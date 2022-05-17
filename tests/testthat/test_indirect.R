@@ -12,14 +12,6 @@ fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baselin
 est <- parameterEstimates(fit)
 
 wvalues <- c(w1 = 5, w2 = 4, w3 = 2, w4 = 3)
-ce_1 <- cond_effect_i(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
-                      wvalues = wvalues)
-ce_1$indirect
-
-dat0 <- dat
-dat0[, names(wvalues)] <- dat[, names(wvalues)] - t(replicate(nrow(dat), wvalues))
-fit0 <- update(fit, data = dat0)
-ce_1_chk <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit0)
 
 ce_1b_chk <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
                       wvalues = wvalues)
@@ -50,11 +42,7 @@ ce_3_chk <- indirect(x = "m2", y = "m3", fit = fit2,
                       wvalues = wvalues)
 ce_3_chk2 <- est2[est2$label == "a3", "est"]
 
-test_that("check indirect using cond_effect_i", {
-    expect_equal(
-        ce_1_chk[1],
-        ce_1$indirect
-      )
+test_that("check indirect", {
     expect_equal(
         ce_1b_chk[1],
         ce_1b_chk2,
