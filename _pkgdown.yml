@@ -1,3 +1,5 @@
+destination: docs
+
 url: https://sfcheung.github.io/stdmodsem/
 template:
   bootstrap: 5
