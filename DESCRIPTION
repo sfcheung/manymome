@@ -1,0 +1,28 @@
+Package: stdmodsem
+Title: Moderation, Mediation, and Moderated-Mediation in SEM
+Version: 0.0.0.9000
+Authors@R: 
+    c(person(given = "Shu Fai",
+           family = "Cheung",
+           role = c("aut", "cre"),
+           email = "shufai.cheung@gmail.com",
+           comment = c(ORCID = "0000-0002-9871-9448")))
+Description: Functions for computing indirect effects, moderation effects,
+             and conditional indirect effects, and their bootstraping
+             confidence interval. Support standadized (partially or completely)
+             moderation effects and conditional indirect effects.
+             For standardized effects that involve the moderator, the
+             sampling variation in the standardization will be taken into
+             accont.
+URL: https://sfcheung.github.io/stdmodsem/
+BugReports: https://github.com/sfcheung/stdmodsem/issues
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.0
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Imports: 
+    boot,
+    lavaan
