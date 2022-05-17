@@ -2,3 +2,4 @@
 
 export(check_path)
 export(indirect)
+export(lm2ptable)
