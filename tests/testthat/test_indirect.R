@@ -1,1 +1,73 @@
-# Test
+library(stdmodsem)
+library(lavaan)
+dat <- modmed_x1m3w4y1
+mod <-
+"
+m1 ~ a1 * x   + b1 * w1 + d1 * x:w1
+m2 ~ a2 * m1  + b2 * w2 + d2 * m1:w2
+m3 ~ a3 * m2  + b3 * w3 + d3 * m2:w3
+y  ~ a4 * m3  + b4 * w4 + d4 * m3:w4
+"
+fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
+est <- parameterEstimates(fit)
+
+wvalues <- c(w1 = 5, w2 = 4, w3 = 2, w4 = 3)
+ce_1 <- cond_effect_i(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
+                      wvalues = wvalues)
+ce_1$indirect
+
+dat0 <- dat
+dat0[, names(wvalues)] <- dat[, names(wvalues)] - t(replicate(nrow(dat), wvalues))
+fit0 <- update(fit, data = dat0)
+ce_1_chk <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit0)
+
+ce_1b_chk <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
+                      wvalues = wvalues)
+ce_1b_chk2 <- (est[est$label == "a1", "est"] +
+                wvalues["w1"] * est[est$label == "d1", "est"]) *
+              (est[est$label == "a2", "est"] +
+                wvalues["w2"] * est[est$label == "d2", "est"]) *
+              (est[est$label == "a3", "est"] +
+                wvalues["w3"] * est[est$label == "d3", "est"]) *
+              (est[est$label == "a4", "est"] +
+                wvalues["w4"] * est[est$label == "d4", "est"])
+
+ce_2_chk <- indirect(x = "x", y = "m1", fit = fit,
+                      wvalues = wvalues)
+ce_2_chk2 <- (est[est$label == "a1", "est"] +
+                wvalues["w1"] * est[est$label == "d1", "est"])
+
+mod2 <-
+"
+m1 ~ a1 * x   + b1 * w1 + d1 * x:w1
+m2 ~ a2 * m1  + b2 * w2 + d2 * m1:w2
+m3 ~ a3 * m2  + b3 * w3
+y  ~ a4 * m3  + b4 * w4 + d4 * m3:w4
+"
+fit2 <- sem(mod2, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
+est2 <- parameterEstimates(fit2)
+ce_3_chk <- indirect(x = "m2", y = "m3", fit = fit2,
+                      wvalues = wvalues)
+ce_3_chk2 <- est2[est2$label == "a3", "est"]
+
+test_that("check indirect using cond_effect_i", {
+    expect_equal(
+        ce_1_chk[1],
+        ce_1$indirect
+      )
+    expect_equal(
+        ce_1b_chk[1],
+        ce_1b_chk2,
+        ignore_attr = TRUE
+      )
+    expect_equal(
+        ce_2_chk[1],
+        ce_2_chk2,
+        ignore_attr = TRUE
+      )
+    expect_equal(
+        ce_3_chk[1],
+        ce_3_chk2,
+        ignore_attr = TRUE
+      )
+  })

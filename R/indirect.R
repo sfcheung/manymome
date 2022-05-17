@@ -44,10 +44,10 @@ indirect <- function(x,
     if (is.null(est)) {
       est <- lavaan::parameterEstimates(fit)
     }
-    if (is.null(m)) {
-        out <- get_b(x, y, fit)
-        return(out)
-      }
+    # if (is.null(m)) {
+    #     out <- get_b(x, y, fit)
+    #     return(out)
+    #   }
     y0 <- y
     p <- length(m) + 1
     bs <- rep(NA, p)

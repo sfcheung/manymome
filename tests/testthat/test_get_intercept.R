@@ -8,7 +8,7 @@ m2 ~ a2 * m1
 m3 ~ a3 * m2
 y  ~ a4 * m3 + c4 * x
 "
-fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
+fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
 est <- parameterEstimates(fit)
 
 test_that("get_intercept", {

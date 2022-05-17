@@ -36,16 +36,16 @@ refit_1_i <- function(x,
         dat0[, names(wvalues)] <- sweep(dat0[, names(wvalues), drop = FALSE],
                                        MARGIN = 2,
                                        STATS = wvalues)
-        fit1 <- lavaan::update(fit,
-                               data = dat0,
-                               se = "none",
-                               baseline = FALSE,
-                               h1 = FALSE)
+        # fit1 <- lavaan::update(fit,
+        #                        data = dat0,
+        #                        se = "none",
+        #                        baseline = FALSE,
+        #                        h1 = FALSE)
       } else {
-        fit1 <- fit
+        # fit1 <- fit
       }
     dat0[, x] <- dat0[, x] - xvalue
-    fit2 <- lavaan::update(fit1,
+    fit2 <- lavaan::update(fit,
                            data = dat0,
                            se = "none",
                            baseline = FALSE,

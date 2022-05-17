@@ -28,10 +28,12 @@ lav_data_used <- function(fit,
     dat <- lavaan::lavInspect(fit, "data")
     i_excluded <- lavaan::lavInspect(fit, "empty.idx")
     vnames <- colnames(dat)
-    vraw <- vnames[!grepl(":", colnames(dat))]
-    vcolon <- apply(expand.grid(vraw, vraw), 1, paste0, collapse = ":")
-    vkeep <- vnames[!(vnames %in% vcolon)]
-    dat <- dat[, vkeep]
+    if (drop_colon) {
+        vraw <- vnames[!grepl(":", colnames(dat))]
+        vcolon <- apply(expand.grid(vraw, vraw), 1, paste0, collapse = ":")
+        vkeep <- vnames[!(vnames %in% vcolon)]
+        dat <- dat[, vkeep]
+      }
     if (length(i_excluded) > 0) {
         return(dat[-i_excluded, ])
       } else {

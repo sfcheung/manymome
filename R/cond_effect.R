@@ -47,16 +47,18 @@ cond_effect <- function(fit,
         dat0[, names(wvalues)] <- sweep(dat0[, names(wvalues), drop = FALSE],
                                        MARGIN = 2,
                                        STATS = wvalues)
-        fit0 <- lavaan::update(fit,
-                               data = dat0,
-                               se = "none",
-                               baseline = FALSE,
-                               h1 = FALSE)
+        # fit0 <- lavaan::update(fit,
+        #                        data = dat0,
+        #                        se = "none",
+        #                        baseline = FALSE,
+        #                        h1 = FALSE)
       } else {
-        fit0 <- fit
+        # fit0 <- fit
       }
-    fit1 <- refit_x_i(x = x, ys = m, xvalue = xvalues[1], fit = fit0)
-    fit2 <- refit_x_i(x = x, ys = m, xvalue = xvalues[2], fit = fit0)
+    fit1 <- refit_x_i(x = x, ys = m, xvalue = xvalues[1],
+                      fit = fit, wvalues = wvalues)
+    fit2 <- refit_x_i(x = x, ys = m, xvalue = xvalues[2],
+                      fit = fit, wvalues = wvalues)
     eff <- (get_intercept(y, fit2) - get_intercept(y, fit1)) /
               (xvalues[2] - xvalues[1])
     out <- list(effect = eff,
