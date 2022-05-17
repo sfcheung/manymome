@@ -32,9 +32,7 @@
 #' @examples
 #' \donttest{
 #' }
-#' @export
-#'
-#'
+#' @noRd
 
 cond_effect <- function(fit,
                         x,
@@ -47,13 +45,6 @@ cond_effect <- function(fit,
         dat0[, names(wvalues)] <- sweep(dat0[, names(wvalues), drop = FALSE],
                                        MARGIN = 2,
                                        STATS = wvalues)
-        # fit0 <- lavaan::update(fit,
-        #                        data = dat0,
-        #                        se = "none",
-        #                        baseline = FALSE,
-        #                        h1 = FALSE)
-      } else {
-        # fit0 <- fit
       }
     fit1 <- refit_x_i(x = x, ys = m, xvalue = xvalues[1],
                       fit = fit, wvalues = wvalues)

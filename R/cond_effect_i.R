@@ -31,7 +31,7 @@
 #' @examples
 #' \donttest{
 #' }
-#' @export
+#' @noRd
 #'
 #'
 
