@@ -31,7 +31,7 @@ p_path <- ptable[(ptable$op == "~") | (ptable$op == "~1"),
                  c("lhs", "op", "rhs", "est")]
 out <- lm2ptable(list(lm_m1, lm_m2, lm_m3, lm_y))
 
-chk <- merge(p_path, out, by = c("lhs", "op", "rhs"))
+chk <- merge(p_path, out$est, by = c("lhs", "op", "rhs"))
 
 test_that("lm2ptable", {
     expect_true(all.equal(chk$est.x, chk$est.y, tolerance = .0001))

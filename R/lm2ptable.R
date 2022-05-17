@@ -39,5 +39,6 @@ lm2ptable <- function(outputs) {
     coefs <- lapply(outputs, coef2lor)
     out <- do.call(rbind, coefs)
     row.names(out) <- NULL
-    out
+    list(est = out,
+         data = mm)
   }
