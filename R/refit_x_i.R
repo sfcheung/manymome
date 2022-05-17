@@ -26,7 +26,7 @@
 #' @examples
 #' \donttest{
 #' }
-#' @export
+#' @noRd
 #'
 #'
 

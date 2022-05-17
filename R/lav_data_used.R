@@ -19,7 +19,7 @@
 #' @examples
 #' \donttest{
 #' }
-#' @export
+#' @noRd
 #'
 #'
 

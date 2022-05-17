@@ -2,6 +2,3 @@
 
 export(check_path)
 export(indirect)
-export(lav_data_used)
-export(refit_1_i)
-export(refit_x_i)

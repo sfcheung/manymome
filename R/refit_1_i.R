@@ -23,7 +23,7 @@
 #' @examples
 #' \donttest{
 #' }
-#' @export
+#' @noRd
 #'
 #'
 

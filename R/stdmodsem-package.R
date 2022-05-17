@@ -1,12 +1,8 @@
-#' stdmodsem: Functions for computing indirect effects,
-#' moderation effects, and conditional indirect effects, and
-#' their bootstraping confidence interval. Support
-#' standadized (partially or completely) moderation effects
-#' and conditional indirect effects. For standardized
-#' effects that involve the moderator, the sampling
-#' variation in the standardization will be taken into
-#' account.
-#'
-#' @docType package
-#' @name stdmodsem
+#' @keywords internal
+"_PACKAGE"
+
+# The following block is used by usethis to automatically manage
+# roxygen namespace tags. Modify with care!
+## usethis namespace: start
+## usethis namespace: end
 NULL
