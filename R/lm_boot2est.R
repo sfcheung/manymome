@@ -42,15 +42,16 @@ lm2boot_out <- function(outputs, R = 100, seed = NULL) {
     out0 <- replicate(R, lm_boot2est_i(d = dat,
                                        i = sample.int(n, replace = TRUE),
                                        outputs = outputs), simplify = FALSE)
+    class(out0) <- "boot_out"
     out0
   }
 
 lm_boot2est_i <- function(d, i = NULL, outputs) {
-    if (is.null(i)) {
+    if (!is.null(i)) {
         d_i <- d[i, ]
       } else {
         d_i <- d
       }
-    out_i <- lapply(outputs, stats::update, data = d)
+    out_i <- lapply(outputs, stats::update, data = d_i)
     lm2ptable(out_i)
   }

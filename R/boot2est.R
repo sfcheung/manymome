@@ -44,6 +44,7 @@ fit2boot_out <- function(fit) {
                   y = boot_implied,
                   SIMPLIFY = FALSE)
     names(out) <- names(boot_est)
+    class(out) <- "boot_out"
     out
   }
 

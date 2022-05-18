@@ -43,8 +43,12 @@
 #'                 bootstrap results. This can be the output of [fit2boot_out()]
 #'                 or [lm2boot_out()]. If not supplied, the function will try
 #'                 to generate them from `fit`.
-#' @param seed If `fit` is a list of [lm()] outputs, `boot_ci` is `TRUE`, and
-#'             `boot_out` is `NULL`, this is the seed for the bootstrapping.
+#' @param R Integer. If `boot_ci` is `TRUE`, `fit` is a list of [lm()] outputs,
+#'          and `boot_out` is `NULL`, this function will do bootstrapping on
+#'          `fit`. `R` is the number of bootstrap samples. Default is 100.
+#' @param seed If `boot_ci` is `TRUE`, `fit` is a list of [lm()] outputs,
+#'          and `boot_out` is `NULL`, this function will do bootstrapping on
+#'          `fit`. This is the seed for the bootstrapping.
 #'             Default is `NULL` and seed is not set.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
@@ -93,7 +97,70 @@ cond_indirect <- function(x,
                      standardized_y = FALSE,
                      boot_ci = FALSE,
                      boot_out = NULL,
+                     R = 100,
                      seed = NULL) {
+    fit_type <- cond_indirect_check_fit(fit)
+    if (boot_ci) {
+        if (fit_type == "lavaan") {
+            opt <- lavaan::lavInspect(fit, "options")
+            if (opt$se != "bootstrap") {
+                stop("If 'boot_ci' is TRUE, 'se' needs to be 'bootstrap' in 'fit'.")
+              }
+            if (is.null(boot_out)) {
+                boot_out <- fit2boot_out(fit = fit)
+              }
+          }
+        if (fit_type == "lm") {
+            if (is.null(boot_out)) {
+                # Do bootstrap here.
+                boot_out <- lm2boot_out(outputs = fit,
+                                        R = R,
+                                        seed = seed)
+              }
+          }
+      }
+    if (fit_type == "lavaan") {
+        fit0 <- fit
+        if (is.null(est)) est <- lavaan::parameterEstimates(fit)
+        if (is.null(implied_stats)) lavaan::lavInspect(fit, "implied")
+      }
+    if (fit_type == "lm") {
+        fit0 <- NULL
+        lm_est <- lm2ptable(fit)
+        if (is.null(est)) est <- lm_est$est
+        if (is.null(implied_stats)) implied_stats <- lm_est$implied_stats
+      }
+    out0 <- indirect(x = x,
+                     y = y,
+                     m = m,
+                     fit = fit0,
+                     est = est,
+                     implied_stats = implied_stats,
+                     wvalues = wvalues,
+                     standardized_x = standardized_x,
+                     standardized_y = standardized_y)
+    if (boot_ci) {
+        out_boot <- mapply(indirect,
+                           est = lapply(boot_out, function(x) x$est),
+                           implied_stats = lapply(boot_out, function(x) x$implied_stats),
+                           MoreArgs = list(x = x,
+                                           y = y,
+                                           m = m,
+                                           fit = fit0,
+                                           wvalues = wvalues,
+                                           standardized_x = standardized_x,
+                                           standardized_y = standardized_y),
+                           SIMPLIFY = FALSE)
+        out0$boot_full <- out_boot
+        out0$boot_indirect <- sapply(out_boot, function(x) x$indirect)
+      }
+    out0
+  }
+
+#' @noRd
+#'
+
+cond_indirect_check_fit <- function(fit) {
     fit_type <- NA
     if (inherits(fit, "lavaan")) {
         fit_type <- "lavaan"
@@ -109,17 +176,5 @@ cond_indirect <- function(x,
     if (is.na(fit_type)) {
         stop("'fit' is neither a lavaan object or a list of lm outputs.")
       }
-    if (boot_ci) {
-        if (fit_type == "lavaan") {
-            opt <- lavaan::lavInspect(fit, "options")
-            if (opt$se != "bootstrap") {
-                stop("If 'boot_ci' is TRUE, 'se' needs to be 'bootstrap' in fit.")
-              }
-          }
-        if (fit_type == "lm") {
-            if (is.null(boot_out)) {
-                # Do bootstrap here.
-              }
-          }
-      }
+    fit_type
   }
