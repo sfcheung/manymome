@@ -34,10 +34,10 @@ ce_3_chk2 <- (coef(lm_y)["x"] +
 
 
 test_that("lm2ptable with indirect", {
-    expect_equal(unname(ce_1b_chk[1]),
+    expect_equal(unname(ce_1b_chk$indirect),
                  unname(ce_1b_chk2))
-    expect_equal(unname(ce_2_chk[1]),
+    expect_equal(unname(ce_2_chk$indirect),
                  unname(ce_2_chk2))
-    expect_equal(unname(ce_3_chk[1]),
+    expect_equal(unname(ce_3_chk$indirect),
                  unname(ce_3_chk2))
   })

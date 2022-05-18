@@ -34,14 +34,14 @@ ce_3_chk <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit)
 test_that("check cond_effect_i using indirect", {
     expect_equal(
         ce_1$indirect,
-        ce_1_chk[1]
+        ce_1_chk$indirect
       )
     expect_equal(
         ce_2$indirect,
-        ce_1_chk[1]
+        ce_1_chk$indirect
       )
     expect_equal(
         ce_3$indirect,
-        ce_3_chk[1]
+        ce_3_chk$indirect
       )
   })

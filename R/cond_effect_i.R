@@ -59,7 +59,7 @@ cond_effect_i <- function(fit,
         fit0 <- fit
       }
     indirect <- indirect(x = x, y = y, m = m, fit = fit0)
-    out <- list(indirect = indirect[1],
+    out <- list(indirect = indirect$indirect,
                 bs = indirect[-1],
                 fit = fit0)
     out

@@ -44,17 +44,17 @@ ce_3_chk2 <- est2[est2$label == "a3", "est"]
 
 test_that("check indirect", {
     expect_equal(
-        ce_1b_chk[1],
+        ce_1b_chk$indirect,
         ce_1b_chk2,
         ignore_attr = TRUE
       )
     expect_equal(
-        ce_2_chk[1],
+        ce_2_chk$indirect,
         ce_2_chk2,
         ignore_attr = TRUE
       )
     expect_equal(
-        ce_3_chk[1],
+        ce_3_chk$indirect,
         ce_3_chk2,
         ignore_attr = TRUE
       )

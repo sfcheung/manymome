@@ -4,7 +4,17 @@
 \alias{indirect}
 \title{One Line Title}
 \usage{
-indirect(x, y, m = NULL, fit = NULL, est = NULL, wvalues = NULL)
+indirect(
+  x,
+  y,
+  m = NULL,
+  fit = NULL,
+  est = NULL,
+  implied_stats = NULL,
+  wvalues = NULL,
+  standardized_x = FALSE,
+  standardized_y = FALSE
+)
 }
 \arguments{
 \item{x}{Character. The name of predictor at the start of the pathway.}
@@ -25,9 +35,24 @@ to \code{y}.}
 default, it will be generated from \code{fit}. If supplied,
 \code{fit} will ge ignored.}
 
+\item{implied_stats}{Implied means, variances, and
+covariances of observed variables, of the
+form of the output of
+\code{\link[lavaan:lavInspect]{lavaan::lavInspect()}} with \code{what} set to
+\code{"implied"}. The standard deviations are
+extracted from this object for
+standardization. Default is \code{NULL}, and
+implied statistics will be computed from \code{fit} if required.}
+
 \item{wvalues}{A numeric vector of named elements. The names are the variable
 names of the moderators, and the values are the values to
 which the moderators will be set to. Default is \code{NULL}.}
+
+\item{standardized_x}{Logical. Whether \code{x} will be standardized. Default is
+\code{FALSE}.}
+
+\item{standardized_y}{Logical. Whether \code{y} will be standardized. Default is
+\code{FALSE}.}
 }
 \value{
 Specify what are returned.
@@ -66,7 +91,7 @@ indirect_2 <- (est[est$label == "a1", "est"] +
                 wvalues["w3"] * est[est$label == "d3", "est"]) *
               (est[est$label == "a4", "est"] +
                 wvalues["w4"] * est[est$label == "d4", "est"])
-indirect_1
+indirect_1$indirect
 indirect_2
 
 }

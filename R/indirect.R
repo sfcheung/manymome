@@ -22,9 +22,21 @@
 #' @param est The output of [lavaan::parameterEstimates()]. If `NULL`, the
 #'            default, it will be generated from `fit`. If supplied,
 #'            `fit` will ge ignored.
+#' @param implied_stats Implied means, variances, and
+#'                covariances of observed variables, of the
+#'                form of the output of
+#'                [lavaan::lavInspect()] with `what` set to
+#'                `"implied"`. The standard deviations are
+#'                extracted from this object for
+#'                standardization. Default is `NULL`, and
+#'                implied statistics will be computed from `fit` if required.
 #' @param wvalues A numeric vector of named elements. The names are the variable
 #'                names of the moderators, and the values are the values to
 #'                which the moderators will be set to. Default is `NULL`.
+#' @param standardized_x Logical. Whether `x` will be standardized. Default is
+#'                       `FALSE`.
+#' @param standardized_y Logical. Whether `y` will be standardized. Default is
+#'                       `FALSE`.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
@@ -54,7 +66,7 @@
 #'                 wvalues["w3"] * est[est$label == "d3", "est"]) *
 #'               (est[est$label == "a4", "est"] +
 #'                 wvalues["w4"] * est[est$label == "d4", "est"])
-#' indirect_1
+#' indirect_1$indirect
 #' indirect_2
 #'
 #' @export
@@ -66,7 +78,10 @@ indirect <- function(x,
                      m = NULL,
                      fit = NULL,
                      est = NULL,
-                     wvalues = NULL) {
+                     implied_stats = NULL,
+                     wvalues = NULL,
+                     standardized_x = FALSE,
+                     standardized_y = FALSE) {
     if (is.null(est)) {
       est <- lavaan::parameterEstimates(fit)
     }
@@ -79,11 +94,13 @@ indirect <- function(x,
     bs <- rep(NA, p)
     xs <- c(x, m)
     ys <- c(m, y)
+    bs_names <- paste0(ys, "~", xs)
     bs <- mapply(get_b,
                  x = xs,
                  y = ys,
                  MoreArgs = list(est = est))
     bs_org <- bs
+    names(bs_org) <- bs_names
     prods <- mapply(get_prod,
                     x = xs,
                     y = ys,
@@ -103,7 +120,31 @@ indirect <- function(x,
       } else {
         b_cond <- rep(NA, length(bs))
       }
+    names(bs) <- bs_names
     b_all <- prod(bs)
-    names(b_all) <- "indirect"
-    return(c(b_all, bs))
+    scale_x <- 1
+    scale_y <- 1
+    if (standardized_x || standardized_y) {
+        if (is.null(implied_stats)) {
+            implied_stats <- lavaan::lavInspect(fit, "implied")
+          }
+        if (standardized_x) {
+            scale_x <- diag(implied_stats$cov)[x]
+          }
+        if (standardized_y) {
+            scale_y <- diag(implied_stats$cov)[y]
+          }
+      }
+    b_all_final <- b_all * scale_x / scale_y
+    out <- list(indirect = b_all_final,
+                indirect_raw = b_all,
+                components = bs_org,
+                components_conditional = bs,
+                call = match.call(),
+                scale_x = scale_x,
+                scale_y = scale_y,
+                standardized_x = standardized_x,
+                standardized_y = standardized_y)
+    class(out) <- "indirect"
+    return(out)
   }
