@@ -50,6 +50,21 @@ boot2est <- function(fit) {
     out_all
   }
 
+boot2implied <- function(fit) {
+    opt <- lavaan::lavInspect(fit, "options")
+    if (opt$se != "bootstrap") {
+        stop("'se' not set to 'bootstrap' when fitting the model.")
+      }
+    if (opt$fixed.x) {
+        stop("'fixed.x' set to TRUE is not supported.")
+      }
+    boot_est0 <- lavInspect(fit, "boot")
+    boot_est <- split(boot_est0, row(boot_est0))
+    out_all <- lapply(boot_est, get_implied_i,
+                        fit = fit)
+    out_all
+  }
+
 set_est_i <- function(est0, fit, p_free) {
     fit@ParTable$est[p_free] <- unname(est0)
     est0 <- lavaan::parameterEstimates(fit,
@@ -64,4 +79,23 @@ set_est_i <- function(est0, fit, p_free) {
                                        remove.nonfree = FALSE,
                                        remove.step1 = FALSE)
     est0
+  }
+
+get_implied_i <- function(est0, fit) {
+    # fit@ParTable$est[p_free] <- unname(est0)
+    # fit@Model@GLIST <- lavaan::lav_model_set_parameters(fit@Model,
+    #                                                     est0)@GLIST
+    # implied <- lavaan::lavInspect(fit, "implied")
+    # implied
+    mod0 <- lavaan::lav_model_set_parameters(fit@Model, est0)
+    implied <- lavaan::lav_model_implied(mod0,
+                                         GLIST = NULL,
+                                         delta = TRUE)
+    out <- lavaan::lavInspect(fit, "implied")
+    out_names <- names(out)
+    out1 <- out
+    for (x in out_names) {
+        out1[[x]][] <- implied[[x]][[1]]
+      }
+    out1
   }
