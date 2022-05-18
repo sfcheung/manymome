@@ -39,6 +39,35 @@ lm2mod <- function(outputs) {
     mod
   }
 
+
+merge_model_frame <- function(outputs) {
+    mm <- lapply(outputs,
+                 function(x) {
+                    out <- stats::model.frame(x)
+                  })
+    vnames <- unique(unlist(sapply(mm, colnames)))
+    idname <- newname(vnames)
+    mm1 <- lapply(mm, function(x) {
+                          j <- colnames(x)
+                          out <- cbind(x, seq_len(nrow(x)))
+                          colnames(out) <- c(j, idname)
+                          out
+                        })
+    # TODO: Check mm
+    `%merge%` <- function(x, y) {
+        xnames <- colnames(x)
+        ynames <- colnames(y)
+        ykeep <- c(idname, ynames[!(ynames %in% xnames)])
+        y1 <- y[, ykeep]
+        merge(x, y1,
+              by = idname)
+      }
+    mm2 <- Reduce(`%merge%`, mm1)
+    mm2[, idname] <- NULL
+    mm2
+  }
+
+
 merge_model_matrix <- function(outputs) {
     mm <- lapply(outputs,
                  function(x) {

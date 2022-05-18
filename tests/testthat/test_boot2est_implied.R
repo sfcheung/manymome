@@ -55,6 +55,10 @@ fit_fixedx <- sem(mod, dat, meanstructure = TRUE, fixed.x = TRUE,
                   baseline = FALSE,
                   h1 = FALSE)
 
+out2 <- fit2boot_out(fit = fit)
+out2_est_chk <- boot2est(fit)
+out2_implied_chk <- boot2implied(fit)
+
 test_that("boot2est with implied stat", {
     expect_equal(
         implied$cov,
@@ -75,5 +79,13 @@ test_that("boot2est with implied stat", {
       )
     expect_error(
         boot2implied(fit_fixedx)
+      )
+    expect_identical(
+        out2[[5]]$est,
+        out2_est_chk[[5]]
+      )
+    expect_identical(
+        out2[[5]]$implied,
+        out2_implied_chk[[5]]
       )
   })

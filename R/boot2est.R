@@ -35,6 +35,18 @@
 #'
 #'
 
+fit2boot_out <- function(fit) {
+    boot_est <- boot2est(fit)
+    boot_implied <- boot2implied(fit)
+    out <- mapply(function(x, y) list(est = x,
+                                      implied_stats = y),
+                  x = boot_est,
+                  y = boot_implied,
+                  SIMPLIFY = FALSE)
+    names(out) <- names(boot_est)
+    out
+  }
+
 boot2est <- function(fit) {
     opt <- lavaan::lavInspect(fit, "options")
     if (opt$se != "bootstrap") {
