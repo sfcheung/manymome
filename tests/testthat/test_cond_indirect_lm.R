@@ -38,8 +38,19 @@ out_boot_chk <- mapply(indirect,
                                        wvalues = wv),
                        SIMPLIFY = FALSE)
 
+out_boot2 <- cond_indirect(x = "x", y = "y",
+                     m = c("m1", "m2", "m3"),
+                     fit = fit,
+                     wvalues = wv,
+                     boot_ci = TRUE,
+                     R = 100,
+                     seed = 418751)
+
+
 test_that("cond_indirect: lavaan", {
     expect_identical(out$indirect, out_chk$indirect)
     expect_identical(out_boot$boot_indirect,
                      sapply(out_boot_chk, function(x) x$indirect))
+    expect_identical(out_boot$boot_indirect,
+                     out_boot$boot_indirect)
   })

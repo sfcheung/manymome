@@ -39,6 +39,8 @@
 #'                       `FALSE`.
 #' @param boot_ci Logical. Whether bootstrap confidence interval will be formed.
 #'                Default is `FALSE`.
+#' @param level The level of confidence for the bootstrap confidence interval.
+#'              Default is .95.
 #' @param boot_out If `boot_ci` is `TRUE`, users can supply pregenerated
 #'                 bootstrap results. This can be the output of [fit2boot_out()]
 #'                 or [lm2boot_out()]. If not supplied, the function will try
@@ -96,6 +98,7 @@ cond_indirect <- function(x,
                      standardized_x = FALSE,
                      standardized_y = FALSE,
                      boot_ci = FALSE,
+                     level = .95,
                      boot_out = NULL,
                      R = 100,
                      seed = NULL) {
@@ -152,8 +155,20 @@ cond_indirect <- function(x,
                                            standardized_y = standardized_y),
                            SIMPLIFY = FALSE)
         out0$boot_full <- out_boot
+        nboot <- length(out_boot)
         out0$boot_indirect <- sapply(out_boot, function(x) x$indirect)
+        tmp <- list(t = matrix(out0$boot_indirect, nrow = nboot, ncol = 1),
+                    t0 = out0$indirect,
+                    R = nboot)
+        boot_ci <- boot::boot.ci(tmp, conf = level, type = "perc")
+        boot_ci1 <- boot_ci$percent[4:5]
+        names(boot_ci1) <- paste0(formatC(c(100 * (1 - level) / 2,
+                                     100 * (1 - (1 - level) / 2)), 2,
+                                     format = "f"), "%")
+        out0$boot_ci <- boot_ci1
+        out0$level <- level
       }
+    out0$cond_indirect_call <- match.call()
     out0
   }
 

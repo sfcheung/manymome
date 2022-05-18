@@ -31,7 +31,7 @@
 #' check_path(x = "x", y = "m3", m = c("m1", "m2"), fit = fit)
 #' check_path(x = "x", y = "y", m = c("m1", "m2"), fit = fit)
 #'
-#' @noRd
+#' @export
 #'
 #'
 

@@ -11,6 +11,8 @@
 #'
 #' @param outputs A list of `lm` class objects.
 #' @param R The number of bootstrap samples. Default is 100.
+#' @param seed The seed for the bootstrapping.
+#'             Default is `NULL` and seed is not set.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
@@ -31,7 +33,7 @@
 #' check_path(x = "x", y = "m3", m = c("m1", "m2"), fit = fit)
 #' check_path(x = "x", y = "y", m = c("m1", "m2"), fit = fit)
 #'
-#' @noRd
+#' @export
 #'
 #'
 

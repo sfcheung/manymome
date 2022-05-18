@@ -2,5 +2,7 @@
 
 export(check_path)
 export(cond_indirect)
+export(fit2boot_out)
 export(indirect)
+export(lm2boot_out)
 export(lm2ptable)

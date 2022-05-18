@@ -15,7 +15,9 @@ cond_indirect(
   standardized_x = FALSE,
   standardized_y = FALSE,
   boot_ci = FALSE,
+  level = 0.95,
   boot_out = NULL,
+  R = 100,
   seed = NULL
 )
 }
@@ -60,13 +62,21 @@ which the moderators will be set to. Default is \code{NULL}.}
 \item{boot_ci}{Logical. Whether bootstrap confidence interval will be formed.
 Default is \code{FALSE}.}
 
+\item{level}{The level of confidence for the bootstrap confidence interval.
+Default is .95.}
+
 \item{boot_out}{If \code{boot_ci} is \code{TRUE}, users can supply pregenerated
 bootstrap results. This can be the output of \code{\link[=fit2boot_out]{fit2boot_out()}}
 or \code{\link[=lm2boot_out]{lm2boot_out()}}. If not supplied, the function will try
 to generate them from \code{fit}.}
 
-\item{seed}{If \code{fit} is a list of \code{\link[=lm]{lm()}} outputs, \code{boot_ci} is \code{TRUE}, and
-\code{boot_out} is \code{NULL}, this is the seed for the bootstrapping.
+\item{R}{Integer. If \code{boot_ci} is \code{TRUE}, \code{fit} is a list of \code{\link[=lm]{lm()}} outputs,
+and \code{boot_out} is \code{NULL}, this function will do bootstrapping on
+\code{fit}. \code{R} is the number of bootstrap samples. Default is 100.}
+
+\item{seed}{If \code{boot_ci} is \code{TRUE}, \code{fit} is a list of \code{\link[=lm]{lm()}} outputs,
+and \code{boot_out} is \code{NULL}, this function will do bootstrapping on
+\code{fit}. This is the seed for the bootstrapping.
 Default is \code{NULL} and seed is not set.}
 }
 \value{
