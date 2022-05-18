@@ -55,7 +55,7 @@ get_prod <- function(x,
     i_prod_x2 <- grepl(paste0(":", x), prod_rhs)
     if (isTRUE(any(i_prod_x2))) {
         prod_x2 <- prod_rhs[i_prod_x2]
-        w2 <- gsub(paste0(x, ":"), "", prod_x2)
+        w2 <- gsub(paste0(":", x), "", prod_x2)
       } else {
         prod_x2 <- NULL
         w2 <- NULL
