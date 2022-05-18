@@ -129,10 +129,10 @@ indirect <- function(x,
             implied_stats <- lavaan::lavInspect(fit, "implied")
           }
         if (standardized_x) {
-            scale_x <- diag(implied_stats$cov)[x]
+            scale_x <- sqrt(diag(implied_stats$cov)[x])
           }
         if (standardized_y) {
-            scale_y <- diag(implied_stats$cov)[y]
+            scale_y <- sqrt(diag(implied_stats$cov)[y])
           }
       }
     b_all_final <- b_all * scale_x / scale_y

@@ -40,5 +40,6 @@ lm2ptable <- function(outputs) {
     out <- do.call(rbind, coefs)
     row.names(out) <- NULL
     list(est = out,
-         data = mm)
+         data = mm,
+         implied_stats = data2implied(mm))
   }

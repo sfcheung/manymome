@@ -33,6 +33,14 @@ out <- lm2ptable(list(lm_m1, lm_m2, lm_m3, lm_y))
 
 chk <- merge(p_path, out$est, by = c("lhs", "op", "rhs"))
 
+mod_lav <- lavaanify(mod)
+mod_chk <- lm2mod(list(lm_m1, lm_m2, lm_m3, lm_y))
+mod_chk_lav <- lavaanify(mod_chk)
+
 test_that("lm2ptable", {
     expect_true(all.equal(chk$est.x, chk$est.y, tolerance = .0001))
+    expect_identical(
+        mod_lav,
+        mod_chk_lav
+      )
   })

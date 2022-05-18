@@ -32,6 +32,25 @@ ce_3_chk <- indirect(x = "x", y = "y", est = out$est,
 ce_3_chk2 <- (coef(lm_y)["x"] +
                 wvalues["w4"] * coef(lm_y)["w4:x"])
 
+ce_1b_stdx_chk <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), est = out$est,
+                      wvalues = wvalues,
+                      implied_stats = out$implied_stats,
+                      standardized_x = TRUE)
+ce_1b_stdy_chk <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), est = out$est,
+                      wvalues = wvalues,
+                      implied_stats = out$implied_stats,
+                      standardized_y = TRUE)
+ce_1b_stdboth_chk <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), est = out$est,
+                      wvalues = wvalues,
+                      implied_stats = out$implied_stats,
+                      standardized_x = TRUE,
+                      standardized_y = TRUE)
+sd_x <- sd(dat$x)
+sd_y <- sd(dat$y)
+ce_1b_stdx_chk2 <- ce_1b_chk2 * sd_x
+ce_1b_stdy_chk2 <- ce_1b_chk2 / sd_y
+ce_1b_stdboth_chk2 <- ce_1b_chk2 * sd_x / sd_y
+
 
 test_that("lm2ptable with indirect", {
     expect_equal(unname(ce_1b_chk$indirect),
@@ -40,4 +59,10 @@ test_that("lm2ptable with indirect", {
                  unname(ce_2_chk2))
     expect_equal(unname(ce_3_chk$indirect),
                  unname(ce_3_chk2))
+    expect_equal(unname(ce_1b_stdx_chk$indirect),
+                 unname(ce_1b_stdx_chk2))
+    expect_equal(unname(ce_1b_stdy_chk$indirect),
+                 unname(ce_1b_stdy_chk2))
+    expect_equal(unname(ce_1b_stdboth_chk$indirect),
+                 unname(ce_1b_stdboth_chk2))
   })

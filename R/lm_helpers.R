@@ -1,6 +1,6 @@
 
 coef2lor <- function(x) {
-    y <- all.vars(stats::formula(x))[1]
+    y <- get_response(x)
     bs <- stats::coef(x)
     bnames <- names(bs)
     j <- which(bnames == "(Intercept)")
@@ -22,20 +22,20 @@ get_response <- function(x) {
   }
 
 get_response_data <- function(x) {
-    y <- all.vars(stats::formula(x))[1]
+    y <- get_response(x)
     stats::model.frame(x)[, y, drop = FALSE]
   }
 
 lm2mod_i <- function(x) {
-    y <- all.vars(stats::formula(x))[1]
+    y <- get_response(x)
     out <- paste(y, "~",
             paste(names(stats::coef(x))[-1], collapse = " + "))
     out
   }
 
-lm2mod <- function(outputs, dat) {
+lm2mod <- function(outputs) {
     out <- lapply(outputs, lm2mod_i)
-    mod <- paste(out, collapse = "\n")
+    mod <- paste0(out, collapse = "\n")
     mod
   }
 
@@ -77,10 +77,9 @@ newname <- function(x) {
     out
   }
 
-factor2var <- function(x_value, x_contrasts) {
-    x_fac <- factor(x_value)
-    stats::contrasts(x_fac) <- x_contrasts
-    m <- do.call(x_contrasts, list(n = levels(x_fac)))
-    out <- t(sapply(x_value, function(x) m[x, ]))
-    out
+data2implied <- function(data) {
+    cov <- cov(data)
+    mean <- colMeans(data)
+    list(cov = cov,
+         mean = mean)
   }

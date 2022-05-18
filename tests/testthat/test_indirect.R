@@ -42,6 +42,19 @@ ce_3_chk <- indirect(x = "m2", y = "m3", fit = fit2,
                       wvalues = wvalues)
 ce_3_chk2 <- est2[est2$label == "a3", "est"]
 
+ce_1b_stdx_chk <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
+                      wvalues = wvalues, standardized_x = TRUE)
+ce_1b_stdy_chk <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
+                      wvalues = wvalues, standardized_y = TRUE)
+ce_1b_stdboth_chk <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
+                      wvalues = wvalues, standardized_x = TRUE, standardized_y = TRUE)
+fit_implied <- lavInspect(fit, "implied")
+sd_x <- sqrt(fit_implied$cov["x", "x"])
+sd_y <- sqrt(fit_implied$cov["y", "y"])
+ce_1b_stdx_chk2 <- ce_1b_chk2 * sd_x
+ce_1b_stdy_chk2 <- ce_1b_chk2 / sd_y
+ce_1b_stdboth_chk2 <- ce_1b_chk2 * sd_x / sd_y
+
 test_that("check indirect", {
     expect_equal(
         ce_1b_chk$indirect,
@@ -56,6 +69,21 @@ test_that("check indirect", {
     expect_equal(
         ce_3_chk$indirect,
         ce_3_chk2,
+        ignore_attr = TRUE
+      )
+    expect_equal(
+        ce_1b_stdx_chk$indirect,
+        ce_1b_stdx_chk2,
+        ignore_attr = TRUE
+      )
+    expect_equal(
+        ce_1b_stdy_chk$indirect,
+        ce_1b_stdy_chk2,
+        ignore_attr = TRUE
+      )
+    expect_equal(
+        ce_1b_stdboth_chk$indirect,
+        ce_1b_stdboth_chk2,
         ignore_attr = TRUE
       )
   })
