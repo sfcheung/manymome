@@ -14,6 +14,29 @@
 #' @param w Character. The names of the moderator. If the moderator is
 #'          categorical with 3 or more groups, this is the vector of the
 #'          indicator variables.
+#' @param w_type Character. Whether the moderator is a `"numeric"`
+#'               variable or a `"categorical"` variable.
+#' @param w_method Character, either `"sd"` or `"percentile"`.
+#'                 If `"sd"`, the levels are defined by the
+#'                 distance from the mean in terms of standard deviation.
+#'                 if `"percentile"`, the levels are defined in percentiles.
+#' @param sd_from_mean A numeric vector. Specify the distance in standard
+#'                     deviation from the mean for each level. Default is
+#'                     `c(-1, 0, 1)`. Ignored if `w_method` is not equal to
+#'                     `"sd"`.
+#' @param percentiles A numeric vector. Specify the percentile (in proportion)
+#'                    for each level. Default is `c(.16, .50, .84)`, corresponding
+#'                    approximately to one standard deviation below mean,
+#'                    mean, and one standard deviation above mean in a normal
+#'                    distribution. Ignored if `w_method` is not equal to
+#'                    `"percentile"`.
+#' @param extract_gp_names Logical. If `TRUE`, the default, the function will
+#'                         try to determine the name of each group from the
+#'                         variable names.
+#' @param prefix Character. If `extract_gp_names` is `TRUE` and `prefix` is
+#'               supplied, it will be removed from the variable names
+#'               to create the group names. Default is `NULL`, and the function
+#'               will try to determine the prefix automatically.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
@@ -39,11 +62,6 @@
 #'
 
 mod_levels <- function(fit,
-                       w) {
-
-  }
-
-mod_levels_i <- function(fit,
                          w,
                          w_type = c("numeric", "categorical"),
                          w_method = c("sd", "percentile"),
@@ -86,25 +104,18 @@ mod_levels_i <- function(fit,
     out
   }
 
-mod_levels_i_lm <- function(fit,
-                            w,
-                            w_method = c("sd", "percentile"),
-                            sd_from_mean = c(-1, 0, 1),
-                            percentiles = c(.16, .50, .84),
-                            extract_gp_names = TRUE,
-                            prefix = NULL) {
-
-  }
-
-mod_levels_i_lm_numerical <- function(fit,
+mod_levels_i_lavaan_numerical <- mod_levels_i_lm_numerical <- function(fit,
                                       w,
                                       w_method = c("sd", "percentile"),
                                       sd_from_mean = c(-1, 0, 1),
                                       percentiles = c(.16, .50, .84)) {
     # No need for user-specified method. If users want to specify their own
     # values, they do not need  to call this function
+    fit_type <- cond_indirect_check_fit(fit)
+    mm <- switch(fit_type,
+                 lavaan = as.data.frame(lav_data_used(fit)),
+                 lm = merge_model_matrix(fit))
     w_method <- match.arg(w_method)
-    mm <- merge_model_matrix(fit)
     w_dat <- mm[, w]
     if (w_method == "sd") {
         w_mean <- mean(w_dat, na.rm = TRUE)
@@ -116,77 +127,26 @@ mod_levels_i_lm_numerical <- function(fit,
         vnames <- paste0("M", vnames, "SD")
         vnames <- gsub("M0.0SD", "Mean", vnames)
         names(levels) <- vnames
-        return(levels)
+        out <- data.frame(w = levels)
+        rownames(out) <- vnames
+        return(out)
       }
     if (w_method == "percentile") {
-        w_q <- quantile(w_dat, probs = percentiles, na.rm = TRUE)
-        return(w_q)
+        w_q <- stats::quantile(w_dat, probs = percentiles, na.rm = TRUE)
+        out <- data.frame(w = w_q)
+        rownames(out) <- names(w_q)
+        return(out)
       }
   }
 
-mod_levels_i_lm_categorical <- function(fit,
+mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
                                         w,
                                         extract_gp_names = TRUE,
                                         prefix = NULL) {
-    mm <- merge_model_matrix(fit)
-    w_dat <- mm[, w]
-    w_gp <- unique(w_dat)
-    k <- nrow(w_gp)
-    j <- rev(seq_len(ncol(w_gp)))
-    i <- do.call(order, w_gp[, j])
-    w_gp <- w_gp[i, ]
-    gpnames <- paste0("Category ", seq_len(k))
-    rownames(w_gp) <- gpnames
-    if (extract_gp_names) {
-        w_gp <- set_gp_names(w_gp, prefix = prefix)
-      }
-    return(w_gp)
-  }
-
-mod_levels_i_lavaan <- function(fit,
-                                w,
-                                w_method = c("sd", "percentile"),
-                                sd_from_mean = c(-1, 0, 1),
-                                percentiles = c(.16, .50, .84),
-                                extract_gp_names = TRUE,
-                                prefix = NULL) {
-
-  }
-
-
-mod_levels_i_lavaan_numerical <- function(fit,
-                                      w_method = c("sd", "percentile"),
-                                      sd_from_mean = c(-1, 0, 1),
-                                      percentiles = c(.16, .50, .84),
-                                      w) {
-    # No need for user-specified method. If users want to specify their own
-    # values, they do not need  to call this function
-    w_method <- match.arg(w_method)
-    mm <- lav_data_used(fit)
-    w_dat <- mm[, w]
-    if (w_method == "sd") {
-        w_mean <- mean(w_dat, na.rm = TRUE)
-        w_sd <- stats::sd(w_dat, na.rm = TRUE)
-        levels <- w_mean + sd_from_mean * w_sd
-        vnames <- ifelse(sd_from_mean > 0,
-                         paste0("+", formatC(sd_from_mean, 1, format = "f")),
-                         formatC(sd_from_mean, 1, format = "f"))
-        vnames <- paste0("M", vnames, "SD")
-        vnames <- gsub("M0.0SD", "Mean", vnames)
-        names(levels) <- vnames
-        return(levels)
-      }
-    if (w_method == "percentile") {
-        w_q <- quantile(w_dat, probs = percentiles, na.rm = TRUE)
-        return(w_q)
-      }
-  }
-
-mod_levels_i_lavaan_categorical <- function(fit,
-                                            w,
-                                            extract_gp_names = TRUE,
-                                            prefix = NULL) {
-    mm <- as.data.frame(lav_data_used(fit))
+    fit_type <- cond_indirect_check_fit(fit)
+    mm <- switch(fit_type,
+                 lavaan = as.data.frame(lav_data_used(fit)),
+                 lm = merge_model_matrix(fit))
     w_dat <- mm[, w]
     w_gp <- unique(w_dat)
     k <- nrow(w_gp)
