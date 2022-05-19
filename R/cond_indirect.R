@@ -247,6 +247,8 @@ cond_indirect_effects <- function(wlevels,
         out1 <- cond_indirect_effects_to_df(out, wlevels = wlevels)
         class(out1) <- c("cond_indirect_effects", class(out1))
         attr(out1, "call") <- match.call()
+        attr(out1, "full_output") <- out
+        attr(out1, "wlevels") <- wlevels
         return(out1)
       } else {
         return(out)
