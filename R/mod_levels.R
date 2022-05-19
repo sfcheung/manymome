@@ -65,6 +65,8 @@
 #' @export
 #'
 #'
+#' @describeIn mod_levels Generate levels for one moderaotr.
+#' @order 1
 
 mod_levels <- function(w,
                        fit,
@@ -125,6 +127,8 @@ mod_levels <- function(w,
   }
 
 #' @export
+#' @describeIn mod_levels Generate levels for several moderaotrs.
+#' @order 2
 
 mod_levels_list <- function(...,
                             fit,

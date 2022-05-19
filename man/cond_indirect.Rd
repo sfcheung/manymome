@@ -2,6 +2,7 @@
 % Please edit documentation in R/cond_indirect.R
 \name{cond_indirect}
 \alias{cond_indirect}
+\alias{cond_indirect_effects}
 \title{One Line Title}
 \usage{
 cond_indirect(
@@ -18,7 +19,19 @@ cond_indirect(
   level = 0.95,
   boot_out = NULL,
   R = 100,
-  seed = NULL
+  seed = NULL,
+  save_boot_full = FALSE
+)
+
+cond_indirect_effects(
+  wlevels,
+  ...,
+  fit = fit,
+  boot_ci = FALSE,
+  boot_out = NULL,
+  R = 100,
+  seed = NULL,
+  output_type = "data.frame"
 )
 }
 \arguments{
@@ -79,9 +92,18 @@ and \code{boot_out} is \code{NULL}, this function will do bootstrapping on
 \code{fit}. This is the seed for the bootstrapping.
 Default is \code{NULL} and seed is not set.}
 
-\item{wlevels}{The output of \code{\link[=merge_mod_levesl]{merge_mod_levesl()}}.}
+\item{save_boot_full}{If \code{TRUE}, full bootstrapping results will be stored.
+Default is \code{FALSE.}}
+
+\item{wlevels}{The output of \code{\link[=merge_mod_levels]{merge_mod_levels()}}.}
 
 \item{...}{Arguments to be passed to \code{\link[=cond_indirect]{cond_indirect()}}}
+
+\item{output_type}{The type of output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+If \code{"data.frame"}, the default, the output will
+be converted to a data frame. If any other value,
+the output is a list of the outputs from
+\code{\link[=cond_indirect]{cond_indirect()}}.}
 }
 \value{
 Specify what are returned.
@@ -94,6 +116,13 @@ Details
 (Include subjects for verbs.)
 (Use 3rd person forms for verbs.)
 }
+\section{Functions}{
+\itemize{
+\item \code{cond_indirect}: Compute conditional indirect effects one set of levels.
+
+\item \code{cond_indirect_effects}: Compute conditional indirect effects for several sets of levels
+}}
+
 \examples{
 
 library(lavaan)

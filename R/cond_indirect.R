@@ -52,8 +52,15 @@
 #'          and `boot_out` is `NULL`, this function will do bootstrapping on
 #'          `fit`. This is the seed for the bootstrapping.
 #'             Default is `NULL` and seed is not set.
-#' @param wlevels The output of [merge_mod_levesl()].
+#' @param wlevels The output of [merge_mod_levels()].
 #' @param ... Arguments to be passed to [cond_indirect()]
+#' @param output_type The type of output of [cond_indirect_effects()].
+#'                    If `"data.frame"`, the default, the output will
+#'                    be converted to a data frame. If any other value,
+#'                    the output is a list of the outputs from
+#'                    [cond_indirect()].
+#' @param save_boot_full If `TRUE`, full bootstrapping results will be stored.
+#'                       Default is `FALSE.`
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
@@ -88,7 +95,8 @@
 #'
 #' @export
 #'
-#'
+#' @describeIn cond_indirect Compute conditional indirect effects one set of levels.
+#' @order 1
 
 cond_indirect <- function(x,
                      y,
@@ -103,7 +111,8 @@ cond_indirect <- function(x,
                      level = .95,
                      boot_out = NULL,
                      R = 100,
-                     seed = NULL) {
+                     seed = NULL,
+                     save_boot_full = FALSE) {
     fit_type <- cond_indirect_check_fit(fit)
     if (boot_ci) {
         if (fit_type == "lavaan") {
@@ -156,7 +165,9 @@ cond_indirect <- function(x,
                                            standardized_x = standardized_x,
                                            standardized_y = standardized_y),
                            SIMPLIFY = FALSE)
-        out0$boot_full <- out_boot
+        if (save_boot_full) {
+            out0$boot_full <- out_boot
+          }
         nboot <- length(out_boot)
         out0$boot_indirect <- sapply(out_boot, function(x) x$indirect)
         tmp <- list(t = matrix(out0$boot_indirect, nrow = nboot, ncol = 1),
@@ -175,18 +186,71 @@ cond_indirect <- function(x,
   }
 
 #' @export
+#' @describeIn cond_indirect Compute conditional indirect effects for several sets of levels
+#' @order 2
 
-cond_indirect_effects <- function(
-                     wlevels,
-                     ...) {
+cond_indirect_effects <- function(wlevels,
+                                  ...,
+                                  fit = fit,
+                                  boot_ci = FALSE,
+                                  boot_out = NULL,
+                                  R = 100,
+                                  seed = NULL,
+                                  output_type = "data.frame") {
     k <- nrow(wlevels)
     wlevels1 <- split(wlevels, seq_len(k))
     wlevels2 <- lapply(wlevels1, unlist)
     names(wlevels2) <- rownames(wlevels)
+    fit_type <- cond_indirect_check_fit(fit)
+    if (boot_ci) {
+        if (fit_type == "lavaan") {
+            opt <- lavaan::lavInspect(fit, "options")
+            if (opt$se != "bootstrap") {
+                stop("If 'boot_ci' is TRUE, 'se' needs to be 'bootstrap' in 'fit'.")
+              }
+            if (is.null(boot_out)) {
+                boot_out <- fit2boot_out(fit = fit)
+              }
+          }
+        if (fit_type == "lm") {
+            if (is.null(boot_out)) {
+                # Do bootstrap here.
+                boot_out <- lm2boot_out(outputs = fit,
+                                        R = R,
+                                        seed = seed)
+              }
+          }
+      }
     out <- lapply(wlevels2,
-                  function(wv, ...) cond_indirect(wvalues = wv, ...),
-                  ...)
-    out
+                  function(wv,
+                           ...,
+                           fit = fit,
+                           boot_ci,
+                           boot_out,
+                           R,
+                           seed) {
+                              cond_indirect(wvalues = wv,
+                                            ...,
+                                            fit = fit,
+                                            boot_ci = boot_ci,
+                                            boot_out = boot_out,
+                                            R = R,
+                                            seed = seed)
+                           },
+                  ...,
+                  fit = fit,
+                  boot_ci = boot_ci,
+                  boot_out = boot_out,
+                  R = R,
+                  seed = seed)
+    if (output_type == "data.frame") {
+        out1 <- cond_indirect_effects_to_df(out, wlevels = wlevels)
+        class(out1) <- c("cond_indirect_effects", class(out1))
+        attr(out1, "call") <- match.call()
+        return(out1)
+      } else {
+        return(out)
+      }
   }
 
 #' @noRd
@@ -209,4 +273,57 @@ cond_indirect_check_fit <- function(fit) {
         stop("'fit' is neither a lavaan object or a list of lm outputs.")
       }
     fit_type
+  }
+
+cond_indirect_effects_to_df <- function(x, wlevels) {
+    k <- nrow(wlevels)
+    wlevels_label <- attr(wlevels, "wlevels")
+    colnames(wlevels_label) <- paste0("[", colnames(wlevels_label), "]")
+    wlevels2 <- wlevels
+    colnames(wlevels2) <- paste0("(", colnames(wlevels2), ")")
+    standardized_x <- x[[1]]$standardized_x
+    standardized_y <- x[[1]]$standardized_y
+    if (standardized_x || standardized_y) {
+        standardized_any <- TRUE
+      } else {
+        standardized_any <- FALSE
+      }
+    indirect <- data.frame(ind = sapply(x,
+                              function(x) {x$indirect_raw}))
+    if (standardized_x || standardized_y) {
+        indirect_std <- sapply(x, function(x) x$indirect)
+      } else {
+        indirect_std <- NULL
+      }
+    cc <- do.call(rbind, sapply(x, function(x) {x$components_conditional},
+                                simplify = FALSE))
+    if (!is.null(x[[1]]$boot_ci)) {
+        boot_ci <- TRUE
+        bc <- do.call(rbind,
+                      sapply(x, function(x) {x$boot_ci}, simplify = FALSE))
+        if (standardized_any) {
+            colnames(bc) <- paste0(c("CILo:", "CIHi:"), colnames(bc))
+            colnames(bc) <- c("CI.lo", "CI.hi")
+          } else {
+            colnames(bc) <- paste0(c("CIStdLo:", "CIStdHi:"), colnames(bc))
+            colnames(bc) <- c("CI.lo", "CI.hi")
+          }
+      } else {
+        boot_ci <- FALSE
+      }
+    if (is.null(indirect_std)) {
+        if (boot_ci) {
+            out <- data.frame(ind = indirect, bc, cc, check.names = FALSE)
+          } else {
+            out <- data.frame(ind = indirect, cc, check.names = FALSE)
+          }
+      } else {
+        if (boot_ci) {
+            out <- data.frame(std = indirect_std, bc, cc, ustd = indirect, check.names = FALSE)
+          } else {
+            out <- data.frame(std = indirect_std, cc, ustd = indirect, check.names = FALSE)
+          }
+      }
+    out1 <- cbind(wlevels_label, wlevels2, out)
+    out1
   }

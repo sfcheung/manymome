@@ -2,6 +2,7 @@
 % Please edit documentation in R/mod_levels.R
 \name{mod_levels}
 \alias{mod_levels}
+\alias{mod_levels_list}
 \title{One Line Title}
 \usage{
 mod_levels(
@@ -13,6 +14,18 @@ mod_levels(
   percentiles = c(0.16, 0.5, 0.84),
   extract_gp_names = TRUE,
   prefix = NULL
+)
+
+mod_levels_list(
+  ...,
+  fit,
+  w_type = c("auto", "numeric", "categorical"),
+  w_method = c("sd", "percentile"),
+  sd_from_mean = c(-1, 0, 1),
+  percentiles = c(0.16, 0.5, 0.84),
+  extract_gp_names = TRUE,
+  prefix = NULL,
+  merge = FALSE
 )
 }
 \arguments{
@@ -55,6 +68,9 @@ will try to determine the prefix automatically.}
 
 \item{...}{The names of moderators variables. For a categorical variable,
 it should be a vector of variable names.}
+
+\item{merge}{If \code{TRUE}, \code{\link[=mod_levels_list]{mod_levels_list()}} will call \code{\link[=merge_mod_levels]{merge_mod_levels()}}
+and return the merged levels. Default is \code{FALSE}.}
 }
 \value{
 Specify what are returned.
@@ -67,6 +83,13 @@ Details
 (Include subjects for verbs.)
 (Use 3rd person forms for verbs.)
 }
+\section{Functions}{
+\itemize{
+\item \code{mod_levels}: Generate levels for one moderaotr.
+
+\item \code{mod_levels_list}: Generate levels for several moderaotrs.
+}}
+
 \examples{
 
 library(lavaan)
