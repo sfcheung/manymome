@@ -129,12 +129,14 @@ mod_levels_i_lavaan_numerical <- mod_levels_i_lm_numerical <- function(fit,
         names(levels) <- vnames
         out <- data.frame(w = levels)
         rownames(out) <- vnames
+        colnames(out) <- w
         return(out)
       }
     if (w_method == "percentile") {
         w_q <- stats::quantile(w_dat, probs = percentiles, na.rm = TRUE)
         out <- data.frame(w = w_q)
         rownames(out) <- names(w_q)
+        colnames(out) <- w
         return(out)
       }
   }
