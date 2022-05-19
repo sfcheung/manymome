@@ -44,11 +44,30 @@ out_m_4 <- merge_mod_levels(out_c2, out_n_p2)
 out_m_5 <- merge_mod_levels(out_c, out_c2)
 attr(out_m_5, "wlevels")
 
-# out_mm_1 <- merge_mod_levels(mod_levels(fit, w = "w1"),
-#                              mod_levels(fit, w = c("gpgp2", "gpgp3"), w_type = "categorical"),
-#                              mod_levels(fit, w = "w4", w_method = "percentile"))
+out_m_l_2 <- merge_mod_levels(mod_levels_list("w1", c("gpgp2", "gpgp3"), fit = fit))
+out_m_l_m_2 <- mod_levels_list("w1", c("gpgp2", "gpgp3"), fit = fit, merge = TRUE)
+
+out_mm_1 <- merge_mod_levels(mod_levels(fit, w = "w1"),
+                             mod_levels(fit, w = c("gpgp2", "gpgp3"), w_type = "categorical"),
+                             mod_levels(fit, w = "w4", w_method = "percentile"))
 
 # tmp1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "m1", fit = fit)
+# tmp1_tmp <- sapply(tmp1, function(x) data.frame(indirect = x$indirect, raw = x$indirect_raw), simplify = FALSE)
+# do.call(rbind, tmp1_tmp)
+
+# tmp1s <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "m1", fit = fit, standardized_x = TRUE, standardized_y = TRUE)
+# tmp1s_tmp <- sapply(tmp1s, function(x) data.frame(indirect = x$indirect, raw = x$indirect_raw), simplify = FALSE)
+# do.call(rbind, tmp1s_tmp)
+
+# tmp1s <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "m1", fit = fit,
+#                                standardized_x = TRUE, standardized_y = TRUE, boot_ci = TRUE,
+#                                seed = 54154)
+# tmp1s_tmp <- sapply(tmp1s, function(x) data.frame(indirect = x$indirect, raw = x$indirect_raw,
+#                                                   boot.cl.lower = x$boot_ci[1],
+#                                                   boot.cl.upper = x$boot_ci[2]), simplify = FALSE)
+# do.call(rbind, tmp1s_tmp)
+
+
 # tmp2 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "m2", , m = "m1", fit = fit)
 # data.frame(sapply(tmp2, function(x) x$indirect))
 # split(out_mm_1, seq_len(nrow(out_mm_1)))
@@ -132,4 +151,6 @@ test_that("merge_mod_levels", {
     expect_equal(out_m_3, out_m_3_chk, ignore_attr = TRUE)
     expect_equal(out_m_4, out_m_4_chk, ignore_attr = TRUE)
     expect_equal(out_m_5, out_m_5_chk, ignore_attr = TRUE)
+    expect_equal(out_m_l_2, out_m_2)
+    expect_equal(out_m_l_m_2, out_m_2)
   })

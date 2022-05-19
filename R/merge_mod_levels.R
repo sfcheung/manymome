@@ -38,6 +38,12 @@
 merge_mod_levels <- function(...) {
     x <- list(...)
     p <- length(x)
+    if (p == 1) {
+        if (is.list(x[[1]]) && !is.data.frame(x[[1]])) {
+            x <- unlist(x, recursive = FALSE)
+            p <- length(x)
+          }
+      }
     wnames <- paste0("w", seq_len(p))
     names(x) <- wnames
     q <- sapply(x, nrow)

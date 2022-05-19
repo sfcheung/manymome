@@ -42,9 +42,9 @@ out_n_p <- mod_levels(fit, w = "w1", w_method = "percentile")
 out_n_sd2 <- mod_levels(fit, w = "w1", sd_from_mean = c(-1, 4))
 out_n_p2 <- mod_levels(fit, w = "w1", w_method = "percentile", percentiles = c(.25, .75))
 
-out_c <- mod_levels(fit, w = c("gpgp2", "gpgp3"), w_type = "categorical")
-out_c2 <- mod_levels(fit, w = c("citybeta", "citygamma", "citysigma"), w_type = "categorical")
-out_c3 <- mod_levels(fit, w = c("gpgp2", "gpgp3"), prefix = "gp", w_type = "categorical")
+out_c <- mod_levels(fit, w = c("gpgp2", "gpgp3"))
+out_c2 <- mod_levels(fit, w = c("citybeta", "citygamma", "citysigma"))
+out_c3 <- mod_levels(fit, w = c("gpgp2", "gpgp3"), prefix = "gp")
 
 out_i_n_sd_chk <- mean(dat$w1) + sd(dat$w1) * c(-1, 0, 1)
 out_i_n_p_chk <- quantile(dat$w1, c(.16, .50, .84))
@@ -58,6 +58,12 @@ out_i_c2_chk <- structure(list(citybeta = c(0, 1, 0, 0), citygamma = c(0, 0,
 "beta", "gamma", "sigma"), class = "data.frame")
 out_i_c3_chk <- structure(list(gpgp2 = c(0, 1, 0), gpgp3 = c(0, 0, 1)), row.names = c("Reference",
 "gp2", "gp3"), class = "data.frame")
+
+out_l_1 <- mod_levels_list("w4", "w1", fit = fit)
+out_l_2 <- mod_levels_list("w4", c("gpgp2", "gpgp3"), fit = fit)
+out_l_3 <- mod_levels_list(c("gpgp2", "gpgp3"), "w4", fit = fit)
+out_l_4 <- mod_levels_list(c("gpgp2", "gpgp3"), c("citybeta", "citygamma", "citysigma"), "w4", fit = fit)
+
 
 test_that("mod_levels: lavaan", {
     expect_equal(unlist(out_i_n_sd), out_i_n_sd_chk, ignore_attr = TRUE)

@@ -5,9 +5,9 @@
 \title{One Line Title}
 \usage{
 mod_levels(
-  fit,
   w,
-  w_type = c("numeric", "categorical"),
+  fit,
+  w_type = c("auto", "numeric", "categorical"),
   w_method = c("sd", "percentile"),
   sd_from_mean = c(-1, 0, 1),
   percentiles = c(0.16, 0.5, 0.84),
@@ -16,15 +16,16 @@ mod_levels(
 )
 }
 \arguments{
-\item{fit}{The fit object. Can be a
-\link[lavaan:lavaan-class]{lavaan::lavaan} object or a list of \code{\link[=lm]{lm()}} outputs.}
-
 \item{w}{Character. The names of the moderator. If the moderator is
 categorical with 3 or more groups, this is the vector of the
 indicator variables.}
 
+\item{fit}{The fit object. Can be a
+\link[lavaan:lavaan-class]{lavaan::lavaan} object or a list of \code{\link[=lm]{lm()}} outputs.}
+
 \item{w_type}{Character. Whether the moderator is a \code{"numeric"}
-variable or a \code{"categorical"} variable.}
+variable or a \code{"categorical"} variable. If \code{"auto"},
+the function will try to determine the type automatically.}
 
 \item{w_method}{Character, either \code{"sd"} or \code{"percentile"}.
 If \code{"sd"}, the levels are defined by the
@@ -51,6 +52,9 @@ variable names.}
 supplied, it will be removed from the variable names
 to create the group names. Default is \code{NULL}, and the function
 will try to determine the prefix automatically.}
+
+\item{...}{The names of moderators variables. For a categorical variable,
+it should be a vector of variable names.}
 }
 \value{
 Specify what are returned.

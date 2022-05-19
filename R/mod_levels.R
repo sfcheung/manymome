@@ -9,13 +9,14 @@
 #' @return
 #' Specify what are returned.
 #'
-#' @param fit The fit object. Can be a
-#'            [lavaan::lavaan-class] object or a list of [lm()] outputs.
 #' @param w Character. The names of the moderator. If the moderator is
 #'          categorical with 3 or more groups, this is the vector of the
 #'          indicator variables.
+#' @param fit The fit object. Can be a
+#'            [lavaan::lavaan-class] object or a list of [lm()] outputs.
 #' @param w_type Character. Whether the moderator is a `"numeric"`
-#'               variable or a `"categorical"` variable.
+#'               variable or a `"categorical"` variable. If `"auto"`,
+#'               the function will try to determine the type automatically.
 #' @param w_method Character, either `"sd"` or `"percentile"`.
 #'                 If `"sd"`, the levels are defined by the
 #'                 distance from the mean in terms of standard deviation.
@@ -37,6 +38,10 @@
 #'               supplied, it will be removed from the variable names
 #'               to create the group names. Default is `NULL`, and the function
 #'               will try to determine the prefix automatically.
+#' @param ... The names of moderators variables. For a categorical variable,
+#'            it should be a vector of variable names.
+#' @param merge If `TRUE`, [mod_levels_list()] will call [merge_mod_levels()]
+#'              and return the merged levels. Default is `FALSE`.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
@@ -61,16 +66,31 @@
 #'
 #'
 
-mod_levels <- function(fit,
-                         w,
-                         w_type = c("numeric", "categorical"),
-                         w_method = c("sd", "percentile"),
-                         sd_from_mean = c(-1, 0, 1),
-                         percentiles = c(.16, .50, .84),
-                         extract_gp_names = TRUE,
-                         prefix = NULL) {
+mod_levels <- function(w,
+                       fit,
+                       w_type = c("auto", "numeric", "categorical"),
+                       w_method = c("sd", "percentile"),
+                       sd_from_mean = c(-1, 0, 1),
+                       percentiles = c(.16, .50, .84),
+                       extract_gp_names = TRUE,
+                       prefix = NULL) {
     fit_type <- cond_indirect_check_fit(fit)
     w_type <- match.arg(w_type)
+    if (w_type == "auto") {
+        if (length(w) > 1) {
+            w_type <- "categorical"
+          } else {
+            mm <- switch(fit_type,
+                        lavaan = as.data.frame(lav_data_used(fit)),
+                        lm = merge_model_matrix(fit))
+            w_dat <- as.vector(mm[, w])
+            if (length(unique(w_dat)) > 2) {
+                w_type <- "numeric"
+              } else {
+                w_type <- "categorical"
+              }
+          }
+      }
     if (fit_type == "lm") {
         if (w_type == "numeric") {
             out <- mod_levels_i_lm_numerical(fit = fit,
@@ -103,6 +123,35 @@ mod_levels <- function(fit,
       }
     out
   }
+
+#' @export
+
+mod_levels_list <- function(...,
+                            fit,
+                            w_type = c("auto", "numeric", "categorical"),
+                            w_method = c("sd", "percentile"),
+                            sd_from_mean = c(-1, 0, 1),
+                            percentiles = c(.16, .50, .84),
+                            extract_gp_names = TRUE,
+                            prefix = NULL,
+                            merge = FALSE) {
+    x <- list(...)
+    out <- lapply(x, mod_levels,
+                  fit = fit,
+                  w_type = w_type,
+                  w_method = w_method,
+                  sd_from_mean = sd_from_mean,
+                  percentiles = percentiles,
+                  extract_gp_names = extract_gp_names,
+                  prefix = prefix)
+    if (merge) {
+        out2 <- merge_mod_levels(out)
+        return(out2)
+      } else {
+        return(out)
+      }
+  }
+
 
 mod_levels_i_lavaan_numerical <- mod_levels_i_lm_numerical <- function(fit,
                                       w,
