@@ -110,6 +110,7 @@ indirect <- function(x,
     if (!is.null(wvalues)) {
         tmpfct <- function(xi) {
             if (all(is.na(xi))) return(0)
+            if (is.null(xi$prod)) return(0)
             b_i <- xi$b
             w_i <- xi$w
             wvalues_i <- wvalues[w_i]
