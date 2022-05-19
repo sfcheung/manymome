@@ -2,6 +2,7 @@
 
 export(check_path)
 export(cond_indirect)
+export(cond_indirect_effects)
 export(fit2boot_out)
 export(indirect)
 export(lm2boot_out)

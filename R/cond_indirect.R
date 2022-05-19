@@ -52,6 +52,8 @@
 #'          and `boot_out` is `NULL`, this function will do bootstrapping on
 #'          `fit`. This is the seed for the bootstrapping.
 #'             Default is `NULL` and seed is not set.
+#' @param wlevels The output of [merge_mod_levesl()].
+#' @param ... Arguments to be passed to [cond_indirect()]
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
@@ -170,6 +172,21 @@ cond_indirect <- function(x,
       }
     out0$cond_indirect_call <- match.call()
     out0
+  }
+
+#' @export
+
+cond_indirect_effects <- function(
+                     wlevels,
+                     ...) {
+    k <- nrow(wlevels)
+    wlevels1 <- split(wlevels, seq_len(k))
+    wlevels2 <- lapply(wlevels1, unlist)
+    names(wlevels2) <- rownames(wlevels)
+    out <- lapply(wlevels2,
+                  function(wv, ...) cond_indirect(wvalues = wv, ...),
+                  ...)
+    out
   }
 
 #' @noRd

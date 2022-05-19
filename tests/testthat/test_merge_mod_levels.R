@@ -44,6 +44,14 @@ out_m_4 <- merge_mod_levels(out_c2, out_n_p2)
 out_m_5 <- merge_mod_levels(out_c, out_c2)
 attr(out_m_5, "wlevels")
 
+# out_mm_1 <- merge_mod_levels(mod_levels(fit, w = "w1"),
+#                              mod_levels(fit, w = c("gpgp2", "gpgp3"), w_type = "categorical"),
+#                              mod_levels(fit, w = "w4", w_method = "percentile"))
+
+# tmp1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "m1", fit = fit)
+# tmp2 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "m2", , m = "m1", fit = fit)
+# data.frame(sapply(tmp2, function(x) x$indirect))
+# split(out_mm_1, seq_len(nrow(out_mm_1)))
 # Known "answers"
 
 out_m_1_chk <- structure(list(w1 = c(-0.71005775924958, -0.71005775924958, -0.71005775924958,

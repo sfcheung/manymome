@@ -78,6 +78,10 @@ and \code{boot_out} is \code{NULL}, this function will do bootstrapping on
 and \code{boot_out} is \code{NULL}, this function will do bootstrapping on
 \code{fit}. This is the seed for the bootstrapping.
 Default is \code{NULL} and seed is not set.}
+
+\item{wlevels}{The output of \code{\link[=merge_mod_levesl]{merge_mod_levesl()}}.}
+
+\item{...}{Arguments to be passed to \code{\link[=cond_indirect]{cond_indirect()}}}
 }
 \value{
 Specify what are returned.
