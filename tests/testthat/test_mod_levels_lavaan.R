@@ -33,3 +33,51 @@ fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
 # w1:
 # data.frame(label = c("Low", "Medium", "High"),
 #            w1 = c(-2, 0, 2))
+
+out_i_n_sd <- mod_levels_i_lavaan_numerical(fit, w = "w1")
+out_i_n_p <- mod_levels_i_lavaan_numerical(fit, w = "w1", w_method = "percentile")
+out_i_n_sd2 <- mod_levels_i_lavaan_numerical(fit, w = "w1", sd_from_mean = c(-1, 4))
+out_i_n_p2 <- mod_levels_i_lavaan_numerical(fit, w = "w1", w_method = "percentile", percentiles = c(.25, .75))
+
+out_i_c <- mod_levels_i_lavaan_categorical(fit, w = c("gpgp2", "gpgp3"))
+out_i_c2 <- mod_levels_i_lavaan_categorical(fit, w = c("citybeta", "citygamma", "citysigma"))
+out_i_c3 <- mod_levels_i_lavaan_categorical(fit, w = c("gpgp2", "gpgp3"), prefix = "gp")
+
+out_n_sd <- mod_levels_i(fit, w = "w1")
+out_n_p <- mod_levels_i(fit, w = "w1", w_method = "percentile")
+out_n_sd2 <- mod_levels_i(fit, w = "w1", sd_from_mean = c(-1, 4))
+out_n_p2 <- mod_levels_i(fit, w = "w1", w_method = "percentile", percentiles = c(.25, .75))
+
+out_c <- mod_levels_i(fit, w = c("gpgp2", "gpgp3"), w_type = "categorical")
+out_c2 <- mod_levels_i(fit, w = c("citybeta", "citygamma", "citysigma"), w_type = "categorical")
+out_c3 <- mod_levels_i(fit, w = c("gpgp2", "gpgp3"), prefix = "gp", w_type = "categorical")
+
+out_i_n_sd_chk <- mean(dat$w1) + sd(dat$w1) * c(-1, 0, 1)
+out_i_n_p_chk <- quantile(dat$w1, c(.16, .50, .84))
+out_i_n_sd2_chk <- mean(dat$w1) + sd(dat$w1) * c(-1, 4)
+out_i_n_p2_chk <- quantile(dat$w1, c(.25, .75))
+
+out_i_c_chk <- structure(list(gpgp2 = c(0, 1, 0), gpgp3 = c(0, 0, 1)), row.names = c("Reference",
+"2", "3"), class = "data.frame")
+out_i_c2_chk <- structure(list(citybeta = c(0, 1, 0, 0), citygamma = c(0, 0,
+1, 0), citysigma = c(0, 0, 0, 1)), row.names = c("Reference",
+"beta", "gamma", "sigma"), class = "data.frame")
+out_i_c3_chk <- structure(list(gpgp2 = c(0, 1, 0), gpgp3 = c(0, 0, 1)), row.names = c("Reference",
+"gp2", "gp3"), class = "data.frame")
+
+test_that("mod_levels: lavaan", {
+    expect_equal(out_i_n_sd, out_i_n_sd_chk, ignore_attr = TRUE)
+    expect_equal(out_i_n_p, out_i_n_p_chk, ignore_attr = TRUE)
+    expect_equal(out_i_n_sd2, out_i_n_sd2_chk, ignore_attr = TRUE)
+    expect_equal(out_i_n_p2, out_i_n_p2_chk, ignore_attr = TRUE)
+    expect_equal(out_i_c, out_i_c_chk, ignore_attr = TRUE)
+    expect_equal(out_i_c2, out_i_c2_chk, ignore_attr = TRUE)
+    expect_equal(out_i_c3, out_i_c3_chk, ignore_attr = TRUE)
+    expect_equal(out_n_sd, out_i_n_sd_chk, ignore_attr = TRUE)
+    expect_equal(out_n_p, out_i_n_p_chk, ignore_attr = TRUE)
+    expect_equal(out_n_sd2, out_i_n_sd2_chk, ignore_attr = TRUE)
+    expect_equal(out_n_p2, out_i_n_p2_chk, ignore_attr = TRUE)
+    expect_equal(out_c, out_i_c_chk, ignore_attr = TRUE)
+    expect_equal(out_c2, out_i_c2_chk, ignore_attr = TRUE)
+    expect_equal(out_c3, out_i_c3_chk, ignore_attr = TRUE)
+  })
