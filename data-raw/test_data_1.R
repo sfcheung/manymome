@@ -35,7 +35,7 @@ y  ~ a4 * m3  + b4 * w4 + d4 * m3:w4
 fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
 fit
 head(dat)
-dat$gp <- sample(c("blue", "yellow", "green"), n, replace = TRUE)
+dat$gp <- sample(c("one", "two", "three"), n, replace = TRUE)
 dat$city <- sample(c("alpha", "beta", "gamma", "sigma"), n, replace = TRUE)
 modmed_x1m3w4y1 <- dat
 usethis::use_data(modmed_x1m3w4y1, overwrite = TRUE)
