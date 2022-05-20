@@ -145,7 +145,11 @@ indirect <- function(x,
                 scale_x = scale_x,
                 scale_y = scale_y,
                 standardized_x = standardized_x,
-                standardized_y = standardized_y)
+                standardized_y = standardized_y,
+                wvalues = wvalues,
+                x = x,
+                y = y,
+                m = m)
     class(out) <- "indirect"
     return(out)
   }
