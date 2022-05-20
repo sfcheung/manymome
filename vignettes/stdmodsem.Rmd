@@ -1,0 +1,175 @@
+---
+title: "stdmodsem"
+author: "Shu Fai Cheung"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{stdmodsem}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# What It Can Do?
+
+## It can
+
+- Compute an unstandardized or standardized indirect effect or
+  conditional indirect effect in a path model.
+- Form bootstrap confidence for this effect.
+
+## Advantages
+
+- No need to define any parameters when fitting a model. Just fit the model first,
+  and then compute the effect for any pathway, from any variable to any other
+  variable.
+- Supports models fitted by path analysis using `lavaan::sem()` or by
+  a set of multiple regression models using `lm()`.
+- No limit on the number of predictors, mediators, and outcome variables, other
+  than that by `lavaan::sem()`.
+- Supports dataset with missing data through `lavaan::sem()`.
+- Supports numeric and categorical moderators.
+- Bootstrap, which is time consuming, can be conducted just once. Estimating
+  the effects and forming their confidence intervals can reuse the precomputed
+  bootstrap samples.
+
+## Limitations (For Now)
+
+- Does not support categorical predictors.
+- Does not support indirect effects between latent variables.
+
+# Moderated Mediation: Multiple Regression by `lm()`
+
+This is the sample dataset comes with the package:
+
+```{r}
+library(stdmodmed)
+dat <- modmed_x1m3w4y1
+print(head(dat), digits = 3)
+```
+
+Suppose this is the model being fitted:
+
+```{r}
+lm_m1 <- lm(m1 ~ x * w1, dat)
+lm_y <- lm(y ~ m1 * gp + x, dat)
+```
+
+This is a mediation model, `x -> m1 -> y`, with both paths
+moderated, `x -> m1` by `w1`, and `m1 -> y` by `gp`, `gp`
+a categorical variable.
+
+These are the coefficients:
+
+```{r}
+printCoefmat(summary(lm_m1)$coefficients, digits = 3)
+printCoefmat(summary(lm_y)$coefficients, digits = 3)
+```
+
+To compute conditional indirect effects and form bootstrap confidence
+intervals, we use `cond_indirect_effects()`. For a model with coefficients
+estimate by multiple regression, we first group the `lm()` output to a `list`:
+
+```{r}
+fit <- list(lm_m1, lm_y)
+```
+
+We then use `mod_levels_list()` to generate combinations of the levels of the
+moderators:
+
+```{r}
+mod_levels <- mod_levels_list("w1",
+                              c("gpmars", "gpvenus"),
+                              fit = fit,
+                              sd_from_mean = c(-1, 1),
+                              merge = TRUE)
+mod_levels
+```
+
+To form bootstrapping confidence intervals, we first repeat the regression
+analysis in all models by nonparametric bootstrapping and store the results.
+This can be done by `lm2boot_out()`:
+
+```{r}
+fit_boot_out <- lm2boot_out(fit, R = 2000, seed = 87415)
+```
+
+It is all set. We can now compute the conditional indirect effect:
+
+```{r}
+out <- cond_indirect_effects(wlevels = mod_levels,
+                             x = "x",
+                             y = "y",
+                             m = "m1",
+                             fit = fit,
+                             boot_ci = TRUE,
+                             boot_out = fit_boot_out)
+out
+```
+
+# Moderated Mediation: Path Analysis by `lavaan::sem()`
+
+Suppose we fit the same model, but by path analysis. `lavaan::sem()` requires
+users to create the indicator variables for categorical variables. This can
+be done b y `factor2var()`:
+
+```{r}
+dat <- modmed_x1m3w4y1
+dat <- data.frame(dat,
+                  factor2var(dat$gp, prefix = "gp", add_rownames = FALSE))
+print(head(dat), digits = 2)
+```
+
+We can fit the model now:
+
+```{r}
+library(lavaan)
+mod <-
+"
+m1 ~ x + w1 + x:w1
+y ~ m1 + gpmars + gpvenus + m1:gpmars + m1:gpvenus + x
+"
+set.seed(870454)
+fit <- sem(model = mod,
+           data = dat,
+           fixed.x = FALSE,
+           se = "boot",
+           bootstrap = 2000)
+```
+
+```{r}
+mod_levels <- mod_levels_list("w1",
+                              c("gpmars", "gpvenus"),
+                              fit = fit,
+                              sd_from_mean = c(-1, 1),
+                              merge = TRUE)
+mod_levels
+```
+
+```{r}
+boot_out <- fit2boot_out(fit = fit)
+```
+
+
+```{r}
+out <- cond_indirect_effects(wlevels = mod_levels,
+                             x = "x",
+                             y = "y",
+                             m = "m1",
+                             fit = fit,
+                             boot_ci = TRUE,
+                             boot_out = boot_out)
+out
+```
+
+# Mediation: Multiple Regression by `lm()`
+
+# Mediation: Path Analysis by `lavaan::sem()`
+
+# Further Information
