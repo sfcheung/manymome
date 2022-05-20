@@ -52,6 +52,7 @@ print.indirect <- function(x, digits = 3, ...) {
     standardized_x <- x$standardized_x
     standardized_y <- x$standardized_y
     standardized <- (standardized_x && standardized_y)
+    has_boot_ci <- isTRUE(!is.null(x$boot_ci))
     has_w <- isTRUE(!is.null(wvalues))
     if (has_w) {
         w0 <- wvalues
@@ -113,6 +114,21 @@ print.indirect <- function(x, digits = 3, ...) {
       ptable <- rbind(ptable,
                       c("Moderators:", paste0(wnames, collapse = ", ")))
     }
+    if (has_boot_ci) {
+        b_str1 <- paste0(formatC(x$level * 100, 1, format = "f"), "%",
+                         " Bootstrap Confidence Interval:")
+        b_str2 <- paste0("[",
+                         paste0(formatC(x$boot_ci, digits, format = "f"),
+                                collapse = " to "),
+                         "]")
+        b_str1b <- "Null Hypothesis Significant Test:"
+        b_str2b <- ifelse((x$boot_ci[1] > 0) || (x$boo_ci[2] < 0),
+                          paste0("Sig. (Level of Significance ",
+                                formatC(1 - x$level, digits, format = "f"), ")"),
+                          paste0("Not Sig. (Level of Significance ",
+                                formatC(1 - x$level, digits, format = "f"), ")"))
+        b_row <- c(b_str1, b_str2)
+      }
     if (has_w) {
         # cat("\nConditional", cond_str, "effect",
         #     "from", sQuote(x0), "to", sQuote(y0),
@@ -123,6 +139,7 @@ print.indirect <- function(x, digits = 3, ...) {
                           formatC(x$indirect, digits = digits, format = "f")))
         tmp <- paste(paste(wnames, "=", w0), collapse = ", ")
         # cat("\nWhen:", tmp)
+        if (has_boot_ci) {ptable <- rbind(ptable, b_row)}
         ptable <- rbind(ptable,
                         c("When:", tmp))
       } else {
@@ -132,10 +149,15 @@ print.indirect <- function(x, digits = 3, ...) {
         ptable <- rbind(ptable,
                         c(ifelse(has_m, "Indirect Effect", "Effect"),
                           formatC(x$indirect, digits = digits, format = "f")))
+        if (has_boot_ci) {ptable <- rbind(ptable, b_row)}
       }
     ptable <- data.frame(lapply(ptable, format))
     colnames(ptable) <- c("", "")
     print(ptable, row.names = FALSE)
+    if (has_boot_ci) {
+        cat("\nPercentile confidence interval formed by nonparametric bootstrapping",
+            "with", length(x$boot_indirect), "bootstrap samples.")
+      }
     if (has_m) {
         if (has_w) {
           out <- data.frame(mpathnames, m0c, m0)
