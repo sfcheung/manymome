@@ -16,7 +16,7 @@ A data frame with 200 rows and 11 variables:
 \item{m2}{Mediator 2. Numeric.}
 \item{m3}{Mediator 3. Numeric.}
 \item{y}{Outcome variable. Numeric.}
-\item{gp}{Three values: "blue", "yellow", "green". String.}
+\item{gp}{Three values: "earth", "mars", "venus". String.}
 \item{city}{Four values: "alpha", "beta", "gamma", "sigma". String.}
 }
 }
