@@ -45,9 +45,10 @@ out_boot2 <- cond_indirect(x = "x", y = "y",
                      boot_ci = TRUE,
                      R = 100,
                      seed = 418751)
-out
-out_boot
-out_boot2
+
+print(out)
+print(out_boot)
+print(out_boot2)
 
 test_that("cond_indirect: lavaan", {
     expect_identical(out$indirect, out_chk$indirect)
@@ -55,4 +56,10 @@ test_that("cond_indirect: lavaan", {
                      sapply(out_boot_chk, function(x) x$indirect))
     expect_identical(out_boot$boot_indirect,
                      out_boot$boot_indirect)
+  })
+
+test_that("confint for indirect", {
+    expect_warning(confint(out))
+    expect_equal(coef(out),  out_boot$indirect, ignore_attr = TRUE)
+    expect_equal(confint(out_boot),  out_boot$boot_ci, ignore_attr = TRUE)
   })

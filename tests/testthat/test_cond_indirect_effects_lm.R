@@ -41,3 +41,11 @@ out_8 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", f
                                standardized_x = TRUE, standardized_y = TRUE,
                                boot_ci = TRUE, boot_out = fit_boot_out)
 
+print(out_1)
+print(out_2)
+print(out_3)
+print(out_4)
+print(out_5)
+print(out_6)
+print(out_7)
+print(out_8)
