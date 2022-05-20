@@ -45,7 +45,9 @@ out_boot2 <- cond_indirect(x = "x", y = "y",
                      boot_ci = TRUE,
                      R = 100,
                      seed = 418751)
-
+out
+out_boot
+out_boot2
 
 test_that("cond_indirect: lavaan", {
     expect_identical(out$indirect, out_chk$indirect)

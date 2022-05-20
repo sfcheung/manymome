@@ -55,6 +55,13 @@ ce_1b_stdx_chk2 <- ce_1b_chk2 * sd_x
 ce_1b_stdy_chk2 <- ce_1b_chk2 / sd_y
 ce_1b_stdboth_chk2 <- ce_1b_chk2 * sd_x / sd_y
 
+ce_1b_chk
+ce_2_chk
+ce_3_chk
+ce_1b_stdx_chk
+ce_1b_stdy_chk
+ce_1b_stdboth_chk
+
 test_that("check indirect", {
     expect_equal(
         ce_1b_chk$indirect,
