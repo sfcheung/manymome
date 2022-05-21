@@ -1,4 +1,6 @@
 
+# Not yet ready. To be revised.
+
 library(stdmodsem)
 library(lavaan)
 dat <- modmed_x1m3w4y1

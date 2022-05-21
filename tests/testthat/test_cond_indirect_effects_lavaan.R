@@ -1,3 +1,4 @@
+# Not yet ready. To be revised.
 
 library(stdmodsem)
 library(lavaan)
@@ -21,27 +22,29 @@ y ~ m2 + m3 + x + w4 + x:w4
 "
 fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
 set.seed(4456)
-fit_boot <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "boot", bootstrap = 100)
+fit_boot <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "boot", bootstrap = 5,
+                warn = FALSE)
 
 out_mm_1 <- mod_levels_list("w4", c("gpgp2", "gpgp3"), fit = fit, merge = TRUE)
 
-out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit)
-out_2 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
-                               standardized_x = TRUE)
-out_3 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
-                               standardized_y = TRUE)
-out_4 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
-                               standardized_x = TRUE, standardized_y = TRUE)
+# Suppress warnings due to small number of bootstrap samples.
+suppressWarnings(out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit))
+suppressWarnings(out_2 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
+                               standardized_x = TRUE))
+suppressWarnings(out_3 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
+                               standardized_y = TRUE))
+suppressWarnings(out_4 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
+                               standardized_x = TRUE, standardized_y = TRUE))
 
-out_5 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_boot,
-                               boot_ci = TRUE)
-out_6 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_boot,
+suppressWarnings(out_5 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_boot,
+                               boot_ci = TRUE))
+suppressWarnings(out_6 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_boot,
                                standardized_x = TRUE,
-                               boot_ci = TRUE)
-out_7 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_boot,
+                               boot_ci = TRUE))
+suppressWarnings(out_7 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_boot,
                                standardized_y = TRUE,
-                               boot_ci = TRUE)
-out_8 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_boot,
+                               boot_ci = TRUE))
+suppressWarnings(out_8 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_boot,
                                standardized_x = TRUE, standardized_y = TRUE,
-                               boot_ci = TRUE, output_type = "list")
+                               boot_ci = TRUE, output_type = "list"))
 

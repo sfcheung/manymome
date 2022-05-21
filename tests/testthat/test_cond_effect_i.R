@@ -1,3 +1,4 @@
+skip("Functions to be deprecated")
 library(stdmodsem)
 library(lavaan)
 dat <- modmed_x1m3w4y1
@@ -19,7 +20,7 @@ ce_1$indirect
 dat0 <- dat
 dat0[, names(wvalues)] <- dat[, names(wvalues)] - t(replicate(nrow(dat), wvalues))
 fit0 <- update(fit, data = dat0)
-ce_1_chk <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit0)
+ce_1_chk <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit0, warn = FALSE)
 
 ce_2 <- cond_effect_i(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
                       wvalues = wvalues, data = dat)
@@ -28,7 +29,7 @@ ce_2$indirect
 ce_3 <- cond_effect_i(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit)
 ce_3$indirect
 
-ce_3_chk <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit)
+ce_3_chk <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit, warn = FALSE)
 
 
 test_that("check cond_effect_i using indirect", {
