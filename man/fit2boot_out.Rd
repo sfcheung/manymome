@@ -12,6 +12,7 @@ fit2boot_out_do_boot(
   R = 100,
   seed = NULL,
   parallel = FALSE,
+  ncores = NULL,
   make_cluster_args = list(spec = getOption("cl.cores", 2))
 )
 }
@@ -26,8 +27,16 @@ fit2boot_out_do_boot(
 \item{parallel}{Logical. Whether parallel processing will be used.
 Default is \code{NULL}.}
 
+\item{ncores}{Integer. The number of CPU cores to use when \code{parallel} is \code{TRUE}.
+Default is \code{NULL}, and the number of cores determined by
+\code{getOption("cl.cores", 2)}. Will raise an error if greater than
+the number of cores detected by \code{\link[parallel:detectCores]{parallel::detectCores()}}.
+If \code{ncores} is set, it will override \code{make_cluster_args}.}
+
 \item{make_cluster_args}{A named list of additional arguments to be passed
-to \code{\link[parallel:makeCluster]{parallel::makeCluster()}}. For advanced users.}
+to \code{\link[parallel:makeCluster]{parallel::makeCluster()}}. For advanced users.
+See \code{\link[parallel:makeCluster]{parallel::makeCluster()}} for details.
+Default is \code{list(spec = getOption("cl.cores", 2))}.}
 }
 \value{
 Specify what are returned.
