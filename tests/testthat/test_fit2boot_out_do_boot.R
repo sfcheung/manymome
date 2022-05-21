@@ -16,10 +16,12 @@ fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE,
 out <- fit2boot_out_do_boot(fit, R = 50, seed = 8715)
 out_chk_est <- boot2est(fit)
 out_chk_implied <- boot2implied(fit)
+out_chk <- fit2boot_out(fit = fit)
 
 out[[9]]
 out_chk_est[[9]]
 out_chk_implied[[9]]
+out_chk[[9]]
 
 test_that("fit2boot_out_do_boot", {
     expect_equal(
@@ -30,6 +32,16 @@ test_that("fit2boot_out_do_boot", {
     expect_equal(
         out[[9]]$implied_stats$mean,
         out_chk_implied[[9]]$mean,
+        tolerance = 1e-5
+      )
+    expect_equal(
+        out[[9]]$implied_stats$cov,
+        out_chk[[9]]$implied_stats$cov,
+        tolerance = 1e-5
+      )
+    expect_equal(
+        out[[9]]$implied_stats$mean,
+        out_chk[[9]]$implied_stats$mean,
         tolerance = 1e-5
       )
   })
