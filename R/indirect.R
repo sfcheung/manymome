@@ -132,7 +132,7 @@ indirect <- function(x,
             wv_na <- is.na(wvalues_i)
             if (isTRUE(any(wv_na))) {
                 wvalues_i[wv_na] <- 0
-                names(wvalues) <- w_i
+                names(wvalues_i) <- w_i
               }
             sum(b_i * wvalues_i)
           }
