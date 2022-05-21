@@ -13,7 +13,8 @@ indirect(
   implied_stats = NULL,
   wvalues = NULL,
   standardized_x = FALSE,
-  standardized_y = FALSE
+  standardized_y = FALSE,
+  computation_digits = 5
 )
 }
 \arguments{
@@ -53,6 +54,9 @@ which the moderators will be set to. Default is \code{NULL}.}
 
 \item{standardized_y}{Logical. Whether \code{y} will be standardized. Default is
 \code{FALSE}.}
+
+\item{computation_digits}{The number of digits in storing the computation
+in text. Default is 3.}
 }
 \value{
 Specify what are returned.

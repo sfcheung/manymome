@@ -37,6 +37,8 @@
 #'                       `FALSE`.
 #' @param standardized_y Logical. Whether `y` will be standardized. Default is
 #'                       `FALSE`.
+#' @param computation_digits The number of digits in storing the computation
+#'                           in text. Default is 3.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
@@ -81,7 +83,8 @@ indirect <- function(x,
                      implied_stats = NULL,
                      wvalues = NULL,
                      standardized_x = FALSE,
-                     standardized_y = FALSE) {
+                     standardized_y = FALSE,
+                     computation_digits = 5) {
     if (is.null(est)) {
       est <- lavaan::parameterEstimates(fit)
     }
@@ -120,13 +123,29 @@ indirect <- function(x,
             b_i <- xi$b
             w_i <- xi$w
             wvalues_i <- wvalues[w_i]
+            wv_na <- is.na(wvalues_i)
+            if (isTRUE(any(wv_na))) {
+                wvalues_i[wv_na] <- 0
+                names(wvalues) <- w_i
+              }
             sum(b_i * wvalues_i)
           }
         b_cond <- sapply(prods, tmpfct)
         bs <- bs + b_cond
       } else {
         b_cond <- rep(NA, length(bs))
+        # b_all_str0 <- "(Not yet available)"
+        # b_all_str1 <- "(Not yet available)"
       }
+    b_cond_str <- mapply(gen_computation, xi = prods, yi = bs_org,
+                          yiname = names(bs_org),
+                          MoreArgs = list(digits = computation_digits,
+                                          y = y,
+                                          wvalues = wvalues),
+                          USE.NAMES = TRUE,
+                          SIMPLIFY = FALSE)
+    b_all_str0 <- paste0("(", b_cond_str, ")", collapse = "*")
+    b_all_str1 <- paste0("(", sapply(b_cond_str, names), ")", collapse = "*")
     names(bs) <- bs_names
     b_all <- prod(bs)
     scale_x <- 1
@@ -155,7 +174,63 @@ indirect <- function(x,
                 wvalues = wvalues,
                 x = x,
                 y = y,
-                m = m)
+                m = m,
+                computation_values = b_all_str0,
+                computation_symbols = b_all_str1)
     class(out) <- "indirect"
     return(out)
+  }
+
+gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL) {
+    yiname_old <- yiname
+    yiname <- paste0("b.", yiname)
+    if (all(is.na(xi)) || is.null(xi$prod)) {
+        out <- formatC(yi, digits = digits, format = "f")
+        names(out) <- yiname
+        return(out)
+      }
+    b_i <- xi$b
+    b_i0 <- paste0("b.", names(b_i))
+    w_i <- xi$w
+    if (is.null(wvalues)) {
+        wvalues_i <- rep(0, length(w_i))
+        tmp <- paste0(paste0(w_i, collapse = ", "),
+                      " modelled as moderator(s) for the path ",
+                      "from ", yiname_old, " to ", y,
+                      " but not included in ", sQuote("wvalues"), ". ",
+                      "This is equivalent to setting wvalues to zero ",
+                      "in computing the effect, ",
+                      "which may not be meaningful. Please check.")
+        warning(tmp)
+      } else {
+        wvalues_i <- wvalues[w_i]
+        wv_na <- is.na(wvalues_i)
+        if (isTRUE(any(wv_na))) {
+            wvalues_i[wv_na] <- 0
+            names(wvalues_i) <- w_i
+            tmp0 <- w_i[!w_i %in% names(wvalues)]
+            tmp <- paste0(paste0(tmp0, collapse = ", "),
+                          " modelled as moderator(s) for the path ",
+                          "from ", yiname_old, " to ", y,
+                          " but not included in ", sQuote("wvalues"), ". ",
+                          "They will be set to zero ",
+                          "in computing the conditional effect, ",
+                          "which may not be meaningful. Please check.")
+            warning(tmp)
+          }
+      }
+    y0 <- yiname
+    out1 <- paste0(y0, " + ",
+                    paste0("(", b_i0, ")*(", w_i, ")",
+                          collapse = "+"))
+    out2 <- paste0("(", formatC(yi, digits = digits, format = "f"),
+                    ") + ",
+                    paste0("(",
+                          formatC(b_i, digits = digits, format = "f"),
+                          ")*(",
+                          formatC(wvalues_i, digits = digits, format = "f"),
+                          ")",
+                          collapse = "+"))
+    names(out2) <- out1
+    out2
   }
