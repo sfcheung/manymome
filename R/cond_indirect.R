@@ -174,7 +174,8 @@ cond_indirect <- function(x,
                                            fit = fit0,
                                            wvalues = wvalues,
                                            standardized_x = standardized_x,
-                                           standardized_y = standardized_y),
+                                           standardized_y = standardized_y,
+                                           warn = FALSE),
                            SIMPLIFY = FALSE)
         if (save_boot_full) {
             out0$boot_full <- out_boot
