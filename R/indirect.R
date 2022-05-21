@@ -39,6 +39,11 @@
 #'                       `FALSE`.
 #' @param computation_digits The number of digits in storing the computation
 #'                           in text. Default is 3.
+#' @param warn If `TRUE`, the default, the function will warn against possible
+#'             misspecification, such as not setting the value of a moderator
+#'             which moderate one of the component path. Set this to `FALSE`
+#'             will suppress these warnings. Suppress them only when the
+#'             moderators are omitted intentionally.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
@@ -84,7 +89,8 @@ indirect <- function(x,
                      wvalues = NULL,
                      standardized_x = FALSE,
                      standardized_y = FALSE,
-                     computation_digits = 5) {
+                     computation_digits = 5,
+                     warn = TRUE) {
     if (is.null(est)) {
       est <- lavaan::parameterEstimates(fit)
     }
@@ -141,7 +147,8 @@ indirect <- function(x,
                           yiname = names(bs_org),
                           MoreArgs = list(digits = computation_digits,
                                           y = y,
-                                          wvalues = wvalues),
+                                          wvalues = wvalues,
+                                          warn = warn),
                           USE.NAMES = TRUE,
                           SIMPLIFY = FALSE)
     b_all_str0 <- paste0("(", b_cond_str, ")", collapse = "*")
@@ -156,9 +163,19 @@ indirect <- function(x,
           }
         if (standardized_x) {
             scale_x <- sqrt(diag(implied_stats$cov)[x])
+            b_all_str0 <- paste0(b_all_str0, "*(",
+                                 formatC(scale_x, digits = computation_digits,
+                                         format = "f"), ")")
+            b_all_str1 <- paste0(b_all_str1, "*",
+                                 "sd_", names(scale_x))
           }
         if (standardized_y) {
             scale_y <- sqrt(diag(implied_stats$cov)[y])
+            b_all_str0 <- paste0(b_all_str0, "/(",
+                                 formatC(scale_y, digits = computation_digits,
+                                         format = "f"), ")")
+            b_all_str1 <- paste0(b_all_str1, "/",
+                                 "sd_", names(scale_y))
           }
       }
     b_all_final <- b_all * scale_x / scale_y
@@ -181,7 +198,8 @@ indirect <- function(x,
     return(out)
   }
 
-gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL) {
+gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL,
+                            warn = TRUE) {
     yiname_old <- yiname
     yiname <- paste0("b.", yiname)
     if (all(is.na(xi)) || is.null(xi$prod)) {
@@ -201,7 +219,7 @@ gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL) {
                       "This is equivalent to setting wvalues to zero ",
                       "in computing the effect, ",
                       "which may not be meaningful. Please check.")
-        warning(tmp)
+        if (warn) warning(tmp)
       } else {
         wvalues_i <- wvalues[w_i]
         wv_na <- is.na(wvalues_i)
@@ -216,7 +234,7 @@ gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL) {
                           "They will be set to zero ",
                           "in computing the conditional effect, ",
                           "which may not be meaningful. Please check.")
-            warning(tmp)
+            if (warn) warning(tmp)
           }
       }
     y0 <- yiname
