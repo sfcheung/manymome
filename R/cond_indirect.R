@@ -121,9 +121,14 @@ cond_indirect <- function(x,
         stop(msg)
       }
     if (boot_ci) {
+        if (!is.null(boot_out)) {
+            if (!inherits(boot_out, "boot_out")) {
+                stop("The object at 'boot_out' must be of the class 'boot_out'.")
+              }
+          }
         if (fit_type == "lavaan") {
             opt <- lavaan::lavInspect(fit, "options")
-            if (opt$se != "bootstrap") {
+            if (opt$se != "bootstrap" && is.null(boot_out)) {
                 stop("If 'boot_ci' is TRUE, 'se' needs to be 'bootstrap' in 'fit'.")
               }
             if (is.null(boot_out)) {
@@ -209,12 +214,17 @@ cond_indirect_effects <- function(wlevels,
     names(wlevels2) <- rownames(wlevels)
     fit_type <- cond_indirect_check_fit(fit)
     if (boot_ci) {
+        if (!is.null(boot_out)) {
+            if (!inherits(boot_out, "boot_out")) {
+                stop("The object at 'boot_out' must be of the class 'boot_out'.")
+              }
+          }
         if (fit_type == "lavaan") {
             opt <- lavaan::lavInspect(fit, "options")
-            if (opt$se != "bootstrap") {
+            if (opt$se != "bootstrap" && is.null(boot_out)) {
                 stop("If 'boot_ci' is TRUE, 'se' needs to be 'bootstrap' in 'fit'.")
               }
-            if (is.null(boot_out)) {
+            if (is.null(boot_out) && opt$se == "bootstrap") {
                 boot_out <- fit2boot_out(fit = fit)
               }
           }
