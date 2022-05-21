@@ -57,13 +57,13 @@ ce_1b_stdboth_chk2 <- ce_1b_chk2 * sd_x / sd_y
 
 ce_no_w <- indirect(x = "m2", y = "m3", fit = fit2)
 
-print(ce_1b_chk)
-print(ce_2_chk)
-print(ce_3_chk)
-print(ce_1b_stdx_chk)
-print(ce_1b_stdy_chk)
-print(ce_1b_stdboth_chk)
-print(ce_no_w)
+tmp <- capture.output(print(ce_1b_chk))
+tmp <- capture.output(print(ce_2_chk))
+tmp <- capture.output(print(ce_3_chk))
+tmp <- capture.output(print(ce_1b_stdx_chk))
+tmp <- capture.output(print(ce_1b_stdy_chk))
+tmp <- capture.output(print(ce_1b_stdboth_chk))
+tmp <- capture.output(print(ce_no_w))
 
 test_that("check indirect", {
     expect_equal(

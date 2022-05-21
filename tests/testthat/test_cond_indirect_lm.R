@@ -46,9 +46,9 @@ out_boot2 <- cond_indirect(x = "x", y = "y",
                      R = 100,
                      seed = 418751)
 
-print(out)
-print(out_boot)
-print(out_boot2)
+tmp <- capture.output(print(out))
+tmp <- capture.output(print(out_boot))
+tmp <- capture.output(print(out_boot2))
 
 test_that("cond_indirect: lavaan", {
     expect_identical(out$indirect, out_chk$indirect)
