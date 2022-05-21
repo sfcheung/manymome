@@ -114,6 +114,12 @@ cond_indirect <- function(x,
                      seed = NULL,
                      save_boot_full = FALSE) {
     fit_type <- cond_indirect_check_fit(fit)
+    chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
+    if (!chkpath) {
+        msg <- paste0("No path from ", sQuote(x), " to ", sQuote(y), ".",
+                      "Please check the arguments x, y, and m.")
+        stop(msg)
+      }
     if (boot_ci) {
         if (fit_type == "lavaan") {
             opt <- lavaan::lavInspect(fit, "options")

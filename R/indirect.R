@@ -85,6 +85,12 @@ indirect <- function(x,
     if (is.null(est)) {
       est <- lavaan::parameterEstimates(fit)
     }
+    chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
+    if (!chkpath) {
+        msg <- paste0("No path from ", sQuote(x), " to ", sQuote(y), ".",
+                      "Please check the arguments x, y, and m.")
+        stop(msg)
+      }
     # if (is.null(m)) {
     #     out <- get_b(x, y, fit)
     #     return(out)
