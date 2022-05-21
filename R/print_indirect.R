@@ -163,8 +163,11 @@ print.indirect <- function(x, digits = 3, ...) {
         cat("\n ", x$computation_values)
       }
     if (has_boot_ci) {
-        cat("\nPercentile confidence interval formed by nonparametric bootstrapping",
-            "with", length(x$boot_indirect), "bootstrap samples.")
+        cat("\n")
+        cat(strwrap(paste("Percentile confidence interval formed by nonparametric bootstrapping",
+                          "with ",
+                          length(x$boot_indirect),
+                          " bootstrap samples.")), sep = " ")
       }
     if (has_m) {
         if (has_w) {
