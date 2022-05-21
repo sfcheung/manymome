@@ -47,7 +47,7 @@
 #' indirect_2
 #'
 #' @export
-#'
+
 coef.indirect <- function(object, ...) {
     out <- object$indirect
     names(out) <- paste0(object$y, "~", object$x)
