@@ -19,6 +19,7 @@ lm_m3b <- lm(m3 ~ m1 + x * gp, dat[-3, ])
 lm_yb <- lm(y ~ m2 + m3 + x * w4, dat[-4, ])
 
 out <- lm2list(lm_m1, lm_m2, lm_m3, lm_y)
+tmp <- capture.output(print(out))
 out_chk <- list(lm_m1, lm_m2, lm_m3, lm_y)
 out_list <- out
 class(out_list) <- "list"
