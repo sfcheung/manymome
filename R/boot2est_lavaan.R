@@ -108,7 +108,7 @@ fit2boot_out_do_boot <- function(fit,
                 stop(paste0("'ncores' cannot be greater than",
                             " the detected number of cores (", ncores0,")."))
               }
-            make_cluster_args <- modifyList(make_cluster_args,
+            make_cluster_args <- utils::modifyList(make_cluster_args,
                                             list(spec = ncores))
           }
         cl <- do.call(parallel::makeCluster, make_cluster_args)
