@@ -75,8 +75,8 @@ fit2boot_out_do_boot <- function(fit,
     dat_org <- lav_data_used(fit)
     n <- nrow(dat_org)
     boot_test <- suppressWarnings(boot_i(dat_org))
-    if (!isTRUE(all.equal(unclass(stats::coef(fit)),
-                          stats::coef(boot_test)[names(stats::coef(fit))]))) {
+    if (!isTRUE(all.equal(unclass(lavaan::coef(fit)),
+                          lavaan::coef(boot_test)[names(lavaan::coef(fit))]))) {
         stop(paste("Something is wrong.",
                     "This function cannot reproduce the results.",
                     "Please fit the model with se = 'boot'"))
