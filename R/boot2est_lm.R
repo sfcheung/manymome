@@ -38,6 +38,11 @@
 #'
 
 lm2boot_out <- function(outputs, R = 100, seed = NULL) {
+    out_type <- cond_indirect_check_fit(outputs)
+    if (out_type != "lm") {
+        stop("'outputs' must be a list of 'lm()' outputs.")
+      }
+    cond_indirect_check_fit
     dat <- merge_model_frame(outputs)
     n <- nrow(dat)
     if (!is.null(seed)) set.seed(seed)
