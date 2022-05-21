@@ -240,7 +240,7 @@ gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL,
     y0 <- yiname
     out1 <- paste0(y0, " + ",
                     paste0("(", b_i0, ")*(", w_i, ")",
-                          collapse = "+"))
+                          collapse = " + "))
     out2 <- paste0("(", formatC(yi, digits = digits, format = "f"),
                     ") + ",
                     paste0("(",
@@ -248,7 +248,7 @@ gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL,
                           ")*(",
                           formatC(wvalues_i, digits = digits, format = "f"),
                           ")",
-                          collapse = "+"))
+                          collapse = " + "))
     names(out2) <- out1
     out2
   }
