@@ -49,7 +49,7 @@ knitr::opts_chunk$set(
 This is the sample dataset comes with the package:
 
 ```{r}
-library(stdmodmed)
+library(stdmodsem)
 dat <- modmed_x1m3w4y1
 print(head(dat), digits = 3)
 ```
