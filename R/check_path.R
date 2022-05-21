@@ -52,7 +52,10 @@ check_path <- function(x,
                        fit = NULL,
                        est = NULL) {
     if (is.null(est)) {
-      est <- lavaan::parameterEstimates(fit)
+      fit_type <- cond_indirect_check_fit(fit)
+      est <- switch(fit_type,
+              lm = lm2ptable(fit)$est,
+              lavaan = lavaan::parameterEstimates(fit))
     }
     if (is.null(m)) {
         return(any(((est$lhs == y) & (est$op == "~") & (est$rhs == x))))
