@@ -154,6 +154,14 @@ print.indirect <- function(x, digits = 3, ...) {
     ptable <- data.frame(lapply(ptable, format))
     colnames(ptable) <- c("", "")
     print(ptable, row.names = FALSE)
+    if (!is.null(x$computation_symbol)) {
+        cat("\nComputation Formula:")
+        cat("\n ", x$computation_symbol)
+      }
+    if (!is.null(x$computation_values)) {
+        cat("\nComputation:")
+        cat("\n ", x$computation_values)
+      }
     if (has_boot_ci) {
         cat("\nPercentile confidence interval formed by nonparametric bootstrapping",
             "with", length(x$boot_indirect), "bootstrap samples.")
