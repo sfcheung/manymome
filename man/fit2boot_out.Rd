@@ -2,13 +2,32 @@
 % Please edit documentation in R/boot2est_lavaan.R
 \name{fit2boot_out}
 \alias{fit2boot_out}
+\alias{fit2boot_out_do_boot}
 \title{One Line Title}
 \usage{
 fit2boot_out(fit)
+
+fit2boot_out_do_boot(
+  fit,
+  R = 100,
+  seed = NULL,
+  parallel = FALSE,
+  make_cluster_args = list(spec = getOption("cl.cores", 2))
+)
 }
 \arguments{
 \item{fit}{The fit object. Currently only supports a
 \link[lavaan:lavaan-class]{lavaan::lavaan} object.}
+
+\item{R}{Number of bootstrap samples. Default is 100.}
+
+\item{seed}{The seed for the random resampling. Default is \code{NULL}.}
+
+\item{parallel}{Logical. Whether parallel processing will be used.
+Default is \code{NULL}.}
+
+\item{make_cluster_args}{A named list of additional arguments to be passed
+to \code{\link[parallel:makeCluster]{parallel::makeCluster()}}. For advanced users.}
 }
 \value{
 Specify what are returned.
@@ -21,6 +40,17 @@ Details
 (Include subjects for verbs.)
 (Use 3rd person forms for verbs.)
 }
+\section{Functions}{
+\itemize{
+\item \code{fit2boot_out}: Process stored bootstrap estimates for functions
+such as \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+
+\item \code{fit2boot_out_do_boot}: Do bootstrapping and store information to be used
+by \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} and related functions.
+Support parallel processing and can be faster than
+setting \code{se} to \code{"boot"} in \code{\link[lavaan:sem]{lavaan::sem()}}.
+}}
+
 \examples{
 
 library(lavaan)

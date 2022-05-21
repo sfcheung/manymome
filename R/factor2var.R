@@ -20,8 +20,11 @@
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @examples
-#' \donttest{
-#' }
+#' dat <- modmed_x1m3w4y1
+#' dat <- data.frame(dat,
+#'                   factor2var(dat$gp, prefix = "gp", add_rownames = FALSE))
+#' head(dat[, c(10, 12, 13)], 15)
+#'
 #' @export
 #'
 

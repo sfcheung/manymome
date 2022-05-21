@@ -32,7 +32,9 @@
 #' check_path(x = "x", y = "y", m = c("m1", "m2"), fit = fit)
 #'
 #' @export
-#'
+#' @describeIn fit2boot_out Process stored bootstrap estimates for functions
+#'                          such as [cond_indirect_effects()].
+#' @order 1
 #'
 
 fit2boot_out <- function(fit) {
@@ -47,6 +49,86 @@ fit2boot_out <- function(fit) {
     class(out) <- "boot_out"
     out
   }
+
+#' @param R Number of bootstrap samples. Default is 100.
+#' @param seed The seed for the random resampling. Default is `NULL`.
+#' @param parallel Logical. Whether parallel processing will be used.
+#'                 Default is `NULL`.
+#' @param make_cluster_args A named list of additional arguments to be passed
+#'                          to [parallel::makeCluster()]. For advanced users.
+#'
+#' @export
+#' @describeIn fit2boot_out Do bootstrapping and store information to be used
+#'                          by [cond_indirect_effects()] and related functions.
+#'                          Support parallel processing and can be faster than
+#'                          setting `se` to `"boot"` in [lavaan::sem()].
+#' @order 2
+#'
+fit2boot_out_do_boot <- function(fit,
+                                 R = 100,
+                                 seed = NULL,
+                                 parallel = FALSE,
+                                 make_cluster_args =
+                                    list(spec = getOption("cl.cores", 2))) {
+    environment(gen_boot_i) <- parent.frame()
+    boot_i <- gen_boot_i(fit)
+    dat_org <- lav_data_used(fit)
+    n <- nrow(dat_org)
+    boot_test <- suppressWarnings(boot_i(dat_org))
+    if (!isTRUE(all.equal(unclass(stats::coef(fit)),
+                          stats::coef(boot_test)[names(stats::coef(fit))]))) {
+        stop(paste("Something is wrong.",
+                    "This function cannot reproduce the results.",
+                    "Please fit the model with se = 'boot'"))
+      }
+    ft <- lavaan::lavInspect(boot_test, "timing")$total
+    set.seed(seed)
+    ids <- replicate(R, sample.int(n, replace = TRUE), simplify = FALSE)
+    if (parallel & requireNamespace("parallel", quietly = TRUE)) {
+        pkgs <- .packages()
+        pkgs <- rev(pkgs)
+        cl <- do.call(parallel::makeCluster, make_cluster_args)
+        texp <-  R * ft[[1]] / length(cl)
+        message(paste0("The expected CPU time is about ",
+                        round(texp, 2),
+                        " second(s)."))
+        utils::flush.console()
+        parallel::clusterExport(cl, "pkgs", envir = environment())
+        parallel::clusterEvalQ(cl, {
+                        sapply(pkgs,
+                        function(x) library(x, character.only = TRUE))
+                      })
+        tmp <- tryCatch({rt <- system.time(out <- suppressWarnings(
+                          parallel::parLapplyLB(cl, ids, boot_i,
+                                                d = dat_org)))},
+                          error = function(e) e)
+        if (inherits(tmp, "error")) {
+            try(parallel::stopCluster(cl), silent = TRUE)
+            stop("Running in parallel failed. Please set 'parallel' to FALSE.")
+          }
+        parallel::stopCluster(cl)
+      } else {
+        texp <-  R * ft[[1]]
+        message(paste0("The expected CPU time is ",
+                        round(texp, 2),
+                        " second(s).\n",
+                        "Could be faster if set 'parallel' to TRUE."))
+        utils::flush.console()
+        rt <- system.time(out <- suppressWarnings(lapply(ids, boot_i,
+                                                         d = dat_org)))
+      }
+    n_ok <- sapply(out, function(x) x$ok)
+    out <- out[n_ok]
+    if (isTRUE(!all(n_ok))) {
+        n_failed <- R - length(n_ok)
+        message(paste("Note: ", n, " bootstrap sample(s) failed.",
+                      "They will be removed"))
+        utils::flush.console()
+      }
+    class(out) <- "boot_out"
+    out
+  }
+
 
 boot2est <- function(fit) {
     opt <- lavaan::lavInspect(fit, "options")
@@ -111,70 +193,6 @@ get_implied_i <- function(est0, fit) {
         out1[[x]][] <- implied[[x]][[1]]
       }
     out1
-  }
-
-fit2boot_out_do_boot <- function(fit,
-                                 R = 100,
-                                 seed = NULL,
-                                 parallel = FALSE,
-                                 make_cluster_args =
-                                    list(spec = getOption("cl.cores", 2))) {
-    environment(gen_boot_i) <- parent.frame()
-    boot_i <- gen_boot_i(fit)
-    dat_org <- lav_data_used(fit)
-    n <- nrow(dat_org)
-    boot_test <- suppressWarnings(boot_i(dat_org))
-    if (!isTRUE(all.equal(unclass(coef(fit)),
-                          coef(boot_test)[names(coef(fit))]))) {
-        stop(paste("Something is wrong.",
-                    "This function cannot reproduce the results.",
-                    "Please fit the model with se = 'boot'"))
-      }
-    ft <- lavaan::lavInspect(boot_test, "timing")$total
-    set.seed(seed)
-    ids <- replicate(R, sample.int(n, replace = TRUE), simplify = FALSE)
-    if (parallel & requireNamespace("parallel", quietly = TRUE)) {
-        pkgs <- .packages()
-        pkgs <- rev(pkgs)
-        cl <- do.call(parallel::makeCluster, make_cluster_args)
-        texp <-  R * ft[[1]] / length(cl)
-        message(paste0("The expected CPU time is about ",
-                        round(texp, 2),
-                        " second(s)."))
-        utils::flush.console()
-        parallel::clusterExport(cl, "pkgs", envir = environment())
-        parallel::clusterEvalQ(cl, {
-                        sapply(pkgs,
-                        function(x) library(x, character.only = TRUE))
-                      })
-        tmp <- tryCatch({rt <- system.time(out <- suppressWarnings(
-                          parallel::parLapplyLB(cl, ids, boot_i,
-                                                d = dat_org)))},
-                          error = function(e) e)
-        if (inherits(tmp, "error")) {
-            try(parallel::stopCluster(cl), silent = TRUE)
-            stop("Running in parallel failed. Please set 'parallel' to FALSE.")
-          }
-        parallel::stopCluster(cl)
-      } else {
-        texp <-  R * ft[[1]]
-        message(paste0("The expected CPU time is ",
-                        round(texp, 2),
-                        " second(s).\n",
-                        "Could be faster if set 'parallel' to TRUE."))
-        utils::flush.console()
-        rt <- system.time(out <- suppressWarnings(lapply(ids, boot_i,
-                                                         d = dat_org)))
-      }
-    n_ok <- sapply(out, function(x) x$ok)
-    out <- out[n_ok]
-    if (isTRUE(!all(n_ok))) {
-        n_failed <- R - length(n_ok)
-        message(paste("Note: ", n, " bootstrap sample(s) failed.",
-                      "They will be removed"))
-        utils::flush.console()
-      }
-    out
   }
 
 gen_boot_i <- function(fit) {
