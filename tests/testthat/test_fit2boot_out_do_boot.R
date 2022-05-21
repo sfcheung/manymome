@@ -25,6 +25,11 @@ out_chk_est[[i]]
 out_chk_implied[[i]]
 out_chk[[i]]
 
+# To be examined interatively
+out_parallel <- fit2boot_out_do_boot(fit, R = 2, seed = 8715, parallel = 2,
+                                     ncores = 2)
+
+
 test_that("fit2boot_out_do_boot", {
     expect_equal(
         out[[i]]$implied_stats$cov,
