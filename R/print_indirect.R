@@ -116,7 +116,7 @@ print.indirect <- function(x, digits = 3, ...) {
     }
     if (has_boot_ci) {
         b_str1 <- paste0(formatC(x$level * 100, 1, format = "f"), "%",
-                         " Bootstrap Confidence Interval:")
+                         " Bootstrap CI:")
         b_str2 <- paste0("[",
                          paste0(formatC(x$boot_ci, digits, format = "f"),
                                 collapse = " to "),
@@ -137,7 +137,9 @@ print.indirect <- function(x, digits = 3, ...) {
                         c(ifelse(has_m, "Conditional Indirect Effect:",
                                         "Conditional Effect:"),
                           formatC(x$indirect, digits = digits, format = "f")))
-        tmp <- paste(paste(wnames, "=", w0), collapse = ", ")
+        tmp <- paste(paste(wnames, "=", formatC(w0,
+                                                digits = digits,
+                                                format = "f")), collapse = ", ")
         # cat("\nWhen:", tmp)
         if (has_boot_ci) {ptable <- rbind(ptable, b_row)}
         ptable <- rbind(ptable,
