@@ -54,8 +54,15 @@ fit2boot_out <- function(fit) {
 #' @param seed The seed for the random resampling. Default is `NULL`.
 #' @param parallel Logical. Whether parallel processing will be used.
 #'                 Default is `NULL`.
+#' @param ncores Integer. The number of CPU cores to use when `parallel` is `TRUE`.
+#'               Default is `NULL`, and the number of cores determined by
+#'               `getOption("cl.cores", 2)`. Will raise an error if greater than
+#'               the number of cores detected by [parallel::detectCores()].
+#'               If `ncores` is set, it will override `make_cluster_args`.
 #' @param make_cluster_args A named list of additional arguments to be passed
 #'                          to [parallel::makeCluster()]. For advanced users.
+#'                          See [parallel::makeCluster()] for details.
+#'                          Default is `list(spec = getOption("cl.cores", 2))`.
 #'
 #' @export
 #' @describeIn fit2boot_out Do bootstrapping and store information to be used
@@ -68,6 +75,7 @@ fit2boot_out_do_boot <- function(fit,
                                  R = 100,
                                  seed = NULL,
                                  parallel = FALSE,
+                                 ncores = NULL,
                                  make_cluster_args =
                                     list(spec = getOption("cl.cores", 2))) {
     environment(gen_boot_i) <- parent.frame()
@@ -87,8 +95,25 @@ fit2boot_out_do_boot <- function(fit,
     if (parallel & requireNamespace("parallel", quietly = TRUE)) {
         pkgs <- .packages()
         pkgs <- rev(pkgs)
+        if (is.numeric(ncores)) {
+            ncores0 <- parallel::detectCores()
+            if (ncores == ncores0) {
+                warning(paste0("'ncores' >= The number of detected cores (",
+                               ncores0,"). The computer may not be responsive",
+                               " when bootstrapping is running."),
+                        immediate. = TRUE)
+                utils::flush.console()
+              }
+            if (ncores > ncores0) {
+                stop(paste0("'ncores' cannot be greater than",
+                            " the detected number of cores (", ncores0,")."))
+              }
+            make_cluster_args <- modifyList(make_cluster_args,
+                                            list(spec = ncores))
+          }
         cl <- do.call(parallel::makeCluster, make_cluster_args)
         texp <-  R * ft[[1]] / length(cl)
+        message(paste0(length(cl), " processes started to run bootstrapping."))
         message(paste0("The expected CPU time is about ",
                         round(texp, 2),
                         " second(s)."))
@@ -113,7 +138,7 @@ fit2boot_out_do_boot <- function(fit,
         message(paste0("The expected CPU time is ",
                         round(texp, 2),
                         " second(s).\n",
-                        "Could be faster if set 'parallel' to TRUE."))
+                        "Could be faster if 'parallel' set to TRUE."))
         utils::flush.console()
         rt <- system.time(out <- suppressWarnings(lapply(ids, boot_i,
                                                          d = dat_org)))
