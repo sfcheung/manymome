@@ -112,3 +112,42 @@ data2implied <- function(data) {
     list(cov = cov,
          mean = mean)
   }
+
+get_mm_names <- function(x) {
+    colnames(stats::model.matrix(x))[-1]
+  }
+
+check_except <- function(x) {
+    # Check if a model is "disconnected" from other models.
+    k <- length(x)
+    out <- sapply(seq_len(k),
+             function(i) {
+                  isTRUE(any(x[[i]] %in%
+                                unique(unlist(x[-i]))))
+               })
+    if (isTRUE(all(out))) {
+        return(TRUE)
+      } else {
+        return(FALSE)
+      }
+  }
+
+check_cases <- function(x) {
+    # Check whether the same cases are used
+    k <- length(x)
+    if (k == 1) return(TRUE)
+    for (i in seq(2, k)) {
+        for (j in seq_len(i - 1)) {
+            namesi <- colnames(x[[i]])[-1]
+            namesj <- colnames(x[[j]])[-1]
+            names0 <- intersect(namesi, namesj)
+            if (length(names0) == 0) next
+            dati <- x[[i]][, names0]
+            datj <- x[[j]][, names0]
+            if (!identical(datj, dati)) {
+                return(FALSE)
+              }
+          }
+      }
+    return(TRUE)
+  }
