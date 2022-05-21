@@ -80,22 +80,26 @@ print.cond_indirect_effects <- function(x, digits = 3, ...) {
   NextMethod()
   if (boot_ci) {
       level_str <- paste0(formatC(level * 100, 1, format = "f"), "%")
-      cat("\n - [CI.lo to CI.hi] are", level_str, "percentile confidence intervals",
-          "by nonparametric bootstrapping with", R, "samples.")
+      cat(strwrap(paste("\n - [CI.lo to CI.hi] are",
+                        level_str,
+                        "percentile confidence intervals",
+                        "by nonparametric bootstrapping with",
+                        R,
+                        "samples."), exdent = 2), sep = "\n")
     }
   if (standardized_x & standardized_y) {
-      cat("\n - The 'std' column shows the standardized indirect effects.",
-          "\n - The 'ind' column shows the unstandardized indirect effects.")
+      cat("\n - std: The standardized indirect effects.",
+          "\n - ind: The unstandardized indirect effects.")
     }
   if (standardized_x & !standardized_y) {
-      cat("\n - The 'std' column shows the partially standardized indirect effects.",
+      cat("\n - std: The partially standardized indirect effects.",
           "\n - ", sQuote(x0), " is standardized.",
-          "\n - The 'ind' column shows the unstandardized indirect effects.", sep = "")
+          "\n - ind: The unstandardized indirect effects.", sep = "")
     }
   if (!standardized_x & standardized_y) {
-      cat("\n - The 'std' column shows the partially standardized indirect effects.",
+      cat("\n - std: Te partially standardized indirect effects.",
           "\n - ", sQuote(y0), " is standardized.",
-          "\n - The 'ind' column shows the unstandardized indirect effects.", sep = "")
+          "\n - ind: The unstandardized indirect effects.", sep = "")
     }
   if (!standardized_x & !standardized_y) {
       cat("\n - The 'ind' column shows the indirect effects.", sep = "")
