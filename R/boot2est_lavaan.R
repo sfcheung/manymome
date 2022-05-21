@@ -98,6 +98,7 @@ fit2boot_out_do_boot <- function(fit,
                         sapply(pkgs,
                         function(x) library(x, character.only = TRUE))
                       })
+        parallel::clusterSetRNGStream(cl, seed)
         tmp <- tryCatch({rt <- system.time(out <- suppressWarnings(
                           parallel::parLapplyLB(cl, ids, boot_i,
                                                 d = dat_org)))},
@@ -230,7 +231,7 @@ gen_boot_i <- function(fit) {
                               mean = lavaan::lavInspect(out, "mean.ov"),
                               mean_lv = lavaan::lavInspect(out, "mean.lv"))
               out1 <- list(est = lavaan::parameterEstimates(
-                                  fit,
+                                  out,
                                   se = FALSE,
                                   zstat = FALSE,
                                   pvalue = FALSE,
