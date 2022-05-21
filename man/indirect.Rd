@@ -14,7 +14,8 @@ indirect(
   wvalues = NULL,
   standardized_x = FALSE,
   standardized_y = FALSE,
-  computation_digits = 5
+  computation_digits = 5,
+  warn = TRUE
 )
 }
 \arguments{
@@ -57,6 +58,12 @@ which the moderators will be set to. Default is \code{NULL}.}
 
 \item{computation_digits}{The number of digits in storing the computation
 in text. Default is 3.}
+
+\item{warn}{If \code{TRUE}, the default, the function will warn against possible
+misspecification, such as not setting the value of a moderator
+which moderate one of the component path. Set this to \code{FALSE}
+will suppress these warnings. Suppress them only when the
+moderators are omitted intentionally.}
 }
 \value{
 Specify what are returned.
