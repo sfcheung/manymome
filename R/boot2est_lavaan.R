@@ -112,3 +112,121 @@ get_implied_i <- function(est0, fit) {
       }
     out1
   }
+
+fit2boot_out_do_boot <- function(fit,
+                                 R = 100,
+                                 seed = NULL,
+                                 parallel = FALSE,
+                                 make_cluster_args =
+                                    list(spec = getOption("cl.cores", 2))) {
+    environment(gen_boot_i) <- parent.frame()
+    boot_i <- gen_boot_i(fit)
+    dat_org <- lav_data_used(fit)
+    n <- nrow(dat_org)
+    boot_test <- suppressWarnings(boot_i(dat_org))
+    if (!isTRUE(all.equal(unclass(coef(fit)),
+                          coef(boot_test)[names(coef(fit))]))) {
+        stop(paste("Something is wrong.",
+                    "This function cannot reproduce the results.",
+                    "Please fit the model with se = 'boot'"))
+      }
+    ft <- lavaan::lavInspect(boot_test, "timing")$total
+    set.seed(seed)
+    ids <- replicate(R, sample.int(n, replace = TRUE), simplify = FALSE)
+    if (parallel & requireNamespace("parallel", quietly = TRUE)) {
+        pkgs <- .packages()
+        pkgs <- rev(pkgs)
+        cl <- do.call(parallel::makeCluster, make_cluster_args)
+        texp <-  R * ft[[1]] / length(cl)
+        message(paste0("The expected CPU time is about ",
+                        round(texp, 2),
+                        " second(s)."))
+        utils::flush.console()
+        parallel::clusterExport(cl, "pkgs", envir = environment())
+        parallel::clusterEvalQ(cl, {
+                        sapply(pkgs,
+                        function(x) library(x, character.only = TRUE))
+                      })
+        tmp <- tryCatch({rt <- system.time(out <- suppressWarnings(
+                          parallel::parLapplyLB(cl, ids, boot_i,
+                                                d = dat_org)))},
+                          error = function(e) e)
+        if (inherits(tmp, "error")) {
+            try(parallel::stopCluster(cl), silent = TRUE)
+            stop("Running in parallel failed. Please set 'parallel' to FALSE.")
+          }
+        parallel::stopCluster(cl)
+      } else {
+        texp <-  R * ft[[1]]
+        message(paste0("The expected CPU time is ",
+                        round(texp, 2),
+                        " second(s).\n",
+                        "Could be faster if set 'parallel' to TRUE."))
+        utils::flush.console()
+        rt <- system.time(out <- suppressWarnings(lapply(ids, boot_i,
+                                                         d = dat_org)))
+      }
+    n_ok <- sapply(out, function(x) x$ok)
+    out <- out[n_ok]
+    if (isTRUE(!all(n_ok))) {
+        n_failed <- R - length(n_ok)
+        message(paste("Note: ", n, " bootstrap sample(s) failed.",
+                      "They will be removed"))
+        utils::flush.console()
+      }
+    out
+  }
+
+gen_boot_i <- function(fit) {
+  fit_org <- eval(fit)
+  data_full <- lavaan::lavInspect(fit_org, "data")
+  function(d, i = NULL) {
+      if (is.null(i)) {
+          return(lavaan::update(fit_org,
+                                data = d,
+                                se = "none",
+                                baseline = FALSE,
+                                h1 = FALSE))
+        } else {
+          out <- tryCatch(lavaan::update(fit_org,
+                                data = d[i, ],
+                                se = "none",
+                                baseline = FALSE,,
+                                h1 = FALSE),
+                          error = function(e) e,
+                          warning = function(e) e)
+          if (inherits(out, "error") || inherits(out, "warning")) {
+              out1 <- list(est = NA,
+                           implied_stats = NA,
+                           ok = FALSE)
+            } else {
+              chk <- tryCatch(lavaan::lavTech(out, what = "post.check"),
+                              warning = function(w) w)
+              if (!isTRUE(chk) ||
+                  !lavaan::lavTech(out, what = "converged")) {
+                  out1 <- list(est = NA,
+                              implied_stats = NA,
+                              ok = FALSE)
+                }
+              implied <- list(cov = lavaan::lavInspect(out, "cov.all"),
+                              mean = lavaan::lavInspect(out, "mean.ov"),
+                              mean_lv = lavaan::lavInspect(out, "mean.lv"))
+              out1 <- list(est = lavaan::parameterEstimates(
+                                  fit,
+                                  se = FALSE,
+                                  zstat = FALSE,
+                                  pvalue = FALSE,
+                                  ci = FALSE,
+                                  rsquare = TRUE,
+                                  remove.eq = FALSE,
+                                  remove.ineq = FALSE,
+                                  remove.def = FALSE,
+                                  remove.nonfree = FALSE,
+                                  remove.step1 = FALSE),
+                            implied_stats = implied,
+                            ok = TRUE)
+            }
+        }
+      return(out1)
+    }
+  }
