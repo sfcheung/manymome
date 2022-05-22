@@ -52,12 +52,19 @@ print.cond_indirect_effects <- function(x, digits = 3, ...) {
   standardized_x <- x_i$standardized_x
   standardized_y <- x_i$standardized_y
   level <- x_i$level
+  has_m <- isTRUE(!is.null(x_i$m))
   R <- ifelse(boot_ci, length(x_i$boot_indirect),
                        NA)
   x0 <- my_call$x
   y0 <- my_call$y
   m0 <- my_call$m
-  path <- paste0(x0, " -> ", paste0(m0, collapse = " -> "), " -> ", y0)
+  if (has_m) {
+      path <- path <- paste0(x0, " -> ",
+                             paste0(m0, collapse = " -> "),
+                             " -> ", y0)
+    } else {
+      path <- paste(x0, "->", y0)
+    }
   out <- lapply(x, format_numeric, digits = digits)
   if (boot_ci) {
       Sig <- ifelse((x$CI.lo > 0) | (x$CI.hi < 0), "Sig", "")
@@ -70,7 +77,17 @@ print.cond_indirect_effects <- function(x, digits = 3, ...) {
   w0 <- colnames(attr(wlevels, "wlevels"))
   w1 <- colnames(wlevels)
   mcond <- names(x_i$components)
-  cat("\n== Conditional indirect effects ==\n")
+  cond_str <- ""
+  cond_str2 <- ""
+  if (has_m) {
+      cond_str <- "indirect"
+      cond_str2 <- "Indirect"
+    }
+  if (has_m) {
+      cat("\n== Conditional indirect effects ==\n")
+    } else {
+      cat("\n== Conditional effects ==\n")
+    }
   cat("\n Path:", path)
   cat("\n Conditioned on moderator(s):", paste0(w0, collapse = ", "))
   cat("\n Moderator(s) represented by:", paste0(w1, collapse = ", "))
@@ -88,21 +105,21 @@ print.cond_indirect_effects <- function(x, digits = 3, ...) {
                         "samples."), exdent = 2), sep = "\n")
     }
   if (standardized_x & standardized_y) {
-      cat("\n - std: The standardized indirect effects.",
-          "\n - ind: The unstandardized indirect effects.")
+      cat("\n - std: The standardized", cond_str, "effects.",
+          "\n - ind: The unstandardized", cond_str, "effects.", sep = " ")
     }
   if (standardized_x & !standardized_y) {
-      cat("\n - std: The partially standardized indirect effects.",
+      cat("\n - std: The partially standardized", cond_str, "effects.",
           "\n - ", sQuote(x0), " is standardized.",
-          "\n - ind: The unstandardized indirect effects.", sep = "")
+          "\n - ind: The unstandardized", cond_str, "effects.", sep = " ")
     }
   if (!standardized_x & standardized_y) {
-      cat("\n - std: Te partially standardized indirect effects.",
+      cat("\n - std: Te partially standardized", cond_str, "effects.",
           "\n - ", sQuote(y0), " is standardized.",
-          "\n - ind: The unstandardized indirect effects.", sep = "")
+          "\n - ind: The unstandardized", cond_str, "effects.", sep = " ")
     }
   if (!standardized_x & !standardized_y) {
-      cat("\n - The 'ind' column shows the indirect effects.", sep = "")
+      cat("\n - The 'ind' column shows the", cond_str, "effects.", sep = " ")
     }
   cat("\n ")
   cat(strwrap(paste("\n -", paste(sQuote(mcond), collapse = ","),
