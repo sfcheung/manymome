@@ -48,3 +48,28 @@ suppressWarnings(out_8 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y =
                                standardized_x = TRUE, standardized_y = TRUE,
                                boot_ci = TRUE, output_type = "list"))
 
+# Moderation only
+
+outmo_mm_1 <- mod_levels(c("gpgp2", "gpgp3"), fit = fit)
+
+# Suppress warnings due to small number of bootstrap samples.
+suppressWarnings(outmo_1 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit))
+suppressWarnings(outmo_2 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+                               standardized_x = TRUE))
+suppressWarnings(outmo_3 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+                               standardized_y = TRUE))
+suppressWarnings(outmo_4 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+                               standardized_x = TRUE, standardized_y = TRUE))
+
+suppressWarnings(outmo_5 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit_boot,
+                               boot_ci = TRUE, seed = 87415))
+fit_boot_out <- fit2boot_out(fit_boot)
+suppressWarnings(outmo_6 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+                               standardized_x = TRUE,
+                               boot_ci = TRUE, boot_out = fit_boot_out))
+suppressWarnings(outmo_7 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+                               standardized_y = TRUE,
+                               boot_ci = TRUE, boot_out = fit_boot_out))
+suppressWarnings(outmo_8 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+                               standardized_x = TRUE, standardized_y = TRUE,
+                               boot_ci = TRUE, boot_out = fit_boot_out))
