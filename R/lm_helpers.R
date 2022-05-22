@@ -114,7 +114,9 @@ data2implied <- function(data) {
   }
 
 get_mm_names <- function(x) {
-    colnames(stats::model.matrix(x))[-1]
+    out1 <- colnames(stats::model.matrix(x))[-1]
+    out2 <- get_response(x)
+    c(out1, out2)
   }
 
 check_except <- function(x) {
