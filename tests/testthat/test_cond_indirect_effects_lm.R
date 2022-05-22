@@ -19,6 +19,7 @@ lm_y_mm <- model.matrix(lm_y)[, 6]
 dat2 <- cbind(dat, lm_m1_mm, lm_m2_mm, lm_m3_mm, lm_y_mm)
 fit <- list(lm_m1, lm_m2, lm_m3, lm_y)
 
+# Moderated mediation
 
 out_mm_1 <- mod_levels_list("w4", c("gpgp2", "gpgp3"), fit = fit, merge = TRUE)
 
@@ -51,3 +52,37 @@ tmp <- capture.output(print(out_5))
 tmp <- capture.output(print(out_6))
 tmp <- capture.output(print(out_7))
 tmp <- capture.output(print(out_8))
+
+# Moderation only
+
+outmo_mm_1 <- mod_levels(c("gpgp2", "gpgp3"), fit = fit)
+
+outmo_1 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit)
+outmo_2 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+                               standardized_x = TRUE)
+outmo_3 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+                               standardized_y = TRUE)
+outmo_4 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+                               standardized_x = TRUE, standardized_y = TRUE)
+
+outmo_5 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+                               boot_ci = TRUE, seed = 87415)
+# fit_boot_out <- lm2boot_out(fit, R = 100, seed = 87415)
+outmo_6 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+                               standardized_x = TRUE,
+                               boot_ci = TRUE, boot_out = fit_boot_out)
+outmo_7 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+                               standardized_y = TRUE,
+                               boot_ci = TRUE, boot_out = fit_boot_out)
+outmo_8 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+                               standardized_x = TRUE, standardized_y = TRUE,
+                               boot_ci = TRUE, boot_out = fit_boot_out)
+
+tmp <- capture.output(print(outmo_1))
+tmp <- capture.output(print(outmo_2))
+tmp <- capture.output(print(outmo_3))
+tmp <- capture.output(print(outmo_4))
+tmp <- capture.output(print(outmo_5))
+tmp <- capture.output(print(outmo_6))
+tmp <- capture.output(print(outmo_7))
+tmp <- capture.output(print(outmo_8))
