@@ -104,9 +104,10 @@ print.cond_indirect_effects <- function(x, digits = 3, ...) {
   if (!standardized_x & !standardized_y) {
       cat("\n - The 'ind' column shows the indirect effects.", sep = "")
     }
-  cat("\n -", paste(sQuote(mcond), collapse = ","),
+  cat("\n ")
+  cat(strwrap(paste("\n -", paste(sQuote(mcond), collapse = ","),
       "is/are the path coefficient(s) along the path",
-      "conditional on the moderators.")
+      "conditional on the moderators."), exdent = 2), sep = "\n")
   cat("\n")
   invisible(x)
 }
