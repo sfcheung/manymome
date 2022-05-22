@@ -123,6 +123,9 @@ mod_levels <- function(w,
                                                    prefix = prefix)
           }
       }
+    tmp <- data.frame(x = rownames(out))
+    colnames(tmp) <- attr(out, "wname")
+    attr(out, "wlevels") <- tmp
     out
   }
 
@@ -192,6 +195,8 @@ mod_levels_i_lavaan_numerical <- mod_levels_i_lm_numerical <- function(fit,
         colnames(out) <- w
         return(out)
       }
+    attr(out, "wname") <- w
+    return(out)
   }
 
 mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
@@ -213,6 +218,10 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
     if (extract_gp_names) {
         w_gp <- set_gp_names(w_gp, prefix = prefix)
       }
+    if (is.null(prefix)) {
+        prefix <- find_prefix(w)
+      }
+    attr(w_gp, "wname") <- prefix
     return(w_gp)
   }
 
