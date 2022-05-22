@@ -16,10 +16,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r}
-options_old <- options(width = 90)
-```
-
 # What It Can Do?
 
 ## It can
@@ -106,7 +102,17 @@ To form bootstrapping confidence intervals, we first repeat the regression
 analysis in all models by nonparametric bootstrapping and store the results.
 This can be done by `lm2boot_out()`:
 
-```{r}
+```{r echo = FALSE}
+fn <- "stdmodsem_fit_lm_boot_out.rds"
+if (file.exists(fn)) {
+    fit_lm_boot_out <- readRDS(fn)
+  } else {
+    fit_lm_boot_out <- lm2boot_out(fit_lm, R = 2000, seed = 87415)
+    saveRDS(fit_lm_boot_out, fn)
+  }
+```
+
+```{r eval = FALSE}
 fit_lm_boot_out <- lm2boot_out(fit_lm, R = 2000, seed = 87415)
 ```
 
@@ -168,7 +174,21 @@ It is not recommended to set `se` to `"boot"` for bootstrapping.
 `fit2boot_out_do_boot()` can be used to compute only information
 necessary for this package. It also supports parallel processing.
 
-```{r}
+```{r echo = FALSE}
+fn <- "stdmodsem_fit_lavaan_boot_out.rds"
+if (file.exists(fn)) {
+    fit_lavaan_boot_out <- readRDS(fn)
+  } else {
+    fit_lavaan_boot_out <- fit2boot_out_do_boot(fit = fit_lavaan,
+                                                R = 2000,
+                                                seed = 8715,
+                                                parallel = TRUE,
+                                                ncores = 2)
+    saveRDS(fit_lavaan_boot_out, fn)
+  }
+```
+
+```{r eval = FALSE}
 fit_lavaan_boot_out <- fit2boot_out_do_boot(fit = fit_lavaan,
                                             R = 2000,
                                             seed = 8715,
@@ -217,11 +237,5 @@ out_lavaan_std
 # Mediation: Multiple Regression by `lm()`
 
 # Mediation: Path Analysis by `lavaan::sem()`
-
-# Reset the Environment
-
-```{r}
-options(options_old)
-```
 
 # Further Information
