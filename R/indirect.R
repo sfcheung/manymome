@@ -116,7 +116,7 @@ indirect <- function(x,
                  MoreArgs = list(est = est))
     bs_org <- bs
     names(bs_org) <- bs_names
-    chk_lv <- bs_names %in% check_lv_in_est(est)
+    chk_lv <- unique(c(xs, ys)) %in% check_lv_in_est(est)
     if (isTRUE(any(chk_lv)) && !isTRUE(all(chk_lv))) {
         stop("Does not support paths with both latent and observed variables")
       }
