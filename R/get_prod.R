@@ -11,6 +11,9 @@
 #'
 #' @param x Character. Variable name.
 #' @param y Character. Variable name.
+#' @param operator Character. The string used to indicate a product term.
+#'                 Default is `":"`, used in both [lm()] and [lavaan::sem()]
+#'                 for observed variables.
 #' @param fit The fit object. Currently only supports a
 #'            [lavaan::lavaan-class] object.
 #' @param est The output of [lavaan::parameterEstimates()]. If `NULL`, the
@@ -26,6 +29,7 @@
 
 get_prod <- function(x,
                      y,
+                     operator = ":",
                      fit = NULL,
                      est = NULL) {
     if (is.null(est)) {
@@ -38,24 +42,24 @@ get_prod <- function(x,
       } else {
         return(NA)
       }
-    i_prod_rhs <- grepl(":", y_rhs)
+    i_prod_rhs <- grepl(operator, y_rhs)
     if (isTRUE(any(i_prod_rhs))) {
         prod_rhs <- y_rhs[i_prod_rhs]
       } else {
         return(NA)
       }
-    i_prod_x1 <- grepl(paste0(x, ":"), prod_rhs)
+    i_prod_x1 <- grepl(paste0(x, operator), prod_rhs)
     if (isTRUE(any(i_prod_x1))) {
         prod_x1 <- prod_rhs[i_prod_x1]
-        w1 <- gsub(paste0(x, ":"), "", prod_x1)
+        w1 <- gsub(paste0(x, operator), "", prod_x1)
       } else {
         prod_x1 <- NULL
         w1 <- NULL
       }
-    i_prod_x2 <- grepl(paste0(":", x), prod_rhs)
+    i_prod_x2 <- grepl(paste0(operator, x), prod_rhs)
     if (isTRUE(any(i_prod_x2))) {
         prod_x2 <- prod_rhs[i_prod_x2]
-        w2 <- gsub(paste0(":", x), "", prod_x2)
+        w2 <- gsub(paste0(operator, x), "", prod_x2)
       } else {
         prod_x2 <- NULL
         w2 <- NULL
