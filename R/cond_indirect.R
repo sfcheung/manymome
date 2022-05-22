@@ -147,7 +147,8 @@ cond_indirect <- function(x,
     if (fit_type == "lavaan") {
         fit0 <- fit
         if (is.null(est)) est <- lavaan::parameterEstimates(fit)
-        if (is.null(implied_stats)) lavaan::lavInspect(fit, "implied")
+        # if (is.null(implied_stats)) lavaan::lavInspect(fit, "implied")
+        if (is.null(implied_stats)) implied_stats <- lav_implied_all(fit)
       }
     if (fit_type == "lm") {
         fit0 <- NULL

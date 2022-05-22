@@ -37,8 +37,8 @@ test_that("fit2boot_out_do_boot", {
         tolerance = 1e-5
       )
     expect_equal(
-        out[[i]]$implied_stats$mean,
-        out_chk_implied[[i]]$mean,
+        unclass(out[[i]]$implied_stats$mean),
+        unclass(out_chk_implied[[i]]$mean),
         tolerance = 1e-5
       )
     expect_equal(
@@ -47,8 +47,8 @@ test_that("fit2boot_out_do_boot", {
         tolerance = 1e-5
       )
     expect_equal(
-        out[[i]]$implied_stats$mean,
-        out_chk[[i]]$implied_stats$mean,
+        unclass(out[[i]]$implied_stats$mean),
+        unclass(out_chk[[i]]$implied_stats$mean),
         tolerance = 1e-5
       )
   })

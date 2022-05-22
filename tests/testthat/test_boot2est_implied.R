@@ -57,8 +57,8 @@ test_that("boot2est with implied stat", {
         tolerance = 1e-5
       )
     expect_equal(
-        implied$mean,
-        implied_check$mean,
+        unclass(implied$mean),
+        unclass(implied_check$mean),
         tolerance = 1e-5
       )
     expect_identical(

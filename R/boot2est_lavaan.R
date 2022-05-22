@@ -38,6 +38,10 @@
 #'
 
 fit2boot_out <- function(fit) {
+    if (length(lavaan::lavNames(fit, "lv")) != 0) {
+        stop(paste0("fit2boot_out() does not support a model with latent variables.",
+                    "\nPlease use fit2boot_out_do_boot()."))
+      }
     boot_est <- boot2est(fit)
     boot_implied <- boot2implied(fit)
     out <- mapply(function(x, y) list(est = x,
@@ -213,6 +217,7 @@ get_implied_i <- function(est0, fit) {
                                          GLIST = NULL,
                                          delta = TRUE)
     out <- lavaan::lavInspect(fit, "implied")
+    out <- lav_implied_all(fit)
     out_names <- names(out)
     out1 <- out
     for (x in out_names) {
