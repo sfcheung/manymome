@@ -159,7 +159,10 @@ indirect <- function(x,
     scale_y <- 1
     if (standardized_x || standardized_y) {
         if (is.null(implied_stats)) {
-            implied_stats <- lavaan::lavInspect(fit, "implied")
+            # implied_stats <- lavaan::lavInspect(fit, "implied")
+            implied_stats <- list(cov = lavaan::lavInspect(fit, "cov.all"),
+                                  mean = lavaan::lavInspect(fit, "mean.ov"),
+                                  mean_lv = lavaan::lavInspect(fit, "mean.lv"))
           }
         if (standardized_x) {
             scale_x <- sqrt(diag(implied_stats$cov)[x])
