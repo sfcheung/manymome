@@ -182,8 +182,8 @@ indirect <- function(x,
           }
       }
     b_all_final <- b_all * scale_x / scale_y
-    out <- list(indirect = b_all_final,
-                indirect_raw = b_all,
+    out <- list(indirect = unname(b_all_final),
+                indirect_raw = unname(b_all),
                 components = bs_org,
                 components_conditional = bs,
                 call = match.call(),
