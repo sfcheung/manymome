@@ -116,11 +116,24 @@ indirect <- function(x,
                  MoreArgs = list(est = est))
     bs_org <- bs
     names(bs_org) <- bs_names
-    prods <- mapply(get_prod,
-                    x = xs,
-                    y = ys,
-                    MoreArgs = list(est = est),
-                    SIMPLIFY = FALSE)
+    chk_lv <- bs_names %in% check_lv_in_est(est)
+    if (isTRUE(any(chk_lv)) && !isTRUE(all(chk_lv))) {
+        stop("Does not support paths with both latent and observed variables")
+      }
+    if (isTRUE(all(chk_lv))) {
+        prods <- mapply(get_prod,
+                        x = xs,
+                        y = ys,
+                        operator = "_x_",
+                        MoreArgs = list(est = est),
+                        SIMPLIFY = FALSE)
+      } else {
+        prods <- mapply(get_prod,
+                        x = xs,
+                        y = ys,
+                        MoreArgs = list(est = est),
+                        SIMPLIFY = FALSE)
+      }
     names(prods) <- ys
     if (!is.null(wvalues)) {
         tmpfct <- function(xi) {
@@ -254,4 +267,8 @@ gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL,
                           collapse = " + "))
     names(out2) <- out1
     out2
+  }
+
+check_lv_in_est <- function(est) {
+    unique(est$lhs[est$op == "=~"] )
   }
