@@ -258,14 +258,14 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
         if (!is.list(values) && nrow(w_gp) > 2) {
             stop("values must a list of numeric vectors when there are more than 2 groups.")
           }
-        if (is.null(values)) {
+        if (is.null(names(values))) {
             stop("values must be a named list, with names equal to the labels of each group.")
           }
         w_gp_chk <- sapply(values, check_cat_values, target = w_gp)
         if (!isTRUE(all(w_gp_chk))) {
             stop("Some values are not in the list of group. Please check the values.")
           }
-        out <- do.call(rbind, values)
+        out <- as.data.frame(do.call(rbind, values))
         colnames(out) <- colnames(w_gp)
         w_gp_org <- w_gp
         w_gp <- out

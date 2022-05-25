@@ -1,3 +1,4 @@
+
 library(stdmodsem)
 library(lavaan)
 dat <- modmed_x1m3w4y1
@@ -9,12 +10,18 @@ lm_m1 <- lm(m1 ~ x * w1, dat)
 lm_m2 <- lm(m2 ~ m1 + gp + city, dat)
 lm_m3 <- lm(m3 ~ m1 + x * gp, dat)
 lm_y <- lm(y ~ m2 + m3 + x * w4, dat)
-lm_m1_mm <- model.matrix(lm_m1)[, 4]
-lm_m2_mm <- model.matrix(lm_m2)[, -c(1:2)]
-lm_m3_mm <- model.matrix(lm_m3)[, 6:7]
-lm_y_mm <- model.matrix(lm_y)[, 6]
-dat2 <- cbind(dat, lm_m1_mm, lm_m2_mm, lm_m3_mm, lm_y_mm)
-fit <- list(lm_m1, lm_m2, lm_m3, lm_y)
+
+dat <- cbind(dat, factor2var(dat$gp, prefix = "gp", add_rownames = FALSE))
+dat <- cbind(dat, factor2var(dat$city, prefix = "city", add_rownames = FALSE))
+
+mod <-
+"
+m1 ~ x + w1 + x:w1
+m2 ~ m1 + gpgp2 + gpgp3 + citybeta + citygamma + citysigma
+m3 ~ m1 + x + gpgp2 + gpgp3 + x:gpgp2 + x:gpgp3
+y ~ m2 + m3 + x + w4 + x:w4
+"
+fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
 
 out_i_n_user <- mod_levels_i_lm_numerical(fit, w = "w1", values = c(-2, 2, 3, 5, 8))
 out_i_n_user2 <- mod_levels_i_lm_numerical(fit, w = "w1", values = c(low = 2, hi = 5, med = 1))
@@ -36,7 +43,7 @@ out_c_user <- mod_levels(fit, w = c("gpgp2", "gpgp3"),
 # out_l_4 <- mod_levels_list(c("gpgp2", "gpgp3"), c("citybeta", "citygamma", "citysigma"), "w4", fit = fit)
 
 
-test_that("mod_levels: lm: user values", {
+test_that("mod_levels: lavaan: user values", {
     expect_equal(unlist(out_i_n_user), c(-2, 2, 3, 5, 8), ignore_attr = TRUE)
     expect_equal(unlist(out_i_n_user2), c(2, 5, 1), ignore_attr = TRUE)
     expect_equal(rownames(out_i_n_user2), c("low", "hi", "med"), ignore_attr = TRUE)
