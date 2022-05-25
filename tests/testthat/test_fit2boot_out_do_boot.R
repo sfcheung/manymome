@@ -26,8 +26,9 @@ out_chk_implied[[i]]
 out_chk[[i]]
 
 # To be examined interatively
-out_parallel <- fit2boot_out_do_boot(fit, R = 2, seed = 8715, parallel = 2,
-                                     ncores = 2)
+out_parallel <- fit2boot_out_do_boot(fit, R = 2, seed = 8715, parallel = TRUE,
+                                     ncores = 2,
+                                     progress = FALSE)
 
 
 test_that("fit2boot_out_do_boot", {
