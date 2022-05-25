@@ -38,6 +38,15 @@
 #'               supplied, it will be removed from the variable names
 #'               to create the group names. Default is `NULL`, and the function
 #'               will try to determine the prefix automatically.
+#' @param values For numeric moderators, a numeric vector. These are the values
+#'               to be used and will override other options. For categorical
+#'               moderators, a named list of numeric vector, each vector
+#'               has length equal to the number of indicator variables. If
+#'               the vector is named, the names will be used to label the values.
+#'               For example, if set to `list(gp1 = c(0, 0), gp3 = c(0, 1)`,
+#'               two levels will be returned, one named `gp1` with the indicator
+#'               variables equal to 0 and 0, the other named `gp3` with the
+#'               indicator variables equal to 0 and 1. Default is `NULL`.
 #' @param ... The names of moderators variables. For a categorical variable,
 #'            it should be a vector of variable names.
 #' @param merge If `TRUE`, [mod_levels_list()] will call [merge_mod_levels()]
@@ -75,7 +84,8 @@ mod_levels <- function(w,
                        sd_from_mean = c(-1, 0, 1),
                        percentiles = c(.16, .50, .84),
                        extract_gp_names = TRUE,
-                       prefix = NULL) {
+                       prefix = NULL,
+                       values = NULL) {
     fit_type <- cond_indirect_check_fit(fit)
     w_type <- match.arg(w_type)
     if (w_type == "auto") {
@@ -99,13 +109,15 @@ mod_levels <- function(w,
                                              w = w,
                                              w_method = w_method,
                                              sd_from_mean = sd_from_mean,
-                                             percentiles = percentiles)
+                                             percentiles = percentiles,
+                                             values = values)
           }
         if (w_type == "categorical") {
             out <- mod_levels_i_lm_categorical(fit = fit,
                                                w = w,
                                                extract_gp_names = extract_gp_names,
-                                               prefix = prefix)
+                                               prefix = prefix,
+                                               values = values)
           }
       }
     if (fit_type == "lavaan") {
@@ -114,13 +126,15 @@ mod_levels <- function(w,
                                                  w = w,
                                                  w_method = w_method,
                                                  sd_from_mean = sd_from_mean,
-                                                 percentiles = percentiles)
+                                                 percentiles = percentiles,
+                                                 values = values)
           }
         if (w_type == "categorical") {
             out <- mod_levels_i_lavaan_categorical(fit = fit,
                                                    w = w,
                                                    extract_gp_names = extract_gp_names,
-                                                   prefix = prefix)
+                                                   prefix = prefix,
+                                                   values = values)
           }
       }
     tmp <- data.frame(x = rownames(out))
@@ -164,7 +178,8 @@ mod_levels_i_lavaan_numerical <- mod_levels_i_lm_numerical <- function(fit,
                                       w,
                                       w_method = c("sd", "percentile"),
                                       sd_from_mean = c(-1, 0, 1),
-                                      percentiles = c(.16, .50, .84)) {
+                                      percentiles = c(.16, .50, .84),
+                                      values = NULL) {
     # No need for user-specified method. If users want to specify their own
     # values, they do not need  to call this function
     fit_type <- cond_indirect_check_fit(fit)
@@ -172,6 +187,25 @@ mod_levels_i_lavaan_numerical <- mod_levels_i_lm_numerical <- function(fit,
                  lavaan = as.data.frame(lav_data_used(fit)),
                  lm = merge_model_matrix(fit))
     w_method <- match.arg(w_method)
+    if (!is.null(values)) {
+        w_method <- "user"
+      }
+    if (w_method == "user") {
+        if (!is.numeric(values)) {
+            stop("values must be a numeric vector.")
+          }
+        values <- values[!is.na(values)]
+        levels <- values
+        if (is.null(names(values))) {
+            vnames <- as.character(values)
+          } else {
+            vnames <- names(values)
+          }
+        names(levels) <- vnames
+        out <- data.frame(w = levels)
+        rownames(out) <- vnames
+        colnames(out) <- w
+      }
     w_dat <- mm[, w]
     if (w_method == "sd") {
         w_mean <- mean(w_dat, na.rm = TRUE)
@@ -186,14 +220,12 @@ mod_levels_i_lavaan_numerical <- mod_levels_i_lm_numerical <- function(fit,
         out <- data.frame(w = levels)
         rownames(out) <- vnames
         colnames(out) <- w
-        return(out)
       }
     if (w_method == "percentile") {
         w_q <- stats::quantile(w_dat, probs = percentiles, na.rm = TRUE)
         out <- data.frame(w = w_q)
         rownames(out) <- names(w_q)
         colnames(out) <- w
-        return(out)
       }
     attr(out, "wname") <- w
     return(out)
@@ -202,7 +234,8 @@ mod_levels_i_lavaan_numerical <- mod_levels_i_lm_numerical <- function(fit,
 mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
                                         w,
                                         extract_gp_names = TRUE,
-                                        prefix = NULL) {
+                                        prefix = NULL,
+                                        values = NULL) {
     fit_type <- cond_indirect_check_fit(fit)
     mm <- switch(fit_type,
                  lavaan = as.data.frame(lav_data_used(fit)),
@@ -220,6 +253,22 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
       }
     if (is.null(prefix)) {
         prefix <- find_prefix(w)
+      }
+    if (!is.null(values)) {
+        if (!is.list(values) && nrow(w_gp) > 2) {
+            stop("values must a list of numeric vectors when there are more than 2 groups.")
+          }
+        if (is.null(values)) {
+            stop("values must be a named list, with names equal to the labels of each group.")
+          }
+        w_gp_chk <- sapply(values, check_cat_values, target = w_gp)
+        if (!isTRUE(all(w_gp_chk))) {
+            stop("Some values are not in the list of group. Please check the values.")
+          }
+        out <- do.call(rbind, values)
+        colnames(out) <- colnames(w_gp)
+        w_gp_org <- w_gp
+        w_gp <- out
       }
     attr(w_gp, "wname") <- prefix
     return(w_gp)
@@ -266,4 +315,13 @@ set_gp_names <- function(x,
           }
       }
     x
+  }
+
+check_cat_values <- function(x0, target) {
+    for (i in seq_len(nrow(target))) {
+        if (isTRUE(all.equal(x0, unlist(target[i, ]), check.attributes = FALSE))) {
+            return(TRUE)
+          }
+      }
+    return(FALSE)
   }
