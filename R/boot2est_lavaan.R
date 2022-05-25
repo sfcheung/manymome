@@ -67,6 +67,7 @@ fit2boot_out <- function(fit) {
 #'                          to [parallel::makeCluster()]. For advanced users.
 #'                          See [parallel::makeCluster()] for details.
 #'                          Default is `list(spec = getOption("cl.cores", 2))`.
+#' @param progress Logical. Display progress or not. Default is `TRUE`.
 #'
 #' @export
 #' @describeIn fit2boot_out Do bootstrapping and store information to be used
@@ -81,7 +82,8 @@ fit2boot_out_do_boot <- function(fit,
                                  parallel = FALSE,
                                  ncores = NULL,
                                  make_cluster_args =
-                                    list(spec = getOption("cl.cores", 2))) {
+                                    list(spec = getOption("cl.cores", 2)),
+                                 progress = TRUE) {
     environment(gen_boot_i) <- parent.frame()
     boot_i <- gen_boot_i(fit)
     dat_org <- lav_data_used(fit)
@@ -128,10 +130,20 @@ fit2boot_out_do_boot <- function(fit,
                         function(x) library(x, character.only = TRUE))
                       })
         parallel::clusterSetRNGStream(cl, seed)
-        tmp <- tryCatch({rt <- system.time(out <- suppressWarnings(
-                          parallel::parLapplyLB(cl, ids, boot_i,
-                                                d = dat_org)))},
-                          error = function(e) e)
+        if (progress) {
+            op_old <- pbapply::pboptions(type = "timer")
+            tmp <- tryCatch({rt <- system.time(out <- suppressWarnings(
+                              pbapply::pblapply(ids, boot_i,
+                                                d = dat_org,
+                                                cl = cl)))},
+                              error = function(e) e)
+            pbapply::pboptions(op_old)
+          } else {
+            tmp <- tryCatch({rt <- system.time(out <- suppressWarnings(
+                              parallel::parLapplyLB(cl, ids, boot_i,
+                                                    d = dat_org)))},
+                              error = function(e) e)
+          }
         if (inherits(tmp, "error")) {
             try(parallel::stopCluster(cl), silent = TRUE)
             stop("Running in parallel failed. Please set 'parallel' to FALSE.")

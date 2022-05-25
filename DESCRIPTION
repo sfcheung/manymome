@@ -29,6 +29,7 @@ Imports:
     lavaan,
     boot,
     parallel,
+    pbapply,
     stats
 Depends:
     R (>= 3.5.0)
