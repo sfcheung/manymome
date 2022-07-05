@@ -164,7 +164,7 @@ fit2boot_out_do_boot <- function(fit,
     n_ok <- sum(i_ok)
     if ((n_ok > 0) && (n_ok < R)) {
         n_failed <- R - n_ok
-        message(paste0("Note: Lavaan check failed in ",
+        message(paste0("Note: Estimation failed in ",
                        n_failed,
                        " bootstrap sample(s).",
                        " They were removed.",
@@ -173,7 +173,7 @@ fit2boot_out_do_boot <- function(fit,
                        "."))
         utils::flush.console()
       } else if (n_ok == 0) {
-        stop("Lavaan check failed in all bootstrap samples.")
+        stop("Estimation failed in all bootstrap samples.")
       }
     class(out) <- "boot_out"
     out
