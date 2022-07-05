@@ -159,13 +159,21 @@ fit2boot_out_do_boot <- function(fit,
         rt <- system.time(out <- suppressWarnings(lapply(ids, boot_i,
                                                          d = dat_org)))
       }
-    n_ok <- sapply(out, function(x) x$ok)
-    out <- out[n_ok]
-    if (isTRUE(!all(n_ok))) {
-        n_failed <- R - length(n_ok)
-        message(paste("Note: ", n, " bootstrap sample(s) failed.",
-                      "They will be removed"))
+    i_ok <- sapply(out, function(x) x$ok)
+    out <- out[i_ok]
+    n_ok <- sum(i_ok)
+    if ((n_ok > 0) && (n_ok < R)) {
+        n_failed <- R - n_ok
+        message(paste0("Note: Lavaan check failed in ",
+                       n_failed,
+                       " bootstrap sample(s).",
+                       " They were removed.",
+                       " Effective number of bootstrap samples is ",
+                       n_ok,
+                       "."))
         utils::flush.console()
+      } else if (n_ok == 0) {
+        stop("Lavaan check failed in all bootstrap samples.")
       }
     class(out) <- "boot_out"
     out
