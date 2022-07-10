@@ -1,3 +1,4 @@
+skip("To be tested in an interactive session")
 library(stdmodsem)
 library(lavaan)
 dat <- modmed_x1m3w4y1
