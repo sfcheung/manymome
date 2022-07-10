@@ -1,6 +1,3 @@
-skip("WIP")
-
-# To be fixed. Take in to account the changes in 0.6-12.
 
 library(stdmodsem)
 library(lavaan)
@@ -24,7 +21,7 @@ i <- 3
 est_boot_9 <- parameterTable(fit)
 est_boot_9[est_boot_9$free > 0, "est"] <- unname(boot_est[i, ])
 fit0 <- fit
-fit0@ParTable$est <- unname(boot_est[i, ])
+fit0@ParTable$est[fit0@ParTable$free > 0] <- unname(boot_est[i, ])
 est0 <- parameterEstimates(fit0, se = FALSE, zstat = FALSE, pvalue = FALSE, ci = FALSE)
 
 # waldo::compare(est, parameterEstimates(fit0))
@@ -41,8 +38,8 @@ fit_noboot <- sem(mod, dat, meanstructure = TRUE, fixed.x = TRUE,
 
 test_that("boot2est", {
     expect_identical(
-        out[[i]][1:30, -5],
-        est[, -5]
+        out[[i]][1:26, -5],
+        est[1:26, -5]
       )
     expect_false(
         identical(out[[i]][1:30, 5],
