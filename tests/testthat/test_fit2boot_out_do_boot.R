@@ -1,4 +1,4 @@
-skip("To be tested in an interactive session")
+
 library(stdmodsem)
 library(lavaan)
 dat <- modmed_x1m3w4y1
@@ -26,10 +26,10 @@ out_chk_est[[i]]
 out_chk_implied[[i]]
 out_chk[[i]]
 
-# To be examined interatively
-out_parallel <- fit2boot_out_do_boot(fit, R = 2, seed = 8715, parallel = TRUE,
-                                     ncores = 2,
-                                     progress = FALSE)
+# To be examined interactively
+# out_parallel <- fit2boot_out_do_boot(fit, R = 2, seed = 8715, parallel = TRUE,
+#                                      ncores = 2,
+#                                      progress = FALSE)
 
 
 test_that("fit2boot_out_do_boot", {
