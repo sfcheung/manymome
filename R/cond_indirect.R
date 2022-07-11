@@ -1,66 +1,86 @@
-#' @title One Line Title
+#' @title Conditional, Indirect, and Conditional Indirect Effects
 #'
-#' @description One paragraph description
+#' @description Compute the conditional effects, indirect effects, or
+#'   conditional indirect effects in a structural model fitted by
+#'   [lm()] or [lavaan::lavaan()].
 #'
-#' @details Details
-#'   (Include subjects for verbs.)
-#'   (Use 3rd person forms for verbs.)
+#' @details
+#'
+#' For a model with a mediation pathway moderated by one or more
+#' moderators, [cond_indirect()] and [cond_indirect_effects()] can be
+#' used to compute the conditional indirect effect from one variable
+#' to another variable, at selected level(s) of the moderator(s).
+#'
+#' If only the mediator(s) is/are specified (`m`) and no values of
+#' moderator(s) are specified, then the indirect effect from one
+#' variable (`x`) to another variable (`y`) is computed.
+#'
+#' If only the value(s) of moderator(s) is/are specified (`wvalues` or
+#' `wlevels`) and no mediators (`m`) are specified, then the
+#' conditional direct effects from one variable to another are
+#' computed.
 #'
 #' @return
-#' Specify what are returned.
+#' [cond_indirect()] returns an `indirect`-class object.
 #'
-#' @param x Character. The name of predictor at the start of the pathway.
-#' @param y Character. The name of the outcome variable at
-#'          the end of the pathway.
-#' @param m A vector of the variable names of the
-#'          moderators. The pathway goes from the first
-#'          mediator successively to the last mediator. If
-#'          `NULL`, the default, the pathway goes from `x`
-#'          to `y`.
+#' [cond_indirect_effects()] returns a `cond_indirect_effects`-class
+#' object.
+#'
+#' These two classes of objects their own print methods for printing
+#' the results (see [print.indirect()] and
+#' [print.cond_indirect_effects()])
+#'
+#' @param x Character. The name of predictor at the start of the
+#'    pathway.
+#' @param y Character. The name of the outcome variable at the end of
+#'    the pathway.
+#' @param m A vector of the variable names of the moderators. The
+#'    pathway goes from the first mediator successively to the last
+#'    mediator. If `NULL`, the default, the pathway goes from `x` to
+#'    `y`.
 #' @param fit The fit object. Can be a
-#'            [lavaan::lavaan-class] object or a list of [lm()] outputs.
-#' @param est The output of [lavaan::parameterEstimates()]. If `NULL`, the
-#'            default, it will be generated from `fit`. If supplied,
-#'            `fit` will ge ignored.
-#' @param implied_stats Implied means, variances, and
-#'                covariances of observed variables, of the
-#'                form of the output of
-#'                [lavaan::lavInspect()] with `what` set to
-#'                `"implied"`. The standard deviations are
-#'                extracted from this object for
-#'                standardization. Default is `NULL`, and
-#'                implied statistics will be computed from `fit` if required.
-#' @param wvalues A numeric vector of named elements. The names are the variable
-#'                names of the moderators, and the values are the values to
-#'                which the moderators will be set to. Default is `NULL`.
-#' @param standardized_x Logical. Whether `x` will be standardized. Default is
-#'                       `FALSE`.
-#' @param standardized_y Logical. Whether `y` will be standardized. Default is
-#'                       `FALSE`.
-#' @param boot_ci Logical. Whether bootstrap confidence interval will be formed.
-#'                Default is `FALSE`.
-#' @param level The level of confidence for the bootstrap confidence interval.
-#'              Default is .95.
-#' @param boot_out If `boot_ci` is `TRUE`, users can supply pregenerated
-#'                 bootstrap results. This can be the output of [fit2boot_out()]
-#'                 or [lm2boot_out()]. If not supplied, the function will try
-#'                 to generate them from `fit`.
-#' @param R Integer. If `boot_ci` is `TRUE`, `fit` is a list of [lm()] outputs,
-#'          and `boot_out` is `NULL`, this function will do bootstrapping on
-#'          `fit`. `R` is the number of bootstrap samples. Default is 100.
-#' @param seed If `boot_ci` is `TRUE`, `fit` is a list of [lm()] outputs,
-#'          and `boot_out` is `NULL`, this function will do bootstrapping on
-#'          `fit`. This is the seed for the bootstrapping.
-#'             Default is `NULL` and seed is not set.
+#'    [lavaan::lavaan-class] object or a list of [lm()] outputs.
+#' @param est The output of [lavaan::parameterEstimates()]. If `NULL`,
+#'    the default, it will be generated from `fit`. If supplied, `fit`
+#'    will ge ignored.
+#' @param implied_stats Implied means, variances, and covariances of
+#'    observed variables, of the form of the output of
+#'    [lavaan::lavInspect()] with `what` set to `"implied"`. The
+#'    standard deviations are extracted from this object for
+#'    standardization. Default is `NULL`, and implied statistics will
+#'    be computed from `fit` if required.
+#' @param wvalues A numeric vector of named elements. The names are
+#'    the variable names of the moderators, and the values are the
+#'    values to which the moderators will be set to. Default is
+#'    `NULL`.
+#' @param standardized_x Logical. Whether `x` will be standardized.
+#'    Default is `FALSE`.
+#' @param standardized_y Logical. Whether `y` will be standardized.
+#'    Default is `FALSE`.
+#' @param boot_ci Logical. Whether bootstrap confidence interval will
+#'    be formed. Default is `FALSE`.
+#' @param level The level of confidence for the bootstrap confidence
+#'    interval. Default is .95.
+#' @param boot_out If `boot_ci` is `TRUE`, users can supply
+#'    pregenerated bootstrap results. This can be the output of
+#'    [fit2boot_out()] or [lm2boot_out()]. If not supplied, the
+#'    function will try to generate them from `fit`.
+#' @param R Integer. If `boot_ci` is `TRUE`, `fit` is a list of [lm()]
+#'    outputs, and `boot_out` is `NULL`, this function will do
+#'    bootstrapping on `fit`. `R` is the number of bootstrap samples.
+#'    Default is 100.
+#' @param seed If `boot_ci` is `TRUE`, `fit` is a list of [lm()]
+#'    outputs, and `boot_out` is `NULL`, this function will do
+#'    bootstrapping on `fit`. This is the seed for the bootstrapping.
+#'    Default is `NULL` and seed is not set.
 #' @param wlevels The output of [merge_mod_levels()].
 #' @param ... Arguments to be passed to [cond_indirect()]
 #' @param output_type The type of output of [cond_indirect_effects()].
-#'                    If `"data.frame"`, the default, the output will
-#'                    be converted to a data frame. If any other value,
-#'                    the output is a list of the outputs from
-#'                    [cond_indirect()].
-#' @param save_boot_full If `TRUE`, full bootstrapping results will be stored.
-#'                       Default is `FALSE.`
+#'    If `"data.frame"`, the default, the output will be converted to
+#'    a data frame. If any other value, the output is a list of the
+#'    outputs from [cond_indirect()].
+#' @param save_boot_full If `TRUE`, full bootstrapping results will be
+#'    stored. Default is `FALSE.`
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
@@ -70,32 +90,34 @@
 #' dat <- modmed_x1m3w4y1
 #' mod <-
 #' "
-#' m1 ~ a1 * x   + b1 * w1 + d1 * x:w1
-#' m2 ~ a2 * m1  + b2 * w2 + d2 * m1:w2
-#' m3 ~ a3 * m2  + b3 * w3 + d3 * m2:w3
-#' y  ~ a4 * m3  + b4 * w4 + d4 * m3:w4
+#' m1 ~ a1 * x  + d1 * w1 + e1 * x:w1
+#' m2 ~ a2 * x
+#' y  ~ b1 * m1 + b2 * m2 + cp * x
 #' "
 #' fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
 #' est <- parameterEstimates(fit)
+#' hi_w1 <- mean(dat$w1) + sd(dat$w1)
 #'
-#' wvalues <- c(w1 = 5, w2 = 4, w3 = 2, w4 = 3)
+#' # Examples for cond_indirect():
 #'
-#' indirect_1 <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
-#'                        wvalues = wvalues)
-#' indirect_2 <- (est[est$label == "a1", "est"] +
-#'                 wvalues["w1"] * est[est$label == "d1", "est"]) *
-#'               (est[est$label == "a2", "est"] +
-#'                 wvalues["w2"] * est[est$label == "d2", "est"]) *
-#'               (est[est$label == "a3", "est"] +
-#'                 wvalues["w3"] * est[est$label == "d3", "est"]) *
-#'               (est[est$label == "a4", "est"] +
-#'                 wvalues["w4"] * est[est$label == "d4", "est"])
-#' indirect_1$indirect
-#' indirect_2
+#' # Conditional effect from x to m1 when w1 is 1 SD above mean
+#' cond_indirect(x = "x", y = "m1",
+#'               wvalues = c(w1 = hi_w1), fit = fit)
+#'
+#' # Indirect effect from x1 through m2 to y
+#' cond_indirect(x = "x", y = "y", m = "m2", fit = fit)
+#'
+#' # Conditional Indirect effect from x1 through m1 to y, when w1 is 1 SD above mean
+#' cond_indirect(x = "x", y = "y", m = "m1",
+#'               wvalues = c(w1 = hi_w1), fit = fit)
+#'
+#'
 #'
 #' @export
 #'
-#' @describeIn cond_indirect Compute conditional indirect effects one set of levels.
+#' @describeIn cond_indirect Compute conditional, indirect, or
+#'                           conditional indirect effects for one set
+#'                           of levels.
 #' @order 1
 
 cond_indirect <- function(x,
@@ -198,8 +220,26 @@ cond_indirect <- function(x,
     out0
   }
 
+#' @examples
+#' # Examples for cond_indirect_effects():
+#'
+#' # Create levels of w1, the moderators
+#' w1levels <- mod_levels("w1", fit = fit)
+#' w1levels
+#'
+#' # Conditional effects from x to m1 when w1 is equal to each of the levels
+#' cond_indirect_effects(x = "x", y = "m1",
+#'                       wlevels = w1levels, fit = fit)
+#'
+#' # Conditional Indirect effect from x1 through m1 to y,
+#' # when w1 is equal to each of the levels
+#' cond_indirect_effects(x = "x", y = "y", m = "m1",
+#'                       wlevels = w1levels, fit = fit)
+#'
 #' @export
-#' @describeIn cond_indirect Compute conditional indirect effects for several sets of levels
+#' @describeIn cond_indirect Compute the conditional, indirect, or
+#'                           conditional indirect effects for several
+#'                           sets of levels.
 #' @order 2
 
 cond_indirect_effects <- function(wlevels,
