@@ -3,7 +3,7 @@
 \name{cond_indirect}
 \alias{cond_indirect}
 \alias{cond_indirect_effects}
-\title{One Line Title}
+\title{Conditional, Indirect, and Conditional Indirect Effects}
 \usage{
 cond_indirect(
   x,
@@ -35,92 +35,114 @@ cond_indirect_effects(
 )
 }
 \arguments{
-\item{x}{Character. The name of predictor at the start of the pathway.}
+\item{x}{Character. The name of predictor at the start of the
+pathway.}
 
-\item{y}{Character. The name of the outcome variable at
-the end of the pathway.}
+\item{y}{Character. The name of the outcome variable at the end of
+the pathway.}
 
-\item{m}{A vector of the variable names of the
-moderators. The pathway goes from the first
-mediator successively to the last mediator. If
-\code{NULL}, the default, the pathway goes from \code{x}
-to \code{y}.}
+\item{m}{A vector of the variable names of the moderators. The
+pathway goes from the first mediator successively to the last
+mediator. If \code{NULL}, the default, the pathway goes from \code{x} to
+\code{y}.}
 
 \item{fit}{The fit object. Can be a
 \link[lavaan:lavaan-class]{lavaan::lavaan} object or a list of \code{\link[=lm]{lm()}} outputs.}
 
-\item{est}{The output of \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}. If \code{NULL}, the
-default, it will be generated from \code{fit}. If supplied,
-\code{fit} will ge ignored.}
+\item{est}{The output of \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}. If \code{NULL},
+the default, it will be generated from \code{fit}. If supplied, \code{fit}
+will ge ignored.}
 
-\item{implied_stats}{Implied means, variances, and
-covariances of observed variables, of the
-form of the output of
-\code{\link[lavaan:lavInspect]{lavaan::lavInspect()}} with \code{what} set to
-\code{"implied"}. The standard deviations are
-extracted from this object for
-standardization. Default is \code{NULL}, and
-implied statistics will be computed from \code{fit} if required.}
+\item{implied_stats}{Implied means, variances, and covariances of
+observed variables, of the form of the output of
+\code{\link[lavaan:lavInspect]{lavaan::lavInspect()}} with \code{what} set to \code{"implied"}. The
+standard deviations are extracted from this object for
+standardization. Default is \code{NULL}, and implied statistics will
+be computed from \code{fit} if required.}
 
-\item{wvalues}{A numeric vector of named elements. The names are the variable
-names of the moderators, and the values are the values to
-which the moderators will be set to. Default is \code{NULL}.}
+\item{wvalues}{A numeric vector of named elements. The names are
+the variable names of the moderators, and the values are the
+values to which the moderators will be set to. Default is
+\code{NULL}.}
 
-\item{standardized_x}{Logical. Whether \code{x} will be standardized. Default is
-\code{FALSE}.}
-
-\item{standardized_y}{Logical. Whether \code{y} will be standardized. Default is
-\code{FALSE}.}
-
-\item{boot_ci}{Logical. Whether bootstrap confidence interval will be formed.
+\item{standardized_x}{Logical. Whether \code{x} will be standardized.
 Default is \code{FALSE}.}
 
-\item{level}{The level of confidence for the bootstrap confidence interval.
-Default is .95.}
+\item{standardized_y}{Logical. Whether \code{y} will be standardized.
+Default is \code{FALSE}.}
 
-\item{boot_out}{If \code{boot_ci} is \code{TRUE}, users can supply pregenerated
-bootstrap results. This can be the output of \code{\link[=fit2boot_out]{fit2boot_out()}}
-or \code{\link[=lm2boot_out]{lm2boot_out()}}. If not supplied, the function will try
-to generate them from \code{fit}.}
+\item{boot_ci}{Logical. Whether bootstrap confidence interval will
+be formed. Default is \code{FALSE}.}
 
-\item{R}{Integer. If \code{boot_ci} is \code{TRUE}, \code{fit} is a list of \code{\link[=lm]{lm()}} outputs,
-and \code{boot_out} is \code{NULL}, this function will do bootstrapping on
-\code{fit}. \code{R} is the number of bootstrap samples. Default is 100.}
+\item{level}{The level of confidence for the bootstrap confidence
+interval. Default is .95.}
 
-\item{seed}{If \code{boot_ci} is \code{TRUE}, \code{fit} is a list of \code{\link[=lm]{lm()}} outputs,
-and \code{boot_out} is \code{NULL}, this function will do bootstrapping on
-\code{fit}. This is the seed for the bootstrapping.
+\item{boot_out}{If \code{boot_ci} is \code{TRUE}, users can supply
+pregenerated bootstrap results. This can be the output of
+\code{\link[=fit2boot_out]{fit2boot_out()}} or \code{\link[=lm2boot_out]{lm2boot_out()}}. If not supplied, the
+function will try to generate them from \code{fit}.}
+
+\item{R}{Integer. If \code{boot_ci} is \code{TRUE}, \code{fit} is a list of \code{\link[=lm]{lm()}}
+outputs, and \code{boot_out} is \code{NULL}, this function will do
+bootstrapping on \code{fit}. \code{R} is the number of bootstrap samples.
+Default is 100.}
+
+\item{seed}{If \code{boot_ci} is \code{TRUE}, \code{fit} is a list of \code{\link[=lm]{lm()}}
+outputs, and \code{boot_out} is \code{NULL}, this function will do
+bootstrapping on \code{fit}. This is the seed for the bootstrapping.
 Default is \code{NULL} and seed is not set.}
 
-\item{save_boot_full}{If \code{TRUE}, full bootstrapping results will be stored.
-Default is \code{FALSE.}}
+\item{save_boot_full}{If \code{TRUE}, full bootstrapping results will be
+stored. Default is \code{FALSE.}}
 
 \item{wlevels}{The output of \code{\link[=merge_mod_levels]{merge_mod_levels()}}.}
 
 \item{...}{Arguments to be passed to \code{\link[=cond_indirect]{cond_indirect()}}}
 
 \item{output_type}{The type of output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
-If \code{"data.frame"}, the default, the output will
-be converted to a data frame. If any other value,
-the output is a list of the outputs from
-\code{\link[=cond_indirect]{cond_indirect()}}.}
+If \code{"data.frame"}, the default, the output will be converted to
+a data frame. If any other value, the output is a list of the
+outputs from \code{\link[=cond_indirect]{cond_indirect()}}.}
 }
 \value{
-Specify what are returned.
+\code{\link[=cond_indirect]{cond_indirect()}} returns an \code{indirect}-class object.
+
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} returns a \code{cond_indirect_effects}-class
+object.
+
+These two classes of objects their own print methods for printing
+the results (see \code{\link[=print.indirect]{print.indirect()}} and
+\code{\link[=print.cond_indirect_effects]{print.cond_indirect_effects()}})
 }
 \description{
-One paragraph description
+Compute the conditional effects, indirect effects, or
+conditional indirect effects in a structural model fitted by
+\code{\link[=lm]{lm()}} or \code{\link[lavaan:lavaan]{lavaan::lavaan()}}.
 }
 \details{
-Details
-(Include subjects for verbs.)
-(Use 3rd person forms for verbs.)
+For a model with a mediation pathway moderated by one or more
+moderators, \code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} can be
+used to compute the conditional indirect effect from one variable
+to another variable, at selected level(s) of the moderator(s).
+
+If only the mediator(s) is/are specified (\code{m}) and no values of
+moderator(s) are specified, then the indirect effect from one
+variable (\code{x}) to another variable (\code{y}) is computed.
+
+If only the value(s) of moderator(s) is/are specified (\code{wvalues} or
+\code{wlevels}) and no mediators (\code{m}) are specified, then the
+conditional direct effects from one variable to another are
+computed.
 }
 \section{Functions}{
 \itemize{
-\item \code{cond_indirect}: Compute conditional indirect effects one set of levels.
+\item \code{cond_indirect}: Compute conditional, indirect, or
+conditional indirect effects for one set
+of levels.
 
-\item \code{cond_indirect_effects}: Compute conditional indirect effects for several sets of levels
+\item \code{cond_indirect_effects}: Compute the conditional, indirect, or
+conditional indirect effects for several
+sets of levels.
 }}
 
 \examples{
@@ -129,28 +151,43 @@ library(lavaan)
 dat <- modmed_x1m3w4y1
 mod <-
 "
-m1 ~ a1 * x   + b1 * w1 + d1 * x:w1
-m2 ~ a2 * m1  + b2 * w2 + d2 * m1:w2
-m3 ~ a3 * m2  + b3 * w3 + d3 * m2:w3
-y  ~ a4 * m3  + b4 * w4 + d4 * m3:w4
+m1 ~ a1 * x  + d1 * w1 + e1 * x:w1
+m2 ~ a2 * x
+y  ~ b1 * m1 + b2 * m2 + cp * x
 "
 fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
 est <- parameterEstimates(fit)
+hi_w1 <- mean(dat$w1) + sd(dat$w1)
 
-wvalues <- c(w1 = 5, w2 = 4, w3 = 2, w4 = 3)
+# Examples for cond_indirect():
 
-indirect_1 <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
-                       wvalues = wvalues)
-indirect_2 <- (est[est$label == "a1", "est"] +
-                wvalues["w1"] * est[est$label == "d1", "est"]) *
-              (est[est$label == "a2", "est"] +
-                wvalues["w2"] * est[est$label == "d2", "est"]) *
-              (est[est$label == "a3", "est"] +
-                wvalues["w3"] * est[est$label == "d3", "est"]) *
-              (est[est$label == "a4", "est"] +
-                wvalues["w4"] * est[est$label == "d4", "est"])
-indirect_1$indirect
-indirect_2
+# Conditional effect from x to m1 when w1 is 1 SD above mean
+cond_indirect(x = "x", y = "m1",
+              wvalues = c(w1 = hi_w1), fit = fit)
+
+# Indirect effect from x1 through m2 to y
+cond_indirect(x = "x", y = "y", m = "m2", fit = fit)
+
+# Conditional Indirect effect from x1 through m1 to y, when w1 is 1 SD above mean
+cond_indirect(x = "x", y = "y", m = "m1",
+              wvalues = c(w1 = hi_w1), fit = fit)
+
+
+
+# Examples for cond_indirect_effects():
+
+# Create levels of w1, the moderators
+w1levels <- mod_levels("w1", fit = fit)
+w1levels
+
+# Conditional effects from x to m1 when w1 is equal to each of the levels
+cond_indirect_effects(x = "x", y = "m1",
+                      wlevels = w1levels, fit = fit)
+
+# Conditional Indirect effect from x1 through m1 to y,
+# when w1 is equal to each of the levels
+cond_indirect_effects(x = "x", y = "y", m = "m1",
+                      wlevels = w1levels, fit = fit)
 
 }
 \author{

@@ -13,7 +13,8 @@ mod_levels(
   sd_from_mean = c(-1, 0, 1),
   percentiles = c(0.16, 0.5, 0.84),
   extract_gp_names = TRUE,
-  prefix = NULL
+  prefix = NULL,
+  values = NULL
 )
 
 mod_levels_list(
@@ -65,6 +66,16 @@ variable names.}
 supplied, it will be removed from the variable names
 to create the group names. Default is \code{NULL}, and the function
 will try to determine the prefix automatically.}
+
+\item{values}{For numeric moderators, a numeric vector. These are the values
+to be used and will override other options. For categorical
+moderators, a named list of numeric vector, each vector
+has length equal to the number of indicator variables. If
+the vector is named, the names will be used to label the values.
+For example, if set to \verb{list(gp1 = c(0, 0), gp3 = c(0, 1)},
+two levels will be returned, one named \code{gp1} with the indicator
+variables equal to 0 and 0, the other named \code{gp3} with the
+indicator variables equal to 0 and 1. Default is \code{NULL}.}
 
 \item{...}{The names of moderators variables. For a categorical variable,
 it should be a vector of variable names.}

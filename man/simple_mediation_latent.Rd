@@ -27,12 +27,14 @@ three latent factors, \code{fx}, \code{fm}, and \code{fy},
 each has three indicators.
 }
 \details{
-The model:\preformatted{fx =~ x1 + x2 + x3
+The model:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{fx =~ x1 + x2 + x3
 fm =~ m1 + m2 + m3
 fy =~ y1 + y2 + y3
 fm ~ a * fx
 fy ~ b * fm + cp * fx
 indirect := a * b
-}
+}\if{html}{\out{</div>}}
 }
 \keyword{datasets}

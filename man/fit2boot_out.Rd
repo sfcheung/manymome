@@ -13,7 +13,8 @@ fit2boot_out_do_boot(
   seed = NULL,
   parallel = FALSE,
   ncores = NULL,
-  make_cluster_args = list(spec = getOption("cl.cores", 2))
+  make_cluster_args = list(spec = getOption("cl.cores", 2)),
+  progress = TRUE
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ If \code{ncores} is set, it will override \code{make_cluster_args}.}
 to \code{\link[parallel:makeCluster]{parallel::makeCluster()}}. For advanced users.
 See \code{\link[parallel:makeCluster]{parallel::makeCluster()}} for details.
 Default is \code{list(spec = getOption("cl.cores", 2))}.}
+
+\item{progress}{Logical. Display progress or not. Default is \code{TRUE}.}
 }
 \value{
 Specify what are returned.
