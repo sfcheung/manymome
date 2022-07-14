@@ -55,6 +55,7 @@ c1 <- ivs[, 4]
 c2 <- ivs[, 5]
 y <- 5 + 15.5 * x + .2 * w1 - 1.3 * w2 + 8.4 * w1 * x - 3.3 * w2 * x + .05 * c1 - .1 * c2 + rnorm(n, 0, 86)
 dat <- data.frame(x, w1, w2, y, c1, c2)
+dat$y <- dat$y / 100
 head(dat)
 colMeans(dat)
 summary(lm_y <- lm(y ~ x*w1 + x*w2 + c1 + c2, dat))
