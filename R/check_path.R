@@ -1,13 +1,29 @@
-#' @title One Line Title
+#' @title Check Whether an Indirect Path is Valid in a Model
 #'
-#' @description One paragraph description
+#' @description It checks whether an indirect path exists
+#'  in a model.
 #'
-#' @details Details
-#'   (Include subjects for verbs.)
-#'   (Use 3rd person forms for verbs.)
+#' @details It checks whether the path defined by a predictor,
+#'  an outcome, and sequence of mediators exists in
+#'  a model.
 #'
-#' @return
-#' Specify what are returned.
+#' For example, in the following model in [lavaan] syntax
+#'
+#' ```
+#' m1 ~ x
+#' m2 ~ m1
+#' m3 ~ x
+#' y ~ m2 + m3
+#' ```
+#'
+#' This path is valid: `x = "x", y = "y", m = c("m1", "m2")``
+#'
+#' This path is invalid: `x = "x", y = "y", m = c("m2")``
+#'
+#' This path is also invalid: `x = "x", y = "y", m = c("m1", "m2")``
+#'
+#' @return Boolean. `TRUE` is the path is valid, `FALSE` if the
+#'  path is invalid.
 #'
 #' @param fit The fit object. Currently only supports a
 #'            [lavaan::lavaan-class] object.
@@ -28,19 +44,24 @@
 #' @examples
 #'
 #' library(lavaan)
-#' dat <- modmed_x1m3w4y1
+#' data(data_serial_parallel)
+#' dat <- data_serial_parallel
 #' mod <-
 #' "
-#' m1 ~ a1 * x
-#' m2 ~ a2 * m1
-#' m3 ~ a3 * m2
-#' y  ~ a4 * m3 + c4 * x
+#' m11 ~ x + c1 + c2
+#' m12 ~ m11 + x + c1 + c2
+#' m2 ~ x + c1 + c2
+#' y ~ m12 + m2 + m11 + x + c1 + c2
 #' "
-#' fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
-#' est <- parameterEstimates(fit)
+#' fit <- sem(mod, dat,
+#'            meanstructure = TRUE, fixed.x = FALSE)
 #'
-#' check_path(x = "x", y = "m3", m = c("m1", "m2"), fit = fit)
-#' check_path(x = "x", y = "y", m = c("m1", "m2"), fit = fit)
+#' # The following paths are valid
+#' check_path(x = "x", y = "y", m = c("m11", "m12"), fit = fit)
+#' check_path(x = "x", y = "y", m = "m2", fit = fit)
+#' # The following paths are invalid
+#' check_path(x = "x", y = "y", m = c("m11", "m2"), fit = fit)
+#' check_path(x = "x", y = "y", m = c("m12", "m11"), fit = fit)
 #'
 #' @export
 #'
