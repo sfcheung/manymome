@@ -2,7 +2,7 @@
 % Please edit documentation in R/indirect.R
 \name{indirect}
 \alias{indirect}
-\title{One Line Title}
+\title{Indirect Effect}
 \usage{
 indirect(
   x,
@@ -66,15 +66,22 @@ will suppress these warnings. Suppress them only when the
 moderators are omitted intentionally.}
 }
 \value{
-Specify what are returned.
+It returns a \code{indirect}-class object. This class has the
+following methods: \code{\link[=coef.indirect]{coef.indirect()}}, \code{\link[=print.indirect]{print.indirect()}}. The
+\code{\link[=confint.indirect]{confint.indirect()}} method is used only when called by
+\code{\link[=cond_indirect]{cond_indirect()}} or \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 }
 \description{
-One paragraph description
+Compute the indirect effect, optionally conditioned on
+the values of moderators if present.
 }
 \details{
-Details
-(Include subjects for verbs.)
-(Use 3rd person forms for verbs.)
+This function is a low-level function called by \code{\link[=cond_indirect]{cond_indirect()}}
+and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, which call this function multiple times
+if bootstrapping confidence interval is requested.
+
+This function usually should not be used directly. It is exported for
+advanced users.
 }
 \examples{
 
@@ -87,13 +94,17 @@ m2 ~ a2 * m1  + b2 * w2 + d2 * m1:w2
 m3 ~ a3 * m2  + b3 * w3 + d3 * m2:w3
 y  ~ a4 * m3  + b4 * w4 + d4 * m3:w4
 "
-fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
+fit <- sem(mod, dat, meanstructure = TRUE,
+           fixed.x = FALSE, se = "none", baseline = FALSE)
 est <- parameterEstimates(fit)
 
 wvalues <- c(w1 = 5, w2 = 4, w3 = 2, w4 = 3)
 
+# Compute the conditional indirect effect by indirect()
 indirect_1 <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
                        wvalues = wvalues)
+
+# Manually compute the conditional indirect effect
 indirect_2 <- (est[est$label == "a1", "est"] +
                 wvalues["w1"] * est[est$label == "d1", "est"]) *
               (est[est$label == "a2", "est"] +
@@ -102,7 +113,8 @@ indirect_2 <- (est[est$label == "a1", "est"] +
                 wvalues["w3"] * est[est$label == "d3", "est"]) *
               (est[est$label == "a4", "est"] +
                 wvalues["w4"] * est[est$label == "d4", "est"])
-indirect_1$indirect
+# They should be the same
+coef(indirect_1)
 indirect_2
 
 }

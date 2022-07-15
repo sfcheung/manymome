@@ -1,13 +1,19 @@
-#' @title One Line Title
+#' @title Indirect Effect
 #'
-#' @description One paragraph description
+#' @description Compute the indirect effect, optionally conditioned on
+#'   the values of moderators if present.
 #'
-#' @details Details
-#'   (Include subjects for verbs.)
-#'   (Use 3rd person forms for verbs.)
+#' @details This function is a low-level function called by [cond_indirect()]
+#'   and [cond_indirect_effects()], which call this function multiple times
+#'   if bootstrapping confidence interval is requested.
 #'
-#' @return
-#' Specify what are returned.
+#' This function usually should not be used directly. It is exported for
+#'   advanced users.
+#'
+#' @return It returns a `indirect`-class object. This class has the
+#'  following methods: [coef.indirect()], [print.indirect()]. The
+#'  [confint.indirect()] method is used only when called by
+#'  [cond_indirect()] or [cond_indirect_effects()].
 #'
 #' @param x Character. The name of predictor at the start of the pathway.
 #' @param y Character. The name of the outcome variable at
@@ -58,13 +64,17 @@
 #' m3 ~ a3 * m2  + b3 * w3 + d3 * m2:w3
 #' y  ~ a4 * m3  + b4 * w4 + d4 * m3:w4
 #' "
-#' fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
+#' fit <- sem(mod, dat, meanstructure = TRUE,
+#'            fixed.x = FALSE, se = "none", baseline = FALSE)
 #' est <- parameterEstimates(fit)
 #'
 #' wvalues <- c(w1 = 5, w2 = 4, w3 = 2, w4 = 3)
 #'
+#' # Compute the conditional indirect effect by indirect()
 #' indirect_1 <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
 #'                        wvalues = wvalues)
+#'
+#' # Manually compute the conditional indirect effect
 #' indirect_2 <- (est[est$label == "a1", "est"] +
 #'                 wvalues["w1"] * est[est$label == "d1", "est"]) *
 #'               (est[est$label == "a2", "est"] +
@@ -73,7 +83,8 @@
 #'                 wvalues["w3"] * est[est$label == "d3", "est"]) *
 #'               (est[est$label == "a4", "est"] +
 #'                 wvalues["w4"] * est[est$label == "d4", "est"])
-#' indirect_1$indirect
+#' # They should be the same
+#' coef(indirect_1)
 #' indirect_2
 #'
 #' @export
