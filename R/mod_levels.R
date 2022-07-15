@@ -188,8 +188,14 @@ mod_levels <- function(w,
 #' # mod_levels_list() forms a combinations of levels in one call
 #' # It returns a list, by default.
 #' # Form the levels from a list of lm() outputs
-#' # Set merge to TRUE
+#' # "merge = TRUE" is optional. cond_indirect_effects will merge the levels
+#' # automatically.
 #' w1w2_levels <- mod_levels_list("w1", "w2", fit = fit, merge = TRUE)
+#' w1w2_levels
+#' cond_indirect_effects(x = "x", y = "y", m = "m",
+#'                       fit = fit, wlevels = w1w2_levels)
+#' # Can work without merge = TRUE:
+#' w1w2_levels <- mod_levels_list("w1", "w2", fit = fit)
 #' w1w2_levels
 #' cond_indirect_effects(x = "x", y = "y", m = "m",
 #'                       fit = fit, wlevels = w1w2_levels)
