@@ -250,6 +250,9 @@ cond_indirect_effects <- function(wlevels,
                                   R = 100,
                                   seed = NULL,
                                   output_type = "data.frame") {
+    if (is.list(wlevels) && !is.data.frame(wlevels)) {
+        wlevels <- merge_mod_levels(wlevels)
+      }
     k <- nrow(wlevels)
     wlevels1 <- split(wlevels, seq_len(k))
     wlevels2 <- lapply(wlevels1, unlist)
