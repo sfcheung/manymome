@@ -2,7 +2,7 @@
 % Please edit documentation in R/lm2ptable.R
 \name{lm2ptable}
 \alias{lm2ptable}
-\title{One Line Title}
+\title{Convert a 'lm' Output to a 'lavaan'-Like Object}
 \usage{
 lm2ptable(outputs)
 }
@@ -10,32 +10,39 @@ lm2ptable(outputs)
 \item{outputs}{A list of \code{lm} class objects.}
 }
 \value{
-Specify what are returned.
+A list with the following arguments:
+\itemize{
+\item \code{est}: A data frame similar to the parameter estimates table
+of the output of \code{\link[lavaan:sem]{lavaan::sem()}}.
+\item \code{dat}: A data frame with all the data in the regression
+models merged.
+\item \code{implied_stats}: A list with two elements: \code{cov} is the
+implied covariance matrix and \code{mean} is the implied
+means. They are used to compute standardized
+effects or form levels of moderators.
+}
 }
 \description{
-One paragraph description
+It only convert information necessary for
+\code{\link[=cond_indirect]{cond_indirect()}} to compute conditional effects or
+conditional indirect effects.
 }
 \details{
-Details
-(Include subjects for verbs.)
-(Use 3rd person forms for verbs.)
+Users usually do not need to call this function
+to use \code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+These two functions will do the conversion internally
+if necessary.
 }
 \examples{
 
-library(lavaan)
-dat <- modmed_x1m3w4y1
-mod <-
-"
-m1 ~ a1 * x
-m2 ~ a2 * m1
-m3 ~ a3 * m2
-y  ~ a4 * m3 + c4 * x
-"
-fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
-est <- parameterEstimates(fit)
+data(data_serial)
+dat <- data_serial
+lm_m1 <- lm(m1 ~ x + c1 + c2, dat)
+lm_m2 <- lm(m2 ~ m1 + x + c1 + c2, dat)
+lm_y <- lm(y ~ m2 + m1 + x + c1 + c2, dat)
+out <- lm2ptable(list(lm_m1, lm_m2, lm_y))
+out$est
 
-check_path(x = "x", y = "m3", m = c("m1", "m2"), fit = fit)
-check_path(x = "x", y = "y", m = c("m1", "m2"), fit = fit)
 
 }
 \author{
