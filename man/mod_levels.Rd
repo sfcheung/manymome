@@ -119,6 +119,7 @@ effects or conditional indirect effects for all the combinations.
 
 \examples{
 
+library(lavaan)
 data(data_med_mod_ab)
 dat <- data_med_mod_ab
 # Form the levels from a list of lm() outputs

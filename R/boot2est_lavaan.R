@@ -5,7 +5,7 @@
 #'
 #' @details
 #' If bootstrapping confidence intervals was requested
-#' when calling [lavaan:sem()] by setting `se = "boot"`,
+#' when calling [lavaan::sem()] by setting `se = "boot"`,
 #' [fit2boot_out()] can be used to extract the stored
 #' bootstrap estimates such that they can be reused by
 #' [cond_indirect()] and [cond_indirect_effects()]
@@ -49,7 +49,7 @@
 #' # bootstrap should be set to 2000 or even 5000 in real study
 #' set.seed(1234)
 #' fit <- sem(model = mod, data = dat, fixed.x = FALSE,
-#'            se = "boot", bootstrap = 50)
+#'            se = "boot", bootstrap = 10)
 #' fit_boot_out <- fit2boot_out(fit)
 #' wlevels <- mod_levels(w = "w", fit = fit)
 #' out <- cond_indirect_effects(wlevels = wlevels,
@@ -63,7 +63,7 @@
 #' # Bootstrapping not requested in calling lavaan::sem()
 #' fit <- sem(model = mod, data = dat, fixed.x = FALSE)
 #' fit_boot_out <- fit2boot_out_do_boot(fit = fit,
-#'                                      R = 50,
+#'                                      R = 10,
 #'                                      seed = 1234)
 #' wlevels <- mod_levels(w = "w", fit = fit)
 #' out <- cond_indirect_effects(wlevels = wlevels,

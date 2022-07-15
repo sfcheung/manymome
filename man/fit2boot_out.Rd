@@ -53,7 +53,7 @@ the output of \code{\link[lavaan:sem]{lavaan::sem()}}.
 }
 \details{
 If bootstrapping confidence intervals was requested
-when calling \code{\link[=lavaan:sem]{lavaan:sem()}} by setting \code{se = "boot"},
+when calling \code{\link[lavaan:sem]{lavaan::sem()}} by setting \code{se = "boot"},
 \code{\link[=fit2boot_out]{fit2boot_out()}} can be used to extract the stored
 bootstrap estimates such that they can be reused by
 \code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
@@ -98,7 +98,7 @@ y ~ m + w + m:w + x + c1 + c2
 # bootstrap should be set to 2000 or even 5000 in real study
 set.seed(1234)
 fit <- sem(model = mod, data = dat, fixed.x = FALSE,
-           se = "boot", bootstrap = 50)
+           se = "boot", bootstrap = 10)
 fit_boot_out <- fit2boot_out(fit)
 wlevels <- mod_levels(w = "w", fit = fit)
 out <- cond_indirect_effects(wlevels = wlevels,
@@ -112,7 +112,7 @@ out
 # Bootstrapping not requested in calling lavaan::sem()
 fit <- sem(model = mod, data = dat, fixed.x = FALSE)
 fit_boot_out <- fit2boot_out_do_boot(fit = fit,
-                                     R = 50,
+                                     R = 10,
                                      seed = 1234)
 wlevels <- mod_levels(w = "w", fit = fit)
 out <- cond_indirect_effects(wlevels = wlevels,
