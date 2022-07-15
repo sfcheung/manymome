@@ -1,13 +1,21 @@
-#' @title One Line Title
+#' @title Create Dummy Variables
 #'
-#' @description One paragraph description
+#' @description Create dummy variables from a categorical
+#'  variable.
 #'
-#' @details Details
-#'   (Include subjects for verbs.)
-#'   (Use 3rd person forms for verbs.)
+#' @details Its main use is for creating dummy variables
+#'  (indicator variables) from a categorical variable,
+#'  to be used in [lavaan::sem()].
+#'
+#' Optionally, the other contrasts can be used through
+#' the argument `x_contrasts`.
 #'
 #' @return
-#' Specify what are returned.
+#' It always returns a matrix with the number of rows
+#' equal to the length of the vector (`x_value`). If
+#' the categorical has only two categories and so
+#' only one dummy variable is needed, the output is
+#' still a one-column "matrix" in R.
 #'
 #' @param x_value The vector of categorical variable.
 #' @param x_contrasts The contrast to be used. Default
@@ -15,15 +23,15 @@
 #' @param prefix The prefix to be added to the variables
 #'               to be created. Default is `""`.
 #' @param add_rownames Whether row names will be added
-#'                     to the output. Default is `FALSE`.
+#'                     to the output. Default is `TRUE`.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @examples
-#' dat <- modmed_x1m3w4y1
+#' dat <- data_mod_cat
 #' dat <- data.frame(dat,
-#'                   factor2var(dat$gp, prefix = "gp", add_rownames = FALSE))
-#' head(dat[, c(10, 12, 13)], 15)
+#'                   factor2var(dat$w, prefix = "gp", add_rownames = FALSE))
+#' head(dat[, c("w", "gpgroup2", "gpgroup3")], 15)
 #'
 #' @export
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/factor2var.R
 \name{factor2var}
 \alias{factor2var}
-\title{One Line Title}
+\title{Create Dummy Variables}
 \usage{
 factor2var(
   x_value,
@@ -21,24 +21,32 @@ is \code{constr.treatment}.}
 to be created. Default is \code{""}.}
 
 \item{add_rownames}{Whether row names will be added
-to the output. Default is \code{FALSE}.}
+to the output. Default is \code{TRUE}.}
 }
 \value{
-Specify what are returned.
+It always returns a matrix with the number of rows
+equal to the length of the vector (\code{x_value}). If
+the categorical has only two categories and so
+only one dummy variable is needed, the output is
+still a one-column "matrix" in R.
 }
 \description{
-One paragraph description
+Create dummy variables from a categorical
+variable.
 }
 \details{
-Details
-(Include subjects for verbs.)
-(Use 3rd person forms for verbs.)
+Its main use is for creating dummy variables
+(indicator variables) from a categorical variable,
+to be used in \code{\link[lavaan:sem]{lavaan::sem()}}.
+
+Optionally, the other contrasts can be used through
+the argument \code{x_contrasts}.
 }
 \examples{
-dat <- modmed_x1m3w4y1
+dat <- data_mod_cat
 dat <- data.frame(dat,
-                  factor2var(dat$gp, prefix = "gp", add_rownames = FALSE))
-head(dat[, c(10, 12, 13)], 15)
+                  factor2var(dat$w, prefix = "gp", add_rownames = FALSE))
+head(dat[, c("w", "gpgroup2", "gpgroup3")], 15)
 
 }
 \author{
