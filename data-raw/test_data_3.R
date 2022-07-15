@@ -29,8 +29,8 @@ ab_hi := (a + d * (m_w + sqrt(v_m))) * b
 fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
 parameterEstimates(fit)[c(1, 3, 6, 31, 32, 33), ]
 head(dat)
-simple_mediation_a_moderated <- dat
-usethis::use_data(simple_mediation_a_moderated, overwrite = TRUE)
+data_med_mod_a <- dat
+usethis::use_data(data_med_mod_a, overwrite = TRUE)
 
 # Generate data
 library(lavaan)
@@ -61,8 +61,8 @@ ab_hi := a * (b + d * (m_w + sqrt(v_m)))
 fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
 parameterEstimates(fit)[c(1, 3, 7, 30, 31, 32), ]
 head(dat)
-simple_mediation_b_moderated <- dat
-usethis::use_data(simple_mediation_b_moderated, overwrite = TRUE)
+data_med_mod_b <- dat
+usethis::use_data(data_med_mod_b, overwrite = TRUE)
 
 
 # Generate data
@@ -107,8 +107,8 @@ ab_hihi := (a + d1 * (m_w1 + sqrt(v_m1))) * (b + d2 * (m_w2 + sqrt(v_m2)))
 fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
 parameterEstimates(fit)[c(1, 3, 6, 10, 41:45), ]
 head(dat)
-simple_mediation_ab_moderated_two_moderators <- dat
-usethis::use_data(simple_mediation_ab_moderated_two_moderators, overwrite = TRUE)
+data_med_mod_ab <- dat
+usethis::use_data(data_med_mod_ab, overwrite = TRUE)
 
 
 # Generate data
@@ -147,8 +147,8 @@ ab_hi := (a + da * (m_w + sqrt(v_m))) * (b + db * (m_w + sqrt(v_m)))
 fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
 parameterEstimates(fit)[c(1, 3, 6, 9, 38:40), ]
 head(dat)
-simple_mediation_ab_moderated_one_moderator <- dat
-usethis::use_data(simple_mediation_ab_moderated_one_moderator, overwrite = TRUE)
+data_med_mod_ab1 <- dat
+usethis::use_data(data_med_mod_ab1, overwrite = TRUE)
 
 
 
@@ -199,8 +199,8 @@ a2b2_w2hi := a2 * (b2 + db2 * (m_w2 + sqrt(v_w2)))
 fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
 parameterEstimates(fit)[c(1, 3, 6, 10, 11, 15, 48:53), ]
 head(dat)
-parallel_mediation_two_moderators <- dat
-usethis::use_data(parallel_mediation_two_moderators, overwrite = TRUE)
+data_med_mod_parallel <- dat
+usethis::use_data(data_med_mod_parallel, overwrite = TRUE)
 
 
 # Generate data
@@ -249,8 +249,8 @@ ab1b2_hihi := (a + da1 * (m_w1 + sqrt(v_m1))) * b1 * (b2 + db2 * (m_w2 + sqrt(v_
 fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
 parameterEstimates(fit)[c(1, 3, 6, 11, 16, 49:53), ]
 head(dat)
-serial_mediation_two_moderators <- dat
-usethis::use_data(serial_mediation_two_moderators, overwrite = TRUE)
+data_med_mod_serial <- dat
+usethis::use_data(data_med_mod_serial, overwrite = TRUE)
 
 
 
@@ -306,5 +306,5 @@ dat$w1 <- dat$w1 / 10
 dat$w2 <- dat$w2 / 10
 fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
 parameterEstimates(fit)[parameterEstimates(fit)$label != "", ]
-serial_parallel_mediation_two_moderators <- dat
-usethis::use_data(serial_parallel_mediation_two_moderators, overwrite = TRUE)
+data_med_mod_serial_parallel <- dat
+usethis::use_data(data_med_mod_serial_parallel, overwrite = TRUE)

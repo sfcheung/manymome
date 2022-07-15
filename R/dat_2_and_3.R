@@ -7,22 +7,22 @@
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{m}{Mediator. Numeric.}
 #'   \item{y}{Outcome variable. Numeric.}
-#'   \item{c1}{Control variable. variable. Numeric.}
+#'   \item{c1}{Control variable. Numeric.}
 #'   \item{c2}{Control variable. Numeric.}
 #' }
 #'
 #' @examples
 #' library(lavaan)
-#' data(simple_mediation)
+#' data(data_med)
 #' mod <-
 #' "
 #' m ~ a * x + c1 + c2
 #' y ~ b * m + x + c1 + c2
 #' ab := a * b
 #' "
-#' fit <- sem(mod, simple_mediation, fixed.x = FALSE)
+#' fit <- sem(mod, data_med, fixed.x = FALSE)
 #' parameterEstimates(fit)
-"simple_mediation"
+"data_med"
 
 #' @title One Moderator: Sample Dataset
 #'
@@ -33,14 +33,14 @@
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{w}{Moderator. Numeric.}
 #'   \item{y}{Outcome variable. Numeric.}
-#'   \item{c1}{Control variable. variable. Numeric.}
+#'   \item{c1}{Control variable. Numeric.}
 #'   \item{c2}{Control variable. Numeric.}
 #' }
 #'
 #' @examples
 #' library(lavaan)
-#' data(one_moderator)
-#' one_moderator$xw <- one_moderator$x * one_moderator$w
+#' data(data_mod)
+#' data_mod$xw <- data_mod$x * data_mod$w
 #' mod <-
 #' "
 #' y ~ a * x + w + d * xw + c1 + c2
@@ -49,9 +49,9 @@
 #' a_lo := a + d * (m_w - sqrt(v_w))
 #' a_hi := a + d * (m_w + sqrt(v_w))
 #' "
-#' fit <- sem(mod, one_moderator, fixed.x = FALSE)
+#' fit <- sem(mod, data_mod, fixed.x = FALSE)
 #' parameterEstimates(fit)[c(1, 3, 6, 7, 24, 25), ]
-"one_moderator"
+"data_mod"
 
 
 #' @title Two Moderators: Sample Dataset
@@ -64,15 +64,15 @@
 #'   \item{w1}{Moderator 1. Numeric.}
 #'   \item{w2}{Moderator 2. Numeric.}
 #'   \item{y}{Outcome variable. Numeric.}
-#'   \item{c1}{Control variable. variable. Numeric.}
+#'   \item{c1}{Control variable. Numeric.}
 #'   \item{c2}{Control variable. Numeric.}
 #' }
 #'
 #' @examples
 #' library(lavaan)
-#' data(two_moderators)
-#' two_moderators$xw1 <- two_moderators$x * two_moderators$w1
-#' two_moderators$xw2 <- two_moderators$x * two_moderators$w2
+#' data(data_mod2)
+#' data_mod2$xw1 <- data_mod2$x * data_mod2$w1
+#' data_mod2$xw2 <- data_mod2$x * data_mod2$w2
 #' mod <-
 #' "
 #' y ~ a * x + w1 + w2 + d1 * xw1 + d2 * xw2 + c1 + c2
@@ -85,9 +85,9 @@
 #' a_hilo := a + d1 * (m_w1 + sqrt(v_w1)) + d2 * (m_w2 - sqrt(v_w2))
 #' a_hihi := a + d1 * (m_w1 + sqrt(v_w1)) + d2 * (m_w2 + sqrt(v_w2))
 #' "
-#' fit <- sem(mod, two_moderators, fixed.x = FALSE)
+#' fit <- sem(mod, data_mod2, fixed.x = FALSE)
 #' parameterEstimates(fit)[c(1, 4, 5, 8:11, 34:37), ]
-"two_moderators"
+"data_mod2"
 
 
 #' @title Serial Mediation: Sample Dataset
@@ -100,13 +100,13 @@
 #'   \item{m1}{Mediator 1. Numeric.}
 #'   \item{m2}{Mediator 2. Numeric.}
 #'   \item{y}{Outcome variable. Numeric.}
-#'   \item{c1}{Control variable. variable. Numeric.}
+#'   \item{c1}{Control variable. Numeric.}
 #'   \item{c2}{Control variable. Numeric.}
 #' }
 #'
 #' @examples
 #' library(lavaan)
-#' data(serial_mediation)
+#' data(data_serial)
 #' mod <-
 #' "
 #' m1 ~ a * x + c1 + c2
@@ -114,10 +114,10 @@
 #' y ~ b2 * m2 + m1 + x + c1 + c2
 #' indirect := a * b1 * b2
 #' "
-#' fit <- sem(mod, serial_mediation,
+#' fit <- sem(mod, data_serial,
 #'            meanstructure = TRUE, fixed.x = FALSE)
 #' parameterEstimates(fit)[c(1, 4, 8, 28), ]
-"serial_mediation"
+"data_serial"
 
 
 #' @title Parallel Mediation: Sample Dataset
@@ -130,13 +130,13 @@
 #'   \item{m1}{Mediator 1. Numeric.}
 #'   \item{m2}{Mediator 2. Numeric.}
 #'   \item{y}{Outcome variable. Numeric.}
-#'   \item{c1}{Control variable. variable. Numeric.}
+#'   \item{c1}{Control variable. Numeric.}
 #'   \item{c2}{Control variable. Numeric.}
 #' }
 #'
 #' @examples
 #' library(lavaan)
-#' data(parallel_mediation)
+#' data(data_parallel)
 #' mod <-
 #' "
 #' m1 ~ a1 * x + c1 + c2
@@ -146,10 +146,10 @@
 #' indirect2 := a2 * b2
 #' indirect := a1 * b1 + a2 * b2
 #' "
-#' fit <- sem(mod, parallel_mediation,
+#' fit <- sem(mod, data_parallel,
 #'            meanstructure = TRUE, fixed.x = FALSE)
 #' parameterEstimates(fit)[c(1, 4, 7, 8, 27:29), ]
-"parallel_mediation"
+"data_parallel"
 
 
 
@@ -165,13 +165,13 @@
 #'   \item{m12}{Mediator 2 in Path 1. Numeric.}
 #'   \item{m2}{Mediator in Path 2. Numeric.}
 #'   \item{y}{Outcome variable. Numeric.}
-#'   \item{c1}{Control variable. variable. Numeric.}
+#'   \item{c1}{Control variable. Numeric.}
 #'   \item{c2}{Control variable. Numeric.}
 #' }
 #'
 #' @examples
 #' library(lavaan)
-#' data(serial_parallel_mediation)
+#' data(data_serial_parallel)
 #' mod <-
 #' "
 #' m11 ~ a11 * x + c1 + c2
@@ -182,10 +182,10 @@
 #' indirect2 := a2 * b2
 #' indirect := a11 * b11 * b12 + a2 * b2
 #' "
-#' fit <- sem(mod, serial_parallel_mediation,
+#' fit <- sem(mod, data_serial_parallel,
 #'            meanstructure = TRUE, fixed.x = FALSE)
 #' parameterEstimates(fit)[c(1, 4, 8, 11, 12, 34:36), ]
-"serial_parallel_mediation"
+"data_serial_parallel"
 
 
 #' @title Simple Mediation with a-Path Moderated: Sample Dataset
@@ -198,16 +198,16 @@
 #'   \item{w}{Moderator. Numeric.}
 #'   \item{m}{Mediator. Numeric.}
 #'   \item{y}{Outcome variable. Numeric.}
-#'   \item{c1}{Control variable. variable. Numeric.}
+#'   \item{c1}{Control variable. Numeric.}
 #'   \item{c2}{Control variable. Numeric.}
 #' }
 #'
 #' @examples
 #' library(lavaan)
-#' data(simple_mediation_a_moderated)
-#' simple_mediation_a_moderated$xw <-
-#'  simple_mediation_a_moderated$x *
-#'  simple_mediation_a_moderated$w
+#' data(data_med_mod_a)
+#' data_med_mod_a$xw <-
+#'  data_med_mod_a$x *
+#'  data_med_mod_a$w
 #' mod <-
 #' "
 #' m ~ a * x + w + d * xw + c1 + c2
@@ -218,10 +218,10 @@
 #' ab_lo := (a + d * (m_w - sqrt(v_w))) * b
 #' ab_hi := (a + d * (m_w + sqrt(v_w))) * b
 #' "
-#' fit <- sem(mod, simple_mediation_a_moderated,
+#' fit <- sem(mod, data_med_mod_a,
 #'            meanstructure = TRUE, fixed.x = FALSE)
 #' parameterEstimates(fit)[c(1, 3, 6, 11, 12, 31:33), ]
-"simple_mediation_a_moderated"
+"data_med_mod_a"
 
 
 
@@ -235,16 +235,16 @@
 #'   \item{w}{Moderator. Numeric.}
 #'   \item{m}{Mediator. Numeric.}
 #'   \item{y}{Outcome variable. Numeric.}
-#'   \item{c1}{Control variable. variable. Numeric.}
+#'   \item{c1}{Control variable. Numeric.}
 #'   \item{c2}{Control variable. Numeric.}
 #' }
 #'
 #' @examples
 #' library(lavaan)
-#' data(simple_mediation_b_moderated)
-#' simple_mediation_b_moderated$mw <-
-#'  simple_mediation_b_moderated$m *
-#'  simple_mediation_b_moderated$w
+#' data(data_med_mod_b)
+#' data_med_mod_b$mw <-
+#'  data_med_mod_b$m *
+#'  data_med_mod_b$w
 #' mod <-
 #' "
 #' m ~ a * x + w + c1 + c2
@@ -255,10 +255,10 @@
 #' ab_lo := a * (b + d * (m_w - sqrt(v_w)))
 #' ab_hi := a * (b + d * (m_w + sqrt(v_w)))
 #' "
-#' fit <- sem(mod, simple_mediation_b_moderated,
+#' fit <- sem(mod, data_med_mod_b,
 #'            meanstructure = TRUE, fixed.x = FALSE)
 #' parameterEstimates(fit)[c(1, 5, 7, 10, 11, 30:32), ]
-"simple_mediation_b_moderated"
+"data_med_mod_b"
 
 
 #' @title Simple Mediation with Both Paths Moderated (Two Moderators): Sample Dataset
@@ -273,19 +273,19 @@
 #'   \item{w2}{Moderator 2. Numeric.}
 #'   \item{m}{Mediator. Numeric.}
 #'   \item{y}{Outcome variable. Numeric.}
-#'   \item{c1}{Control variable. variable. Numeric.}
+#'   \item{c1}{Control variable. Numeric.}
 #'   \item{c2}{Control variable. Numeric.}
 #' }
 #'
 #' @examples
 #' library(lavaan)
-#' data(simple_mediation_ab_moderated_two_moderators)
-#' simple_mediation_ab_moderated_two_moderators$xw1 <-
-#'  simple_mediation_ab_moderated_two_moderators$x *
-#'  simple_mediation_ab_moderated_two_moderators$w1
-#' simple_mediation_ab_moderated_two_moderators$mw2 <-
-#'  simple_mediation_ab_moderated_two_moderators$m *
-#'  simple_mediation_ab_moderated_two_moderators$w2
+#' data(data_med_mod_ab)
+#' data_med_mod_ab$xw1 <-
+#'  data_med_mod_ab$x *
+#'  data_med_mod_ab$w1
+#' data_med_mod_ab$mw2 <-
+#'  data_med_mod_ab$m *
+#'  data_med_mod_ab$w2
 #' mod <-
 #' "
 #' m ~ a * x + w1 + d1 * xw1 + c1 + c2
@@ -300,10 +300,10 @@
 #' ab_hilo := (a + d1 * (m_w1 + sqrt(v_w1))) * (b + d2 * (m_w2 - sqrt(v_w2)))
 #' ab_hihi := (a + d1 * (m_w1 + sqrt(v_w1))) * (b + d2 * (m_w2 + sqrt(v_w2)))
 #' "
-#' fit <- sem(mod, simple_mediation_ab_moderated_two_moderators,
+#' fit <- sem(mod, data_med_mod_ab,
 #'            meanstructure = TRUE, fixed.x = FALSE)
 #' parameterEstimates(fit)[c(1, 3, 6, 10, 41:45), ]
-"simple_mediation_ab_moderated_two_moderators"
+"data_med_mod_ab"
 
 
 #' @title Simple Mediation with Both Paths Moderated By a Moderator: Sample Dataset
@@ -317,19 +317,19 @@
 #'   \item{w}{Moderator. Numeric.}
 #'   \item{m}{Mediator. Numeric.}
 #'   \item{y}{Outcome variable. Numeric.}
-#'   \item{c1}{Control variable. variable. Numeric.}
+#'   \item{c1}{Control variable. Numeric.}
 #'   \item{c2}{Control variable. Numeric.}
 #' }
 #'
 #' @examples
 #' library(lavaan)
-#' data(simple_mediation_ab_moderated_one_moderator)
-#' simple_mediation_ab_moderated_one_moderator$xw <-
-#'  simple_mediation_ab_moderated_one_moderator$x *
-#'  simple_mediation_ab_moderated_one_moderator$w
-#' simple_mediation_ab_moderated_one_moderator$mw <-
-#'  simple_mediation_ab_moderated_one_moderator$m *
-#'  simple_mediation_ab_moderated_one_moderator$w
+#' data(data_med_mod_ab1)
+#' data_med_mod_ab1$xw <-
+#'  data_med_mod_ab1$x *
+#'  data_med_mod_ab1$w
+#' data_med_mod_ab1$mw <-
+#'  data_med_mod_ab1$m *
+#'  data_med_mod_ab1$w
 #' mod <-
 #' "
 #' m ~ a * x + w + da * xw + c1 + c2
@@ -340,51 +340,10 @@
 #' ab_lo := (a + da * (m_w - sqrt(v_w))) * (b + db * (m_w - sqrt(v_w)))
 #' ab_hi := (a + da * (m_w + sqrt(v_w))) * (b + db * (m_w + sqrt(v_w)))
 #' "
-#' fit <- sem(mod, simple_mediation_ab_moderated_one_moderator,
+#' fit <- sem(mod, data_med_mod_ab1,
 #'            meanstructure = TRUE, fixed.x = FALSE)
 #' parameterEstimates(fit)[c(1, 3, 6, 9, 38:40), ]
-"simple_mediation_ab_moderated_one_moderator"
-
-
-#' @title Simple Mediation with Both Paths Moderated By a Moderator: Sample Dataset
-#'
-#' @description A simple mediation model with a-path and b-path
-#' moderated by one moderator.
-#'
-#' @format A data frame with 100 rows and 6 variables:
-#' \describe{
-#'   \item{x}{Predictor. Numeric.}
-#'   \item{w}{Moderator. Numeric.}
-#'   \item{m}{Mediator. Numeric.}
-#'   \item{y}{Outcome variable. Numeric.}
-#'   \item{c1}{Control variable. variable. Numeric.}
-#'   \item{c2}{Control variable. Numeric.}
-#' }
-#'
-#' @examples
-#' library(lavaan)
-#' data(simple_mediation_ab_moderated_one_moderator)
-#' simple_mediation_ab_moderated_one_moderator$xw <-
-#'  simple_mediation_ab_moderated_one_moderator$x *
-#'  simple_mediation_ab_moderated_one_moderator$w
-#' simple_mediation_ab_moderated_one_moderator$mw <-
-#'  simple_mediation_ab_moderated_one_moderator$m *
-#'  simple_mediation_ab_moderated_one_moderator$w
-#' mod <-
-#' "
-#' m ~ a * x + w + da * xw + c1 + c2
-#' y ~ b * m + x + w + db * mw + c1 + c2
-#' w ~~ v_w * w
-#' w ~ m_w * 1
-#' ab := a * b
-#' ab_lo := (a + da * (m_w - sqrt(v_w))) * (b + db * (m_w - sqrt(v_w)))
-#' ab_hi := (a + da * (m_w + sqrt(v_w))) * (b + db * (m_w + sqrt(v_w)))
-#' "
-#' fit <- sem(mod, simple_mediation_ab_moderated_one_moderator,
-#'            meanstructure = TRUE, fixed.x = FALSE)
-#' parameterEstimates(fit)[c(1, 3, 6, 9, 38:40), ]
-"simple_mediation_ab_moderated_one_moderator"
-
+"data_med_mod_ab1"
 
 #' @title Serial Mediation with Two Moderators: Sample Dataset
 #'
@@ -399,19 +358,19 @@
 #'   \item{m1}{Mediator 1. Numeric.}
 #'   \item{m2}{Mediator 2. Numeric.}
 #'   \item{y}{Outcome variable. Numeric.}
-#'   \item{c1}{Control variable. variable. Numeric.}
+#'   \item{c1}{Control variable. Numeric.}
 #'   \item{c2}{Control variable. Numeric.}
 #' }
 #'
 #' @examples
 #' library(lavaan)
-#' data(serial_mediation_two_moderators)
-#' serial_mediation_two_moderators$xw1 <-
-#'  serial_mediation_two_moderators$x *
-#'  serial_mediation_two_moderators$w1
-#' serial_mediation_two_moderators$m2w2 <-
-#'  serial_mediation_two_moderators$m2 *
-#'  serial_mediation_two_moderators$w2
+#' data(data_med_mod_serial)
+#' data_med_mod_serial$xw1 <-
+#'  data_med_mod_serial$x *
+#'  data_med_mod_serial$w1
+#' data_med_mod_serial$m2w2 <-
+#'  data_med_mod_serial$m2 *
+#'  data_med_mod_serial$w2
 #' mod <-
 #' "
 #' m1 ~ a * x + w1 + da1 * xw1 + c1 + c2
@@ -427,10 +386,10 @@
 #' ab1b2_hilo := (a + da1 * (m_w1 + sqrt(v_w1))) * b1 * (b2 + db2 * (m_w2 - sqrt(v_w2)))
 #' ab1b2_hihi := (a + da1 * (m_w1 + sqrt(v_w1))) * b1 * (b2 + db2 * (m_w2 + sqrt(v_w2)))
 #' "
-#' fit <- sem(mod, serial_mediation_two_moderators,
+#' fit <- sem(mod, data_med_mod_serial,
 #'            meanstructure = TRUE, fixed.x = FALSE)
 #' parameterEstimates(fit)[c(1, 3, 6, 11, 16, 49:53), ]
-"serial_mediation_two_moderators"
+"data_med_mod_serial"
 
 
 #' @title Parallel Mediation with Two Moderators: Sample Dataset
@@ -446,19 +405,19 @@
 #'   \item{m1}{Mediator 1. Numeric.}
 #'   \item{m2}{Mediator 2. Numeric.}
 #'   \item{y}{Outcome variable. Numeric.}
-#'   \item{c1}{Control variable. variable. Numeric.}
+#'   \item{c1}{Control variable. Numeric.}
 #'   \item{c2}{Control variable. Numeric.}
 #' }
 #'
 #' @examples
 #' library(lavaan)
-#' data(parallel_mediation_two_moderators)
-#' parallel_mediation_two_moderators$xw1 <-
-#'  parallel_mediation_two_moderators$x *
-#'  parallel_mediation_two_moderators$w1
-#' parallel_mediation_two_moderators$m2w2 <-
-#'  parallel_mediation_two_moderators$m2 *
-#'  parallel_mediation_two_moderators$w2
+#' data(data_med_mod_parallel)
+#' data_med_mod_parallel$xw1 <-
+#'  data_med_mod_parallel$x *
+#'  data_med_mod_parallel$w1
+#' data_med_mod_parallel$m2w2 <-
+#'  data_med_mod_parallel$m2 *
+#'  data_med_mod_parallel$w2
 #' mod <-
 #' "
 #' m1 ~ a1 * x + w1 + da1 * xw1 + c1 + c2
@@ -475,10 +434,10 @@
 #' a2b2_w2lo := a2 * (b2 + db2 * (m_w2 - sqrt(v_w2)))
 #' a2b2_w2hi := a2 * (b2 + db2 * (m_w2 + sqrt(v_w2)))
 #' "
-#' fit <- sem(mod, parallel_mediation_two_moderators,
+#' fit <- sem(mod, data_med_mod_parallel,
 #'            meanstructure = TRUE, fixed.x = FALSE)
 #' parameterEstimates(fit)[c(1, 3, 6, 10, 11, 15, 48:53), ]
-"parallel_mediation_two_moderators"
+"data_med_mod_parallel"
 
 
 
@@ -496,19 +455,19 @@
 #'   \item{m12}{Mediator 2 in Path 2. Numeric.}
 #'   \item{m2}{Mediator 2. Numeric.}
 #'   \item{y}{Outcome variable. Numeric.}
-#'   \item{c1}{Control variable. variable. Numeric.}
+#'   \item{c1}{Control variable. Numeric.}
 #'   \item{c2}{Control variable. Numeric.}
 #' }
 #'
 #' @examples
 #' library(lavaan)
-#' data(serial_parallel_mediation_two_moderators)
-#' serial_parallel_mediation_two_moderators$xw1 <-
-#'  serial_parallel_mediation_two_moderators$x *
-#'  serial_parallel_mediation_two_moderators$w1
-#' serial_parallel_mediation_two_moderators$m2w2 <-
-#'  serial_parallel_mediation_two_moderators$m2 *
-#'  serial_parallel_mediation_two_moderators$w2
+#' data(data_med_mod_serial_parallel)
+#' data_med_mod_serial_parallel$xw1 <-
+#'  data_med_mod_serial_parallel$x *
+#'  data_med_mod_serial_parallel$w1
+#' data_med_mod_serial_parallel$m2w2 <-
+#'  data_med_mod_serial_parallel$m2 *
+#'  data_med_mod_serial_parallel$w2
 #' mod <-
 #' "
 #' m11 ~ a1 * x + w1 + da11 * xw1 + c1 + c2
@@ -527,8 +486,8 @@
 #' a2b2_w2lo := a2 * (b2 + db2 * (m_w2 - sqrt(v_w2)))
 #' a2b2_w2hi := a2 * (b2 + db2 * (m_w2 + sqrt(v_w2)))
 #' "
-#' fit <- sem(mod, serial_parallel_mediation_two_moderators,
+#' fit <- sem(mod, data_med_mod_serial_parallel,
 #'            meanstructure = TRUE, fixed.x = FALSE)
 #' parameterEstimates(fit)[parameterEstimates(fit)$label != "", ]
-"serial_parallel_mediation_two_moderators"
+"data_med_mod_serial_parallel"
 

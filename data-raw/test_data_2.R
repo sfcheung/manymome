@@ -22,8 +22,8 @@ ab := a * b
 fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
 parameterEstimates(fit)
 head(dat)
-simple_mediation <- dat
-usethis::use_data(simple_mediation, overwrite = TRUE)
+data_med <- dat
+usethis::use_data(data_med, overwrite = TRUE)
 
 # Generate data
 library(lavaan)
@@ -40,8 +40,8 @@ head(dat)
 colMeans(dat)
 summary(lm_y <- lm(y ~ x*w + c1 + c2, dat))
 head(dat)
-one_moderator <- dat
-usethis::use_data(one_moderator, overwrite = TRUE)
+data_mod <- dat
+usethis::use_data(data_mod, overwrite = TRUE)
 
 # Generate data
 library(lavaan)
@@ -60,8 +60,8 @@ head(dat)
 colMeans(dat)
 summary(lm_y <- lm(y ~ x*w1 + x*w2 + c1 + c2, dat))
 head(dat)
-two_moderators <- dat
-usethis::use_data(two_moderators, overwrite = TRUE)
+data_mod2 <- dat
+usethis::use_data(data_mod2, overwrite = TRUE)
 
 # Generate data
 library(lavaan)
@@ -92,8 +92,8 @@ indirect := a * b1 * b2
 fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
 parameterEstimates(fit)
 head(dat)
-serial_mediation <- dat
-usethis::use_data(serial_mediation, overwrite = TRUE)
+data_serial <- dat
+usethis::use_data(data_serial, overwrite = TRUE)
 
 # Generate data
 library(lavaan)
@@ -126,8 +126,8 @@ indirect := a1 * b1 + a2 * b2
 fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
 parameterEstimates(fit)
 head(dat)
-parallel_mediation <- dat
-usethis::use_data(parallel_mediation, overwrite = TRUE)
+data_parallel <- dat
+usethis::use_data(data_parallel, overwrite = TRUE)
 
 # Generate data
 library(lavaan)
@@ -164,5 +164,5 @@ indirect := a11 * b11 * b12 + a2 * b2
 fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
 parameterEstimates(fit)
 head(dat)
-serial_parallel_mediation <- dat
-usethis::use_data(serial_parallel_mediation, overwrite = TRUE)
+data_serial_parallel <- dat
+usethis::use_data(data_serial_parallel, overwrite = TRUE)
