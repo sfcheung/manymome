@@ -1,13 +1,30 @@
-#' @title One Line Title
+#' @title Create Levels of Moderators
 #'
-#' @description One paragraph description
+#' @description Create levels of moderators to be used by
+#'  [indirect()], [cond_indirect()], and [cond_indirect_effects()].
 #'
-#' @details Details
-#'   (Include subjects for verbs.)
-#'   (Use 3rd person forms for verbs.)
+#' @details
+#' It creates values of a moderator that can be used to compute
+#' conditional effect or conditional indirect effect. By default,
+#' for a numeric moderator, it uses one standard deviation below mean,
+#' mean, and one standard deviation above mean. The percentiles
+#' of these three levels in a normal distribution (16th, 50th, and 84th)
+#' can also be used. For categorical variable, it will simply collect
+#' the unique categories in the data.
+#'
+#' The generated levels are then used by [cond_indirect()] and
+#' [cond_indirect_effects()].
+#'
+#' If a model has more than one moderator, [mod_levels_list()] can be
+#' used to generate combinations of levels. The output can be merged
+#' and then passed to [cond_indirect_effects()] to compute the conditional
+#' effects or conditional indirect effects for all the combinations.
 #'
 #' @return
-#' Specify what are returned.
+#' [mod_levels()] returns a data frame of the levels created.
+#'
+#' [mod_levels_list()] returns a list of data frames, or a merged data frame
+#' if `merge = TRUE`.
 #'
 #' @param w Character. The names of the moderator. If the moderator is
 #'          categorical with 3 or more groups, this is the vector of the
@@ -56,25 +73,48 @@
 #'
 #' @examples
 #'
-#' library(lavaan)
-#' dat <- modmed_x1m3w4y1
+#' data(data_med_mod_ab)
+#' dat <- data_med_mod_ab
+#' # Form the levels from a list of lm() outputs
+#' lm_m <- lm(m ~ x*w1 + c1 + c2, dat)
+#' lm_y <- lm(y ~ m*w2 + x + w1 + c1 + c2, dat)
+#' lm_out <- lm2list(lm_m, lm_y)
+#' w1_levels <- mod_levels(lm_out, w = "w1")
+#' w1_levels
+#' w2_levels <- mod_levels(lm_out, w = "w2")
+#' w2_levels
+#' # Indirect effect from x to y through m, at the first levels of w1 and w2
+#' cond_indirect(x = "x", y = "y", m = "m",
+#'               fit = lm_out,
+#'               wvalues = c(w1 = w1_levels$w1[1],
+#'                           w2 = w2_levels$w2[1]))
+#' # Can form the levels based on percentiles
+#' w1_levels2 <- mod_levels(lm_out, w = "w1", w_method = "percentile")
+#' w1_levels2
+#' # Form the levels from a lavaan output
+#' # Compute the product terms before fitting the model
+#' # Need to use the ":" to denote a product term
 #' mod <-
 #' "
-#' m1 ~ a1 * x
-#' m2 ~ a2 * m1
-#' m3 ~ a3 * m2
-#' y  ~ a4 * m3 + c4 * x
+#' m ~ x + w1 + x:w1 + c1 + c2
+#' y ~ m + x + w1 + w2 + m:w2 + c1 + c2
 #' "
-#' fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
-#' est <- parameterEstimates(fit)
-#'
-#' check_path(x = "x", y = "m3", m = c("m1", "m2"), fit = fit)
-#' check_path(x = "x", y = "y", m = c("m1", "m2"), fit = fit)
+#' fit <- sem(mod, dat, fixed.x = FALSE)
+#' cond_indirect(x = "x", y = "y", m = "m",
+#'               fit = fit,
+#'               wvalues = c(w1 = w1_levels$w1[1],
+#'                           w2 = w2_levels$w2[1]))
+#' # Can pass all levels to cond_indirect_effects()
+#' # First merge the levels by merge_mod_levels()
+#' w1w2_levels <- merge_mod_levels(w1_levels, w2_levels)
+#' cond_indirect_effects(x = "x", y = "y", m = "m",
+#'                       fit = fit,
+#'                       wlevels = w1w2_levels)
 #'
 #' @export
 #'
 #'
-#' @describeIn mod_levels Generate levels for one moderaotr.
+#' @describeIn mod_levels Generate levels for one moderator.
 #' @order 1
 
 mod_levels <- function(w,
@@ -143,8 +183,18 @@ mod_levels <- function(w,
     out
   }
 
+#' @examples
+#'
+#' # mod_levels_list() forms a combinations of levels in one call
+#' # It returns a list, by default.
+#' # Form the levels from a list of lm() outputs
+#' # Set merge to TRUE
+#' w1w2_levels <- mod_levels_list("w1", "w2", fit = fit, merge = TRUE)
+#' w1w2_levels
+#' cond_indirect_effects(x = "x", y = "y", m = "m",
+#'                       fit = fit, wlevels = w1w2_levels)
 #' @export
-#' @describeIn mod_levels Generate levels for several moderaotrs.
+#' @describeIn mod_levels Generate levels for several moderators.
 #' @order 2
 
 mod_levels_list <- function(...,
