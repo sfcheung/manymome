@@ -2,12 +2,14 @@
 % Please edit documentation in R/boot2est_lm.R
 \name{lm2boot_out}
 \alias{lm2boot_out}
-\title{One Line Title}
+\title{Bootstrapping Estimates for \code{lm} Outputs}
 \usage{
 lm2boot_out(outputs, R = 100, seed = NULL)
 }
 \arguments{
-\item{outputs}{A list of \code{lm} class objects.}
+\item{outputs}{A list of \code{lm} class objects, or
+the output of \code{\link[=lm2list]{lm2list()}} (i.e., a \code{lm_list}-class
+object).}
 
 \item{R}{The number of bootstrap samples. Default is 100.}
 
@@ -15,32 +17,47 @@ lm2boot_out(outputs, R = 100, seed = NULL)
 Default is \code{NULL} and seed is not set.}
 }
 \value{
-Specify what are returned.
+A \code{boot_out}-class object that can be used for the \code{boot_out}
+argument of \code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
+for forming bootstrapping confidence intervals.
 }
 \description{
-One paragraph description
+Generate bootstrapping estimates for models
+in a list of 'lm' outputs.
 }
 \details{
-Details
-(Include subjects for verbs.)
-(Use 3rd person forms for verbs.)
+It do nonparametric bootstrapping to generate bootstrap
+estimates of the regression coefficients in the regression models
+of a list of \code{\link[=lm]{lm()}} outputs, or a \code{lm_list}-class object
+formed by \code{\link[=lm2list]{lm2list()}}. The stored estimates can be
+used to \code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
+in forming bootstrapping confidence intervals for
+conditional effects.
+
+This approach removes the need to repeat bootstrapping in
+each call to \code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+It also ensures that the same set of bootstrap samples
+is used in all subsequent analysis.
 }
 \examples{
 
-library(lavaan)
-dat <- modmed_x1m3w4y1
-mod <-
-"
-m1 ~ a1 * x
-m2 ~ a2 * m1
-m3 ~ a3 * m2
-y  ~ a4 * m3 + c4 * x
-"
-fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
-est <- parameterEstimates(fit)
-
-check_path(x = "x", y = "m3", m = c("m1", "m2"), fit = fit)
-check_path(x = "x", y = "y", m = c("m1", "m2"), fit = fit)
+data(data_med_mod_ab1)
+dat <- data_med_mod_ab1
+lm_m <- lm(m ~ x*w + c1 + c2, dat)
+lm_y <- lm(y ~ m*w + x + c1 + c2, dat)
+lm_out <- lm2list(lm_m, lm_y)
+# In real research, R should be 2000 or even 5000
+lm_boot_out <- lm2boot_out(lm_out, R = 100, seed = 1234)
+wlevels <- mod_levels(w = "w", fit = lm_out)
+wlevels
+out <- cond_indirect_effects(wlevels = wlevels,
+                             x = "x",
+                             y = "y",
+                             m = "m",
+                             fit = lm_out,
+                             boot_ci = TRUE,
+                             boot_out = lm_boot_out)
+out
 
 }
 \author{

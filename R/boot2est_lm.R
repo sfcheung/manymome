@@ -1,15 +1,30 @@
-#' @title One Line Title
+#' @title Bootstrapping Estimates for `lm` Outputs
 #'
-#' @description One paragraph description
+#' @description Generate bootstrapping estimates for models
+#'  in a list of 'lm' outputs.
 #'
-#' @details Details
-#'   (Include subjects for verbs.)
-#'   (Use 3rd person forms for verbs.)
+#' @details
+#' It do nonparametric bootstrapping to generate bootstrap
+#' estimates of the regression coefficients in the regression models
+#' of a list of [lm()] outputs, or a `lm_list`-class object
+#' formed by [lm2list()]. The stored estimates can be
+#' used to [cond_indirect()] and [cond_indirect_effects()]
+#' in forming bootstrapping confidence intervals for
+#' conditional effects.
+#'
+#' This approach removes the need to repeat bootstrapping in
+#' each call to [cond_indirect()] and [cond_indirect_effects()].
+#' It also ensures that the same set of bootstrap samples
+#' is used in all subsequent analysis.
 #'
 #' @return
-#' Specify what are returned.
+#' A `boot_out`-class object that can be used for the `boot_out`
+#' argument of [cond_indirect()] and [cond_indirect_effects()]
+#' for forming bootstrapping confidence intervals.
 #'
-#' @param outputs A list of `lm` class objects.
+#' @param outputs A list of `lm` class objects, or
+#'  the output of [lm2list()] (i.e., a `lm_list`-class
+#'  object).
 #' @param R The number of bootstrap samples. Default is 100.
 #' @param seed The seed for the bootstrapping.
 #'             Default is `NULL` and seed is not set.
@@ -18,20 +33,23 @@
 #'
 #' @examples
 #'
-#' library(lavaan)
-#' dat <- modmed_x1m3w4y1
-#' mod <-
-#' "
-#' m1 ~ a1 * x
-#' m2 ~ a2 * m1
-#' m3 ~ a3 * m2
-#' y  ~ a4 * m3 + c4 * x
-#' "
-#' fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
-#' est <- parameterEstimates(fit)
-#'
-#' check_path(x = "x", y = "m3", m = c("m1", "m2"), fit = fit)
-#' check_path(x = "x", y = "y", m = c("m1", "m2"), fit = fit)
+#' data(data_med_mod_ab1)
+#' dat <- data_med_mod_ab1
+#' lm_m <- lm(m ~ x*w + c1 + c2, dat)
+#' lm_y <- lm(y ~ m*w + x + c1 + c2, dat)
+#' lm_out <- lm2list(lm_m, lm_y)
+#' # In real research, R should be 2000 or even 5000
+#' lm_boot_out <- lm2boot_out(lm_out, R = 100, seed = 1234)
+#' wlevels <- mod_levels(w = "w", fit = lm_out)
+#' wlevels
+#' out <- cond_indirect_effects(wlevels = wlevels,
+#'                              x = "x",
+#'                              y = "y",
+#'                              m = "m",
+#'                              fit = lm_out,
+#'                              boot_ci = TRUE,
+#'                              boot_out = lm_boot_out)
+#' out
 #'
 #' @export
 #'
