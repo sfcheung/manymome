@@ -2,7 +2,7 @@
 % Please edit documentation in R/lm2list.R
 \name{lm2list}
 \alias{lm2list}
-\title{One Line Title}
+\title{Join 'lm()' Output to Form an 'lm_list-class' Object}
 \usage{
 lm2list(...)
 }
@@ -10,32 +10,65 @@ lm2list(...)
 \item{...}{The \code{\link[=lm]{lm()}} outputs to be grouped in a list.}
 }
 \value{
-Specify what are returned.
+It returns a \code{lm_list}-class object that forms a path model represented
+by a set of regression models. This class has a \code{\link[=summary.lm_list]{summary.lm_list()}} method
+that prints the summary of each regression model stored.
 }
 \description{
-One paragraph description
+The resulting model can be used by \code{\link[=cond_indirect]{cond_indirect()}}
+and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} as a path method, as if fitted
+by \code{\link[lavaan:sem]{lavaan::sem()}}.
 }
 \details{
-Details
-(Include subjects for verbs.)
-(Use 3rd person forms for verbs.)
+If a path model with mediation and/or moderation is fitted
+by a set of regression models using \code{\link[=lm]{lm()}}, this function can
+combine them to an object of the class \code{lm_list-class} that
+represents a path model, as one fitted by structural equation
+model functions such as \code{\link[lavaan:sem]{lavaan::sem()}}. This class of object can
+be used by some functions, such as \code{\link[=cond_indirect]{cond_indirect()}} and
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} as if they are the output of fitting a
+path model, with the regression coefficients treated as path
+coefficients.
+
+The regression outputs to be combined need to meet
+the following requirements:
+\itemize{
+\item All models must be connected to at least one another model.
+That is, a regression model must either have (a) at least
+on predictor that is the outcome variable of another model, or
+(b) its outcome variable the predictor of another model.
+\item The sample sizes of all regression outputs must be identical.
+\item All models must be fitted to the same sample.
+}
 }
 \examples{
 
-library(lavaan)
-dat <- modmed_x1m3w4y1
-mod <-
-"
-m1 ~ a1 * x
-m2 ~ a2 * m1
-m3 ~ a3 * m2
-y  ~ a4 * m3 + c4 * x
-"
-fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
-est <- parameterEstimates(fit)
 
-check_path(x = "x", y = "m3", m = c("m1", "m2"), fit = fit)
-check_path(x = "x", y = "y", m = c("m1", "m2"), fit = fit)
+
+data(data_serial_parallel)
+lm_m11 <- lm(m11 ~ x + c1 + c2, data_serial_parallel)
+lm_m12 <- lm(m12 ~ m11 + x + c1 + c2, data_serial_parallel)
+lm_m2 <- lm(m2 ~ x + c1 + c2, data_serial_parallel)
+lm_y <- lm(y ~ m11 + m12 + m2 + x + c1 + c2, data_serial_parallel)
+# Join them to form a lm_list-class object
+lm_serial_parallel <- lm2list(lm_m11, lm_m12, lm_m2, lm_y)
+lm_serial_parallel
+summary(lm_serial_parallel)
+
+# Compute indirect effect from x to y through m11 and m12
+outm11m12 <- cond_indirect(x = "x", y = "y",
+                           m = c("m11", "m12"),
+                           fit = lm_serial_parallel)
+outm11m12
+# Compute indirect effect from x to y through m11 and m12 with bootstrapping CI
+# R should be at least 2000 or even 5000 in read study.
+outm11m12 <- cond_indirect(x = "x", y = "y",
+                           m = c("m11", "m12"),
+                           fit = lm_serial_parallel,
+                           boot_ci = TRUE,
+                           R = 100,
+                           seed = 1234)
+outm11m12
 
 }
 \author{
