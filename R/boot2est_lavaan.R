@@ -1,13 +1,32 @@
-#' @title One Line Title
+#' @title Bootstrapping Estimates for a `lavaan` Output
 #'
-#' @description One paragraph description
+#' @description Extract the bootstrapping estimates from
+#'  the output of [lavaan::sem()].
 #'
-#' @details Details
-#'   (Include subjects for verbs.)
-#'   (Use 3rd person forms for verbs.)
+#' @details
+#' If bootstrapping confidence intervals was requested
+#' when calling [lavaan:sem()] by setting `se = "boot"`,
+#' [fit2boot_out()] can be used to extract the stored
+#' bootstrap estimates such that they can be reused by
+#' [cond_indirect()] and [cond_indirect_effects()]
+#' to form bootstrapping confidence intervals for
+#' conditional effects.
 #'
-#' @return
-#' Specify what are returned.
+#' If bootstrapping confidence intervals was not requested,
+#' [fit2boot_out_do_boot()] can be used to generate nonparametric
+#' bootstrap estimates from the output of [lavaan::sem()]
+#' and store them for use by
+#' [cond_indirect()] and [cond_indirect_effects()].
+#'
+#' This approach removes the need to repeat bootstrapping in
+#' each call to [cond_indirect()] and [cond_indirect_effects()].
+#' It also ensures that the same set of bootstrap samples
+#' is used in all subsequent analysis.
+#'
+#' @return A `boot_out`-class object that can be used for the
+#' `boot_out` argument of [cond_indirect()] and
+#' [cond_indirect_effects()] for forming bootstrapping confidence
+#' intervals.
 #'
 #' @param fit The fit object. Currently only supports a
 #'            [lavaan::lavaan-class] object.
@@ -17,19 +36,44 @@
 #' @examples
 #'
 #' library(lavaan)
-#' dat <- modmed_x1m3w4y1
+#' data(data_med_mod_ab1)
+#' dat <- data_med_mod_ab1
+#' dat$"x:w" <- dat$x * dat$w
+#' dat$"m:w" <- dat$m * dat$w
 #' mod <-
 #' "
-#' m1 ~ a1 * x
-#' m2 ~ a2 * m1
-#' m3 ~ a3 * m2
-#' y  ~ a4 * m3 + c4 * x
+#' m ~ x + w + x:w + c1 + c2
+#' y ~ m + w + m:w + x + c1 + c2
 #' "
-#' fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
-#' est <- parameterEstimates(fit)
-#'
-#' check_path(x = "x", y = "m3", m = c("m1", "m2"), fit = fit)
-#' check_path(x = "x", y = "y", m = c("m1", "m2"), fit = fit)
+#' # Bootstrapping confidence interval requested in lavaan::sem()
+#' # bootstrap should be set to 2000 or even 5000 in real study
+#' set.seed(1234)
+#' fit <- sem(model = mod, data = dat, fixed.x = FALSE,
+#'            se = "boot", bootstrap = 50)
+#' fit_boot_out <- fit2boot_out(fit)
+#' wlevels <- mod_levels(w = "w", fit = fit)
+#' out <- cond_indirect_effects(wlevels = wlevels,
+#'                              x = "x",
+#'                              y = "y",
+#'                              m = "m",
+#'                              fit = fit,
+#'                              boot_ci = TRUE,
+#'                              boot_out = fit_boot_out)
+#' out
+#' # Bootstrapping not requested in calling lavaan::sem()
+#' fit <- sem(model = mod, data = dat, fixed.x = FALSE)
+#' fit_boot_out <- fit2boot_out_do_boot(fit = fit,
+#'                                      R = 50,
+#'                                      seed = 1234)
+#' wlevels <- mod_levels(w = "w", fit = fit)
+#' out <- cond_indirect_effects(wlevels = wlevels,
+#'                              x = "x",
+#'                              y = "y",
+#'                              m = "m",
+#'                              fit = fit,
+#'                              boot_ci = TRUE,
+#'                              boot_out = fit_boot_out)
+#' out
 #'
 #' @export
 #' @describeIn fit2boot_out Process stored bootstrap estimates for functions
