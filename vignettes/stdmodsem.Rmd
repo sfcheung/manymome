@@ -26,7 +26,9 @@ if (basename(getwd()) == "stdmodsem") {
 This article is a brief illustration on how `stdmodsem` functions are
 used in some typical cases.
 
-# Moderated Mediation: Multiple Regression by `lm()`
+# Moderated mediation
+
+## Multiple Regression by `lm()`
 
 This is the sample dataset comes with the package:
 
@@ -157,7 +159,7 @@ out_lm_std <- cond_indirect_effects(wlevels = mod_levels,
 out_lm_std
 ```
 
-# Moderated Mediation: Path Analysis by `lavaan::sem()`
+## Path Analysis by `lavaan::sem()`
 
 Suppose we fit the same model, but by path analysis.
 
@@ -239,8 +241,16 @@ out_lavaan_std <- cond_indirect_effects(wlevels = mod_levels,
 out_lavaan_std
 ```
 
-# Mediation: Multiple Regression by `lm()`
+# Mediation Only
 
-# Mediation: Path Analysis by `lavaan::sem()`
+## Multiple Regression by `lm()`
+
+## Path Analysis by `lavaan::sem()`
+
+# More Cases
+
+## A Complicated Path model
+
+## A Latent Variable model
 
 # Further Information
