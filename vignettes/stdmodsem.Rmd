@@ -2,7 +2,9 @@
 title: "stdmodsem"
 author: "Shu Fai Cheung"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    number_sections: true
 vignette: >
   %\VignetteIndexEntry{stdmodsem}
   %\VignetteEngine{knitr::rmarkdown}
