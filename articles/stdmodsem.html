@@ -258,7 +258,7 @@
 <span><span class="co">#&gt; 'ncores' &gt;= The number of detected cores (2). The computer may not be responsive</span></span>
 <span><span class="co">#&gt; when bootstrapping is running.</span></span>
 <span><span class="co">#&gt; 2 processes started to run bootstrapping.</span></span>
-<span><span class="co">#&gt; The expected CPU time is about 17 second(s).</span></span></code></pre></div>
+<span><span class="co">#&gt; The expected CPU time is about 21 second(s).</span></span></code></pre></div>
 <p>We can use <code><a href="../reference/mod_levels.html">mod_levels_list()</a></code> to generate levels of the moderators:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mod_levels.html">mod_levels_list</a></span><span class="op">(</span><span class="st">"w1"</span>, <span class="st">"w2"</span>,</span>
@@ -349,6 +349,7 @@
 <span><span class="co">#&gt; 5 10.85 6.39 6.19 5.39 8.76 5.36  9.84 4.28  9.81</span></span>
 <span><span class="co">#&gt; 6 10.28 4.58 4.88 4.28 8.50 4.57 10.42 4.71 11.38</span></span></code></pre></div>
 <p>Suppose this is the model being fitted:</p>
+<p><img src="stdmodsem_files/figure-html/unnamed-chunk-19-1.png" width="700"></p>
 <div class="section level3">
 <h3 id="multiple-regression-by-lm-1">Multiple Regression by <code>lm()</code><a class="anchor" aria-label="anchor" href="#multiple-regression-by-lm-1"></a>
 </h3>
@@ -566,7 +567,7 @@
 <span><span class="co">#&gt; 'ncores' &gt;= The number of detected cores (2). The computer may not be responsive</span></span>
 <span><span class="co">#&gt; when bootstrapping is running.</span></span>
 <span><span class="co">#&gt; 2 processes started to run bootstrapping.</span></span>
-<span><span class="co">#&gt; The expected CPU time is about 8.25 second(s).</span></span></code></pre></div>
+<span><span class="co">#&gt; The expected CPU time is about 10 second(s).</span></span></code></pre></div>
 <p>We can now compute the indirect effects. There are several possible pathways. <code><a href="../reference/cond_indirect.html">cond_indirect()</a></code> does not require the pathways to be specified before fitting the models. The pathway can be specified when calling it.</p>
 <p>For example, suppose we want to estimate the indirect effect through <code>x1 -&gt; m11 -&gt; m12 -&gt; y1</code>. We set <code>x</code> to the start of the pathway, <code>y</code> to the end of the pathway, and <code>m</code> to the sequence of mediators, from left to right:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
