@@ -25,28 +25,27 @@ library(lavaan)
 dat <- modmed_x1m3w4y1
 mod <-
 "
-m1 ~ a1 * x   + b1 * w1 + d1 * x:w1
-m2 ~ a2 * m1  + b2 * w2 + d2 * m1:w2
-m3 ~ a3 * m2  + b3 * w3 + d3 * m2:w3
-y  ~ a4 * m3  + b4 * w4 + d4 * m3:w4
+m1 ~ a1 * x  + d1 * w1 + e1 * x:w1
+m2 ~ a2 * x
+y  ~ b1 * m1 + b2 * m2 + cp * x
 "
 fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
-est <- parameterEstimates(fit)
 
-wvalues <- c(w1 = 5, w2 = 4, w3 = 2, w4 = 3)
+# Examples for cond_indirect_effects():
 
-indirect_1 <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
-                       wvalues = wvalues)
-indirect_2 <- (est[est$label == "a1", "est"] +
-                wvalues["w1"] * est[est$label == "d1", "est"]) *
-              (est[est$label == "a2", "est"] +
-                wvalues["w2"] * est[est$label == "d2", "est"]) *
-              (est[est$label == "a3", "est"] +
-                wvalues["w3"] * est[est$label == "d3", "est"]) *
-              (est[est$label == "a4", "est"] +
-                wvalues["w4"] * est[est$label == "d4", "est"])
-indirect_1$indirect
-indirect_2
+# Create levels of w1, the moderators
+w1levels <- mod_levels("w1", fit = fit)
+w1levels
+
+# Conditional effects from x to m1 when w1 is equal to each of the levels
+cond_indirect_effects(x = "x", y = "m1",
+                      wlevels = w1levels, fit = fit)
+
+# Conditional Indirect effect from x1 through m1 to y,
+# when w1 is equal to each of the levels
+cond_indirect_effects(x = "x", y = "y", m = "m1",
+                      wlevels = w1levels, fit = fit)
+
 
 }
 \author{
