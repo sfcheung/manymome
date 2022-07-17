@@ -4,10 +4,28 @@
     <loc>https://sfcheung.github.io/stdmodsem/404.html</loc>
   </url>
   <url>
-    <loc>https://sfcheung.github.io/stdmodsem/LICENSE-text.html</loc>
+    <loc>https://sfcheung.github.io/stdmodsem/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://sfcheung.github.io/stdmodsem/LICENSE.html</loc>
+    <loc>https://sfcheung.github.io/stdmodsem/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/articles/mediation.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/articles/moderated_mediation.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/articles/moderated_mediation_cat.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/articles/moderation.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/articles/moderation_cat.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/articles/stdmodsem.html</loc>
   </url>
   <url>
     <loc>https://sfcheung.github.io/stdmodsem/authors.html</loc>
@@ -19,6 +37,117 @@
     <loc>https://sfcheung.github.io/stdmodsem/news/index.html</loc>
   </url>
   <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/check_path.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/coef.indirect.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/cond_indirect.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/confint.indirect.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/data_med.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/data_med_complicated.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/data_med_mod_a.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/data_med_mod_ab.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/data_med_mod_ab1.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/data_med_mod_b.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/data_med_mod_parallel.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/data_med_mod_parallel_cat.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/data_med_mod_serial.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/data_med_mod_serial_cat.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/data_med_mod_serial_parallel.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/data_med_mod_serial_parallel_cat.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/data_mod.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/data_mod2.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/data_mod_cat.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/data_parallel.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/data_serial.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/data_serial_parallel.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/factor2var.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/fit2boot_out.html</loc>
+  </url>
+  <url>
     <loc>https://sfcheung.github.io/stdmodsem/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/indirect.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/lm2boot_out.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/lm2list.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/lm2ptable.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/merge_mod_levels.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/mod_levels.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/modmed_x1m3w4y1.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/print.cond_indirect_effects.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/print.indirect.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/print.lm_list.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/simple_mediation_latent.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/stdmodsem-package.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/summary.lm_list.html</loc>
   </url>
 </urlset>
