@@ -99,8 +99,8 @@ lm_y <- lm(y ~ m * w2 + x, dat)
 These are the coefficients:
 
 ```{r}
-printCoefmat(summary(lm_m)$coefficients, digits = 3)
-printCoefmat(summary(lm_y)$coefficients, digits = 3)
+printCoefmat(summary(lm_m)$coefficients, digits = 3, signif.legend = FALSE)
+printCoefmat(summary(lm_y)$coefficients, digits = 3, signif.legend = FALSE)
 ```
 
 To compute conditional indirect effects and form bootstrap confidence
@@ -133,7 +133,7 @@ To form bootstrapping confidence intervals, we first repeat the regression
 analysis in all models by nonparametric bootstrapping and store the results.
 This can be done by `lm2boot_out()`:
 
-```{r echo = FALSE}
+```{r echo = FALSE, eval = FALSE}
 fn <- paste0(pth, "stdmodsem_fit_lm_boot_out.rds")
 if (file.exists(fn)) {
     fit_lm_boot_out <- readRDS(fn)
@@ -143,8 +143,11 @@ if (file.exists(fn)) {
   }
 ```
 
-```{r eval = FALSE}
-fit_lm_boot_out <- lm2boot_out(fit_lm, R = 2000, seed = 87415)
+(Note: Only 500 bootstrap samples are used for illustration. Set
+R to 2000 or even 5000 in real research.)
+
+```{r eval = TRUE}
+fit_lm_boot_out <- lm2boot_out(fit_lm, R = 500, seed = 87415)
 ```
 
 It is all set. We can now compute the conditional indirect effect:
@@ -190,13 +193,14 @@ y ~ m + w2 + m:w2 + x
 fit_lavaan <- sem(model = mod,
                   data = dat,
                   fixed.x = FALSE)
+parameterEstimates(fit_lavaan)[parameterEstimates(fit_lavaan)$op == "~", ]
 ```
 
 It is not recommended to set `se` to `"boot"` for bootstrapping.
 `fit2boot_out_do_boot()` can be used to compute only information
 necessary for this package. It also supports parallel processing.
 
-```{r echo = FALSE}
+```{r echo = FALSE, eval = FALSE}
 fn <- paste0(pth, "stdmodsem_fit_lavaan_boot_out.rds")
 if (file.exists(fn)) {
     fit_lavaan_boot_out <- readRDS(fn)
@@ -210,9 +214,12 @@ if (file.exists(fn)) {
   }
 ```
 
-```{r eval = FALSE}
+(Note: Only 500 bootstrap samples are used for illustration. Set
+R to 2000 or even 5000 in real research.)
+
+```{r eval = TRUE}
 fit_lavaan_boot_out <- fit2boot_out_do_boot(fit = fit_lavaan,
-                                            R = 2000,
+                                            R = 500,
                                             seed = 8715,
                                             parallel = TRUE,
                                             ncores = 2)
@@ -347,7 +354,7 @@ To form bootstrapping confidence intervals, we first repeat the regression
 analysis in all models by nonparametric bootstrapping and store the results.
 This can be done by `lm2boot_out()`:
 
-```{r echo = FALSE}
+```{r echo = FALSE, eval = FALSE}
 fn <- paste0(pth, "stdmodsem_fit_lm_boot_out_complicated.rds")
 if (file.exists(fn)) {
     fit_lm_boot_out_complicated <- readRDS(fn)
@@ -358,8 +365,11 @@ if (file.exists(fn)) {
   }
 ```
 
-```{r eval = FALSE}
-fit_lm_boot_out_complicated <- lm2boot_out(fit_lm, R = 2000, seed = 87415)
+(Note: Only 500 bootstrap samples are used for illustration. Set
+R to 2000 or even 5000 in real research.)
+
+```{r eval = TRUE}
+fit_lm_boot_out_complicated <- lm2boot_out(fit_lm, R = 500, seed = 87415)
 ```
 
 We can now compute the indirect effects. There are several
@@ -440,13 +450,14 @@ y2 ~ m2 + x1 + x2
 fit_lavaan <- sem(model = mod,
                   data = dat,
                   fixed.x = FALSE)
+parameterEstimates(fit_lavaan)[parameterEstimates(fit_lavaan)$op == "~", ]
 ```
 
 It is not recommended to set `se` to `"boot"` for bootstrapping.
 `fit2boot_out_do_boot()` can be used to compute only information
 necessary for this package. It also supports parallel processing.
 
-```{r echo = FALSE}
+```{r echo = FALSE, eval = FALSE}
 fn <- paste0(pth, "stdmodsem_fit_lavaan_boot_out_complicated.rds")
 if (file.exists(fn)) {
     fit_lavaan_boot_out_complicated <- readRDS(fn)
@@ -460,9 +471,12 @@ if (file.exists(fn)) {
   }
 ```
 
-```{r eval = FALSE}
+(Note: Only 500 bootstrap samples are used for illustration. Set
+R to 2000 or even 5000 in real research.)
+
+```{r eval = TRUE}
 fit_lavaan_boot_out_complicated <- fit2boot_out_do_boot(fit = fit_lavaan,
-                                            R = 2000,
+                                            R = 500,
                                             seed = 8715,
                                             parallel = TRUE,
                                             ncores = 2)
