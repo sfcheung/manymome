@@ -28,9 +28,7 @@ if (basename(getwd()) == "stdmodsem") {
 This article is a brief illustration on how `stdmodsem` functions are
 used in some typical cases.
 
-# Moderated mediation
-
-## Multiple Regression by `lm()`
+# Moderated Mediation
 
 This is the sample dataset comes with the package:
 
@@ -74,13 +72,29 @@ p$graphAttributes$Edges$asize[c(1, 4)] <- 0
 plot(p)
 ```
 
+This is a moderated mediation model with
+
+  - a mediation path `x -> m -> y`, and
+
+  - two moderators: `x -> m` moderated by `w1` and `m -> y` moderated by `w2`.
+
+The effects of interest are the *conditional
+indirect effects*: the indirect effects from `x` to `y` through `m` for
+different levels of `w1` and `w2`.
+
+There are two common approaches to test and estimate these
+effects: regression approach and structural equation modelling
+approach. The following sections will illustrate these two
+approaches.
+
+## Multiple Regression by `lm()`
+
+
 ```{r}
 lm_m <- lm(m ~ x * w1, dat)
 lm_y <- lm(y ~ m * w2 + x, dat)
 ```
 
-This is a mediation model, `x -> m -> y`, with both paths
-moderated, `x -> m` by `w1`, and `m -> y` by `w2`.
 
 These are the coefficients:
 
@@ -95,7 +109,7 @@ estimate by multiple regression, we first group the `lm()` outputs to a `list`.
 
 This can be done by `lm2list()`, which will also check the `lm()` outputs
 to see whether they can from a model and whether exactly the cases are used
-in all modlels:
+in all models:
 
 
 ```{r}
@@ -163,7 +177,8 @@ out_lm_std
 
 ## Path Analysis by `lavaan::sem()`
 
-Suppose we fit the same model, but by path analysis.
+Suppose we fit the same model, but by path analysis conducted in
+by structural equation modelling analysis using `lavaan::sem()`.
 
 ```{r}
 library(lavaan)
@@ -244,6 +259,10 @@ out_lavaan_std
 ```
 
 # Mediation Only
+
+The function `cond_indirect()` also supports a path model without
+moderator. It can be used for complicated models with any number of
+predictors, mediators, outcome variables, and paths.
 
 ## Multiple Regression by `lm()`
 
