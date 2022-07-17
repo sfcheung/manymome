@@ -281,7 +281,7 @@ print(head(dat), digits = 3)
 
 Suppose this is the model being fitted:
 
-```{r echo = FALSE}
+```{r echo = FALSE, eval = FALSE}
 library(semPlot)
 suppressMessages(library(lavaan))
 mod <-
