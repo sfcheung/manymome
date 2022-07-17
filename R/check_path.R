@@ -1,0 +1,94 @@
+#' @title Check Whether an Indirect Path is Valid in a Model
+#'
+#' @description It checks whether an indirect path exists
+#'  in a model.
+#'
+#' @details It checks whether the path defined by a predictor,
+#'  an outcome, and sequence of mediators exists in
+#'  a model.
+#'
+#' For example, in the following model in [lavaan] syntax
+#'
+#' ```
+#' m1 ~ x
+#' m2 ~ m1
+#' m3 ~ x
+#' y ~ m2 + m3
+#' ```
+#'
+#' This path is valid: `x = "x", y = "y", m = c("m1", "m2")``
+#'
+#' This path is invalid: `x = "x", y = "y", m = c("m2")``
+#'
+#' This path is also invalid: `x = "x", y = "y", m = c("m1", "m2")``
+#'
+#' @return Boolean. `TRUE` is the path is valid, `FALSE` if the
+#'  path is invalid.
+#'
+#' @param fit The fit object. Currently only supports a
+#'            [lavaan::lavaan-class] object.
+#' @param x Character. The name of predictor at the start of the pathway.
+#' @param y Character. The name of the outcome variable at
+#'          the end of the pathway.
+#' @param m A vector of the variable names of the
+#'          mediators. The pathway goes from the first
+#'          mediator successively to the last mediator. If
+#'          `NULL`, the default, the pathway goes from `x`
+#'          to `y`.
+#' @param est The output of [lavaan::parameterEstimates()]. If `NULL`, the
+#'            default, it will be generated from `fit`. If supplied,
+#'            `fit` will ge ignored.
+#'
+#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
+#'
+#' @examples
+#'
+#' library(lavaan)
+#' data(data_serial_parallel)
+#' dat <- data_serial_parallel
+#' mod <-
+#' "
+#' m11 ~ x + c1 + c2
+#' m12 ~ m11 + x + c1 + c2
+#' m2 ~ x + c1 + c2
+#' y ~ m12 + m2 + m11 + x + c1 + c2
+#' "
+#' fit <- sem(mod, dat,
+#'            meanstructure = TRUE, fixed.x = FALSE)
+#'
+#' # The following paths are valid
+#' check_path(x = "x", y = "y", m = c("m11", "m12"), fit = fit)
+#' check_path(x = "x", y = "y", m = "m2", fit = fit)
+#' # The following paths are invalid
+#' check_path(x = "x", y = "y", m = c("m11", "m2"), fit = fit)
+#' check_path(x = "x", y = "y", m = c("m12", "m11"), fit = fit)
+#'
+#' @export
+#'
+#'
+
+check_path <- function(x,
+                       y,
+                       m = NULL,
+                       fit = NULL,
+                       est = NULL) {
+    if (is.null(est)) {
+      fit_type <- cond_indirect_check_fit(fit)
+      est <- switch(fit_type,
+              lm = lm2ptable(fit)$est,
+              lavaan = lavaan::parameterEstimates(fit))
+    }
+    if (is.null(m)) {
+        return(any(((est$lhs == y) & (est$op == "~") & (est$rhs == x))))
+      }
+    y0 <- y
+    for (xi in c(rev(m), x)) {
+        if (any(((est$lhs == y0) & (est$op == "~") & (est$rhs == xi)))) {
+            y0 <- xi
+            next
+          } else {
+            return(FALSE)
+          }
+      }
+    return(TRUE)
+  }

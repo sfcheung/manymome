@@ -1,0 +1,28 @@
+---
+title: "Moderation Models - Categorical Moderators"
+author: "Shu Fai Cheung"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Moderation Models - Categorical Moderators}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r}
+options_old <- options(width = 90)
+```
+
+```{r echo = FALSE}
+# To Include
+# - Simple moderation: Categorical moderator
+# - Multiple moderators: Categorical moderator
+# - Multiple moderators: Continuous and categorical moderator
+```
