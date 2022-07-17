@@ -1,6 +1,6 @@
 Package: stdmodsem
 Title: Moderation, Mediation, and Moderated-Mediation in SEM
-Version: 0.0.1.9001
+Version: 0.0.1.9002
 Authors@R:
     c(person(given = "Shu Fai",
            family = "Cheung",
@@ -23,6 +23,7 @@ RoxygenNote: 7.2.0
 Suggests:
     knitr,
     rmarkdown,
+    semPlot,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Imports:
