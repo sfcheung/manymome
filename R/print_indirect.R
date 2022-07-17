@@ -165,11 +165,11 @@ print.indirect <- function(x, digits = 3, ...) {
         cat("\n ", x$computation_values)
       }
     if (has_boot_ci) {
-        cat("\n")
+        cat("\n\n")
         cat(strwrap(paste("Percentile confidence interval formed by nonparametric bootstrapping",
                           "with ",
                           length(x$boot_indirect),
-                          " bootstrap samples.")), sep = " ")
+                          " bootstrap samples.")), sep = "\n")
       }
     if (has_m) {
         if (has_w) {
@@ -181,7 +181,7 @@ print.indirect <- function(x, digits = 3, ...) {
           rownames(out) <- NULL
           colnames(out) <- c("Path", "Coefficient")
         }
-        cat("\n")
+        # cat("\n")
         cat("\nCoefficients of Component Paths:")
         cat("\n")
         print(out, digits = digits, row.names = FALSE)
