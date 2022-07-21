@@ -62,6 +62,8 @@ find_all_products <- function(data, expand = TRUE) {
                   USE.NAMES = TRUE,
                   simplify = FALSE)
     out <- out[sapply(out, function(x) !all(is.na(x)))]
+    # Remove variables that are a product of themselves
+    out <- out[sapply(out, function(x) x[1] != x[2])]
     if (expand) {
         out <- expand2lower(out)
       }
