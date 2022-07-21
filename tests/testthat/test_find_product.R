@@ -45,8 +45,8 @@ test_that("Find all product terms", {
                list(V1V3 = c("V1", "V3"),
                     V4V2 = c("V2", "V4"),
                     V1V2V3 = c("V2", "V1V3"),
-                    V1V2V3V4 = c("V4", "V1V2V3"),
-                    V4sq = c("V4", "V4")))
+                    V1V2V3V4 = c("V4", "V1V2V3")))
+                    # V4sq = c("V4", "V4")))
 })
 
 
@@ -55,7 +55,7 @@ test_that("Find all product terms", {
                list(V1V3 = c("V1", "V3"),
                     V4V2 = c("V2", "V4"),
                     V1V2V3 = c("V2", "V1", "V3"),
-                    V1V2V3V4 = c("V4", "V2", "V1", "V3"),
-                    V4sq = c("V4", "V4")))
+                    V1V2V3V4 = c("V4", "V2", "V1", "V3")))
+                    # V4sq = c("V4", "V4")))
 })
 
