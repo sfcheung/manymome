@@ -178,6 +178,16 @@ cond_indirect <- function(x,
         if (is.null(est)) est <- lm_est$est
         if (is.null(implied_stats)) implied_stats <- lm_est$implied_stats
       }
+    prods <- indirect(x = x,
+                     y = y,
+                     m = m,
+                     fit = fit0,
+                     est = est,
+                     implied_stats = implied_stats,
+                     wvalues = wvalues,
+                     standardized_x = standardized_x,
+                     standardized_y = standardized_y,
+                     get_prods_only = TRUE)
     out0 <- indirect(x = x,
                      y = y,
                      m = m,
@@ -186,7 +196,8 @@ cond_indirect <- function(x,
                      implied_stats = implied_stats,
                      wvalues = wvalues,
                      standardized_x = standardized_x,
-                     standardized_y = standardized_y)
+                     standardized_y = standardized_y,
+                     prods = prods)
     if (boot_ci) {
         out_boot <- mapply(indirect,
                            est = lapply(boot_out, function(x) x$est),
@@ -198,7 +209,8 @@ cond_indirect <- function(x,
                                            wvalues = wvalues,
                                            standardized_x = standardized_x,
                                            standardized_y = standardized_y,
-                                           warn = FALSE),
+                                           warn = FALSE,
+                                           prods = prods),
                            SIMPLIFY = FALSE)
         if (save_boot_full) {
             out0$boot_full <- out_boot

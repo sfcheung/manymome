@@ -15,6 +15,8 @@ indirect(
   standardized_x = FALSE,
   standardized_y = FALSE,
   computation_digits = 5,
+  prods = NULL,
+  get_prods_only = FALSE,
   warn = TRUE
 )
 }
@@ -58,6 +60,12 @@ which the moderators will be set to. Default is \code{NULL}.}
 
 \item{computation_digits}{The number of digits in storing the computation
 in text. Default is 3.}
+
+\item{prods}{The product terms found. For internal use.}
+
+\item{get_prods_only}{IF \code{TRUE}, will quit early and return the product
+terms found. The results can be passed to the \code{prod} argument
+when calling this function. Default is \code{FALSE}.}
 
 \item{warn}{If \code{TRUE}, the default, the function will warn against possible
 misspecification, such as not setting the value of a moderator
