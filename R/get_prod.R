@@ -61,13 +61,18 @@ get_prod <- function(x,
     if (!identical(all_prods, NA)) {
         tmp <- all_prods[prod_rhs]
         i_prod_x1 <- sapply(unname(tmp), function(xx) x %in% xx)
-        prod_x1 <- prod_rhs[i_prod_x1]
-        tmp2 <- tmp[i_prod_x1]
-        w1 <- sapply(unname(tmp2), function(xx) {
-                          xx[!(xx %in% x)]
-                        })
-        prod_x <- prod_x1
-        w <- w1
+        if (isTRUE(any(i_prod_x1))) {
+            prod_x1 <- prod_rhs[i_prod_x1]
+            tmp2 <- tmp[i_prod_x1]
+            w1 <- sapply(unname(tmp2), function(xx) {
+                              xx[!(xx %in% x)]
+                            })
+            prod_x <- prod_x1
+            w <- w1
+          } else {
+            prod_x <- NULL
+            w <- NULL
+          }
       } else {
         i_prod_x1 <- grepl(paste0(x, operator), prod_rhs)
         i_prod_x2 <- grepl(paste0(operator, x), prod_rhs)
