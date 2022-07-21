@@ -36,7 +36,8 @@ get_prod <- function(x,
       est <- lavaan::parameterEstimates(fit)
     }
     if (inherits(fit, "lavaan")) {
-        all_prods <- find_all_products(lavaan::lavInspect(fit, "data"))
+        all_prods <- find_all_products(lavaan::lavInspect(fit, "data"),
+                                       expand = FALSE)
         all_prods_names <- names(all_prods)
       } else {
         all_prods <- NA
