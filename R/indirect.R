@@ -46,6 +46,9 @@
 #' @param computation_digits The number of digits in storing the computation
 #'                           in text. Default is 3.
 #' @param prods The product terms found. For internal use.
+#' @param get_prods_only IF `TRUE`, will quit early and return the product
+#'             terms found. The results can be passed to the `prod` argument
+#'             when calling this function. Default is `FALSE`.
 #' @param warn If `TRUE`, the default, the function will warn against possible
 #'             misspecification, such as not setting the value of a moderator
 #'             which moderate one of the component path. Set this to `FALSE`
