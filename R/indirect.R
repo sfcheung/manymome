@@ -45,6 +45,7 @@
 #'                       `FALSE`.
 #' @param computation_digits The number of digits in storing the computation
 #'                           in text. Default is 3.
+#' @param prods The product terms found. For internal use.
 #' @param warn If `TRUE`, the default, the function will warn against possible
 #'             misspecification, such as not setting the value of a moderator
 #'             which moderate one of the component path. Set this to `FALSE`
@@ -101,6 +102,8 @@ indirect <- function(x,
                      standardized_x = FALSE,
                      standardized_y = FALSE,
                      computation_digits = 5,
+                     prods = NULL,
+                     get_prods_only = FALSE,
                      warn = TRUE) {
     if (is.null(est)) {
       est <- lavaan::parameterEstimates(fit)
@@ -131,28 +134,31 @@ indirect <- function(x,
     if (isTRUE(any(chk_lv)) && !isTRUE(all(chk_lv))) {
         stop("Does not support paths with both latent and observed variables")
       }
-    if (isTRUE(all(chk_lv))) {
-        prods <- mapply(get_prod,
-                        x = xs,
-                        y = ys,
-                        operator = "_x_",
-                        MoreArgs = list(est = est),
-                        SIMPLIFY = FALSE)
-      } else {
-        if (!is.null(fit)) {
+    if (is.null(prods)) {
+        if (isTRUE(all(chk_lv))) {
             prods <- mapply(get_prod,
                             x = xs,
                             y = ys,
-                            MoreArgs = list(fit = fit),
-                            SIMPLIFY = FALSE)
-          } else {
-            prods <- mapply(get_prod,
-                            x = xs,
-                            y = ys,
+                            operator = "_x_",
                             MoreArgs = list(est = est),
                             SIMPLIFY = FALSE)
+          } else {
+            if (!is.null(fit)) {
+                prods <- mapply(get_prod,
+                                x = xs,
+                                y = ys,
+                                MoreArgs = list(fit = fit),
+                                SIMPLIFY = FALSE)
+              } else {
+                prods <- mapply(get_prod,
+                                x = xs,
+                                y = ys,
+                                MoreArgs = list(est = est),
+                                SIMPLIFY = FALSE)
+              }
           }
       }
+    if (get_prods_only) return(prods)
     names(prods) <- ys
     if (!is.null(wvalues)) {
         tmpfct <- function(xi) {
