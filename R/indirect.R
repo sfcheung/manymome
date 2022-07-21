@@ -139,11 +139,19 @@ indirect <- function(x,
                         MoreArgs = list(est = est),
                         SIMPLIFY = FALSE)
       } else {
-        prods <- mapply(get_prod,
-                        x = xs,
-                        y = ys,
-                        MoreArgs = list(est = est),
-                        SIMPLIFY = FALSE)
+        if (!is.null(fit)) {
+            prods <- mapply(get_prod,
+                            x = xs,
+                            y = ys,
+                            MoreArgs = list(fit = fit),
+                            SIMPLIFY = FALSE)
+          } else {
+            prods <- mapply(get_prod,
+                            x = xs,
+                            y = ys,
+                            MoreArgs = list(est = est),
+                            SIMPLIFY = FALSE)
+          }
       }
     names(prods) <- ys
     if (!is.null(wvalues)) {
