@@ -138,7 +138,7 @@ fn <- paste0(pth, "stdmodsem_fit_lm_boot_out.rds")
 if (file.exists(fn)) {
     fit_lm_boot_out <- readRDS(fn)
   } else {
-    fit_lm_boot_out <- lm2boot_out(fit_lm, R = 2000, seed = 87415)
+    fit_lm_boot_out <- lm2boot_out(fit_lm, R = 500, seed = 87415)
     saveRDS(fit_lm_boot_out, fn)
   }
 ```
@@ -185,10 +185,19 @@ by structural equation modelling analysis using `lavaan::sem()`.
 
 ```{r}
 library(lavaan)
+dat$x_w1 <- dat$x * dat$w1
+dat$m_w2 <- dat$m * dat$w2
 mod <-
 "
-m ~ x + w1 + x:w1
-y ~ m + w2 + m:w2 + x
+m ~ x + w1 + x_w1
+y ~ m + w2 + m_w2 + x
+m ~~ w2 + m_w2
+w2 ~~ m_w2 + x
+m_w2 ~ x
+x ~~ w1 + x_w1
+w1 ~~ x_w1
+w2 ~~ w1 + x_w1
+m_w2 ~~ w1 + x_w1
 "
 fit_lavaan <- sem(model = mod,
                   data = dat,
@@ -206,8 +215,8 @@ if (file.exists(fn)) {
     fit_lavaan_boot_out <- readRDS(fn)
   } else {
     fit_lavaan_boot_out <- fit2boot_out_do_boot(fit = fit_lavaan,
-                                                R = 2000,
-                                                seed = 8715,
+                                                R = 500,
+                                                seed = 87515,
                                                 parallel = TRUE,
                                                 ncores = 2)
     saveRDS(fit_lavaan_boot_out, fn)
@@ -220,7 +229,7 @@ R to 2000 or even 5000 in real research.)
 ```{r eval = TRUE}
 fit_lavaan_boot_out <- fit2boot_out_do_boot(fit = fit_lavaan,
                                             R = 500,
-                                            seed = 8715,
+                                            seed = 87515,
                                             parallel = TRUE,
                                             ncores = 2)
 ```
@@ -286,17 +295,14 @@ library(semPlot)
 suppressMessages(library(lavaan))
 mod <-
 "
-m11 ~ x1
-m12 ~ m11 + x1
-m2 ~ x2
-y1 ~ m12 + x1 + m11 + x2
-y2 ~ m2 + x2 + x1
+m11 ~ x1 + x2
+m12 ~ m11 + x1 + x2
+y1 ~ m12 + m11 + x1 + x2
 "
 fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
-layout_m <- matrix(c(NA, "m11", NA, "m12", NA,
-                     "x1", NA, NA, NA, "y1",
-                     "x2", NA, NA, NA, "y2",
-                     NA, NA, "m2", NA, NA), 4, 5, byrow = TRUE)
+layout_m <- matrix(c("x1", NA, NA, NA,
+                     NA, "m11", "m12", "y1",
+                     "x2", NA, NA, NA), 3, 4, byrow = TRUE)
 p <- semPaths(fit0,
               layout = layout_m,
               nCharNodes = 0,
@@ -306,7 +312,7 @@ p <- semPaths(fit0,
               asize = 5,
               # curve = rep(2, 15),
               DoNotPlot = TRUE)
-p$graphAttributes$Edges$curve[c(12:13, 14:15)] <- c(6, -6, 0, 0)
+p$graphAttributes$Edges$curve[10:11] <- c(-2, 2)
 plot(p)
 ```
 
@@ -317,16 +323,12 @@ include all possible paths to make a model saturated, we illustrate
 how to fit the intended model by multiple regression.
 
 ```{r}
-lm_m11 <- lm(m11 ~ x1, dat)
-lm_m12 <- lm(m12 ~ m11 + x1, dat)
+lm_m11 <- lm(m11 ~ x1 + x2, dat)
+lm_m12 <- lm(m12 ~ m11 + x1 + x2, dat)
 lm_y1 <- lm(y1 ~ m12 + m11 + x1 + x2, dat)
-lm_m2 <- lm(m2 ~ x2, dat)
-lm_y2 <- lm(y2 ~ m2 + x1 + x2, dat)
 ```
 
 These are the coefficients:
-
-- From `x1` to `y1`:
 
 ```{r}
 printCoefmat(summary(lm_m11)$coefficients, digits = 3, signif.legend = FALSE)
@@ -334,19 +336,12 @@ printCoefmat(summary(lm_m12)$coefficients, digits = 3, signif.legend = FALSE)
 printCoefmat(summary(lm_y1)$coefficients, digits = 3, signif.legend = FALSE)
 ```
 
-- From `x2` to `y2`:
-
-```{r}
-printCoefmat(summary(lm_m2)$coefficients, digits = 3, signif.legend = FALSE)
-printCoefmat(summary(lm_y2)$coefficients, digits = 3, signif.legend = FALSE)
-```
-
 To compute indirect effects and form bootstrap confidence
 intervals, we use `cond_indirect_effects()`. We first group
 the `lm()` outputs to a `list` by `lm2list()`.
 
 ```{r}
-fit_lm <- lm2list(lm_m11, lm_m12, lm_y1, lm_m2, lm_y2)
+fit_lm <- lm2list(lm_m11, lm_m12, lm_y1)
 fit_lm
 ```
 
@@ -360,7 +355,7 @@ if (file.exists(fn)) {
     fit_lm_boot_out_complicated <- readRDS(fn)
   } else {
     fit_lm_boot_out_complicated <- lm2boot_out(fit_lm,
-          R = 2000, seed = 87415)
+          R = 500, seed = 87415)
     saveRDS(fit_lm_boot_out_complicated, fn)
   }
 ```
@@ -383,54 +378,70 @@ start of the pathway, `y` to the end of the pathway,
 and `m` to the sequence of mediators, from left to right:
 
 ```{r}
-out_x1y1 <- cond_indirect(x = "x1",
-                          y = "y1",
-                          m = c("m11", "m12"),
-                          fit = fit_lm,
-                          boot_ci = TRUE,
-                          boot_out = fit_lm_boot_out_complicated)
-out_x1y1
+out_x1y1_lm <- cond_indirect(x = "x1",
+                        y = "y1",
+                        m = c("m11", "m12"),
+                        fit = fit_lm,
+                        boot_ci = TRUE,
+                        boot_out = fit_lm_boot_out_complicated)
+out_x1y1_lm
 ```
 
-The indirect effect in the pathway `x2 -> m2 -> y2` can be
+The indirect effect in the pathway `x2 -> m12 -> m12 -> y1` can be
 estimated similarly:
 
 ```{r}
-out_x2y2 <- cond_indirect(x = "x2",
-                          y = "y2",
-                          m = "m2",
-                          fit = fit_lm,
-                          boot_ci = TRUE,
-                          boot_out = fit_lm_boot_out_complicated)
-out_x2y2
+out_x2y1_lm <- cond_indirect(x = "x2",
+                        y = "y1",
+                        m = c("m11", "m12"),
+                        fit = fit_lm,
+                        boot_ci = TRUE,
+                        boot_out = fit_lm_boot_out_complicated)
+out_x2y1_lm
 ```
 
 Suppose we are interested in the indirect effect from `x1`
-to `y1` through `m11` only, bypassing `m12`. This can be done
-by setting `m` only to `m11`:
+to `y1` through `m12` only, bypassing `m11`. This can be done
+by setting `m` only to `m12`:
 
 ```{r}
-out_x1y1_m11 <- cond_indirect(x = "x1",
-                              y = "y1",
-                              m = "m12",
-                              fit = fit_lm,
-                              boot_ci = TRUE,
-                              boot_out = fit_lm_boot_out_complicated)
-out_x1y1_m11
+out_x1y1_m12_lm <- cond_indirect(x = "x1",
+                        y = "y1",
+                        m = "m12",
+                        fit = fit_lm,
+                        boot_ci = TRUE,
+                        boot_out = fit_lm_boot_out_complicated)
+out_x1y1_m12_lm
 ```
 
 It is also possible to estimate the indirect effect only in a segment
 of a pathway, for example, from `m11` through `m12` to `y1`:
 
 ```{r}
-out_m11y1 <- cond_indirect(x = "m11",
-                           y = "y1",
-                           m = "m12",
-                           fit = fit_lm,
-                           boot_ci = TRUE,
-                           boot_out = fit_lm_boot_out_complicated)
-out_m11y1
+out_m11y1_lm <- cond_indirect(x = "m11",
+                        y = "y1",
+                        m = "m12",
+                        fit = fit_lm,
+                        boot_ci = TRUE,
+                        boot_out = fit_lm_boot_out_complicated)
+out_m11y1_lm
 ```
+
+The standardized solution can be computed by setting `standardized_x`
+and `standardized_y` to `TRUE`:
+
+```{r}
+out_x1y1_lm_std <- cond_indirect(x = "x1",
+                        y = "y1",
+                        m = c("m11", "m12"),
+                        fit = fit_lm,
+                        boot_ci = TRUE,
+                        boot_out = fit_lm_boot_out_complicated,
+                        standardized_x = TRUE,
+                        standardized_y = TRUE)
+out_x1y1_lm_std
+```
+
 
 ## Path Analysis by `lavaan::sem()`
 
@@ -441,11 +452,9 @@ by structural equation modelling analysis using `lavaan::sem()`.
 library(lavaan)
 mod <-
 "
-m11 ~ x1
-m12 ~ m11 + x1
+m11 ~ x1 + x2
+m12 ~ m11 + x1 + x2
 y1 ~ m12 + m11 + x1 + x2
-m2 ~ x2
-y2 ~ m2 + x1 + x2
 "
 fit_lavaan <- sem(model = mod,
                   data = dat,
@@ -463,7 +472,7 @@ if (file.exists(fn)) {
     fit_lavaan_boot_out_complicated <- readRDS(fn)
   } else {
     fit_lavaan_boot_out_complicated <- fit2boot_out_do_boot(fit = fit_lavaan,
-                                                R = 2000,
+                                                R = 500,
                                                 seed = 8715,
                                                 parallel = TRUE,
                                                 ncores = 2)
@@ -493,53 +502,68 @@ start of the pathway, `y` to the end of the pathway,
 and `m` to the sequence of mediators, from left to right:
 
 ```{r}
-out_x1y1 <- cond_indirect(x = "x1",
-                          y = "y1",
-                          m = c("m11", "m12"),
-                          fit = fit_lavaan,
-                          boot_ci = TRUE,
-                          boot_out = fit_lavaan_boot_out_complicated)
-out_x1y1
+out_x1y1_lavaan <- cond_indirect(x = "x1",
+                        y = "y1",
+                        m = c("m11", "m12"),
+                        fit = fit_lavaan,
+                        boot_ci = TRUE,
+                        boot_out = fit_lavaan_boot_out_complicated)
+out_x1y1_lavaan
 ```
 
 The indirect effect in the pathway `x2 -> m2 -> y2` can be
 estimated similarly:
 
 ```{r}
-out_x2y2 <- cond_indirect(x = "x2",
-                          y = "y2",
-                          m = "m2",
-                          fit = fit_lavaan,
-                          boot_ci = TRUE,
-                          boot_out = fit_lavaan_boot_out_complicated)
-out_x2y2
+out_x2y1_lavaan <- cond_indirect(x = "x2",
+                        y = "y1",
+                        m = c("m11", "m12"),
+                        fit = fit_lavaan,
+                        boot_ci = TRUE,
+                        boot_out = fit_lavaan_boot_out_complicated)
+out_x2y1_lavaan
 ```
 
 Suppose we are interested in the indirect effect from `x1`
-to `y1` through `m11` only, bypassing `m12`. This can be done
-by setting `m` only to `m11`:
+to `y1` through `m12` only, bypassing `m11`. This can be done
+by setting `m` only to `m12`:
 
 ```{r}
-out_x1y1_m11 <- cond_indirect(x = "x1",
-                              y = "y1",
-                              m = "m12",
-                              fit = fit_lavaan,
-                              boot_ci = TRUE,
-                              boot_out = fit_lavaan_boot_out_complicated)
-out_x1y1_m11
+out_x1y1_m12_lavaan <- cond_indirect(x = "x1",
+                        y = "y1",
+                        m = "m12",
+                        fit = fit_lavaan,
+                        boot_ci = TRUE,
+                        boot_out = fit_lavaan_boot_out_complicated)
+out_x1y1_m12_lavaan
 ```
 
 It is also possible to estimate the indirect effect only in a segment
 of a pathway, for example, from `m11` through `m12` to `y1`:
 
 ```{r}
-out_m11y1 <- cond_indirect(x = "m11",
-                           y = "y1",
-                           m = "m12",
-                           fit = fit_lavaan,
-                           boot_ci = TRUE,
-                           boot_out = fit_lavaan_boot_out_complicated)
-out_m11y1
+out_m11y1_lavaan <- cond_indirect(x = "m11",
+                        y = "y1",
+                        m = "m12",
+                        fit = fit_lavaan,
+                        boot_ci = TRUE,
+                        boot_out = fit_lavaan_boot_out_complicated)
+out_m11y1_lavaan
+```
+
+The standardized solution can be computed by setting `standardized_x`
+and `standardized_y` to `TRUE`:
+
+```{r}
+out_x1y1_lavaan_std <- cond_indirect(x = "x1",
+                        y = "y1",
+                        m = c("m11", "m12"),
+                        fit = fit_lavaan,
+                        boot_ci = TRUE,
+                        boot_out = fit_lavaan_boot_out_complicated,
+                        standardized_x = TRUE,
+                        standardized_y = TRUE)
+out_x1y1_lavaan_std
 ```
 
 # More Cases
