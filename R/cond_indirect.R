@@ -81,6 +81,10 @@
 #'    outputs from [cond_indirect()].
 #' @param save_boot_full If `TRUE`, full bootstrapping results will be
 #'    stored. Default is `FALSE.`
+#' @param prods The product terms found. For internal use.
+#' @param get_prods_only IF `TRUE`, will quit early and return the product
+#'             terms found. The results can be passed to the `prod` argument
+#'             when calling this function. Default is `FALSE`.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
@@ -134,7 +138,9 @@ cond_indirect <- function(x,
                      boot_out = NULL,
                      R = 100,
                      seed = NULL,
-                     save_boot_full = FALSE) {
+                     save_boot_full = FALSE,
+                     prods = NULL,
+                     get_prods_only = FALSE) {
     fit_type <- cond_indirect_check_fit(fit)
     chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
     if (!chkpath) {
@@ -180,18 +186,21 @@ cond_indirect <- function(x,
         if (is.null(implied_stats)) implied_stats <- lm_est$implied_stats
         fit_data <- lm_est$data
       }
-    prods <- indirect(x = x,
-                     y = y,
-                     m = m,
-                     fit = fit0,
-                     est = est,
-                     implied_stats = implied_stats,
-                     wvalues = wvalues,
-                     standardized_x = standardized_x,
-                     standardized_y = standardized_y,
-                     get_prods_only = TRUE,
-                     data = fit_data,
-                     expand = TRUE)
+    if (is.null(prods)) {
+        prods <- indirect(x = x,
+                        y = y,
+                        m = m,
+                        fit = fit0,
+                        est = est,
+                        implied_stats = implied_stats,
+                        wvalues = wvalues,
+                        standardized_x = standardized_x,
+                        standardized_y = standardized_y,
+                        get_prods_only = TRUE,
+                        data = fit_data,
+                        expand = TRUE)
+      }
+    if (get_prods_only) return(prods)
     out0 <- indirect(x = x,
                      y = y,
                      m = m,
@@ -298,6 +307,10 @@ cond_indirect_effects <- function(wlevels,
               }
           }
       }
+    prods <- cond_indirect(wvalues = wlevels2[[1]],
+                            ...,
+                            fit = fit,
+                            get_prods_only = TRUE)
     out <- lapply(wlevels2,
                   function(wv,
                            ...,
@@ -312,7 +325,8 @@ cond_indirect_effects <- function(wlevels,
                                             boot_ci = boot_ci,
                                             boot_out = boot_out,
                                             R = R,
-                                            seed = seed)
+                                            seed = seed,
+                                            prods = prods)
                            },
                   ...,
                   fit = fit,
