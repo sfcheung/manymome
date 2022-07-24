@@ -171,12 +171,14 @@ cond_indirect <- function(x,
         if (is.null(est)) est <- lavaan::parameterEstimates(fit)
         # if (is.null(implied_stats)) lavaan::lavInspect(fit, "implied")
         if (is.null(implied_stats)) implied_stats <- lav_implied_all(fit)
+        fit_data <- lavaan::lavInspect(fit, "data")
       }
     if (fit_type == "lm") {
         fit0 <- NULL
         lm_est <- lm2ptable(fit)
         if (is.null(est)) est <- lm_est$est
         if (is.null(implied_stats)) implied_stats <- lm_est$implied_stats
+        fit_data <- lm_est$data
       }
     prods <- indirect(x = x,
                      y = y,
@@ -187,7 +189,9 @@ cond_indirect <- function(x,
                      wvalues = wvalues,
                      standardized_x = standardized_x,
                      standardized_y = standardized_y,
-                     get_prods_only = TRUE)
+                     get_prods_only = TRUE,
+                     data = fit_data,
+                     expand = TRUE)
     out0 <- indirect(x = x,
                      y = y,
                      m = m,

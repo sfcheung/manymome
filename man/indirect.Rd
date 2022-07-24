@@ -17,6 +17,8 @@ indirect(
   computation_digits = 5,
   prods = NULL,
   get_prods_only = FALSE,
+  data = NULL,
+  expand = FALSE,
   warn = TRUE
 )
 }
@@ -66,6 +68,12 @@ in text. Default is 3.}
 \item{get_prods_only}{IF \code{TRUE}, will quit early and return the product
 terms found. The results can be passed to the \code{prod} argument
 when calling this function. Default is \code{FALSE}.}
+
+\item{data}{Data frame (optional). If supplied, it will be used to
+identify the product terms.}
+
+\item{expand}{Whether products of more than two terms will be searched.
+\code{FALSE} by default.}
 
 \item{warn}{If \code{TRUE}, the default, the function will warn against possible
 misspecification, such as not setting the value of a moderator
