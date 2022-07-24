@@ -196,7 +196,7 @@ indirect <- function(x,
                 wvalues_i[wv_na] <- 0
                 names(wvalues_i) <- w_i0
               }
-            b_i * wvalues_i
+            sum(b_i * wvalues_i)
           }
         b_cond <- sapply(prods, tmpfct)
         bs <- bs + b_cond
@@ -282,8 +282,15 @@ gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL,
         w_i1 <- w_i
         w_i2 <- w_i
       }
+    wvalues_i0 <- mapply(function(w1, wvalues) {
+                      paste0(formatC(wvalues[w1], digits = digits, format = "f"),
+                             collapse = "*")
+                    },
+                    w1 = w_i,
+                    MoreArgs = list(wvalues = wvalues))
     if (is.null(wvalues)) {
         wvalues_i <- rep(0, length(w_i))
+        wvalues_i0 <- "(0)"
         tmp <- paste0(paste0(w_i1, collapse = ", "),
                       " modelled as moderator(s) for the path ",
                       "from ", yiname_old, " to ", y,
@@ -303,6 +310,7 @@ gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL,
         wv_na <- is.na(wvalues_i)
         if (isTRUE(any(wv_na))) {
             wvalues_i[wv_na] <- 0
+            wvalues_i0[wv_na] <- "0"
             names(wvalues_i) <- w_i0
             # tmp0 <- w_i[!(w_i %in% names(wvalues))]
             tmp0 <- unique(unlist(w_i[wv_na]))
@@ -322,12 +330,6 @@ gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL,
                     paste0("(", b_i0, ")*(", w_i2, ")",
                           collapse = " + "))
 
-    wvalues_i0 <- mapply(function(b1, w1, wvalues) {
-                      paste0(formatC(wvalues[w1], digits = digits, format = "f"),
-                             collapse = "*")
-                    },
-                    w1 = w_i,
-                    MoreArgs = list(wvalues = wvalues))
     out2 <- paste0("(", formatC(yi, digits = digits, format = "f"),
                     ") + ",
                     paste0("(",
