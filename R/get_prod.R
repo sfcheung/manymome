@@ -19,6 +19,10 @@
 #' @param est The output of [lavaan::parameterEstimates()]. If `NULL`, the
 #'            default, it will be generated from `fit`. If supplied,
 #'            `fit` will ge ignored.
+#' @param data Data frame (optional). If supplied, it will be used to
+#'             identify the product terms.
+#' @param expand Whether products of more than two terms will be searched.
+#'               `FALSE` by default.
 #'
 #' @examples
 #' \donttest{
@@ -31,16 +35,22 @@ get_prod <- function(x,
                      y,
                      operator = ":",
                      fit = NULL,
-                     est = NULL) {
+                     est = NULL,
+                     data = NULL,
+                     expand = FALSE) {
     if (is.null(est)) {
       est <- lavaan::parameterEstimates(fit)
     }
+    all_prods <- NA
     if (inherits(fit, "lavaan")) {
         all_prods <- find_all_products(lavaan::lavInspect(fit, "data"),
-                                       expand = FALSE)
+                                       expand = expand)
         all_prods_names <- names(all_prods)
-      } else {
-        all_prods <- NA
+      }
+    if (!is.null(data)) {
+        all_prods <- find_all_products(data,
+                                       expand = expand)
+        all_prods_names <- names(all_prods)
       }
     i_rhs <- (est$lhs == y) &
              (est$op == "~")

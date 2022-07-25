@@ -49,6 +49,10 @@
 #' @param get_prods_only IF `TRUE`, will quit early and return the product
 #'             terms found. The results can be passed to the `prod` argument
 #'             when calling this function. Default is `FALSE`.
+#' @param data Data frame (optional). If supplied, it will be used to
+#'             identify the product terms.
+#' @param expand Whether products of more than two terms will be searched.
+#'               `TRUE` by default.
 #' @param warn If `TRUE`, the default, the function will warn against possible
 #'             misspecification, such as not setting the value of a moderator
 #'             which moderate one of the component path. Set this to `FALSE`
@@ -107,6 +111,8 @@ indirect <- function(x,
                      computation_digits = 5,
                      prods = NULL,
                      get_prods_only = FALSE,
+                     data = NULL,
+                     expand = TRUE,
                      warn = TRUE) {
     if (is.null(est)) {
       est <- lavaan::parameterEstimates(fit)
@@ -146,17 +152,30 @@ indirect <- function(x,
                             MoreArgs = list(est = est),
                             SIMPLIFY = FALSE)
           } else {
+            if (is.null(data)) {
+                # Try to get the data from fit
+                if (!is.null(fit)) {
+                    fit_type <- cond_indirect_check_fit(fit)
+                    data <- switch(fit_type,
+                                  lavaan = lavaan::lavInspect(fit, "data"),
+                                  lm = lm2ptable(fit)$data)
+                  }
+              }
             if (!is.null(fit)) {
                 prods <- mapply(get_prod,
                                 x = xs,
                                 y = ys,
-                                MoreArgs = list(fit = fit),
+                                MoreArgs = list(fit = fit,
+                                                data = data,
+                                                expand = expand),
                                 SIMPLIFY = FALSE)
               } else {
                 prods <- mapply(get_prod,
                                 x = xs,
                                 y = ys,
-                                MoreArgs = list(est = est),
+                                MoreArgs = list(est = est,
+                                                data = data,
+                                                expand = expand),
                                 SIMPLIFY = FALSE)
               }
           }
@@ -169,11 +188,22 @@ indirect <- function(x,
             if (is.null(xi$prod)) return(0)
             b_i <- xi$b
             w_i <- xi$w
-            wvalues_i <- wvalues[w_i]
+            if (is.list(w_i)) {
+                w_i0 <- sapply(w_i, paste0, collapse = ":")
+              } else {
+                w_i0 <- w_i
+              }
+            wvalues_i <- mapply(function(b1, w1, wvalues) {
+                              prod(wvalues[w1])
+                            },
+                            b1 = b_i,
+                            w1 = w_i,
+                            MoreArgs = list(wvalues = wvalues))
+            # wvalues_i <- wvalues[w_i0]
             wv_na <- is.na(wvalues_i)
             if (isTRUE(any(wv_na))) {
                 wvalues_i[wv_na] <- 0
-                names(wvalues_i) <- w_i
+                names(wvalues_i) <- w_i0
               }
             sum(b_i * wvalues_i)
           }
@@ -252,9 +282,25 @@ gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL,
     b_i <- xi$b
     b_i0 <- paste0("b.", names(b_i))
     w_i <- xi$w
+    if (is.list(w_i)) {
+        w_i0 <- sapply(w_i, paste0, collapse = ":")
+        w_i1 <- unique(unlist(w_i))
+        w_i2 <- sapply(w_i, paste0, collapse = "*")
+      } else {
+        w_i0 <- w_i
+        w_i1 <- w_i
+        w_i2 <- w_i
+      }
+    wvalues_i0 <- mapply(function(w1, wvalues) {
+                      paste0(formatC(wvalues[w1], digits = digits, format = "f"),
+                             collapse = "*")
+                    },
+                    w1 = w_i,
+                    MoreArgs = list(wvalues = wvalues))
     if (is.null(wvalues)) {
         wvalues_i <- rep(0, length(w_i))
-        tmp <- paste0(paste0(w_i, collapse = ", "),
+        wvalues_i0 <- "(0)"
+        tmp <- paste0(paste0(w_i1, collapse = ", "),
                       " modelled as moderator(s) for the path ",
                       "from ", yiname_old, " to ", y,
                       " but not included in ", sQuote("wvalues"), ". ",
@@ -263,12 +309,21 @@ gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL,
                       "which may not be meaningful. Please check.")
         if (warn) warning(tmp)
       } else {
-        wvalues_i <- wvalues[w_i]
+        # wvalues_i <- wvalues[w_i]
+        wvalues_i <- mapply(function(b1, w1, wvalues) {
+                          b1 * prod(wvalues[w1])
+                        },
+                        b1 = b_i,
+                        w1 = w_i,
+                        MoreArgs = list(wvalues = wvalues))
         wv_na <- is.na(wvalues_i)
         if (isTRUE(any(wv_na))) {
             wvalues_i[wv_na] <- 0
-            names(wvalues_i) <- w_i
-            tmp0 <- w_i[!w_i %in% names(wvalues)]
+            wvalues_i0[wv_na] <- "0"
+            names(wvalues_i) <- w_i0
+            # tmp0 <- w_i[!(w_i %in% names(wvalues))]
+            tmp0 <- unique(unlist(w_i[wv_na]))
+            tmp0 <- tmp0[!(tmp0 %in% names(wvalues))]
             tmp <- paste0(paste0(tmp0, collapse = ", "),
                           " modelled as moderator(s) for the path ",
                           "from ", yiname_old, " to ", y,
@@ -281,14 +336,15 @@ gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL,
       }
     y0 <- yiname
     out1 <- paste0(y0, " + ",
-                    paste0("(", b_i0, ")*(", w_i, ")",
+                    paste0("(", b_i0, ")*(", w_i2, ")",
                           collapse = " + "))
+
     out2 <- paste0("(", formatC(yi, digits = digits, format = "f"),
                     ") + ",
                     paste0("(",
                           formatC(b_i, digits = digits, format = "f"),
                           ")*(",
-                          formatC(wvalues_i, digits = digits, format = "f"),
+                          wvalues_i0,
                           ")",
                           collapse = " + "))
     names(out2) <- out1
