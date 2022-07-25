@@ -80,6 +80,10 @@ outm_boot_chk <- mapply(indirect_i,
                                        m = c("m2")),
                        SIMPLIFY = FALSE)
 
+outi <- indirect_effect(x = "m1", y = "m3", m = c("m2"), fit = fitm)
+outi_boot <- cond_indirect(x = "m1", y = "m3", m = c("m2"), fit = fitm_boot,
+                     boot_ci = TRUE)
+
 # Moderation only
 
 dat <- modmed_x1m3w4y1
@@ -125,6 +129,8 @@ test_that("cond_indirect: lavaan, mediation only", {
     expect_identical(outm$indirect, outm_chk$indirect)
     # expect_identical(outm_boot$boot_indirect,
     #                  sapply(outm_boot_chk, function(x) x$indirect))
+    expect_identical(outm[-which(names(outm) == "cond_indirect_call")],
+                     outi[-which(names(outi) == "cond_indirect_call")])
   })
 
 test_that("cond_indirect: lavaan, moderation only", {
