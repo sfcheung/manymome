@@ -48,7 +48,7 @@ test_that("cond_indirect: lm, 3-way", {
                      sapply(out_boot_chk, function(x) x$indirect))
   })
 
-test_that("confint for indirect, 3-way", {
+test_that("confint for indirect: lm, 3-way", {
     expect_warning(confint(out))
     expect_equal(coef(out),  out_boot$indirect, ignore_attr = TRUE)
     expect_equal(confint(out_boot),  out_boot$boot_ci, ignore_attr = TRUE)

@@ -1,5 +1,5 @@
 library(stdmodsem)
-library(lavaan)
+suppressMessages(library(lavaan))
 dat <- modmed_x1m3w4y1
 n <- nrow(dat)
 set.seed(860314)
@@ -47,7 +47,7 @@ test_that("mod_levels: lm: user values", {
     expect_equal(out_c_user, out_i_c, ignore_attr = TRUE)
   })
 
-test_that("mod_levels: lavaan: user values: error", {
+test_that("mod_levels: lm: user values: error", {
     expect_error(mod_levels_i_lm_numerical(fit, w = "w1", values = c("a","b")))
     expect_error(mod_levels_i_lm_categorical(fit, w = c("gpgp2", "gpgp3"),
                                        values = list(gp2 = c(1, 1),

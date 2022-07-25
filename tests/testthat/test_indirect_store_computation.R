@@ -1,5 +1,5 @@
 library(stdmodsem)
-library(lavaan)
+suppressMessages(library(lavaan))
 dat <- modmed_x1m3w4y1
 mod <-
 "
@@ -19,7 +19,7 @@ eval(parse(text = ce_1b_chk$computation_values))
 ce_1b_chk$indirect
 ce_1b_chk$computation_symbols
 
-test_that("test stored computation", {
+test_that("Test stored computation", {
     expect_equal(eval(parse(text = ce_1b_chk$computation_values)),
                  ce_1b_chk$indirect,
                  ignore_attr = TRUE)

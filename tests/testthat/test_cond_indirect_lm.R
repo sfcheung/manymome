@@ -1,6 +1,6 @@
 
 library(stdmodsem)
-library(lavaan)
+suppressMessages(library(lavaan))
 dat <- modmed_x1m3w4y1
 lm_m1 <- lm(m1 ~ x * w1, dat)
 lm_m2 <- lm(m2 ~ m1 * w2, dat)
@@ -125,19 +125,19 @@ outmo_boot_chk <- mapply(indirect_i,
                        SIMPLIFY = FALSE)
 
 
-test_that("cond_indirect: lavaan", {
+test_that("cond_indirect: lm", {
     expect_identical(out$indirect, out_chk$indirect)
     # expect_identical(out_boot$boot_indirect,
     #                  sapply(out_boot_chk, function(x) x$indirect))
   })
 
-test_that("confint for indirect", {
+test_that("confint for indirect: lm", {
     expect_warning(confint(out))
     expect_equal(coef(out),  out_boot$indirect, ignore_attr = TRUE)
     expect_equal(confint(out_boot),  out_boot$boot_ci, ignore_attr = TRUE)
   })
 
-test_that("cond_indirect: lavaan, mediation only", {
+test_that("cond_indirect: lm, mediation only", {
     expect_identical(outm$indirect, outm_chk$indirect)
     expect_identical(outm_boot$boot_indirect,
                      sapply(outm_boot_chk, function(x) x$indirect))
@@ -152,13 +152,13 @@ test_that("confint for indirect, mediation only", {
     expect_equal(confint(outi_boot),  outm_boot$boot_ci, ignore_attr = TRUE)
   })
 
-test_that("cond_indirect: lavaan, moderation only", {
+test_that("cond_indirect: lm, moderation only", {
     expect_identical(outmo$indirect, outmo_chk$indirect)
     # expect_identical(outmo_boot$boot_indirect,
     #                  sapply(outmo_boot_chk, function(x) x$indirect))
   })
 
-test_that("confint for indirect, moderation only", {
+test_that("confint for indirect: lm, moderation only", {
     expect_warning(confint(outmo))
     expect_equal(coef(outmo),  outmo_boot$indirect, ignore_attr = TRUE)
     expect_equal(confint(outmo_boot),  outmo_boot$boot_ci, ignore_attr = TRUE)

@@ -3,7 +3,7 @@ dat <- data_med_mod_b_mod
 lm_m <- lm(m ~ x*w1 + c1 + c2, dat)
 lm_y <- lm(y ~ w1*m*w2 + x + c1 + c2, dat)
 lm_list <- lm2list(lm_m, lm_y)
-library(lavaan)
+suppressMessages(library(lavaan))
 dat$w1x <- dat$w1 * dat$x
 dat$w1m <- dat$w1 * dat$m
 dat$w2m <- dat$w2 * dat$m

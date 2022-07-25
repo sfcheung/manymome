@@ -1,5 +1,5 @@
 library(stdmodsem)
-library(lavaan)
+suppressMessages(library(lavaan))
 dat <- modmed_x1m3w4y1
 mod <-
 "
@@ -71,7 +71,7 @@ tmp <- capture.output(print(ce_1b_stdy_chk))
 tmp <- capture.output(print(ce_1b_stdboth_chk))
 tmp <- capture.output(print(ce_no_w))
 
-test_that("check indirect", {
+test_that("Check indirect", {
     expect_equal(
         ce_1b_chk$indirect,
         ce_1b_chk2,

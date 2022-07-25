@@ -1,5 +1,4 @@
-
-# Not yet ready. To be revised.
+# To be examined in an interactive session
 
 dat <- data_med_mod_b_mod
 lm_m <- lm(m ~ x*w1 + c1 + c2, dat)

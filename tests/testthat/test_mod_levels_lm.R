@@ -1,6 +1,6 @@
 
 library(stdmodsem)
-library(lavaan)
+suppressMessages(library(lavaan))
 dat <- modmed_x1m3w4y1
 n <- nrow(dat)
 set.seed(860314)
@@ -65,7 +65,7 @@ out_l_3 <- mod_levels_list(c("gpgp2", "gpgp3"), "w4", fit = fit)
 out_l_4 <- mod_levels_list(c("gpgp2", "gpgp3"), c("citybeta", "citygamma", "citysigma"), "w4", fit = fit)
 
 
-test_that("mod_levels: lavaan", {
+test_that("mod_levels: lm", {
     expect_equal(unlist(out_i_n_sd), out_i_n_sd_chk, ignore_attr = TRUE)
     expect_equal(unlist(out_i_n_p), out_i_n_p_chk, ignore_attr = TRUE)
     expect_equal(unlist(out_i_n_sd2), out_i_n_sd2_chk, ignore_attr = TRUE)

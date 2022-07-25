@@ -29,7 +29,7 @@ test_that("Find product term", {
 dat$V5 <- sample(c("a", "b"), n, replace = TRUE)
 head(dat)
 
-test_that("Find product term (with nonnumeric columns", {
+test_that("Find product term (with nonnumeric columns)", {
   expect_equal(find_product(dat, "V1"),
               c(NA, NA))
   expect_equal(find_product(dat, "V1V3"),

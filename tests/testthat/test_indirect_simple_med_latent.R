@@ -1,5 +1,5 @@
 library(stdmodsem)
-library(lavaan)
+suppressMessages(library(lavaan))
 dat <- simple_mediation_latent
 mod <-
 "
@@ -34,7 +34,7 @@ fit_boot <- sem(mod, dat,
                 se = "bootstrap", bootstrap = 50, baseline = FALSE,
                 h1 = FALSE, warn = FALSE)
 # boot_out <- fit2boot_out(fit_boot)
-boot_out <- fit2boot_out_do_boot(fit, R = 50, seed = 85701)
+boot_out <- suppressMessages(fit2boot_out_do_boot(fit, R = 50, seed = 85701))
 boot_est <- lapply(boot_out, function(x) x$est)
 boot_implied_stats <- lapply(boot_out, function(x) x$implied_stats)
 

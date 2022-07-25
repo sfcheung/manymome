@@ -6,7 +6,7 @@ lm_y <- lm(y ~ w1*m*w2 + x + c1 + c2, dat)
 lm_list <- lm2list(lm_m, lm_y)
 lm2fit <- lm2ptable(lm_list)
 
-suppressMessages(library(lavaan))
+suppressMessages(suppressMessages(library(lavaan)))
 dat$w1x <- dat$w1 * dat$x
 dat$w1m <- dat$w1 * dat$m
 dat$w2m <- dat$w2 * dat$m
@@ -40,7 +40,7 @@ ce_2b_chk <- indirect_i(x = "x", y = "y", m = "m",
                       data = lm2fit$data,
                       wvalues = wvalues)
 
-test_that("check indirect: 3-way", {
+test_that("Check indirect: 3-way", {
     expect_equal(
         ce_1b_chk$indirect,
         ce_1b_chk2,
