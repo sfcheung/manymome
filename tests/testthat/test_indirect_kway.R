@@ -25,7 +25,7 @@ est <- parameterEstimates(fit)
 wvalues <- c(w1 = 5, w2 = -4)
 
 # Moderated-moderated mediation
-ce_1b_chk <- indirect(x = "x", y = "y", m = "m",
+ce_1b_chk <- indirect_i(x = "x", y = "y", m = "m",
                       fit = fit,
                       wvalues = wvalues)
 ce_1b_chk2 <- (est[est$label == "a", "est"] +
@@ -35,7 +35,7 @@ ce_1b_chk2 <- (est[est$label == "a", "est"] +
                 wvalues["w2"] * est[est$label == "bd2", "est"] +
                 wvalues["w1"] * wvalues["w2"] * est[est$label == "be12", "est"])
 
-ce_2b_chk <- indirect(x = "x", y = "y", m = "m",
+ce_2b_chk <- indirect_i(x = "x", y = "y", m = "m",
                       est = lm2fit$est,
                       data = lm2fit$data,
                       wvalues = wvalues)

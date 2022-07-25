@@ -17,7 +17,7 @@ out <- cond_indirect(x = "x", y = "y",
                      m = "m",
                      fit = fit,
                      wvalues = wv)
-out_chk <- indirect(x = "x", y = "y",
+out_chk <- indirect_i(x = "x", y = "y",
                     m = "m",
                     est = lm2fit$est,
                     data = lm2fit$data,
@@ -32,7 +32,7 @@ out_boot <- cond_indirect(x = "x", y = "y",
                      boot_out = boot_out)
 prods <- cond_indirect(x = "x", y = "y", m = "m",
                        fit = fit, get_prods_only = TRUE)
-out_boot_chk <- mapply(indirect,
+out_boot_chk <- mapply(indirect_i,
                        est = boot_est,
                        implied_stats = boot_implied_stats,
                        MoreArgs = list(x = "x",

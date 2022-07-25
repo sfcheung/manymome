@@ -7,7 +7,7 @@
 \method{print}{indirect}(x, digits = 3, ...)
 }
 \arguments{
-\item{x}{The output of he output of \code{\link[=indirect]{indirect()}}
+\item{x}{The output of he output of \code{\link[=indirect_i]{indirect_i()}}
 or \code{\link[=cond_indirect]{cond_indirect()}}.}
 
 \item{digits}{Number of digits to display. Default is 3.}
@@ -18,7 +18,7 @@ or \code{\link[=cond_indirect]{cond_indirect()}}.}
 \code{x} is returned invisibly.
 }
 \description{
-Print the content of the output of \code{\link[=indirect]{indirect()}}
+Print the content of the output of \code{\link[=indirect_i]{indirect_i()}}
 or \code{\link[=cond_indirect]{cond_indirect()}}.
 }
 \examples{
@@ -37,7 +37,7 @@ est <- parameterEstimates(fit)
 
 wvalues <- c(w1 = 5, w2 = 4, w3 = 2, w4 = 3)
 
-indirect_1 <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
+indirect_1 <- indirect_i(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
                        wvalues = wvalues)
 indirect_2 <- (est[est$label == "a1", "est"] +
                 wvalues["w1"] * est[est$label == "d1", "est"]) *

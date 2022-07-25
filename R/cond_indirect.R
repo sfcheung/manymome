@@ -187,7 +187,7 @@ cond_indirect <- function(x,
         fit_data <- lm_est$data
       }
     if (is.null(prods)) {
-        prods <- indirect(x = x,
+        prods <- indirect_i(x = x,
                         y = y,
                         m = m,
                         fit = fit0,
@@ -201,7 +201,7 @@ cond_indirect <- function(x,
                         expand = TRUE)
       }
     if (get_prods_only) return(prods)
-    out0 <- indirect(x = x,
+    out0 <- indirect_i(x = x,
                      y = y,
                      m = m,
                      fit = fit0,
@@ -212,7 +212,7 @@ cond_indirect <- function(x,
                      standardized_y = standardized_y,
                      prods = prods)
     if (boot_ci) {
-        out_boot <- mapply(indirect,
+        out_boot <- mapply(indirect_i,
                            est = lapply(boot_out, function(x) x$est),
                            implied_stats = lapply(boot_out, function(x) x$implied_stats),
                            MoreArgs = list(x = x,

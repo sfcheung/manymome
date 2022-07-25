@@ -19,7 +19,7 @@ out <- cond_indirect(x = "x", y = "y",
                      m = c("m1", "m2", "m3"),
                      fit = fit,
                      wvalues = wv)
-out_chk <- indirect(x = "x", y = "y",
+out_chk <- indirect_i(x = "x", y = "y",
                     m = c("m1", "m2", "m3"),
                     est = lm2fit$est,
                     wvalues = wv)
@@ -31,7 +31,7 @@ out_boot <- cond_indirect(x = "x", y = "y",
                      wvalues = wv,
                      boot_ci = TRUE,
                      boot_out = boot_out)
-out_boot_chk <- mapply(indirect,
+out_boot_chk <- mapply(indirect_i,
                        est = boot_est,
                        implied_stats = boot_implied_stats,
                        MoreArgs = list(x = "x",
@@ -69,7 +69,7 @@ boot_implied_statsm <- lapply(boot_outm, function(x) x$implied_stats)
 outm <- cond_indirect(x = "x", y = "y",
                       m = c("m1", "m2", "m3"),
                       fit = fitm)
-outm_chk <- indirect(x = "x", y = "y",
+outm_chk <- indirect_i(x = "x", y = "y",
                     m = c("m1", "m2", "m3"),
                     est = lm2mfit$est)
 
@@ -79,7 +79,7 @@ outm_boot <- cond_indirect(x = "x", y = "y",
                      fit = fitm,
                      boot_ci = TRUE,
                      boot_out = boot_outm)
-outm_boot_chk <- mapply(indirect,
+outm_boot_chk <- mapply(indirect_i,
                        est = boot_estm,
                        implied_stats = boot_implied_statsm,
                        MoreArgs = list(x = "x",
@@ -103,7 +103,7 @@ boot_implied_statsmo <- lapply(boot_outmo, function(x) x$implied_stats)
 
 outmo <- cond_indirect(x = "m1", y = "m2", wvalues = c(w1 = 4),
                       fit = fitmo)
-outmo_chk <- indirect(x = "m1", y = "m2", wvalues = c(w1 = 4),
+outmo_chk <- indirect_i(x = "m1", y = "m2", wvalues = c(w1 = 4),
                     est = lm2mofit$est)
 
 # Moderation only with bootstrap CI, precomputed bootstrapping
@@ -111,7 +111,7 @@ outmo_boot <- cond_indirect(x = "m1", y = "m2", wvalues = c(w1 = 4),
                      fit = fitmo,
                      boot_ci = TRUE,
                      boot_out = boot_outmo)
-outmo_boot_chk <- mapply(indirect,
+outmo_boot_chk <- mapply(indirect_i,
                        est = boot_estmo,
                        implied_stats = boot_implied_statsmo,
                        MoreArgs = list(x = "m1", y = "m2", wvalues = c(w1 = 4)),

@@ -14,9 +14,9 @@ fit <- sem(mod, dat, se = "none", baseline = FALSE)
 est <- parameterEstimates(fit)
 std <- standardizedSolution(fit)
 est[c(10:12, 25), ]
-out <- indirect(x = "fx", y = "fy", m = c("fm"), fit = fit)
+out <- indirect_i(x = "fx", y = "fy", m = c("fm"), fit = fit)
 out
-out_std <- indirect(x = "fx", y = "fy", m = c("fm"), fit = fit,
+out_std <- indirect_i(x = "fx", y = "fy", m = c("fm"), fit = fit,
                     standardized_x = TRUE,
                     standardized_y = TRUE)
 out_std
@@ -41,7 +41,7 @@ boot_implied_stats <- lapply(boot_out, function(x) x$implied_stats)
 out_cond_boot <- cond_indirect(x = "fx", y = "fy", m = c("fm"), fit = fit,
                                boot_ci = TRUE,
                                boot_out = boot_out)
-out_cond_boot_chk <- mapply(indirect,
+out_cond_boot_chk <- mapply(indirect_i,
                             est = boot_est,
                             implied_stats = boot_implied_stats,
                             MoreArgs = list(x = "fx",

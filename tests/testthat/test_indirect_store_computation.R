@@ -13,7 +13,7 @@ est <- parameterEstimates(fit)
 
 wvalues <- c(w1 = 5, w2 = 4, w3 = 2, w4 = 3)
 
-ce_1b_chk <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
+ce_1b_chk <- indirect_i(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
                       wvalues = wvalues, computation_digits = 10)
 eval(parse(text = ce_1b_chk$computation_values))
 ce_1b_chk$indirect
@@ -26,14 +26,14 @@ test_that("test stored computation", {
   })
 
 test_that("Check warning", {
-    expect_warning(ce_2_chk <- indirect(x = "x", y = "m1", fit = fit, computation_digits = 10))
+    expect_warning(ce_2_chk <- indirect_i(x = "x", y = "m1", fit = fit, computation_digits = 10))
     expect_equal(eval(parse(text = ce_2_chk$computation_values)),
                  ce_2_chk$indirect,
                  ignore_attr = TRUE)
   })
 
 test_that("Check warning", {
-    expect_warning(ce_3_chk <- indirect(x = "x", y = "m2", m = "m1",
+    expect_warning(ce_3_chk <- indirect_i(x = "x", y = "m2", m = "m1",
                    wvalues = c(w1 = 2, w3 = 5),
                    fit = fit, computation_digits = 10))
     expect_equal(eval(parse(text = ce_3_chk$computation_values)),
@@ -42,7 +42,7 @@ test_that("Check warning", {
   })
 
 test_that("test stored computation, standardized", {
-    ce_1b_chk <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
+    ce_1b_chk <- indirect_i(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
                           wvalues = wvalues, computation_digits = 10,
                           standardized_x = TRUE)
     expect_equal(eval(parse(text = ce_1b_chk$computation_values)),
