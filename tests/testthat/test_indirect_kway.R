@@ -4,6 +4,8 @@ dat <- data_med_mod_b_mod
 lm_m <- lm(m ~ x*w1 + c1 + c2, dat)
 lm_y <- lm(y ~ w1*m*w2 + x + c1 + c2, dat)
 lm_list <- lm2list(lm_m, lm_y)
+lm2fit <- lm2ptable(lm_list)
+
 suppressMessages(library(lavaan))
 dat$w1x <- dat$w1 * dat$x
 dat$w1m <- dat$w1 * dat$m
@@ -33,10 +35,20 @@ ce_1b_chk2 <- (est[est$label == "a", "est"] +
                 wvalues["w2"] * est[est$label == "bd2", "est"] +
                 wvalues["w1"] * wvalues["w2"] * est[est$label == "be12", "est"])
 
+ce_2b_chk <- indirect(x = "x", y = "y", m = "m",
+                      est = lm2fit$est,
+                      data = lm2fit$data,
+                      wvalues = wvalues)
+
 test_that("check indirect: 3-way", {
     expect_equal(
         ce_1b_chk$indirect,
         ce_1b_chk2,
+        ignore_attr = TRUE
+      )
+    expect_equal(
+        ce_1b_chk$indirect,
+        ce_2b_chk$indirect,
         ignore_attr = TRUE
       )
   })
