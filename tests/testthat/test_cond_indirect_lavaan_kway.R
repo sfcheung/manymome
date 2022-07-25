@@ -45,8 +45,8 @@ out_boot <- suppressWarnings(cond_indirect(x = "x", y = "y",
                      fit = fit_boot,
                      wvalues = wv,
                      boot_ci = TRUE))
-prods <- cond_indirect(x = "x", y = "y", m = "m", fit = fit_boot,
-                       get_prods_only = TRUE)
+prods <- suppressWarnings(cond_indirect(x = "x", y = "y", m = "m", fit = fit_boot,
+                       get_prods_only = TRUE))
 out_boot_chk <- mapply(indirect,
                        est = boot_est,
                        implied_stats = boot_implied_stats,
