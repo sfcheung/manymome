@@ -20,7 +20,9 @@ cond_indirect(
   boot_out = NULL,
   R = 100,
   seed = NULL,
-  save_boot_full = FALSE
+  save_boot_full = FALSE,
+  prods = NULL,
+  get_prods_only = FALSE
 )
 
 cond_indirect_effects(
@@ -94,6 +96,12 @@ Default is \code{NULL} and seed is not set.}
 
 \item{save_boot_full}{If \code{TRUE}, full bootstrapping results will be
 stored. Default is \code{FALSE.}}
+
+\item{prods}{The product terms found. For internal use.}
+
+\item{get_prods_only}{IF \code{TRUE}, will quit early and return the product
+terms found. The results can be passed to the \code{prod} argument
+when calling this function. Default is \code{FALSE}.}
 
 \item{wlevels}{The output of \code{\link[=merge_mod_levels]{merge_mod_levels()}}.}
 
