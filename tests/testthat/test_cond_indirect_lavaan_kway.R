@@ -34,7 +34,7 @@ out <- cond_indirect(x = "x", y = "y",
                      m = "m",
                      fit = fit,
                      wvalues = wv)
-out_chk <- indirect(x = "x", y = "y",
+out_chk <- indirect_i(x = "x", y = "y",
                     m = "m",
                     est = parameterEstimates(fit),
                     data = lavInspect(fit, "data"),
@@ -47,7 +47,7 @@ out_boot <- suppressWarnings(cond_indirect(x = "x", y = "y",
                      boot_ci = TRUE))
 prods <- suppressWarnings(cond_indirect(x = "x", y = "y", m = "m", fit = fit_boot,
                        get_prods_only = TRUE))
-out_boot_chk <- mapply(indirect,
+out_boot_chk <- mapply(indirect_i,
                        est = boot_est,
                        implied_stats = boot_implied_stats,
                        MoreArgs = list(x = "x",

@@ -1,7 +1,7 @@
 #' @title Create Levels of Moderators
 #'
 #' @description Create levels of moderators to be used by
-#'  [indirect()], [cond_indirect()], and [cond_indirect_effects()].
+#'  [indirect_i()], [cond_indirect()], and [cond_indirect_effects()].
 #'
 #' @details
 #' It creates values of a moderator that can be used to compute

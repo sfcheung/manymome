@@ -1,12 +1,12 @@
 #' @title Indirect effect or conditional indirect effect
 #'
 #' @description Return the estimate of the indirect effect
-#'              in the output of [indirect()] or
+#'              in the output of [indirect_i()] or
 #'              [cond_indirect()].
 #'
 #' @details It just extracts and returns the element `indirect`.
 #'
-#' @param object The output of [indirect()] or
+#' @param object The output of [indirect_i()] or
 #'              [cond_indirect()].
 #' @param parm Ignored. Always return the bootstrap confidence interval
 #'              of the standardized moderation effect.
@@ -33,7 +33,7 @@
 #'
 #' wvalues <- c(w1 = 5, w2 = 4, w3 = 2, w4 = 3)
 #'
-#' indirect_1 <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
+#' indirect_1 <- indirect_i(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
 #'                        wvalues = wvalues)
 #' indirect_2 <- (est[est$label == "a1", "est"] +
 #'                 wvalues["w1"] * est[est$label == "d1", "est"]) *
