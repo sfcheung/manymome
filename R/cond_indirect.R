@@ -245,6 +245,41 @@ cond_indirect <- function(x,
     out0
   }
 
+#' @export
+#' @describeIn cond_indirect Compute the indirect effects. A wrapper of
+#'                           [cond_indirect()]. Can be used
+#'                           when there is no moderator.
+#' @order 3
+
+indirect_effect <- function(x,
+                     y,
+                     m = NULL,
+                     fit = NULL,
+                     est = NULL,
+                     implied_stats = NULL,
+                     standardized_x = FALSE,
+                     standardized_y = FALSE,
+                     boot_ci = FALSE,
+                     level = .95,
+                     boot_out = NULL,
+                     R = 100,
+                     seed = NULL,
+                     save_boot_full = FALSE) {
+    cond_indirect(x = x,
+                  y = y,
+                  fit = fit,
+                  est = est,
+                  implied_stats = implied_stats,
+                  standardized_x = standardized_x,
+                  standardized_y = standardized_y,
+                  boot_ci = boot_ci,
+                  level = level,
+                  boot_out = boot_out,
+                  R = 100,
+                  seed = NULL,
+                  save_boot_full = save_boot_full)
+  }
+
 #' @examples
 #' # Examples for cond_indirect_effects():
 #'

@@ -3,6 +3,7 @@
 \name{cond_indirect}
 \alias{cond_indirect}
 \alias{cond_indirect_effects}
+\alias{indirect_effect}
 \title{Conditional, Indirect, and Conditional Indirect Effects}
 \usage{
 cond_indirect(
@@ -34,6 +35,23 @@ cond_indirect_effects(
   R = 100,
   seed = NULL,
   output_type = "data.frame"
+)
+
+indirect_effect(
+  x,
+  y,
+  m = NULL,
+  fit = NULL,
+  est = NULL,
+  implied_stats = NULL,
+  standardized_x = FALSE,
+  standardized_y = FALSE,
+  boot_ci = FALSE,
+  level = 0.95,
+  boot_out = NULL,
+  R = 100,
+  seed = NULL,
+  save_boot_full = FALSE
 )
 }
 \arguments{
@@ -151,6 +169,10 @@ of levels.
 \item \code{cond_indirect_effects}: Compute the conditional, indirect, or
 conditional indirect effects for several
 sets of levels.
+
+\item \code{indirect_effect}: Compute the indirect effects. A wrapper of
+\code{\link[=cond_indirect]{cond_indirect()}}. Can be used
+when there is no moderator.
 }}
 
 \examples{

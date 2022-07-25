@@ -11,7 +11,7 @@ reference:
 - contents:
   - cond_indirect_effects
   - cond_indirect
-  - indirect
+  - indirect_effect
 - title: Helper Functions
 - contents:
   - lm2list
@@ -24,6 +24,7 @@ reference:
   - check_path
   - lm2ptable
   - merge_mod_levels
+  - indirect_i
 - title: Methods
   desc: >
     Methods
