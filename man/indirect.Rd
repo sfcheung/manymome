@@ -18,7 +18,7 @@ indirect(
   prods = NULL,
   get_prods_only = FALSE,
   data = NULL,
-  expand = FALSE,
+  expand = TRUE,
   warn = TRUE
 )
 }
@@ -73,7 +73,7 @@ when calling this function. Default is \code{FALSE}.}
 identify the product terms.}
 
 \item{expand}{Whether products of more than two terms will be searched.
-\code{FALSE} by default.}
+\code{TRUE} by default.}
 
 \item{warn}{If \code{TRUE}, the default, the function will warn against possible
 misspecification, such as not setting the value of a moderator

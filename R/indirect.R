@@ -52,7 +52,7 @@
 #' @param data Data frame (optional). If supplied, it will be used to
 #'             identify the product terms.
 #' @param expand Whether products of more than two terms will be searched.
-#'               `FALSE` by default.
+#'               `TRUE` by default.
 #' @param warn If `TRUE`, the default, the function will warn against possible
 #'             misspecification, such as not setting the value of a moderator
 #'             which moderate one of the component path. Set this to `FALSE`
@@ -112,7 +112,7 @@ indirect <- function(x,
                      prods = NULL,
                      get_prods_only = FALSE,
                      data = NULL,
-                     expand = FALSE,
+                     expand = TRUE,
                      warn = TRUE) {
     if (is.null(est)) {
       est <- lavaan::parameterEstimates(fit)
@@ -152,6 +152,15 @@ indirect <- function(x,
                             MoreArgs = list(est = est),
                             SIMPLIFY = FALSE)
           } else {
+            if (is.null(data)) {
+                # Try to get the data from fit
+                if (!is.null(fit)) {
+                    fit_type <- cond_indirect_check_fit(fit)
+                    data <- switch(fit_type,
+                                  lavaan = lavaan::lavInspect(fit, "data"),
+                                  lm = lm2ptable(fit)$data)
+                  }
+              }
             if (!is.null(fit)) {
                 prods <- mapply(get_prod,
                                 x = xs,
