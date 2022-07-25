@@ -267,6 +267,7 @@ indirect_effect <- function(x,
                      save_boot_full = FALSE) {
     cond_indirect(x = x,
                   y = y,
+                  m = m,
                   fit = fit,
                   est = est,
                   implied_stats = implied_stats,
