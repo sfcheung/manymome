@@ -1,4 +1,5 @@
-skip("WIP")
+# To be examined in an interactive session.
+
 library(stdmodsem)
 
 suppressMessages(library(lavaan))
@@ -29,7 +30,6 @@ out_mm_1 <- mod_levels_list("w4", c("gpgp2", "gpgp3"),
                             sd_from_mean = c(-1, 1),
                             fit = fit, merge = TRUE)
 
-# Suppress warnings due to small number of bootstrap samples.
 out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit)
 
 plot(out_1)
@@ -42,3 +42,45 @@ out_mm_1_lm <- mod_levels_list("w4", c("gpgp2", "gpgp3"),
 
 out_1_lm <- cond_indirect_effects(wlevels = out_mm_1_lm, x = "x", y = "y", m = "m3", fit = fit_lm)
 plot(out_1_lm)
+plot(out_1_lm, graph_type = "tumble")
+
+
+out_1_std <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
+                                   standardized_x = TRUE, standardized_y = TRUE)
+
+plot(out_1_std)
+plot(out_1_std, graph_type = "tumble")
+
+out_1_stdx <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
+                                   standardized_x = TRUE)
+
+plot(out_1_stdx)
+plot(out_1_stdx, graph_type = "tumble")
+
+out_1_stdy <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
+                                   standardized_y = TRUE)
+
+plot(out_1_stdy)
+plot(out_1_stdy, graph_type = "tumble")
+
+
+out_mm_1_lm <- mod_levels_list("w4", c("gpgp2", "gpgp3"),
+                            sd_from_mean = c(-1, 1),
+                            fit = fit_lm, merge = TRUE)
+
+
+out_1_lm_std <- cond_indirect_effects(wlevels = out_mm_1_lm, x = "x", y = "y", m = "m3", fit = fit_lm,
+                                  standardized_x = TRUE, standardized_y = TRUE)
+plot(out_1_lm_std)
+plot(out_1_lm_std, graph_type = "tumble")
+
+out_1_lm_stdx <- cond_indirect_effects(wlevels = out_mm_1_lm, x = "x", y = "y", m = "m3", fit = fit_lm,
+                                  standardized_x = TRUE)
+plot(out_1_lm_stdx)
+plot(out_1_lm_stdx, graph_type = "tumble")
+
+out_1_lm_stdy <- cond_indirect_effects(wlevels = out_mm_1_lm, x = "x", y = "y", m = "m3", fit = fit_lm,
+                                  standardized_y = TRUE)
+plot(out_1_lm_stdy)
+plot(out_1_lm_stdy, graph_type = "tumble")
+

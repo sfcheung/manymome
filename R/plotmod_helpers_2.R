@@ -16,6 +16,9 @@ x_for_wlevels <- function(wlevels_i, mf, x, band = .16, nvalues = 2) {
   }
 
 check_w_type <- function(w, mf, nvalues = 2) {
+    if (!is.numeric(mf[, w])) {
+        return("categorical")
+      }
     tmp <- length(unique(mf[, w]))
     if (tmp > nvalues) {
         return("numeric")

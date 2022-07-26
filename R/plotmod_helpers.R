@@ -130,4 +130,18 @@ find_b <- function(w_i, mf, x, w) {
 ind_to_cat <- function(wlevels) {
     wlevels0 <- attr(wlevels, "wlevels")
     wvars <- attr(wlevels, "wvars")
+    wnames <- names(wvars)
+    w_types <- attr(wlevels, "w_types")
+    tmpfct <- function(wn, wt, wlevels, wlevels0) {
+        switch(wt,
+               categorical = wlevels0[, wn],
+               numeric = wlevels[, wn])
+      }
+    out <- mapply(tmpfct, wn = wnames, wt = w_types,
+                            MoreArgs = list(wlevels = wlevels,
+                                            wlevels0 = wlevels0),
+                    SIMPLIFY = FALSE)
+    out <- as.data.frame(out)
+    rownames(out) <- rownames(wlevels)
+    out
   }

@@ -2,17 +2,14 @@
 % Please edit documentation in R/plotmod.R
 \name{plot.cond_indirect_effects}
 \alias{plot.cond_indirect_effects}
-\title{Moderation Effect Plot}
+\title{Plot Conditional Indirect Effect}
 \usage{
 \method{plot}{cond_indirect_effects}(
   x,
-  y,
   x_label,
-  w_label,
+  w_label = "Moderator(s)",
   y_label,
-  fit,
   title,
-  digits = 3,
   x_from_mean_in_sd = 1,
   x_method = c("sd", "percentile"),
   x_percentiles = c(0.16, 0.84),
@@ -21,18 +18,20 @@
   no_title = FALSE,
   line_width = 1,
   point_size = 5,
-  graph_type = c("default", "tumble")
+  graph_type = c("default", "tumble"),
+  ...
 )
 }
 \arguments{
-\item{x}{The name of the focal variable (x-axis) in `output``. It
-can be the name of the variable, with or without quotes.
-Currently only numeric variables are supported.}
+\item{x}{The output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}. (Named \code{x}
+because it is required in the naming of arguments
+of the `plot`` generic function.)}
 
-\item{x_label}{The label for the X-axis. Default is the value of \code{x}.}
+\item{x_label}{The label for the X-axis. Default is the value of the
+predictor in the output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
 
 \item{w_label}{The label for the legend for the lines.
-Default is the value of\code{w}.}
+Default is \code{"Moderator(s)"}.}
 
 \item{y_label}{The label for the Y-axis. Default is the
 name of the response variable in the model.}
@@ -44,8 +43,6 @@ and \code{w_label}). If \code{""}, no title will be printed.
 This can be used when the plot is for manuscript
 submission and figures are required to have no
 titles.}
-
-\item{digits}{Number of decimal places to print. Default is 3.}
 
 \item{x_from_mean_in_sd}{How many SD from mean is used to define
 "low" and
@@ -107,107 +104,53 @@ will be plotted. If \code{"tubmle"}, then the tumble graph
 proposed by Bodner (2016) will be plotted. Default is
 \code{"default"}.}
 
-\item{output}{The output
-of \code{\link[stats:lm]{stats::lm()}}, \code{\link[=std_selected]{std_selected()}}, or
-\code{\link[=std_selected_boot]{std_selected_boot()}}.}
-
-\item{w}{The name of the moderator in \code{output}. It
-can be the name of the variable, with or without quotes.}
-
-\item{w_from_mean_in_sd}{How many SD from mean is used to define
-"low" and
-"high" for the moderator. Default is 1.
-Ignored if \code{w} is categorical.}
-
-\item{w_method}{How to define "high" and "low" for the moderator levels.
-Default is in terms of the
-standard deviation of the moderator, \code{"sd"}.
-If equal to
-\code{"percentile"}, then the percentiles of the moderator in
-the
-dataset are used.
-Ignored if \code{w} is categorical.}
-
-\item{w_percentiles}{If \code{w_method} is \code{"percentile"}, then this
-argument
-specifies the two percentiles to be used,
-divided by 100.
-It must be a
-vector of two numbers. The default is
-\code{c(.16, .84)},
-the 16th and 84th percentiles,
-which corresponds approximately
-to one SD below and above mean for a
-normal distribution, respectively.
-Ignored if \code{w} is categorical.}
-
-\item{w_sd_to_percentiles}{If \code{w_method} is \code{"percentile"} and
-this argument is
-set to a number, this number will be
-used
-to determine the percentiles to be used.
-The
-lower percentile is the percentile in a
-normal
-distribution
-that is \code{w_sd_to_percentiles} SD below
-the mean.
-The upper percentile is the percentile in
-a normal
-distribution that is \code{w_sd_to_percentiles}
-SD
-above the mean. Therefore, if
-\code{w_sd_to_percentiles} is set to 1, then the
-lower
-and upper percentiles are 16th and 84th,
-respectively. Default is \code{NA}.}
+\item{...}{Additional arguments. Ignored.}
 }
 \value{
 A \link{ggplot2} graph. Plotted if not assigned to a name. It can
 be further modified like a usual \link{ggplot2} graph.
 }
 \description{
-Plot the moderation effect in a regression model
+Plot the conditional indirect effects for different
+levels of moderators.
 }
 \details{
-This function generate a basic \link{ggplot2} graph
-typically found in psychology manuscripts. It tries to
-check whether one or more variables are standardized, and
-report this in the plot if required.
-
-This function only has features for typical plots of moderation effects.
-It is not intended to be a flexible tool for a fine control on the plots.
+This function is a plot method of the output
+of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}. It will use the levels of moderators
+in the output.
 }
 \examples{
+library(lavaan)
+dat <- modmed_x1m3w4y1
+n <- nrow(dat)
+set.seed(860314)
+dat$gp <- sample(c("gp1", "gp2", "gp3"), n, replace = TRUE)
+dat <- cbind(dat, factor2var(dat$gp, prefix = "gp", add_rownames = FALSE))
 
-# Do a moderated regression by lm
-lm_out <- lm(sleep_duration ~ age + gender + emotional_stability*conscientiousness, sleep_emo_con)
-plotmod(lm_out,
-        x = emotional_stability,
-        w = conscientiousness,
-        x_label = "Emotional Stability",
-        w_label = "Conscientiousness",
-        y_label = "Sleep Duration")
+# lavaan
+mod <-
+"
+m3 ~ m1 + x + gpgp2 + gpgp3 + x:gpgp2 + x:gpgp3
+y ~ m2 + m3 + x + w4 + x:w4
+"
+fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
+out_mm_1 <- mod_levels_list("w4", c("gpgp2", "gpgp3"),
+                            sd_from_mean = c(-1, 1),
+                            fit = fit, merge = TRUE)
+out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit)
+plot(out_1)
+plot(out_1, graph_type = "tumble")
 
-# Standardize all variables except for categorical variables
-lm_std <- std_selected(lm_out,
-                       to_scale = ~ .,
-                       to_center = ~ .)
-plotmod(lm_std,
-        x = emotional_stability,
-        w = conscientiousness,
-        x_label = "Emotional Stability",
-        w_label = "Conscientiousness",
-        y_label = "Sleep Duration")
-
-# Tumble Graph
-plotmod(lm_std,
-        x = emotional_stability,
-        w = conscientiousness,
-        x_label = "Emotional Stability",
-        w_label = "Conscientiousness",
-        y_label = "Sleep Duration",
-        graph_type = "tumble")
+# Regression
+lm_m3 <- lm(m3 ~ m1 + x*gp, dat)
+lm_y <- lm(y ~ m2 + m3 + x*w4, dat)
+fit_lm <- lm2list(lm_m3, lm_y)
+out_mm_1_lm <- mod_levels_list("w4", c("gpgp2", "gpgp3"),
+                            sd_from_mean = c(-1, 1),
+                            fit = fit_lm, merge = TRUE)
+out_1_lm <- cond_indirect_effects(wlevels = out_mm_1_lm, x = "x", y = "y", m = "m3", fit = fit_lm)
+plot(out_1_lm)
+plot(out_1_lm, graph_type = "tumble")
 
 }
 \references{
