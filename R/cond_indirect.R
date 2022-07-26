@@ -305,7 +305,9 @@ indirect_effect <- function(x,
 
 cond_indirect_effects <- function(wlevels,
                                   ...,
-                                  fit = fit,
+                                  fit = NULL,
+                                  est = NULL,
+                                  implied_stats = NULL,
                                   boot_ci = FALSE,
                                   boot_out = NULL,
                                   R = 100,
@@ -346,11 +348,15 @@ cond_indirect_effects <- function(wlevels,
     prods <- cond_indirect(wvalues = wlevels2[[1]],
                             ...,
                             fit = fit,
+                            est = est,
+                            implied_stats = implied_stats,
                             get_prods_only = TRUE)
     out <- lapply(wlevels2,
                   function(wv,
                            ...,
                            fit = fit,
+                           est = est,
+                           implied_stats = implied_stats,
                            boot_ci,
                            boot_out,
                            R,
@@ -358,6 +364,8 @@ cond_indirect_effects <- function(wlevels,
                               cond_indirect(wvalues = wv,
                                             ...,
                                             fit = fit,
+                                            est = est,
+                                            implied_stats = implied_stats,
                                             boot_ci = boot_ci,
                                             boot_out = boot_out,
                                             R = R,
@@ -366,6 +374,8 @@ cond_indirect_effects <- function(wlevels,
                            },
                   ...,
                   fit = fit,
+                  est = est,
+                  implied_stats = implied_stats,
                   boot_ci = boot_ci,
                   boot_out = boot_out,
                   R = R,
@@ -376,6 +386,9 @@ cond_indirect_effects <- function(wlevels,
         attr(out1, "call") <- match.call()
         attr(out1, "full_output") <- out
         attr(out1, "wlevels") <- wlevels
+        attr(out1, "fit") <- fit
+        attr(out1, "est") <- est
+        attr(out1, "implied_stats") <- implied_stats
         return(out1)
       } else {
         return(out)
