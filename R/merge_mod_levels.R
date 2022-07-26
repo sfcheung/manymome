@@ -75,6 +75,10 @@ merge_mod_levels <- function(...) {
               })
     out2levels <- data.frame(do.call(rbind, out2levels0))
     tmpfct2 <- function(y) {
+        tmp <- attr(y, "wname")
+        if (!is.null(tmp)) {
+            return(tmp)
+          }
         if (ncol(y) == 1) return(colnames(y))
         yn0 <- find_prefix(colnames(y))
         if (yn0 != "") {
