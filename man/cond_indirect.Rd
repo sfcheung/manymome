@@ -29,7 +29,9 @@ cond_indirect(
 cond_indirect_effects(
   wlevels,
   ...,
-  fit = fit,
+  fit = NULL,
+  est = NULL,
+  implied_stats = NULL,
   boot_ci = FALSE,
   boot_out = NULL,
   R = 100,
