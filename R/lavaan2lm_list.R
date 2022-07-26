@@ -1,36 +1,37 @@
-#' @title One Line Title
+#' @title Convert a 'lavaan' Model to an 'lm_from_lavaan_list'-Class Object
 #'
-#' @description One paragraph description
+#' @description Converts the regression models in a `lavaan`` model to an
+#'   `lm_from_lavaan_list`-class object.
 #'
-#' @details Details
-#'   (Include subjects for verbs.)
-#'   (Use 3rd person forms for verbs.)
+#' @details It identifies all dependent variables in a `lavaan` model
+#'   and creates a `lm_from_lavaan`-class object for each of them.
 #'
 #' @return
-#' Specify what are returned.
+#' A `lm_from_lavaan_list`-class object, which is a list of `lm_from_lavaan`
+#' objects. It has a `predict`-method ([predict.lm_from_lavaan_list()]) for
+#' computing the predicted values from one variable to another.
 #'
-#' @param arg1 Argument description.
-#' @param ... Additional arguments.
+#' @param fit A `lavaan`-class object, usually the output of [lavaan::lavaan()]
+#'            or its wrappers.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
-#' @references
-#' Cheung, S. F., Cheung, S.-H., Lau, E. Y. Y., Hui, C. H., & Vong, W. N.
-#' (2022) Improving an old way to measure moderation effect in standardized
-#' units. Advance online publication. *Health Psychology*.
-#' \doi{10.1037/hea0001188}
-#'
-#' @seealso [functionname()]
-#'
-#' @family relatedfunctions
 #'
 #' @examples
-#' \donttest{
-#' }
+#' library(lavaan)
+#' data(data_med)
+#' mod <-
+#' "
+#' m ~ a * x + c1 + c2
+#' y ~ b * m + x + c1 + c2
+#' "
+#' fit <- sem(mod, data_med, fixed.x = FALSE)
+#' fit_list <- lm_from_lavaan_list(fit)
+#' tmp <- data.frame(x = 1, c1 = 2, c2 = 3, m = 4)
+#' predict(fit_list, x = "x", y = "y", m = "m", newdata = tmp)
 #'
 #' @export
-#'
-#' @noRd
+
 
 lm_from_lavaan_list <- function(fit) {
     ptable <- lavaan::parameterTable(fit)
@@ -77,6 +78,227 @@ lm_from_lavaan_list <- function(fit) {
     class(out) <- c("lm_from_lavaan_list", class(out))
     out
   }
+
+#' @title Model Terms of a 'lm_from_lavaan'-Class Object
+#'
+#' @description Extract the terms object rom a `lm_from_lavaan`-class
+#'  object.
+#'
+#' @details A `lm_from_lavaan`-class object converts a regression model
+#'  for a variable in a `lavaan`` model to a `formula` object.
+#'  This function simply calls [stats::terms()] on the `formula` object
+#'  to extract the predictors of a variable.
+#'
+#' @return
+#' A `terms`-class object. See [terms.object] for details.
+#'
+#' @param x A 'lm_from_lavaan'-class object.
+#' @param ... Additional arguments. Ignored.
+#'
+#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
+#'
+#' @seealso [terms.object], [lm_from_lavaan_list()]
+#'
+#' @examples
+#' library(lavaan)
+#' data(data_med)
+#' mod <-
+#' "
+#' m ~ a * x + c1 + c2
+#' y ~ b * m + x + c1 + c2
+#' "
+#' fit <- sem(mod, data_med, fixed.x = FALSE)
+#' fit_list <- lm_from_lavaan_list(fit)
+#' terms(fit_list$m)
+#' terms(fit_list$y)
+#'
+#' @export
+
+terms.lm_from_lavaan <- function(x, ...) {
+    stats::terms(x$model)
+  }
+
+#' @title Coefficients of a 'lm_from_lavaan'-Class Object
+#'
+#' @description Returns the path coefficients of the terms in
+#'  a `lm_from_lavaan`-class object.
+#'
+#' @details A `lm_from_lavaan`-class object converts a regression model
+#'  for a variable in a `lavaan`` model to a `formula` object.
+#'  This function simply extracts the path coefficients estimates.
+#'  Intercept is always included, and set to zero if mean structure
+#'  is not in the source `lavaan` model.
+#'
+#' @return
+#' A numeric vector of the path coefficients.
+#'
+#' @param object A 'lm_from_lavaan'-class object.
+#' @param ... Additional arguments. Ignored.
+#'
+#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
+#'
+#' @seealso [lm_from_lavaan_list()]
+#'
+#' @examples
+#' library(lavaan)
+#' data(data_med)
+#' mod <-
+#' "
+#' m ~ a * x + c1 + c2
+#' y ~ b * m + x + c1 + c2
+#' "
+#' fit <- sem(mod, data_med, fixed.x = FALSE)
+#' fit_list <- lm_from_lavaan_list(fit)
+#' coef(fit_list$m)
+#' coef(fit_list$y)
+#'
+#' @export
+
+coef.lm_from_lavaan <- function(object, ...) {
+    c(object$intercept, object$coefficients)
+  }
+
+#' @title Predicted Values of a 'lm_from_lavaan'-Class Object
+#'
+#' @description Compute the predicted values based on
+#'  the model stored in a 'lm_from_lavaan`-class object.
+#'
+#' @details A `lm_from_lavaan`-class object converts a regression model
+#'  for a variable in a `lavaan`` model to a `formula` object.
+#'  This function uses the stored model to compute predicted
+#'  values using user-supplied data.
+#'
+#' @return
+#' A numeric vector of the predicted values, with length equal to
+#' the number of rows of user-supplied data.
+#'
+#' @param object A 'lm_from_lavaan'-class object.
+#' @param newdata Required. A data frame of the new data. It must be a
+#' data frame.
+#' @param ... Additional arguments. Ignored.
+#'
+#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
+#'
+#' @seealso [lm_from_lavaan_list()]
+#'
+#' @examples
+#' library(lavaan)
+#' data(data_med)
+#' mod <-
+#' "
+#' m ~ a * x + c1 + c2
+#' y ~ b * m + x + c1 + c2
+#' "
+#' fit <- sem(mod, data_med, fixed.x = FALSE)
+#' fit_list <- lm_from_lavaan_list(fit)
+#' tmp <- data.frame(x = 1, c1 = 2, c2 = 3, m = 4)
+#' predict(fit_list$m, newdata = tmp)
+#' predict(fit_list$y, newdata = tmp)
+#'
+#' @export
+
+predict.lm_from_lavaan <- function(object, newdata, ...) {
+    if (missing(newdata)) {
+        stop("This method for lm_from_lavaan requires new data.")
+      }
+    tivs <- stats::delete.response(stats::terms(object))
+    bs <- stats::coef(object)
+    dat0 <- model.frame(tivs, newdata)
+    mm <- stats::model.matrix(tivs, dat0) # No need for contrasts.arg
+    p <- length(bs)
+    out <- mm[, names(bs)] %*% matrix(bs, nrow = p, ncol = 1)
+    unname(out[, 1])
+  }
+
+#' @title Predicted Values of a 'lm_from_lavaan_list'-Class Object
+#'
+#' @description Compute the predicted values based on
+#'  the models stored in a 'lm_from_lavaan_list`-class object.
+#'
+#' @details A `lm_from_lavaan_list`-class object is a list
+#'  of `lm_from_lavaan`-class objects.
+#'
+#' @return
+#' A numeric vector of the predicted values, with length equal to
+#' the number of rows of user-supplied data.
+#'
+#' @param object A 'lm_from_lavaan'-class object.
+#' @param x The variable name at the start of a pathway.
+#' @param y The variable name at the end of a pathway.
+#' @param m Optional. The mediator(s) from `x` to `y`.
+#'          A numeric vector of the names of the mediators.
+#'          The path goes from the first element to the last element.
+#'          For example, if `m = c("m1", "m2")`, then the path
+#'          is `x -> m1 -> m2 -> y`.
+#' @param newdata Required. A data frame of the new data. It must be a
+#' data frame.
+#' @param ... Additional arguments. Ignored.
+#'
+#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
+#'
+#' @seealso [lm_from_lavaan_list()]
+#'
+#' @examples
+#' library(lavaan)
+#' data(data_med)
+#' mod <-
+#' "
+#' m ~ a * x + c1 + c2
+#' y ~ b * m + x + c1 + c2
+#' "
+#' fit <- sem(mod, data_med, fixed.x = FALSE)
+#' fit_list <- lm_from_lavaan_list(fit)
+#' tmp <- data.frame(x = 1, c1 = 2, c2 = 3, m = 4)
+#' predict(fit_list, x = "x", y = "y", m = "m", newdata = tmp)
+#'
+#' @export
+
+predict.lm_from_lavaan_list <- function(object,
+                                        x = NULL,
+                                        y = NULL,
+                                        m = NULL,
+                                        newdata, ...) {
+    ptable <- lm_from_lavaan_list2ptable(object)
+    if (!check_path(x = x, y = y, m = m, est = ptable)) {
+        stop(paste0("The path from ",
+                    dQuote(x),
+                    " to ",
+                    dQuote(y),
+                    " through ",
+                    paste0(dQuote(m), collapse = ", "),
+                    " is invalid."))
+      }
+    ys <- c(m, y)
+    newdata_i <- newdata
+    for (yi in ys) {
+        yi_hat <- stats::predict(object[[yi]], newdata = newdata_i)
+        newdata_i[, yi] <- yi_hat
+      }
+    newdata_i[, y]
+  }
+
+#' @noRd
+
+lm_from_lavaan_list2ptable <- function(x) {
+    vars <- sapply(x, get_variables,
+                simplify = FALSE)
+    dvs <- names(x)
+    ptable <- mapply(cbind, dvs, "~", vars,
+                     SIMPLIFY = FALSE)
+    ptable <- do.call(rbind, ptable)
+    ptable <- as.data.frame(ptable)
+    colnames(ptable) <- c("lhs", "op", "rhs")
+    ptable
+  }
+
+#' @noRd
+
+get_variables <- function(x) {
+    tmp <- attr(stats::terms(x), "factors")
+    id <- (colSums(tmp) == 1)
+    colnames(tmp)[id]
+  }
+
 
 #' @noRd
 
@@ -141,76 +363,4 @@ lm_from_lavaan <- function(model, betas, intercept) {
                 intercept = intercept)
     class(out) <- c("lm_from_lavaan", class(out))
     out
-  }
-
-#' @export
-
-terms.lm_from_lavaan <- function(x, ...) {
-    stats::terms(x$model)
-  }
-
-#' @export
-
-coef.lm_from_lavaan <- function(object, ...) {
-    c(object$intercept, object$coefficients)
-  }
-
-#' @export
-
-predict.lm_from_lavaan <- function(object, newdata, ...) {
-    tivs <- stats::delete.response(stats::terms(object))
-    bs <- stats::coef(object)
-    dat0 <- model.frame(tivs, newdata)
-    mm <- stats::model.matrix(tivs, dat0) # No need for contrasts.arg
-    p <- length(bs)
-    out <- mm[, names(bs)] %*% matrix(bs, nrow = p, ncol = 1)
-    unname(out[, 1])
-  }
-
-#' @export
-
-predict.lm_from_lavaan_list <- function(object,
-                                        x = NULL,
-                                        y = NULL,
-                                        m = NULL,
-                                        newdata, ...) {
-    ptable <- lm_from_lavaan_list2ptable(object)
-    if (!check_path(x = x, y = y, m = m, est = ptable)) {
-        stop(paste0("The path from ",
-                    dQuote(x),
-                    " to ",
-                    dQuote(y),
-                    " through ",
-                    paste0(dQuote(m), collapse = ", "),
-                    " is invalid."))
-      }
-    ys <- c(m, y)
-    newdata_i <- newdata
-    for (yi in ys) {
-        yi_hat <- stats::predict(object[[yi]], newdata = newdata_i)
-        newdata_i[, yi] <- yi_hat
-      }
-    newdata_i[, y]
-  }
-
-#' @noRd
-
-lm_from_lavaan_list2ptable <- function(x) {
-    vars <- sapply(x, get_variables,
-                simplify = FALSE)
-    dvs <- names(x)
-    ptable <- mapply(cbind, dvs, "~", vars,
-                     SIMPLIFY = FALSE)
-    ptable <- do.call(rbind, ptable)
-    ptable <- as.data.frame(ptable)
-    colnames(ptable) <- c("lhs", "op", "rhs")
-    ptable
-  }
-
-#' @noRd
-
-get_variables <- function(x) {
-    tmp <- attr(stats::terms(x), "factors")
-    id <- (colSums(tmp) == 1)
-    colnames(tmp)[id]
   }
