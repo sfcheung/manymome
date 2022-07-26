@@ -1,4 +1,3 @@
-skip("WIP")
 library(stdmodsem)
 
 suppressMessages(suppressMessages(library(lavaan)))
