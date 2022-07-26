@@ -203,7 +203,7 @@ predict.lm_from_lavaan <- function(object, newdata, ...) {
       }
     tivs <- stats::delete.response(stats::terms(object))
     bs <- stats::coef(object)
-    dat0 <- model.frame(tivs, newdata)
+    dat0 <- stats::model.frame(tivs, newdata)
     mm <- stats::model.matrix(tivs, dat0) # No need for contrasts.arg
     p <- length(bs)
     out <- mm[, names(bs)] %*% matrix(bs, nrow = p, ncol = 1)
