@@ -181,6 +181,7 @@ mod_levels <- function(w,
     tmp <- data.frame(x = rownames(out))
     colnames(tmp) <- attr(out, "wname")
     attr(out, "wlevels") <- tmp
+    attr(out, "w_type") <- w_type
     out
   }
 
