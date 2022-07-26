@@ -35,5 +35,10 @@ out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", f
 plot(out_1)
 plot(out_1, graph_type = "tumble")
 
-out_1_lm <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_lm)
+out_mm_1_lm <- mod_levels_list("w4", c("gpgp2", "gpgp3"),
+                            sd_from_mean = c(-1, 1),
+                            fit = fit_lm, merge = TRUE)
+
+
+out_1_lm <- cond_indirect_effects(wlevels = out_mm_1_lm, x = "x", y = "y", m = "m3", fit = fit_lm)
 plot(out_1_lm)

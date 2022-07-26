@@ -224,7 +224,7 @@ plot.cond_indirect_effects <- function(x,
       }
     dat0 <- switch(fit_type,
                   lavaan = lavaan::lavInspect(fit, "data"),
-                  lm = lm2ptable(fit)$data)
+                  lm = merge_model_frame(fit))
     x_numeric <- TRUE
     if (!x_numeric) {
         stop("x variable must be a numeric variable.")
@@ -260,6 +260,7 @@ plot.cond_indirect_effects <- function(x,
     mf2 <- mf2[, -(which(colnames(mf2) %in% c(x, w_names)))]
     plot_df_xstart <- cbind(plot_df_xstart, wlevels, mf2)
     plot_df_xend <- cbind(plot_df_xend, wlevels, mf2)
+    browser()
     plot_df_xstart[, y] <- stats::predict(fit_list,
                                           x = x, y = y, m = m,
                                           newdata = plot_df_xstart)

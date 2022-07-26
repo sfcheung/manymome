@@ -126,3 +126,8 @@ find_b <- function(w_i, mf, x, w) {
             mf_i[mf_i$x_level == "Low", x])
     b_i
   }
+
+ind_to_cat <- function(wlevels) {
+    wlevels0 <- attr(wlevels, "wlevels")
+    wvars <- attr(wlevels, "wvars")
+  }
