@@ -108,5 +108,8 @@ merge_mod_levels <- function(...) {
     wvars <- lapply(x, colnames)
     names(wvars) <- wnames1
     attr(out2, "wvars") <- wvars
+    w_types <- sapply(x, attr, which = "w_type")
+    names(w_types) <- wnames1
+    attr(out2, "w_types") <- w_types
     out2
   }
