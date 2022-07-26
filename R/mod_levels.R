@@ -297,6 +297,9 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
     mm <- switch(fit_type,
                  lavaan = as.data.frame(lav_data_used(fit)),
                  lm = merge_model_matrix(fit))
+    mf <- switch(fit_type,
+                 lavaan = NA,
+                 lm = merge_model_frame(fit))
     w_dat <- mm[, w]
     w_gp <- unique(w_dat)
     k <- nrow(w_gp)
@@ -306,10 +309,21 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
     gpnames <- paste0("Category ", seq_len(k))
     rownames(w_gp) <- gpnames
     if (extract_gp_names) {
-        w_gp <- set_gp_names(w_gp, prefix = prefix)
+        if (fit_type == "lavaan") {
+            w_gp <- set_gp_names(w_gp, prefix = prefix)
+          }
+        if (fit_type == "lm") {
+            w_source <- find_source_cat(fit, w)
+            tmp <- cbind(w_source = mf[, w_source], mm[, w])
+            tmp <- tmp[!duplicated(tmp), ]
+            tmp2 <- merge(x = w_gp, y = tmp, sort = FALSE)
+            rownames(w_gp) <- tmp2$w_source
+          }
       }
     if (is.null(prefix)) {
-        prefix <- find_prefix(w)
+        prefix <- switch(fit_type,
+                    lavaan = find_prefix(w),
+                    lm = w_source)
       }
     if (!is.null(values)) {
         if (!is.list(values) && nrow(w_gp) > 2) {
@@ -381,4 +395,23 @@ check_cat_values <- function(x0, target) {
           }
       }
     return(FALSE)
+  }
+
+find_source_cat <- function(lm_list, w) {
+    mm <- merge_model_matrix(lm_list)
+    mf <- merge_model_frame(lm_list)
+    terms_list <- lapply(lm_list,
+                      function(x) stats::delete.response(stats::terms(x)))
+    coefs_list <- lapply(lm_list, stats::coef)
+    i <- sapply(coefs_list, function(x) {any(w %in% names(x))})
+    terms_i <- terms_list[[which(i)[1]]]
+    j <- (attr(terms_i, "dataClasses") == "character") |
+         (attr(terms_i, "dataClasses") == "factor")
+    jnames <- names(j)[j]
+    jcat <- sapply(jnames, function(x) unique(mf[, x]),
+                   simplify = FALSE)
+    jcatind <- mapply(function(x, y) {paste0(x, y)}, x = jnames, y = jcat,
+                   SIMPLIFY = FALSE)
+    k <- sapply(jcatind, function(x) all(w %in% x))
+    jnames[k]
   }
