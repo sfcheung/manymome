@@ -105,5 +105,8 @@ merge_mod_levels <- function(...) {
     wlevels <- apply(tmp, 1, paste, collapse = "; ")
     rownames(out2) <- wlevels
     attr(out2, "wlevels") <- out2levels
+    wvars <- lapply(x, colnames)
+    names(wvars) <- wnames1
+    attr(out2, "wvars") <- wvars
     out2
   }
