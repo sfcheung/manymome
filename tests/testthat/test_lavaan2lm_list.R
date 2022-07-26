@@ -48,7 +48,7 @@ coef(fit_m_list[[1]])
 
 # predict
 
-test_that("lm_from_lavaan_list: predict", {
+test_that("lm_from_lavaan: predict", {
     expect_equal(predict(fit_list[["y"]], dat[3:5, ]),
                  predict(lm_y, dat[3:5, ]) - coef(lm_y)[1],
                  ignore_attr = TRUE,
@@ -59,9 +59,40 @@ test_that("lm_from_lavaan_list: predict", {
                  tolerance = 1e-6)
   })
 
-tmp <- predict(fit_list,
+# predict for lm_from_lavaan_list
+tmpdat <- dat[6:9, ]
+yhat1 <- predict(fit_list,
                x = "x",
                y = "y",
                m = c("m1", "m2"),
                newdata = tmpdat)
-tmp
+tmpdat_i <- tmpdat
+m1hat1 <- predict(lm_m1, tmpdat_i) - coef(lm_m1)[1]
+tmpdat_i$m1 <- m1hat1
+m2hat1 <- predict(lm_m2, tmpdat_i) - coef(lm_m2)[1]
+tmpdat_i$m2 <- m2hat1
+yhat1_chk <- predict(lm_y, tmpdat_i) - coef(lm_y)[1]
+
+tmpdat <- dat[6:9, ]
+yhat2 <- predict(fit_m_list,
+               x = "x",
+               y = "y",
+               m = c("m1", "m2"),
+               newdata = tmpdat)
+tmpdat_i <- tmpdat
+m1hat2 <- predict(lm_m1, tmpdat_i)
+tmpdat_i$m1 <- m1hat2
+m2hat2 <- predict(lm_m2, tmpdat_i)
+tmpdat_i$m2 <- m2hat2
+yhat2_chk <- predict(lm_y, tmpdat_i)
+
+test_that("lm_from_lavaan_list: predict", {
+    expect_equal(yhat1,
+                 yhat1_chk,
+                 ignore_attr = TRUE,
+                 tolerance = 1e-6)
+    expect_equal(yhat2,
+                 yhat2_chk,
+                 ignore_attr = TRUE,
+                 tolerance = 1e-6)
+  })
