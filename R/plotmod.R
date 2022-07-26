@@ -174,7 +174,8 @@
 #'
 #' @export
 
-plotmod <- function(output, x_label,
+plot.cond_indirect_effects <- function(x,
+                            x_label,
                             w_label,
                             y_label,
                             fit,
@@ -194,6 +195,7 @@ plotmod <- function(output, x_label,
                             point_size = 5,
                             graph_type = c("default", "tumble")
                     ) {
+                      browser()
     # Note
     # - No need to generate w levels. They can be retrieved from the output of
     #   cond_indirect_effects().
@@ -219,12 +221,13 @@ plotmod <- function(output, x_label,
     # y <- colnames(stats::model.frame(output))[
     #                 attr(stats::terms(output), "response")
     #               ]
+    output <- x
     plot_df <- as.data.frame(output)
     full_output <- attr(output, "full_output")
     full_output_1 <- full_output[[1]]
     x <- full_output_1$x
     y <- full_output_1$y
-    wlevels <- attr(output, "wlevels")
+    wlevels <- attr(x, "wlevels")
     fit_type <- cond_indirect_check_fit(fit)
     mf0 <- switch(fit_type,
                   lavaan = lavaan::lavInspect(fit, "data"),
@@ -344,7 +347,7 @@ plotmod <- function(output, x_label,
             mf2 <- do.call(rbind, mf_list)
           }
       }
-
+    browser()
     mf2$predicted <- stats::predict(output, mf2)
 
     if (missing(x_label)) x_label <- x
