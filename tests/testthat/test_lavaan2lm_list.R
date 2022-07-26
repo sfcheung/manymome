@@ -1,3 +1,4 @@
+skip("WIP")
 library(stdmodsem)
 
 suppressMessages(suppressMessages(library(lavaan)))
@@ -57,3 +58,10 @@ test_that("lm_from_lavaan_list: predict", {
                  ignore_attr = TRUE,
                  tolerance = 1e-6)
   })
+
+tmp <- predict(fit_list,
+               x = "x",
+               y = "y",
+               m = c("m1", "m2"),
+               newdata = tmpdat)
+tmp

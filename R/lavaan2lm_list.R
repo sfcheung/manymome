@@ -167,3 +167,50 @@ predict.lm_from_lavaan <- function(object, newdata, ...) {
     unname(out[, 1])
   }
 
+#' @export
+
+predict.lm_from_lavaan_list <- function(object,
+                                        x = NULL,
+                                        y = NULL,
+                                        m = NULL,
+                                        newdata, ...) {
+    ptable <- lm_from_lavaan_list2ptable(object)
+    if (!check_path(x = x, y = y, m = m, est = ptable)) {
+        stop(paste0("The path from ",
+                    dQuote(x),
+                    " to ",
+                    dQuote(y),
+                    " through ",
+                    paste0(dQuote(m), collapse = ", "),
+                    " is invalid."))
+      }
+    ys <- c(m, y)
+    newdata_i <- newdata
+    for (yi in ys) {
+        yi_hat <- stats::predict(object[[yi]], newdata = newdata_i)
+        newdata_i[, yi] <- yi_hat
+      }
+    newdata_i[, y]
+  }
+
+#' @noRd
+
+lm_from_lavaan_list2ptable <- function(x) {
+    vars <- sapply(x, get_variables,
+                simplify = FALSE)
+    dvs <- names(x)
+    ptable <- mapply(cbind, dvs, "~", vars,
+                     SIMPLIFY = FALSE)
+    ptable <- do.call(rbind, ptable)
+    ptable <- as.data.frame(ptable)
+    colnames(ptable) <- c("lhs", "op", "rhs")
+    ptable
+  }
+
+#' @noRd
+
+get_variables <- function(x) {
+    tmp <- attr(stats::terms(x), "factors")
+    id <- (colSums(tmp) == 1)
+    colnames(tmp)[id]
+  }
