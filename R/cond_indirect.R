@@ -73,9 +73,8 @@
 #'    outputs, and `boot_out` is `NULL`, this function will do
 #'    bootstrapping on `fit`. This is the seed for the bootstrapping.
 #'    Default is `NULL` and seed is not set.
-#' @param wlevels The output of [merge_mod_levels()].
-#' @param ws The moderator(s) to be passed to [mod_levels_list()].
-#'        Used only if `wlevels` is not specified. If all the
+#' @param wlevels The output of [merge_mod_levels()], or the
+#'        moderator(s) to be passed to [mod_levels_list()]. If all the
 #'        moderators can be represented by one variable, that is, each
 #'        moderator is (a) a numeric variable, (b) a dichotomous
 #'        categorical variable, or (c) a factor or string variable
@@ -87,8 +86,8 @@
 #'        the names of the moderators, with such moderators
 #'        represented by a vector of names. For example: `list("w1",
 #'        c("gpgp2", "gpgp3")`, the first moderator `w1` and the
-#'        second moderator a three-categorical variable
-#'        represented by `gpgp2` and `gpgp3`.
+#'        second moderator a three-categorical variable represented by
+#'        `gpgp2` and `gpgp3`.
 #' @param ... Arguments to be passed to [cond_indirect()]
 #' @param output_type The type of output of [cond_indirect_effects()].
 #'    If `"data.frame"`, the default, the output will be converted to
@@ -296,6 +295,34 @@ indirect_effect <- function(x,
                   save_boot_full = save_boot_full)
   }
 
+#' @param w_type Character. Whether the moderator is a `"numeric"`
+#'               variable or a `"categorical"` variable. If `"auto"`,
+#'               the function will try to determine the type
+#'               automatically.  See [mod_levels_list()] for
+#'               further information.
+#' @param w_method Character, either `"sd"` or `"percentile"`. If
+#'                `"sd"`, the levels are defined by the distance from
+#'                the mean in terms of standard deviation. if
+#'                `"percentile"`, the levels are defined in
+#'                percentiles.  See [mod_levels_list()] for further
+#'                information.
+#' @param sd_from_mean A numeric vector. Specify the distance in
+#'                     standard deviation from the mean for each
+#'                     level. Default is `c(-1, 0, 1)` when there is
+#'                     only one moderator, and `c(-1, 1)` when there
+#'                     are more than one moderator. Ignored if
+#'                     `w_method` is not equal to `"sd"`. See
+#'                    [mod_levels_list()] for further information.
+#' @param percentiles A numeric vector. Specify the percentile (in
+#'                    proportion) for each level. Default is `c(.16, .50,
+#'                    .84)` if there is one moderator, and `c(.16,
+#'                    .84)` when there are more than one moderator.
+#'                    Ignored if `w_method` is not equal to
+#'                    `"percentile"`. See [mod_levels_list()] for
+#'                    further information.
+#' @param mod_levels_list_args Additional arguments to be passed
+#'     to [mod_levels_list()] if it is called for creating
+#'     the levels of moderators. Default is `list()`.
 #' @examples
 #' # Examples for cond_indirect_effects():
 #'
@@ -320,24 +347,46 @@ indirect_effect <- function(x,
 
 
 cond_indirect_effects <- function(wlevels,
-                                  ws,
                                   ...,
                                   fit = NULL,
+                                  w_type = "auto",
+                                  w_method = "sd",
+                                  sd_from_mean = NULL,
+                                  percentiles = NULL,
                                   est = NULL,
                                   implied_stats = NULL,
                                   boot_ci = FALSE,
                                   boot_out = NULL,
                                   R = 100,
                                   seed = NULL,
-                                  output_type = "data.frame") {
+                                  output_type = "data.frame",
+                                  mod_levels_list_args = list()) {
     if (!missing(wlevels)) {
-        if (is.list(wlevels) && !is.data.frame(wlevels)) {
-            wlevels <- merge_mod_levels(wlevels)
+        # if (is.list(wlevels) && !is.data.frame(wlevels)) {
+            # wlevels <- merge_mod_levels(wlevels)
+          # }
+        wlevels_check <- check_wlevels(wlevels)
+        if (!is.null(wlevels_check)) {
+            wlevels <- wlevels_check
+          } else {
+            # Call mod_levels_list
+            # Case 1: A character vector
+            # Case 2: A list of character vectors
+            mod_levels_list_args_final <-
+              utils::modifyList(mod_levels_list_args,
+                                list(w_type = w_type,
+                                     w_method = w_method,
+                                     sd_from_mean = sd_from_mean,
+                                     percentiles = percentiles,
+                                     fit = fit,
+                                     merge = TRUE))
+            wlevels <- do.call(mod_levels_list,
+                          args = c(as.list(wlevels),
+                                   mod_levels_list_args_final))
+
           }
       } else {
-        if (missing(ws)) {
-            stop("Either wlevels or ws must be specified.")
-          }
+        stop("wlevels is required.")
       }
     k <- nrow(wlevels)
     wlevels1 <- split(wlevels, seq_len(k))
@@ -491,4 +540,21 @@ cond_indirect_effects_to_df <- function(x, wlevels) {
       }
     out1 <- cbind(wlevels_label, wlevels2, out)
     out1
+  }
+
+check_wlevels <- function(ws) {
+    if (is.data.frame(ws)) {
+        # A data frame. Assumed to be merged levels
+        return(ws)
+      }
+    if (is.list(ws)) {
+        tmp <- sapply(ws, function(x) !is.null(attr(x, which = "wlevels")))
+        if (all(tmp)) {
+            # A list of wlevels. Merge them
+            out <- merge_mod_levels(ws)
+            return(out)
+          }
+      }
+    # Cannot convert to wlevels
+    return(NULL)
   }
