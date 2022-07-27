@@ -28,7 +28,7 @@ if (basename(getwd()) == "stdmodsem") {
 This article is a brief illustration on how `stdmodsem` functions are
 used in some typical cases.
 
-# Moderated Mediation
+# Moderated Mediation by Regression
 
 This is the sample dataset comes with the package:
 
@@ -72,6 +72,8 @@ p$graphAttributes$Edges$asize[c(1, 4)] <- 0
 plot(p)
 ```
 
+## Estimating the Coefficients
+
 This is a moderated mediation model with
 
   - a mediation path `x -> m -> y`, and
@@ -82,19 +84,21 @@ The effects of interest are the *conditional
 indirect effects*: the indirect effects from `x` to `y` through `m` for
 different levels of `w1` and `w2`.
 
-There are two common approaches to test and estimate these
-effects: regression approach and structural equation modelling
-approach. The following sections will illustrate these two
-approaches.
+The effects in this moderated mediation model can be
+estimated by multiple regression approach in R using
+`lm()`.
 
-## Multiple Regression by `lm()`
-
+First, `m` is regressed on `x`, `w1`, and their interaction:
 
 ```{r}
 lm_m <- lm(m ~ x * w1, dat)
-lm_y <- lm(y ~ m * w2 + x, dat)
 ```
 
+Second, `y` is regressed on `m`, `w2`, their interaction, and `x`:
+
+```{r}
+lm_y <- lm(y ~ m * w2 + x, dat)
+```
 
 These are the coefficients:
 
@@ -103,18 +107,31 @@ printCoefmat(summary(lm_m)$coefficients, digits = 3, signif.legend = FALSE)
 printCoefmat(summary(lm_y)$coefficients, digits = 3, signif.legend = FALSE)
 ```
 
+Both moderation effects are significant. Because the indirect effect
+is moderated on both stages (`x -> m` and `m -> y`), the magnitude
+of the indirect effect depends on `w1` and `w2`. The indirect
+effect conditional on the moderators is called the *conditional*
+*indirect* *effect*. Moreover, like a mediation effect without moderation,
+its confidence interval can be formed by nonparametric bootstrapping.
+
 To compute conditional indirect effects and form bootstrap confidence
-intervals, we use `cond_indirect_effects()`. For a model with coefficients
-estimate by multiple regression, we first group the `lm()` outputs to a `list`.
+intervals, we can use `cond_indirect_effects()`.
 
-This can be done by `lm2list()`, which will also check the `lm()` outputs
-to see whether they can from a model and whether exactly the cases are used
-in all models:
-
+## Estimating Conditional Indirect Effects
 
 ```{r}
-fit_lm <- lm2list(lm_m, lm_y)
-fit_lm
+out_lm <- cond_indirect_effects(wlevels =c("w1", "w2"),
+                                x = "x",
+                                y = "y",
+                                m = "m",
+                                fit = list(lm_m, lm_y),
+                                boot_ci = TRUE,
+                                R = 2000,
+                                seed = 43143)
+```
+
+```{r}
+out_lm
 ```
 
 We then use `mod_levels_list()` to generate combinations of levels of the
@@ -124,7 +141,6 @@ moderators, 1 SD below and above means in this example by setting
 ```{r}
 mod_levels <- mod_levels_list("w1", "w2",
                               fit = fit_lm,
-                              sd_from_mean = c(-1, 1),
                               merge = TRUE)
 mod_levels
 ```
@@ -147,7 +163,7 @@ if (file.exists(fn)) {
 R to 2000 or even 5000 in real research.)
 
 ```{r eval = TRUE}
-fit_lm_boot_out <- lm2boot_out(fit_lm, R = 500, seed = 87415)
+fit_lm_boot_out <- lm2boot_out(fit_lm, R = 2000, seed = 87415)
 ```
 
 It is all set. We can now compute the conditional indirect effect:
@@ -161,6 +177,27 @@ out_lm <- cond_indirect_effects(wlevels = mod_levels,
                              boot_ci = TRUE,
                              boot_out = fit_lm_boot_out)
 out_lm
+tmp <- cond_indirect(wvalues = unlist(mod_levels[1, ]),
+                    x = "x",
+                    y = "y",
+                    m = "m",
+                    fit = fit_lm,
+                    boot_ci = TRUE,
+                    boot_out = fit_lm_boot_out)
+tmp2 <- cond_indirect(wvalues = unlist(mod_levels[1, ]),
+                    x = "x",
+                    y = "y",
+                    m = "m",
+                    fit = fit_lm)
+tmpfct <- function(d, i) {
+    lm_m <- lm(m ~ x*w1, d[i, ])
+    lm_y <- lm(y ~ m*w2 + x, d[i, ])
+    out <- cond_indirect(wvalues = c(w1 = 6.17315699477943, w2 = 4.04048736536153),
+                  x = "x", y = "y", m = "m", fit = lm2list(lm_m, lm_y))
+    return(coef(out))
+  }
+library(boot)
+bout <- boot(dat, tmpfct, R = 2000)
 ```
 
 These are the standardized conditional indirect effects:
