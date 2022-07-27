@@ -73,6 +73,21 @@
 #'    outputs, and `boot_out` is `NULL`, this function will do
 #'    bootstrapping on `fit`. This is the seed for the bootstrapping.
 #'    Default is `NULL` and seed is not set.
+#' @param parallel Logical. If bootstrapping is conducted,
+#'                 whether parallel processing will be used.
+#'                 Default is `TRUE`. If `fit` is a list of
+#'                 [lm()] outputs, parallel processing will not be used.
+#' @param ncores Integer. The number of CPU cores to use when
+#'               `parallel` is `TRUE`. Default is the number of
+#'               non-logical cores minus one (one minimum). Will raise
+#'               an error if greater than the number of cores detected
+#'               by [parallel::detectCores()]. If `ncores` is set, it
+#'               will override `make_cluster_args` in [do_boot()].
+#' @param make_cluster_args A named list of additional arguments to be
+#'               passed to [parallel::makeCluster()]. For advanced
+#'               users. See [parallel::makeCluster()] for details.
+#'               Default is `list()`.
+#' @param progress Logical. Display progress or not. Default is `TRUE`.
 #' @param wlevels The output of [merge_mod_levels()], or the
 #'        moderator(s) to be passed to [mod_levels_list()]. If all the
 #'        moderators can be represented by one variable, that is, each
@@ -152,6 +167,10 @@ cond_indirect <- function(x,
                      boot_out = NULL,
                      R = 100,
                      seed = NULL,
+                     parallel = TRUE,
+                     ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                     make_cluster_args = list(),
+                     progress = TRUE,
                      save_boot_full = FALSE,
                      prods = NULL,
                      get_prods_only = FALSE) {
@@ -167,24 +186,32 @@ cond_indirect <- function(x,
             if (!inherits(boot_out, "boot_out")) {
                 stop("The object at 'boot_out' must be of the class 'boot_out'.")
               }
+          } else {
+            boot_out <- do_boot(fit = fit,
+                                R = R,
+                                seed = seed,
+                                parallel = parallel,
+                                ncores = ncores,
+                                make_cluster_args = make_cluster_args,
+                                progress = progress)
           }
-        if (fit_type == "lavaan") {
-            opt <- lavaan::lavInspect(fit, "options")
-            if (opt$se != "bootstrap" && is.null(boot_out)) {
-                stop("If 'boot_ci' is TRUE, 'se' needs to be 'bootstrap' in 'fit'.")
-              }
-            if (is.null(boot_out)) {
-                boot_out <- fit2boot_out(fit = fit)
-              }
-          }
-        if (fit_type == "lm") {
-            if (is.null(boot_out)) {
-                # Do bootstrap here.
-                boot_out <- lm2boot_out(outputs = fit,
-                                        R = R,
-                                        seed = seed)
-              }
-          }
+        # if (fit_type == "lavaan") {
+        #     opt <- lavaan::lavInspect(fit, "options")
+        #     if (opt$se != "bootstrap" && is.null(boot_out)) {
+        #         stop("If 'boot_ci' is TRUE, 'se' needs to be 'bootstrap' in 'fit'.")
+        #       }
+        #     if (is.null(boot_out)) {
+        #         boot_out <- fit2boot_out(fit = fit)
+        #       }
+        #   }
+        # if (fit_type == "lm") {
+        #     if (is.null(boot_out)) {
+        #         # Do bootstrap here.
+        #         boot_out <- lm2boot_out(outputs = fit,
+        #                                 R = R,
+        #                                 seed = seed)
+        #       }
+        #   }
       }
     if (fit_type == "lavaan") {
         fit0 <- fit
@@ -278,6 +305,10 @@ indirect_effect <- function(x,
                      boot_out = NULL,
                      R = 100,
                      seed = NULL,
+                     parallel = TRUE,
+                     ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                     make_cluster_args = list(),
+                     progress = TRUE,
                      save_boot_full = FALSE) {
     cond_indirect(x = x,
                   y = y,
@@ -292,6 +323,10 @@ indirect_effect <- function(x,
                   boot_out = boot_out,
                   R = 100,
                   seed = NULL,
+                  parallel = parallel,
+                  ncores = ncores,
+                  make_cluster_args = make_cluster_args,
+                  progress = progress,
                   save_boot_full = save_boot_full)
   }
 
@@ -347,7 +382,9 @@ indirect_effect <- function(x,
 
 
 cond_indirect_effects <- function(wlevels,
-                                  ...,
+                                  x,
+                                  y,
+                                  m = NULL,
                                   fit = NULL,
                                   w_type = "auto",
                                   w_method = "sd",
@@ -356,11 +393,16 @@ cond_indirect_effects <- function(wlevels,
                                   est = NULL,
                                   implied_stats = NULL,
                                   boot_ci = FALSE,
-                                  boot_out = NULL,
                                   R = 100,
                                   seed = NULL,
+                                  parallel = TRUE,
+                                  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                                  make_cluster_args = list(),
+                                  progress = TRUE,
+                                  boot_out = NULL,
                                   output_type = "data.frame",
-                                  mod_levels_list_args = list()) {
+                                  mod_levels_list_args = list(),
+                                  ...) {
     if (!missing(wlevels)) {
         # if (is.list(wlevels) && !is.data.frame(wlevels)) {
             # wlevels <- merge_mod_levels(wlevels)
@@ -398,43 +440,59 @@ cond_indirect_effects <- function(wlevels,
             if (!inherits(boot_out, "boot_out")) {
                 stop("The object at 'boot_out' must be of the class 'boot_out'.")
               }
+          } else {
+            boot_out <- do_boot(fit = fit,
+                                R = R,
+                                seed = seed,
+                                parallel = parallel,
+                                ncores = ncores,
+                                make_cluster_args = make_cluster_args,
+                                progress = progress)
           }
-        if (fit_type == "lavaan") {
-            opt <- lavaan::lavInspect(fit, "options")
-            if (opt$se != "bootstrap" && is.null(boot_out)) {
-                stop("If 'boot_ci' is TRUE, 'se' needs to be 'bootstrap' in 'fit'.")
-              }
-            if (is.null(boot_out) && opt$se == "bootstrap") {
-                boot_out <- fit2boot_out(fit = fit)
-              }
-          }
-        if (fit_type == "lm") {
-            if (is.null(boot_out)) {
-                # Do bootstrap here.
-                boot_out <- lm2boot_out(outputs = fit,
-                                        R = R,
-                                        seed = seed)
-              }
-          }
+        # if (fit_type == "lavaan") {
+        #     opt <- lavaan::lavInspect(fit, "options")
+        #     if (opt$se != "bootstrap" && is.null(boot_out)) {
+        #         stop("If 'boot_ci' is TRUE, 'se' needs to be 'bootstrap' in 'fit'.")
+        #       }
+        #     if (is.null(boot_out) && opt$se == "bootstrap") {
+        #         boot_out <- fit2boot_out(fit = fit)
+        #       }
+        #   }
+        # if (fit_type == "lm") {
+        #     if (is.null(boot_out)) {
+        #         # Do bootstrap here.
+        #         boot_out <- lm2boot_out(outputs = fit,
+        #                                 R = R,
+        #                                 seed = seed)
+        #       }
+        #   }
       }
     prods <- cond_indirect(wvalues = wlevels2[[1]],
-                            ...,
+                            x = x,
+                            y = y,
+                            m = m,
                             fit = fit,
                             est = est,
                             implied_stats = implied_stats,
-                            get_prods_only = TRUE)
+                            get_prods_only = TRUE,
+                            ...)
     out <- lapply(wlevels2,
                   function(wv,
-                           ...,
+                           x = x,
+                           y = y,
+                           m = m,
                            fit = fit,
                            est = est,
                            implied_stats = implied_stats,
                            boot_ci,
                            boot_out,
                            R,
-                           seed) {
+                           seed,
+                           ...) {
                               cond_indirect(wvalues = wv,
-                                            ...,
+                                            x = x,
+                                            y = y,
+                                            m = m,
                                             fit = fit,
                                             est = est,
                                             implied_stats = implied_stats,
@@ -442,16 +500,20 @@ cond_indirect_effects <- function(wlevels,
                                             boot_out = boot_out,
                                             R = R,
                                             seed = seed,
-                                            prods = prods)
+                                            prods = prods,
+                                            ...)
                            },
-                  ...,
+                  x = x,
+                  y = y,
+                  m = m,
                   fit = fit,
                   est = est,
                   implied_stats = implied_stats,
                   boot_ci = boot_ci,
                   boot_out = boot_out,
                   R = R,
-                  seed = seed)
+                  seed = seed,
+                  ...)
     if (output_type == "data.frame") {
         out1 <- cond_indirect_effects_to_df(out, wlevels = wlevels)
         class(out1) <- c("cond_indirect_effects", class(out1))
@@ -461,6 +523,7 @@ cond_indirect_effects <- function(wlevels,
         attr(out1, "fit") <- fit
         attr(out1, "est") <- est
         attr(out1, "implied_stats") <- implied_stats
+        attr(out1, "boot_out") <- boot_out
         return(out1)
       } else {
         return(out)
