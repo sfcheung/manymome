@@ -74,6 +74,21 @@
 #'    bootstrapping on `fit`. This is the seed for the bootstrapping.
 #'    Default is `NULL` and seed is not set.
 #' @param wlevels The output of [merge_mod_levels()].
+#' @param ws The moderator(s) to be passed to [mod_levels_list()].
+#'        Used only if `wlevels` is not specified. If all the
+#'        moderators can be represented by one variable, that is, each
+#'        moderator is (a) a numeric variable, (b) a dichotomous
+#'        categorical variable, or (c) a factor or string variable
+#'        used in [lm()] in `fit`, then it is a vector of the names of
+#'        the moderators as appeared in the data frame. If at least
+#'        one of the moderators is a categorical variable represented
+#'        by more than one variable, such as user-created dummy
+#'        variables used in [lavaan::sem()], then it must be a list of
+#'        the names of the moderators, with such moderators
+#'        represented by a vector of names. For example: `list("w1",
+#'        c("gpgp2", "gpgp3")`, the first moderator `w1` and the
+#'        second moderator a three-categorical variable
+#'        represented by `gpgp2` and `gpgp3`.
 #' @param ... Arguments to be passed to [cond_indirect()]
 #' @param output_type The type of output of [cond_indirect_effects()].
 #'    If `"data.frame"`, the default, the output will be converted to
@@ -303,7 +318,9 @@ indirect_effect <- function(x,
 #'                           sets of levels.
 #' @order 2
 
+
 cond_indirect_effects <- function(wlevels,
+                                  ws,
                                   ...,
                                   fit = NULL,
                                   est = NULL,
@@ -313,8 +330,14 @@ cond_indirect_effects <- function(wlevels,
                                   R = 100,
                                   seed = NULL,
                                   output_type = "data.frame") {
-    if (is.list(wlevels) && !is.data.frame(wlevels)) {
-        wlevels <- merge_mod_levels(wlevels)
+    if (!missing(wlevels)) {
+        if (is.list(wlevels) && !is.data.frame(wlevels)) {
+            wlevels <- merge_mod_levels(wlevels)
+          }
+      } else {
+        if (missing(ws)) {
+            stop("Either wlevels or ws must be specified.")
+          }
       }
     k <- nrow(wlevels)
     wlevels1 <- split(wlevels, seq_len(k))
