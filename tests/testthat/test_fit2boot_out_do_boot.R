@@ -26,11 +26,18 @@ out_chk_est[[i]]
 out_chk_implied[[i]]
 out_chk[[i]]
 
-# To be examined interactively
-# out_parallel <- fit2boot_out_do_boot(fit, R = 2, seed = 8715, parallel = TRUE,
+out_db <- do_boot(fit)
+
+# # To examine in an interactive sessions.
+# fit2 <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE,
+#            baseline = FALSE,
+#            h1 = FALSE,
+#            warn = FALSE)
+# out_parallel <- fit2boot_out_do_boot(fit2, R = 2, seed = 8715, parallel = TRUE,
 #                                      ncores = 2,
 #                                      progress = FALSE)
-
+# out_db2 <- do_boot(fit2, R = 2, seed = 8715, ncores = 2, progress = FALSE)
+# identical(out_parallel, out_db2)
 
 test_that("fit2boot_out_do_boot", {
     expect_equal(
@@ -52,5 +59,9 @@ test_that("fit2boot_out_do_boot", {
         unclass(out[[i]]$implied_stats$mean),
         unclass(out_chk[[i]]$implied_stats$mean),
         tolerance = 1e-5
+      )
+    expect_identical(
+        out_db,
+        out_chk
       )
   })

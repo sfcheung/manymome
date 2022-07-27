@@ -71,12 +71,18 @@
 lm2list <- function(...) {
     check_lm_consistency(...)
     outputs <- list(...)
+    if ((is.list(outputs)) && (length(outputs) == 1)) {
+        outputs <- unlist(outputs, recursive = FALSE)
+      }
     class(outputs) <- c("lm_list", class(outputs))
     outputs
   }
 
 check_lm_consistency <- function(...) {
     outputs <- list(...)
+    if ((is.list(outputs)) && (length(outputs) == 1)) {
+        outputs <- unlist(outputs, recursive = FALSE)
+      }
     mm_names <- lapply(outputs, get_mm_names)
     if (!check_except(mm_names)) {
         stop(paste0("At least one model has all variables not",

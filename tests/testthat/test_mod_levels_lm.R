@@ -37,14 +37,24 @@ out_i_c <- mod_levels_i_lm_categorical(fit, w = c("gpgp2", "gpgp3"))
 out_i_c2 <- mod_levels_i_lm_categorical(fit, w = c("citybeta", "citygamma", "citysigma"))
 out_i_c3 <- mod_levels_i_lm_categorical(fit, w = c("gpgp2", "gpgp3"), prefix = "gp")
 
+out_i_c3b <- mod_levels_i_lm_categorical(fit, w = c("gp"))
+
 out_n_sd <- mod_levels(fit, w = "w1")
 out_n_p <- mod_levels(fit, w = "w1", w_method = "percentile")
 out_n_sd2 <- mod_levels(fit, w = "w1", sd_from_mean = c(-1, 4))
 out_n_p2 <- mod_levels(fit, w = "w1", w_method = "percentile", percentiles = c(.25, .75))
 
+out_n_sd_l <- mod_levels_list("w1", fit = fit)
+
 out_c <- mod_levels(fit, w = c("gpgp2", "gpgp3"))
 out_c2 <- mod_levels(fit, w = c("citybeta", "citygamma", "citysigma"))
 out_c3 <- mod_levels(fit, w = c("gpgp2", "gpgp3"), prefix = "gp")
+
+out_c3b <- mod_levels(fit, w = c("gp"), prefix = "gp")
+
+out_c_l <- mod_levels_list(fit = fit, c("gpgp2", "gpgp3"), merge = TRUE)
+out_c3_l <- mod_levels_list(fit = fit, c("gpgp2", "gpgp3"), prefix = "gp")
+
 
 out_i_n_sd_chk <- mean(dat$w1) + sd(dat$w1) * rev(c(-1, 0, 1))
 out_i_n_p_chk <- quantile(dat$w1, rev(c(.16, .50, .84)))
@@ -73,6 +83,7 @@ test_that("mod_levels: lm", {
     expect_equal(out_i_c, out_i_c_chk, ignore_attr = TRUE)
     expect_equal(out_i_c2, out_i_c2_chk, ignore_attr = TRUE)
     expect_equal(out_i_c3, out_i_c3_chk, ignore_attr = TRUE)
+    expect_equal(out_i_c3, out_i_c3b, ignore_attr = TRUE)
     expect_equal(unlist(out_n_sd), out_i_n_sd_chk, ignore_attr = TRUE)
     expect_equal(unlist(out_n_p), out_i_n_p_chk, ignore_attr = TRUE)
     expect_equal(unlist(out_n_sd2), out_i_n_sd2_chk, ignore_attr = TRUE)

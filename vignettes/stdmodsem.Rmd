@@ -26,9 +26,14 @@ if (basename(getwd()) == "stdmodsem") {
 # Introduction
 
 This article is a brief illustration on how `stdmodsem` functions are
-used in some typical cases.
+used in some typical cases. The model is intended to be
+simple (though with two moderators). See the
+section [Other Cases](#other-cases) for other models supported,
+and how to use the function for models fitted by
+structural equation modelings using `lavaan::sem()`,
+including models with latent variables.
 
-# Moderated Mediation
+# Moderated Mediation by Regression
 
 This is the sample dataset comes with the package:
 
@@ -72,6 +77,8 @@ p$graphAttributes$Edges$asize[c(1, 4)] <- 0
 plot(p)
 ```
 
+## Estimating the Coefficients
+
 This is a moderated mediation model with
 
   - a mediation path `x -> m -> y`, and
@@ -82,19 +89,21 @@ The effects of interest are the *conditional
 indirect effects*: the indirect effects from `x` to `y` through `m` for
 different levels of `w1` and `w2`.
 
-There are two common approaches to test and estimate these
-effects: regression approach and structural equation modelling
-approach. The following sections will illustrate these two
-approaches.
+The effects in this moderated mediation model can be
+estimated by multiple regression approach in R using
+`lm()`.
 
-## Multiple Regression by `lm()`
-
+First, `m` is regressed on `x`, `w1`, and their interaction:
 
 ```{r}
 lm_m <- lm(m ~ x * w1, dat)
-lm_y <- lm(y ~ m * w2 + x, dat)
 ```
 
+Second, `y` is regressed on `m`, `w2`, their interaction, and `x`:
+
+```{r}
+lm_y <- lm(y ~ m * w2 + x, dat)
+```
 
 These are the coefficients:
 
@@ -103,449 +112,326 @@ printCoefmat(summary(lm_m)$coefficients, digits = 3, signif.legend = FALSE)
 printCoefmat(summary(lm_y)$coefficients, digits = 3, signif.legend = FALSE)
 ```
 
+Both moderation effects are significant. Because the indirect effect
+is moderated on both stages (`x -> m` and `m -> y`), the magnitude
+of the indirect effect depends on `w1` and `w2`. The indirect
+effect conditional on the moderators is called the *conditional*
+*indirect* *effect*. Moreover, like a mediation effect without moderation,
+its confidence interval can be formed by nonparametric bootstrapping.
+
 To compute conditional indirect effects and form bootstrap confidence
-intervals, we use `cond_indirect_effects()`. For a model with coefficients
-estimate by multiple regression, we first group the `lm()` outputs to a `list`.
+intervals, we can use `cond_indirect_effects()`.
 
-This can be done by `lm2list()`, which will also check the `lm()` outputs
-to see whether they can from a model and whether exactly the cases are used
-in all models:
+## Estimating Conditional Indirect Effects
 
+This is the call to compute the conditional indirect effects:
 
 ```{r}
-fit_lm <- lm2list(lm_m, lm_y)
-fit_lm
+out_lm <- cond_indirect_effects(wlevels =c("w1", "w2"),
+                                x = "x",
+                                y = "y",
+                                m = "m",
+                                fit = lm2list(lm_m, lm_y),
+                                boot_ci = TRUE,
+                                R = 500,
+                                seed = 43143)
 ```
 
-We then use `mod_levels_list()` to generate combinations of levels of the
-moderators, 1 SD below and above means in this example by setting
-`sd_from_mean`:
+These are the major arguments:
+
+- `wlevels`: The vector of the names of the moderators.
+- `x`: The name of the predictor.
+- `y`: The name of the outcome variable.
+- `m`: The name of the mediator, or a vector of names
+       if the pathway has more than one mediator.
+- `fit`: The list of the output of `lm()`.
+- `boot_ci`: Set to `TRUE` to request bootstrapping confidence intervals.
+             Default is `FALSE`.
+- `R`: The number of bootstrap samples. Only 500 bootstrap samples
+        for illustration. Set `R` to 2000 or even 5000 in real research.
+- `seed`: The seed for the random number generator.
+
+This is the output:
 
 ```{r}
-mod_levels <- mod_levels_list("w1", "w2",
-                              fit = fit_lm,
-                              sd_from_mean = c(-1, 1),
-                              merge = TRUE)
-mod_levels
-```
-
-To form bootstrapping confidence intervals, we first repeat the regression
-analysis in all models by nonparametric bootstrapping and store the results.
-This can be done by `lm2boot_out()`:
-
-```{r echo = FALSE, eval = FALSE}
-fn <- paste0(pth, "stdmodsem_fit_lm_boot_out.rds")
-if (file.exists(fn)) {
-    fit_lm_boot_out <- readRDS(fn)
-  } else {
-    fit_lm_boot_out <- lm2boot_out(fit_lm, R = 2000, seed = 87415)
-    saveRDS(fit_lm_boot_out, fn)
-  }
-```
-
-(Note: Only 500 bootstrap samples are used for illustration. Set
-R to 2000 or even 5000 in real research.)
-
-```{r eval = TRUE}
-fit_lm_boot_out <- lm2boot_out(fit_lm, R = 500, seed = 87415)
-```
-
-It is all set. We can now compute the conditional indirect effect:
-
-```{r}
-out_lm <- cond_indirect_effects(wlevels = mod_levels,
-                             x = "x",
-                             y = "y",
-                             m = "m",
-                             fit = fit_lm,
-                             boot_ci = TRUE,
-                             boot_out = fit_lm_boot_out)
 out_lm
 ```
 
-These are the standardized conditional indirect effects:
+For two or more moderators, the default levels for numeric moderators
+are one standard deviation below mean and one standard deviation above
+mean. For two moderators, there are four combinations. As shown
+above, among these levels, the indirect effect from `x` to `y` through
+`m` is significant only when both `w1` and `w2` are one standard deviation
+above mean. The indirect effect at these levels of `w1` and `w2` are
+`r formatC(out_lm[1, "ind"], digits = 3, format = "f")`, with
+95% bootstrap confidence interval
+[`r paste0(formatC(unlist(out_lm[1, c("CI.lo", "CI.hi")]), digits = 3, format = "f"), collapse = ", ")`].
+
+## Standardized Conditional Indirect Effects
+
+To compute the conditional indirect effects, we can standardize
+only the predictor (`x`), only the outcome (`y`), or both.
+
+To standardize `x`, set `standardized_x` to `TRUE`. To standardize
+`y`, set `standardized_y` to `TRUE`. To standardize both,
+set both `standardized_x` and `standardized_y` to `TRUE`.
+
+This is the result when both `x` and `y` are standardized:
 
 ```{r}
-out_lm_std <- cond_indirect_effects(wlevels = mod_levels,
-                             x = "x",
-                             y = "y",
-                             m = "m",
-                             fit = fit_lm,
-                             boot_ci = TRUE,
-                             boot_out = fit_lm_boot_out,
-                             standardized_x = TRUE,
-                             standardized_y = TRUE)
-out_lm_std
+out_lm_stdxy <- cond_indirect_effects(wlevels =c("w1", "w2"),
+                                x = "x",
+                                y = "y",
+                                m = "m",
+                                fit = list(lm_m, lm_y),
+                                boot_ci = TRUE,
+                                R = 500,
+                                seed = 43143,
+                                standardized_x = TRUE,
+                                standardized_y = TRUE)
+out_lm_stdxy
 ```
 
-## Path Analysis by `lavaan::sem()`
+The standardized indirect effect when both `w1` and `w2` are
+one standard deviation above mean is
+`r formatC(out_lm_stdxy[1, "std"], digits = 3, format = "f")`, with
+95% bootstrap confidence interval
+[`r paste0(formatC(unlist(out_lm_stdxy[1, c("CI.lo", "CI.hi")]), digits = 3, format = "f"), collapse = ", ")`].
 
-Suppose we fit the same model, but by path analysis conducted in
-by structural equation modelling analysis using `lavaan::sem()`.
+## Plotting the Conditional Indirect Effects
+
+The output of `cond_indirect_effects()` is a
+`cond_indirect_effects`-class object with a `plot`
+method:
 
 ```{r}
-library(lavaan)
-mod <-
-"
-m ~ x + w1 + x:w1
-y ~ m + w2 + m:w2 + x
-"
-fit_lavaan <- sem(model = mod,
-                  data = dat,
-                  fixed.x = FALSE)
-parameterEstimates(fit_lavaan)[parameterEstimates(fit_lavaan)$op == "~", ]
+plot(out_lm)
 ```
 
-It is not recommended to set `se` to `"boot"` for bootstrapping.
-`fit2boot_out_do_boot()` can be used to compute only information
-necessary for this package. It also supports parallel processing.
+By default, the two end points of each line are
+one standard deviation below
+and one standard above this mean of the predictor (`x`).
 
-```{r echo = FALSE, eval = FALSE}
-fn <- paste0(pth, "stdmodsem_fit_lavaan_boot_out.rds")
-if (file.exists(fn)) {
-    fit_lavaan_boot_out <- readRDS(fn)
-  } else {
-    fit_lavaan_boot_out <- fit2boot_out_do_boot(fit = fit_lavaan,
-                                                R = 2000,
-                                                seed = 8715,
-                                                parallel = TRUE,
-                                                ncores = 2)
-    saveRDS(fit_lavaan_boot_out, fn)
-  }
-```
+The plot reveals patterns not apparent from the conditional
+effects. Although the indirect effect does increase when
+either `w1` or `w2` increases, the coefficients of
+`w1` (`r formatC(coef(lm_m)["w1"], digits = 4, format = "f")`)
+and `w2` (`r formatC(coef(lm_y)["w2"], digits = 4, format = "f")`)
+are both negative. Therefore, the combined effects of
+the increases of `w1` and `w2` decreases `y` and move the line
+downward.
 
-(Note: Only 500 bootstrap samples are used for illustration. Set
-R to 2000 or even 5000 in real research.)
-
-```{r eval = TRUE}
-fit_lavaan_boot_out <- fit2boot_out_do_boot(fit = fit_lavaan,
-                                            R = 500,
-                                            seed = 8715,
-                                            parallel = TRUE,
-                                            ncores = 2)
-```
-
-We can use `mod_levels_list()` to generate levels of the moderators:
-
-```{r}
-mod_levels <- mod_levels_list("w1", "w2",
-                              fit = fit_lavaan,
-                              sd_from_mean = c(-1, 1),
-                              merge = TRUE)
-mod_levels
-```
-
-We then use `cond_indirect_effects()` to compute the
-conditional indirect effects, with nonparametric bootstrapping
-confidence intervals:
-
-```{r}
-out_lavaan <- cond_indirect_effects(wlevels = mod_levels,
-                                    x = "x",
-                                    y = "y",
-                                    m = "m",
-                                    fit = fit_lavaan,
-                                    boot_ci = TRUE,
-                                    boot_out = fit_lavaan_boot_out)
-out_lavaan
-```
-
-These are the standardized conditional indirect effects:
-
-```{r}
-out_lavaan_std <- cond_indirect_effects(wlevels = mod_levels,
-                                        x = "x",
-                                        y = "y",
-                                        m = "m",
-                                        fit = fit_lavaan,
-                                        boot_ci = TRUE,
-                                        boot_out = fit_lavaan_boot_out,
-                                        standardized_x = TRUE,
-                                        standardized_y = TRUE)
-out_lavaan_std
-```
+Options to customize the plot can be found on the
+help page of `plot.cond_indirect_effects()`.
 
 # Mediation Only
 
-The function `cond_indirect()` also supports a path model without
-moderator. It can be used for complicated models with any number of
-predictors, mediators, outcome variables, and paths.
+The package can also be used for a mediation model.
 
 This is the sample dataset comes with the package:
 
 ```{r}
 library(stdmodsem)
-dat <- data_med_complicated
+dat <- data_serial
 print(head(dat), digits = 3)
 ```
 
-Suppose this is the model being fitted:
+Suppose this is the model being fitted, with `c1` and
+`c2` the control variables.
 
 ```{r echo = FALSE}
 library(semPlot)
 suppressMessages(library(lavaan))
 mod <-
-"
-m11 ~ x1
-m12 ~ m11 + x1
-m2 ~ x2
-y1 ~ m12 + x1 + m11 + x2
-y2 ~ m2 + x2 + x1
+"m1 ~ x + c1 + c2
+m2 ~ m1 + x + c1 + c2
+y ~ m2 + m1 + x + c1 + c2
 "
 fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
-layout_m <- matrix(c(NA, "m11", NA, "m12", NA,
-                     "x1", NA, NA, NA, "y1",
-                     "x2", NA, NA, NA, "y2",
-                     NA, NA, "m2", NA, NA), 4, 5, byrow = TRUE)
+layout_m <- matrix(c(NA, "m1", "m2", NA,
+                     "x", NA, NA, "y",
+                     "c1", NA, NA, NA,
+                     "c2", NA, NA, NA), 4, 4, byrow = TRUE)
 p <- semPaths(fit0,
               layout = layout_m,
               nCharNodes = 0,
-              exoCov = TRUE,
+              exoCov = FALSE,
               residuals = FALSE,
               sizeMan = 10,
               asize = 5,
-              # curve = rep(2, 15),
               DoNotPlot = TRUE)
-p$graphAttributes$Edges$curve[c(12:13, 14:15)] <- c(6, -6, 0, 0)
 plot(p)
 ```
 
-## Multiple Regression by `lm()`
+## Estimating Parameters
 
-Although it is common in regression-based mediation analysis to
-include all possible paths to make a model saturated, we illustrate
-how to fit the intended model by multiple regression.
+These coefficients can be estimated by three regression models:
+
+"m1 ~ x + c1 + c2
+m2 ~ m1 + x + c1 + c2
+y ~ m2 + m1 + x + c1 + c2
 
 ```{r}
-lm_m11 <- lm(m11 ~ x1, dat)
-lm_m12 <- lm(m12 ~ m11 + x1, dat)
-lm_y1 <- lm(y1 ~ m12 + m11 + x1 + x2, dat)
-lm_m2 <- lm(m2 ~ x2, dat)
-lm_y2 <- lm(y2 ~ m2 + x1 + x2, dat)
+lm_m1 <- lm(m1 ~ x + c1 + c2, dat)
+lm_m2 <- lm(m2 ~ m1 + x + c1 + c2, dat)
+lm_y <- lm(y ~ m2 + m1 + x + c1 + c2, dat)
 ```
 
 These are the coefficients:
 
-- From `x1` to `y1`:
-
 ```{r}
-printCoefmat(summary(lm_m11)$coefficients, digits = 3, signif.legend = FALSE)
-printCoefmat(summary(lm_m12)$coefficients, digits = 3, signif.legend = FALSE)
-printCoefmat(summary(lm_y1)$coefficients, digits = 3, signif.legend = FALSE)
-```
-
-- From `x2` to `y2`:
-
-```{r}
+printCoefmat(summary(lm_m1)$coefficients, digits = 3, signif.legend = FALSE)
 printCoefmat(summary(lm_m2)$coefficients, digits = 3, signif.legend = FALSE)
-printCoefmat(summary(lm_y2)$coefficients, digits = 3, signif.legend = FALSE)
+printCoefmat(summary(lm_y)$coefficients, digits = 3, signif.legend = FALSE)
 ```
 
-To compute indirect effects and form bootstrap confidence
-intervals, we use `cond_indirect_effects()`. We first group
-the `lm()` outputs to a `list` by `lm2list()`.
+## Estimating Indirect Effects
+
+`indirect_effect()` can be used to estimate the indirect effect
+and form its bootstrapping confidence interval along a path
+in a model
+that starts with any variable (predictor), ends with
+any variable (outcome variable), through any variable(s) (mediator(s)).
+
+For example, this is the call for the indirect effect
+from `x` to `y` through `m1` and `m2`:
 
 ```{r}
-fit_lm <- lm2list(lm_m11, lm_m12, lm_y1, lm_m2, lm_y2)
-fit_lm
-```
-
-To form bootstrapping confidence intervals, we first repeat the regression
-analysis in all models by nonparametric bootstrapping and store the results.
-This can be done by `lm2boot_out()`:
-
-```{r echo = FALSE, eval = FALSE}
-fn <- paste0(pth, "stdmodsem_fit_lm_boot_out_complicated.rds")
-if (file.exists(fn)) {
-    fit_lm_boot_out_complicated <- readRDS(fn)
-  } else {
-    fit_lm_boot_out_complicated <- lm2boot_out(fit_lm,
-          R = 2000, seed = 87415)
-    saveRDS(fit_lm_boot_out_complicated, fn)
-  }
-```
-
-(Note: Only 500 bootstrap samples are used for illustration. Set
-R to 2000 or even 5000 in real research.)
-
-```{r eval = TRUE}
-fit_lm_boot_out_complicated <- lm2boot_out(fit_lm, R = 500, seed = 87415)
-```
-
-We can now compute the indirect effects. There are several
-possible pathways. `cond_indirect()` does not require
-the pathways to be specified before fitting the models. The
-pathway can be specified when calling it.
-
-For example, suppose we want to estimate the indirect effect
-through `x1 -> m11 -> m12 -> y1`. We set `x` to the
-start of the pathway, `y` to the end of the pathway,
-and `m` to the sequence of mediators, from left to right:
-
-```{r}
-out_x1y1 <- cond_indirect(x = "x1",
-                          y = "y1",
-                          m = c("m11", "m12"),
-                          fit = fit_lm,
+out_med <- indirect_effect(x = "x",
+                          y = "y",
+                          m = c("m1", "m2"),
+                          fit = list(lm_m1, lm_m2, lm_y),
                           boot_ci = TRUE,
-                          boot_out = fit_lm_boot_out_complicated)
-out_x1y1
+                          R = 500,
+                          seed = 43143)
 ```
 
-The indirect effect in the pathway `x2 -> m2 -> y2` can be
-estimated similarly:
+The main arguments are:
+
+- `x`: The name of the predictor. The start of the pathway.
+- `y`: The name of the outcome variable. The end of the pathway
+- `m`: The name of the mediator, or the vector of names of the
+        mediators if the pathway has more than one mediator.
+- `fit`: The list of the output of `lm()`.
+- `boot_ci`: Set to `TRUE` to request bootstrapping confidence intervals.
+             Default is `FALSE`.
+- `R`: The number of bootstrap samples. Only 500 bootstrap samples
+        for illustration. Set `R` to 2000 or even 5000 in real research.
+- `seed`: The seed for the random number generator.
+
+This is the output:
 
 ```{r}
-out_x2y2 <- cond_indirect(x = "x2",
-                          y = "y2",
-                          m = "m2",
-                          fit = fit_lm,
+out_med
+```
+
+The indirect effect from `x` to `y` through `m1` and `m2`
+is `r formatC(coef(out_med), digits = 3, format = "f")`,
+with a 95% confidence interval of
+[`r paste0(formatC(confint(out_med), digits = 3, format = "f"), collapse = ", ")`],
+significantly different from zero (*p* < .05).
+
+## Standardized Indirect Effect
+
+To compute the indirect effect with the predictor standardized,
+set `standardized_x` to `TRUE`. To compute the indirect effect
+with the outcome variable standardized, set `standardized_y`
+to `TRUE`. To compute the (completely) standardized
+indirect effect, set both `standardized_x` and
+`standardized_y` to `TRUE`.
+
+This is the call to compute the (completely) standardized
+indirect effect:
+
+```{r}
+out_med_stdxy <- indirect_effect(x = "x",
+                          y = "y",
+                          m = c("m1", "m2"),
+                          fit = list(lm_m1, lm_m2, lm_y),
                           boot_ci = TRUE,
-                          boot_out = fit_lm_boot_out_complicated)
-out_x2y2
+                          R = 500,
+                          seed = 43143,
+                          standardized_x = TRUE,
+                          standardized_y = TRUE)
+out_med_stdxy
 ```
 
-Suppose we are interested in the indirect effect from `x1`
-to `y1` through `m11` only, bypassing `m12`. This can be done
-by setting `m` only to `m11`:
+The indirect effect from `x` to `y` through `m1` and `m2`
+is `r formatC(coef(out_med_stdxy), digits = 3, format = "f")`,
+with a 95% confidence interval of
+[`r paste0(formatC(confint(out_med_stdxy), digits = 3, format = "f"), collapse = ", ")`],
+significantly different from zero (*p* < .05).
+
+## Estimating Indirect Effects For *Any* Pathways
+
+`indirect_effect()` can be used for the indirect effect
+in any pathway in a path model. There is no need to specify
+the pathway when doing the regression analysis.
+
+For example, suppose we want to estimate and test the
+indirect effect from `x` through `m2` to `y`, bypassing
+`m1`, simply set `x` to `"x"`, `y` to `"y"`, and `m` to `"m2"`:
 
 ```{r}
-out_x1y1_m11 <- cond_indirect(x = "x1",
-                              y = "y1",
-                              m = "m12",
-                              fit = fit_lm,
+out_x_m2_y <- indirect_effect(x = "x",
+                              y = "y",
+                              m = "m2",
+                              fit = list(lm_m1, lm_m2, lm_y),
                               boot_ci = TRUE,
-                              boot_out = fit_lm_boot_out_complicated)
-out_x1y1_m11
+                              R = 500,
+                              seed = 43143)
+out_x_m2_y
 ```
 
-It is also possible to estimate the indirect effect only in a segment
-of a pathway, for example, from `m11` through `m12` to `y1`:
+The indirect effect along this path is not significant.
 
-```{r}
-out_m11y1 <- cond_indirect(x = "m11",
-                           y = "y1",
-                           m = "m12",
-                           fit = fit_lm,
-                           boot_ci = TRUE,
-                           boot_out = fit_lm_boot_out_complicated)
-out_m11y1
-```
+Similarly, indirect effects from `m1` through `m2`  to `y`
+or from `x` through `m1` to `y` can also be tested
+by setting the three arguments accordingly.
 
-## Path Analysis by `lavaan::sem()`
+This also means that the model can have more than one
+predictor and more than one outcome variable.
+For example, `c1` and `c2` can be other
+predictors in the model, and they may point to only one of
+the mediators. The model can also have more than one outcome
+variable. `indirect_effect()` works by extracting
+the path coefficients and compute their product. Therefore,
+it does not require users do anything in advance in fitting
+the models and also has not limit on the form of the models.
+`indirect_effect()` can be used as long as the indirect effect computed as the product of the component paths is meaningful.
 
-Suppose we fit the same model, but by path analysis conducted in
-by structural equation modelling analysis using `lavaan::sem()`.
+Fit the models first, and explore as many pathways as we want.
 
-```{r}
-library(lavaan)
-mod <-
-"
-m11 ~ x1
-m12 ~ m11 + x1
-y1 ~ m12 + m11 + x1 + x2
-m2 ~ x2
-y2 ~ m2 + x1 + x2
-"
-fit_lavaan <- sem(model = mod,
-                  data = dat,
-                  fixed.x = FALSE)
-parameterEstimates(fit_lavaan)[parameterEstimates(fit_lavaan)$op == "~", ]
-```
+# Other Cases
 
-It is not recommended to set `se` to `"boot"` for bootstrapping.
-`fit2boot_out_do_boot()` can be used to compute only information
-necessary for this package. It also supports parallel processing.
+The following articles illustrate other uses of `stdmodsem` (to be prepared):
 
-```{r echo = FALSE, eval = FALSE}
-fn <- paste0(pth, "stdmodsem_fit_lavaan_boot_out_complicated.rds")
-if (file.exists(fn)) {
-    fit_lavaan_boot_out_complicated <- readRDS(fn)
-  } else {
-    fit_lavaan_boot_out_complicated <- fit2boot_out_do_boot(fit = fit_lavaan,
-                                                R = 2000,
-                                                seed = 8715,
-                                                parallel = TRUE,
-                                                ncores = 2)
-    saveRDS(fit_lavaan_boot_out_complicated, fn)
-  }
-```
+- Models estimated by multiple regression:
+    - Moderated mediation models with categorical and numeric moderators.
+    - Moderated mediation models with both categorical and numeric moderators.
+    - Parallel mediation models.
+    - Complex mediation models.
+- Models fitted by structural equation modeling using `lavaan::sem()`:
+    - Moderated mediation models with numeric moderators.
+    - Moderated mediation models with categorical moderators.
+    - Moderated mediation models with both numeric and categorical moderators.
+    - Complex mediation models.
+    - Indirect effects between latent factors.
+    - Models with missing data.
 
-(Note: Only 500 bootstrap samples are used for illustration. Set
-R to 2000 or even 5000 in real research.)
+# Moderation-Only Models
 
-```{r eval = TRUE}
-fit_lavaan_boot_out_complicated <- fit2boot_out_do_boot(fit = fit_lavaan,
-                                            R = 500,
-                                            seed = 8715,
-                                            parallel = TRUE,
-                                            ncores = 2)
-```
+Although `cond_indirect_effects()` can also be used for a moderated
+regression model without mediators, there are other packages
+specifically for this model. For example, `stdmod::cond_effect()`
+can be used to compute the conditional effects, and
+`stdmod::cond_effect_boot()`, when used with
+`stdmod::std_selected()`, can be used to form bootstrap
+confidence intervals for standardized conditional effects.
+`visreg::visreg()` and `stdmod::plotmod()` can be used to plot
+conditional effects in a moderated regression model.
+Interested researchers can check the package [stdmod](https://sfcheung.github.io/stdmod/) and
+and [visreg](http://pbreheny.github.io/visreg/).
 
-We can now compute the indirect effects. There are several
-possible pathways. `cond_indirect()` does not require
-the pathways to be specified before fitting the models. The
-pathway can be specified when calling it.
-
-For example, suppose we want to estimate the indirect effect
-through `x1 -> m11 -> m12 -> y1`. We set `x` to the
-start of the pathway, `y` to the end of the pathway,
-and `m` to the sequence of mediators, from left to right:
-
-```{r}
-out_x1y1 <- cond_indirect(x = "x1",
-                          y = "y1",
-                          m = c("m11", "m12"),
-                          fit = fit_lavaan,
-                          boot_ci = TRUE,
-                          boot_out = fit_lavaan_boot_out_complicated)
-out_x1y1
-```
-
-The indirect effect in the pathway `x2 -> m2 -> y2` can be
-estimated similarly:
-
-```{r}
-out_x2y2 <- cond_indirect(x = "x2",
-                          y = "y2",
-                          m = "m2",
-                          fit = fit_lavaan,
-                          boot_ci = TRUE,
-                          boot_out = fit_lavaan_boot_out_complicated)
-out_x2y2
-```
-
-Suppose we are interested in the indirect effect from `x1`
-to `y1` through `m11` only, bypassing `m12`. This can be done
-by setting `m` only to `m11`:
-
-```{r}
-out_x1y1_m11 <- cond_indirect(x = "x1",
-                              y = "y1",
-                              m = "m12",
-                              fit = fit_lavaan,
-                              boot_ci = TRUE,
-                              boot_out = fit_lavaan_boot_out_complicated)
-out_x1y1_m11
-```
-
-It is also possible to estimate the indirect effect only in a segment
-of a pathway, for example, from `m11` through `m12` to `y1`:
-
-```{r}
-out_m11y1 <- cond_indirect(x = "m11",
-                           y = "y1",
-                           m = "m12",
-                           fit = fit_lavaan,
-                           boot_ci = TRUE,
-                           boot_out = fit_lavaan_boot_out_complicated)
-out_m11y1
-```
-
-# More Cases
-
-## A Latent Variable model
-
-## Missing Data
-
-# Further Information
+(Disclosure: `stdmod` is also developed by the maintainer
+of `stdmodsem`.)

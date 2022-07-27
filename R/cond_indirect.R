@@ -73,7 +73,36 @@
 #'    outputs, and `boot_out` is `NULL`, this function will do
 #'    bootstrapping on `fit`. This is the seed for the bootstrapping.
 #'    Default is `NULL` and seed is not set.
-#' @param wlevels The output of [merge_mod_levels()].
+#' @param parallel Logical. If bootstrapping is conducted,
+#'                 whether parallel processing will be used.
+#'                 Default is `TRUE`. If `fit` is a list of
+#'                 [lm()] outputs, parallel processing will not be used.
+#' @param ncores Integer. The number of CPU cores to use when
+#'               `parallel` is `TRUE`. Default is the number of
+#'               non-logical cores minus one (one minimum). Will raise
+#'               an error if greater than the number of cores detected
+#'               by [parallel::detectCores()]. If `ncores` is set, it
+#'               will override `make_cluster_args` in [do_boot()].
+#' @param make_cluster_args A named list of additional arguments to be
+#'               passed to [parallel::makeCluster()]. For advanced
+#'               users. See [parallel::makeCluster()] for details.
+#'               Default is `list()`.
+#' @param progress Logical. Display progress or not. Default is `TRUE`.
+#' @param wlevels The output of [merge_mod_levels()], or the
+#'        moderator(s) to be passed to [mod_levels_list()]. If all the
+#'        moderators can be represented by one variable, that is, each
+#'        moderator is (a) a numeric variable, (b) a dichotomous
+#'        categorical variable, or (c) a factor or string variable
+#'        used in [lm()] in `fit`, then it is a vector of the names of
+#'        the moderators as appeared in the data frame. If at least
+#'        one of the moderators is a categorical variable represented
+#'        by more than one variable, such as user-created dummy
+#'        variables used in [lavaan::sem()], then it must be a list of
+#'        the names of the moderators, with such moderators
+#'        represented by a vector of names. For example: `list("w1",
+#'        c("gpgp2", "gpgp3")`, the first moderator `w1` and the
+#'        second moderator a three-categorical variable represented by
+#'        `gpgp2` and `gpgp3`.
 #' @param ... Arguments to be passed to [cond_indirect()]
 #' @param output_type The type of output of [cond_indirect_effects()].
 #'    If `"data.frame"`, the default, the output will be converted to
@@ -138,6 +167,10 @@ cond_indirect <- function(x,
                      boot_out = NULL,
                      R = 100,
                      seed = NULL,
+                     parallel = TRUE,
+                     ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                     make_cluster_args = list(),
+                     progress = TRUE,
                      save_boot_full = FALSE,
                      prods = NULL,
                      get_prods_only = FALSE) {
@@ -153,24 +186,32 @@ cond_indirect <- function(x,
             if (!inherits(boot_out, "boot_out")) {
                 stop("The object at 'boot_out' must be of the class 'boot_out'.")
               }
+          } else {
+            boot_out <- do_boot(fit = fit,
+                                R = R,
+                                seed = seed,
+                                parallel = parallel,
+                                ncores = ncores,
+                                make_cluster_args = make_cluster_args,
+                                progress = progress)
           }
-        if (fit_type == "lavaan") {
-            opt <- lavaan::lavInspect(fit, "options")
-            if (opt$se != "bootstrap" && is.null(boot_out)) {
-                stop("If 'boot_ci' is TRUE, 'se' needs to be 'bootstrap' in 'fit'.")
-              }
-            if (is.null(boot_out)) {
-                boot_out <- fit2boot_out(fit = fit)
-              }
-          }
-        if (fit_type == "lm") {
-            if (is.null(boot_out)) {
-                # Do bootstrap here.
-                boot_out <- lm2boot_out(outputs = fit,
-                                        R = R,
-                                        seed = seed)
-              }
-          }
+        # if (fit_type == "lavaan") {
+        #     opt <- lavaan::lavInspect(fit, "options")
+        #     if (opt$se != "bootstrap" && is.null(boot_out)) {
+        #         stop("If 'boot_ci' is TRUE, 'se' needs to be 'bootstrap' in 'fit'.")
+        #       }
+        #     if (is.null(boot_out)) {
+        #         boot_out <- fit2boot_out(fit = fit)
+        #       }
+        #   }
+        # if (fit_type == "lm") {
+        #     if (is.null(boot_out)) {
+        #         # Do bootstrap here.
+        #         boot_out <- lm2boot_out(outputs = fit,
+        #                                 R = R,
+        #                                 seed = seed)
+        #       }
+        #   }
       }
     if (fit_type == "lavaan") {
         fit0 <- fit
@@ -264,6 +305,10 @@ indirect_effect <- function(x,
                      boot_out = NULL,
                      R = 100,
                      seed = NULL,
+                     parallel = TRUE,
+                     ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                     make_cluster_args = list(),
+                     progress = TRUE,
                      save_boot_full = FALSE) {
     cond_indirect(x = x,
                   y = y,
@@ -276,11 +321,43 @@ indirect_effect <- function(x,
                   boot_ci = boot_ci,
                   level = level,
                   boot_out = boot_out,
-                  R = 100,
-                  seed = NULL,
+                  R = R,
+                  seed = seed,
+                  parallel = parallel,
+                  ncores = ncores,
+                  make_cluster_args = make_cluster_args,
+                  progress = progress,
                   save_boot_full = save_boot_full)
   }
 
+#' @param w_type Character. Whether the moderator is a `"numeric"`
+#'               variable or a `"categorical"` variable. If `"auto"`,
+#'               the function will try to determine the type
+#'               automatically.  See [mod_levels_list()] for
+#'               further information.
+#' @param w_method Character, either `"sd"` or `"percentile"`. If
+#'                `"sd"`, the levels are defined by the distance from
+#'                the mean in terms of standard deviation. if
+#'                `"percentile"`, the levels are defined in
+#'                percentiles.  See [mod_levels_list()] for further
+#'                information.
+#' @param sd_from_mean A numeric vector. Specify the distance in
+#'                     standard deviation from the mean for each
+#'                     level. Default is `c(-1, 0, 1)` when there is
+#'                     only one moderator, and `c(-1, 1)` when there
+#'                     are more than one moderator. Ignored if
+#'                     `w_method` is not equal to `"sd"`. See
+#'                    [mod_levels_list()] for further information.
+#' @param percentiles A numeric vector. Specify the percentile (in
+#'                    proportion) for each level. Default is `c(.16, .50,
+#'                    .84)` if there is one moderator, and `c(.16,
+#'                    .84)` when there are more than one moderator.
+#'                    Ignored if `w_method` is not equal to
+#'                    `"percentile"`. See [mod_levels_list()] for
+#'                    further information.
+#' @param mod_levels_list_args Additional arguments to be passed
+#'     to [mod_levels_list()] if it is called for creating
+#'     the levels of moderators. Default is `list()`.
 #' @examples
 #' # Examples for cond_indirect_effects():
 #'
@@ -303,66 +380,123 @@ indirect_effect <- function(x,
 #'                           sets of levels.
 #' @order 2
 
+
 cond_indirect_effects <- function(wlevels,
-                                  ...,
+                                  x,
+                                  y,
+                                  m = NULL,
                                   fit = NULL,
+                                  w_type = "auto",
+                                  w_method = "sd",
+                                  sd_from_mean = NULL,
+                                  percentiles = NULL,
                                   est = NULL,
                                   implied_stats = NULL,
                                   boot_ci = FALSE,
-                                  boot_out = NULL,
                                   R = 100,
                                   seed = NULL,
-                                  output_type = "data.frame") {
-    if (is.list(wlevels) && !is.data.frame(wlevels)) {
-        wlevels <- merge_mod_levels(wlevels)
+                                  parallel = TRUE,
+                                  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                                  make_cluster_args = list(),
+                                  progress = TRUE,
+                                  boot_out = NULL,
+                                  output_type = "data.frame",
+                                  mod_levels_list_args = list(),
+                                  ...) {
+    if (!missing(wlevels)) {
+        # if (is.list(wlevels) && !is.data.frame(wlevels)) {
+            # wlevels <- merge_mod_levels(wlevels)
+          # }
+        wlevels_check <- check_wlevels(wlevels)
+        if (!is.null(wlevels_check)) {
+            wlevels <- wlevels_check
+          } else {
+            # Call mod_levels_list
+            # Case 1: A character vector
+            # Case 2: A list of character vectors
+            mod_levels_list_args_final <-
+              utils::modifyList(mod_levels_list_args,
+                                list(w_type = w_type,
+                                     w_method = w_method,
+                                     sd_from_mean = sd_from_mean,
+                                     percentiles = percentiles,
+                                     fit = fit,
+                                     merge = TRUE))
+            wlevels <- do.call(mod_levels_list,
+                          args = c(as.list(wlevels),
+                                   mod_levels_list_args_final))
+
+          }
+      } else {
+        stop("wlevels is required.")
       }
     k <- nrow(wlevels)
     wlevels1 <- split(wlevels, seq_len(k))
     wlevels2 <- lapply(wlevels1, unlist)
     names(wlevels2) <- rownames(wlevels)
     fit_type <- cond_indirect_check_fit(fit)
+    if ((fit_type == "lm") && !inherits(fit, "lm_list") &&
+        is.list(fit)) {
+        fit <- lm2list(fit)
+      }
     if (boot_ci) {
         if (!is.null(boot_out)) {
             if (!inherits(boot_out, "boot_out")) {
                 stop("The object at 'boot_out' must be of the class 'boot_out'.")
               }
+          } else {
+            boot_out <- do_boot(fit = fit,
+                                R = R,
+                                seed = seed,
+                                parallel = parallel,
+                                ncores = ncores,
+                                make_cluster_args = make_cluster_args,
+                                progress = progress)
           }
-        if (fit_type == "lavaan") {
-            opt <- lavaan::lavInspect(fit, "options")
-            if (opt$se != "bootstrap" && is.null(boot_out)) {
-                stop("If 'boot_ci' is TRUE, 'se' needs to be 'bootstrap' in 'fit'.")
-              }
-            if (is.null(boot_out) && opt$se == "bootstrap") {
-                boot_out <- fit2boot_out(fit = fit)
-              }
-          }
-        if (fit_type == "lm") {
-            if (is.null(boot_out)) {
-                # Do bootstrap here.
-                boot_out <- lm2boot_out(outputs = fit,
-                                        R = R,
-                                        seed = seed)
-              }
-          }
+        # if (fit_type == "lavaan") {
+        #     opt <- lavaan::lavInspect(fit, "options")
+        #     if (opt$se != "bootstrap" && is.null(boot_out)) {
+        #         stop("If 'boot_ci' is TRUE, 'se' needs to be 'bootstrap' in 'fit'.")
+        #       }
+        #     if (is.null(boot_out) && opt$se == "bootstrap") {
+        #         boot_out <- fit2boot_out(fit = fit)
+        #       }
+        #   }
+        # if (fit_type == "lm") {
+        #     if (is.null(boot_out)) {
+        #         # Do bootstrap here.
+        #         boot_out <- lm2boot_out(outputs = fit,
+        #                                 R = R,
+        #                                 seed = seed)
+        #       }
+        #   }
       }
     prods <- cond_indirect(wvalues = wlevels2[[1]],
-                            ...,
+                            x = x,
+                            y = y,
+                            m = m,
                             fit = fit,
                             est = est,
                             implied_stats = implied_stats,
-                            get_prods_only = TRUE)
+                            get_prods_only = TRUE,
+                            ...)
     out <- lapply(wlevels2,
                   function(wv,
-                           ...,
+                           x = x,
+                           y = y,
+                           m = m,
                            fit = fit,
                            est = est,
                            implied_stats = implied_stats,
                            boot_ci,
                            boot_out,
                            R,
-                           seed) {
+                           seed,
+                           ...) {
                               cond_indirect(wvalues = wv,
-                                            ...,
+                                            x = x,
+                                            y = y,
+                                            m = m,
                                             fit = fit,
                                             est = est,
                                             implied_stats = implied_stats,
@@ -370,16 +504,20 @@ cond_indirect_effects <- function(wlevels,
                                             boot_out = boot_out,
                                             R = R,
                                             seed = seed,
-                                            prods = prods)
+                                            prods = prods,
+                                            ...)
                            },
-                  ...,
+                  x = x,
+                  y = y,
+                  m = m,
                   fit = fit,
                   est = est,
                   implied_stats = implied_stats,
                   boot_ci = boot_ci,
                   boot_out = boot_out,
                   R = R,
-                  seed = seed)
+                  seed = seed,
+                  ...)
     if (output_type == "data.frame") {
         out1 <- cond_indirect_effects_to_df(out, wlevels = wlevels)
         class(out1) <- c("cond_indirect_effects", class(out1))
@@ -389,6 +527,7 @@ cond_indirect_effects <- function(wlevels,
         attr(out1, "fit") <- fit
         attr(out1, "est") <- est
         attr(out1, "implied_stats") <- implied_stats
+        attr(out1, "boot_out") <- boot_out
         return(out1)
       } else {
         return(out)
@@ -468,4 +607,21 @@ cond_indirect_effects_to_df <- function(x, wlevels) {
       }
     out1 <- cbind(wlevels_label, wlevels2, out)
     out1
+  }
+
+check_wlevels <- function(ws) {
+    if (is.data.frame(ws)) {
+        # A data frame. Assumed to be merged levels
+        return(ws)
+      }
+    if (is.list(ws)) {
+        tmp <- sapply(ws, function(x) !is.null(attr(x, which = "wlevels")))
+        if (all(tmp)) {
+            # A list of wlevels. Merge them
+            out <- merge_mod_levels(ws)
+            return(out)
+          }
+      }
+    # Cannot convert to wlevels
+    return(NULL)
   }

@@ -21,6 +21,10 @@ cond_indirect(
   boot_out = NULL,
   R = 100,
   seed = NULL,
+  parallel = TRUE,
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  make_cluster_args = list(),
+  progress = TRUE,
   save_boot_full = FALSE,
   prods = NULL,
   get_prods_only = FALSE
@@ -28,15 +32,27 @@ cond_indirect(
 
 cond_indirect_effects(
   wlevels,
-  ...,
+  x,
+  y,
+  m = NULL,
   fit = NULL,
+  w_type = "auto",
+  w_method = "sd",
+  sd_from_mean = NULL,
+  percentiles = NULL,
   est = NULL,
   implied_stats = NULL,
   boot_ci = FALSE,
-  boot_out = NULL,
   R = 100,
   seed = NULL,
-  output_type = "data.frame"
+  parallel = TRUE,
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  make_cluster_args = list(),
+  progress = TRUE,
+  boot_out = NULL,
+  output_type = "data.frame",
+  mod_levels_list_args = list(),
+  ...
 )
 
 indirect_effect(
@@ -53,6 +69,10 @@ indirect_effect(
   boot_out = NULL,
   R = 100,
   seed = NULL,
+  parallel = TRUE,
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  make_cluster_args = list(),
+  progress = TRUE,
   save_boot_full = FALSE
 )
 }
@@ -114,6 +134,25 @@ outputs, and \code{boot_out} is \code{NULL}, this function will do
 bootstrapping on \code{fit}. This is the seed for the bootstrapping.
 Default is \code{NULL} and seed is not set.}
 
+\item{parallel}{Logical. If bootstrapping is conducted,
+whether parallel processing will be used.
+Default is \code{TRUE}. If \code{fit} is a list of
+\code{\link[=lm]{lm()}} outputs, parallel processing will not be used.}
+
+\item{ncores}{Integer. The number of CPU cores to use when
+\code{parallel} is \code{TRUE}. Default is the number of
+non-logical cores minus one (one minimum). Will raise
+an error if greater than the number of cores detected
+by \code{\link[parallel:detectCores]{parallel::detectCores()}}. If \code{ncores} is set, it
+will override \code{make_cluster_args} in \code{\link[=do_boot]{do_boot()}}.}
+
+\item{make_cluster_args}{A named list of additional arguments to be
+passed to \code{\link[parallel:makeCluster]{parallel::makeCluster()}}. For advanced
+users. See \code{\link[parallel:makeCluster]{parallel::makeCluster()}} for details.
+Default is \code{list()}.}
+
+\item{progress}{Logical. Display progress or not. Default is \code{TRUE}.}
+
 \item{save_boot_full}{If \code{TRUE}, full bootstrapping results will be
 stored. Default is \code{FALSE.}}
 
@@ -123,14 +162,58 @@ stored. Default is \code{FALSE.}}
 terms found. The results can be passed to the \code{prod} argument
 when calling this function. Default is \code{FALSE}.}
 
-\item{wlevels}{The output of \code{\link[=merge_mod_levels]{merge_mod_levels()}}.}
+\item{wlevels}{The output of \code{\link[=merge_mod_levels]{merge_mod_levels()}}, or the
+moderator(s) to be passed to \code{\link[=mod_levels_list]{mod_levels_list()}}. If all the
+moderators can be represented by one variable, that is, each
+moderator is (a) a numeric variable, (b) a dichotomous
+categorical variable, or (c) a factor or string variable
+used in \code{\link[=lm]{lm()}} in \code{fit}, then it is a vector of the names of
+the moderators as appeared in the data frame. If at least
+one of the moderators is a categorical variable represented
+by more than one variable, such as user-created dummy
+variables used in \code{\link[lavaan:sem]{lavaan::sem()}}, then it must be a list of
+the names of the moderators, with such moderators
+represented by a vector of names. For example: \verb{list("w1", c("gpgp2", "gpgp3")}, the first moderator \code{w1} and the
+second moderator a three-categorical variable represented by
+\code{gpgp2} and \code{gpgp3}.}
 
-\item{...}{Arguments to be passed to \code{\link[=cond_indirect]{cond_indirect()}}}
+\item{w_type}{Character. Whether the moderator is a \code{"numeric"}
+variable or a \code{"categorical"} variable. If \code{"auto"},
+the function will try to determine the type
+automatically.  See \code{\link[=mod_levels_list]{mod_levels_list()}} for
+further information.}
+
+\item{w_method}{Character, either \code{"sd"} or \code{"percentile"}. If
+\code{"sd"}, the levels are defined by the distance from
+the mean in terms of standard deviation. if
+\code{"percentile"}, the levels are defined in
+percentiles.  See \code{\link[=mod_levels_list]{mod_levels_list()}} for further
+information.}
+
+\item{sd_from_mean}{A numeric vector. Specify the distance in
+standard deviation from the mean for each
+level. Default is \code{c(-1, 0, 1)} when there is
+only one moderator, and \code{c(-1, 1)} when there
+are more than one moderator. Ignored if
+\code{w_method} is not equal to \code{"sd"}. See
+\code{\link[=mod_levels_list]{mod_levels_list()}} for further information.}
+
+\item{percentiles}{A numeric vector. Specify the percentile (in
+proportion) for each level. Default is \code{c(.16, .50, .84)} if there is one moderator, and \code{c(.16, .84)} when there are more than one moderator.
+Ignored if \code{w_method} is not equal to
+\code{"percentile"}. See \code{\link[=mod_levels_list]{mod_levels_list()}} for
+further information.}
 
 \item{output_type}{The type of output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 If \code{"data.frame"}, the default, the output will be converted to
 a data frame. If any other value, the output is a list of the
 outputs from \code{\link[=cond_indirect]{cond_indirect()}}.}
+
+\item{mod_levels_list_args}{Additional arguments to be passed
+to \code{\link[=mod_levels_list]{mod_levels_list()}} if it is called for creating
+the levels of moderators. Default is \code{list()}.}
+
+\item{...}{Arguments to be passed to \code{\link[=cond_indirect]{cond_indirect()}}}
 }
 \value{
 \code{\link[=cond_indirect]{cond_indirect()}} returns an \code{indirect}-class object.
