@@ -229,7 +229,7 @@ mod_levels_list <- function(...,
       } else {
         sd_from_mean <- c(-1, 0, 1)
       }
-    if ((p > 1) && is.null(sd_from_mean)) {
+    if ((p > 1) && is.null(percentiles)) {
         percentiles <- c(.16, .84)
       } else {
         percentiles <- c(.16, .50, .84)
