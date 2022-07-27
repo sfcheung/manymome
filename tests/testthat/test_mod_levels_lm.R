@@ -44,11 +44,16 @@ out_n_p <- mod_levels(fit, w = "w1", w_method = "percentile")
 out_n_sd2 <- mod_levels(fit, w = "w1", sd_from_mean = c(-1, 4))
 out_n_p2 <- mod_levels(fit, w = "w1", w_method = "percentile", percentiles = c(.25, .75))
 
+out_n_sd_l <- mod_levels_list("w1", fit = fit)
+
 out_c <- mod_levels(fit, w = c("gpgp2", "gpgp3"))
 out_c2 <- mod_levels(fit, w = c("citybeta", "citygamma", "citysigma"))
 out_c3 <- mod_levels(fit, w = c("gpgp2", "gpgp3"), prefix = "gp")
 
 out_c3b <- mod_levels(fit, w = c("gp"), prefix = "gp")
+
+out_c_l <- mod_levels_list(fit = fit, c("gpgp2", "gpgp3"), merge = TRUE)
+out_c3_l <- mod_levels_list(fit = fit, c("gpgp2", "gpgp3"), prefix = "gp")
 
 
 out_i_n_sd_chk <- mean(dat$w1) + sd(dat$w1) * rev(c(-1, 0, 1))

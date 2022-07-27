@@ -50,7 +50,7 @@ merge_mod_levels <- function(...) {
     q <- sapply(x, nrow)
     i <- sapply(q, seq_len, simplify = FALSE)
     qi <- expand.grid(rev(i))
-    qi <- qi[, rev(seq_len(ncol(qi)))]
+    qi <- qi[, rev(seq_len(ncol(qi))), drop = FALSE]
     qinrow <- nrow(qi)
     qi0 <- split(qi, seq_len(qinrow))
     tmpfct <- function(a1, a2, x) {
