@@ -1,6 +1,6 @@
 Package: stdmodsem
 Title: Moderation, Mediation, and Moderated-Mediation in SEM
-Version: 0.0.1.9002
+Version: 0.0.1.9015
 Authors@R:
     c(person(given = "Shu Fai",
            family = "Cheung",
@@ -31,7 +31,8 @@ Imports:
     boot,
     parallel,
     pbapply,
-    stats
+    stats,
+    ggplot2
 Depends:
     R (>= 3.5.0)
 LazyData: true

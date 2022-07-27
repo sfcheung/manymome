@@ -3,6 +3,7 @@
 \name{cond_indirect}
 \alias{cond_indirect}
 \alias{cond_indirect_effects}
+\alias{indirect_effect}
 \title{Conditional, Indirect, and Conditional Indirect Effects}
 \usage{
 cond_indirect(
@@ -20,18 +21,39 @@ cond_indirect(
   boot_out = NULL,
   R = 100,
   seed = NULL,
-  save_boot_full = FALSE
+  save_boot_full = FALSE,
+  prods = NULL,
+  get_prods_only = FALSE
 )
 
 cond_indirect_effects(
   wlevels,
   ...,
-  fit = fit,
+  fit = NULL,
+  est = NULL,
+  implied_stats = NULL,
   boot_ci = FALSE,
   boot_out = NULL,
   R = 100,
   seed = NULL,
   output_type = "data.frame"
+)
+
+indirect_effect(
+  x,
+  y,
+  m = NULL,
+  fit = NULL,
+  est = NULL,
+  implied_stats = NULL,
+  standardized_x = FALSE,
+  standardized_y = FALSE,
+  boot_ci = FALSE,
+  level = 0.95,
+  boot_out = NULL,
+  R = 100,
+  seed = NULL,
+  save_boot_full = FALSE
 )
 }
 \arguments{
@@ -95,6 +117,12 @@ Default is \code{NULL} and seed is not set.}
 \item{save_boot_full}{If \code{TRUE}, full bootstrapping results will be
 stored. Default is \code{FALSE.}}
 
+\item{prods}{The product terms found. For internal use.}
+
+\item{get_prods_only}{IF \code{TRUE}, will quit early and return the product
+terms found. The results can be passed to the \code{prod} argument
+when calling this function. Default is \code{FALSE}.}
+
 \item{wlevels}{The output of \code{\link[=merge_mod_levels]{merge_mod_levels()}}.}
 
 \item{...}{Arguments to be passed to \code{\link[=cond_indirect]{cond_indirect()}}}
@@ -143,6 +171,10 @@ of levels.
 \item \code{cond_indirect_effects}: Compute the conditional, indirect, or
 conditional indirect effects for several
 sets of levels.
+
+\item \code{indirect_effect}: Compute the indirect effects. A wrapper of
+\code{\link[=cond_indirect]{cond_indirect()}}. Can be used
+when there is no moderator.
 }}
 
 \examples{

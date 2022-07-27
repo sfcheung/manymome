@@ -1,7 +1,7 @@
 #' @title Create Levels of Moderators
 #'
 #' @description Create levels of moderators to be used by
-#'  [indirect()], [cond_indirect()], and [cond_indirect_effects()].
+#'  [indirect_i()], [cond_indirect()], and [cond_indirect_effects()].
 #'
 #' @details
 #' It creates values of a moderator that can be used to compute
@@ -64,6 +64,13 @@
 #'               two levels will be returned, one named `gp1` with the indicator
 #'               variables equal to 0 and 0, the other named `gp3` with the
 #'               indicator variables equal to 0 and 1. Default is `NULL`.
+#' @param descending If `TRUE` (default), the rows are sorted in
+#'               descending order for numerical moderators: The
+#'               highest value on the first row and the lowest values
+#'               on the last row. For user supplied values, the first
+#'               value is on the last row and the last value is on the
+#'               first row. If `FALSE`, the rows are sorted in
+#'               ascending order.
 #' @param ... The names of moderators variables. For a categorical variable,
 #'            it should be a vector of variable names.
 #' @param merge If `TRUE`, [mod_levels_list()] will call [merge_mod_levels()]
@@ -126,7 +133,8 @@ mod_levels <- function(w,
                        percentiles = c(.16, .50, .84),
                        extract_gp_names = TRUE,
                        prefix = NULL,
-                       values = NULL) {
+                       values = NULL,
+                       descending = TRUE) {
     fit_type <- cond_indirect_check_fit(fit)
     w_type <- match.arg(w_type)
     if (w_type == "auto") {
@@ -151,7 +159,8 @@ mod_levels <- function(w,
                                              w_method = w_method,
                                              sd_from_mean = sd_from_mean,
                                              percentiles = percentiles,
-                                             values = values)
+                                             values = values,
+                                             descending = descending)
           }
         if (w_type == "categorical") {
             out <- mod_levels_i_lm_categorical(fit = fit,
@@ -168,7 +177,8 @@ mod_levels <- function(w,
                                                  w_method = w_method,
                                                  sd_from_mean = sd_from_mean,
                                                  percentiles = percentiles,
-                                                 values = values)
+                                                 values = values,
+                                                 descending = descending)
           }
         if (w_type == "categorical") {
             out <- mod_levels_i_lavaan_categorical(fit = fit,
@@ -181,6 +191,7 @@ mod_levels <- function(w,
     tmp <- data.frame(x = rownames(out))
     colnames(tmp) <- attr(out, "wname")
     attr(out, "wlevels") <- tmp
+    attr(out, "w_type") <- w_type
     out
   }
 
@@ -236,7 +247,8 @@ mod_levels_i_lavaan_numerical <- mod_levels_i_lm_numerical <- function(fit,
                                       w_method = c("sd", "percentile"),
                                       sd_from_mean = c(-1, 0, 1),
                                       percentiles = c(.16, .50, .84),
-                                      values = NULL) {
+                                      values = NULL,
+                                      descending = TRUE) {
     # No need for user-specified method. If users want to specify their own
     # values, they do not need  to call this function
     fit_type <- cond_indirect_check_fit(fit)
@@ -284,6 +296,9 @@ mod_levels_i_lavaan_numerical <- mod_levels_i_lm_numerical <- function(fit,
         rownames(out) <- names(w_q)
         colnames(out) <- w
       }
+    if (descending) {
+        out <- out[rev(seq_len(nrow(out))), , drop = FALSE]
+      }
     attr(out, "wname") <- w
     return(out)
   }
@@ -297,6 +312,9 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
     mm <- switch(fit_type,
                  lavaan = as.data.frame(lav_data_used(fit)),
                  lm = merge_model_matrix(fit))
+    mf <- switch(fit_type,
+                 lavaan = NA,
+                 lm = merge_model_frame(fit))
     w_dat <- mm[, w]
     w_gp <- unique(w_dat)
     k <- nrow(w_gp)
@@ -306,10 +324,21 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
     gpnames <- paste0("Category ", seq_len(k))
     rownames(w_gp) <- gpnames
     if (extract_gp_names) {
-        w_gp <- set_gp_names(w_gp, prefix = prefix)
+        if (fit_type == "lavaan") {
+            w_gp <- set_gp_names(w_gp, prefix = prefix)
+          }
+        if (fit_type == "lm") {
+            w_source <- find_source_cat(fit, w)
+            tmp <- cbind(w_source = mf[, w_source], mm[, w])
+            tmp <- tmp[!duplicated(tmp), ]
+            tmp2 <- merge(x = w_gp, y = tmp, sort = FALSE)
+            rownames(w_gp) <- tmp2$w_source
+          }
       }
     if (is.null(prefix)) {
-        prefix <- find_prefix(w)
+        prefix <- switch(fit_type,
+                    lavaan = find_prefix(w),
+                    lm = w_source)
       }
     if (!is.null(values)) {
         if (!is.list(values) && nrow(w_gp) > 2) {
@@ -381,4 +410,23 @@ check_cat_values <- function(x0, target) {
           }
       }
     return(FALSE)
+  }
+
+find_source_cat <- function(lm_list, w) {
+    mm <- merge_model_matrix(lm_list)
+    mf <- merge_model_frame(lm_list)
+    terms_list <- lapply(lm_list,
+                      function(x) stats::delete.response(stats::terms(x)))
+    coefs_list <- lapply(lm_list, stats::coef)
+    i <- sapply(coefs_list, function(x) {any(w %in% names(x))})
+    terms_i <- terms_list[[which(i)[1]]]
+    j <- (attr(terms_i, "dataClasses") == "character") |
+         (attr(terms_i, "dataClasses") == "factor")
+    jnames <- names(j)[j]
+    jcat <- sapply(jnames, function(x) unique(mf[, x]),
+                   simplify = FALSE)
+    jcatind <- mapply(function(x, y) {paste0(x, y)}, x = jnames, y = jcat,
+                   SIMPLIFY = FALSE)
+    k <- sapply(jcatind, function(x) all(w %in% x))
+    jnames[k]
   }

@@ -1,6 +1,6 @@
 
 library(stdmodsem)
-library(lavaan)
+suppressMessages(library(lavaan))
 dat <- modmed_x1m3w4y1
 n <- nrow(dat)
 set.seed(860314)
@@ -73,77 +73,86 @@ out_mm_1 <- merge_mod_levels(mod_levels(fit, w = "w1"),
 # split(out_mm_1, seq_len(nrow(out_mm_1)))
 # Known "answers"
 
-out_m_1_chk <- structure(list(w1 = c(-0.71005775924958, -0.71005775924958, -0.71005775924958,
-0.258999906944399, 0.258999906944399, 0.258999906944399, 1.22805757313838,
-1.22805757313838, 1.22805757313838), w4 = c(-0.856078089831277,
-0.0429229585375893, 1.20145409352787, -0.856078089831277, 0.0429229585375893,
-1.20145409352787, -0.856078089831277, 0.0429229585375893, 1.20145409352787
-)), row.names = c("w1: M-1.0SD; w4: 16%", "w1: M-1.0SD; w4: 50%",
-"w1: M-1.0SD; w4: 84%", "w1: Mean; w4: 16%", "w1: Mean; w4: 50%",
-"w1: Mean; w4: 84%", "w1: M+1.0SD; w4: 16%", "w1: M+1.0SD; w4: 50%",
-"w1: M+1.0SD; w4: 84%"), class = "data.frame", wlevels = structure(list(
-    w1 = c("M-1.0SD", "M-1.0SD", "M-1.0SD", "Mean", "Mean", "Mean",
-    "M+1.0SD", "M+1.0SD", "M+1.0SD"), w4 = c("16%", "50%", "84%",
-    "16%", "50%", "84%", "16%", "50%", "84%")), class = "data.frame", row.names = c("1",
-"2", "3", "4", "5", "6", "7", "8", "9")))
+out_m_1_chk <- structure(list(w1 = c(1.22805757313838, 1.22805757313838, 1.22805757313838,
+0.258999906944399, 0.258999906944399, 0.258999906944399, -0.71005775924958,
+-0.71005775924958, -0.71005775924958), w4 = c(1.20145409352787,
+0.0429229585375893, -0.856078089831277, 1.20145409352787, 0.0429229585375893,
+-0.856078089831277, 1.20145409352787, 0.0429229585375893, -0.856078089831277
+)), row.names = c("w1: M+1.0SD; w4: 84%", "w1: M+1.0SD; w4: 50%",
+"w1: M+1.0SD; w4: 16%", "w1: Mean; w4: 84%", "w1: Mean; w4: 50%",
+"w1: Mean; w4: 16%", "w1: M-1.0SD; w4: 84%", "w1: M-1.0SD; w4: 50%",
+"w1: M-1.0SD; w4: 16%"), class = "data.frame", wlevels = structure(list(
+    w1 = c("M+1.0SD", "M+1.0SD", "M+1.0SD", "Mean", "Mean", "Mean",
+    "M-1.0SD", "M-1.0SD", "M-1.0SD"), w4 = c("84%", "50%", "16%",
+    "84%", "50%", "16%", "84%", "50%", "16%")), class = "data.frame", row.names = c("1",
+"2", "3", "4", "5", "6", "7", "8", "9")), wvars = list(w1 = "w1",
+    w4 = "w4"), w_types = c(w1 = "numeric", w4 = "numeric"))
 
-out_m_2_chk <- structure(list(w1 = c(-0.71005775924958, -0.71005775924958, -0.71005775924958,
-0.258999906944399, 0.258999906944399, 0.258999906944399, 1.22805757313838,
-1.22805757313838, 1.22805757313838), gpgp2 = c(0, 1, 0, 0, 1,
-0, 0, 1, 0), gpgp3 = c(0, 0, 1, 0, 0, 1, 0, 0, 1)), row.names = c("w1: M-1.0SD; gpgp: Reference",
-"w1: M-1.0SD; gpgp: 2", "w1: M-1.0SD; gpgp: 3", "w1: Mean; gpgp: Reference",
-"w1: Mean; gpgp: 2", "w1: Mean; gpgp: 3", "w1: M+1.0SD; gpgp: Reference",
-"w1: M+1.0SD; gpgp: 2", "w1: M+1.0SD; gpgp: 3"), class = "data.frame", wlevels = structure(list(
-    w1 = c("M-1.0SD", "M-1.0SD", "M-1.0SD", "Mean", "Mean", "Mean",
-    "M+1.0SD", "M+1.0SD", "M+1.0SD"), gpgp = c("Reference", "2",
-    "3", "Reference", "2", "3", "Reference", "2", "3")), class = "data.frame", row.names = c("1",
-"2", "3", "4", "5", "6", "7", "8", "9")))
+out_m_2_chk <- structure(list(w1 = c(1.22805757313838, 1.22805757313838, 1.22805757313838,
+0.258999906944399, 0.258999906944399, 0.258999906944399, -0.71005775924958,
+-0.71005775924958, -0.71005775924958), gpgp2 = c(0, 1, 0, 0,
+1, 0, 0, 1, 0), gpgp3 = c(0, 0, 1, 0, 0, 1, 0, 0, 1)), row.names = c("w1: M+1.0SD; gp: gp1",
+"w1: M+1.0SD; gp: gp2", "w1: M+1.0SD; gp: gp3", "w1: Mean; gp: gp1",
+"w1: Mean; gp: gp2", "w1: Mean; gp: gp3", "w1: M-1.0SD; gp: gp1",
+"w1: M-1.0SD; gp: gp2", "w1: M-1.0SD; gp: gp3"), class = "data.frame", wlevels = structure(list(
+    w1 = c("M+1.0SD", "M+1.0SD", "M+1.0SD", "Mean", "Mean", "Mean",
+    "M-1.0SD", "M-1.0SD", "M-1.0SD"), gp = c("gp1", "gp2", "gp3",
+    "gp1", "gp2", "gp3", "gp1", "gp2", "gp3")), class = "data.frame", row.names = c("1",
+"2", "3", "4", "5", "6", "7", "8", "9")), wvars = list(w1 = "w1",
+    gp = c("gpgp2", "gpgp3")), w_types = c(w1 = "numeric", gp = "categorical"
+))
 
-out_m_3_chk <- structure(list(w1 = c(-0.71005775924958, -0.71005775924958, -0.71005775924958,
--0.71005775924958, 0.258999906944399, 0.258999906944399, 0.258999906944399,
-0.258999906944399, 1.22805757313838, 1.22805757313838, 1.22805757313838,
-1.22805757313838), citybeta = c(0, 1, 0, 0, 0, 1, 0, 0, 0, 1,
+out_m_3_chk <- structure(list(w1 = c(1.22805757313838, 1.22805757313838, 1.22805757313838,
+1.22805757313838, 0.258999906944399, 0.258999906944399, 0.258999906944399,
+0.258999906944399, -0.71005775924958, -0.71005775924958, -0.71005775924958,
+-0.71005775924958), citybeta = c(0, 1, 0, 0, 0, 1, 0, 0, 0, 1,
 0, 0), citygamma = c(0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0), citysigma = c(0,
-0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)), row.names = c("w1: M-1.0SD; city: Reference",
-"w1: M-1.0SD; city: beta", "w1: M-1.0SD; city: gamma", "w1: M-1.0SD; city: sigma",
-"w1: Mean; city: Reference", "w1: Mean; city: beta", "w1: Mean; city: gamma",
-"w1: Mean; city: sigma", "w1: M+1.0SD; city: Reference", "w1: M+1.0SD; city: beta",
-"w1: M+1.0SD; city: gamma", "w1: M+1.0SD; city: sigma"), class = "data.frame", wlevels = structure(list(
-    w1 = c("M-1.0SD", "M-1.0SD", "M-1.0SD", "M-1.0SD", "Mean",
-    "Mean", "Mean", "Mean", "M+1.0SD", "M+1.0SD", "M+1.0SD",
-    "M+1.0SD"), city = c("Reference", "beta", "gamma", "sigma",
-    "Reference", "beta", "gamma", "sigma", "Reference", "beta",
-    "gamma", "sigma")), class = "data.frame", row.names = c("1",
-"2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")))
+0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)), row.names = c("w1: M+1.0SD; city: alpha",
+"w1: M+1.0SD; city: beta", "w1: M+1.0SD; city: gamma", "w1: M+1.0SD; city: sigma",
+"w1: Mean; city: alpha", "w1: Mean; city: beta", "w1: Mean; city: gamma",
+"w1: Mean; city: sigma", "w1: M-1.0SD; city: alpha", "w1: M-1.0SD; city: beta",
+"w1: M-1.0SD; city: gamma", "w1: M-1.0SD; city: sigma"), class = "data.frame", wlevels = structure(list(
+    w1 = c("M+1.0SD", "M+1.0SD", "M+1.0SD", "M+1.0SD", "Mean",
+    "Mean", "Mean", "Mean", "M-1.0SD", "M-1.0SD", "M-1.0SD",
+    "M-1.0SD"), city = c("alpha", "beta", "gamma", "sigma", "alpha",
+    "beta", "gamma", "sigma", "alpha", "beta", "gamma", "sigma"
+    )), class = "data.frame", row.names = c("1", "2", "3", "4",
+"5", "6", "7", "8", "9", "10", "11", "12")), wvars = list(w1 = "w1",
+    city = c("citybeta", "citygamma", "citysigma")), w_types = c(w1 = "numeric",
+city = "categorical"))
 
 out_m_4_chk <- structure(list(citybeta = c(0, 0, 1, 1, 0, 0, 0, 0), citygamma = c(0,
 0, 0, 0, 1, 1, 0, 0), citysigma = c(0, 0, 0, 0, 0, 0, 1, 1),
-    w1 = c(-0.380019362976597, 0.850514535665991, -0.380019362976597,
-    0.850514535665991, -0.380019362976597, 0.850514535665991,
-    -0.380019362976597, 0.850514535665991)), row.names = c("city: Reference; w1: 25%",
-"city: Reference; w1: 75%", "city: beta; w1: 25%", "city: beta; w1: 75%",
-"city: gamma; w1: 25%", "city: gamma; w1: 75%", "city: sigma; w1: 25%",
-"city: sigma; w1: 75%"), class = "data.frame", wlevels = structure(list(
-    city = c("Reference", "Reference", "beta", "beta", "gamma",
-    "gamma", "sigma", "sigma"), w1 = c("25%", "75%", "25%", "75%",
-    "25%", "75%", "25%", "75%")), class = "data.frame", row.names = c("1",
-"2", "3", "4", "5", "6", "7", "8")))
+    w1 = c(0.850514535665991, -0.380019362976597, 0.850514535665991,
+    -0.380019362976597, 0.850514535665991, -0.380019362976597,
+    0.850514535665991, -0.380019362976597)), row.names = c("city: alpha; w1: 75%",
+"city: alpha; w1: 25%", "city: beta; w1: 75%", "city: beta; w1: 25%",
+"city: gamma; w1: 75%", "city: gamma; w1: 25%", "city: sigma; w1: 75%",
+"city: sigma; w1: 25%"), class = "data.frame", wlevels = structure(list(
+    city = c("alpha", "alpha", "beta", "beta", "gamma", "gamma",
+    "sigma", "sigma"), w1 = c("75%", "25%", "75%", "25%", "75%",
+    "25%", "75%", "25%")), class = "data.frame", row.names = c("1",
+"2", "3", "4", "5", "6", "7", "8")), wvars = list(city = c("citybeta",
+"citygamma", "citysigma"), w1 = "w1"), w_types = c(city = "categorical",
+w1 = "numeric"))
 
 out_m_5_chk <- structure(list(gpgp2 = c(0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0),
     gpgp3 = c(0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1), citybeta = c(0,
     1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0), citygamma = c(0, 0, 1,
     0, 0, 0, 1, 0, 0, 0, 1, 0), citysigma = c(0, 0, 0, 1, 0,
-    0, 0, 1, 0, 0, 0, 1)), row.names = c("gpgp: Reference; city: Reference",
-"gpgp: Reference; city: beta", "gpgp: Reference; city: gamma",
-"gpgp: Reference; city: sigma", "gpgp: 2; city: Reference", "gpgp: 2; city: beta",
-"gpgp: 2; city: gamma", "gpgp: 2; city: sigma", "gpgp: 3; city: Reference",
-"gpgp: 3; city: beta", "gpgp: 3; city: gamma", "gpgp: 3; city: sigma"
-), class = "data.frame", wlevels = structure(list(gpgp = c("Reference",
-"Reference", "Reference", "Reference", "2", "2", "2", "2", "3",
-"3", "3", "3"), city = c("Reference", "beta", "gamma", "sigma",
-"Reference", "beta", "gamma", "sigma", "Reference", "beta", "gamma",
-"sigma")), class = "data.frame", row.names = c("1", "2", "3",
-"4", "5", "6", "7", "8", "9", "10", "11", "12")))
+    0, 0, 1, 0, 0, 0, 1)), row.names = c("gp: gp1; city: alpha",
+"gp: gp1; city: beta", "gp: gp1; city: gamma", "gp: gp1; city: sigma",
+"gp: gp2; city: alpha", "gp: gp2; city: beta", "gp: gp2; city: gamma",
+"gp: gp2; city: sigma", "gp: gp3; city: alpha", "gp: gp3; city: beta",
+"gp: gp3; city: gamma", "gp: gp3; city: sigma"), class = "data.frame", wlevels = structure(list(
+    gp = c("gp1", "gp1", "gp1", "gp1", "gp2", "gp2", "gp2", "gp2",
+    "gp3", "gp3", "gp3", "gp3"), city = c("alpha", "beta", "gamma",
+    "sigma", "alpha", "beta", "gamma", "sigma", "alpha", "beta",
+    "gamma", "sigma")), class = "data.frame", row.names = c("1",
+"2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")), wvars = list(
+    gp = c("gpgp2", "gpgp3"), city = c("citybeta", "citygamma",
+    "citysigma")), w_types = c(gp = "categorical", city = "categorical"
+))
 
 test_that("merge_mod_levels", {
     expect_equal(out_m_1, out_m_1_chk, ignore_attr = TRUE)

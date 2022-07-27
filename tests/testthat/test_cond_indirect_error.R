@@ -1,5 +1,5 @@
 library(stdmodsem)
-library(lavaan)
+suppressMessages(library(lavaan))
 dat <- modmed_x1m3w4y1
 mod <-
 "
@@ -19,7 +19,7 @@ fit_lm <- list(lm_m1, lm_m2, lm_m3, lm_y)
 
 wvalues <- c(w1 = 5, w2 = 4, w3 = 2, w4 = 3)
 
-test_that("cond_indirect: Check errror", {
+test_that("cond_indirect: Check error", {
     expect_error(cond_indirect(fit = mod))
     expect_error(cond_indirect(fit = list(lm_m1, mod)))
     expect_error(cond_indirect(fit = fit_lav, boot_ci = TRUE))

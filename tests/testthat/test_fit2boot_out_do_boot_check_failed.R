@@ -1,5 +1,5 @@
 library(stdmodsem)
-library(lavaan)
+suppressMessages(library(lavaan))
 
 dat0 <- simple_mediation_latent
 mod <-
@@ -22,6 +22,6 @@ tmp1 <- capture.output(out1 <- fit2boot_out_do_boot(fit, R = 4, seed = 8734),
 
 test_that("Check failed boot samples", {
     expect_true(any(grepl("failed in 2 bootstrap", tmp1)))
-    expect_error(fit2boot_out_do_boot(fit, R = 1, seed = 1378),
+    expect_error(suppressMessages(fit2boot_out_do_boot(fit, R = 1, seed = 1378)),
                  "failed in all bootstrap")
   })

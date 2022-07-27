@@ -14,7 +14,8 @@ mod_levels(
   percentiles = c(0.16, 0.5, 0.84),
   extract_gp_names = TRUE,
   prefix = NULL,
-  values = NULL
+  values = NULL,
+  descending = TRUE
 )
 
 mod_levels_list(
@@ -77,6 +78,14 @@ two levels will be returned, one named \code{gp1} with the indicator
 variables equal to 0 and 0, the other named \code{gp3} with the
 indicator variables equal to 0 and 1. Default is \code{NULL}.}
 
+\item{descending}{If \code{TRUE} (default), the rows are sorted in
+descending order for numerical moderators: The
+highest value on the first row and the lowest values
+on the last row. For user supplied values, the first
+value is on the last row and the last value is on the
+first row. If \code{FALSE}, the rows are sorted in
+ascending order.}
+
 \item{...}{The names of moderators variables. For a categorical variable,
 it should be a vector of variable names.}
 
@@ -91,7 +100,7 @@ if \code{merge = TRUE}.
 }
 \description{
 Create levels of moderators to be used by
-\code{\link[=indirect]{indirect()}}, \code{\link[=cond_indirect]{cond_indirect()}}, and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+\code{\link[=indirect_i]{indirect_i()}}, \code{\link[=cond_indirect]{cond_indirect()}}, and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 }
 \details{
 It creates values of a moderator that can be used to compute

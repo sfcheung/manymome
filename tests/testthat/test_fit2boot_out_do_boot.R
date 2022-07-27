@@ -1,6 +1,6 @@
 
 library(stdmodsem)
-library(lavaan)
+suppressMessages(library(lavaan))
 dat <- modmed_x1m3w4y1
 mod <-
 "
@@ -15,7 +15,7 @@ fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE,
            h1 = FALSE,
            warn = FALSE)
 
-out <- fit2boot_out_do_boot(fit, R = 15, seed = 8715)
+out <- suppressMessages(fit2boot_out_do_boot(fit, R = 15, seed = 8715))
 out_chk_est <- boot2est(fit)
 out_chk_implied <- boot2implied(fit)
 out_chk <- fit2boot_out(fit = fit)
