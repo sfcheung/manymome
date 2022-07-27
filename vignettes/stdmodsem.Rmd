@@ -126,7 +126,7 @@ out_lm <- cond_indirect_effects(wlevels =c("w1", "w2"),
                                 x = "x",
                                 y = "y",
                                 m = "m",
-                                fit = list(lm_m, lm_y),
+                                fit = lm2list(lm_m, lm_y),
                                 boot_ci = TRUE,
                                 R = 500,
                                 seed = 43143)
@@ -192,6 +192,9 @@ one standard deviation above mean is
 95% bootstrap confidence interval
 [`r paste0(formatC(unlist(out_lm_stdxy[1, c("CI.lo", "CI.hi")]), digits = 3, format = "f"), collapse = ", ")`].
 
+## Plotting the Conditional Indirect Effects
+
+plot(out_lm)
 
 # More Cases
 
