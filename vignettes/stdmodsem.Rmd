@@ -349,7 +349,6 @@ out_med_stdxy <- indirect_effect(x = "x",
                           m = c("m1", "m2"),
                           fit = list(lm_m1, lm_m2, lm_y),
                           boot_ci = TRUE,
-                          
                           R = 500,
                           seed = 43143,
                           standardized_x = TRUE,
