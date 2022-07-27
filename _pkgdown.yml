@@ -30,6 +30,7 @@ reference:
     Generate bootstrap estimates to be used
     by the main functions.
 - contents:
+  - do_boot
   - lm2boot_out
   - fit2boot_out
   - fit2boot_out_do_boot
