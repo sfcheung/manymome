@@ -179,6 +179,10 @@ indirect_i <- function(x,
                                 SIMPLIFY = FALSE)
               }
           }
+      } else {
+        # prods is supplied.
+        # Need to update the estimates
+        prods <- update_prods(prods, est)
       }
     if (get_prods_only) return(prods)
     names(prods) <- ys
@@ -353,4 +357,23 @@ gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL,
 
 check_lv_in_est <- function(est) {
     unique(est$lhs[est$op == "=~"] )
+  }
+
+update_prods <- function(prods, est) {
+    pout <- prods
+    tmpfct <- function(prods_i) {
+        pout_i <- prods_i
+        if (all(is.na(prods_i))) {
+            return(pout_i)
+          } else {
+            est_i <- est[(est$lhs == prods_i$y) &
+                        (est$op == "~") &
+                        (est$rhs %in% prods_i$prod), "est"]
+            pout_i$b <- est_i
+            names(pout_i$b) <- prods_i$prod
+            return(pout_i)
+          }
+      }
+    pout <- sapply(prods, tmpfct, simplify = FALSE)
+    pout
   }
