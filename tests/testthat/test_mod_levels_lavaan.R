@@ -52,10 +52,10 @@ out_c <- mod_levels(fit, w = c("gpgp2", "gpgp3"))
 out_c2 <- mod_levels(fit, w = c("citybeta", "citygamma", "citysigma"))
 out_c3 <- mod_levels(fit, w = c("gpgp2", "gpgp3"), prefix = "gp")
 
-out_i_n_sd_chk <- mean(dat$w1) + sd(dat$w1) * c(-1, 0, 1)
-out_i_n_p_chk <- quantile(dat$w1, c(.16, .50, .84))
-out_i_n_sd2_chk <- mean(dat$w1) + sd(dat$w1) * c(-1, 4)
-out_i_n_p2_chk <- quantile(dat$w1, c(.25, .75))
+out_i_n_sd_chk <- mean(dat$w1) + sd(dat$w1) * rev(c(-1, 0, 1))
+out_i_n_p_chk <- quantile(dat$w1, rev(c(.16, .50, .84)))
+out_i_n_sd2_chk <- mean(dat$w1) + sd(dat$w1) * rev(c(-1, 4))
+out_i_n_p2_chk <- quantile(dat$w1, rev(c(.25, .75)))
 
 out_i_c_chk <- structure(list(gpgp2 = c(0, 1, 0), gpgp3 = c(0, 0, 1)), row.names = c("Reference",
 "2", "3"), class = "data.frame")

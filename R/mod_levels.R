@@ -64,6 +64,13 @@
 #'               two levels will be returned, one named `gp1` with the indicator
 #'               variables equal to 0 and 0, the other named `gp3` with the
 #'               indicator variables equal to 0 and 1. Default is `NULL`.
+#' @param descending If `TRUE` (default), the rows are sorted in
+#'               descending order for numerical moderators: The
+#'               highest value on the first row and the lowest values
+#'               on the last row. For user supplied values, the first
+#'               value is on the last row and the last value is on the
+#'               first row. If `FALSE`, the rows are sorted in
+#'               ascending order.
 #' @param ... The names of moderators variables. For a categorical variable,
 #'            it should be a vector of variable names.
 #' @param merge If `TRUE`, [mod_levels_list()] will call [merge_mod_levels()]
@@ -126,7 +133,8 @@ mod_levels <- function(w,
                        percentiles = c(.16, .50, .84),
                        extract_gp_names = TRUE,
                        prefix = NULL,
-                       values = NULL) {
+                       values = NULL,
+                       descending = TRUE) {
     fit_type <- cond_indirect_check_fit(fit)
     w_type <- match.arg(w_type)
     if (w_type == "auto") {
@@ -151,7 +159,8 @@ mod_levels <- function(w,
                                              w_method = w_method,
                                              sd_from_mean = sd_from_mean,
                                              percentiles = percentiles,
-                                             values = values)
+                                             values = values,
+                                             descending = descending)
           }
         if (w_type == "categorical") {
             out <- mod_levels_i_lm_categorical(fit = fit,
@@ -168,7 +177,8 @@ mod_levels <- function(w,
                                                  w_method = w_method,
                                                  sd_from_mean = sd_from_mean,
                                                  percentiles = percentiles,
-                                                 values = values)
+                                                 values = values,
+                                                 descending = descending)
           }
         if (w_type == "categorical") {
             out <- mod_levels_i_lavaan_categorical(fit = fit,
@@ -237,7 +247,8 @@ mod_levels_i_lavaan_numerical <- mod_levels_i_lm_numerical <- function(fit,
                                       w_method = c("sd", "percentile"),
                                       sd_from_mean = c(-1, 0, 1),
                                       percentiles = c(.16, .50, .84),
-                                      values = NULL) {
+                                      values = NULL,
+                                      descending = TRUE) {
     # No need for user-specified method. If users want to specify their own
     # values, they do not need  to call this function
     fit_type <- cond_indirect_check_fit(fit)
@@ -284,6 +295,9 @@ mod_levels_i_lavaan_numerical <- mod_levels_i_lm_numerical <- function(fit,
         out <- data.frame(w = w_q)
         rownames(out) <- names(w_q)
         colnames(out) <- w
+      }
+    if (descending) {
+        out <- out[rev(seq_len(nrow(out))), , drop = FALSE]
       }
     attr(out, "wname") <- w
     return(out)

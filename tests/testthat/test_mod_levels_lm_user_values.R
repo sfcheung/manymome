@@ -37,10 +37,10 @@ out_c_user <- mod_levels(fit, w = c("gpgp2", "gpgp3"),
 
 
 test_that("mod_levels: lm: user values", {
-    expect_equal(unlist(out_i_n_user), c(-2, 2, 3, 5, 8), ignore_attr = TRUE)
-    expect_equal(unlist(out_i_n_user2), c(2, 5, 1), ignore_attr = TRUE)
-    expect_equal(rownames(out_i_n_user2), c("low", "hi", "med"), ignore_attr = TRUE)
-    expect_equal(unlist(out_i_n_user3), c(3, 2, 1, 8), ignore_attr = TRUE)
+    expect_equal(unlist(out_i_n_user), rev(c(-2, 2, 3, 5, 8)), ignore_attr = TRUE)
+    expect_equal(unlist(out_i_n_user2), rev(c(2, 5, 1)), ignore_attr = TRUE)
+    expect_equal(rownames(out_i_n_user2), rev(c("low", "hi", "med")), ignore_attr = TRUE)
+    expect_equal(unlist(out_i_n_user3), rev(c(3, 2, 1, 8)), ignore_attr = TRUE)
     expect_equal(out_i_c, data.frame(x = c(1, 0), y = c(0, 0)), ignore_attr = TRUE)
     expect_equal(rownames(out_i_c), c("gp2", "gp1"), ignore_attr = TRUE)
     expect_equal(out_n_user, out_i_n_user, ignore_attr = TRUE)
