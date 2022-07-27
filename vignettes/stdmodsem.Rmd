@@ -285,7 +285,7 @@ printCoefmat(summary(lm_m2)$coefficients, digits = 3, signif.legend = FALSE)
 printCoefmat(summary(lm_y)$coefficients, digits = 3, signif.legend = FALSE)
 ```
 
-## Estimating Conditional Indirect Effects
+## Estimating Indirect Effects
 
 `indirect_effect()` can be used to estimate the indirect effect
 and form its bootstrapping confidence interval along a path
@@ -349,6 +349,7 @@ out_med_stdxy <- indirect_effect(x = "x",
                           m = c("m1", "m2"),
                           fit = list(lm_m1, lm_m2, lm_y),
                           boot_ci = TRUE,
+                          
                           R = 500,
                           seed = 43143,
                           standardized_x = TRUE,
@@ -362,7 +363,7 @@ with a 95% confidence interval of
 [`r paste0(formatC(confint(out_med_stdxy), digits = 3, format = "f"), collapse = ", ")`],
 significantly different from zero (*p* < .05).
 
-## Estimating Conditional Indirect Effects For *Any* Pathways
+## Estimating Indirect Effects For *Any* Pathways
 
 `indirect_effect()` can be used for the indirect effect
 in any pathway in a path model. There is no need to specify
