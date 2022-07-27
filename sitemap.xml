@@ -40,10 +40,19 @@
     <loc>https://sfcheung.github.io/stdmodsem/reference/check_path.html</loc>
   </url>
   <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/coef.index_of_mome.html</loc>
+  </url>
+  <url>
     <loc>https://sfcheung.github.io/stdmodsem/reference/coef.indirect.html</loc>
   </url>
   <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/coef.lm_from_lavaan.html</loc>
+  </url>
+  <url>
     <loc>https://sfcheung.github.io/stdmodsem/reference/cond_indirect.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/confint.index_of_mome.html</loc>
   </url>
   <url>
     <loc>https://sfcheung.github.io/stdmodsem/reference/confint.indirect.html</loc>
@@ -65,6 +74,9 @@
   </url>
   <url>
     <loc>https://sfcheung.github.io/stdmodsem/reference/data_med_mod_b.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/data_med_mod_b_mod.html</loc>
   </url>
   <url>
     <loc>https://sfcheung.github.io/stdmodsem/reference/data_med_mod_parallel.html</loc>
@@ -112,7 +124,10 @@
     <loc>https://sfcheung.github.io/stdmodsem/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://sfcheung.github.io/stdmodsem/reference/indirect.html</loc>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/index_of_mome.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/indirect_i.html</loc>
   </url>
   <url>
     <loc>https://sfcheung.github.io/stdmodsem/reference/lm2boot_out.html</loc>
@@ -124,6 +139,9 @@
     <loc>https://sfcheung.github.io/stdmodsem/reference/lm2ptable.html</loc>
   </url>
   <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/lm_from_lavaan_list.html</loc>
+  </url>
+  <url>
     <loc>https://sfcheung.github.io/stdmodsem/reference/merge_mod_levels.html</loc>
   </url>
   <url>
@@ -133,7 +151,22 @@
     <loc>https://sfcheung.github.io/stdmodsem/reference/modmed_x1m3w4y1.html</loc>
   </url>
   <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/plot.cond_indirect_effects.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/predict.lm_from_lavaan.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/predict.lm_from_lavaan_list.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/predict.lm_list.html</loc>
+  </url>
+  <url>
     <loc>https://sfcheung.github.io/stdmodsem/reference/print.cond_indirect_effects.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/print.index_of_mome.html</loc>
   </url>
   <url>
     <loc>https://sfcheung.github.io/stdmodsem/reference/print.indirect.html</loc>
@@ -149,5 +182,8 @@
   </url>
   <url>
     <loc>https://sfcheung.github.io/stdmodsem/reference/summary.lm_list.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/stdmodsem/reference/terms.lm_from_lavaan.html</loc>
   </url>
 </urlset>

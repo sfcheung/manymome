@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">stdmodsem</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9015</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,7 +59,7 @@
     <div class="section level2">
       <h2 id="main-functions">Main Functions<a class="anchor" aria-label="anchor" href="#main-functions"></a></h2>
       
-      <p class="section-desc"></p><p>(Main Functions)</p>
+      <p class="section-desc"></p><p>Compute conditional indirect effects, conditional effects, and indirect effects.</p>
 
       
     </div><div id="" class="section level2">
@@ -69,16 +69,74 @@
 
       <dl><dt>
           
-          <code><a href="cond_indirect.html">cond_indirect()</a></code> <code><a href="cond_indirect.html">cond_indirect_effects()</a></code> 
+          <code><a href="cond_indirect.html">cond_indirect()</a></code> <code><a href="cond_indirect.html">cond_indirect_effects()</a></code> <code><a href="cond_indirect.html">indirect_effect()</a></code> 
         </dt>
         <dd>Conditional, Indirect, and Conditional Indirect Effects</dd>
+      </dl></div><div class="section level2">
+      <h2 id="presenting-the-effects">Presenting the Effects<a class="anchor" aria-label="anchor" href="#presenting-the-effects"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="index_of_mome.html">index_of_mome()</a></code> 
+        </dt>
+        <dd>Generalized Index of Moderated-Mediation</dd>
       </dl><dl><dt>
           
-          <code><a href="indirect.html">indirect()</a></code> 
+          <code><a href="plot.cond_indirect_effects.html">plot(<i>&lt;cond_indirect_effects&gt;</i>)</a></code> 
         </dt>
-        <dd>Indirect Effect</dd>
+        <dd>Plot Conditional Indirect Effect</dd>
       </dl></div><div class="section level2">
-      <h2 id="helper-functions">Helper Functions<a class="anchor" aria-label="anchor" href="#helper-functions"></a></h2>
+      <h2 id="moderator-levels">Moderator Levels<a class="anchor" aria-label="anchor" href="#moderator-levels"></a></h2>
+      
+      <p class="section-desc"></p><p>Set the levels of moderators to be used in <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> and <code><a href="../reference/cond_indirect.html">cond_indirect()</a></code>.</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="mod_levels.html">mod_levels()</a></code> <code><a href="mod_levels.html">mod_levels_list()</a></code> 
+        </dt>
+        <dd>Create Levels of Moderators</dd>
+      </dl><dl><dt>
+          
+          <code><a href="merge_mod_levels.html">merge_mod_levels()</a></code> 
+        </dt>
+        <dd>Merge the Generated Levels of Moderators</dd>
+      </dl></div><div class="section level2">
+      <h2 id="bootstrapping">Bootstrapping<a class="anchor" aria-label="anchor" href="#bootstrapping"></a></h2>
+      
+      <p class="section-desc"></p><p>Generate bootstrap estimates to be used by the main functions.</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="lm2boot_out.html">lm2boot_out()</a></code> 
+        </dt>
+        <dd>Bootstrapping Estimates for <code>lm</code> Outputs</dd>
+      </dl><dl><dt>
+          
+          <code><a href="fit2boot_out.html">fit2boot_out()</a></code> <code><a href="fit2boot_out.html">fit2boot_out_do_boot()</a></code> 
+        </dt>
+        <dd>Bootstrapping Estimates for a <code>lavaan</code> Output</dd>
+      </dl></div><div class="section level2">
+      <h2 id="for-lm-">For ‘lm’<a class="anchor" aria-label="anchor" href="#for-lm-"></a></h2>
       
       
 
@@ -93,45 +151,26 @@
           <code><a href="lm2list.html">lm2list()</a></code> 
         </dt>
         <dd>Join 'lm()' Output to Form an 'lm_list-class' Object</dd>
-      </dl><dl><dt>
-          
-          <code><a href="mod_levels.html">mod_levels()</a></code> <code><a href="mod_levels.html">mod_levels_list()</a></code> 
-        </dt>
-        <dd>Create Levels of Moderators</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      <h2 id="for-lavaan-">For ‘lavaan’<a class="anchor" aria-label="anchor" href="#for-lavaan-"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="factor2var.html">factor2var()</a></code> 
         </dt>
         <dd>Create Dummy Variables</dd>
-      </dl><dl><dt>
-          
-          <code><a href="lm2boot_out.html">lm2boot_out()</a></code> 
-        </dt>
-        <dd>Bootstrapping Estimates for <code>lm</code> Outputs</dd>
-      </dl><dl><dt>
-          
-          <code><a href="fit2boot_out.html">fit2boot_out()</a></code> <code><a href="fit2boot_out.html">fit2boot_out_do_boot()</a></code> 
-        </dt>
-        <dd>Bootstrapping Estimates for a <code>lavaan</code> Output</dd>
-      </dl><dl><dt>
-          
-          <code><a href="check_path.html">check_path()</a></code> 
-        </dt>
-        <dd>Check Whether an Indirect Path is Valid in a Model</dd>
-      </dl><dl><dt>
-          
-          <code><a href="lm2ptable.html">lm2ptable()</a></code> 
-        </dt>
-        <dd>Convert a 'lm' Output to a 'lavaan'-Like Object</dd>
-      </dl><dl><dt>
-          
-          <code><a href="merge_mod_levels.html">merge_mod_levels()</a></code> 
-        </dt>
-        <dd>Merge the Generated Levels of Moderators</dd>
       </dl></div><div class="section level2">
       <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
       
-      <p class="section-desc"></p><p>Methods</p>
+      <p class="section-desc"></p><p>Methods for the output of the main functions.</p>
 
       
     </div><div id="" class="section level2">
@@ -169,6 +208,21 @@
           <code><a href="summary.lm_list.html">summary(<i>&lt;lm_list&gt;</i>)</a></code> <code><a href="summary.lm_list.html">print(<i>&lt;summary_lm_list&gt;</i>)</a></code> 
         </dt>
         <dd>Summary of a <code>lm_list</code>-Class Object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="coef.index_of_mome.html">coef(<i>&lt;index_of_mome&gt;</i>)</a></code> 
+        </dt>
+        <dd>Print the Output of 'index_of_mome'</dd>
+      </dl><dl><dt>
+          
+          <code><a href="confint.index_of_mome.html">confint(<i>&lt;index_of_mome&gt;</i>)</a></code> 
+        </dt>
+        <dd>Confidence Interval of the Output of 'index_of_mome'</dd>
+      </dl><dl><dt>
+          
+          <code><a href="print.index_of_mome.html">print(<i>&lt;index_of_mome&gt;</i>)</a></code> 
+        </dt>
+        <dd>Print the Output of 'index_of_mome'</dd>
       </dl></div><div class="section level2">
       <h2 id="datasets">Datasets<a class="anchor" aria-label="anchor" href="#datasets"></a></h2>
       
@@ -210,6 +264,11 @@
           <code><a href="data_med_mod_b.html">data_med_mod_b</a></code> 
         </dt>
         <dd>Simple Mediation with b-Path Moderated: Sample Dataset</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_med_mod_b_mod.html">data_med_mod_b_mod</a></code> 
+        </dt>
+        <dd>A Simple Mediation Model with b-Path Moderated-Moderation: Sample Dataset</dd>
       </dl><dl><dt>
           
           <code><a href="data_med_mod_parallel.html">data_med_mod_parallel</a></code> 
@@ -283,6 +342,62 @@ Sample Dataset</dd>
           <code><a href="simple_mediation_latent.html">simple_mediation_latent</a></code> 
         </dt>
         <dd>A Simple Latent Mediation Model</dd>
+      </dl></div><div class="section level2">
+      <h2 id="advanced-helpers">Advanced helpers<a class="anchor" aria-label="anchor" href="#advanced-helpers"></a></h2>
+      
+      <p class="section-desc"></p><p>Helper functions exported for advanced users.</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="indirect_i.html">indirect_i()</a></code> 
+        </dt>
+        <dd>Indirect Effect (No Bootstrapping)</dd>
+      </dl><dl><dt>
+          
+          <code><a href="check_path.html">check_path()</a></code> 
+        </dt>
+        <dd>Check Whether an Indirect Path is Valid in a Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="lm2ptable.html">lm2ptable()</a></code> 
+        </dt>
+        <dd>Convert a 'lm' Output to a 'lavaan'-Like Object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="lm_from_lavaan_list.html">lm_from_lavaan_list()</a></code> 
+        </dt>
+        <dd>Convert a 'lavaan' Model to an 'lm_from_lavaan_list'-Class Object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="coef.lm_from_lavaan.html">coef(<i>&lt;lm_from_lavaan&gt;</i>)</a></code> 
+        </dt>
+        <dd>Coefficients of a 'lm_from_lavaan'-Class Object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="terms.lm_from_lavaan.html">terms(<i>&lt;lm_from_lavaan&gt;</i>)</a></code> 
+        </dt>
+        <dd>Model Terms of a 'lm_from_lavaan'-Class Object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="predict.lm_from_lavaan.html">predict(<i>&lt;lm_from_lavaan&gt;</i>)</a></code> 
+        </dt>
+        <dd>Predicted Values of a 'lm_from_lavaan'-Class Object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="predict.lm_from_lavaan_list.html">predict(<i>&lt;lm_from_lavaan_list&gt;</i>)</a></code> 
+        </dt>
+        <dd>Predicted Values of a 'lm_from_lavaan_list'-Class Object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="predict.lm_list.html">predict(<i>&lt;lm_list&gt;</i>)</a></code> 
+        </dt>
+        <dd>Predicted Values of a 'lm_list'-Class Object</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

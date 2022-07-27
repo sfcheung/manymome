@@ -14,7 +14,7 @@ lm() or lavaan::lavaan()."><!-- mathjax --><script src="https://cdnjs.cloudflare
     
     <a class="navbar-brand me-2" href="../index.html">stdmodsem</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9015</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,18 +85,39 @@ conditional indirect effects in a structural model fitted by
 <span>  boot_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  R <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  save_boot_full <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  save_boot_full <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  prods <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  get_prods_only <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">cond_indirect_effects</span><span class="op">(</span></span>
 <span>  <span class="va">wlevels</span>,</span>
 <span>  <span class="va">...</span>,</span>
-<span>  fit <span class="op">=</span> <span class="va">fit</span>,</span>
+<span>  fit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  est <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  implied_stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  boot_ci <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  boot_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  R <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  output_type <span class="op">=</span> <span class="st">"data.frame"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">indirect_effect</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">y</span>,</span>
+<span>  m <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  fit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  est <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  implied_stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  standardized_x <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  standardized_y <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  boot_ci <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  boot_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  R <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  save_boot_full <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -192,6 +213,16 @@ Default is <code>NULL</code> and seed is not set.</p></dd>
 stored. Default is <code>FALSE.</code></p></dd>
 
 
+<dt>prods</dt>
+<dd><p>The product terms found. For internal use.</p></dd>
+
+
+<dt>get_prods_only</dt>
+<dd><p>IF <code>TRUE</code>, will quit early and return the product
+terms found. The results can be passed to the <code>prod</code> argument
+when calling this function. Default is <code>FALSE</code>.</p></dd>
+
+
 <dt>wlevels</dt>
 <dd><p>The output of <code><a href="merge_mod_levels.html">merge_mod_levels()</a></code>.</p></dd>
 
@@ -245,6 +276,9 @@ of levels.</p></li>
 <li><p><code>cond_indirect_effects</code>: Compute the conditional, indirect, or
 conditional indirect effects for several
 sets of levels.</p></li>
+<li><p><code>indirect_effect</code>: Compute the indirect effects. A wrapper of
+<code>cond_indirect()</code>. Can be used
+when there is no moderator.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
@@ -331,9 +365,9 @@ sets of levels.</p></li>
 <span class="r-in"><span><span class="va">w1levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="mod_levels.html">mod_levels</a></span><span class="op">(</span><span class="st">"w1"</span>, fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">w1levels</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 w1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> M-1.0SD -0.7100578</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mean     0.2589999</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> M+1.0SD  1.2280576</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mean     0.2589999</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M-1.0SD -0.7100578</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Conditional effects from x to m1 when w1 is equal to each of the levels</span></span></span>
 <span class="r-in"><span><span class="fu">cond_indirect_effects</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"m1"</span>,</span></span>
@@ -346,9 +380,9 @@ sets of levels.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [w1]   (w1)   ind  m1~x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M-1.0SD -0.710 0.297 0.297</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD  1.228 0.750 0.750</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 Mean     0.259 0.523 0.523</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M+1.0SD  1.228 0.750 0.750</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M-1.0SD -0.710 0.297 0.297</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the  effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m1~x’ is/are the path coefficient(s) along the path conditional on</span>
@@ -367,9 +401,9 @@ sets of levels.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [w1]   (w1)    ind  m1~x   y~m1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M-1.0SD -0.710 -0.012 0.297 -0.042</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD  1.228 -0.031 0.750 -0.042</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 Mean     0.259 -0.022 0.523 -0.042</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M+1.0SD  1.228 -0.031 0.750 -0.042</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M-1.0SD -0.710 -0.012 0.297 -0.042</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m1~x’,‘y~m1’ is/are the path coefficient(s) along the path</span>
