@@ -12,7 +12,7 @@ indirect_i(), cond_indirect(), and cond_indirect_effects()."><!-- mathjax --><sc
     
     <a class="navbar-brand me-2" href="../index.html">stdmodsem</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9015</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9019</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,12 +83,13 @@ indirect_i(), cond_indirect(), and cond_indirect_effects()."><!-- mathjax --><sc
 <span><span class="fu">mod_levels_list</span><span class="op">(</span></span>
 <span>  <span class="va">...</span>,</span>
 <span>  <span class="va">fit</span>,</span>
-<span>  w_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"numeric"</span>, <span class="st">"categorical"</span><span class="op">)</span>,</span>
-<span>  w_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sd"</span>, <span class="st">"percentile"</span><span class="op">)</span>,</span>
-<span>  sd_from_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>  percentiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.16</span>, <span class="fl">0.5</span>, <span class="fl">0.84</span><span class="op">)</span>,</span>
+<span>  w_type <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  w_method <span class="op">=</span> <span class="st">"sd"</span>,</span>
+<span>  sd_from_mean <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  percentiles <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  extract_gp_names <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  prefix <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  descending <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  merge <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -120,18 +121,24 @@ if <code>"percentile"</code>, the levels are defined in percentiles.</p></dd>
 
 
 <dt>sd_from_mean</dt>
-<dd><p>A numeric vector. Specify the distance in standard
-deviation from the mean for each level. Default is
-<code>c(-1, 0, 1)</code>. Ignored if <code>w_method</code> is not equal to
-<code>"sd"</code>.</p></dd>
+<dd><p>A numeric vector. Specify the distance in
+standard deviation from the mean for each
+level. Default is <code>c(-1, 0, 1)</code> for
+<code>mod_levels()</code>. For <code>mod_levels_list()</code>, the
+default is <code>c(-1, 0, 1)</code> when there is only one
+moderator, and <code>c(-1, 1)</code> when there are more
+than one moderator. Ignored if <code>w_method</code> is
+not equal to <code>"sd"</code>.</p></dd>
 
 
 <dt>percentiles</dt>
-<dd><p>A numeric vector. Specify the percentile (in proportion)
-for each level. Default is <code>c(.16, .50, .84)</code>, corresponding
-approximately to one standard deviation below mean,
-mean, and one standard deviation above mean in a normal
-distribution. Ignored if <code>w_method</code> is not equal to
+<dd><p>A numeric vector. Specify the percentile (in
+proportion) for each level. Default is <code>c(.16, .50, .84)</code> for <code>mod_levels()</code>, corresponding
+approximately to one standard deviation below
+mean, mean, and one standard deviation above
+mean in a normal distribution. For
+<code>mod_levels_list()</code>, default is <code>c(.16, .50, .84)</code> if there is one moderator, and <code>c(.16, .84)</code> when there are more than one moderator.
+Ignored if <code>w_method</code> is not equal to
 <code>"percentile"</code>.</p></dd>
 
 
@@ -337,13 +344,8 @@ effects or conditional indirect effects for all the combinations.</p>
 <span class="r-in"><span><span class="va">w1w2_levels</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                w1       w2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w2: M+1.0SD 6.173157 4.040487</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w2: Mean    6.173157 3.047789</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w2: M-1.0SD 6.173157 2.055091</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: Mean; w2: M+1.0SD    5.105602 4.040487</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: Mean; w2: Mean       5.105602 3.047789</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: Mean; w2: M-1.0SD    5.105602 2.055091</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> w1: M-1.0SD; w2: M+1.0SD 4.038047 4.040487</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M-1.0SD; w2: Mean    4.038047 3.047789</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> w1: M-1.0SD; w2: M-1.0SD 4.038047 2.055091</span>
 <span class="r-in"><span><span class="fu"><a href="cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, m <span class="op">=</span> <span class="st">"m"</span>,</span></span>
 <span class="r-in"><span>                      fit <span class="op">=</span> <span class="va">fit</span>, wlevels <span class="op">=</span> <span class="va">w1w2_levels</span><span class="op">)</span></span></span>
@@ -356,14 +358,9 @@ effects or conditional indirect effects for all the combinations.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [w1]    [w2]  (w1)  (w2)   ind   m~x   y~m</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD M+1.0SD 6.173 4.040 0.398 0.596 0.669</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 M+1.0SD Mean    6.173 3.048 0.279 0.596 0.468</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M+1.0SD M-1.0SD 6.173 2.055 0.159 0.596 0.267</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Mean    M+1.0SD 5.106 4.040 0.253 0.378 0.669</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 Mean    Mean    5.106 3.048 0.177 0.378 0.468</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Mean    M-1.0SD 5.106 2.055 0.101 0.378 0.267</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 M-1.0SD M+1.0SD 4.038 4.040 0.107 0.160 0.669</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 M-1.0SD Mean    4.038 3.048 0.075 0.160 0.468</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9 M-1.0SD M-1.0SD 4.038 2.055 0.043 0.160 0.267</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 M+1.0SD M-1.0SD 6.173 2.055 0.159 0.596 0.267</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M-1.0SD M+1.0SD 4.038 4.040 0.107 0.160 0.669</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 M-1.0SD M-1.0SD 4.038 2.055 0.043 0.160 0.267</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m~x’,‘y~m’ is/are the path coefficient(s) along the path conditional</span>
@@ -375,13 +372,11 @@ effects or conditional indirect effects for all the combinations.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               w1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> M+1.0SD 6.173157</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mean    5.105602</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> M-1.0SD 4.038047</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               w2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> M+1.0SD 4.040487</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mean    3.047789</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> M-1.0SD 2.055091</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, m <span class="op">=</span> <span class="st">"m"</span>,</span></span>
@@ -395,14 +390,9 @@ effects or conditional indirect effects for all the combinations.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [w1]    [w2]  (w1)  (w2)   ind   m~x   y~m</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD M+1.0SD 6.173 4.040 0.398 0.596 0.669</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 M+1.0SD Mean    6.173 3.048 0.279 0.596 0.468</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M+1.0SD M-1.0SD 6.173 2.055 0.159 0.596 0.267</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Mean    M+1.0SD 5.106 4.040 0.253 0.378 0.669</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 Mean    Mean    5.106 3.048 0.177 0.378 0.468</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Mean    M-1.0SD 5.106 2.055 0.101 0.378 0.267</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 M-1.0SD M+1.0SD 4.038 4.040 0.107 0.160 0.669</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 M-1.0SD Mean    4.038 3.048 0.075 0.160 0.468</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9 M-1.0SD M-1.0SD 4.038 2.055 0.043 0.160 0.267</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 M+1.0SD M-1.0SD 6.173 2.055 0.159 0.596 0.267</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M-1.0SD M+1.0SD 4.038 4.040 0.107 0.160 0.669</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 M-1.0SD M-1.0SD 4.038 2.055 0.043 0.160 0.267</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m~x’,‘y~m’ is/are the path coefficient(s) along the path conditional</span>

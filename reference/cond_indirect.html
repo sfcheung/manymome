@@ -14,7 +14,7 @@ lm() or lavaan::lavaan()."><!-- mathjax --><script src="https://cdnjs.cloudflare
     
     <a class="navbar-brand me-2" href="../index.html">stdmodsem</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9015</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9019</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,6 +85,10 @@ conditional indirect effects in a structural model fitted by
 <span>  boot_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  R <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  parallel <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  make_cluster_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  save_boot_full <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  prods <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  get_prods_only <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -92,15 +96,27 @@ conditional indirect effects in a structural model fitted by
 <span></span>
 <span><span class="fu">cond_indirect_effects</span><span class="op">(</span></span>
 <span>  <span class="va">wlevels</span>,</span>
-<span>  <span class="va">...</span>,</span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">y</span>,</span>
+<span>  m <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  w_type <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  w_method <span class="op">=</span> <span class="st">"sd"</span>,</span>
+<span>  sd_from_mean <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  percentiles <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  est <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  implied_stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  boot_ci <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  boot_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  R <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  output_type <span class="op">=</span> <span class="st">"data.frame"</span></span>
+<span>  parallel <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  make_cluster_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  boot_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  output_type <span class="op">=</span> <span class="st">"data.frame"</span>,</span>
+<span>  mod_levels_list_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">indirect_effect</span><span class="op">(</span></span>
@@ -117,6 +133,10 @@ conditional indirect effects in a structural model fitted by
 <span>  boot_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  R <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  parallel <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  make_cluster_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  save_boot_full <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -208,6 +228,33 @@ bootstrapping on <code>fit</code>. This is the seed for the bootstrapping.
 Default is <code>NULL</code> and seed is not set.</p></dd>
 
 
+<dt>parallel</dt>
+<dd><p>Logical. If bootstrapping is conducted,
+whether parallel processing will be used.
+Default is <code>TRUE</code>. If <code>fit</code> is a list of
+<code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> outputs, parallel processing will not be used.</p></dd>
+
+
+<dt>ncores</dt>
+<dd><p>Integer. The number of CPU cores to use when
+<code>parallel</code> is <code>TRUE</code>. Default is the number of
+non-logical cores minus one (one minimum). Will raise
+an error if greater than the number of cores detected
+by <code><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">parallel::detectCores()</a></code>. If <code>ncores</code> is set, it
+will override <code>make_cluster_args</code> in <code><a href="do_boot.html">do_boot()</a></code>.</p></dd>
+
+
+<dt>make_cluster_args</dt>
+<dd><p>A named list of additional arguments to be
+passed to <code><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">parallel::makeCluster()</a></code>. For advanced
+users. See <code><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">parallel::makeCluster()</a></code> for details.
+Default is <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>.</p></dd>
+
+
+<dt>progress</dt>
+<dd><p>Logical. Display progress or not. Default is <code>TRUE</code>.</p></dd>
+
+
 <dt>save_boot_full</dt>
 <dd><p>If <code>TRUE</code>, full bootstrapping results will be
 stored. Default is <code>FALSE.</code></p></dd>
@@ -224,11 +271,55 @@ when calling this function. Default is <code>FALSE</code>.</p></dd>
 
 
 <dt>wlevels</dt>
-<dd><p>The output of <code><a href="merge_mod_levels.html">merge_mod_levels()</a></code>.</p></dd>
+<dd><p>The output of <code><a href="merge_mod_levels.html">merge_mod_levels()</a></code>, or the
+moderator(s) to be passed to <code><a href="mod_levels.html">mod_levels_list()</a></code>. If all the
+moderators can be represented by one variable, that is, each
+moderator is (a) a numeric variable, (b) a dichotomous
+categorical variable, or (c) a factor or string variable
+used in <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> in <code>fit</code>, then it is a vector of the names of
+the moderators as appeared in the data frame. If at least
+one of the moderators is a categorical variable represented
+by more than one variable, such as user-created dummy
+variables used in <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>, then it must be a list of
+the names of the moderators, with such moderators
+represented by a vector of names. For example: <code>list("w1", c("gpgp2", "gpgp3")</code>, the first moderator <code>w1</code> and the
+second moderator a three-categorical variable represented by
+<code>gpgp2</code> and <code>gpgp3</code>.</p></dd>
 
 
-<dt>...</dt>
-<dd><p>Arguments to be passed to <code>cond_indirect()</code></p></dd>
+<dt>w_type</dt>
+<dd><p>Character. Whether the moderator is a <code>"numeric"</code>
+variable or a <code>"categorical"</code> variable. If <code>"auto"</code>,
+the function will try to determine the type
+automatically.  See <code><a href="mod_levels.html">mod_levels_list()</a></code> for
+further information.</p></dd>
+
+
+<dt>w_method</dt>
+<dd><p>Character, either <code>"sd"</code> or <code>"percentile"</code>. If
+<code>"sd"</code>, the levels are defined by the distance from
+the mean in terms of standard deviation. if
+<code>"percentile"</code>, the levels are defined in
+percentiles.  See <code><a href="mod_levels.html">mod_levels_list()</a></code> for further
+information.</p></dd>
+
+
+<dt>sd_from_mean</dt>
+<dd><p>A numeric vector. Specify the distance in
+standard deviation from the mean for each
+level. Default is <code>c(-1, 0, 1)</code> when there is
+only one moderator, and <code>c(-1, 1)</code> when there
+are more than one moderator. Ignored if
+<code>w_method</code> is not equal to <code>"sd"</code>. See
+<code><a href="mod_levels.html">mod_levels_list()</a></code> for further information.</p></dd>
+
+
+<dt>percentiles</dt>
+<dd><p>A numeric vector. Specify the percentile (in
+proportion) for each level. Default is <code>c(.16, .50, .84)</code> if there is one moderator, and <code>c(.16, .84)</code> when there are more than one moderator.
+Ignored if <code>w_method</code> is not equal to
+<code>"percentile"</code>. See <code><a href="mod_levels.html">mod_levels_list()</a></code> for
+further information.</p></dd>
 
 
 <dt>output_type</dt>
@@ -236,6 +327,16 @@ when calling this function. Default is <code>FALSE</code>.</p></dd>
 If <code>"data.frame"</code>, the default, the output will be converted to
 a data frame. If any other value, the output is a list of the
 outputs from <code>cond_indirect()</code>.</p></dd>
+
+
+<dt>mod_levels_list_args</dt>
+<dd><p>Additional arguments to be passed
+to <code><a href="mod_levels.html">mod_levels_list()</a></code> if it is called for creating
+the levels of moderators. Default is <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>Arguments to be passed to <code>cond_indirect()</code></p></dd>
 
 </dl></div>
     <div class="section level2">
