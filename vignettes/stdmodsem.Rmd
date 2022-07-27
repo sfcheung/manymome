@@ -119,6 +119,8 @@ intervals, we can use `cond_indirect_effects()`.
 
 ## Estimating Conditional Indirect Effects
 
+This is the call to compute the conditional indirect effects:
+
 ```{r}
 out_lm <- cond_indirect_effects(wlevels =c("w1", "w2"),
                                 x = "x",
@@ -126,495 +128,71 @@ out_lm <- cond_indirect_effects(wlevels =c("w1", "w2"),
                                 m = "m",
                                 fit = list(lm_m, lm_y),
                                 boot_ci = TRUE,
-                                R = 2000,
+                                R = 500,
                                 seed = 43143)
 ```
 
+These are the major arguments:
+
+- `wlevels`: The vector of the names of the moderators.
+- `x`: The name of the predictor.
+- `y`: The name of the outcome variable.
+- `m`: The name of the mediator.
+- `fit`: The list of the output of `lm()`.
+- `boot_ci`: Set to `TRUE` to request bootstrapping confidence intervals.
+             Default is `FALSE`.
+- `R`: The number of bootstrap samples. Only 500 bootstrap samples
+        for illustration. Set `R` to 2000 or even 5000 in real research.
+- `seed`: The seed for the random number generator.
+
+This is the output:
+
 ```{r}
 out_lm
 ```
 
-We then use `mod_levels_list()` to generate combinations of levels of the
-moderators, 1 SD below and above means in this example by setting
-`sd_from_mean`:
+For two or more moderators, the default levels for numeric moderators
+are one standard deviation below mean and one standard deviation above
+mean. For two moderators, there are four combinations. As shown
+above, among these levels, the indirect effect from `x` to `y` through
+`m` is significant only when both `w1` and `w2` are one standard deviation
+above mean. The indirect effect at these levels of `w1` and `w2` are
+`r formatC(out_lm[1, "ind"], digits = 3, format = "f")`, with
+95% bootstrap confidence interval
+[`r paste0(formatC(unlist(out_lm[1, c("CI.lo", "CI.hi")]), digits = 3, format = "f"), collapse = ", ")`].
+
+## Standardized Conditional Indirect Effects
+
+To compute the conditional indirect effects, we can standardize
+only the predictor (`x`), only the outcome (`y`), or both.
+
+To standardize `x`, set `standardized_x` to `TRUE`. To standardize
+`y`, set `standardized_y` to `TRUE`. To standardize both,
+set both `standardized_x` and `standardized_y` to `TRUE`.
+
+This is the result when both `x` and `y` are standardized:
 
 ```{r}
-mod_levels <- mod_levels_list("w1", "w2",
-                              fit = fit_lm,
-                              merge = TRUE)
-mod_levels
+out_lm_stdxy <- cond_indirect_effects(wlevels =c("w1", "w2"),
+                                x = "x",
+                                y = "y",
+                                m = "m",
+                                fit = list(lm_m, lm_y),
+                                boot_ci = TRUE,
+                                R = 500,
+                                seed = 43143,
+                                standardized_x = TRUE,
+                                standardized_y = TRUE)
+out_lm_stdxy
 ```
 
-To form bootstrapping confidence intervals, we first repeat the regression
-analysis in all models by nonparametric bootstrapping and store the results.
-This can be done by `lm2boot_out()`:
+The standardized indirect effect when both `w1` and `w2` are
+one standard deviation above mean is
+`r formatC(out_lm_stdxy[1, "std"], digits = 3, format = "f")`, with
+95% bootstrap confidence interval
+[`r paste0(formatC(unlist(out_lm_stdxy[1, c("CI.lo", "CI.hi")]), digits = 3, format = "f"), collapse = ", ")`].
 
-```{r echo = FALSE, eval = FALSE}
-fn <- paste0(pth, "stdmodsem_fit_lm_boot_out.rds")
-if (file.exists(fn)) {
-    fit_lm_boot_out <- readRDS(fn)
-  } else {
-    fit_lm_boot_out <- lm2boot_out(fit_lm, R = 500, seed = 87415)
-    saveRDS(fit_lm_boot_out, fn)
-  }
-```
-
-(Note: Only 500 bootstrap samples are used for illustration. Set
-R to 2000 or even 5000 in real research.)
-
-```{r eval = TRUE}
-fit_lm_boot_out <- lm2boot_out(fit_lm, R = 2000, seed = 87415)
-```
-
-It is all set. We can now compute the conditional indirect effect:
-
-```{r}
-out_lm <- cond_indirect_effects(wlevels = mod_levels,
-                             x = "x",
-                             y = "y",
-                             m = "m",
-                             fit = fit_lm,
-                             boot_ci = TRUE,
-                             boot_out = fit_lm_boot_out)
-out_lm
-tmp <- cond_indirect(wvalues = unlist(mod_levels[1, ]),
-                    x = "x",
-                    y = "y",
-                    m = "m",
-                    fit = fit_lm,
-                    boot_ci = TRUE,
-                    boot_out = fit_lm_boot_out)
-tmp2 <- cond_indirect(wvalues = unlist(mod_levels[1, ]),
-                    x = "x",
-                    y = "y",
-                    m = "m",
-                    fit = fit_lm)
-tmpfct <- function(d, i) {
-    lm_m <- lm(m ~ x*w1, d[i, ])
-    lm_y <- lm(y ~ m*w2 + x, d[i, ])
-    out <- cond_indirect(wvalues = c(w1 = 6.17315699477943, w2 = 4.04048736536153),
-                  x = "x", y = "y", m = "m", fit = lm2list(lm_m, lm_y))
-    return(coef(out))
-  }
-library(boot)
-bout <- boot(dat, tmpfct, R = 2000)
-
-tmp2 <- cond_indirect(wvalues = unlist(mod_levels[1, ]),
-                    x = "x",
-                    y = "y",
-                    m = "m",
-                    fit = fit_lm,
-                    get_prods_only = TRUE)
-tmp2
-```
-
-These are the standardized conditional indirect effects:
-
-```{r}
-out_lm_std <- cond_indirect_effects(wlevels = mod_levels,
-                             x = "x",
-                             y = "y",
-                             m = "m",
-                             fit = fit_lm,
-                             boot_ci = TRUE,
-                             boot_out = fit_lm_boot_out,
-                             standardized_x = TRUE,
-                             standardized_y = TRUE)
-out_lm_std
-```
-
-## Path Analysis by `lavaan::sem()`
-
-Suppose we fit the same model, but by path analysis conducted in
-by structural equation modelling analysis using `lavaan::sem()`.
-
-```{r}
-library(lavaan)
-dat$x_w1 <- dat$x * dat$w1
-dat$m_w2 <- dat$m * dat$w2
-mod <-
-"
-m ~ x + w1 + x_w1
-y ~ m + w2 + m_w2 + x
-m ~~ w2 + m_w2
-w2 ~~ m_w2 + x
-m_w2 ~ x
-x ~~ w1 + x_w1
-w1 ~~ x_w1
-w2 ~~ w1 + x_w1
-m_w2 ~~ w1 + x_w1
-"
-fit_lavaan <- sem(model = mod,
-                  data = dat,
-                  fixed.x = FALSE)
-parameterEstimates(fit_lavaan)[parameterEstimates(fit_lavaan)$op == "~", ]
-```
-
-It is not recommended to set `se` to `"boot"` for bootstrapping.
-`fit2boot_out_do_boot()` can be used to compute only information
-necessary for this package. It also supports parallel processing.
-
-```{r echo = FALSE, eval = FALSE}
-fn <- paste0(pth, "stdmodsem_fit_lavaan_boot_out.rds")
-if (file.exists(fn)) {
-    fit_lavaan_boot_out <- readRDS(fn)
-  } else {
-    fit_lavaan_boot_out <- fit2boot_out_do_boot(fit = fit_lavaan,
-                                                R = 500,
-                                                seed = 87515,
-                                                parallel = TRUE,
-                                                ncores = 2)
-    saveRDS(fit_lavaan_boot_out, fn)
-  }
-```
-
-(Note: Only 500 bootstrap samples are used for illustration. Set
-R to 2000 or even 5000 in real research.)
-
-```{r eval = TRUE}
-fit_lavaan_boot_out <- fit2boot_out_do_boot(fit = fit_lavaan,
-                                            R = 500,
-                                            seed = 87515,
-                                            parallel = TRUE,
-                                            ncores = 2)
-```
-
-We can use `mod_levels_list()` to generate levels of the moderators:
-
-```{r}
-mod_levels <- mod_levels_list("w1", "w2",
-                              fit = fit_lavaan,
-                              sd_from_mean = c(-1, 1),
-                              merge = TRUE)
-mod_levels
-```
-
-We then use `cond_indirect_effects()` to compute the
-conditional indirect effects, with nonparametric bootstrapping
-confidence intervals:
-
-```{r}
-out_lavaan <- cond_indirect_effects(wlevels = mod_levels,
-                                    x = "x",
-                                    y = "y",
-                                    m = "m",
-                                    fit = fit_lavaan,
-                                    boot_ci = TRUE,
-                                    boot_out = fit_lavaan_boot_out)
-out_lavaan
-```
-
-These are the standardized conditional indirect effects:
-
-```{r}
-out_lavaan_std <- cond_indirect_effects(wlevels = mod_levels,
-                                        x = "x",
-                                        y = "y",
-                                        m = "m",
-                                        fit = fit_lavaan,
-                                        boot_ci = TRUE,
-                                        boot_out = fit_lavaan_boot_out,
-                                        standardized_x = TRUE,
-                                        standardized_y = TRUE)
-out_lavaan_std
-```
-
-# Mediation Only
-
-The function `cond_indirect()` also supports a path model without
-moderator. It can be used for complicated models with any number of
-predictors, mediators, outcome variables, and paths.
-
-This is the sample dataset comes with the package:
-
-```{r}
-library(stdmodsem)
-dat <- data_med_complicated
-print(head(dat), digits = 3)
-```
-
-Suppose this is the model being fitted:
-
-```{r echo = FALSE}
-library(semPlot)
-suppressMessages(library(lavaan))
-mod <-
-"
-m11 ~ x1 + x2
-m12 ~ m11 + x1 + x2
-y1 ~ m12 + m11 + x1 + x2
-"
-fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
-layout_m <- matrix(c("x1", NA, NA, NA,
-                     NA, "m11", "m12", "y1",
-                     "x2", NA, NA, NA), 3, 4, byrow = TRUE)
-p <- semPaths(fit0,
-              layout = layout_m,
-              nCharNodes = 0,
-              exoCov = TRUE,
-              residuals = FALSE,
-              sizeMan = 10,
-              asize = 5,
-              # curve = rep(2, 15),
-              DoNotPlot = TRUE)
-p$graphAttributes$Edges$curve[10:11] <- c(-2, 2)
-plot(p)
-```
-
-## Multiple Regression by `lm()`
-
-Although it is common in regression-based mediation analysis to
-include all possible paths to make a model saturated, we illustrate
-how to fit the intended model by multiple regression.
-
-```{r}
-lm_m11 <- lm(m11 ~ x1 + x2, dat)
-lm_m12 <- lm(m12 ~ m11 + x1 + x2, dat)
-lm_y1 <- lm(y1 ~ m12 + m11 + x1 + x2, dat)
-```
-
-These are the coefficients:
-
-```{r}
-printCoefmat(summary(lm_m11)$coefficients, digits = 3, signif.legend = FALSE)
-printCoefmat(summary(lm_m12)$coefficients, digits = 3, signif.legend = FALSE)
-printCoefmat(summary(lm_y1)$coefficients, digits = 3, signif.legend = FALSE)
-```
-
-To compute indirect effects and form bootstrap confidence
-intervals, we use `cond_indirect_effects()`. We first group
-the `lm()` outputs to a `list` by `lm2list()`.
-
-```{r}
-fit_lm <- lm2list(lm_m11, lm_m12, lm_y1)
-fit_lm
-```
-
-To form bootstrapping confidence intervals, we first repeat the regression
-analysis in all models by nonparametric bootstrapping and store the results.
-This can be done by `lm2boot_out()`:
-
-```{r echo = FALSE, eval = FALSE}
-fn <- paste0(pth, "stdmodsem_fit_lm_boot_out_complicated.rds")
-if (file.exists(fn)) {
-    fit_lm_boot_out_complicated <- readRDS(fn)
-  } else {
-    fit_lm_boot_out_complicated <- lm2boot_out(fit_lm,
-          R = 500, seed = 87415)
-    saveRDS(fit_lm_boot_out_complicated, fn)
-  }
-```
-
-(Note: Only 500 bootstrap samples are used for illustration. Set
-R to 2000 or even 5000 in real research.)
-
-```{r eval = TRUE}
-fit_lm_boot_out_complicated <- lm2boot_out(fit_lm, R = 500, seed = 87415)
-```
-
-We can now compute the indirect effects. There are several
-possible pathways. `cond_indirect()` does not require
-the pathways to be specified before fitting the models. The
-pathway can be specified when calling it.
-
-For example, suppose we want to estimate the indirect effect
-through `x1 -> m11 -> m12 -> y1`. We set `x` to the
-start of the pathway, `y` to the end of the pathway,
-and `m` to the sequence of mediators, from left to right:
-
-```{r}
-out_x1y1_lm <- cond_indirect(x = "x1",
-                        y = "y1",
-                        m = c("m11", "m12"),
-                        fit = fit_lm,
-                        boot_ci = TRUE,
-                        boot_out = fit_lm_boot_out_complicated)
-out_x1y1_lm
-```
-
-The indirect effect in the pathway `x2 -> m12 -> m12 -> y1` can be
-estimated similarly:
-
-```{r}
-out_x2y1_lm <- cond_indirect(x = "x2",
-                        y = "y1",
-                        m = c("m11", "m12"),
-                        fit = fit_lm,
-                        boot_ci = TRUE,
-                        boot_out = fit_lm_boot_out_complicated)
-out_x2y1_lm
-```
-
-Suppose we are interested in the indirect effect from `x1`
-to `y1` through `m12` only, bypassing `m11`. This can be done
-by setting `m` only to `m12`:
-
-```{r}
-out_x1y1_m12_lm <- cond_indirect(x = "x1",
-                        y = "y1",
-                        m = "m12",
-                        fit = fit_lm,
-                        boot_ci = TRUE,
-                        boot_out = fit_lm_boot_out_complicated)
-out_x1y1_m12_lm
-```
-
-It is also possible to estimate the indirect effect only in a segment
-of a pathway, for example, from `m11` through `m12` to `y1`:
-
-```{r}
-out_m11y1_lm <- cond_indirect(x = "m11",
-                        y = "y1",
-                        m = "m12",
-                        fit = fit_lm,
-                        boot_ci = TRUE,
-                        boot_out = fit_lm_boot_out_complicated)
-out_m11y1_lm
-```
-
-The standardized solution can be computed by setting `standardized_x`
-and `standardized_y` to `TRUE`:
-
-```{r}
-out_x1y1_lm_std <- cond_indirect(x = "x1",
-                        y = "y1",
-                        m = c("m11", "m12"),
-                        fit = fit_lm,
-                        boot_ci = TRUE,
-                        boot_out = fit_lm_boot_out_complicated,
-                        standardized_x = TRUE,
-                        standardized_y = TRUE)
-out_x1y1_lm_std
-```
-
-
-## Path Analysis by `lavaan::sem()`
-
-Suppose we fit the same model, but by path analysis conducted in
-by structural equation modelling analysis using `lavaan::sem()`.
-
-```{r}
-library(lavaan)
-mod <-
-"
-m11 ~ x1 + x2
-m12 ~ m11 + x1 + x2
-y1 ~ m12 + m11 + x1 + x2
-"
-fit_lavaan <- sem(model = mod,
-                  data = dat,
-                  fixed.x = FALSE)
-parameterEstimates(fit_lavaan)[parameterEstimates(fit_lavaan)$op == "~", ]
-```
-
-It is not recommended to set `se` to `"boot"` for bootstrapping.
-`fit2boot_out_do_boot()` can be used to compute only information
-necessary for this package. It also supports parallel processing.
-
-```{r echo = FALSE, eval = FALSE}
-fn <- paste0(pth, "stdmodsem_fit_lavaan_boot_out_complicated.rds")
-if (file.exists(fn)) {
-    fit_lavaan_boot_out_complicated <- readRDS(fn)
-  } else {
-    fit_lavaan_boot_out_complicated <- fit2boot_out_do_boot(fit = fit_lavaan,
-                                                R = 500,
-                                                seed = 8715,
-                                                parallel = TRUE,
-                                                ncores = 2)
-    saveRDS(fit_lavaan_boot_out_complicated, fn)
-  }
-```
-
-(Note: Only 500 bootstrap samples are used for illustration. Set
-R to 2000 or even 5000 in real research.)
-
-```{r eval = TRUE}
-fit_lavaan_boot_out_complicated <- fit2boot_out_do_boot(fit = fit_lavaan,
-                                            R = 500,
-                                            seed = 8715,
-                                            parallel = TRUE,
-                                            ncores = 2)
-```
-
-We can now compute the indirect effects. There are several
-possible pathways. `cond_indirect()` does not require
-the pathways to be specified before fitting the models. The
-pathway can be specified when calling it.
-
-For example, suppose we want to estimate the indirect effect
-through `x1 -> m11 -> m12 -> y1`. We set `x` to the
-start of the pathway, `y` to the end of the pathway,
-and `m` to the sequence of mediators, from left to right:
-
-```{r}
-out_x1y1_lavaan <- cond_indirect(x = "x1",
-                        y = "y1",
-                        m = c("m11", "m12"),
-                        fit = fit_lavaan,
-                        boot_ci = TRUE,
-                        boot_out = fit_lavaan_boot_out_complicated)
-out_x1y1_lavaan
-```
-
-The indirect effect in the pathway `x2 -> m2 -> y2` can be
-estimated similarly:
-
-```{r}
-out_x2y1_lavaan <- cond_indirect(x = "x2",
-                        y = "y1",
-                        m = c("m11", "m12"),
-                        fit = fit_lavaan,
-                        boot_ci = TRUE,
-                        boot_out = fit_lavaan_boot_out_complicated)
-out_x2y1_lavaan
-```
-
-Suppose we are interested in the indirect effect from `x1`
-to `y1` through `m12` only, bypassing `m11`. This can be done
-by setting `m` only to `m12`:
-
-```{r}
-out_x1y1_m12_lavaan <- cond_indirect(x = "x1",
-                        y = "y1",
-                        m = "m12",
-                        fit = fit_lavaan,
-                        boot_ci = TRUE,
-                        boot_out = fit_lavaan_boot_out_complicated)
-out_x1y1_m12_lavaan
-```
-
-It is also possible to estimate the indirect effect only in a segment
-of a pathway, for example, from `m11` through `m12` to `y1`:
-
-```{r}
-out_m11y1_lavaan <- cond_indirect(x = "m11",
-                        y = "y1",
-                        m = "m12",
-                        fit = fit_lavaan,
-                        boot_ci = TRUE,
-                        boot_out = fit_lavaan_boot_out_complicated)
-out_m11y1_lavaan
-```
-
-The standardized solution can be computed by setting `standardized_x`
-and `standardized_y` to `TRUE`:
-
-```{r}
-out_x1y1_lavaan_std <- cond_indirect(x = "x1",
-                        y = "y1",
-                        m = c("m11", "m12"),
-                        fit = fit_lavaan,
-                        boot_ci = TRUE,
-                        boot_out = fit_lavaan_boot_out_complicated,
-                        standardized_x = TRUE,
-                        standardized_y = TRUE)
-out_x1y1_lavaan_std
-```
 
 # More Cases
-
-## A Latent Variable model
-
-## Missing Data
 
 # Further Information
