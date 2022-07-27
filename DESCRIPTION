@@ -1,6 +1,6 @@
 Package: stdmodsem
 Title: Moderation, Mediation, and Moderated-Mediation in SEM
-Version: 0.0.1.9006
+Version: 0.0.1.9016
 Authors@R:
     c(person(given = "Shu Fai",
            family = "Cheung",
@@ -26,12 +26,15 @@ Suggests:
     semPlot,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Config/testthat/parallel: true
+Config/testthat/start-first: cond_indirect_*
 Imports:
     lavaan,
     boot,
     parallel,
     pbapply,
-    stats
+    stats,
+    ggplot2
 Depends:
     R (>= 3.5.0)
 LazyData: true

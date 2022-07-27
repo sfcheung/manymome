@@ -1,4 +1,4 @@
-#' @title Indirect Effect
+#' @title Indirect Effect (No Bootstrapping)
 #'
 #' @description Compute the indirect effect, optionally conditioned on
 #'   the values of moderators if present.
@@ -78,8 +78,8 @@
 #'
 #' wvalues <- c(w1 = 5, w2 = 4, w3 = 2, w4 = 3)
 #'
-#' # Compute the conditional indirect effect by indirect()
-#' indirect_1 <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
+#' # Compute the conditional indirect effect by indirect_i()
+#' indirect_1 <- indirect_i(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
 #'                        wvalues = wvalues)
 #'
 #' # Manually compute the conditional indirect effect
@@ -99,7 +99,7 @@
 #'
 #'
 
-indirect <- function(x,
+indirect_i <- function(x,
                      y,
                      m = NULL,
                      fit = NULL,

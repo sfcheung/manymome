@@ -7,26 +7,42 @@ template:
 reference:
 - title: Main Functions
   desc:  >
-    (Main Functions)
+    Compute conditional indirect effects,
+    conditional effects, and indirect effects.
 - contents:
   - cond_indirect_effects
   - cond_indirect
-  - indirect
-- title: Helper Functions
+  - indirect_effect
+- title: Presenting the Effects
 - contents:
-  - lm2list
+  - index_of_mome
+  - plot.cond_indirect_effects
+- title: Moderator Levels
+  desc:  >
+    Set the levels of moderators to be used in `cond_indirect_effects()`
+    and `cond_indirect()`.
+- contents:
   - mod_levels
   - mod_levels_list
-  - factor2var
+  - merge_mod_levels
+- title: Bootstrapping
+  desc: >
+    Generate bootstrap estimates to be used
+    by the main functions.
+- contents:
+  - do_boot
   - lm2boot_out
   - fit2boot_out
   - fit2boot_out_do_boot
-  - check_path
-  - lm2ptable
-  - merge_mod_levels
+- title: For 'lm'
+- contents:
+  - lm2list
+- title: For 'lavaan'
+- contents:
+  - factor2var
 - title: Methods
   desc: >
-    Methods
+    Methods for the output of the main functions.
 - contents:
   - coef.indirect
   - confint.indirect
@@ -34,7 +50,22 @@ reference:
   - print.cond_indirect_effects
   - print.lm_list
   - summary.lm_list
+  - coef.index_of_mome
+  - confint.index_of_mome
+  - print.index_of_mome
 - title: Datasets
   desc: Datasets used in examples.
 - contents:
   - has_keyword("datasets")
+- title: Advanced helpers
+  desc: Helper functions exported for advanced users.
+- contents:
+  - indirect_i
+  - check_path
+  - lm2ptable
+  - lm_from_lavaan_list
+  - coef.lm_from_lavaan
+  - terms.lm_from_lavaan
+  - predict.lm_from_lavaan
+  - predict.lm_from_lavaan_list
+  - predict.lm_list

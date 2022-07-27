@@ -1,6 +1,6 @@
 
 library(stdmodsem)
-library(lavaan)
+suppressMessages(library(lavaan))
 dat <- modmed_x1m3w4y1
 n <- nrow(dat)
 set.seed(860314)
@@ -22,6 +22,8 @@ out_chk <- lm(m1 ~ x * w1, data = out[[2]]$data)
 
 out2 <- lm_boot2est_i(dat, outputs = outputs)
 
+out2_db <- do_boot(fit = outputs, R = 5, seed = 81674958)
+
 test_that("lm2boot_out", {
     expect_identical(
         unname(out[[2]]$est$est[c(4, 1:3)]),
@@ -30,5 +32,9 @@ test_that("lm2boot_out", {
     expect_identical(
         unname(out2$est$est[c(4, 1:3)]),
         unname(coef(lm_m1))
+      )
+    expect_identical(
+        out2_db,
+        out
       )
   })

@@ -1,8 +1,8 @@
-# Not yet ready. To be revised.
+# To be examined in an interactive session
 
 library(stdmodsem)
 
-suppressMessages(library(lavaan))
+suppressMessages(suppressMessages(library(lavaan)))
 
 dat <- data_med_mod_b_mod
 dat$w1x <- dat$w1 * dat$x

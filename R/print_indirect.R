@@ -1,12 +1,12 @@
 #' @title Print the a 'indirect' Class Object
 #'
-#' @description Print the content of the output of [indirect()]
+#' @description Print the content of the output of [indirect_i()]
 #'              or [cond_indirect()].
 #'
 #' @return
 #'  `x` is returned invisibly.
 #'
-#' @param x The output of he output of [indirect()]
+#' @param x The output of he output of [indirect_i()]
 #'              or [cond_indirect()].
 #' @param digits Number of digits to display. Default is 3.
 #' @param ...  Other arguments. Not used.
@@ -30,7 +30,7 @@
 #'
 #' wvalues <- c(w1 = 5, w2 = 4, w3 = 2, w4 = 3)
 #'
-#' indirect_1 <- indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
+#' indirect_1 <- indirect_i(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
 #'                        wvalues = wvalues)
 #' indirect_2 <- (est[est$label == "a1", "est"] +
 #'                 wvalues["w1"] * est[est$label == "d1", "est"]) *

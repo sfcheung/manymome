@@ -14,18 +14,20 @@ mod_levels(
   percentiles = c(0.16, 0.5, 0.84),
   extract_gp_names = TRUE,
   prefix = NULL,
-  values = NULL
+  values = NULL,
+  descending = TRUE
 )
 
 mod_levels_list(
   ...,
   fit,
-  w_type = c("auto", "numeric", "categorical"),
-  w_method = c("sd", "percentile"),
-  sd_from_mean = c(-1, 0, 1),
-  percentiles = c(0.16, 0.5, 0.84),
+  w_type = "auto",
+  w_method = "sd",
+  sd_from_mean = NULL,
+  percentiles = NULL,
   extract_gp_names = TRUE,
   prefix = NULL,
+  descending = TRUE,
   merge = FALSE
 )
 }
@@ -46,16 +48,22 @@ If \code{"sd"}, the levels are defined by the
 distance from the mean in terms of standard deviation.
 if \code{"percentile"}, the levels are defined in percentiles.}
 
-\item{sd_from_mean}{A numeric vector. Specify the distance in standard
-deviation from the mean for each level. Default is
-\code{c(-1, 0, 1)}. Ignored if \code{w_method} is not equal to
-\code{"sd"}.}
+\item{sd_from_mean}{A numeric vector. Specify the distance in
+standard deviation from the mean for each
+level. Default is \code{c(-1, 0, 1)} for
+\code{\link[=mod_levels]{mod_levels()}}. For \code{\link[=mod_levels_list]{mod_levels_list()}}, the
+default is \code{c(-1, 0, 1)} when there is only one
+moderator, and \code{c(-1, 1)} when there are more
+than one moderator. Ignored if \code{w_method} is
+not equal to \code{"sd"}.}
 
-\item{percentiles}{A numeric vector. Specify the percentile (in proportion)
-for each level. Default is \code{c(.16, .50, .84)}, corresponding
-approximately to one standard deviation below mean,
-mean, and one standard deviation above mean in a normal
-distribution. Ignored if \code{w_method} is not equal to
+\item{percentiles}{A numeric vector. Specify the percentile (in
+proportion) for each level. Default is \code{c(.16, .50, .84)} for \code{\link[=mod_levels]{mod_levels()}}, corresponding
+approximately to one standard deviation below
+mean, mean, and one standard deviation above
+mean in a normal distribution. For
+\code{\link[=mod_levels_list]{mod_levels_list()}}, default is \code{c(.16, .50, .84)} if there is one moderator, and \code{c(.16, .84)} when there are more than one moderator.
+Ignored if \code{w_method} is not equal to
 \code{"percentile"}.}
 
 \item{extract_gp_names}{Logical. If \code{TRUE}, the default, the function will
@@ -77,6 +85,14 @@ two levels will be returned, one named \code{gp1} with the indicator
 variables equal to 0 and 0, the other named \code{gp3} with the
 indicator variables equal to 0 and 1. Default is \code{NULL}.}
 
+\item{descending}{If \code{TRUE} (default), the rows are sorted in
+descending order for numerical moderators: The
+highest value on the first row and the lowest values
+on the last row. For user supplied values, the first
+value is on the last row and the last value is on the
+first row. If \code{FALSE}, the rows are sorted in
+ascending order.}
+
 \item{...}{The names of moderators variables. For a categorical variable,
 it should be a vector of variable names.}
 
@@ -91,7 +107,7 @@ if \code{merge = TRUE}.
 }
 \description{
 Create levels of moderators to be used by
-\code{\link[=indirect]{indirect()}}, \code{\link[=cond_indirect]{cond_indirect()}}, and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+\code{\link[=indirect_i]{indirect_i()}}, \code{\link[=cond_indirect]{cond_indirect()}}, and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 }
 \details{
 It creates values of a moderator that can be used to compute

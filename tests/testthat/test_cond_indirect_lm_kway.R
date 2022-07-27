@@ -17,7 +17,7 @@ out <- cond_indirect(x = "x", y = "y",
                      m = "m",
                      fit = fit,
                      wvalues = wv)
-out_chk <- indirect(x = "x", y = "y",
+out_chk <- indirect_i(x = "x", y = "y",
                     m = "m",
                     est = lm2fit$est,
                     data = lm2fit$data,
@@ -32,7 +32,7 @@ out_boot <- cond_indirect(x = "x", y = "y",
                      boot_out = boot_out)
 prods <- cond_indirect(x = "x", y = "y", m = "m",
                        fit = fit, get_prods_only = TRUE)
-out_boot_chk <- mapply(indirect,
+out_boot_chk <- mapply(indirect_i,
                        est = boot_est,
                        implied_stats = boot_implied_stats,
                        MoreArgs = list(x = "x",
@@ -48,7 +48,7 @@ test_that("cond_indirect: lm, 3-way", {
                      sapply(out_boot_chk, function(x) x$indirect))
   })
 
-test_that("confint for indirect, 3-way", {
+test_that("confint for indirect: lm, 3-way", {
     expect_warning(confint(out))
     expect_equal(coef(out),  out_boot$indirect, ignore_attr = TRUE)
     expect_equal(confint(out_boot),  out_boot$boot_ci, ignore_attr = TRUE)
