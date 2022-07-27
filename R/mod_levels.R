@@ -38,15 +38,24 @@
 #'                 If `"sd"`, the levels are defined by the
 #'                 distance from the mean in terms of standard deviation.
 #'                 if `"percentile"`, the levels are defined in percentiles.
-#' @param sd_from_mean A numeric vector. Specify the distance in standard
-#'                     deviation from the mean for each level. Default is
-#'                     `c(-1, 0, 1)`. Ignored if `w_method` is not equal to
-#'                     `"sd"`.
-#' @param percentiles A numeric vector. Specify the percentile (in proportion)
-#'                    for each level. Default is `c(.16, .50, .84)`, corresponding
-#'                    approximately to one standard deviation below mean,
-#'                    mean, and one standard deviation above mean in a normal
-#'                    distribution. Ignored if `w_method` is not equal to
+#' @param sd_from_mean A numeric vector. Specify the distance in
+#'                     standard deviation from the mean for each
+#'                     level. Default is `c(-1, 0, 1)` for
+#'                     [mod_levels()]. For [mod_levels_list()], the
+#'                     default is `c(-1, 0, 1)` when there is only one
+#'                     moderator, and `c(-1, 1)` when there are more
+#'                     than one moderator. Ignored if `w_method` is
+#'                     not equal to `"sd"`.
+#' @param percentiles A numeric vector. Specify the percentile (in
+#'                    proportion) for each level. Default is `c(.16,
+#'                    .50, .84)` for [mod_levels()], corresponding
+#'                    approximately to one standard deviation below
+#'                    mean, mean, and one standard deviation above
+#'                    mean in a normal distribution. For
+#'                    [mod_levels_list()], default is `c(.16, .50,
+#'                    .84)` if there is one moderator, and `c(.16,
+#'                    .84)` when there are more than one moderator.
+#'                    Ignored if `w_method` is not equal to
 #'                    `"percentile"`.
 #' @param extract_gp_names Logical. If `TRUE`, the default, the function will
 #'                         try to determine the name of each group from the
@@ -205,15 +214,26 @@ mod_levels <- function(w,
 
 mod_levels_list <- function(...,
                             fit,
-                            w_type = c("auto", "numeric", "categorical"),
-                            w_method = c("sd", "percentile"),
-                            sd_from_mean = c(-1, 0, 1),
-                            percentiles = c(.16, .50, .84),
+                            w_type = "auto",
+                            w_method = "sd",
+                            sd_from_mean = NULL,
+                            percentiles = NULL,
                             extract_gp_names = TRUE,
                             prefix = NULL,
                             descending = TRUE,
                             merge = FALSE) {
     x <- list(...)
+    p <- length(x)
+    if ((p > 1) && is.null(sd_from_mean)) {
+        sd_from_mean <- c(-1, 1)
+      } else {
+        sd_from_mean <- c(-1, 0, 1)
+      }
+    if ((p > 1) && is.null(sd_from_mean)) {
+        percentiles <- c(.16, .84)
+      } else {
+        percentiles <- c(.16, .50, .84)
+      }
     out <- lapply(x, mod_levels,
                   fit = fit,
                   w_type = w_type,
@@ -223,6 +243,23 @@ mod_levels_list <- function(...,
                   extract_gp_names = extract_gp_names,
                   prefix = prefix,
                   descending = descending)
+    # if (!is.list(sd_from_mean)) {
+    #     sd_from_mean <- list(sd_from_mean)
+    #   }
+    # if (!is.list(percentiles)) {
+    #     percentiles <- list(percentiles)
+    #   }
+    # out <- mapply(mod_levels,
+    #               w = x,
+    #               w_type = w_type,
+    #               w_method = w_method,
+    #               sd_from_mean = sd_from_mean,
+    #               percentiles = percentiles,
+    #               extract_gp_names = extract_gp_names,
+    #               prefix = prefix,
+    #               descending = descending,
+    #               MoreArgs = list(fit = fit),
+    #               SIMPLIFY = FALSE)
     if (merge) {
         out2 <- merge_mod_levels(out)
         return(out2)

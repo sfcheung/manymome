@@ -21,10 +21,10 @@ mod_levels(
 mod_levels_list(
   ...,
   fit,
-  w_type = c("auto", "numeric", "categorical"),
-  w_method = c("sd", "percentile"),
-  sd_from_mean = c(-1, 0, 1),
-  percentiles = c(0.16, 0.5, 0.84),
+  w_type = "auto",
+  w_method = "sd",
+  sd_from_mean = NULL,
+  percentiles = NULL,
   extract_gp_names = TRUE,
   prefix = NULL,
   descending = TRUE,
@@ -48,16 +48,22 @@ If \code{"sd"}, the levels are defined by the
 distance from the mean in terms of standard deviation.
 if \code{"percentile"}, the levels are defined in percentiles.}
 
-\item{sd_from_mean}{A numeric vector. Specify the distance in standard
-deviation from the mean for each level. Default is
-\code{c(-1, 0, 1)}. Ignored if \code{w_method} is not equal to
-\code{"sd"}.}
+\item{sd_from_mean}{A numeric vector. Specify the distance in
+standard deviation from the mean for each
+level. Default is \code{c(-1, 0, 1)} for
+\code{\link[=mod_levels]{mod_levels()}}. For \code{\link[=mod_levels_list]{mod_levels_list()}}, the
+default is \code{c(-1, 0, 1)} when there is only one
+moderator, and \code{c(-1, 1)} when there are more
+than one moderator. Ignored if \code{w_method} is
+not equal to \code{"sd"}.}
 
-\item{percentiles}{A numeric vector. Specify the percentile (in proportion)
-for each level. Default is \code{c(.16, .50, .84)}, corresponding
-approximately to one standard deviation below mean,
-mean, and one standard deviation above mean in a normal
-distribution. Ignored if \code{w_method} is not equal to
+\item{percentiles}{A numeric vector. Specify the percentile (in
+proportion) for each level. Default is \code{c(.16, .50, .84)} for \code{\link[=mod_levels]{mod_levels()}}, corresponding
+approximately to one standard deviation below
+mean, mean, and one standard deviation above
+mean in a normal distribution. For
+\code{\link[=mod_levels_list]{mod_levels_list()}}, default is \code{c(.16, .50, .84)} if there is one moderator, and \code{c(.16, .84)} when there are more than one moderator.
+Ignored if \code{w_method} is not equal to
 \code{"percentile"}.}
 
 \item{extract_gp_names}{Logical. If \code{TRUE}, the default, the function will
