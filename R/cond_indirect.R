@@ -435,6 +435,10 @@ cond_indirect_effects <- function(wlevels,
     wlevels2 <- lapply(wlevels1, unlist)
     names(wlevels2) <- rownames(wlevels)
     fit_type <- cond_indirect_check_fit(fit)
+    if ((fit_type == "lm") && !inherits(fit, "lm_list") &&
+        is.list(fit)) {
+        fit <- lm2list(fit)
+      }
     if (boot_ci) {
         if (!is.null(boot_out)) {
             if (!inherits(boot_out, "boot_out")) {
