@@ -138,19 +138,7 @@ mod_levels <- function(w,
     fit_type <- cond_indirect_check_fit(fit)
     w_type <- match.arg(w_type)
     if (w_type == "auto") {
-        if (length(w) > 1) {
-            w_type <- "categorical"
-          } else {
-            mm <- switch(fit_type,
-                        lavaan = as.data.frame(lav_data_used(fit)),
-                        lm = merge_model_matrix(fit))
-            w_dat <- as.vector(mm[, w])
-            if (length(unique(w_dat)) > 2) {
-                w_type <- "numeric"
-              } else {
-                w_type <- "categorical"
-              }
-          }
+        w_type <- find_w_type(w, fit)
       }
     if (fit_type == "lm") {
         if (w_type == "numeric") {
@@ -317,6 +305,12 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
     mf <- switch(fit_type,
                  lavaan = NA,
                  lm = merge_model_frame(fit))
+    if (!(all(w %in% colnames(mm))) && (fit_type == "lm")) {
+        w_source <- w
+        w <- find_ind(fit, w)
+      } else {
+        w_source <- NA
+      }
     w_dat <- mm[, w]
     w_gp <- unique(w_dat)
     k <- nrow(w_gp)
@@ -330,7 +324,9 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
             w_gp <- set_gp_names(w_gp, prefix = prefix)
           }
         if (fit_type == "lm") {
-            w_source <- find_source_cat(fit, w)
+            if (is.na(w_source)) {
+                w_source <- find_source_cat(fit, w)
+              }
             tmp <- cbind(w_source = mf[, w_source], mm[, w])
             tmp <- tmp[!duplicated(tmp), ]
             tmp2 <- merge(x = w_gp, y = tmp, sort = FALSE)
@@ -431,4 +427,52 @@ find_source_cat <- function(lm_list, w) {
                    SIMPLIFY = FALSE)
     k <- sapply(jcatind, function(x) all(w %in% x))
     jnames[k]
+  }
+
+find_ind <- function(lm_list, w) {
+    mm <- merge_model_matrix(lm_list)
+    mf <- merge_model_frame(lm_list)
+    terms_list <- lapply(lm_list,
+                      function(x) stats::delete.response(stats::terms(x)))
+    coefs_list <- lapply(lm_list, stats::coef)
+    i <- sapply(terms_list, function(x) {any(w %in% all.vars(x))})
+    terms_i <- terms_list[[which(i)[1]]]
+    coefs_i <- coefs_list[[which(i)[1]]]
+    coefs_i_names <- names(coefs_i)
+    # TODO: Should use a more robust method, e.g., use contrasts.arg
+    w_values <- unique(as.character(mf[, w]))
+    k <- which(coefs_i_names %in% paste0(w, w_values))
+    knames <- coefs_i_names[k]
+  }
+
+find_w_type <- function(w, fit) {
+    if (length(w) > 1) {
+        return("categorical")
+      }
+    fit_type <- cond_indirect_check_fit(fit)
+    if (fit_type == "lavaan") {
+        mm <- as.data.frame(lav_data_used(fit))
+        w_dat <- as.vector(mm[, w])
+        if (length(unique(w_dat)) > 2) {
+            return("numeric")
+          } else {
+            return("categorical")
+          }
+      }
+    if (fit_type == "lm") {
+        mm <- merge_model_matrix(fit)
+        mf <- merge_model_frame(fit)
+        terms_list <- lapply(fit,
+                          function(x) stats::delete.response(stats::terms(x)))
+        i <- sapply(terms_list, function(x) {any(w %in% all.vars(x))})
+        terms_i <- terms_list[[which(i)[1]]]
+        w_dc <- attr(terms_i, "dataClasses")[w]
+        if (w_dc == "numeric") {
+            return("numeric")
+          } else {
+            return("categorical")
+          }
+      }
+    stop(paste0("Failed to find the type of the moderator ",
+                dQuote(w)))
   }
