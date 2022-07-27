@@ -160,6 +160,5 @@ test_that("merge_mod_levels", {
     expect_equal(out_m_3, out_m_3_chk, ignore_attr = TRUE)
     expect_equal(out_m_4, out_m_4_chk, ignore_attr = TRUE)
     expect_equal(out_m_5, out_m_5_chk, ignore_attr = TRUE)
-    expect_equal(out_m_l_2, out_m_2)
-    expect_equal(out_m_l_m_2, out_m_2)
+    expect_equal(out_m_l_2, out_m_l_m_2, ignore_attr = TRUE)
   })
