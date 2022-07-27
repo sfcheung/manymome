@@ -198,6 +198,14 @@ tmpfct <- function(d, i) {
   }
 library(boot)
 bout <- boot(dat, tmpfct, R = 2000)
+
+tmp2 <- cond_indirect(wvalues = unlist(mod_levels[1, ]),
+                    x = "x",
+                    y = "y",
+                    m = "m",
+                    fit = fit_lm,
+                    get_prods_only = TRUE)
+tmp2
 ```
 
 These are the standardized conditional indirect effects:
