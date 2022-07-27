@@ -27,6 +27,7 @@ mod_levels_list(
   percentiles = c(0.16, 0.5, 0.84),
   extract_gp_names = TRUE,
   prefix = NULL,
+  descending = TRUE,
   merge = FALSE
 )
 }

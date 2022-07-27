@@ -223,6 +223,7 @@ mod_levels_list <- function(...,
                             percentiles = c(.16, .50, .84),
                             extract_gp_names = TRUE,
                             prefix = NULL,
+                            descending = TRUE,
                             merge = FALSE) {
     x <- list(...)
     out <- lapply(x, mod_levels,
@@ -232,7 +233,8 @@ mod_levels_list <- function(...,
                   sd_from_mean = sd_from_mean,
                   percentiles = percentiles,
                   extract_gp_names = extract_gp_names,
-                  prefix = prefix)
+                  prefix = prefix,
+                  descending = descending)
     if (merge) {
         out2 <- merge_mod_levels(out)
         return(out2)
