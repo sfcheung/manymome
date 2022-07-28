@@ -62,8 +62,11 @@
 #' @param level The level of confidence for the bootstrap confidence
 #'    interval. Default is .95.
 #' @param boot_out If `boot_ci` is `TRUE`, users can supply
-#'    pregenerated bootstrap results. This can be the output of
-#'    [fit2boot_out()] or [lm2boot_out()]. If not supplied, the
+#'    pregenerated bootstrap estimates. This can be the output of
+#'    [do_boot()]. For [cond_indirect_effects()], this can be
+#'    the output of previous call to [cond_indirect_effects()] with
+#'    bootstrap estimates. These stored estimates will be reused such that
+#'    there is no need to do bootstrapping again. If not supplied, the
 #'    function will try to generate them from `fit`.
 #' @param R Integer. If `boot_ci` is `TRUE`, `fit` is a list of [lm()]
 #'    outputs, and `boot_out` is `NULL`, this function will do
@@ -441,6 +444,12 @@ cond_indirect_effects <- function(wlevels,
       }
     if (boot_ci) {
         if (!is.null(boot_out)) {
+            if (inherits(boot_out, "cond_indirect_effects")) {
+                boot_out <- attr(boot_out, "boot_out")
+                if (is.null(boot_out)) {
+                    stop("boot_out not found in the supplied cond_indirect_effects output")
+                  }
+              }
             if (!inherits(boot_out, "boot_out")) {
                 stop("The object at 'boot_out' must be of the class 'boot_out'.")
               }

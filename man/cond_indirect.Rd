@@ -120,8 +120,11 @@ be formed. Default is \code{FALSE}.}
 interval. Default is .95.}
 
 \item{boot_out}{If \code{boot_ci} is \code{TRUE}, users can supply
-pregenerated bootstrap results. This can be the output of
-\code{\link[=fit2boot_out]{fit2boot_out()}} or \code{\link[=lm2boot_out]{lm2boot_out()}}. If not supplied, the
+pregenerated bootstrap estimates. This can be the output of
+\code{\link[=do_boot]{do_boot()}}. For \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, this can be
+the output of previous call to \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} with
+bootstrap estimates. These stored estimates will be reused such that
+there is no need to do bootstrapping again. If not supplied, the
 function will try to generate them from \code{fit}.}
 
 \item{R}{Integer. If \code{boot_ci} is \code{TRUE}, \code{fit} is a list of \code{\link[=lm]{lm()}}
