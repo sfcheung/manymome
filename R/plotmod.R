@@ -205,6 +205,8 @@ plot.cond_indirect_effects <- function(
     mf2 <- mf2[, -(which(colnames(mf2) %in% c(x, w_names)))]
     plot_df_xstart <- cbind(plot_df_xstart, wlevels, mf2)
     plot_df_xend <- cbind(plot_df_xend, wlevels, mf2)
+    colnames(plot_df_xstart)[1] <- x
+    colnames(plot_df_xend)[1] <- x
     plot_df_xstart[, y] <- stats::predict(fit_list,
                                           x = x, y = y, m = m,
                                           newdata = plot_df_xstart)
