@@ -14,7 +14,7 @@ lm() or lavaan::lavaan()."><!-- mathjax --><script src="https://cdnjs.cloudflare
     
     <a class="navbar-brand me-2" href="../index.html">stdmodsem</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9019</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9022</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,7 +91,8 @@ conditional indirect effects in a structural model fitted by
 <span>  progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  save_boot_full <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  prods <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  get_prods_only <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  get_prods_only <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  save_boot_out <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">cond_indirect_effects</span><span class="op">(</span></span>
@@ -209,8 +210,11 @@ interval. Default is .95.</p></dd>
 
 <dt>boot_out</dt>
 <dd><p>If <code>boot_ci</code> is <code>TRUE</code>, users can supply
-pregenerated bootstrap results. This can be the output of
-<code><a href="fit2boot_out.html">fit2boot_out()</a></code> or <code><a href="lm2boot_out.html">lm2boot_out()</a></code>. If not supplied, the
+pregenerated bootstrap estimates. This can be the output of
+<code><a href="do_boot.html">do_boot()</a></code>. For <code>cond_indirect_effects()</code>, this can be
+the output of previous call to <code>cond_indirect_effects()</code> with
+bootstrap estimates. These stored estimates will be reused such that
+there is no need to do bootstrapping again. If not supplied, the
 function will try to generate them from <code>fit</code>.</p></dd>
 
 
@@ -268,6 +272,11 @@ stored. Default is <code>FALSE.</code></p></dd>
 <dd><p>IF <code>TRUE</code>, will quit early and return the product
 terms found. The results can be passed to the <code>prod</code> argument
 when calling this function. Default is <code>FALSE</code>.</p></dd>
+
+
+<dt>save_boot_out</dt>
+<dd><p>If <code>boot_out</code> is supplied, whether it will be save
+in the output. Default is <code>TRUE</code>.</p></dd>
 
 
 <dt>wlevels</dt>
