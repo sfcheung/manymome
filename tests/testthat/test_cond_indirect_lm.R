@@ -163,3 +163,30 @@ test_that("confint for indirect: lm, moderation only", {
     expect_equal(coef(outmo),  outmo_boot$indirect, ignore_attr = TRUE)
     expect_equal(confint(outmo_boot),  outmo_boot$boot_ci, ignore_attr = TRUE)
   })
+
+out_boot2_preboot <- cond_indirect(x = "x", y = "y",
+                                    m = c("m1", "m2", "m3"),
+                                    fit = fit,
+                                    wvalues = wv,
+                                    boot_ci = TRUE,
+                                    boot_out = out_boot2)
+
+test_that("cond_indirect: Use boot_out from previous run", {
+    expect_equal(out_boot2_preboot$boot_ci, out_boot2$boot_ci, ignore_attr = TRUE)
+  })
+
+outm_boot2 <- indirect_effect(x = "x", y = "y",
+                     m = c("m1", "m2", "m3"),
+                     fit = fitm,
+                     boot_ci = TRUE,
+                     R = 100,
+                     seed = 43175)
+outm_boot2_preboot <- indirect_effect(x = "x", y = "y",
+                     m = c("m1", "m2", "m3"),
+                     fit = fitm,
+                     boot_ci = TRUE,
+                     boot_out = outm_boot2)
+
+test_that("indirect_effect: Use boot_out from previous run", {
+    expect_equal(outm_boot2_preboot$boot_ci, outm_boot2$boot_ci, ignore_attr = TRUE)
+  })

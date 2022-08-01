@@ -117,6 +117,8 @@
 #' @param get_prods_only IF `TRUE`, will quit early and return the product
 #'             terms found. The results can be passed to the `prod` argument
 #'             when calling this function. Default is `FALSE`.
+#' @param save_boot_out If `boot_out` is supplied, whether it will be save
+#'             in the output. Default is `TRUE`.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
@@ -176,7 +178,8 @@ cond_indirect <- function(x,
                      progress = TRUE,
                      save_boot_full = FALSE,
                      prods = NULL,
-                     get_prods_only = FALSE) {
+                     get_prods_only = FALSE,
+                     save_boot_out = TRUE) {
     fit_type <- cond_indirect_check_fit(fit)
     chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
     if (!chkpath) {
@@ -186,6 +189,18 @@ cond_indirect <- function(x,
       }
     if (boot_ci) {
         if (!is.null(boot_out)) {
+            if (inherits(boot_out, "cond_indirect_effects")) {
+                boot_out <- attr(boot_out, "boot_out")
+                if (is.null(boot_out)) {
+                    stop("boot_out not found in the supplied object for 'boot_out'")
+                  }
+              }
+            if (inherits(boot_out, "indirect")) {
+                boot_out <- boot_out$boot_out
+                if (is.null(boot_out)) {
+                    stop("boot_out not found in the supplied object for 'boot_out'")
+                  }
+              }
             if (!inherits(boot_out, "boot_out")) {
                 stop("The object at 'boot_out' must be of the class 'boot_out'.")
               }
@@ -198,23 +213,6 @@ cond_indirect <- function(x,
                                 make_cluster_args = make_cluster_args,
                                 progress = progress)
           }
-        # if (fit_type == "lavaan") {
-        #     opt <- lavaan::lavInspect(fit, "options")
-        #     if (opt$se != "bootstrap" && is.null(boot_out)) {
-        #         stop("If 'boot_ci' is TRUE, 'se' needs to be 'bootstrap' in 'fit'.")
-        #       }
-        #     if (is.null(boot_out)) {
-        #         boot_out <- fit2boot_out(fit = fit)
-        #       }
-        #   }
-        # if (fit_type == "lm") {
-        #     if (is.null(boot_out)) {
-        #         # Do bootstrap here.
-        #         boot_out <- lm2boot_out(outputs = fit,
-        #                                 R = R,
-        #                                 seed = seed)
-        #       }
-        #   }
       }
     if (fit_type == "lavaan") {
         fit0 <- fit
@@ -284,6 +282,11 @@ cond_indirect <- function(x,
                                      format = "f"), "%")
         out0$boot_ci <- boot_ci1
         out0$level <- level
+        if (save_boot_out) {
+            out0$boot_out <- boot_out
+          } else {
+            out0$boot_out <- NULL
+          }
       }
     out0$cond_indirect_call <- match.call()
     out0
@@ -502,6 +505,7 @@ cond_indirect_effects <- function(wlevels,
                            R,
                            seed,
                            prods,
+                           save_boot_out,
                            ...) {
                               cond_indirect(wvalues = wv,
                                             x = x,
@@ -515,6 +519,7 @@ cond_indirect_effects <- function(wlevels,
                                             R = R,
                                             seed = seed,
                                             prods = prods,
+                                            save_boot_out = FALSE,
                                             ...)
                            },
                   x = x,
@@ -528,6 +533,7 @@ cond_indirect_effects <- function(wlevels,
                   R = R,
                   seed = seed,
                   prods = prods,
+                  save_boot_out = FALSE,
                   ...)
     if (output_type == "data.frame") {
         out1 <- cond_indirect_effects_to_df(out, wlevels = wlevels)

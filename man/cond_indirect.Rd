@@ -27,7 +27,8 @@ cond_indirect(
   progress = TRUE,
   save_boot_full = FALSE,
   prods = NULL,
-  get_prods_only = FALSE
+  get_prods_only = FALSE,
+  save_boot_out = TRUE
 )
 
 cond_indirect_effects(
@@ -164,6 +165,9 @@ stored. Default is \code{FALSE.}}
 \item{get_prods_only}{IF \code{TRUE}, will quit early and return the product
 terms found. The results can be passed to the \code{prod} argument
 when calling this function. Default is \code{FALSE}.}
+
+\item{save_boot_out}{If \code{boot_out} is supplied, whether it will be save
+in the output. Default is \code{TRUE}.}
 
 \item{wlevels}{The output of \code{\link[=merge_mod_levels]{merge_mod_levels()}}, or the
 moderator(s) to be passed to \code{\link[=mod_levels_list]{mod_levels_list()}}. If all the
