@@ -36,9 +36,11 @@
 lm_from_lavaan_list <- function(fit) {
     ptable <- lavaan::parameterTable(fit)
     # Get all dvs (ov.nox, lv.ox)
-    dvs <- c(lavaan::lavNames(fit, "ov.nox"),
-             lavaan::lavNames(fit, "lv.nox"))
-    dat <- lavaan::lavInspect(fit, "data")
+    # dvs <- c(lavaan::lavNames(fit, "ov.nox"),
+    #          lavaan::lavNames(fit, "lv.nox"))
+    dvs <- lavaan_get_dvs(ptable)
+    # dat <- lavaan::lavInspect(fit, "data")
+    dat <- lav_data_used(fit)
     # Get all ivs
     ivs_list <- sapply(dvs, lavaan_get_ivs,
                       ptable = ptable,
@@ -362,5 +364,13 @@ lm_from_lavaan <- function(model, betas, intercept) {
                 coefficients = betas,
                 intercept = intercept)
     class(out) <- c("lm_from_lavaan", class(out))
+    out
+  }
+
+#' @noRd
+
+lavaan_get_dvs <- function(ptable) {
+    i <- ptable$op == "~"
+    out <- unique(ptable$lhs[i])
     out
   }

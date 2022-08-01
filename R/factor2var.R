@@ -43,10 +43,20 @@ factor2var <- function(x_value,
     x_fac <- factor(x_value)
     stats::contrasts(x_fac) <- x_contrasts
     m <- do.call(x_contrasts, list(n = levels(x_fac)))
-    out <- t(sapply(x_value, function(x) m[x, ]))
+    mj <- ncol(m)
+    mna <- rep(NA, mj)
+    out <- t(sapply(x_value, function(x) {
+                                if (is.na(x)) {
+                                    xx <- mna
+                                  } else {
+                                    xx <- m[x, ]
+                                  }
+                                xx
+                              }))
     if (!is.matrix(out)) {
         out <- matrix(out, ncol = 1)
       }
+    colnames(out) <- colnames(m)
     colnames(out) <- paste0(prefix, colnames(out))
     if (!add_rownames) rownames(out) <- NULL
     out

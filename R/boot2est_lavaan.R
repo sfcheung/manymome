@@ -298,14 +298,12 @@ gen_boot_i <- function(fit) {
           return(lavaan::update(fit_org,
                                 data = d,
                                 se = "none",
-                                baseline = FALSE,
-                                h1 = FALSE))
+                                baseline = FALSE))
         } else {
           out <- tryCatch(lavaan::update(fit_org,
                                 data = d[i, ],
                                 se = "none",
-                                baseline = FALSE,,
-                                h1 = FALSE),
+                                baseline = FALSE),
                           error = function(e) e,
                           warning = function(e) e)
           if (inherits(out, "error") || inherits(out, "warning")) {
