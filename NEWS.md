@@ -1,3 +1,3 @@
-# stdmodsem 0.0.0.9000
+# manymome 0.0.0.9000
 
 * Initialize the package.

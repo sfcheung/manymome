@@ -1,6 +1,6 @@
 # To be examined in an interactive session
 
-library(stdmodsem)
+library(manymome)
 
 suppressMessages(suppressMessages(library(lavaan)))
 
