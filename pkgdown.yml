@@ -2,14 +2,14 @@ pandoc: 2.7.3
 pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
+  manymome: manymome.html
   mediation: mediation.html
   moderated_mediation: moderated_mediation.html
   moderated_mediation_cat: moderated_mediation_cat.html
   moderation: moderation.html
   moderation_cat: moderation_cat.html
-  stdmodsem: stdmodsem.html
-last_built: 2022-08-01T02:47Z
+last_built: 2022-08-02T05:24Z
 urls:
-  reference: https://sfcheung.github.io/stdmodsem/reference
-  article: https://sfcheung.github.io/stdmodsem/articles
+  reference: https://sfcheung.github.io/manymome/reference
+  article: https://sfcheung.github.io/manymome/articles
 
