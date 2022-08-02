@@ -1,6 +1,6 @@
-Package: stdmodsem
+Package: manymome
 Title: Moderation, Mediation, and Moderated-Mediation in SEM
-Version: 0.0.1.9022
+Version: 0.0.1.9023
 Authors@R:
     c(person(given = "Shu Fai",
            family = "Cheung",
@@ -14,8 +14,8 @@ Description: Functions for computing indirect effects, moderation effects,
              For standardized effects that involve the moderator, the
              sampling variation in the standardization will be taken into
              account.
-URL: https://sfcheung.github.io/stdmodsem/
-BugReports: https://github.com/sfcheung/stdmodsem/issues
+URL: https://sfcheung.github.io/manymome/
+BugReports: https://github.com/sfcheung/manymome/issues
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

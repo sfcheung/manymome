@@ -1,4 +1,4 @@
 library(testthat)
-library(stdmodsem)
+library(manymome)
 
-test_check("stdmodsem")
+test_check("manymome")

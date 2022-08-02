@@ -1,4 +1,4 @@
-library(stdmodsem)
+library(manymome)
 
 suppressMessages(suppressMessages(library(lavaan)))
 

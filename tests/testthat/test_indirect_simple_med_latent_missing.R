@@ -1,4 +1,4 @@
-library(stdmodsem)
+library(manymome)
 suppressMessages(library(lavaan))
 dat <- simple_mediation_latent
 dat <- add_na(dat, prop = .10, seed = 4589)

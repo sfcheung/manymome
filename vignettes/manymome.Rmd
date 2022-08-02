@@ -1,12 +1,12 @@
 ---
-title: "stdmodsem"
+title: "manymome"
 author: "Shu Fai Cheung"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     number_sections: true
 vignette: >
-  %\VignetteIndexEntry{stdmodsem}
+  %\VignetteIndexEntry{manymome}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-if (basename(getwd()) == "stdmodsem") {
+if (basename(getwd()) == "manymome") {
     pth <- "./vignettes/"
   } else {
     pth <- "./"
@@ -25,7 +25,7 @@ if (basename(getwd()) == "stdmodsem") {
 
 # Introduction
 
-This article is a brief illustration on how `stdmodsem` functions are
+This article is a brief illustration on how `manymome` functions are
 used in some typical cases. The model is intended to be
 simple (though with two moderators). See the
 section [Other Cases](#other-cases) for other models supported,
@@ -38,7 +38,7 @@ including models with latent variables.
 This is the sample dataset comes with the package:
 
 ```{r}
-library(stdmodsem)
+library(manymome)
 dat <- data_med_mod_ab
 print(head(dat), digits = 3)
 ```
@@ -231,7 +231,7 @@ The package can also be used for a mediation model.
 This is the sample dataset comes with the package:
 
 ```{r}
-library(stdmodsem)
+library(manymome)
 dat <- data_serial
 print(head(dat), digits = 3)
 ```
@@ -404,7 +404,7 @@ Fit the models first, and explore as many pathways as we want.
 
 # Other Cases
 
-The following articles illustrate other uses of `stdmodsem` (to be prepared):
+The following articles illustrate other uses of `manymome` (to be prepared):
 
 - Models estimated by multiple regression:
     - Moderated mediation models with categorical and numeric moderators.
@@ -434,4 +434,4 @@ Interested researchers can check the package [stdmod](https://sfcheung.github.io
 and [visreg](http://pbreheny.github.io/visreg/).
 
 (Disclosure: `stdmod` is also developed by the maintainer
-of `stdmodsem`.)
+of `manymome`.)

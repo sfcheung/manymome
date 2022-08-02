@@ -1,4 +1,4 @@
-library(stdmodsem)
+library(manymome)
 suppressMessages(library(lavaan))
 
 dat0 <- simple_mediation_latent

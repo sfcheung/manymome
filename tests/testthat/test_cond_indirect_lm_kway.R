@@ -1,4 +1,4 @@
-library(stdmodsem)
+library(manymome)
 
 dat <- data_med_mod_b_mod
 lm_m <- lm(m ~ x*w1 + c1 + c2, dat)

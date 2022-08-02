@@ -1,5 +1,5 @@
 
-library(stdmodsem)
+library(manymome)
 suppressMessages(library(lavaan))
 dat <- modmed_x1m3w4y1
 mod <-
