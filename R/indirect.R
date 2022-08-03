@@ -119,7 +119,11 @@ indirect_i <- function(x,
     }
     chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
     if (!chkpath) {
-        msg <- paste0("No path from ", sQuote(x), " to ", sQuote(y), ".",
+        msg <- paste0("No path from ", sQuote(x), " to ", sQuote(y),
+                      ifelse(is.null(m), "",
+                                         paste0(" through ",
+                                                paste0(sQuote(m), collapse = ", "))),
+                      ". ",
                       "Please check the arguments x, y, and m.")
         stop(msg)
       }

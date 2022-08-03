@@ -24,3 +24,10 @@ test_that("cond_indirect: Check error", {
     expect_error(cond_indirect(fit = list(lm_m1, mod)))
     expect_error(cond_indirect(fit = fit_lav, boot_ci = TRUE))
   })
+
+test_that("cond_indirect: Check error", {
+    expect_error(cond_indirect("x", "m3", "y", fit = fit_lm))
+    expect_error(cond_indirect("m3", "m2", fit = fit_lm))
+  })
+
+
