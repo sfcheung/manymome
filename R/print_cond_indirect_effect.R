@@ -59,7 +59,7 @@ print.cond_indirect_effects <- function(x, digits = 3, ...) {
   m0 <- my_call$m
   if (has_m) {
       path <- path <- paste0(x0, " -> ",
-                             paste0(m0, collapse = " -> "),
+                             paste0(eval(m0), collapse = " -> "),
                              " -> ", y0)
     } else {
       path <- paste(x0, "->", y0)
