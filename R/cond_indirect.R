@@ -454,7 +454,13 @@ cond_indirect_effects <- function(wlevels,
             if (inherits(boot_out, "cond_indirect_effects")) {
                 boot_out <- attr(boot_out, "boot_out")
                 if (is.null(boot_out)) {
-                    stop("boot_out not found in the supplied cond_indirect_effects output")
+                    stop("boot_out not found in the supplied object for 'boot_out'")
+                  }
+              }
+            if (inherits(boot_out, "indirect")) {
+                boot_out <- boot_out$boot_out
+                if (is.null(boot_out)) {
+                    stop("boot_out not found in the supplied object for 'boot_out'")
                   }
               }
             if (!inherits(boot_out, "boot_out")) {
