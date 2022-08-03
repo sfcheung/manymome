@@ -1,12 +1,25 @@
-#' @title Plot Conditional Indirect Effect
+#' @title Plot Conditional ToTal Effect
 #'
-#' @description Plot the conditional indirect effects for different
+#' @description Plot the conditional total effects for different
 #'   levels of moderators.
 #'
 #' @details This function is a plot method of the output
 #'  of [cond_indirect_effects()]. It will use the levels of moderators
 #'  in the output.
 #'
+#' It plots the *total* effect from `x` to `y` in a model for
+#' different levels of the moderators.
+#'
+#' If `x` has only one path to `y` and there is no
+#' mediator along this path, then it plots the conditional (simple)
+#' effect of `x` on `y`.
+#'
+#' If `x` has only one path to `y` and there is one or more
+#' mediators along this path, then it plots the conditional
+#' *indirect* effect along this path.
+#'
+#' If `x` has more than one path to `y`, then it plots the
+#' conditional *total* effect from `x` to `y`.
 #'
 #' @return
 #'  A [ggplot2] graph. Plotted if not assigned to a name. It can
