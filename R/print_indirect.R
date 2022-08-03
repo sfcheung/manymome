@@ -77,7 +77,7 @@ print.indirect <- function(x, digits = 3, ...) {
     y0 <- x$y
     if (has_m) {
         path <- paste(x0, "->",
-                      paste(mnames, collapse = " -> "),
+                      paste(eval(mnames), collapse = " -> "),
                       "->", y0)
       } else {
         path <- paste(x0, "->", y0)
