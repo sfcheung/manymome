@@ -224,15 +224,19 @@ mod_levels_list <- function(...,
                             merge = FALSE) {
     x <- list(...)
     p <- length(x)
-    if ((p > 1) && is.null(sd_from_mean)) {
-        sd_from_mean <- c(-1, 1)
-      } else {
-        sd_from_mean <- c(-1, 0, 1)
+    if (is.null(sd_from_mean)) {
+        if (p > 1) {
+            sd_from_mean <- c(-1, 1)
+          } else {
+            sd_from_mean <- c(-1, 0, 1)
+          }
       }
-    if ((p > 1) && is.null(percentiles)) {
-        percentiles <- c(.16, .84)
-      } else {
-        percentiles <- c(.16, .50, .84)
+    if (is.null(percentiles)) {
+        if (p > 1) {
+            percentiles <- c(.16, .84)
+          } else {
+            percentiles <- c(.16, .50, .84)
+          }
       }
     out <- lapply(x, mod_levels,
                   fit = fit,
