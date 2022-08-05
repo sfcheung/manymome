@@ -42,12 +42,15 @@ reference:
   - factor2var
 - title: Methods
   desc: >
-    Methods for the output of the main functions.
+    Methods and utility functions for the output of the main functions.
 - contents:
   - coef.indirect
   - confint.indirect
   - print.indirect
+  - coef.cond_indirect_effects
+  - confint.cond_indirect_effects
   - print.cond_indirect_effects
+  - get_one_cond_indirect_effect
   - print.lm_list
   - summary.lm_list
   - coef.index_of_mome
