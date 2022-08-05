@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotmod.R
 \name{plot.cond_indirect_effects}
 \alias{plot.cond_indirect_effects}
-\title{Plot Conditional Indirect Effect}
+\title{Plot Conditional ToTal Effect}
 \usage{
 \method{plot}{cond_indirect_effects}(
   x,
@@ -111,13 +111,27 @@ A \link{ggplot2} graph. Plotted if not assigned to a name. It can
 be further modified like a usual \link{ggplot2} graph.
 }
 \description{
-Plot the conditional indirect effects for different
+Plot the conditional total effects for different
 levels of moderators.
 }
 \details{
 This function is a plot method of the output
 of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}. It will use the levels of moderators
 in the output.
+
+It plots the \emph{total} effect from \code{x} to \code{y} in a model for
+different levels of the moderators.
+
+If \code{x} has only one path to \code{y} and there is no
+mediator along this path, then it plots the conditional (simple)
+effect of \code{x} on \code{y}.
+
+If \code{x} has only one path to \code{y} and there is one or more
+mediators along this path, then it plots the conditional
+\emph{indirect} effect along this path.
+
+If \code{x} has more than one path to \code{y}, then it plots the
+conditional \emph{total} effect from \code{x} to \code{y}.
 }
 \examples{
 library(lavaan)

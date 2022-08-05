@@ -77,7 +77,7 @@ print.indirect <- function(x, digits = 3, ...) {
     y0 <- x$y
     if (has_m) {
         path <- paste(x0, "->",
-                      paste(mnames, collapse = " -> "),
+                      paste(eval(mnames), collapse = " -> "),
                       "->", y0)
       } else {
         path <- paste(x0, "->", y0)
@@ -186,7 +186,7 @@ print.indirect <- function(x, digits = 3, ...) {
         cat("\n")
         print(out, digits = digits, row.names = FALSE)
         if (standardized_x || standardized_y) {
-          cat("\nNOTE: The effects of the component paths are form the model, not standardized.")
+          cat("\nNOTE: The effects of the component paths are from the model, not standardized.")
         }
       }
     cat("\n")

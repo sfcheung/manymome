@@ -59,7 +59,7 @@ print.cond_indirect_effects <- function(x, digits = 3, ...) {
   m0 <- my_call$m
   if (has_m) {
       path <- path <- paste0(x0, " -> ",
-                             paste0(m0, collapse = " -> "),
+                             paste0(eval(m0), collapse = " -> "),
                              " -> ", y0)
     } else {
       path <- paste(x0, "->", y0)
@@ -88,7 +88,7 @@ print.cond_indirect_effects <- function(x, digits = 3, ...) {
       cat("\n== Conditional effects ==\n")
     }
   cat("\n Path:", path)
-  cat("\n Conditioned on moderator(s):", paste0(w0, collapse = ", "))
+  cat("\n Conditional on moderator(s):", paste0(w0, collapse = ", "))
   cat("\n Moderator(s) represented by:", paste0(w1, collapse = ", "))
   xold <- x
   x <- out1

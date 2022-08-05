@@ -198,11 +198,12 @@ one standard deviation above mean is
 95% bootstrap confidence interval
 [`r paste0(formatC(unlist(out_lm_stdxy[1, c("CI.lo", "CI.hi")]), digits = 3, format = "f"), collapse = ", ")`].
 
-## Plotting the Conditional Indirect Effects
+## Plotting the Conditional Total Effects
 
 The output of `cond_indirect_effects()` is a
 `cond_indirect_effects`-class object with a `plot`
-method:
+method, which plot the *total* effect along a path,
+conditional on different levels of the moderators:
 
 ```{r}
 plot(out_lm)

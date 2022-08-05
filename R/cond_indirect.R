@@ -183,7 +183,11 @@ cond_indirect <- function(x,
     fit_type <- cond_indirect_check_fit(fit)
     chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
     if (!chkpath) {
-        msg <- paste0("No path from ", sQuote(x), " to ", sQuote(y), ".",
+        msg <- paste0("No path from ", sQuote(x), " to ", sQuote(y),
+                      ifelse(is.null(m), "",
+                                         paste0(" through ",
+                                                paste0(sQuote(m), collapse = ", "))),
+                      ". ",
                       "Please check the arguments x, y, and m.")
         stop(msg)
       }
@@ -450,7 +454,13 @@ cond_indirect_effects <- function(wlevels,
             if (inherits(boot_out, "cond_indirect_effects")) {
                 boot_out <- attr(boot_out, "boot_out")
                 if (is.null(boot_out)) {
-                    stop("boot_out not found in the supplied cond_indirect_effects output")
+                    stop("boot_out not found in the supplied object for 'boot_out'")
+                  }
+              }
+            if (inherits(boot_out, "indirect")) {
+                boot_out <- boot_out$boot_out
+                if (is.null(boot_out)) {
+                    stop("boot_out not found in the supplied object for 'boot_out'")
                   }
               }
             if (!inherits(boot_out, "boot_out")) {

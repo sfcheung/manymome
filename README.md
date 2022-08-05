@@ -17,7 +17,7 @@ and path models fitted by linear regression.
   code when
   fitting a model. Just focus on fitting the model first. After a model has
   been selected, users can compute the effect for *any* pathway, from
-  *any* variable, to *any* other variables, conditioned on *any* moderators,
+  *any* variable, to *any* other variables, conditional on *any* moderators,
   and at *any* levels of the moderators.
 
 - **Supports Both SEM-Based Modelling and Regression-Based**
