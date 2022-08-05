@@ -1,6 +1,6 @@
 #' @title Indirect Effect (No Bootstrapping)
 #'
-#' @description Compute the indirect effect, optionally conditioned on
+#' @description Compute the indirect effect, optionally conditional on
 #'   the values of moderators if present.
 #'
 #' @details This function is a low-level function called by [cond_indirect()]

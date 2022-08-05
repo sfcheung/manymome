@@ -88,7 +88,7 @@ print.cond_indirect_effects <- function(x, digits = 3, ...) {
       cat("\n== Conditional effects ==\n")
     }
   cat("\n Path:", path)
-  cat("\n Conditioned on moderator(s):", paste0(w0, collapse = ", "))
+  cat("\n Conditional on moderator(s):", paste0(w0, collapse = ", "))
   cat("\n Moderator(s) represented by:", paste0(w1, collapse = ", "))
   xold <- x
   x <- out1
