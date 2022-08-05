@@ -40,6 +40,9 @@
     <loc>https://sfcheung.github.io/manymome/reference/check_path.html</loc>
   </url>
   <url>
+    <loc>https://sfcheung.github.io/manymome/reference/coef.cond_indirect_effects.html</loc>
+  </url>
+  <url>
     <loc>https://sfcheung.github.io/manymome/reference/coef.index_of_mome.html</loc>
   </url>
   <url>
@@ -50,6 +53,9 @@
   </url>
   <url>
     <loc>https://sfcheung.github.io/manymome/reference/cond_indirect.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/manymome/reference/confint.cond_indirect_effects.html</loc>
   </url>
   <url>
     <loc>https://sfcheung.github.io/manymome/reference/confint.index_of_mome.html</loc>
@@ -106,6 +112,12 @@
     <loc>https://sfcheung.github.io/manymome/reference/data_mod_cat.html</loc>
   </url>
   <url>
+    <loc>https://sfcheung.github.io/manymome/reference/data_mome_demo.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/manymome/reference/data_mome_demo_missing.html</loc>
+  </url>
+  <url>
     <loc>https://sfcheung.github.io/manymome/reference/data_parallel.html</loc>
   </url>
   <url>
@@ -122,6 +134,9 @@
   </url>
   <url>
     <loc>https://sfcheung.github.io/manymome/reference/fit2boot_out.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/manymome/reference/get_one_cond_indirect_effect.html</loc>
   </url>
   <url>
     <loc>https://sfcheung.github.io/manymome/reference/index.html</loc>

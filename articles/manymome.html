@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9023</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9030</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +80,7 @@
       <img src="" class="logo" alt=""><h1>manymome</h1>
                         <h4 data-toc-skip class="author">Shu Fai Cheung</h4>
             
-            <h4 data-toc-skip class="date">2022-08-02</h4>
+            <h4 data-toc-skip class="date">2022-08-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/HEAD/vignettes/manymome.Rmd" class="external-link"><code>vignettes/manymome.Rmd</code></a></small>
       <div class="d-none name"><code>manymome.Rmd</code></div>
@@ -183,7 +183,7 @@
 <span><span class="co">#&gt; == Conditional indirect effects ==</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Path: x -&gt; m -&gt; y</span></span>
-<span><span class="co">#&gt;  Conditioned on moderator(s): w1, w2</span></span>
+<span><span class="co">#&gt;  Conditional on moderator(s): w1, w2</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: w1, w2</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [w1]    [w2]  (w1)  (w2)   ind  CI.lo CI.hi Sig   m~x   y~m</span></span>
@@ -221,7 +221,7 @@
 <span><span class="co">#&gt; == Conditional indirect effects ==</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Path: x -&gt; m -&gt; y</span></span>
-<span><span class="co">#&gt;  Conditioned on moderator(s): w1, w2</span></span>
+<span><span class="co">#&gt;  Conditional on moderator(s): w1, w2</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: w1, w2</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [w1]    [w2]  (w1)  (w2)   std  CI.lo CI.hi Sig   m~x   y~m   ind</span></span>
@@ -239,9 +239,9 @@
 <p>The standardized indirect effect when both <code>w1</code> and <code>w2</code> are one standard deviation above mean is 0.412, with 95% bootstrap confidence interval [0.115, 0.700].</p>
 </div>
 <div class="section level3">
-<h3 id="plotting-the-conditional-indirect-effects">Plotting the Conditional Indirect Effects<a class="anchor" aria-label="anchor" href="#plotting-the-conditional-indirect-effects"></a>
+<h3 id="plotting-the-conditional-total-effects">Plotting the Conditional Total Effects<a class="anchor" aria-label="anchor" href="#plotting-the-conditional-total-effects"></a>
 </h3>
-<p>The output of <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> is a <code>cond_indirect_effects</code>-class object with a <code>plot</code> method:</p>
+<p>The output of <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> is a <code>cond_indirect_effects</code>-class object with a <code>plot</code> method, which plot the <em>total</em> effect along a path, conditional on different levels of the moderators:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">out_lm</span><span class="op">)</span></span></code></pre></div>
 <p><img src="manymome_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
@@ -393,7 +393,7 @@
 <span><span class="co">#&gt;  m2~m1       0.421</span></span>
 <span><span class="co">#&gt;   y~m2       0.521</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; NOTE: The effects of the component paths are form the model, not standardized.</span></span></code></pre></div>
+<span><span class="co">#&gt; NOTE: The effects of the component paths are from the model, not standardized.</span></span></code></pre></div>
 <p>The indirect effect from <code>x</code> to <code>y</code> through <code>m1</code> and <code>m2</code> is 0.086, with a 95% confidence interval of [0.017, 0.183], significantly different from zero (<em>p</em> &lt; .05).</p>
 </div>
 <div class="section level3">
