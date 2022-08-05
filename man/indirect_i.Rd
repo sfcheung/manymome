@@ -88,7 +88,7 @@ following methods: \code{\link[=coef.indirect]{coef.indirect()}}, \code{\link[=p
 \code{\link[=cond_indirect]{cond_indirect()}} or \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 }
 \description{
-Compute the indirect effect, optionally conditioned on
+Compute the indirect effect, optionally conditional on
 the values of moderators if present.
 }
 \details{
