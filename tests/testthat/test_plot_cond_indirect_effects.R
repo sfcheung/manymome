@@ -84,3 +84,20 @@ out_1_lm_stdy <- cond_indirect_effects(wlevels = out_mm_1_lm, x = "x", y = "y", 
 plot(out_1_lm_stdy)
 plot(out_1_lm_stdy, graph_type = "tumble")
 
+mod_mod <-
+"
+m1 ~ x + gpgp2 + gpgp3 + x:gpgp2 + x:gpgp3
+"
+fit_mod <- sem(mod_mod, dat, meanstructure = TRUE, fixed.x = FALSE)
+out_mm_mod <- mod_levels_list(c("gpgp2", "gpgp3"),
+                              fit = fit_mod, merge = TRUE)
+out_mod_mod <- cond_indirect_effects(wlevels = list(c("gpgp2", "gpgp3")),
+                                  x = "x", y = "m1",
+                                  fit = fit_mod)
+plot(out_mod_mod)
+
+out_mod_mod <- cond_indirect_effects(wlevels = list(c("gpgp2", "gpgp3")),
+                                  x = "x", y = "m1",
+                                  fit = fit_mod,
+                                  standardized_x = TRUE)
+plot(out_mod_mod)

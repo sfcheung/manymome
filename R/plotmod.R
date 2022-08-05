@@ -254,6 +254,9 @@ plot.cond_indirect_effects <- function(
       }
 
     cap_txt <- NULL
+    if (!is.null(m)) {
+        cap_txt <- "The effects are *total* effects through all possible paths"
+      }
 
     if (note_standardized) {
         if (any(c(x_standardized,
@@ -271,7 +274,11 @@ plot.cond_indirect_effects <- function(
           }
       }
     if (missing(title)) {
-        title <- "Moderation Effect"
+        if (!is.null(m)) {
+            title <- "Conditional Total Effects"
+          } else {
+            title <- "Conditional Effects"
+          }
       }
 
     plot_df_xstart$wlevels <- rownames(wlevels)
