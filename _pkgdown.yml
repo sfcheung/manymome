@@ -47,6 +47,7 @@ reference:
   - coef.indirect
   - confint.indirect
   - print.indirect
+  - math_indirect
   - coef.cond_indirect_effects
   - confint.cond_indirect_effects
   - print.cond_indirect_effects
