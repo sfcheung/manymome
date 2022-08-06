@@ -352,7 +352,8 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
       } else {
         w_source <- NA
       }
-    w_dat <- mm[, w]
+    w_dat <- mm[, w, drop = FALSE]
+    w_dat <- w_dat[stats::complete.cases(w_dat), ]
     w_gp <- unique(w_dat)
     k <- nrow(w_gp)
     j <- rev(seq_len(ncol(w_gp)))
