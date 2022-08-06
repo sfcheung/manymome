@@ -66,7 +66,11 @@ print.indirect <- function(x, digits = 3, ...) {
         m0 <- x$components
         m0c <- x$components_conditional
         mnames <- x$m
-        mpathnames <- names(m0)
+        if (is.list(m0)) {
+            mpathnames <- lapply(m0, names)
+          } else {
+            mpathnames <- names(m0)
+          }
       } else {
         m0 <- NA
         m0c <- NA
@@ -76,9 +80,22 @@ print.indirect <- function(x, digits = 3, ...) {
     x0 <- x$x
     y0 <- x$y
     if (has_m) {
-        path <- paste(x0, "->",
-                      paste(eval(mnames), collapse = " -> "),
-                      "->", y0)
+        if (is.list(mnames)) {
+          path <- sapply(mnames, function(mm) {
+                  if (is.null(mm)) {
+                      out <- paste(x0, "->", y0)
+                    } else {
+                      out <- paste(x0, "->",
+                                paste(eval(mm), collapse = " -> "),
+                                "->", y0)
+                    }
+                  return(out)
+                })
+        } else {
+          path <- paste(x0, "->",
+                        paste(eval(mnames), collapse = " -> "),
+                        "->", y0)
+        }
       } else {
         path <- paste(x0, "->", y0)
       }
@@ -133,10 +150,16 @@ print.indirect <- function(x, digits = 3, ...) {
         # cat("\nConditional", cond_str, "effect",
         #     "from", sQuote(x0), "to", sQuote(y0),
         #     ":", formatC(x$indirect, digits = digits, format = "f"))
-        ptable <- rbind(ptable,
-                        c(ifelse(has_m, "Conditional Indirect Effect:",
-                                        "Conditional Effect:"),
-                          formatC(x$indirect, digits = digits, format = "f")))
+        if (is.null(x$op)) {
+            ptable <- rbind(ptable,
+                            c(ifelse(has_m, "Conditional Indirect Effect:",
+                                            "Conditional Effect:"),
+                              formatC(x$indirect, digits = digits, format = "f")))
+          } else {
+            ptable <- rbind(ptable,
+                            c("Function of Effects:",
+                              formatC(x$indirect, digits = digits, format = "f")))
+          }
         tmp <- paste(paste(wnames, "=", formatC(w0,
                                                 digits = digits,
                                                 format = "f")), collapse = ", ")
@@ -148,21 +171,41 @@ print.indirect <- function(x, digits = 3, ...) {
         # if (has_m) {cat("\nEffect ")} else {cat("\nIndirect Effect ")}
         # cat("from", sQuote(x0), "to", sQuote(y0),
         #     ":", formatC(x$indirect, digits = digits, format = "f"))
-        ptable <- rbind(ptable,
-                        c(ifelse(has_m, "Indirect Effect", "Effect"),
-                          formatC(x$indirect, digits = digits, format = "f")))
+        if (is.null(x$op)) {
+            ptable <- rbind(ptable,
+                            c(ifelse(has_m, "Indirect Effect", "Effect"),
+                              formatC(x$indirect, digits = digits, format = "f")))
+          } else {
+            ptable <- rbind(ptable,
+                            c("Function of Effects:",
+                              formatC(x$indirect, digits = digits, format = "f")))
+          }
         if (has_boot_ci) {ptable <- rbind(ptable, b_row)}
       }
     ptable <- data.frame(lapply(ptable, format))
     colnames(ptable) <- c("", "")
     print(ptable, row.names = FALSE)
+    if (!is.null(x$op)) {
+        cat("\nComputation of the Function of Effects:")
+        cat("\n", x$op, "\n")
+      }
     if (!is.null(x$computation_symbol)) {
-        cat("\nComputation Formula:")
-        cat("\n ", x$computation_symbol)
+        if (is.list(x$computation_symbol)) {
+            # cat("\nComputation Formulas:")
+            # cat("\n", paste(x$op, x$computation_symbol, collapse = "\n"))
+          } else {
+            cat("\nComputation Formula:")
+            cat("\n ", x$computation_symbol)
+          }
       }
     if (!is.null(x$computation_values)) {
-        cat("\nComputation:")
-        cat("\n ", x$computation_values)
+        if (is.list(x$computation_values)) {
+            # cat("\nComputation:")
+            # cat("\n", paste(x$op, x$computation_values, collapse = "\n"))
+          } else {
+            cat("\nComputation:")
+            cat("\n ", x$computation_values)
+          }
       }
     if (has_boot_ci) {
         cat("\n\n")
@@ -171,7 +214,7 @@ print.indirect <- function(x, digits = 3, ...) {
                           length(x$boot_indirect),
                           " bootstrap samples.")), sep = "\n")
       }
-    if (has_m) {
+    if (has_m & !is.list(mpathnames)) {
         if (has_w) {
           out <- data.frame(mpathnames, m0c, m0)
           rownames(out) <- NULL
