@@ -86,7 +86,7 @@ out <- cond_indirect_effects(x = "x", y = "y", m = "m1",
                       wlevels = w1levels, fit = fit,
                       boot_ci = TRUE, boot_out = boot_out)
 out
-out_ind <- index_of_mome(out, from = 2, to = 3)
+out_ind <- index_of_mome(out, from = 2, to = 1)
 out_ind
 coef(out_ind)
 confint(out_ind)
