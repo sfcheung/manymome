@@ -45,7 +45,7 @@ factor2var <- function(x_value,
     m <- do.call(x_contrasts, list(n = levels(x_fac)))
     mj <- ncol(m)
     mna <- rep(NA, mj)
-    out <- t(sapply(x_value, function(x) {
+    out <- t(sapply(as.character(x_value), function(x) {
                                 if (is.na(x)) {
                                     xx <- mna
                                   } else {
