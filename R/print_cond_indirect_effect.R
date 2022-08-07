@@ -7,6 +7,8 @@
 #'
 #' @param x The output of [cond_indirect_effects()].
 #' @param digits Number of digits to display. Default is 3.
+#' @param annotation Logical. Whether the annotation after the table of effects
+#'                   is to be printed. Default is `TRUE.`
 #' @param ...  Other arguments. Not used.
 #'
 #'
@@ -42,7 +44,8 @@
 #'
 #' @export
 
-print.cond_indirect_effects <- function(x, digits = 3, ...) {
+print.cond_indirect_effects <- function(x, digits = 3,
+                                        annotation = TRUE, ...) {
   full_output <- attr(x, "full_output")
   x_i <- full_output[[1]]
   my_call <- attr(x, "call")
@@ -94,40 +97,42 @@ print.cond_indirect_effects <- function(x, digits = 3, ...) {
   x <- out1
   cat("\n\n")
   NextMethod()
-  if (boot_ci) {
-      level_str <- paste0(formatC(level * 100, 1, format = "f"), "%")
+  if (annotation) {
+      if (boot_ci) {
+          level_str <- paste0(formatC(level * 100, 1, format = "f"), "%")
+          cat("\n ")
+          cat(strwrap(paste("- [CI.lo to CI.hi] are",
+                            level_str,
+                            "percentile confidence intervals",
+                            "by nonparametric bootstrapping with",
+                            R,
+                            "samples."), exdent = 3), sep = "\n")
+        } else {
+          cat("\n")
+        }
+      if (standardized_x && standardized_y) {
+          cat(" - std: The standardized", cond_str, "effects.",
+              "\n - ind: The unstandardized", cond_str, "effects.", sep = " ")
+        }
+      if (standardized_x && !standardized_y) {
+          cat(" - std: The partially standardized", cond_str, "effects.",
+              "\n - ", sQuote(x0), " is standardized.",
+              "\n - ind: The unstandardized", cond_str, "effects.", sep = " ")
+        }
+      if (!standardized_x && standardized_y) {
+          cat(" - std: Te partially standardized", cond_str, "effects.",
+              "\n - ", sQuote(y0), " is standardized.",
+              "\n - ind: The unstandardized", cond_str, "effects.", sep = " ")
+        }
+      if (!standardized_x & !standardized_y) {
+          cat(" - The 'ind' column shows the", cond_str, "effects.", sep = " ")
+        }
       cat("\n ")
-      cat(strwrap(paste("- [CI.lo to CI.hi] are",
-                        level_str,
-                        "percentile confidence intervals",
-                        "by nonparametric bootstrapping with",
-                        R,
-                        "samples."), exdent = 3), sep = "\n")
-    } else {
+      cat(strwrap(paste("\n -", paste(sQuote(mcond), collapse = ","),
+          "is/are the path coefficient(s) along the path",
+          "conditional on the moderators."), exdent = 3), sep = "\n")
       cat("\n")
     }
-  if (standardized_x && standardized_y) {
-      cat(" - std: The standardized", cond_str, "effects.",
-          "\n - ind: The unstandardized", cond_str, "effects.", sep = " ")
-    }
-  if (standardized_x && !standardized_y) {
-      cat(" - std: The partially standardized", cond_str, "effects.",
-          "\n - ", sQuote(x0), " is standardized.",
-          "\n - ind: The unstandardized", cond_str, "effects.", sep = " ")
-    }
-  if (!standardized_x && standardized_y) {
-      cat(" - std: Te partially standardized", cond_str, "effects.",
-          "\n - ", sQuote(y0), " is standardized.",
-          "\n - ind: The unstandardized", cond_str, "effects.", sep = " ")
-    }
-  if (!standardized_x & !standardized_y) {
-      cat(" - The 'ind' column shows the", cond_str, "effects.", sep = " ")
-    }
-  cat("\n ")
-  cat(strwrap(paste("\n -", paste(sQuote(mcond), collapse = ","),
-      "is/are the path coefficient(s) along the path",
-      "conditional on the moderators."), exdent = 3), sep = "\n")
-  cat("\n")
   invisible(x)
 }
 
