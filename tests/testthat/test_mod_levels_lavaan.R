@@ -86,3 +86,29 @@ test_that("mod_levels: lavaan", {
     expect_equal(out_c2, out_i_c2_chk, ignore_attr = TRUE)
     expect_equal(out_c3, out_i_c3_chk, ignore_attr = TRUE)
   })
+
+out_c_ref <- mod_levels(fit, w = c("gpgp2", "gpgp3"), reference_group_label = "Group 1")
+out_c2_ref <- mod_levels(fit, w = c("citybeta", "citygamma", "citysigma"), reference_group_label = "alpha")
+out_c3_ref <- mod_levels(fit, w = c("gpgp2", "gpgp3"), prefix = "gp", reference_group_label = "gp1")
+
+out_c_ref_chk <- structure(list(gpgp2 = c(0, 1, 0), gpgp3 = c(0, 0, 1)), row.names = c("Group 1",
+"2", "3"), class = "data.frame", wname = "gpgp", wlevels = structure(list(
+    gpgp = c("Group 1", "2", "3")), class = "data.frame", row.names = c(NA,
+-3L)), w_type = "categorical")
+
+out_c2_ref_chk <- structure(list(citybeta = c(0, 1, 0, 0), citygamma = c(0, 0,
+1, 0), citysigma = c(0, 0, 0, 1)), row.names = c("alpha", "beta",
+"gamma", "sigma"), class = "data.frame", wname = "city", wlevels = structure(list(
+    city = c("alpha", "beta", "gamma", "sigma")), class = "data.frame", row.names = c(NA,
+-4L)), w_type = "categorical")
+
+out_c3_ref_chk <- structure(list(gpgp2 = c(0, 1, 0), gpgp3 = c(0, 0, 1)), row.names = c("gp1",
+"gp2", "gp3"), class = "data.frame", wname = "gp", wlevels = structure(list(
+    gp = c("gp1", "gp2", "gp3")), class = "data.frame", row.names = c(NA,
+-3L)), w_type = "categorical")
+
+test_that("mod_levels: lavaan, custome label for reference group", {
+    expect_equal(out_c_ref, out_c_ref_chk, ignore_attr = TRUE)
+    expect_equal(out_c2_ref, out_c2_ref_chk, ignore_attr = TRUE)
+    expect_equal(out_c3_ref, out_c3_ref_chk, ignore_attr = TRUE)
+  })
