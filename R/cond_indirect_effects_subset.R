@@ -76,8 +76,8 @@ NULL
       } else {
         fo <- attr(x, "full_output")[i]
         attr(out, "full_output") <- fo
-        wl <- attr(x, "wlevels")[i, ]
-        attr(wl, "wlevels") <- attr(wl, "wlevels")[i, ]
+        wl <- attr(x, "wlevels")[i, , drop = FALSE]
+        attr(wl, "wlevels") <- attr(wl, "wlevels")[i, , drop = FALSE]
         attr(out, "wlevels") <- wl
         return(out)
       }
