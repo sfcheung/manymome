@@ -12,7 +12,7 @@ indirect_i(), cond_indirect(), and cond_indirect_effects()."><!-- mathjax --><sc
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9030</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9036</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,6 +77,7 @@ indirect_i(), cond_indirect(), and cond_indirect_effects()."><!-- mathjax --><sc
 <span>  extract_gp_names <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  prefix <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  values <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  reference_group_label <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  descending <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -165,6 +166,14 @@ For example, if set to <code>list(gp1 = c(0, 0), gp3 = c(0, 1)</code>,
 two levels will be returned, one named <code>gp1</code> with the indicator
 variables equal to 0 and 0, the other named <code>gp3</code> with the
 indicator variables equal to 0 and 1. Default is <code>NULL</code>.</p></dd>
+
+
+<dt>reference_group_label</dt>
+<dd><p>For categorical moderator, if the label for
+the reference group (group with all indicators equal to zero)
+cannot be determined, the default label is <code>"Reference"</code>.
+To change it, set <code>reference_group_label</code> to the desired
+label. Ignored if <code>values</code> is set.</p></dd>
 
 
 <dt>descending</dt>

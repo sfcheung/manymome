@@ -163,6 +163,9 @@
     <loc>https://sfcheung.github.io/manymome/reference/manymome-package.html</loc>
   </url>
   <url>
+    <loc>https://sfcheung.github.io/manymome/reference/math_indirect.html</loc>
+  </url>
+  <url>
     <loc>https://sfcheung.github.io/manymome/reference/merge_mod_levels.html</loc>
   </url>
   <url>
@@ -197,6 +200,9 @@
   </url>
   <url>
     <loc>https://sfcheung.github.io/manymome/reference/simple_mediation_latent.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/manymome/reference/subsetting_cond_indirect_effects.html</loc>
   </url>
   <url>
     <loc>https://sfcheung.github.io/manymome/reference/summary.lm_list.html</loc>
