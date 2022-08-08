@@ -40,17 +40,13 @@
 #'
 #' # Conditional effects from x to m1 when w1 is equal to each of the levels
 #' out1 <- cond_indirect_effects(x = "x", y = "m1",
-#'                       wlevels = w1levels, fit = fit,
-#'                       boot_ci = TRUE, R = 50, seed = 54151,
-#'                       parallel = FALSE)
+#'                       wlevels = w1levels, fit = fit)
 #' get_one_cond_indirect_effect(out1, 3)
 #'
 #' # Conditional Indirect effect from x1 through m1 to y,
 #' # when w1 is equal to each of the levels
 #' out2 <- cond_indirect_effects(x = "x", y = "y", m = c("m1", "m2"),
-#'                       wlevels = w1w4levels, fit = fit,
-#'                       boot_ci = TRUE, R = 50, seed = 54151,
-#'                       parallel = FALSE)
+#'                       wlevels = w1w4levels, fit = fit)
 #' get_one_cond_indirect_effect(out2, 4)
 #'
 #' @export

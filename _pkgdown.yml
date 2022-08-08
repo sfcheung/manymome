@@ -47,15 +47,17 @@ reference:
   - coef.indirect
   - confint.indirect
   - print.indirect
+  - math_indirect
   - coef.cond_indirect_effects
   - confint.cond_indirect_effects
   - print.cond_indirect_effects
+  - subsetting_cond_indirect_effects
   - get_one_cond_indirect_effect
-  - print.lm_list
-  - summary.lm_list
   - coef.index_of_mome
   - confint.index_of_mome
   - print.index_of_mome
+  - print.lm_list
+  - summary.lm_list
 - title: Datasets
   desc: Datasets used in examples.
 - contents:

@@ -73,6 +73,11 @@
 #'               two levels will be returned, one named `gp1` with the indicator
 #'               variables equal to 0 and 0, the other named `gp3` with the
 #'               indicator variables equal to 0 and 1. Default is `NULL`.
+#' @param reference_group_label For categorical moderator, if the label for
+#'               the reference group (group with all indicators equal to zero)
+#'               cannot be determined, the default label is `"Reference"`.
+#'               To change it, set `reference_group_label` to the desired
+#'               label. Ignored if `values` is set.
 #' @param descending If `TRUE` (default), the rows are sorted in
 #'               descending order for numerical moderators: The
 #'               highest value on the first row and the lowest values
@@ -143,6 +148,7 @@ mod_levels <- function(w,
                        extract_gp_names = TRUE,
                        prefix = NULL,
                        values = NULL,
+                       reference_group_label = NULL,
                        descending = TRUE) {
     fit_type <- cond_indirect_check_fit(fit)
     w_type <- match.arg(w_type)
@@ -164,7 +170,8 @@ mod_levels <- function(w,
                                                w = w,
                                                extract_gp_names = extract_gp_names,
                                                prefix = prefix,
-                                               values = values)
+                                               values = values,
+                                               reference_group_label = reference_group_label)
           }
       }
     if (fit_type == "lavaan") {
@@ -182,7 +189,8 @@ mod_levels <- function(w,
                                                    w = w,
                                                    extract_gp_names = extract_gp_names,
                                                    prefix = prefix,
-                                                   values = values)
+                                                   values = values,
+                                                   reference_group_label = reference_group_label)
           }
       }
     tmp <- data.frame(x = rownames(out))
@@ -338,7 +346,8 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
                                         w,
                                         extract_gp_names = TRUE,
                                         prefix = NULL,
-                                        values = NULL) {
+                                        values = NULL,
+                                        reference_group_label = NULL) {
     fit_type <- cond_indirect_check_fit(fit)
     mm <- switch(fit_type,
                  lavaan = as.data.frame(lav_data_used(fit)),
@@ -352,7 +361,8 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
       } else {
         w_source <- NA
       }
-    w_dat <- mm[, w]
+    w_dat <- mm[, w, drop = FALSE]
+    w_dat <- w_dat[stats::complete.cases(w_dat), ]
     w_gp <- unique(w_dat)
     k <- nrow(w_gp)
     j <- rev(seq_len(ncol(w_gp)))
@@ -394,6 +404,11 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
         colnames(out) <- colnames(w_gp)
         w_gp_org <- w_gp
         w_gp <- out
+      } else {
+        if (!is.null(reference_group_label)) {
+          rownames(w_gp)[which(rownames(w_gp) == "Reference")] <-
+            reference_group_label
+        }
       }
     attr(w_gp, "wname") <- prefix
     return(w_gp)

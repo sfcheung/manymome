@@ -15,6 +15,7 @@ mod_levels(
   extract_gp_names = TRUE,
   prefix = NULL,
   values = NULL,
+  reference_group_label = NULL,
   descending = TRUE
 )
 
@@ -84,6 +85,12 @@ For example, if set to \verb{list(gp1 = c(0, 0), gp3 = c(0, 1)},
 two levels will be returned, one named \code{gp1} with the indicator
 variables equal to 0 and 0, the other named \code{gp3} with the
 indicator variables equal to 0 and 1. Default is \code{NULL}.}
+
+\item{reference_group_label}{For categorical moderator, if the label for
+the reference group (group with all indicators equal to zero)
+cannot be determined, the default label is \code{"Reference"}.
+To change it, set \code{reference_group_label} to the desired
+label. Ignored if \code{values} is set.}
 
 \item{descending}{If \code{TRUE} (default), the rows are sorted in
 descending order for numerical moderators: The

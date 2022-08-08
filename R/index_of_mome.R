@@ -78,7 +78,7 @@
 #'                       wlevels = w1levels, fit = fit,
 #'                       boot_ci = TRUE, boot_out = boot_out)
 #' out
-#' out_ind <- index_of_mome(out, from = 2, to = 3)
+#' out_ind <- index_of_mome(out, from = 2, to = 1)
 #' out_ind
 #' coef(out_ind)
 #' confint(out_ind)
@@ -147,14 +147,24 @@ index_of_mome <- function(output,
 
 print.index_of_mome <- function(x, digits = 3, ...) {
     full_output_attr <- attr(x$output, "full_output")[[1]]
-    print(x$output, digits = digits, ...)
+    print(x$output, digits = digits, annotation = FALSE, ...)
     cat("\n== Index of Moderated-Mediation ==")
     cat("\n")
-    tofrom <- rbind(x$to, x$from)
-    rownames(tofrom) <- paste0(c("To: ", "From: "),
-                               rownames(tofrom))
+    xto0 <- sapply(x$to, function(xx) {
+                    ifelse(is.numeric(xx),
+                           formatC(xx, digits = digits, format = "f"),
+                           xx)
+                  })
+    xfrom0 <- sapply(x$from, function(xx) {
+                    ifelse(is.numeric(xx),
+                           formatC(xx, digits = digits, format = "f"),
+                           xx)
+                  })
+    tofrom <- rbind(xto0, xfrom0)
+    rownames(tofrom) <- paste0(c("To:   ", "From: "),
+                               c(rownames(x$to), rownames(x$from)))
     cat("\nLevels: \n")
-    print(tofrom)
+    print(tofrom, quote = FALSE)
     index_df <- data.frame(x = full_output_attr$x,
                            y = full_output_attr$y,
                            Change = formatC(x$index, digits = digits, format = "f"),
@@ -165,7 +175,7 @@ print.index_of_mome <- function(x, digits = 3, ...) {
     print(index_df, nd = digits)
     cat("\n ")
     cat(strwrap(paste0("- [CI.lo, CI.hi]: ",
-                       x$level,
+                       x$level * 100,
                        "% percentile confidence interval."), exdent = 3),
                        sep = "\n")
     if (full_output_attr$standardized_x) {

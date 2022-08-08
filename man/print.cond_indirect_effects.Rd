@@ -4,12 +4,15 @@
 \alias{print.cond_indirect_effects}
 \title{Print the a 'cond_indirect_effects' Class Object}
 \usage{
-\method{print}{cond_indirect_effects}(x, digits = 3, ...)
+\method{print}{cond_indirect_effects}(x, digits = 3, annotation = TRUE, ...)
 }
 \arguments{
 \item{x}{The output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
 
 \item{digits}{Number of digits to display. Default is 3.}
+
+\item{annotation}{Logical. Whether the annotation after the table of effects
+is to be printed. Default is \code{TRUE.}}
 
 \item{...}{Other arguments. Not used.}
 }
