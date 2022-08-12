@@ -4,26 +4,26 @@
 #'  in a list of 'lm' outputs.
 #'
 #' @details
-#' It do nonparametric bootstrapping to generate bootstrap
+#' It does nonparametric bootstrapping to generate bootstrap
 #' estimates of the regression coefficients in the regression models
-#' of a list of [lm()] outputs, or a `lm_list`-class object
-#' formed by [lm2list()]. The stored estimates can be
-#' used to [cond_indirect()] and [cond_indirect_effects()]
+#' of a list of [lm()] outputs, or an `lm_list`-class object
+#' created by [lm2list()]. The stored estimates can be
+#' used by [indirect_effect()] and [cond_indirect_effects()]
 #' in forming bootstrapping confidence intervals for
-#' conditional effects.
+#' indirect effect and conditional indirect effects.
 #'
 #' This approach removes the need to repeat bootstrapping in
-#' each call to [cond_indirect()] and [cond_indirect_effects()].
+#' each call to [indirect_effect()] and [cond_indirect_effects()].
 #' It also ensures that the same set of bootstrap samples
-#' is used in all subsequent analysis.
+#' is used in all subsequent analyses.
 #'
 #' @return
 #' A `boot_out`-class object that can be used for the `boot_out`
-#' argument of [cond_indirect()] and [cond_indirect_effects()]
+#' argument of [indirect_effect()] and [cond_indirect_effects()]
 #' for forming bootstrapping confidence intervals.
 #'
 #' @param outputs A list of `lm` class objects, or
-#'  the output of [lm2list()] (i.e., a `lm_list`-class
+#'  the output of [lm2list()] (i.e., an `lm_list`-class
 #'  object).
 #' @param R The number of bootstrap samples. Default is 100.
 #' @param seed The seed for the bootstrapping.
