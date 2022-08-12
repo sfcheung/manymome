@@ -5,7 +5,8 @@
 #'
 #' @details It checks whether the path defined by a predictor,
 #'  an outcome, and sequence of mediators exists in
-#'  a model.
+#'  a model. It can check models in a [lavaan::lavaan-class]
+#'  object.
 #'
 #' For example, in the following model in [lavaan] syntax
 #'
@@ -22,18 +23,18 @@
 #'
 #' This path is also invalid: `x = "x", y = "y", m = c("m1", "m2")``
 #'
-#' @return Boolean. `TRUE` is the path is valid, `FALSE` if the
+#' @return Boolean. `TRUE` if the path is valid, `FALSE` if the
 #'  path is invalid.
 #'
 #' @param fit The fit object. Currently only supports a
 #'            [lavaan::lavaan-class] object.
-#' @param x Character. The name of predictor at the start of the pathway.
+#' @param x Character. The name of predictor at the start of the path.
 #' @param y Character. The name of the outcome variable at
-#'          the end of the pathway.
+#'          the end of the path.
 #' @param m A vector of the variable names of the
-#'          mediators. The pathway goes from the first
+#'          mediators. The path goes from the first
 #'          mediator successively to the last mediator. If
-#'          `NULL`, the default, the pathway goes from `x`
+#'          `NULL`, the default, the path goes from `x`
 #'          to `y`.
 #' @param est The output of [lavaan::parameterEstimates()]. If `NULL`, the
 #'            default, it will be generated from `fit`. If supplied,
