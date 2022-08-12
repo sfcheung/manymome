@@ -1,30 +1,30 @@
 #' @title Bootstrapping Estimates for a `lavaan` Output
 #'
-#' @description Extract the bootstrapping estimates from
+#' @description Generate bootstrapping estimates from
 #'  the output of [lavaan::sem()].
 #'
 #' @details
 #' If bootstrapping confidence intervals was requested
 #' when calling [lavaan::sem()] by setting `se = "boot"`,
 #' [fit2boot_out()] can be used to extract the stored
-#' bootstrap estimates such that they can be reused by
-#' [cond_indirect()] and [cond_indirect_effects()]
+#' bootstrap estimates so that they can be reused by
+#' [indirect_effect()] and [cond_indirect_effects()]
 #' to form bootstrapping confidence intervals for
-#' conditional effects.
+#' indirect effects and conditional indirect effects.
 #'
 #' If bootstrapping confidence intervals was not requested,
 #' [fit2boot_out_do_boot()] can be used to generate nonparametric
 #' bootstrap estimates from the output of [lavaan::sem()]
 #' and store them for use by
-#' [cond_indirect()] and [cond_indirect_effects()].
+#' [indirect_effect()] and [cond_indirect_effects()].
 #'
 #' This approach removes the need to repeat bootstrapping in
-#' each call to [cond_indirect()] and [cond_indirect_effects()].
+#' each call to [indirect_effect()] and [cond_indirect_effects()].
 #' It also ensures that the same set of bootstrap samples
-#' is used in all subsequent analysis.
+#' is used in all subsequent analyses.
 #'
 #' @return A `boot_out`-class object that can be used for the
-#' `boot_out` argument of [cond_indirect()] and
+#' `boot_out` argument of [indirect_effect()] and
 #' [cond_indirect_effects()] for forming bootstrapping confidence
 #' intervals.
 #'
@@ -98,7 +98,7 @@ fit2boot_out <- function(fit) {
     out
   }
 
-#' @param R Number of bootstrap samples. Default is 100.
+#' @param R The number of bootstrap samples. Default is 100.
 #' @param seed The seed for the random resampling. Default is `NULL`.
 #' @param parallel Logical. Whether parallel processing will be used.
 #'                 Default is `NULL`.
@@ -116,8 +116,7 @@ fit2boot_out <- function(fit) {
 #' @export
 #' @describeIn fit2boot_out Do bootstrapping and store information to be used
 #'                          by [cond_indirect_effects()] and related functions.
-#'                          Support parallel processing and can be faster than
-#'                          setting `se` to `"boot"` in [lavaan::sem()].
+#'                          Support parallel processing.
 #' @order 2
 #'
 fit2boot_out_do_boot <- function(fit,
