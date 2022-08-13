@@ -8,7 +8,8 @@
 #' when calling [lavaan::sem()] by setting `se = "boot"`,
 #' [fit2boot_out()] can be used to extract the stored
 #' bootstrap estimates so that they can be reused by
-#' [indirect_effect()] and [cond_indirect_effects()]
+#' [indirect_effect()], [cond_indirect_effects()] and
+#' related functions
 #' to form bootstrapping confidence intervals for
 #' indirect effects and conditional indirect effects.
 #'
