@@ -4,7 +4,7 @@
 #'   effects or conditional effects for all levels in the output of
 #'   [cond_indirect_effects()].
 #'
-#' @details It just extracts and returns the column `ind` or `std`
+#' @details It extracts and returns the column `ind` or `std`
 #'  in the output of [cond_indirect_effects()].
 #'
 #' @return
@@ -16,6 +16,7 @@
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
+#' @seealso [cond_indirect_effects()]
 #'
 #' @examples
 #'
