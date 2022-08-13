@@ -4,6 +4,12 @@
 #'  the output of [lavaan::sem()].
 #'
 #' @details
+#' This function is for advanced users. 
+#' [do_boot()] is a function users should
+#' try first because it has a general
+#' interface for input-specific functions
+#' like this one.
+#'
 #' If bootstrapping confidence intervals was requested
 #' when calling [lavaan::sem()] by setting `se = "boot"`,
 #' [fit2boot_out()] can be used to extract the stored
@@ -26,15 +32,19 @@
 #' is used in all subsequent analyses.
 #'
 #' @return A `boot_out`-class object that can be used for the
-#' `boot_out` argument of [indirect_effect()] and
-#' [cond_indirect_effects()] for forming bootstrapping confidence
+#' `boot_out` argument of [indirect_effect()],
+#' [cond_indirect_effects()], and related
+#' functions for forming bootstrapping confidence
 #' intervals.
 #'
-#' @param fit The fit object. Currently only supports a
+#' @param fit The fit object. This function
+#'            only supports a
 #'            [lavaan::lavaan-class] object.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
+#' @seealso [do_boot()], the general purpose
+#'          function that users should try first.
 #' @examples
 #'
 #' library(lavaan)
