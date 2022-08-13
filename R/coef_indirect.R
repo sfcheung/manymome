@@ -1,13 +1,14 @@
-#' @title Indirect effect or conditional indirect effect
+#' @title Extract the Indirect Effect or Conditional Indirect Effect
 #'
 #' @description Return the estimate of the indirect effect
 #'              in the output of [indirect_i()] or
 #'              [cond_indirect()].
 #'
-#' @details It just extracts and returns the element `indirect`.
+#' @details It extracts and returns the element `indirect`.
 #'
 #' @return
-#'  A scalar: The estimate of the standardized moderation effect.
+#'  A scalar: The estimate of the indirect effect or
+#'            conditional indirect effect.
 #'
 #' @param object The output of [indirect_i()] or
 #'              [cond_indirect()].
@@ -15,10 +16,11 @@
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
+#' @seealso [indirect_effect()] and [cond_effect()].
 #'
 #' @examples
 #'
-#'
+#' # TODO: Update the example
 #' library(lavaan)
 #' dat <- modmed_x1m3w4y1
 #' mod <-
