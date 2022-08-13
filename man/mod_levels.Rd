@@ -114,7 +114,7 @@ if \code{merge = TRUE}.
 }
 \description{
 Create levels of moderators to be used by
-\code{\link[=indirect_i]{indirect_i()}}, \code{\link[=cond_indirect]{cond_indirect()}}, and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+\code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect]{cond_indirect()}}, and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 }
 \details{
 It creates values of a moderator that can be used to compute

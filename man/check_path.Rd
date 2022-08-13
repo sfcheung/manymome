@@ -7,15 +7,15 @@
 check_path(x, y, m = NULL, fit = NULL, est = NULL)
 }
 \arguments{
-\item{x}{Character. The name of predictor at the start of the pathway.}
+\item{x}{Character. The name of predictor at the start of the path.}
 
 \item{y}{Character. The name of the outcome variable at
-the end of the pathway.}
+the end of the path.}
 
 \item{m}{A vector of the variable names of the
-mediators. The pathway goes from the first
+mediators. The path goes from the first
 mediator successively to the last mediator. If
-\code{NULL}, the default, the pathway goes from \code{x}
+\code{NULL}, the default, the path goes from \code{x}
 to \code{y}.}
 
 \item{fit}{The fit object. Currently only supports a
@@ -26,7 +26,7 @@ default, it will be generated from \code{fit}. If supplied,
 \code{fit} will ge ignored.}
 }
 \value{
-Boolean. \code{TRUE} is the path is valid, \code{FALSE} if the
+Boolean. \code{TRUE} if the path is valid, \code{FALSE} if the
 path is invalid.
 }
 \description{
@@ -36,7 +36,8 @@ in a model.
 \details{
 It checks whether the path defined by a predictor,
 an outcome, and sequence of mediators exists in
-a model.
+a model. It can check models in a \link[lavaan:lavaan-class]{lavaan::lavaan}
+object.
 
 For example, in the following model in \link{lavaan} syntax
 

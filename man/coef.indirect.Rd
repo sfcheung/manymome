@@ -2,30 +2,31 @@
 % Please edit documentation in R/coef_indirect.R
 \name{coef.indirect}
 \alias{coef.indirect}
-\title{Indirect effect or conditional indirect effect}
+\title{Extract the Indirect Effect or Conditional Indirect Effect}
 \usage{
 \method{coef}{indirect}(object, ...)
 }
 \arguments{
-\item{object}{The output of \code{\link[=indirect_i]{indirect_i()}} or
+\item{object}{The output of \code{\link[=indirect_effect]{indirect_effect()}} or
 \code{\link[=cond_indirect]{cond_indirect()}}.}
 
 \item{...}{Optional arguments. Ignored by the function.}
 }
 \value{
-A scalar: The estimate of the standardized moderation effect.
+A scalar: The estimate of the indirect effect or
+conditional indirect effect.
 }
 \description{
 Return the estimate of the indirect effect
-in the output of \code{\link[=indirect_i]{indirect_i()}} or
+in the output of \code{\link[=indirect_effect]{indirect_effect()}} or
 \code{\link[=cond_indirect]{cond_indirect()}}.
 }
 \details{
-It just extracts and returns the element \code{indirect}.
+It extracts and returns the element \code{indirect}.
 }
 \examples{
 
-
+# TODO: Update the example
 library(lavaan)
 dat <- modmed_x1m3w4y1
 mod <-
@@ -53,6 +54,9 @@ indirect_2 <- (est[est$label == "a1", "est"] +
 indirect_1$indirect
 indirect_2
 
+}
+\seealso{
+\code{\link[=indirect_effect]{indirect_effect()}} and \code{\link[=cond_indirect]{cond_indirect()}}.
 }
 \author{
 Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}

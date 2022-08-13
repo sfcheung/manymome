@@ -21,7 +21,7 @@ effects or conditional effects for all levels in the output of
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 }
 \details{
-It just extracts and returns the column \code{ind} or \code{std}
+It extracts and returns the column \code{ind} or \code{std}
 in the output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 }
 \examples{
@@ -57,6 +57,9 @@ out2 <- cond_indirect_effects(x = "x", y = "y", m = c("m1", "m2"),
                       wlevels = w1w4levels, fit = fit)
 coef(out2)
 
+}
+\seealso{
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
 }
 \author{
 Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}

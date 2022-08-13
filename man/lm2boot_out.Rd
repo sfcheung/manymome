@@ -8,7 +8,7 @@ lm2boot_out(outputs, R = 100, seed = NULL)
 }
 \arguments{
 \item{outputs}{A list of \code{lm} class objects, or
-the output of \code{\link[=lm2list]{lm2list()}} (i.e., a \code{lm_list}-class
+the output of \code{\link[=lm2list]{lm2list()}} (i.e., an \code{lm_list}-class
 object).}
 
 \item{R}{The number of bootstrap samples. Default is 100.}
@@ -18,7 +18,8 @@ Default is \code{NULL} and seed is not set.}
 }
 \value{
 A \code{boot_out}-class object that can be used for the \code{boot_out}
-argument of \code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
+argument of \code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+and related functions
 for forming bootstrapping confidence intervals.
 }
 \description{
@@ -26,18 +27,26 @@ Generate bootstrapping estimates for models
 in a list of 'lm' outputs.
 }
 \details{
-It do nonparametric bootstrapping to generate bootstrap
+This function is for advanced users.
+\code{\link[=do_boot]{do_boot()}} is a function users should
+try first because it has a general
+interface for input-specific functions
+like this one.
+
+It does nonparametric bootstrapping to generate bootstrap
 estimates of the regression coefficients in the regression models
-of a list of \code{\link[=lm]{lm()}} outputs, or a \code{lm_list}-class object
-formed by \code{\link[=lm2list]{lm2list()}}. The stored estimates can be
-used to \code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
+of a list of \code{\link[=lm]{lm()}} outputs, or an \code{lm_list}-class object
+created by \code{\link[=lm2list]{lm2list()}}. The stored estimates can be
+used by \code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+and related functions
 in forming bootstrapping confidence intervals for
-conditional effects.
+effects such as indirect effect and conditional indirect effects.
 
 This approach removes the need to repeat bootstrapping in
-each call to \code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+each call to \code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+and related functions.
 It also ensures that the same set of bootstrap samples
-is used in all subsequent analysis.
+is used in all subsequent analyses.
 }
 \examples{
 
@@ -59,6 +68,10 @@ out <- cond_indirect_effects(wlevels = wlevels,
                              boot_out = lm_boot_out)
 out
 
+}
+\seealso{
+\code{\link[=do_boot]{do_boot()}}, the general purpose
+function that users should try first.
 }
 \author{
 Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}

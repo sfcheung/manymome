@@ -1,12 +1,12 @@
-#' @title Print the a 'indirect' Class Object
+#' @title Print the an 'indirect' Class Object
 #'
-#' @description Print the content of the output of [indirect_i()]
+#' @description Print the content of the output of [indirect_effect()]
 #'              or [cond_indirect()].
 #'
 #' @return
 #'  `x` is returned invisibly.
 #'
-#' @param x The output of he output of [indirect_i()]
+#' @param x The output of he output of [indirect_effect()]
 #'              or [cond_indirect()].
 #' @param digits Number of digits to display. Default is 3.
 #' @param ...  Other arguments. Not used.

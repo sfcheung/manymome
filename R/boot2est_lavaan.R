@@ -4,7 +4,7 @@
 #'  the output of [lavaan::sem()].
 #'
 #' @details
-#' This function is for advanced users. 
+#' This function is for advanced users.
 #' [do_boot()] is a function users should
 #' try first because it has a general
 #' interface for input-specific functions
@@ -20,7 +20,7 @@
 #' effects such as indirect effects and conditional indirect effects.
 #'
 #' If bootstrapping confidence was not requested
-#' when fitting the model by [lavaan::semm()],
+#' when fitting the model by [lavaan::sem()],
 #' [fit2boot_out_do_boot()] can be used to generate nonparametric
 #' bootstrap estimates from the output of [lavaan::sem()]
 #' and store them for use by

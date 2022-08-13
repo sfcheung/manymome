@@ -2,16 +2,16 @@
 % Please edit documentation in R/confint_indirect.R
 \name{confint.indirect}
 \alias{confint.indirect}
-\title{Indirect effect or conditional indirect effect}
+\title{Confidence Interval of Indirect Effect or Conditional Indirect Effect}
 \usage{
 \method{confint}{indirect}(object, parm, level = 0.95, ...)
 }
 \arguments{
-\item{object}{The output of \code{\link[=indirect_i]{indirect_i()}} or
+\item{object}{The output of \code{\link[=indirect_effect]{indirect_effect()}} or
 \code{\link[=cond_indirect]{cond_indirect()}}.}
 
-\item{parm}{Ignored. Always return the bootstrap confidence interval
-of the standardized moderation effect.}
+\item{parm}{Ignored because the stored object
+always has only one parameter.}
 
 \item{level}{The level of confidence, default is .95, returning the
 95\% confidence interval.}
@@ -19,14 +19,19 @@ of the standardized moderation effect.}
 \item{...}{Additional arguments. Ignored by the function.}
 }
 \description{
-Return the estimate of the indirect effect
-in the output of \code{\link[=indirect_i]{indirect_i()}} or
+Return the  bootstrap confidence
+interval of the indirect effect
+or conditional indirect effect
+stored in the output of \code{\link[=indirect_effect]{indirect_effect()}} or
 \code{\link[=cond_indirect]{cond_indirect()}}.
 }
 \details{
-It just extracts and returns the element \code{indirect}.
+It extracts and returns the stored bootstrap
+confidence interval.
 }
 \examples{
+
+# TODO: Update the examples
 
 library(lavaan)
 dat <- modmed_x1m3w4y1
@@ -55,6 +60,9 @@ indirect_2 <- (est[est$label == "a1", "est"] +
 indirect_1$indirect
 indirect_2
 
+}
+\seealso{
+\code{\link[=indirect_effect]{indirect_effect()}} and \code{\link[=cond_indirect]{cond_indirect()}}
 }
 \author{
 Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}

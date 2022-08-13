@@ -18,10 +18,11 @@ fit2boot_out_do_boot(
 )
 }
 \arguments{
-\item{fit}{The fit object. Currently only supports a
+\item{fit}{The fit object. This function
+only supports a
 \link[lavaan:lavaan-class]{lavaan::lavaan} object.}
 
-\item{R}{Number of bootstrap samples. Default is 100.}
+\item{R}{The number of bootstrap samples. Default is 100.}
 
 \item{seed}{The seed for the random resampling. Default is \code{NULL}.}
 
@@ -43,33 +44,42 @@ Default is \code{list(spec = getOption("cl.cores", 2))}.}
 }
 \value{
 A \code{boot_out}-class object that can be used for the
-\code{boot_out} argument of \code{\link[=cond_indirect]{cond_indirect()}} and
-\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} for forming bootstrapping confidence
+\code{boot_out} argument of \code{\link[=indirect_effect]{indirect_effect()}},
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, and related
+functions for forming bootstrapping confidence
 intervals.
 }
 \description{
-Extract the bootstrapping estimates from
+Generate bootstrapping estimates from
 the output of \code{\link[lavaan:sem]{lavaan::sem()}}.
 }
 \details{
+This function is for advanced users.
+\code{\link[=do_boot]{do_boot()}} is a function users should
+try first because it has a general
+interface for input-specific functions
+like this one.
+
 If bootstrapping confidence intervals was requested
 when calling \code{\link[lavaan:sem]{lavaan::sem()}} by setting \code{se = "boot"},
 \code{\link[=fit2boot_out]{fit2boot_out()}} can be used to extract the stored
-bootstrap estimates such that they can be reused by
-\code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
+bootstrap estimates so that they can be reused by
+\code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} and
+related functions
 to form bootstrapping confidence intervals for
-conditional effects.
+effects such as indirect effects and conditional indirect effects.
 
-If bootstrapping confidence intervals was not requested,
+If bootstrapping confidence was not requested
+when fitting the model by \code{\link[lavaan:sem]{lavaan::sem()}},
 \code{\link[=fit2boot_out_do_boot]{fit2boot_out_do_boot()}} can be used to generate nonparametric
 bootstrap estimates from the output of \code{\link[lavaan:sem]{lavaan::sem()}}
 and store them for use by
-\code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+\code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, and related functions.
 
 This approach removes the need to repeat bootstrapping in
-each call to \code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+each call to \code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, and related functions.
 It also ensures that the same set of bootstrap samples
-is used in all subsequent analysis.
+is used in all subsequent analyses.
 }
 \section{Functions}{
 \itemize{
@@ -78,8 +88,7 @@ such as \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 
 \item \code{fit2boot_out_do_boot}: Do bootstrapping and store information to be used
 by \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} and related functions.
-Support parallel processing and can be faster than
-setting \code{se} to \code{"boot"} in \code{\link[lavaan:sem]{lavaan::sem()}}.
+Support parallel processing.
 }}
 
 \examples{
@@ -124,6 +133,10 @@ out <- cond_indirect_effects(wlevels = wlevels,
                              boot_out = fit_boot_out)
 out
 
+}
+\seealso{
+\code{\link[=do_boot]{do_boot()}}, the general purpose
+function that users should try first.
 }
 \author{
 Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}

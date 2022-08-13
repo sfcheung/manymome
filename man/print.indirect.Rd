@@ -2,12 +2,12 @@
 % Please edit documentation in R/print_indirect.R
 \name{print.indirect}
 \alias{print.indirect}
-\title{Print the a 'indirect' Class Object}
+\title{Print the an 'indirect' Class Object}
 \usage{
 \method{print}{indirect}(x, digits = 3, ...)
 }
 \arguments{
-\item{x}{The output of he output of \code{\link[=indirect_i]{indirect_i()}}
+\item{x}{The output of he output of \code{\link[=indirect_effect]{indirect_effect()}}
 or \code{\link[=cond_indirect]{cond_indirect()}}.}
 
 \item{digits}{Number of digits to display. Default is 3.}
@@ -18,7 +18,7 @@ or \code{\link[=cond_indirect]{cond_indirect()}}.}
 \code{x} is returned invisibly.
 }
 \description{
-Print the content of the output of \code{\link[=indirect_i]{indirect_i()}}
+Print the content of the output of \code{\link[=indirect_effect]{indirect_effect()}}
 or \code{\link[=cond_indirect]{cond_indirect()}}.
 }
 \examples{
