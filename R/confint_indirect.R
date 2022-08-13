@@ -1,23 +1,29 @@
-#' @title Indirect effect or conditional indirect effect
+#' @title Confidence Interval of Indirect Effect or Conditional Indirect Effect
 #'
-#' @description Return the estimate of the indirect effect
-#'              in the output of [indirect_i()] or
+#' @description Return the  bootstrap confidence
+#'              interval of the indirect effect
+#'              or conditional indirect effect
+#'              stored in the output of [indirect_effect()] or
 #'              [cond_indirect()].
 #'
-#' @details It just extracts and returns the element `indirect`.
+#' @details It extracts and returns the stored bootstrap
+#'           confidence interval.
 #'
-#' @param object The output of [indirect_i()] or
+#' @param object The output of [indirect_effect()] or
 #'              [cond_indirect()].
-#' @param parm Ignored. Always return the bootstrap confidence interval
-#'              of the standardized moderation effect.
+#' @param parm Ignored because the stored object
+#'             always has only one parameter.
 #' @param level The level of confidence, default is .95, returning the
 #'               95% confidence interval.
 #' @param ...  Additional arguments. Ignored by the function.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
+#' @seealso [indirect_effect()] and [cond_indirect()]
 #'
 #' @examples
+#'
+#' # TODO: Update the examples
 #'
 #' library(lavaan)
 #' dat <- modmed_x1m3w4y1
