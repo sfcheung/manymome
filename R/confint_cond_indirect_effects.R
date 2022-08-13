@@ -5,11 +5,11 @@
 #'        indirect effects or conditional effects in the output of
 #'        [cond_indirect_effects()].
 #'
-#' @details It just extracts and returns the columns for confidence
+#' @details It extracts and returns the columns for confidence
 #'  intervals, if available.
 #'
 #' @param object The output of [cond_indirect_effects()].
-#' @param parm Ignored. Always return the bootstrap confidence interval
+#' @param parm Ignored. Always returns the bootstrap confidence interval
 #'              of the effects for all levels stored.
 #' @param level The level of confidence, default is .95, returning the
 #'               95% confidence interval. Ignored for now and will
@@ -18,6 +18,7 @@
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
+#' @seealso [cond_indirect_effects()]
 #'
 #' @examples
 #'
