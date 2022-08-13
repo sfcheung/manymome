@@ -11,16 +11,17 @@
 #' [indirect_effect()], [cond_indirect_effects()] and
 #' related functions
 #' to form bootstrapping confidence intervals for
-#' indirect effects and conditional indirect effects.
+#' effects such as indirect effects and conditional indirect effects.
 #'
-#' If bootstrapping confidence intervals was not requested,
+#' If bootstrapping confidence was not requested
+#' when fitting the model by [lavaan::semm()],
 #' [fit2boot_out_do_boot()] can be used to generate nonparametric
 #' bootstrap estimates from the output of [lavaan::sem()]
 #' and store them for use by
-#' [indirect_effect()] and [cond_indirect_effects()].
+#' [indirect_effect()], [cond_indirect_effects()], and related functions.
 #'
 #' This approach removes the need to repeat bootstrapping in
-#' each call to [indirect_effect()] and [cond_indirect_effects()].
+#' each call to [indirect_effect()], [cond_indirect_effects()], and related functions.
 #' It also ensures that the same set of bootstrap samples
 #' is used in all subsequent analyses.
 #'
