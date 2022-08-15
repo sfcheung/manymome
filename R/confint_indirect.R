@@ -7,7 +7,7 @@
 #'              [cond_indirect()].
 #'
 #' @details It extracts and returns the stored bootstrap
-#'           confidence interval.
+#'           confidence interval if available.
 #'
 #' @param object The output of [indirect_effect()] or
 #'              [cond_indirect()].
