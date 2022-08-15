@@ -247,13 +247,12 @@ confint.index_of_mome<- function(object, parm, level = .95, ...) {
 # Check the number of product terms
 #' @noRd
 
-n_prods <- function(object) {
-    prod0 <- attr(object, "prods")
-    isna <- sapply(prod0, function(x) all(is.na(x)))
+n_prods <- function(prods) {
+    isna <- sapply(prods, function(x) all(is.na(x)))
     if (all(isna)) {
         return(0)
       }
-    prod1 <- prod0[!isna]
+    prod1 <- prods[!isna]
     np <- sapply(prod1, function(x) length(unlist(x$prod)))
     return(np)
   }
