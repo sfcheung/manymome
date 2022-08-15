@@ -126,7 +126,8 @@ index_of_mome <- function(output,
                 level = level,
                 from = wlevels_from,
                 to = wlevels_to,
-                output = output[c(to, from), ])
+                output = output[c(to, from), ],
+                boot_diff = boot_diff)
     class(out) <- c("index_of_mome", class(out))
     out
   }
@@ -241,4 +242,18 @@ confint.index_of_mome<- function(object, parm, level = .95, ...) {
                          "~",
                          full_output_attr$x)
     out
+  }
+
+# Check the number of product terms
+#' @noRd
+
+n_prods <- function(object) {
+    prod0 <- attr(object, "prods")
+    isna <- sapply(prod0, function(x) all(is.na(x)))
+    if (all(isna)) {
+        return(0)
+      }
+    prod1 <- prod0[!isna]
+    np <- sapply(prod1, function(x) length(unlist(x$prod)))
+    return(np)
   }
