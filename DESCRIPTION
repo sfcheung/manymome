@@ -1,6 +1,6 @@
 Package: manymome
 Title: Moderation, Mediation, and Moderated-Mediation in SEM
-Version: 0.0.1.9036
+Version: 0.0.1.9037
 Authors@R:
     c(person(given = "Shu Fai",
            family = "Cheung",
