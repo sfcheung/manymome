@@ -96,10 +96,10 @@
 #'
 
 fit2boot_out <- function(fit) {
-    if (length(lavaan::lavNames(fit, "lv")) != 0) {
-        stop(paste0("fit2boot_out() does not support a model with latent variables.",
-                    "\nPlease use fit2boot_out_do_boot()."))
-      }
+    # if (length(lavaan::lavNames(fit, "lv")) != 0) {
+    #     stop(paste0("fit2boot_out() does not support a model with latent variables.",
+    #                 "\nPlease use fit2boot_out_do_boot()."))
+    #   }
     boot_est <- boot2est(fit)
     boot_implied <- boot2implied(fit)
     out <- mapply(function(x, y) list(est = x,
@@ -298,21 +298,43 @@ set_est_i <- function(est0, fit, p_free) {
 #' @noRd
 
 get_implied_i <- function(est0, fit) {
-    # fit@ParTable$est[p_free] <- unname(est0)
-    # fit@Model@GLIST <- lavaan::lav_model_set_parameters(fit@Model,
-    #                                                     est0)@GLIST
-    # implied <- lavaan::lavInspect(fit, "implied")
-    # implied
-    mod0 <- lavaan::lav_model_set_parameters(fit@Model, est0)
-    implied <- lavaan::lav_model_implied(mod0,
-                                         GLIST = NULL,
-                                         delta = TRUE)
-    out <- lavaan::lavInspect(fit, "implied")
+    has_lv <- length(lavaan::lavNames(fit, "lv")) != 0
+    if (has_lv) {
+        p_free <- fit@ParTable$free > 0
+        fit@ParTable$est[p_free] <- unname(est0)
+        fit@Model@GLIST <- lavaan::lav_model_set_parameters(fit@Model,
+                                                            est0)@GLIST
+        implied_cov_all <- lavaan::lavInspect(fit, "cov.all")
+        mod0 <- lavaan::lav_model_set_parameters(fit@Model, est0)
+        implied_mean_ov <- lavaan::lavInspect(fit, "mean.ov")
+        implied_mean_ov[] <- lavaan::lav_model_implied(mod0,
+                                             GLIST = NULL,
+                                             delta = TRUE)$mean[[1]][, 1]
+        implied_mean_lv <- lavaan::lavInspect(fit, "mean.lv")
+        implied_mean_lv[] <- NA
+        implied <- list(cov = list(implied_cov_all),
+                        mean = list(c(implied_mean_ov,
+                                      implied_mean_lv)),
+                        mean_lv = list(implied_mean_lv))
+      } else {
+        mod0 <- lavaan::lav_model_set_parameters(fit@Model, est0)
+        implied <- lavaan::lav_model_implied(mod0,
+                                             GLIST = NULL,
+                                             delta = TRUE)
+      }
     out <- lav_implied_all(fit)
     out_names <- names(out)
+    implied_names <- names(implied)
     out1 <- out
     for (x in out_names) {
-        out1[[x]][] <- implied[[x]][[1]]
+        if (x %in% implied_names) {
+          out1[[x]][] <- implied[[x]][[1]]
+        } else {
+          out1[[x]][] <- NA
+        }
+      }
+    if (has_lv) {
+        out1$mean_lv <- implied$mean_lv[[1]]
       }
     out1
   }
