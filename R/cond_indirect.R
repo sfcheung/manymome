@@ -2,47 +2,88 @@
 #'
 #' @description Compute the conditional effects, indirect effects, or
 #'   conditional indirect effects in a structural model fitted by
-#'   [lm()] or [lavaan::lavaan()].
+#'   [lm()] or [lavaan::sem()].
 #'
 #' @details
 #'
-#' For a model with a mediation pathway moderated by one or more
-#' moderators, [cond_indirect()] and [cond_indirect_effects()] can be
+#' For a model with a mediation path moderated by one or more
+#' moderators, [cond_indirect_effects()] can be
 #' used to compute the conditional indirect effect from one variable
-#' to another variable, at selected level(s) of the moderator(s).
+#' to another variable, at one or more set of
+#' selected value(s) of the moderator(s).
+#'
+#' If only the effect for one set of value(s) of the moderator(s)
+#' is needed, [cond_indirect()] can be used.
 #'
 #' If only the mediator(s) is/are specified (`m`) and no values of
 #' moderator(s) are specified, then the indirect effect from one
-#' variable (`x`) to another variable (`y`) is computed.
+#' variable (`x`) to another variable (`y`) is computed. A convenient
+#' wrapper [indirect_effect()] can be used to compute the indirect
+#' effect.
 #'
 #' If only the value(s) of moderator(s) is/are specified (`wvalues` or
-#' `wlevels`) and no mediators (`m`) are specified, then the
+#' `wlevels`) and no mediators (`m`) are specified when
+#' calling [cond_indirect_effects()] or [cond_indirect()], then the
 #' conditional direct effects from one variable to another are
 #' computed.
 #'
+#' All three functions support using nonparametric bootstrapping to
+#' form percentile confidence intervals. Bootstrapping
+#' only needs to be done once. These are the possible ways to form
+#' bootstrapping:
+#'
+#' 1. Do bootstrapping in the first call to one of these functions,
+#'    by setting `boot_ci` to `TRUE` and `R` to the number of
+#'    bootstrap samples, `level` to the level of confidence (default .95
+#'    or 95%), and `seed` to reproduce the results (`parallel` and
+#'    `ncores` are optional). This will take some time to run. The output
+#'    will have all bootstrap estimates stored. This output, whether it
+#'    is from [indirect_effect()], [cond_indirect_effects()], or
+#'    [cond_indirect()], can be reused by any of these three functions
+#'   by setting `boot_out` to this output. They will form the confidence
+#'   intervals using the stored bootstrap estimates.
+#'
+#' 2. Do bootstrapping using [do_boot()]. The output can be used
+#'    in the `boot_out` argument of [indirect_effect()],
+#'    [cond_indirect_effects()] and [cond_indirect()].
+#'
+#' 3. If [lavaan::sem()] is used to fit a model and `se = "boot"` is
+#'    used, [do_boot()] can extract them to generate a `boot_out`-class
+#'    object that again can be used in the `boot_out` argument.
+#'
+#' If `boot_out` is set, arguments such as `R`, `seed`, and `parallel`
+#' will be ignored.
+#'
 #' @return
-#' [cond_indirect()] returns an `indirect`-class object.
+#' [indirect_effect()] and [cond_indirect()] return an
+#' `indirect`-class object.
 #'
 #' [cond_indirect_effects()] returns a `cond_indirect_effects`-class
 #' object.
 #'
-#' These two classes of objects their own print methods for printing
-#' the results (see [print.indirect()] and
-#' [print.cond_indirect_effects()])
+#' These two classes of objects have their own print methods for
+#' printing the results (see [print.indirect()] and
+#' [print.cond_indirect_effects()]). They also have a `coef`
+#' method for extracting the estimates ([coef.indirect()] and
+#' [coef.cond_indirect_effects()]) and a `confint` method
+#' for extracting the confidence intervals ([confint.indirect()]
+#' and [confint.cond_indirect_effects()]). Addition and subtraction
+#' can also be conducted on `indirect`-class object to estimate
+#' and test a function of effects (see [math_indirect])
 #'
-#' @param x Character. The name of predictor at the start of the
-#'    pathway.
+#' @param x Character. The name of the predictor at the start of the
+#'    path.
 #' @param y Character. The name of the outcome variable at the end of
-#'    the pathway.
+#'    the path.
 #' @param m A vector of the variable names of the moderators. The
-#'    pathway goes from the first mediator successively to the last
-#'    mediator. If `NULL`, the default, the pathway goes from `x` to
+#'    path goes from the first mediator successively to the last
+#'    mediator. If `NULL`, the default, the path goes from `x` to
 #'    `y`.
 #' @param fit The fit object. Can be a
 #'    [lavaan::lavaan-class] object or a list of [lm()] outputs.
 #' @param est The output of [lavaan::parameterEstimates()]. If `NULL`,
 #'    the default, it will be generated from `fit`. If supplied, `fit`
-#'    will ge ignored.
+#'    will be ignored.
 #' @param implied_stats Implied means, variances, and covariances of
 #'    observed variables, of the form of the output of
 #'    [lavaan::lavInspect()] with `what` set to `"implied"`. The
@@ -64,7 +105,8 @@
 #' @param boot_out If `boot_ci` is `TRUE`, users can supply
 #'    pregenerated bootstrap estimates. This can be the output of
 #'    [do_boot()]. For [cond_indirect_effects()], this can be
-#'    the output of previous call to [cond_indirect_effects()] with
+#'    the output of previous call to [cond_indirect_effects()],
+#'    [indirect_effect()], or [cond_indirect()] with
 #'    bootstrap estimates. These stored estimates will be reused such that
 #'    there is no need to do bootstrapping again. If not supplied, the
 #'    function will try to generate them from `fit`.
@@ -109,18 +151,23 @@
 #' @param ... Arguments to be passed to [cond_indirect()]
 #' @param output_type The type of output of [cond_indirect_effects()].
 #'    If `"data.frame"`, the default, the output will be converted to
-#'    a data frame. If any other value, the output is a list of the
+#'    a data frame. If any other values, the output is a list of the
 #'    outputs from [cond_indirect()].
 #' @param save_boot_full If `TRUE`, full bootstrapping results will be
 #'    stored. Default is `FALSE.`
 #' @param prods The product terms found. For internal use.
 #' @param get_prods_only IF `TRUE`, will quit early and return the product
 #'             terms found. The results can be passed to the `prod` argument
-#'             when calling this function. Default is `FALSE`.
-#' @param save_boot_out If `boot_out` is supplied, whether it will be save
+#'             when calling this function. Default is `FALSE`. This function
+#'             is for internal use.
+#' @param save_boot_out If `boot_out` is supplied, whether it will be saved
 #'             in the output. Default is `TRUE`.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
+#'
+#' @seealso [mod_levels()] and [merge_mod_levels()] for generating levels
+#'          of moderators. [do_boot] for doing bootstrapping before calling these
+#'          functions.
 #'
 #' @examples
 #'
@@ -143,7 +190,7 @@
 #'               wvalues = c(w1 = hi_w1), fit = fit)
 #'
 #' # Indirect effect from x1 through m2 to y
-#' cond_indirect(x = "x", y = "y", m = "m2", fit = fit)
+#' indirect_effect(x = "x", y = "y", fit = fit)
 #'
 #' # Conditional Indirect effect from x1 through m1 to y, when w1 is 1 SD above mean
 #' cond_indirect(x = "x", y = "y", m = "m1",
@@ -297,7 +344,7 @@ cond_indirect <- function(x,
   }
 
 #' @export
-#' @describeIn cond_indirect Compute the indirect effects. A wrapper of
+#' @describeIn cond_indirect Compute the indirect effect. A wrapper of
 #'                           [cond_indirect()]. Can be used
 #'                           when there is no moderator.
 #' @order 3
@@ -385,9 +432,9 @@ indirect_effect <- function(x,
 #'                       wlevels = w1levels, fit = fit)
 #'
 #' @export
-#' @describeIn cond_indirect Compute the conditional, indirect, or
+#' @describeIn cond_indirect Compute the conditional effects or
 #'                           conditional indirect effects for several
-#'                           sets of levels.
+#'                           sets of levels of the moderator(s).
 #' @order 2
 
 
@@ -561,6 +608,7 @@ cond_indirect_effects <- function(wlevels,
       }
   }
 
+# Check the type of `fit` and return the type as a string
 #' @noRd
 #'
 
@@ -582,6 +630,10 @@ cond_indirect_check_fit <- function(fit) {
       }
     fit_type
   }
+
+# Convert a list of `indirect`-class objects to a data frame, with
+# information on the levels of moderators.
+#' @noRd
 
 cond_indirect_effects_to_df <- function(x, wlevels) {
     k <- nrow(wlevels)
@@ -635,6 +687,10 @@ cond_indirect_effects_to_df <- function(x, wlevels) {
     out1 <- cbind(wlevels_label, wlevels2, out)
     out1
   }
+
+# Check the argument `wlevels` and convert it to a valid data
+# frame of wlevels if possible.
+#' @noRd
 
 check_wlevels <- function(ws) {
     if (is.data.frame(ws)) {

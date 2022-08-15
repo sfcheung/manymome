@@ -8,6 +8,10 @@
 #' @details It extracts and returns the element `indirect`.
 #'           in an object.
 #'
+#' If standardized effect is requested when calling
+#' [indirect_effect()] or [cond_indirect()], the
+#' effect returned is also standardized.
+#'
 #' @return
 #'  A scalar: The estimate of the indirect effect or
 #'            conditional indirect effect.
@@ -22,33 +26,33 @@
 #'
 #' @examples
 #'
-#' # TODO: Update the example
 #' library(lavaan)
 #' dat <- modmed_x1m3w4y1
 #' mod <-
 #' "
-#' m1 ~ a1 * x   + b1 * w1 + d1 * x:w1
-#' m2 ~ a2 * m1  + b2 * w2 + d2 * m1:w2
-#' m3 ~ a3 * m2  + b3 * w3 + d3 * m2:w3
-#' y  ~ a4 * m3  + b4 * w4 + d4 * m3:w4
+#' m1 ~ x + w1 + x:w1
+#' m2 ~ x
+#' y  ~ m1 + m2 + x
 #' "
-#' fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
+#' fit <- sem(mod, dat,
+#'            meanstructure = TRUE, fixed.x = FALSE,
+#'            se = "none", baseline = FALSE)
 #' est <- parameterEstimates(fit)
 #'
-#' wvalues <- c(w1 = 5, w2 = 4, w3 = 2, w4 = 3)
+#' # Examples for indirect_effect():
 #'
-#' indirect_1 <- indirect_i(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
-#'                        wvalues = wvalues)
-#' indirect_2 <- (est[est$label == "a1", "est"] +
-#'                 wvalues["w1"] * est[est$label == "d1", "est"]) *
-#'               (est[est$label == "a2", "est"] +
-#'                 wvalues["w2"] * est[est$label == "d2", "est"]) *
-#'               (est[est$label == "a3", "est"] +
-#'                 wvalues["w3"] * est[est$label == "d3", "est"]) *
-#'               (est[est$label == "a4", "est"] +
-#'                 wvalues["w4"] * est[est$label == "d4", "est"])
-#' indirect_1$indirect
-#' indirect_2
+#' # Inidrect effect from x through m2 to y
+#' out1 <- indirect_effect(x = "x", y = "y", m = "m2", fit = fit)
+#' out1
+#' coef(out1)
+#'
+#' # Conditional Indirect effect from x1 through m1 to y,
+#' # when w1 is 1 SD above mean
+#' hi_w1 <- mean(dat$w1) + sd(dat$w1)
+#' out2 <- cond_indirect(x = "x", y = "y", m = "m1",
+#'                       wvalues = c(w1 = hi_w1), fit = fit)
+#' out2
+#' coef(out2)
 #'
 #' @export
 

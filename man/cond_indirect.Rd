@@ -78,15 +78,15 @@ indirect_effect(
 )
 }
 \arguments{
-\item{x}{Character. The name of predictor at the start of the
-pathway.}
+\item{x}{Character. The name of the predictor at the start of the
+path.}
 
 \item{y}{Character. The name of the outcome variable at the end of
-the pathway.}
+the path.}
 
 \item{m}{A vector of the variable names of the moderators. The
-pathway goes from the first mediator successively to the last
-mediator. If \code{NULL}, the default, the pathway goes from \code{x} to
+path goes from the first mediator successively to the last
+mediator. If \code{NULL}, the default, the path goes from \code{x} to
 \code{y}.}
 
 \item{fit}{The fit object. Can be a
@@ -94,7 +94,7 @@ mediator. If \code{NULL}, the default, the pathway goes from \code{x} to
 
 \item{est}{The output of \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}. If \code{NULL},
 the default, it will be generated from \code{fit}. If supplied, \code{fit}
-will ge ignored.}
+will be ignored.}
 
 \item{implied_stats}{Implied means, variances, and covariances of
 observed variables, of the form of the output of
@@ -123,7 +123,8 @@ interval. Default is .95.}
 \item{boot_out}{If \code{boot_ci} is \code{TRUE}, users can supply
 pregenerated bootstrap estimates. This can be the output of
 \code{\link[=do_boot]{do_boot()}}. For \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, this can be
-the output of previous call to \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} with
+the output of previous call to \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+\code{\link[=indirect_effect]{indirect_effect()}}, or \code{\link[=cond_indirect]{cond_indirect()}} with
 bootstrap estimates. These stored estimates will be reused such that
 there is no need to do bootstrapping again. If not supplied, the
 function will try to generate them from \code{fit}.}
@@ -164,9 +165,10 @@ stored. Default is \code{FALSE.}}
 
 \item{get_prods_only}{IF \code{TRUE}, will quit early and return the product
 terms found. The results can be passed to the \code{prod} argument
-when calling this function. Default is \code{FALSE}.}
+when calling this function. Default is \code{FALSE}. This function
+is for internal use.}
 
-\item{save_boot_out}{If \code{boot_out} is supplied, whether it will be save
+\item{save_boot_out}{If \code{boot_out} is supplied, whether it will be saved
 in the output. Default is \code{TRUE}.}
 
 \item{wlevels}{The output of \code{\link[=merge_mod_levels]{merge_mod_levels()}}, or the
@@ -213,7 +215,7 @@ further information.}
 
 \item{output_type}{The type of output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 If \code{"data.frame"}, the default, the output will be converted to
-a data frame. If any other value, the output is a list of the
+a data frame. If any other values, the output is a list of the
 outputs from \code{\link[=cond_indirect]{cond_indirect()}}.}
 
 \item{mod_levels_list_args}{Additional arguments to be passed
@@ -223,34 +225,74 @@ the levels of moderators. Default is \code{list()}.}
 \item{...}{Arguments to be passed to \code{\link[=cond_indirect]{cond_indirect()}}}
 }
 \value{
-\code{\link[=cond_indirect]{cond_indirect()}} returns an \code{indirect}-class object.
+\code{\link[=indirect_effect]{indirect_effect()}} and \code{\link[=cond_indirect]{cond_indirect()}} return an
+\code{indirect}-class object.
 
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} returns a \code{cond_indirect_effects}-class
 object.
 
-These two classes of objects their own print methods for printing
-the results (see \code{\link[=print.indirect]{print.indirect()}} and
-\code{\link[=print.cond_indirect_effects]{print.cond_indirect_effects()}})
+These two classes of objects have their own print methods for
+printing the results (see \code{\link[=print.indirect]{print.indirect()}} and
+\code{\link[=print.cond_indirect_effects]{print.cond_indirect_effects()}}). They also have a \code{coef}
+method for extracting the estimates (\code{\link[=coef.indirect]{coef.indirect()}} and
+\code{\link[=coef.cond_indirect_effects]{coef.cond_indirect_effects()}}) and a \code{confint} method
+for extracting the confidence intervals (\code{\link[=confint.indirect]{confint.indirect()}}
+and \code{\link[=confint.cond_indirect_effects]{confint.cond_indirect_effects()}}). Addition and subtraction
+can also be conducted on \code{indirect}-class object to estimate
+and test a function of effects (see \link{math_indirect})
 }
 \description{
 Compute the conditional effects, indirect effects, or
 conditional indirect effects in a structural model fitted by
-\code{\link[=lm]{lm()}} or \code{\link[lavaan:lavaan]{lavaan::lavaan()}}.
+\code{\link[=lm]{lm()}} or \code{\link[lavaan:sem]{lavaan::sem()}}.
 }
 \details{
-For a model with a mediation pathway moderated by one or more
-moderators, \code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} can be
+For a model with a mediation path moderated by one or more
+moderators, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} can be
 used to compute the conditional indirect effect from one variable
-to another variable, at selected level(s) of the moderator(s).
+to another variable, at one or more set of
+selected value(s) of the moderator(s).
+
+If only the effect for one set of value(s) of the moderator(s)
+is needed, \code{\link[=cond_indirect]{cond_indirect()}} can be used.
 
 If only the mediator(s) is/are specified (\code{m}) and no values of
 moderator(s) are specified, then the indirect effect from one
-variable (\code{x}) to another variable (\code{y}) is computed.
+variable (\code{x}) to another variable (\code{y}) is computed. A convenient
+wrapper \code{\link[=indirect_effect]{indirect_effect()}} can be used to compute the indirect
+effect.
 
 If only the value(s) of moderator(s) is/are specified (\code{wvalues} or
-\code{wlevels}) and no mediators (\code{m}) are specified, then the
+\code{wlevels}) and no mediators (\code{m}) are specified when
+calling \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} or \code{\link[=cond_indirect]{cond_indirect()}}, then the
 conditional direct effects from one variable to another are
 computed.
+
+All three functions support using nonparametric bootstrapping to
+form percentile confidence intervals. Bootstrapping
+only needs to be done once. These are the possible ways to form
+bootstrapping:
+\enumerate{
+\item Do bootstrapping in the first call to one of these functions,
+by setting \code{boot_ci} to \code{TRUE} and \code{R} to the number of
+bootstrap samples, \code{level} to the level of confidence (default .95
+or 95\%), and \code{seed} to reproduce the results (\code{parallel} and
+\code{ncores} are optional). This will take some time to run. The output
+will have all bootstrap estimates stored. This output, whether it
+is from \code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, or
+\code{\link[=cond_indirect]{cond_indirect()}}, can be reused by any of these three functions
+by setting \code{boot_out} to this output. They will form the confidence
+intervals using the stored bootstrap estimates.
+\item Do bootstrapping using \code{\link[=do_boot]{do_boot()}}. The output can be used
+in the \code{boot_out} argument of \code{\link[=indirect_effect]{indirect_effect()}},
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} and \code{\link[=cond_indirect]{cond_indirect()}}.
+\item If \code{\link[lavaan:sem]{lavaan::sem()}} is used to fit a model and \code{se = "boot"} is
+used, \code{\link[=do_boot]{do_boot()}} can extract them to generate a \code{boot_out}-class
+object that again can be used in the \code{boot_out} argument.
+}
+
+If \code{boot_out} is set, arguments such as \code{R}, \code{seed}, and \code{parallel}
+will be ignored.
 }
 \section{Functions}{
 \itemize{
@@ -258,11 +300,11 @@ computed.
 conditional indirect effects for one set
 of levels.
 
-\item \code{cond_indirect_effects}: Compute the conditional, indirect, or
+\item \code{cond_indirect_effects}: Compute the conditional effects or
 conditional indirect effects for several
-sets of levels.
+sets of levels of the moderator(s).
 
-\item \code{indirect_effect}: Compute the indirect effects. A wrapper of
+\item \code{indirect_effect}: Compute the indirect effect. A wrapper of
 \code{\link[=cond_indirect]{cond_indirect()}}. Can be used
 when there is no moderator.
 }}
@@ -288,7 +330,7 @@ cond_indirect(x = "x", y = "m1",
               wvalues = c(w1 = hi_w1), fit = fit)
 
 # Indirect effect from x1 through m2 to y
-cond_indirect(x = "x", y = "y", m = "m2", fit = fit)
+indirect_effect(x = "x", y = "y", fit = fit)
 
 # Conditional Indirect effect from x1 through m1 to y, when w1 is 1 SD above mean
 cond_indirect(x = "x", y = "y", m = "m1",
@@ -311,6 +353,11 @@ cond_indirect_effects(x = "x", y = "m1",
 cond_indirect_effects(x = "x", y = "y", m = "m1",
                       wlevels = w1levels, fit = fit)
 
+}
+\seealso{
+\code{\link[=mod_levels]{mod_levels()}} and \code{\link[=merge_mod_levels]{merge_mod_levels()}} for generating levels
+of moderators. \link{do_boot} for doing bootstrapping before calling these
+functions.
 }
 \author{
 Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
