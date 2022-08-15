@@ -2,9 +2,11 @@
 #'
 #' @description Return the estimate of the indirect effect
 #'              in the output of [indirect_effect()] or
-#'              [cond_indirect()].
+#'              or the conditional indirect
+#'              in the output of [cond_indirect()].
 #'
 #' @details It extracts and returns the element `indirect`.
+#'           in an object.
 #'
 #' @return
 #'  A scalar: The estimate of the indirect effect or
