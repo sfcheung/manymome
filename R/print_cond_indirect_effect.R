@@ -57,9 +57,9 @@ print.cond_indirect_effects <- function(x, digits = 3,
   has_m <- isTRUE(!is.null(x_i$m))
   R <- ifelse(boot_ci, length(x_i$boot_indirect),
                        NA)
-  x0 <- my_call$x
-  y0 <- my_call$y
-  m0 <- my_call$m
+  x0 <- attr(x, "x")
+  y0 <- attr(x, "y")
+  m0 <- attr(x, "m")
   if (has_m) {
       path <- path <- paste0(x0, " -> ",
                              paste0(eval(m0), collapse = " -> "),
