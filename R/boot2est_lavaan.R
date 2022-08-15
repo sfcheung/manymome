@@ -6,7 +6,7 @@
 #' @details
 #' This function is for advanced users.
 #' [do_boot()] is a function users should
-#' try first because it has a general
+#' try first because [do_boot()] has a general
 #' interface for input-specific functions
 #' like this one.
 #'
@@ -27,7 +27,8 @@
 #' [indirect_effect()], [cond_indirect_effects()], and related functions.
 #'
 #' This approach removes the need to repeat bootstrapping in
-#' each call to [indirect_effect()], [cond_indirect_effects()], and related functions.
+#' each call to [indirect_effect()], [cond_indirect_effects()],
+#' and related functions.
 #' It also ensures that the same set of bootstrap samples
 #' is used in all subsequent analyses.
 #'
@@ -44,7 +45,8 @@
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [do_boot()], the general purpose
-#'          function that users should try first.
+#'          function that users should try first before
+#'          using this function.
 #' @examples
 #'
 #' library(lavaan)
@@ -61,10 +63,11 @@
 #' # bootstrap should be set to 2000 or even 5000 in real study
 #' set.seed(1234)
 #' fit <- sem(model = mod, data = dat, fixed.x = FALSE,
-#'            se = "boot", bootstrap = 10)
+#'            se = "boot", bootstrap = 40,
+#'            warn = FALSE)
 #' fit_boot_out <- fit2boot_out(fit)
 #' wlevels <- mod_levels(w = "w", fit = fit)
-#' out <- cond_indirect_effects(wlevels = wlevels,
+#' out <- cond_indirect_effects(wlevels = "w",
 #'                              x = "x",
 #'                              y = "y",
 #'                              m = "m",
@@ -75,10 +78,9 @@
 #' # Bootstrapping not requested in calling lavaan::sem()
 #' fit <- sem(model = mod, data = dat, fixed.x = FALSE)
 #' fit_boot_out <- fit2boot_out_do_boot(fit = fit,
-#'                                      R = 10,
+#'                                      R = 40,
 #'                                      seed = 1234)
-#' wlevels <- mod_levels(w = "w", fit = fit)
-#' out <- cond_indirect_effects(wlevels = wlevels,
+#' out <- cond_indirect_effects(wlevels = "w",
 #'                              x = "x",
 #'                              y = "y",
 #'                              m = "m",
@@ -114,11 +116,13 @@ fit2boot_out <- function(fit) {
 #' @param seed The seed for the random resampling. Default is `NULL`.
 #' @param parallel Logical. Whether parallel processing will be used.
 #'                 Default is `NULL`.
-#' @param ncores Integer. The number of CPU cores to use when `parallel` is `TRUE`.
-#'               Default is `NULL`, and the number of cores determined by
-#'               `getOption("cl.cores", 2)`. Will raise an error if greater than
-#'               the number of cores detected by [parallel::detectCores()].
-#'               If `ncores` is set, it will override `make_cluster_args`.
+#' @param ncores Integer. The number of CPU cores to use when
+#'               `parallel` is `TRUE`. Default is `NULL`, and the
+#'               number of cores determined by `getOption("cl.cores",
+#'               2)`. Will raise an error if greater than the number
+#'               of cores detected by [parallel::detectCores()]. If
+#'               `ncores` is set, it will override
+#'               `make_cluster_args`.
 #' @param make_cluster_args A named list of additional arguments to be passed
 #'                          to [parallel::makeCluster()]. For advanced users.
 #'                          See [parallel::makeCluster()] for details.
@@ -234,6 +238,9 @@ fit2boot_out_do_boot <- function(fit,
     out
   }
 
+# Convert stored estimates to a list of parameter estimates tables.
+# This is preferred because it is what users usually see.
+#' @noRd
 
 boot2est <- function(fit) {
     opt <- lavaan::lavInspect(fit, "options")
@@ -250,6 +257,9 @@ boot2est <- function(fit) {
     out_all
   }
 
+# Get the implied statistics from stored parameter estimates
+#' @noRd
+
 boot2implied <- function(fit) {
     opt <- lavaan::lavInspect(fit, "options")
     if (opt$se != "bootstrap") {
@@ -264,6 +274,9 @@ boot2implied <- function(fit) {
                         fit = fit)
     out_all
   }
+
+# Convert set the estimates in a parameter estimates tables.
+#' @noRd
 
 set_est_i <- function(est0, fit, p_free) {
     fit@ParTable$est[p_free] <- unname(est0)
@@ -280,6 +293,9 @@ set_est_i <- function(est0, fit, p_free) {
                                        remove.step1 = FALSE)
     est0
   }
+
+# Get the implied statistics from a set of estimates
+#' @noRd
 
 get_implied_i <- function(est0, fit) {
     # fit@ParTable$est[p_free] <- unname(est0)
@@ -300,6 +316,10 @@ get_implied_i <- function(est0, fit) {
       }
     out1
   }
+
+# Create the function for bootstrapping.
+# Return the parameter estimates and implied statistics.
+#' @noRd
 
 gen_boot_i <- function(fit) {
   fit_org <- eval(fit)

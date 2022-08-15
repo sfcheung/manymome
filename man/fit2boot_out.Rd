@@ -29,11 +29,12 @@ only supports a
 \item{parallel}{Logical. Whether parallel processing will be used.
 Default is \code{NULL}.}
 
-\item{ncores}{Integer. The number of CPU cores to use when \code{parallel} is \code{TRUE}.
-Default is \code{NULL}, and the number of cores determined by
-\code{getOption("cl.cores", 2)}. Will raise an error if greater than
-the number of cores detected by \code{\link[parallel:detectCores]{parallel::detectCores()}}.
-If \code{ncores} is set, it will override \code{make_cluster_args}.}
+\item{ncores}{Integer. The number of CPU cores to use when
+\code{parallel} is \code{TRUE}. Default is \code{NULL}, and the
+number of cores determined by \code{getOption("cl.cores", 2)}. Will raise an error if greater than the number
+of cores detected by \code{\link[parallel:detectCores]{parallel::detectCores()}}. If
+\code{ncores} is set, it will override
+\code{make_cluster_args}.}
 
 \item{make_cluster_args}{A named list of additional arguments to be passed
 to \code{\link[parallel:makeCluster]{parallel::makeCluster()}}. For advanced users.
@@ -56,7 +57,7 @@ the output of \code{\link[lavaan:sem]{lavaan::sem()}}.
 \details{
 This function is for advanced users.
 \code{\link[=do_boot]{do_boot()}} is a function users should
-try first because it has a general
+try first because \code{\link[=do_boot]{do_boot()}} has a general
 interface for input-specific functions
 like this one.
 
@@ -77,7 +78,8 @@ and store them for use by
 \code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, and related functions.
 
 This approach removes the need to repeat bootstrapping in
-each call to \code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, and related functions.
+each call to \code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+and related functions.
 It also ensures that the same set of bootstrap samples
 is used in all subsequent analyses.
 }
@@ -107,10 +109,11 @@ y ~ m + w + m:w + x + c1 + c2
 # bootstrap should be set to 2000 or even 5000 in real study
 set.seed(1234)
 fit <- sem(model = mod, data = dat, fixed.x = FALSE,
-           se = "boot", bootstrap = 10)
+           se = "boot", bootstrap = 40,
+           warn = FALSE)
 fit_boot_out <- fit2boot_out(fit)
 wlevels <- mod_levels(w = "w", fit = fit)
-out <- cond_indirect_effects(wlevels = wlevels,
+out <- cond_indirect_effects(wlevels = "w",
                              x = "x",
                              y = "y",
                              m = "m",
@@ -121,10 +124,9 @@ out
 # Bootstrapping not requested in calling lavaan::sem()
 fit <- sem(model = mod, data = dat, fixed.x = FALSE)
 fit_boot_out <- fit2boot_out_do_boot(fit = fit,
-                                     R = 10,
+                                     R = 40,
                                      seed = 1234)
-wlevels <- mod_levels(w = "w", fit = fit)
-out <- cond_indirect_effects(wlevels = wlevels,
+out <- cond_indirect_effects(wlevels = "w",
                              x = "x",
                              y = "y",
                              m = "m",
@@ -136,7 +138,8 @@ out
 }
 \seealso{
 \code{\link[=do_boot]{do_boot()}}, the general purpose
-function that users should try first.
+function that users should try first before
+using this function.
 }
 \author{
 Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}

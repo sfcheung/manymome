@@ -29,7 +29,7 @@ in a list of 'lm' outputs.
 \details{
 This function is for advanced users.
 \code{\link[=do_boot]{do_boot()}} is a function users should
-try first because it has a general
+try first because \code{\link[=do_boot]{do_boot()}} has a general
 interface for input-specific functions
 like this one.
 
@@ -57,9 +57,7 @@ lm_y <- lm(y ~ m*w + x + c1 + c2, dat)
 lm_out <- lm2list(lm_m, lm_y)
 # In real research, R should be 2000 or even 5000
 lm_boot_out <- lm2boot_out(lm_out, R = 100, seed = 1234)
-wlevels <- mod_levels(w = "w", fit = lm_out)
-wlevels
-out <- cond_indirect_effects(wlevels = wlevels,
+out <- cond_indirect_effects(wlevels = "w",
                              x = "x",
                              y = "y",
                              m = "m",
@@ -71,7 +69,8 @@ out
 }
 \seealso{
 \code{\link[=do_boot]{do_boot()}}, the general purpose
-function that users should try first.
+function that users should try first before
+using this function.
 }
 \author{
 Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}

@@ -34,28 +34,29 @@ m1 ~ x  + w1 + x:w1
 m2 ~ m1
 y  ~ m2 + x + w4 + m2:w4
 "
-fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
+fit <- sem(mod, dat,
+           meanstructure = TRUE, fixed.x = FALSE,
+           se = "none", baseline = FALSE)
 est <- parameterEstimates(fit)
-
-# Examples for cond_indirect():
-
-# Create levels of w1 and w4
-w1levels <- mod_levels("w1", fit = fit)
-w1levels
-w4levels <- mod_levels("w4", fit = fit)
-w4levels
-w1w4levels <- merge_mod_levels(w1levels, w4levels)
 
 # Conditional effects from x to m1 when w1 is equal to each of the levels
 out1 <- cond_indirect_effects(x = "x", y = "m1",
-                      wlevels = w1levels, fit = fit)
+                      wlevels = c("w1"), fit = fit)
+out1
 coef(out1)
 
-# Conditional Indirect effect from x1 through m1 to y,
-# when w1 is equal to each of the levels
+# Conditional indirect effects from x1 through m1 and m2 to y,
 out2 <- cond_indirect_effects(x = "x", y = "y", m = c("m1", "m2"),
-                      wlevels = w1w4levels, fit = fit)
+                      wlevels = c("w1", "w4"), fit = fit)
+out2
 coef(out2)
+
+# Standardized conditional indirect effects from x1 through m1 and m2 to y,
+out2std <- cond_indirect_effects(x = "x", y = "y", m = c("m1", "m2"),
+                      wlevels = c("w1", "w4"), fit = fit,
+                      standardized_x = TRUE, standardized_y = TRUE)
+out2std
+coef(out2std)
 
 }
 \seealso{

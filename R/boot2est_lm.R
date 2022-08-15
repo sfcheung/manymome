@@ -4,9 +4,9 @@
 #'  in a list of 'lm' outputs.
 #'
 #' @details
-#' This function is for advanced users. 
+#' This function is for advanced users.
 #' [do_boot()] is a function users should
-#' try first because it has a general
+#' try first because [do_boot()] has a general
 #' interface for input-specific functions
 #' like this one.
 #'
@@ -41,7 +41,9 @@
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [do_boot()], the general purpose
-#'          function that users should try first.
+#'          function that users should try first before
+#'          using this function.
+#'
 #' @examples
 #'
 #' data(data_med_mod_ab1)
@@ -51,9 +53,7 @@
 #' lm_out <- lm2list(lm_m, lm_y)
 #' # In real research, R should be 2000 or even 5000
 #' lm_boot_out <- lm2boot_out(lm_out, R = 100, seed = 1234)
-#' wlevels <- mod_levels(w = "w", fit = lm_out)
-#' wlevels
-#' out <- cond_indirect_effects(wlevels = wlevels,
+#' out <- cond_indirect_effects(wlevels = "w",
 #'                              x = "x",
 #'                              y = "y",
 #'                              m = "m",
@@ -80,6 +80,10 @@ lm2boot_out <- function(outputs, R = 100, seed = NULL) {
     class(out0) <- "boot_out"
     out0
   }
+
+# Generate the function for bootstrapping.
+# Return a parameter estimates tables.
+#' @noRd
 
 lm_boot2est_i <- function(d, i = NULL, outputs) {
     if (!is.null(i)) {

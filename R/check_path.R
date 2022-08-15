@@ -1,12 +1,12 @@
-#' @title Check Whether an Indirect Path is Valid in a Model
+#' @title Check a Path Exists in a Model
 #'
-#' @description It checks whether an indirect path exists
-#'  in a model.
+#' @description It checks whether a path, usually an indirect path,
+#'  exists in a model.
 #'
-#' @details It checks whether the path defined by a predictor,
-#'  an outcome, and sequence of mediators exists in
-#'  a model. It can check models in a [lavaan::lavaan-class]
-#'  object.
+#' @details It checks whether the path defined by a predictor (`x`),
+#'  an outcome (`y`), and optionally a sequence of mediators (`m`),
+#'  exists in a model. It can check models in a [lavaan::lavaan-class]
+#'  object or a list of outputs of [lm()].
 #'
 #' For example, in the following model in [lavaan] syntax
 #'
@@ -23,11 +23,12 @@
 #'
 #' This path is also invalid: `x = "x", y = "y", m = c("m1", "m2")``
 #'
-#' @return Boolean. `TRUE` if the path is valid, `FALSE` if the
-#'  path is invalid.
+#' @return A logical vector of length one. `TRUE` if the path is
+#' valid, `FALSE` if the path is invalid.
 #'
 #' @param fit The fit object. Currently only supports a
-#'            [lavaan::lavaan-class] object.
+#'            [lavaan::lavaan-class] object or a list
+#'            of outputs of [lm()].
 #' @param x Character. The name of predictor at the start of the path.
 #' @param y Character. The name of the outcome variable at
 #'          the end of the path.

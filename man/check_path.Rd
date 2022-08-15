@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_path.R
 \name{check_path}
 \alias{check_path}
-\title{Check Whether an Indirect Path is Valid in a Model}
+\title{Check a Path Exists in a Model}
 \usage{
 check_path(x, y, m = NULL, fit = NULL, est = NULL)
 }
@@ -19,25 +19,26 @@ mediator successively to the last mediator. If
 to \code{y}.}
 
 \item{fit}{The fit object. Currently only supports a
-\link[lavaan:lavaan-class]{lavaan::lavaan} object.}
+\link[lavaan:lavaan-class]{lavaan::lavaan} object or a list
+of outputs of \code{\link[=lm]{lm()}}.}
 
 \item{est}{The output of \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}. If \code{NULL}, the
 default, it will be generated from \code{fit}. If supplied,
 \code{fit} will ge ignored.}
 }
 \value{
-Boolean. \code{TRUE} if the path is valid, \code{FALSE} if the
-path is invalid.
+A logical vector of length one. \code{TRUE} if the path is
+valid, \code{FALSE} if the path is invalid.
 }
 \description{
-It checks whether an indirect path exists
-in a model.
+It checks whether a path, usually an indirect path,
+exists in a model.
 }
 \details{
-It checks whether the path defined by a predictor,
-an outcome, and sequence of mediators exists in
-a model. It can check models in a \link[lavaan:lavaan-class]{lavaan::lavaan}
-object.
+It checks whether the path defined by a predictor (\code{x}),
+an outcome (\code{y}), and optionally a sequence of mediators (\code{m}),
+exists in a model. It can check models in a \link[lavaan:lavaan-class]{lavaan::lavaan}
+object or a list of outputs of \code{\link[=lm]{lm()}}.
 
 For example, in the following model in \link{lavaan} syntax
 

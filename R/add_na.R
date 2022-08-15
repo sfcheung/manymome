@@ -1,3 +1,6 @@
+# An internal function for creating missing data.
+# For demonstration.
+#
 #' @noRd
 
 add_na <- function(data, prop = .15, seed = NULL) {
@@ -11,4 +14,3 @@ add_na <- function(data, prop = .15, seed = NULL) {
       }
     data
   }
-
