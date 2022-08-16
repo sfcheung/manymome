@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_mome_demo}
 \alias{data_mome_demo}
-\title{A Complicated Moderated-Mediation Model for Demonstration}
+\title{Sample Dataset: A Complicated Moderated-Mediation Model}
 \format{
 A data frame with 200 rows and 11 variables:
 \describe{

@@ -27,6 +27,9 @@ A \code{lm_from_lavaan}-class object converts a regression model
 for a variable in a \verb{lavaan`` model to a }formula` object.
 This function uses the stored model to compute predicted
 values using user-supplied data.
+
+This is an advanced helper used by \code{\link[=plot.cond_indirect_effects]{plot.cond_indirect_effects()}}.
+Exported for advanced users and developers.
 }
 \examples{
 library(lavaan)

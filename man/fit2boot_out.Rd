@@ -3,7 +3,7 @@
 \name{fit2boot_out}
 \alias{fit2boot_out}
 \alias{fit2boot_out_do_boot}
-\title{Bootstrapping Estimates for a \code{lavaan} Output}
+\title{Bootstrap Estimates for a \code{lavaan} Output}
 \usage{
 fit2boot_out(fit)
 
@@ -51,7 +51,7 @@ functions for forming bootstrapping confidence
 intervals.
 }
 \description{
-Generate bootstrapping estimates from
+Generate bootstrap estimates from
 the output of \code{\link[lavaan:sem]{lavaan::sem()}}.
 }
 \details{

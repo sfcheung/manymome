@@ -1,65 +1,72 @@
 #' @title Indirect Effect (No Bootstrapping)
 #'
-#' @description Compute the indirect effect, optionally conditional on
-#'   the values of moderators if present.
+#' @description It computes an indirect effect, optionally conditional on
+#'   the value(s) of moderator(s) if present.
 #'
-#' @details This function is a low-level function called by [cond_indirect()]
-#'   and [cond_indirect_effects()], which call this function multiple times
-#'   if bootstrapping confidence interval is requested.
+#' @details This function is a low-level function called by
+#'   [indirect_effect()], [cond_indirect_effects()], and
+#'   [cond_indirect()], which call this function multiple times if
+#'   bootstrap confidence interval is requested.
 #'
 #' This function usually should not be used directly. It is exported for
-#'   advanced users.
+#'   advanced users and developers
 #'
-#' @return It returns a `indirect`-class object. This class has the
-#'  following methods: [coef.indirect()], [print.indirect()]. The
-#'  [confint.indirect()] method is used only when called by
-#'  [cond_indirect()] or [cond_indirect_effects()].
+#' @return It returns an `indirect`-class object. This class has the
+#'   following methods: [coef.indirect()], [print.indirect()]. The
+#'   [confint.indirect()] method is used only when called by
+#'   [cond_indirect()] or [cond_indirect_effects()].
 #'
-#' @param x Character. The name of predictor at the start of the pathway.
-#' @param y Character. The name of the outcome variable at
-#'          the end of the pathway.
-#' @param m A vector of the variable names of the
-#'          moderators. The pathway goes from the first
-#'          mediator successively to the last mediator. If
-#'          `NULL`, the default, the pathway goes from `x`
-#'          to `y`.
-#' @param fit The fit object. Currently only supports a
-#'            [lavaan::lavaan-class] object.
-#' @param est The output of [lavaan::parameterEstimates()]. If `NULL`, the
-#'            default, it will be generated from `fit`. If supplied,
-#'            `fit` will ge ignored.
-#' @param implied_stats Implied means, variances, and
-#'                covariances of observed variables, of the
-#'                form of the output of
-#'                [lavaan::lavInspect()] with `what` set to
-#'                `"implied"`. The standard deviations are
-#'                extracted from this object for
-#'                standardization. Default is `NULL`, and
-#'                implied statistics will be computed from `fit` if required.
-#' @param wvalues A numeric vector of named elements. The names are the variable
-#'                names of the moderators, and the values are the values to
-#'                which the moderators will be set to. Default is `NULL`.
-#' @param standardized_x Logical. Whether `x` will be standardized. Default is
-#'                       `FALSE`.
-#' @param standardized_y Logical. Whether `y` will be standardized. Default is
-#'                       `FALSE`.
-#' @param computation_digits The number of digits in storing the computation
-#'                           in text. Default is 3.
+#' @param x Character. The name of the predictor at the start of the
+#'   path.
+#' @param y Character. The name of the outcome variable at the end of
+#'   the path.
+#' @param m A vector of the variable names of the mediator(s). The path
+#'   goes from the first mediator successively to the last mediator.
+#'   If `NULL`, the default, the path goes from `x` to `y`.
+#' @param fit The fit object. Currently only supports
+#'   [lavaan::lavaan-class] objects. Support for lists of [lm()]
+#'   output is implemented by high level functions such as
+#'   [indirect_effect()] and [cond_indirect_effects()].
+#' @param est The output of [lavaan::parameterEstimates()]. If `NULL`,
+#'   the default, it will be generated from `fit`. If supplied, `fit`
+#'   will be ignored.
+#' @param implied_stats Implied means, variances, and covariances of
+#'   observed variables and latent variables (if any), of the form of
+#'   the output of [lavaan::lavInspect()] with `what` set to
+#'   `"implied"`, but with means extracted with `what` set to
+#'   `"mean.ov"` and `"mean.lv"`. The standard deviations are
+#'   extracted from this object for standardization. Default is
+#'   `NULL`, and implied statistics will be computed from `fit` if
+#'   required.
+#' @param wvalues A numeric vector of named elements. The names are
+#'   the variable names of the moderators, and the values are the
+#'   values to which the moderators will be set to. Default is `NULL`.
+#' @param standardized_x Logical. Whether `x` will be standardized.
+#'   Default is `FALSE`.
+#' @param standardized_y Logical. Whether `y` will be standardized.
+#'   Default is `FALSE`.
+#' @param computation_digits The number of digits in storing the
+#'   computation in text. Default is 3.
 #' @param prods The product terms found. For internal use.
-#' @param get_prods_only IF `TRUE`, will quit early and return the product
-#'             terms found. The results can be passed to the `prod` argument
-#'             when calling this function. Default is `FALSE`.
+#' @param get_prods_only IF `TRUE`, will quit early and return the
+#'   product terms found. The results can be passed to the `prod`
+#'   argument when calling this function. Default is `FALSE`.
+#'   For internal use.
 #' @param data Data frame (optional). If supplied, it will be used to
-#'             identify the product terms.
-#' @param expand Whether products of more than two terms will be searched.
-#'               `TRUE` by default.
-#' @param warn If `TRUE`, the default, the function will warn against possible
-#'             misspecification, such as not setting the value of a moderator
-#'             which moderate one of the component path. Set this to `FALSE`
-#'             will suppress these warnings. Suppress them only when the
-#'             moderators are omitted intentionally.
+#'   identify the product terms. For internal use.
+#' @param expand Whether products of more than two terms will be
+#'   searched. `TRUE` by default. For internal use.
+#' @param warn If `TRUE`, the default, the function will warn against
+#'   possible misspecification, such as not setting the value of a
+#'   moderator which moderate one of the component path. Set this to
+#'   `FALSE` will suppress these warnings. Suppress them only when the
+#'   moderators are omitted intentionally.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
+#'
+#' @seealso [indirect_effect()], [cond_indirect_effects()], and
+#'   [cond_indirect()], the high level functions that should usually
+#'   be used.
 #'
 #' @examples
 #'
@@ -278,6 +285,8 @@ indirect_i <- function(x,
     return(out)
   }
 
+#' @noRd
+
 gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL,
                             warn = TRUE) {
     yiname_old <- yiname
@@ -359,9 +368,13 @@ gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL,
     out2
   }
 
+#' @noRd
+
 check_lv_in_est <- function(est) {
     unique(est$lhs[est$op == "=~"] )
   }
+
+#' @noRd
 
 update_prods <- function(prods, est) {
     pout <- prods

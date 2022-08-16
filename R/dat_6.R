@@ -1,4 +1,5 @@
-#' @title A Simple Mediation Model with b-Path Moderated-Moderation: Sample Dataset
+#' @title Sample Dataset: A Simple Mediation Model with b-Path
+#' Moderated-Moderation
 #'
 #' @description A simple mediation model with moderated-mediation on the b-path.
 #'

@@ -84,7 +84,7 @@ path.}
 \item{y}{Character. The name of the outcome variable at the end of
 the path.}
 
-\item{m}{A vector of the variable names of the moderators. The
+\item{m}{A vector of the variable names of the mediator(s). The
 path goes from the first mediator successively to the last
 mediator. If \code{NULL}, the default, the path goes from \code{x} to
 \code{y}.}
@@ -122,22 +122,21 @@ interval. Default is .95.}
 
 \item{boot_out}{If \code{boot_ci} is \code{TRUE}, users can supply
 pregenerated bootstrap estimates. This can be the output of
-\code{\link[=do_boot]{do_boot()}}. For \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, this can be
-the output of previous call to \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
-\code{\link[=indirect_effect]{indirect_effect()}}, or \code{\link[=cond_indirect]{cond_indirect()}} with
-bootstrap estimates. These stored estimates will be reused such that
-there is no need to do bootstrapping again. If not supplied, the
-function will try to generate them from \code{fit}.}
+\code{\link[=do_boot]{do_boot()}}. For \code{\link[=indirect_effect]{indirect_effect()}} and
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, this can be the output of a previous
+call to \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, \code{\link[=indirect_effect]{indirect_effect()}}, or
+\code{\link[=cond_indirect]{cond_indirect()}} with bootstrap confidence intervals requested.
+These stored estimates will be reused such that there is no need
+to do bootstrapping again. If not supplied, the function will try
+to generate them from \code{fit}.}
 
-\item{R}{Integer. If \code{boot_ci} is \code{TRUE}, \code{fit} is a list of \code{\link[=lm]{lm()}}
-outputs, and \code{boot_out} is \code{NULL}, this function will do
-bootstrapping on \code{fit}. \code{R} is the number of bootstrap samples.
-Default is 100.}
+\item{R}{Integer. If \code{boot_ci} is \code{TRUE}, \code{boot_out} is \code{NULL}, and
+bootstrap standard errors not requested if \code{fit} is a
+\linkS4class{lavaan} object, this function will do bootstrapping on
+\code{fit}. \code{R} is the number of bootstrap samples. Default is 100.}
 
-\item{seed}{If \code{boot_ci} is \code{TRUE}, \code{fit} is a list of \code{\link[=lm]{lm()}}
-outputs, and \code{boot_out} is \code{NULL}, this function will do
-bootstrapping on \code{fit}. This is the seed for the bootstrapping.
-Default is \code{NULL} and seed is not set.}
+\item{seed}{If bootstrapping is conducted, this is the seed for the
+bootstrapping. Default is \code{NULL} and seed is not set.}
 
 \item{parallel}{Logical. If bootstrapping is conducted,
 whether parallel processing will be used.
@@ -156,7 +155,8 @@ passed to \code{\link[parallel:makeCluster]{parallel::makeCluster()}}. For advan
 users. See \code{\link[parallel:makeCluster]{parallel::makeCluster()}} for details.
 Default is \code{list()}.}
 
-\item{progress}{Logical. Display progress or not. Default is \code{TRUE}.}
+\item{progress}{Logical. Display bootstrapping progress or not.
+Default is \code{TRUE}.}
 
 \item{save_boot_full}{If \code{TRUE}, full bootstrapping results will be
 stored. Default is \code{FALSE.}}

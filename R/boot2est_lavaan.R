@@ -1,6 +1,6 @@
-#' @title Bootstrapping Estimates for a `lavaan` Output
+#' @title Bootstrap Estimates for a `lavaan` Output
 #'
-#' @description Generate bootstrapping estimates from
+#' @description Generate bootstrap estimates from
 #'  the output of [lavaan::sem()].
 #'
 #' @details

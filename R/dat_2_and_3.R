@@ -1,4 +1,4 @@
-#' @title Simple Mediation: Sample Dataset
+#' @title Sample Dataset: Simple Mediation
 #'
 #' @description A simple mediation model.
 #'
@@ -24,7 +24,7 @@
 #' parameterEstimates(fit)
 "data_med"
 
-#' @title One Moderator: Sample Dataset
+#' @title Sample Dataset: One Moderator
 #'
 #' @description A one-moderator model.
 #'
@@ -54,7 +54,7 @@
 "data_mod"
 
 
-#' @title Two Moderators: Sample Dataset
+#' @title Sample Dataset: Two Moderators
 #'
 #' @description A two-moderator model.
 #'
@@ -90,7 +90,7 @@
 "data_mod2"
 
 
-#' @title Serial Mediation: Sample Dataset
+#' @title Sample Dataset: Serial Mediation
 #'
 #' @description A serial mediation model.
 #'
@@ -120,7 +120,7 @@
 "data_serial"
 
 
-#' @title Parallel Mediation: Sample Dataset
+#' @title Sample Dataset: Parallel Mediation
 #'
 #' @description A parallel mediation model.
 #'
@@ -153,7 +153,7 @@
 
 
 
-#' @title Serial-Parallel Mediation: Sample Dataset
+#' @title Sample Dataset: Serial-Parallel Mediation
 #'
 #' @description A mediation model with both serial and parallel
 #' components.
@@ -188,7 +188,7 @@
 "data_serial_parallel"
 
 
-#' @title Simple Mediation with a-Path Moderated: Sample Dataset
+#' @title Sample Dataset: Simple Mediation with a-Path Moderated
 #'
 #' @description A simple mediation model with a-path moderated.
 #'
@@ -225,7 +225,7 @@
 
 
 
-#' @title Simple Mediation with b-Path Moderated: Sample Dataset
+#' @title Sample Dataset: Simple Mediation with b-Path Moderated
 #'
 #' @description A simple mediation model with b-path moderated.
 #'
@@ -261,7 +261,7 @@
 "data_med_mod_b"
 
 
-#' @title Simple Mediation with Both Paths Moderated (Two Moderators): Sample Dataset
+#' @title Sample Dataset: Simple Mediation with Both Paths Moderated (Two Moderators)
 #'
 #' @description A simple mediation model with a-path and b-path
 #' each moderated by a moderator.
@@ -306,7 +306,7 @@
 "data_med_mod_ab"
 
 
-#' @title Simple Mediation with Both Paths Moderated By a Moderator: Sample Dataset
+#' @title Sample Dataset: Simple Mediation with Both Paths Moderated By a Moderator
 #'
 #' @description A simple mediation model with a-path and b-path
 #' moderated by one moderator.
@@ -345,7 +345,7 @@
 #' parameterEstimates(fit)[c(1, 3, 6, 9, 38:40), ]
 "data_med_mod_ab1"
 
-#' @title Serial Mediation with Two Moderators: Sample Dataset
+#' @title Sample Dataset: Serial Mediation with Two Moderators
 #'
 #' @description A simple mediation model with a-path and b2-path
 #' moderated.
@@ -392,7 +392,7 @@
 "data_med_mod_serial"
 
 
-#' @title Parallel Mediation with Two Moderators: Sample Dataset
+#' @title Sample Dataset: Parallel Mediation with Two Moderators
 #'
 #' @description A parallel mediation model with a1-path and b2-path
 #' moderated.
@@ -441,7 +441,7 @@
 
 
 
-#' @title Serial-Parallel Mediation with Two Moderators: Sample Dataset
+#' @title Sample Dataset: Serial-Parallel Mediation with Two Moderators
 #'
 #' @description A serial-parallel mediation model with some paths
 #' moderated.

@@ -1,6 +1,6 @@
-#' @title Bootstrapping Estimates for `lm` Outputs
+#' @title Bootstrap Estimates for `lm` Outputs
 #'
-#' @description Generate bootstrapping estimates for models
+#' @description Generate bootstrap estimates for models
 #'  in a list of 'lm' outputs.
 #'
 #' @details

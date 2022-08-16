@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_med_complicated}
 \alias{data_med_complicated}
-\title{A Complicated Mediation Model: Sample Dataset}
+\title{Sample Dataset: A Complicated Mediation Model}
 \format{
 A data frame with 300 rows and 5 variables:
 \describe{

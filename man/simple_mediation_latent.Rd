@@ -3,7 +3,7 @@
 \docType{data}
 \name{simple_mediation_latent}
 \alias{simple_mediation_latent}
-\title{A Simple Latent Mediation Model}
+\title{Sample Dataset: A Simple Latent Mediation Model}
 \format{
 A data frame with 200 rows and 11 variables:
 \describe{
@@ -22,9 +22,8 @@ A data frame with 200 rows and 11 variables:
 simple_mediation_latent
 }
 \description{
-Generated from a simple mediation model among
-three latent factors, \code{fx}, \code{fm}, and \code{fy},
-each has three indicators.
+Generated from a simple mediation model among xthree
+latent factors, \code{fx}, \code{fm}, and \code{fy}, xeach has three indicators.
 }
 \details{
 The model:

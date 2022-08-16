@@ -75,7 +75,7 @@
 #'    path.
 #' @param y Character. The name of the outcome variable at the end of
 #'    the path.
-#' @param m A vector of the variable names of the moderators. The
+#' @param m A vector of the variable names of the mediator(s). The
 #'    path goes from the first mediator successively to the last
 #'    mediator. If `NULL`, the default, the path goes from `x` to
 #'    `y`.
@@ -103,21 +103,20 @@
 #' @param level The level of confidence for the bootstrap confidence
 #'    interval. Default is .95.
 #' @param boot_out If `boot_ci` is `TRUE`, users can supply
-#'    pregenerated bootstrap estimates. This can be the output of
-#'    [do_boot()]. For [cond_indirect_effects()], this can be
-#'    the output of previous call to [cond_indirect_effects()],
-#'    [indirect_effect()], or [cond_indirect()] with
-#'    bootstrap estimates. These stored estimates will be reused such that
-#'    there is no need to do bootstrapping again. If not supplied, the
-#'    function will try to generate them from `fit`.
-#' @param R Integer. If `boot_ci` is `TRUE`, `fit` is a list of [lm()]
-#'    outputs, and `boot_out` is `NULL`, this function will do
-#'    bootstrapping on `fit`. `R` is the number of bootstrap samples.
-#'    Default is 100.
-#' @param seed If `boot_ci` is `TRUE`, `fit` is a list of [lm()]
-#'    outputs, and `boot_out` is `NULL`, this function will do
-#'    bootstrapping on `fit`. This is the seed for the bootstrapping.
-#'    Default is `NULL` and seed is not set.
+#'   pregenerated bootstrap estimates. This can be the output of
+#'   [do_boot()]. For [indirect_effect()] and
+#'   [cond_indirect_effects()], this can be the output of a previous
+#'   call to [cond_indirect_effects()], [indirect_effect()], or
+#'   [cond_indirect()] with bootstrap confidence intervals requested.
+#'   These stored estimates will be reused such that there is no need
+#'   to do bootstrapping again. If not supplied, the function will try
+#'   to generate them from `fit`.
+#' @param R Integer. If `boot_ci` is `TRUE`, `boot_out` is `NULL`, and
+#'   bootstrap standard errors not requested if `fit` is a
+#'   [lavaan-class] object, this function will do bootstrapping on
+#'   `fit`. `R` is the number of bootstrap samples. Default is 100.
+#' @param seed If bootstrapping is conducted, this is the seed for the
+#'   bootstrapping. Default is `NULL` and seed is not set.
 #' @param parallel Logical. If bootstrapping is conducted,
 #'                 whether parallel processing will be used.
 #'                 Default is `TRUE`. If `fit` is a list of
@@ -132,7 +131,8 @@
 #'               passed to [parallel::makeCluster()]. For advanced
 #'               users. See [parallel::makeCluster()] for details.
 #'               Default is `list()`.
-#' @param progress Logical. Display progress or not. Default is `TRUE`.
+#' @param progress Logical. Display bootstrapping progress or not.
+#'   Default is `TRUE`.
 #' @param wlevels The output of [merge_mod_levels()], or the
 #'        moderator(s) to be passed to [mod_levels_list()]. If all the
 #'        moderators can be represented by one variable, that is, each

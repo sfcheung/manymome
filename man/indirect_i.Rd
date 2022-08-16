@@ -23,81 +23,84 @@ indirect_i(
 )
 }
 \arguments{
-\item{x}{Character. The name of predictor at the start of the pathway.}
+\item{x}{Character. The name of the predictor at the start of the
+path.}
 
-\item{y}{Character. The name of the outcome variable at
-the end of the pathway.}
+\item{y}{Character. The name of the outcome variable at the end of
+the path.}
 
-\item{m}{A vector of the variable names of the
-moderators. The pathway goes from the first
-mediator successively to the last mediator. If
-\code{NULL}, the default, the pathway goes from \code{x}
-to \code{y}.}
+\item{m}{A vector of the variable names of the mediator(s). The path
+goes from the first mediator successively to the last mediator.
+If \code{NULL}, the default, the path goes from \code{x} to \code{y}.}
 
-\item{fit}{The fit object. Currently only supports a
-\link[lavaan:lavaan-class]{lavaan::lavaan} object.}
+\item{fit}{The fit object. Currently only supports
+\link[lavaan:lavaan-class]{lavaan::lavaan} objects. Support for lists of \code{\link[=lm]{lm()}}
+output is implemented by high level functions such as
+\code{\link[=indirect_effect]{indirect_effect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
 
-\item{est}{The output of \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}. If \code{NULL}, the
-default, it will be generated from \code{fit}. If supplied,
-\code{fit} will ge ignored.}
+\item{est}{The output of \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}. If \code{NULL},
+the default, it will be generated from \code{fit}. If supplied, \code{fit}
+will be ignored.}
 
-\item{implied_stats}{Implied means, variances, and
-covariances of observed variables, of the
-form of the output of
-\code{\link[lavaan:lavInspect]{lavaan::lavInspect()}} with \code{what} set to
-\code{"implied"}. The standard deviations are
-extracted from this object for
-standardization. Default is \code{NULL}, and
-implied statistics will be computed from \code{fit} if required.}
+\item{implied_stats}{Implied means, variances, and covariances of
+observed variables and latent variables (if any), of the form of
+the output of \code{\link[lavaan:lavInspect]{lavaan::lavInspect()}} with \code{what} set to
+\code{"implied"}, but with means extracted with \code{what} set to
+\code{"mean.ov"} and \code{"mean.lv"}. The standard deviations are
+extracted from this object for standardization. Default is
+\code{NULL}, and implied statistics will be computed from \code{fit} if
+required.}
 
-\item{wvalues}{A numeric vector of named elements. The names are the variable
-names of the moderators, and the values are the values to
-which the moderators will be set to. Default is \code{NULL}.}
+\item{wvalues}{A numeric vector of named elements. The names are
+the variable names of the moderators, and the values are the
+values to which the moderators will be set to. Default is \code{NULL}.}
 
-\item{standardized_x}{Logical. Whether \code{x} will be standardized. Default is
-\code{FALSE}.}
+\item{standardized_x}{Logical. Whether \code{x} will be standardized.
+Default is \code{FALSE}.}
 
-\item{standardized_y}{Logical. Whether \code{y} will be standardized. Default is
-\code{FALSE}.}
+\item{standardized_y}{Logical. Whether \code{y} will be standardized.
+Default is \code{FALSE}.}
 
-\item{computation_digits}{The number of digits in storing the computation
-in text. Default is 3.}
+\item{computation_digits}{The number of digits in storing the
+computation in text. Default is 3.}
 
 \item{prods}{The product terms found. For internal use.}
 
-\item{get_prods_only}{IF \code{TRUE}, will quit early and return the product
-terms found. The results can be passed to the \code{prod} argument
-when calling this function. Default is \code{FALSE}.}
+\item{get_prods_only}{IF \code{TRUE}, will quit early and return the
+product terms found. The results can be passed to the \code{prod}
+argument when calling this function. Default is \code{FALSE}.
+For internal use.}
 
 \item{data}{Data frame (optional). If supplied, it will be used to
-identify the product terms.}
+identify the product terms. For internal use.}
 
-\item{expand}{Whether products of more than two terms will be searched.
-\code{TRUE} by default.}
+\item{expand}{Whether products of more than two terms will be
+searched. \code{TRUE} by default. For internal use.}
 
-\item{warn}{If \code{TRUE}, the default, the function will warn against possible
-misspecification, such as not setting the value of a moderator
-which moderate one of the component path. Set this to \code{FALSE}
-will suppress these warnings. Suppress them only when the
+\item{warn}{If \code{TRUE}, the default, the function will warn against
+possible misspecification, such as not setting the value of a
+moderator which moderate one of the component path. Set this to
+\code{FALSE} will suppress these warnings. Suppress them only when the
 moderators are omitted intentionally.}
 }
 \value{
-It returns a \code{indirect}-class object. This class has the
+It returns an \code{indirect}-class object. This class has the
 following methods: \code{\link[=coef.indirect]{coef.indirect()}}, \code{\link[=print.indirect]{print.indirect()}}. The
 \code{\link[=confint.indirect]{confint.indirect()}} method is used only when called by
 \code{\link[=cond_indirect]{cond_indirect()}} or \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 }
 \description{
-Compute the indirect effect, optionally conditional on
-the values of moderators if present.
+It computes an indirect effect, optionally conditional on
+the value(s) of moderator(s) if present.
 }
 \details{
-This function is a low-level function called by \code{\link[=cond_indirect]{cond_indirect()}}
-and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, which call this function multiple times
-if bootstrapping confidence interval is requested.
+This function is a low-level function called by
+\code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, and
+\code{\link[=cond_indirect]{cond_indirect()}}, which call this function multiple times if
+bootstrap confidence interval is requested.
 
 This function usually should not be used directly. It is exported for
-advanced users.
+advanced users and developers
 }
 \examples{
 
@@ -133,6 +136,11 @@ indirect_2 <- (est[est$label == "a1", "est"] +
 coef(indirect_1)
 indirect_2
 
+}
+\seealso{
+\code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, and
+\code{\link[=cond_indirect]{cond_indirect()}}, the high level functions that should usually
+be used.
 }
 \author{
 Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}

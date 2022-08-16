@@ -2,7 +2,7 @@
 % Please edit documentation in R/boot2est_lm.R
 \name{lm2boot_out}
 \alias{lm2boot_out}
-\title{Bootstrapping Estimates for \code{lm} Outputs}
+\title{Bootstrap Estimates for \code{lm} Outputs}
 \usage{
 lm2boot_out(outputs, R = 100, seed = NULL)
 }
@@ -23,7 +23,7 @@ and related functions
 for forming bootstrapping confidence intervals.
 }
 \description{
-Generate bootstrapping estimates for models
+Generate bootstrap estimates for models
 in a list of 'lm' outputs.
 }
 \details{

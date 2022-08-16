@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_mod_cat}
 \alias{data_mod_cat}
-\title{Moderation with One Categorical Moderator: Sample Dataset}
+\title{Sample Dataset: Moderation with One Categorical Moderator}
 \format{
 A data frame with 300 rows and 5 variables:
 \describe{

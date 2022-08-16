@@ -1,18 +1,18 @@
-#' @title Join 'lm()' Output to Form an 'lm_list-class' Object
+#' @title Join 'lm()' Output to Form an 'lm_list`-Class Object
 #'
-#' @description The resulting model can be used by [cond_indirect()]
-#'  and [cond_indirect_effects()] as a path method, as if fitted
-#'  by [lavaan::sem()].
+#' @description The resulting model can be used by [indirect_effect()],
+#'  [cond_indirect_effects()], or [cond_indirect()] as a
+#'  path method, as if fitted by [lavaan::sem()].
 #'
 #' @details If a path model with mediation and/or moderation is fitted
 #'  by a set of regression models using [lm()], this function can
-#'  combine them to an object of the class `lm_list-class` that
+#'  combine them to an object of the class `lm_list` that
 #'  represents a path model, as one fitted by structural equation
 #'  model functions such as [lavaan::sem()]. This class of object can
-#'  be used by some functions, such as [cond_indirect()] and
-#'  [cond_indirect_effects()] as if they are the output of fitting a
-#'  path model, with the regression coefficients treated as path
-#'  coefficients.
+#'  be used by some functions, such as [indirect_effect()],
+#'  [cond_indirect_effects()], and [cond_indirect()] as if they were
+#'  the output of fitting a path model, with the regression
+#'  coefficients treated as path coefficients.
 #'
 #'  The regression outputs to be combined need to meet
 #'  the following requirements:
@@ -22,18 +22,23 @@
 #'    on predictor that is the outcome variable of another model, or
 #'    (b) its outcome variable the predictor of another model.
 #'
-#'  - The sample sizes of all regression outputs must be identical.
-#'
-#'  - All models must be fitted to the same sample.
+#'  - All models must be fitted to the same sample. This implies that
+#'    the sample size must be the same in all analysis.
 #'
 #' @return
-#'  It returns a `lm_list`-class object that forms a path model represented
-#'  by a set of regression models. This class has a [summary.lm_list()] method
-#'  that prints the summary of each regression model stored.
+#'  It returns an `lm_list`-class object that forms a path model represented
+#'  by a set of regression models. This class has a `summary` method
+#'  that shows the summary of each regression model stored
+#'  (see [summary.lm_list()]), and
+#'  a `print` method that prints the models stored (see [print.lm_list()]).
 #'
 #' @param ... The [lm()] outputs to be grouped in a list.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
+#'
+#' @seealso [summary.lm_list()] and [print.lm_list()] for related methods,
+#'  [indirect_effect()] and [cond_indirect_effects()] which accept
+#'  `lm_list`-class objects as input.
 #'
 #' @examples
 #'

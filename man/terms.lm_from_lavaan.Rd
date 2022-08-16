@@ -2,12 +2,12 @@
 % Please edit documentation in R/lavaan2lm_list.R
 \name{terms.lm_from_lavaan}
 \alias{terms.lm_from_lavaan}
-\title{Model Terms of a 'lm_from_lavaan'-Class Object}
+\title{Model Terms of an 'lm_from_lavaan'-Class Object}
 \usage{
 \method{terms}{lm_from_lavaan}(x, ...)
 }
 \arguments{
-\item{x}{A 'lm_from_lavaan'-class object.}
+\item{x}{An 'lm_from_lavaan'-class object.}
 
 \item{...}{Additional arguments. Ignored.}
 }
@@ -15,7 +15,7 @@
 A \code{terms}-class object. See \link{terms.object} for details.
 }
 \description{
-Extract the terms object rom a \code{lm_from_lavaan}-class
+It extracts the terms object from an \code{lm_from_lavaan}-class
 object.
 }
 \details{

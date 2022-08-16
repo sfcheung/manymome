@@ -44,7 +44,7 @@ path.}
 \item{y}{Character. The name of the outcome variable at the end of
 the path.}
 
-\item{m}{A vector of the variable names of the moderators. The
+\item{m}{A vector of the variable names of the mediator(s). The
 path goes from the first mediator successively to the last
 mediator. If \code{NULL}, the default, the path goes from \code{x} to
 \code{y}.}
@@ -52,7 +52,8 @@ mediator. If \code{NULL}, the default, the path goes from \code{x} to
 \item{w}{Character. The name of the moderator.}
 
 \item{fit}{The fit object. Can be a
-\link[lavaan:lavaan-class]{lavaan::lavaan} object or a list of \code{\link[=lm]{lm()}} outputs.}
+\link[lavaan:lavaan-class]{lavaan::lavaan} object, a list of \code{\link[=lm]{lm()}} outputs,
+or an object created by \code{\link[=lm2list]{lm2list()}}.}
 
 \item{boot_ci}{Logical. Whether bootstrap confidence interval will
 be formed. Default is \code{FALSE}.}
@@ -62,24 +63,24 @@ interval. Default is .95.}
 
 \item{boot_out}{If \code{boot_ci} is \code{TRUE}, users can supply
 pregenerated bootstrap estimates. This can be the output of
-\code{\link[=do_boot]{do_boot()}}. For \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, this can be
-the output of previous call to \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
-\code{\link[=indirect_effect]{indirect_effect()}}, or \code{\link[=cond_indirect]{cond_indirect()}} with
-bootstrap estimates. These stored estimates will be reused such that
-there is no need to do bootstrapping again. If not supplied, the
-function will try to generate them from \code{fit}.}
+\code{\link[=do_boot]{do_boot()}}. For \code{\link[=indirect_effect]{indirect_effect()}} and
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, this can be the output of a previous
+call to \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, \code{\link[=indirect_effect]{indirect_effect()}}, or
+\code{\link[=cond_indirect]{cond_indirect()}} with bootstrap confidence intervals requested.
+These stored estimates will be reused such that there is no need
+to do bootstrapping again. If not supplied, the function will try
+to generate them from \code{fit}.}
 
-\item{R}{Integer. If \code{boot_ci} is \code{TRUE}, \code{fit} is a list of \code{\link[=lm]{lm()}}
-outputs, and \code{boot_out} is \code{NULL}, this function will do
-bootstrapping on \code{fit}. \code{R} is the number of bootstrap samples.
-Default is 100.}
+\item{R}{Integer. If \code{boot_ci} is \code{TRUE}, \code{boot_out} is \code{NULL}, and
+bootstrap standard errors not requested if \code{fit} is a
+\linkS4class{lavaan} object, this function will do bootstrapping on
+\code{fit}. \code{R} is the number of bootstrap samples. Default is 100.}
 
-\item{seed}{If \code{boot_ci} is \code{TRUE}, \code{fit} is a list of \code{\link[=lm]{lm()}}
-outputs, and \code{boot_out} is \code{NULL}, this function will do
-bootstrapping on \code{fit}. This is the seed for the bootstrapping.
-Default is \code{NULL} and seed is not set.}
+\item{seed}{If bootstrapping is conducted, this is the seed for the
+bootstrapping. Default is \code{NULL} and seed is not set.}
 
-\item{progress}{Logical. Display progress or not. Default is \code{TRUE}.}
+\item{progress}{Logical. Display bootstrapping progress or not.
+Default is \code{TRUE}.}
 
 \item{...}{Arguments to be passed to \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}}
 
@@ -87,24 +88,36 @@ Default is \code{NULL} and seed is not set.}
 the index of moderated moderated mediation.}
 }
 \value{
-It returns an \code{cond_indirect_diff}-class object. This class has a
+It returns a \code{cond_indirect_diff}-class object. This class has a
 \code{print} method (\code{\link[=print.cond_indirect_diff]{print.cond_indirect_diff()}}), a \code{coef} method
+for extracting the index
 (\code{\link[=coef.cond_indirect_diff]{coef.cond_indirect_diff()}}), and a \code{confint} method
+for extracting the bootstrap confidence interval if available
 (\code{\link[=confint.cond_indirect_diff]{confint.cond_indirect_diff()}}).
 }
 \description{
-Compute the index of moderated mediation and
-the index of moderated moderated mediation.
+It computes the index of moderated mediation and
+the index of moderated moderated mediation proposed by
+Hayes (2015, 2018).
 }
 \details{
-The function \code{\link[=index_of_mome]{index_of_mome()}} computes the index of moderated
-mediation proposed by Hayes. It supports any path in a model,
-with one component path moderated.
+The function \code{\link[=index_of_mome]{index_of_mome()}} computes the
+\emph{index of moderated mediation} proposed by Hayes (2015).
+It supports any path
+in a model with one (and only one) component path moderated.
+For example, \code{x->m1->m2->y} with \code{x->m1} moderated by \code{w}.
+It measures the change in indirect effect when the moderator
+increases by one unit.
 
-The function \code{\link[=index_of_momome]{index_of_momome()}} computes the index of
-moderated mediation proposed by Hayes. It supports any path
-in a model, with two component paths each moderated by
-one moderator.
+The function \code{\link[=index_of_momome]{index_of_momome()}} computes the
+\emph{index of moderated moderated mediation} proposed by Hayes (2018).
+It supports any path
+in a model, with two component paths moderated,
+each by one moderator.
+For example, \code{x->m1->m2->y} with \code{x->m1} moderated by \code{w}
+and \code{m2->y} moderated by \code{z}.
+It measures the change in the index of moderated mediation
+of one moderator when the other moderator increases by one unit.
 }
 \section{Functions}{
 \itemize{
@@ -133,10 +146,13 @@ fit <- sem(mod, dat,
 est <- parameterEstimates(fit)
 
 # R should be at least 2000 or even 5000 in real research.
-boot_out <- do_boot(fit, R = 500, seed = 4314, parallel = FALSE)
+# parallel should be enabled (set to TRUE) in real research.
 out_mome <- index_of_mome(x = "x", y = "y", m = "m1", w = "w1",
                           fit = fit,
-                          boot_ci = TRUE, boot_out = boot_out)
+                          boot_ci = TRUE,
+                          R = 500,
+                          seed = 4314,
+                          parallel = FALSE)
 out_mome
 coef(out_mome)
 # From lavaan
@@ -163,11 +179,14 @@ fit <- sem(mod, dat,
 est <- parameterEstimates(fit)
 
 # R should be at least 2000 or even 5000 in real research.
-boot_out <- do_boot(fit, R = 500, seed = 4314, parallel = FALSE)
+# parallel should be enabled (set to TRUE) in real research.
 out_momome <- index_of_momome(x = "x", y = "y", m = "m1",
                           w = "w1", z = "w4",
                           fit = fit,
-                          boot_ci = TRUE, boot_out = boot_out)
+                          boot_ci = TRUE,
+                          R = 500,
+                          seed = 4314,
+                          parallel = FALSE)
 out_momome
 coef(out_momome)
 print(est[32, ], nd = 8)
@@ -184,6 +203,9 @@ Hayes, A. F. (2018). Partial, conditional, and moderated moderated
 mediation: Quantification, inference, and interpretation.
 \emph{Communication Monographs, 85}(1), 4-40.
 \doi{10.1080/03637751.2017.1352100}
+}
+\seealso{
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
 }
 \author{
 Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}

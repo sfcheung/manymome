@@ -1,4 +1,4 @@
-#' @title A Complicated Moderated-Mediation Model for Demonstration (With Missing Data)
+#' @title Sample Dataset: A Complicated Moderated-Mediation Model With Missing Data
 #'
 #' @description Generated from a complicated moderated-mediation model for
 #'   demonstration, with missing data

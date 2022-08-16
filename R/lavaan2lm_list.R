@@ -1,13 +1,16 @@
-#' @title Convert a 'lavaan' Model to an 'lm_from_lavaan_list'-Class Object
+#' @title 'lavaan'-class to 'lm_from_lavaan_list'-Class
 #'
-#' @description Converts the regression models in a `lavaan`` model to an
+#' @description Converts the regression models in a `lavaan`-class model to an
 #'   `lm_from_lavaan_list`-class object.
 #'
 #' @details It identifies all dependent variables in a `lavaan` model
-#'   and creates a `lm_from_lavaan`-class object for each of them.
+#'   and creates an `lm_from_lavaan`-class object for each of them.
+#'
+#' This is an advanced helper used by [plot.cond_indirect_effects()].
+#' Exported for advanced users and developers.
 #'
 #' @return
-#' A `lm_from_lavaan_list`-class object, which is a list of `lm_from_lavaan`
+#' An `lm_from_lavaan_list`-class object, which is a list of `lm_from_lavaan`
 #' objects. It has a `predict`-method ([predict.lm_from_lavaan_list()]) for
 #' computing the predicted values from one variable to another.
 #'
@@ -16,6 +19,7 @@
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
+#' @seealso [predict.lm_from_lavaan_list]
 #'
 #' @examples
 #' library(lavaan)
@@ -81,9 +85,9 @@ lm_from_lavaan_list <- function(fit) {
     out
   }
 
-#' @title Model Terms of a 'lm_from_lavaan'-Class Object
+#' @title Model Terms of an 'lm_from_lavaan'-Class Object
 #'
-#' @description Extract the terms object rom a `lm_from_lavaan`-class
+#' @description It extracts the terms object from an `lm_from_lavaan`-class
 #'  object.
 #'
 #' @details A `lm_from_lavaan`-class object converts a regression model
@@ -94,7 +98,7 @@ lm_from_lavaan_list <- function(fit) {
 #' @return
 #' A `terms`-class object. See [terms.object] for details.
 #'
-#' @param x A 'lm_from_lavaan'-class object.
+#' @param x An 'lm_from_lavaan'-class object.
 #' @param ... Additional arguments. Ignored.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
@@ -120,16 +124,19 @@ terms.lm_from_lavaan <- function(x, ...) {
     stats::terms(x$model)
   }
 
-#' @title Coefficients of a 'lm_from_lavaan'-Class Object
+#' @title Coefficients of an 'lm_from_lavaan'-Class Object
 #'
 #' @description Returns the path coefficients of the terms in
-#'  a `lm_from_lavaan`-class object.
+#'  an `lm_from_lavaan`-class object.
 #'
-#' @details A `lm_from_lavaan`-class object converts a regression model
-#'  for a variable in a `lavaan`` model to a `formula` object.
+#' @details An `lm_from_lavaan`-class object converts a regression model
+#'  for a variable in a `lavaan`-class object to a `formula`-class object.
 #'  This function simply extracts the path coefficients estimates.
 #'  Intercept is always included, and set to zero if mean structure
-#'  is not in the source `lavaan` model.
+#'  is not in the source `lavaan`-class object.
+#'
+#' This is an advanced helper used by [plot.cond_indirect_effects()].
+#' Exported for advanced users and developers.
 #'
 #' @return
 #' A numeric vector of the path coefficients.
@@ -169,6 +176,9 @@ coef.lm_from_lavaan <- function(object, ...) {
 #'  for a variable in a `lavaan`` model to a `formula` object.
 #'  This function uses the stored model to compute predicted
 #'  values using user-supplied data.
+#'
+#' This is an advanced helper used by [plot.cond_indirect_effects()].
+#' Exported for advanced users and developers.
 #'
 #' @return
 #' A numeric vector of the predicted values, with length equal to
@@ -212,21 +222,24 @@ predict.lm_from_lavaan <- function(object, newdata, ...) {
     unname(out[, 1])
   }
 
-#' @title Predicted Values of a 'lm_from_lavaan_list'-Class Object
+#' @title Predicted Values of an 'lm_from_lavaan_list'-Class Object
 #'
-#' @description Compute the predicted values based on
-#'  the models stored in a 'lm_from_lavaan_list`-class object.
+#' @description It computes the predicted values based on
+#'  the models stored in an 'lm_from_lavaan_list`-class object.
 #'
-#' @details A `lm_from_lavaan_list`-class object is a list
+#' @details An `lm_from_lavaan_list`-class object is a list
 #'  of `lm_from_lavaan`-class objects.
+#'
+#' This is an advanced helper used by [plot.cond_indirect_effects()].
+#' Exported for advanced users and developers.
 #'
 #' @return
 #' A numeric vector of the predicted values, with length equal to
 #' the number of rows of user-supplied data.
 #'
 #' @param object A 'lm_from_lavaan'-class object.
-#' @param x The variable name at the start of a pathway.
-#' @param y The variable name at the end of a pathway.
+#' @param x The variable name at the start of a path.
+#' @param y The variable name at the end of a path.
 #' @param m Optional. The mediator(s) from `x` to `y`.
 #'          A numeric vector of the names of the mediators.
 #'          The path goes from the first element to the last element.
