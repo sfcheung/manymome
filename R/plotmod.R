@@ -1,4 +1,4 @@
-#' @title Plot Conditional ToTal Effect
+#' @title Plot Conditional Total Effect
 #'
 #' @description Plot the conditional total effects for different
 #'   levels of moderators.
@@ -14,11 +14,12 @@
 #' mediator along this path, then it plots the conditional (simple)
 #' effect of `x` on `y`.
 #'
-#' If `x` has only one path to `y` and there is one or more
+#' If `x` has one and only one path to `y` and there is one or more
 #' mediators along this path, then it plots the conditional
 #' *indirect* effect along this path.
 #'
-#' If `x` has more than one path to `y`, then it plots the
+#' If `x` has more than one path to `y`, for example, `x`
+#' has a direct path to `y`, then it plots the
 #' conditional *total* effect from `x` to `y`.
 #'
 #' @return
@@ -27,7 +28,7 @@
 #'
 #' @param x The output of [cond_indirect_effects()]. (Named `x`
 #'          because it is required in the naming of arguments
-#'          of the `plot`` generic function.)
+#'          of the `plot` generic function.)
 #' @param x_label The label for the X-axis. Default is the value of the
 #'                predictor in the output of [cond_indirect_effects()].
 #' @param w_label The label for the legend for the lines.
@@ -95,6 +96,8 @@
 #' @param ... Additional arguments. Ignored.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
+#'
+#' @seealso [cond_indirect_effects()]
 #'
 #' @references
 #'

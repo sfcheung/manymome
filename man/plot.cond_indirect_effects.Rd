@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotmod.R
 \name{plot.cond_indirect_effects}
 \alias{plot.cond_indirect_effects}
-\title{Plot Conditional ToTal Effect}
+\title{Plot Conditional Total Effect}
 \usage{
 \method{plot}{cond_indirect_effects}(
   x,
@@ -25,7 +25,7 @@
 \arguments{
 \item{x}{The output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}. (Named \code{x}
 because it is required in the naming of arguments
-of the `plot`` generic function.)}
+of the \code{plot} generic function.)}
 
 \item{x_label}{The label for the X-axis. Default is the value of the
 predictor in the output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
@@ -126,11 +126,12 @@ If \code{x} has only one path to \code{y} and there is no
 mediator along this path, then it plots the conditional (simple)
 effect of \code{x} on \code{y}.
 
-If \code{x} has only one path to \code{y} and there is one or more
+If \code{x} has one and only one path to \code{y} and there is one or more
 mediators along this path, then it plots the conditional
 \emph{indirect} effect along this path.
 
-If \code{x} has more than one path to \code{y}, then it plots the
+If \code{x} has more than one path to \code{y}, for example, \code{x}
+has a direct path to \code{y}, then it plots the
 conditional \emph{total} effect from \code{x} to \code{y}.
 }
 \examples{
@@ -172,6 +173,9 @@ Bodner, T. E. (2016). Tumble graphs: Avoiding misleading end point
 extrapolation when graphing interactions from a moderated multiple
 regression analysis. \emph{Journal of Educational and Behavioral
 Statistics, 41}(6), 593-604. \doi{10.3102/1076998616657080}
+}
+\seealso{
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
 }
 \author{
 Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}

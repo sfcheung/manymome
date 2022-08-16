@@ -1,11 +1,11 @@
-#' @title Print a `lm_list`-Class Object
+#' @title Print an `lm_list`-Class Object
 #'
 #' @description Print the content of the output of [lm2list()].
 #'
 #' @return
 #'  `x` is returned invisibly.
 #'
-#' @param x The output of the output of [lm2list()].
+#' @param x The output of [lm2list()].
 #' @param ...  Other arguments. Not used.
 #'
 #'

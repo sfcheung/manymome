@@ -6,7 +6,7 @@
 #' @details
 #'
 #' Ths function takes the output of [cond_indirect_effects()] and
-#' compute the difference in conditional indirect effects
+#' computes the difference in conditional indirect effects
 #' between any two rows, that is, between levels of the moderator,
 #' or two sets of levels of the moderators when the path has
 #' more than one moderator.
@@ -16,14 +16,16 @@
 #' levels are the mean of the moderator and one standard deviation
 #' above mean of the moderator, then this difference is the change in
 #' indirect effect when the moderator increases by one standard
-#' deviation. When a path has only one moderator, this is called
-#' the *z*-index of moderated mediation.
+#' deviation.
 #'
 #' If the two levels are 0 and 1, then this difference is the
 #' index of moderated mediation as proposed by Hayes (2015).
+#' (This index can also be computed directly by
+#' [index_of_mome()], designed specifically for this purpose.)
 #'
 #' The function can also compute the change in the standardized
-#' indirect effect when a moderator increases by one unit.
+#' indirect effect between two levels of a moderator or two sets of
+#' levels of the moderators.
 #'
 #' This function is intended to be a general purpose function
 #' that allows users to compute the difference between any
@@ -57,6 +59,11 @@
 #'    interval. Default is .95.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
+#'
+#' @seealso [index_of_mome()] for computing the index of moderated mediation,
+#'  [index_of_momome()] for computing the index of moderated moderated mediation,
+#'  [cond_indirect_effects()], [mod_levels()], and [merge_mod_levels()] for
+#'  preparing the levels to be compared.
 #'
 #' @references
 #' Hayes, A. F. (2015). An index and test of linear moderated mediation.

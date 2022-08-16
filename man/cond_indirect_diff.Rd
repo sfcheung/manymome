@@ -31,7 +31,7 @@ between two sets of levels of the moderators.
 }
 \details{
 Ths function takes the output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} and
-compute the difference in conditional indirect effects
+computes the difference in conditional indirect effects
 between any two rows, that is, between levels of the moderator,
 or two sets of levels of the moderators when the path has
 more than one moderator.
@@ -41,14 +41,16 @@ levels or sets of levels are meaningful. For example, if the two
 levels are the mean of the moderator and one standard deviation
 above mean of the moderator, then this difference is the change in
 indirect effect when the moderator increases by one standard
-deviation. When a path has only one moderator, this is called
-the \emph{z}-index of moderated mediation.
+deviation.
 
 If the two levels are 0 and 1, then this difference is the
 index of moderated mediation as proposed by Hayes (2015).
+(This index can also be computed directly by
+\code{\link[=index_of_mome]{index_of_mome()}}, designed specifically for this purpose.)
 
 The function can also compute the change in the standardized
-indirect effect when a moderator increases by one unit.
+indirect effect between two levels of a moderator or two sets of
+levels of the moderators.
 
 This function is intended to be a general purpose function
 that allows users to compute the difference between any
@@ -109,6 +111,12 @@ confint(out_ind)
 Hayes, A. F. (2015). An index and test of linear moderated mediation.
 \emph{Multivariate Behavioral Research, 50}(1), 1-22.
 \doi{10.1080/00273171.2014.962683}
+}
+\seealso{
+\code{\link[=index_of_mome]{index_of_mome()}} for computing the index of moderated mediation,
+\code{\link[=index_of_momome]{index_of_momome()}} for computing the index of moderated moderated mediation,
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, \code{\link[=mod_levels]{mod_levels()}}, and \code{\link[=merge_mod_levels]{merge_mod_levels()}} for
+preparing the levels to be compared.
 }
 \author{
 Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}

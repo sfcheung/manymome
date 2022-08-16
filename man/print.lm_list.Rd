@@ -2,12 +2,12 @@
 % Please edit documentation in R/print_lm_list.R
 \name{print.lm_list}
 \alias{print.lm_list}
-\title{Print a \code{lm_list}-Class Object}
+\title{Print an \code{lm_list}-Class Object}
 \usage{
 \method{print}{lm_list}(x, ...)
 }
 \arguments{
-\item{x}{The output of the output of \code{\link[=lm2list]{lm2list()}}.}
+\item{x}{The output of \code{\link[=lm2list]{lm2list()}}.}
 
 \item{...}{Other arguments. Not used.}
 }

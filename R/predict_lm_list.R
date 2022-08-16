@@ -1,19 +1,24 @@
-
-#' @title Predicted Values of a 'lm_list'-Class Object
+#' @title Predicted Values of an 'lm_list'-Class Object
 #'
 #' @description Compute the predicted values based on
-#'  the models stored in a 'lm_list`-class object.
+#'  the models stored in an 'lm_list`-class object.
 #'
-#' @details A `lm_list`-class object is a list
-#'  of `lm`-class objects.
+#' @details An `lm_list`-class object is a list
+#'  of `lm`-class objects, this function is similar
+#'  to the [stats::predict()] method of [lm()] but
+#'  it works on a system defined
+#'  by a list of regression models.
+#'
+#' This is an advanced helper used by some functions
+#' in this package. Exported for advanced users.
 #'
 #' @return
 #' A numeric vector of the predicted values, with length equal to
 #' the number of rows of user-supplied data.
 #'
-#' @param object A 'lm_list'-class object.
-#' @param x The variable name at the start of a pathway.
-#' @param y The variable name at the end of a pathway.
+#' @param object An 'lm_list'-class object.
+#' @param x The variable name at the start of a path.
+#' @param y The variable name at the end of a path.
 #' @param m Optional. The mediator(s) from `x` to `y`.
 #'          A numeric vector of the names of the mediators.
 #'          The path goes from the first element to the last element.

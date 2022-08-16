@@ -114,7 +114,8 @@ if \code{merge = TRUE}.
 }
 \description{
 Create levels of moderators to be used by
-\code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect]{cond_indirect()}}, and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+\code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+and \code{\link[=cond_indirect]{cond_indirect()}}.
 }
 \details{
 It creates values of a moderator that can be used to compute
@@ -129,8 +130,8 @@ The generated levels are then used by \code{\link[=cond_indirect]{cond_indirect(
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 
 If a model has more than one moderator, \code{\link[=mod_levels_list]{mod_levels_list()}} can be
-used to generate combinations of levels. The output can be merged
-and then passed to \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} to compute the conditional
+used to generate combinations of levels. The output can then passed
+to \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} to compute the conditional
 effects or conditional indirect effects for all the combinations.
 }
 \section{Functions}{
@@ -163,11 +164,11 @@ w1_levels2 <- mod_levels(lm_out, w = "w1", w_method = "percentile")
 w1_levels2
 # Form the levels from a lavaan output
 # Compute the product terms before fitting the model
-# Need to use the ":" to denote a product term
+dat$mw2 <- dat$m * dat$w2
 mod <-
 "
 m ~ x + w1 + x:w1 + c1 + c2
-y ~ m + x + w1 + w2 + m:w2 + c1 + c2
+y ~ m + x + w1 + w2 + mw2 + c1 + c2
 "
 fit <- sem(mod, dat, fixed.x = FALSE)
 cond_indirect(x = "x", y = "y", m = "m",
@@ -196,6 +197,11 @@ w1w2_levels <- mod_levels_list("w1", "w2", fit = fit)
 w1w2_levels
 cond_indirect_effects(x = "x", y = "y", m = "m",
                       fit = fit, wlevels = w1w2_levels)
+}
+\seealso{
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} for computing conditional
+indiret effects; \code{\link[=merge_mod_levels]{merge_mod_levels()}} for merging
+levels of moderators.
 }
 \author{
 Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}

@@ -3,20 +3,21 @@
 \name{summary.lm_list}
 \alias{summary.lm_list}
 \alias{print.summary_lm_list}
-\title{Summary of a \code{lm_list}-Class Object}
+\title{Summary of an \code{lm_list}-Class Object}
 \usage{
 \method{summary}{lm_list}(object, ...)
 
 \method{print}{summary_lm_list}(x, digits = 3, ...)
 }
 \arguments{
-\item{object}{The output of the output of \code{\link[=lm2list]{lm2list()}}.}
+\item{object}{The output of \code{\link[=lm2list]{lm2list()}}.}
 
 \item{...}{Other arguments. Not used.}
 
-\item{x}{An object of class "summary_lm_list".}
+\item{x}{An object of class \code{summary_lm_list}.}
 
-\item{digits}{The number of significant digits in printing numerical results.}
+\item{digits}{The number of significant digits in printing
+numerical results.}
 }
 \value{
 \code{x} is returned invisibly.
