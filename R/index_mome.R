@@ -5,13 +5,20 @@
 #'   the index of moderated moderated mediation.
 #'
 #' @details
-#' TODO
+#' The function [index_of_mome()] computes the index of moderated
+#' mediation proposed by Hayes. It supports any path in a model
+#' with one component path moderated.
+#'
+#' The function [index_of_momome()] computes the index of
+#' moderated mediation proposed by Hayes. It supports any path
+#' in a model with two moderators, each moderates on component
+#' path.
 #'
 #' @return
-#' It returns an `index_of_mome`-class object. This class has a
-#' `print` method ([print.index_of_mome()]), a `coef` method
-#' ([coef.index_of_mome()]), and a `confint` method
-#' ([confint.index_of_mome()]).
+#' It returns an `cond_indirect_diff`-class object. This class has a
+#' `print` method ([print.cond_indirect_diff()]), a `coef` method
+#' ([coef.cond_indirect_diff()]), and a `confint` method
+#' ([confint.cond_indirect_diff()]).
 #'
 #'
 #' @param x Character. The name of the predictor at the start of the
@@ -64,7 +71,7 @@
 #'
 #' @examples
 #'
-#' # TOUPDATE
+#' \dontrun{
 #' library(lavaan)
 #' dat <- modmed_x1m3w4y1
 #' dat$xw1 <- dat$x * dat$w1
@@ -72,27 +79,24 @@
 #' "
 #' m1 ~ a * x  + f * w1 + d * xw1
 #' y  ~ b * m1 + cp * x
+#' ind_mome := d * b
 #' "
 #' fit <- sem(mod, dat,
 #'            meanstructure = TRUE, fixed.x = FALSE,
 #'            se = "none", baseline = FALSE)
 #' est <- parameterEstimates(fit)
 #'
-#' # Create levels of w1, the moderators
-#' w1levels <- mod_levels("w1", fit = fit)
-#' w1levels
-#'
-#' # Conditional effects from x to y when w1 is equal to each of the levels
-#' boot_out <- fit2boot_out_do_boot(fit, R = 50, seed = 4314)
-#' out <- cond_indirect_effects(x = "x", y = "y", m = "m1",
-#'                       wlevels = w1levels, fit = fit,
-#'                       boot_ci = TRUE, boot_out = boot_out)
-#' out
-#' out_ind <- index_of_mome(out, from = 2, to = 1)
-#' out_ind
-#' coef(out_ind)
-#' confint(out_ind)
-#'
+#' # R should be at least 2000 or even 5000 in real research.
+#' boot_out <- do_boot(fit, R = 500, seed = 4314, parallel = FALSE)
+#' out_mome <- index_of_mome(x = "x", y = "y", m = "m1", w = "w1",
+#'                           fit = fit,
+#'                           boot_ci = TRUE, boot_out = boot_out)
+#' out_mome
+#' coef(out_mome)
+#' # From lavaan
+#' print(est[19, ], nd = 8)
+#' confint(out_mome)
+#' }
 #'
 #'
 #' @export
@@ -141,6 +145,37 @@ index_of_mome <- function(x,
     out
   }
 
+#' @examples
+#'
+#' \dontrun{
+#' library(lavaan)
+#' dat <- modmed_x1m3w4y1
+#' dat$xw1 <- dat$x * dat$w1
+#' dat$m1w4 <- dat$m1 * dat$w4
+#' mod <-
+#' "
+#' m1 ~ a * x  + f1 * w1 + d1 * xw1
+#' y  ~ b * m1 + f4 * w4 + d4 * m1w4 + cp * x
+#' ind_momome := d1 * d4
+#' "
+#' fit <- sem(mod, dat,
+#'            meanstructure = TRUE, fixed.x = FALSE,
+#'            se = "none", baseline = FALSE)
+#' est <- parameterEstimates(fit)
+#'
+#' # R should be at least 2000 or even 5000 in real research.
+#' boot_out <- do_boot(fit, R = 500, seed = 4314, parallel = FALSE)
+#' out_momome <- index_of_momome(x = "x", y = "y", m = "m1",
+#'                           w = "w1", z = "w4",
+#'                           fit = fit,
+#'                           boot_ci = TRUE, boot_out = boot_out)
+#' out_momome
+#' coef(out_momome)
+#' print(est[32, ], nd = 8)
+#' confint(out_momome)
+#' }
+#'
+#' @export
 #' @describeIn index_of_mome Compute the index of
 #'   moderated moderated mediation.
 #' @order 2
@@ -187,7 +222,7 @@ index_of_momome <- function(x,
                                  ...)
     i0 <- cond_indirect_diff(out, from = 4, to = 3, level = level)
     i1 <- cond_indirect_diff(out, from = 2, to = 1, level = level)
-    ind <- coef(i1) - coef(i0)
+    ind <- stats::coef(i1) - stats::coef(i0)
     ind_boot <- i1$boot_diff - i0$boot_diff
     levels0 <- c((1 - level) / 2, 1 - (1 - level) / 2)
     ind_ci <- stats::quantile(ind_boot, probs = levels0)
@@ -201,7 +236,7 @@ index_of_momome <- function(x,
                 output = out,
                 boot_diff = ind_boot,
                 type = "index_of_mome")
-    class(out) <- c("cond_effect_diff", class(out))
+    class(out) <- c("cond_indirect_diff", class(out))
     out
   }
 

@@ -87,17 +87,19 @@ Default is \code{NULL} and seed is not set.}
 the index of moderated moderated mediation.}
 }
 \value{
-It returns an \code{index_of_mome}-class object. This class has a
-\code{print} method (\code{\link[=print.index_of_mome]{print.index_of_mome()}}), a \code{coef} method
-(\code{\link[=coef.index_of_mome]{coef.index_of_mome()}}), and a \code{confint} method
-(\code{\link[=confint.index_of_mome]{confint.index_of_mome()}}).
+It returns an \code{cond_indirect_diff}-class object. This class has a
+\code{print} method (\code{\link[=print.cond_indirect_diff]{print.cond_indirect_diff()}}), a \code{coef} method
+(\code{\link[=coef.cond_indirect_diff]{coef.cond_indirect_diff()}}), and a \code{confint} method
+(\code{\link[=confint.cond_indirect_diff]{confint.cond_indirect_diff()}}).
 }
 \description{
 Compute the index of moderated mediation and
 the index of moderated moderated mediation.
 }
 \details{
-TODO
+The function \code{\link[=index_of_mome]{index_of_mome()}} compute the index of moderated
+mediation proposed by Hayes. It supports any path in a model
+with one component path moderated
 }
 \section{Functions}{
 \itemize{
@@ -110,7 +112,7 @@ moderated moderated mediation.
 
 \examples{
 
-# TOUPDATE
+\dontrun{
 library(lavaan)
 dat <- modmed_x1m3w4y1
 dat$xw1 <- dat$x * dat$w1
@@ -118,28 +120,54 @@ mod <-
 "
 m1 ~ a * x  + f * w1 + d * xw1
 y  ~ b * m1 + cp * x
+ind_mome := d * b
 "
 fit <- sem(mod, dat,
            meanstructure = TRUE, fixed.x = FALSE,
            se = "none", baseline = FALSE)
 est <- parameterEstimates(fit)
 
-# Create levels of w1, the moderators
-w1levels <- mod_levels("w1", fit = fit)
-w1levels
-
-# Conditional effects from x to y when w1 is equal to each of the levels
-boot_out <- fit2boot_out_do_boot(fit, R = 50, seed = 4314)
-out <- cond_indirect_effects(x = "x", y = "y", m = "m1",
-                      wlevels = w1levels, fit = fit,
-                      boot_ci = TRUE, boot_out = boot_out)
-out
-out_ind <- index_of_mome(out, from = 2, to = 1)
-out_ind
-coef(out_ind)
-confint(out_ind)
+# R should be at least 2000 or even 5000 in real research.
+boot_out <- do_boot(fit, R = 500, seed = 4314, parallel = FALSE)
+out_mome <- index_of_mome(x = "x", y = "y", m = "m1", w = "w1",
+                          fit = fit,
+                          boot_ci = TRUE, boot_out = boot_out)
+out_mome
+coef(out_mome)
+# From lavaan
+print(est[19, ], nd = 8)
+confint(out_mome)
+}
 
 
+
+\dontrun{
+library(lavaan)
+dat <- modmed_x1m3w4y1
+dat$xw1 <- dat$x * dat$w1
+dat$m1w4 <- dat$m1 * dat$w4
+mod <-
+"
+m1 ~ a * x  + f1 * w1 + d1 * xw1
+y  ~ b * m1 + f4 * w4 + d4 * m1w4 + cp * x
+ind_momome := d1 * d4
+"
+fit <- sem(mod, dat,
+           meanstructure = TRUE, fixed.x = FALSE,
+           se = "none", baseline = FALSE)
+est <- parameterEstimates(fit)
+
+# R should be at least 2000 or even 5000 in real research.
+boot_out <- do_boot(fit, R = 500, seed = 4314, parallel = FALSE)
+out_momome <- index_of_momome(x = "x", y = "y", m = "m1",
+                          w = "w1", z = "w4",
+                          fit = fit,
+                          boot_ci = TRUE, boot_out = boot_out)
+out_momome
+coef(out_momome)
+print(est[32, ], nd = 8)
+confint(out_momome)
+}
 
 }
 \references{
