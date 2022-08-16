@@ -13,9 +13,10 @@ reference:
   - cond_indirect_effects
   - cond_indirect
   - indirect_effect
-- title: Presenting the Effects
+- title: Presenting and Exploring the Effects
 - contents:
   - index_of_mome
+  - cond_indirect_diff
   - plot.cond_indirect_effects
 - title: Moderator Levels
   desc:  >
@@ -34,12 +35,12 @@ reference:
   - lm2boot_out
   - fit2boot_out
   - fit2boot_out_do_boot
-- title: For 'lm'
-- contents:
-  - lm2list
 - title: For 'lavaan'
 - contents:
   - factor2var
+- title: For 'lm'
+- contents:
+  - lm2list
 - title: Methods
   desc: >
     Methods and utility functions for the output of the main functions.
@@ -53,24 +54,23 @@ reference:
   - print.cond_indirect_effects
   - subsetting_cond_indirect_effects
   - get_one_cond_indirect_effect
-  - coef.index_of_mome
-  - confint.index_of_mome
-  - print.index_of_mome
+  - coef.cond_indirect_diff
+  - confint.cond_indirect_diff
+  - print.cond_indirect_diff
   - print.lm_list
   - summary.lm_list
-- title: Datasets
-  desc: Datasets used in examples.
-- contents:
-  - has_keyword("datasets")
 - title: Advanced helpers
   desc: Helper functions exported for advanced users.
 - contents:
   - indirect_i
   - check_path
-  - lm2ptable
   - lm_from_lavaan_list
   - coef.lm_from_lavaan
   - terms.lm_from_lavaan
   - predict.lm_from_lavaan
   - predict.lm_from_lavaan_list
   - predict.lm_list
+- title: Datasets
+  desc: Datasets used in examples.
+- contents:
+  - has_keyword("datasets")
