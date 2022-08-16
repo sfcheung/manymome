@@ -1,42 +1,50 @@
-#' @title Generalized Index of Moderated-Mediation
+#' @title Differences In Conditional Indirect Effects
 #'
-#' @description Compute a generalized version of the index of
-#'   moderated-mediation proposed by Hayes (2015).
+#' @description Compute the difference in conditional indirect effects
+#'   between two sets of levels of the moderators.
 #'
 #' @details
 #'
-#' Ths function computes a generalized version of the index of
-#' moderated-mediation
-#' proposed by Hayes (2015).
+#' Ths function takes the output of [cond_indirect_effects()] and
+#' compute the difference in conditional indirect effects
+#' between any two rows, that is, between levels of the moderator,
+#' or two sets of levels of the moderators when the path has
+#' more than one moderator.
 #'
-#' The variant proposed by Hayes is the change in the indirect effect
-#' along a moderated pathway when a moderator increases by one unit.
+#' The difference is meaningful when the difference between the two
+#' levels or sets of levels are meaningful. For example, if the two
+#' levels are the mean of the moderator and one standard deviation
+#' above mean of the moderator, then this difference is the change in
+#' indirect effect when the moderator increases by one standard
+#' deviation. When a path has only one moderator, this is called
+#' the *z*-index of moderated mediation.
 #'
-#' The generalized version is the change in the indirect effect
-#' along a moderated pathway when a moderator increases by an amount
-#' meaningful in a context.
-#'
-#' For example, the function can compute the change in the indirect effect
-#' when a moderator increases by one standard deviation. We call this
-#' variant the *standardized index of moderated-mediation*.
+#' If the two levels are 0 and 1, then this difference is the
+#' index of moderated mediation as proposed by Hayes (2015).
 #'
 #' The function can also compute the change in the standardized
-#' indirect effect when a moderator increases by one unit. We call this
-#' variant the *index of standardized moderated-mediation*.
+#' indirect effect when a moderator increases by one unit.
 #'
-#' The change in the standardized
-#' indirect effect when a moderator increases by one standardized deviation
-#' is called the *standardized index of standardized moderated-mediation*.
+#' This function is intended to be a general purpose function
+#' that allows users to compute the difference between any
+#' two levels or sets of levels that are meaningful in a context.
 #'
 #' This function itself does not set the levels of comparison. The levels
 #' to be compared need to be set when calling [cond_indirect_effects()].
 #' This function extracts required information from the output of
 #' [cond_indirect_effects()].
 #'
+#' If bootstrap estimates are available in the input or
+#' bootstrap confidence intervals are requested in calling
+#' [cond_indirect_effects()], [cond_indirect_diff()] will
+#' also form the percentile bootstrap confidence interval
+#' for the difference in conditional indirect effects.
+#'
 #' @return
-#' It returns an `index_of_mome`-class object. This class
-#' has a `print` method ([print.index_of_mome()]), a `coef` method
-#' ([coef.index_of_mome()]), and a `confint` method ([confint.index_of_mome()]).
+#' It returns a `cond_indirect_diff`-class object. This class has a
+#' `print` method ([print.cond_indirect_diff()]), a `coef` method
+#' ([coef.cond_indirect_diff()]), and a `confint` method
+#' ([confint.cond_indirect_diff()]).
 #'
 #'
 #' @param output A `cond_indirect_effects`-class object: The output
@@ -65,7 +73,9 @@
 #' m1 ~ a * x  + f * w1 + d * xw1
 #' y  ~ b * m1 + cp * x
 #' "
-#' fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
+#' fit <- sem(mod, dat,
+#'            meanstructure = TRUE, fixed.x = FALSE,
+#'            se = "none", baseline = FALSE)
 #' est <- parameterEstimates(fit)
 #'
 #' # Create levels of w1, the moderators
@@ -78,7 +88,7 @@
 #'                       wlevels = w1levels, fit = fit,
 #'                       boot_ci = TRUE, boot_out = boot_out)
 #' out
-#' out_ind <- index_of_mome(out, from = 2, to = 1)
+#' out_ind <- cond_indirect_diff(out, from = 2, to = 1)
 #' out_ind
 #' coef(out_ind)
 #' confint(out_ind)
@@ -86,11 +96,12 @@
 #'
 #'
 #' @export
-#' @describeIn index_of_mome Compute the generalized index of
-#'                           moderated-mediation.
+#' @describeIn cond_indirect_diff Compute the difference in
+#'   in conditional indirect effect between two rows
+#'   in the output of [cond_indirect_effects()].
 #' @order 1
 
-index_of_mome <- function(output,
+cond_indirect_diff <- function(output,
                           from = NULL,
                           to = NULL,
                           level = .95) {
@@ -112,11 +123,18 @@ index_of_mome <- function(output,
     boot_i_from <- output_full_from$boot_i
     boot_i_to <- output_full_to$boot_i
     if (is.null(boot_i_from) || is.null(boot_i_to)) {
-        stop("Bootstrap estimates not found. Was bootstrapping requested?")
+        has_boot <- FALSE
+      } else {
+        has_boot <- TRUE
       }
-    boot_diff <- boot_i_to - boot_i_from
-    levels0 <- c((1 - level) / 2, 1 - (1 - level) / 2)
-    boot_diff_ci <- stats::quantile(boot_diff, probs = levels0)
+    if (has_boot) {
+        boot_diff <- boot_i_to - boot_i_from
+        levels0 <- c((1 - level) / 2, 1 - (1 - level) / 2)
+        boot_diff_ci <- stats::quantile(boot_diff, probs = levels0)
+      } else {
+        boot_diff <- NA
+        boot_diff_ci <- c(NA, NA)
+      }
     effect_diff <- stats::coef(output_full_to) - stats::coef(output_full_from)
     wlevels <- attr(output, "wlevels")
     wlevels_from <- wlevels[from, , drop = FALSE]
@@ -128,28 +146,28 @@ index_of_mome <- function(output,
                 to = wlevels_to,
                 output = output[c(to, from), ],
                 boot_diff = boot_diff)
-    class(out) <- c("index_of_mome", class(out))
+    class(out) <- c("cond_indirect_diff", class(out))
     out
   }
 
-#' @title Print the Output of 'index_of_mome'
+#' @title Print the Output of 'cond_indirect_diff'
 #'
-#' @description Print the output of [index_of_mome()].
+#' @description Print the output of [cond_indirect_diff()].
 #'
-#' @details The `print` method of the `index_of_mome`-class object.
+#' @details The `print` method of the `cond_indirect_diff`-class object.
 #'
 #' @return Return `x` invisibly. Called for its side effect.
 #'
-#' @param x The output of [index_of_mome()].
+#' @param x The output of [cond_indirect_diff()].
 #' @param digits The number of decimal places in the printout.
 #' @param ... Optional arguments. Ignored.
-#' @seealso [index_of_mome()]
+#' @seealso [cond_indirect_diff()]
 #' @export
 
-print.index_of_mome <- function(x, digits = 3, ...) {
+print.cond_indirect_diff <- function(x, digits = 3, ...) {
     full_output_attr <- attr(x$output, "full_output")[[1]]
     print(x$output, digits = digits, annotation = FALSE, ...)
-    cat("\n== Index of Moderated-Mediation ==")
+    cat("\n== Difference in Conditional Indirect Effect ==")
     cat("\n")
     xto0 <- sapply(x$to, function(xx) {
                     ifelse(is.numeric(xx),
@@ -168,17 +186,22 @@ print.index_of_mome <- function(x, digits = 3, ...) {
     print(tofrom, quote = FALSE)
     index_df <- data.frame(x = full_output_attr$x,
                            y = full_output_attr$y,
-                           Change = formatC(x$index, digits = digits, format = "f"),
-                           CI.lo = formatC(x$ci[1], digits = digits, format = "f"),
-                           CI.hi = formatC(x$ci[2], digits = digits, format = "f"))
-    rownames(index_df) <- "Index"
+                           Change = formatC(x$index, digits = digits, format = "f"))
+    has_ci <- !all(is.na(x$ci))
+    if (has_ci) {
+        index_df$CI.lo <- formatC(x$ci[1], digits = digits, format = "f")
+        index_df$CI.hi <- formatC(x$ci[2], digits = digits, format = "f")
+      }
+    rownames(index_df) <- "Change"
     cat("\nChange in Indirect Effect:\n")
     print(index_df, nd = digits)
     cat("\n ")
-    cat(strwrap(paste0("- [CI.lo, CI.hi]: ",
-                       x$level * 100,
-                       "% percentile confidence interval."), exdent = 3),
-                       sep = "\n")
+    if (has_ci) {
+        cat(strwrap(paste0("- [CI.lo, CI.hi]: ",
+                          x$level * 100,
+                          "% percentile confidence interval."), exdent = 3),
+                          sep = "\n")
+      }
     if (full_output_attr$standardized_x) {
         cat(" - ", full_output_attr$x, " standardized.\n", sep = "")
       }
@@ -189,20 +212,20 @@ print.index_of_mome <- function(x, digits = 3, ...) {
     invisible(x)
   }
 
-#' @title Print the Output of 'index_of_mome'
+#' @title Print the Output of 'cond_indirect_diff()'
 #'
-#' @description Extract the Index of Moderated-Mediation.
+#' @description Extract the change in conditional indirect effect.
 #'
-#' @details The `coef` method of the `index_of_mome`-class object.
+#' @details The `coef` method of the `cond_indirect_diff`-class object.
 #'
-#' @return Scalar: The index of moderated-mediation in `object`.
+#' @return Scalar: The change of conditional indirect effect `object`.
 #'
-#' @param object The output of [index_of_mome()].
+#' @param object The output of [cond_indirect_diff()].
 #' @param ... Optional arguments. Ignored.
-#' @seealso [index_of_mome()]
+#' @seealso [cond_indirect_diff()]
 #' @export
 
-coef.index_of_mome <- function(object, ...) {
+coef.cond_indirect_diff <- function(object, ...) {
     full_output_attr <- attr(object$output, "full_output")[[1]]
     out <- object$index
     names(out) <- paste0(full_output_attr$y,
@@ -214,15 +237,16 @@ coef.index_of_mome <- function(object, ...) {
   }
 
 
-#' @title Confidence Interval of the Output of 'index_of_mome'
+#' @title Confidence Interval of the Output of 'cond_indirect_diff()'
 #'
-#' @description Extract the confidence interval the output of [index_of_mome()].
+#' @description Extract the confidence interval the output of [cond_indirect_diff()].
 #'
-#' @details The `confint` method of the `index_of_mome`-class object.
+#' @details The `confint` method of the `cond_indirect_diff`-class object.
 #'
 #' @return A one-row-two-column data frame of the confidence limits.
+#'  If confidence interval is not available, the limits are `NA`s.
 #'
-#' @param object The output of [index_of_mome()].
+#' @param object The output of [cond_indirect_diff()].
 #' @param parm Ignored.
 #' @param level The level of confidence for the bootstrap confidence
 #'    interval. Default is .95. Must match the level of the stored
@@ -230,12 +254,13 @@ coef.index_of_mome <- function(object, ...) {
 #' @param ... Optional arguments. Ignored.
 #' @export
 
-confint.index_of_mome<- function(object, parm, level = .95, ...) {
+confint.cond_indirect_diff<- function(object, parm, level = .95, ...) {
     if (object$level != level) {
         stop("Requested level does not match stored level.")
       }
     full_output_attr <- attr(object$output, "full_output")[[1]]
     out <- data.frame(as.list(object$ci), check.names = FALSE)
+    if (all(is.na(out))) out <- data.frame(ci.lower = NA, ci.upper = NA)
     rownames(out) <- paste0(full_output_attr$y,
                          "~",
                          paste0(rev(full_output_attr$m), collapse = "~"),
