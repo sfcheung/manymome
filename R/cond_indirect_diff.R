@@ -129,6 +129,7 @@ cond_indirect_diff <- function(output,
     output_full_to <- output_full[[to]]
     boot_i_from <- output_full_from$boot_i
     boot_i_to <- output_full_to$boot_i
+    effect_diff <- stats::coef(output_full_to) - stats::coef(output_full_from)
     if (is.null(boot_i_from) || is.null(boot_i_to)) {
         has_boot <- FALSE
       } else {
@@ -136,13 +137,21 @@ cond_indirect_diff <- function(output,
       }
     if (has_boot) {
         boot_diff <- boot_i_to - boot_i_from
-        levels0 <- c((1 - level) / 2, 1 - (1 - level) / 2)
-        boot_diff_ci <- stats::quantile(boot_diff, probs = levels0)
+        # levels0 <- c((1 - level) / 2, 1 - (1 - level) / 2)
+        # boot_diff_ci <- stats::quantile(boot_diff, probs = levels0)
+        boot_tmp <- list(t0 = effect_diff,
+                         t = matrix(boot_diff, ncol = 1),
+                         R = length(boot_diff))
+        boot_diff_ci <- boot::boot.ci(boot_tmp,
+                            type = "perc",
+                            conf = level)$percent[4:5]
+        names(boot_diff_ci) <- paste0(formatC(c(100 * (1 - level) / 2,
+                                      100 * (1 - (1 - level) / 2)), 2,
+                                      format = "f"), "%")
       } else {
         boot_diff <- NA
         boot_diff_ci <- c(NA, NA)
       }
-    effect_diff <- stats::coef(output_full_to) - stats::coef(output_full_from)
     wlevels <- attr(output, "wlevels")
     wlevels_from <- wlevels[from, , drop = FALSE]
     wlevels_to <- wlevels[to, , drop = FALSE]

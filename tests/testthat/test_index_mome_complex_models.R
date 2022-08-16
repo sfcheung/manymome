@@ -69,22 +69,18 @@ ind_momome2 <- index_of_momome(x = "x", y = "y", m = c("m1", "m2"), w = "w1", z 
 
 coef(ind_mome1)
 confint(ind_mome1)
-c(boot:::norm.inter(ind_mome1$boot, .025)[2], boot:::norm.inter(ind_mome1$boot, .975)[2])
 print(parameterEstimates(fitmo1_boot)[22, c("est", "ci.lower", "ci.upper")], nd = 8)
 
 coef(ind_mome2)
 confint(ind_mome2)
-c(boot:::norm.inter(ind_mome2$boot, .025)[2], boot:::norm.inter(ind_mome2$boot, .975)[2])
 print(parameterEstimates(fitmo2_boot)[22, c("est", "ci.lower", "ci.upper")], nd = 8)
 
 coef(ind_momome1)
 confint(ind_momome1)
-c(boot:::norm.inter(ind_momome1$boot, .025)[2], boot:::norm.inter(ind_momome1$boot, .975)[2])
 print(parameterEstimates(fitmomo1_boot)[35, c("est", "ci.lower", "ci.upper")], nd = 8)
 
 coef(ind_momome2)
 confint(ind_momome2)
-c(boot:::norm.inter(ind_momome2$boot, .025)[2], boot:::norm.inter(ind_momome2$boot, .975)[2])
 print(parameterEstimates(fitmomo2_boot)[35, c("est", "ci.lower", "ci.upper")], nd = 8)
 
 
@@ -110,25 +106,25 @@ test_that("index_of_mome and index_of_momome", {
         ignore_attr = TRUE
       )
     expect_equal(
-        c(boot:::norm.inter(ind_mome1$boot, .025)[2], boot:::norm.inter(ind_mome1$boot, .975)[2]),
+        unlist(confint(ind_mome1)),
         unlist(parameterEstimates(fitmo1_boot)[22, c("ci.lower", "ci.upper")]),
         tolerance = 1e-4,
         ignore_attr = TRUE
       )
     expect_equal(
-        c(boot:::norm.inter(ind_mome2$boot, .025)[2], boot:::norm.inter(ind_mome2$boot, .975)[2]),
+        unlist(confint(ind_mome2)),
         unlist(parameterEstimates(fitmo2_boot)[22, c("ci.lower", "ci.upper")]),
         tolerance = 1e-4,
         ignore_attr = TRUE
       )
     expect_equal(
-        c(boot:::norm.inter(ind_momome1$boot, .025)[2], boot:::norm.inter(ind_momome1$boot, .975)[2]),
+        unlist(confint(ind_momome1)),
         unlist(parameterEstimates(fitmomo1_boot)[35, c("ci.lower", "ci.upper")]),
         tolerance = 1e-4,
         ignore_attr = TRUE
       )
     expect_equal(
-        c(boot:::norm.inter(ind_momome2$boot, .025)[2], boot:::norm.inter(ind_momome2$boot, .975)[2]),
+        unlist(confint(ind_momome2)),
         unlist(parameterEstimates(fitmomo2_boot)[35, c("ci.lower", "ci.upper")]),
         tolerance = 1e-4,
         ignore_attr = TRUE

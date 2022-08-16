@@ -245,8 +245,16 @@ index_of_momome <- function(x,
     i1 <- cond_indirect_diff(out, from = 2, to = 1, level = level)
     ind <- stats::coef(i1) - stats::coef(i0)
     ind_boot <- i1$boot_diff - i0$boot_diff
-    levels0 <- c((1 - level) / 2, 1 - (1 - level) / 2)
-    ind_ci <- stats::quantile(ind_boot, probs = levels0)
+    # levels0 <- c((1 - level) / 2, 1 - (1 - level) / 2)
+    # ind_ci <- stats::quantile(ind_boot, probs = levels0)
+    tmp <- list(t = matrix(ind_boot, nrow = length(ind_boot), ncol = 1),
+                t0 = ind,
+                R = length(ind_boot))
+    boot_ci <- boot::boot.ci(tmp, conf = level, type = "perc")
+    ind_ci <- boot_ci$percent[4:5]
+    names(ind_ci) <- paste0(formatC(c(100 * (1 - level) / 2,
+                                  100 * (1 - (1 - level) / 2)), 2,
+                                  format = "f"), "%")
     out <- list(index = ind,
                 ci = ind_ci,
                 level = level,

@@ -49,18 +49,15 @@ ind_momome <- index_of_momome(x = "x", y = "y", m = "m1", w = "w1", z = "w4",
 
 coef(ind_mome1)
 confint(ind_mome1)
-c(boot:::norm.inter(ind_mome1$boot, .025)[2], boot:::norm.inter(ind_mome1$boot, .975)[2])
 print(parameterEstimates(fitmo1_boot)[19, c("est", "ci.lower", "ci.upper")], nd = 8)
 
 coef(ind_mome2)
 confint(ind_mome2)
-c(boot:::norm.inter(ind_mome2$boot, .025)[2], boot:::norm.inter(ind_mome2$boot, .975)[2])
-print(parameterEstimates(fitmo2_boot)[19, c("est", "ci.lower", "ci.upper")], nd = 5)
+print(parameterEstimates(fitmo2_boot)[19, c("est", "ci.lower", "ci.upper")], nd = 8)
 
 coef(ind_momome)
 confint(ind_momome)
-c(boot:::norm.inter(ind_momome$boot, .025)[2], boot:::norm.inter(ind_momome$boot, .975)[2])
-print(parameterEstimates(fitmomo_boot)[32, c("est", "ci.lower", "ci.upper")], nd = 5)
+print(parameterEstimates(fitmomo_boot)[32, c("est", "ci.lower", "ci.upper")], nd = 8)
 
 test_that("index_of_mome and index_of_momome", {
     expect_equal(
@@ -79,19 +76,19 @@ test_that("index_of_mome and index_of_momome", {
         ignore_attr = TRUE
       )
     expect_equal(
-        c(boot:::norm.inter(ind_mome1$boot, .025)[2], boot:::norm.inter(ind_mome1$boot, .975)[2]),
+        unlist(confint(ind_mome1)),
         unlist(parameterEstimates(fitmo1_boot)[19, c("ci.lower", "ci.upper")]),
         tolerance = 1e-4,
         ignore_attr = TRUE
       )
     expect_equal(
-        c(boot:::norm.inter(ind_mome2$boot, .025)[2], boot:::norm.inter(ind_mome2$boot, .975)[2]),
+        unlist(confint(ind_mome2)),
         unlist(parameterEstimates(fitmo2_boot)[19, c("ci.lower", "ci.upper")]),
         tolerance = 1e-4,
         ignore_attr = TRUE
       )
     expect_equal(
-        c(boot:::norm.inter(ind_momome$boot, .025)[2], boot:::norm.inter(ind_momome$boot, .975)[2]),
+        unlist(confint(ind_momome)),
         unlist(parameterEstimates(fitmomo_boot)[32, c("ci.lower", "ci.upper")]),
         tolerance = 1e-4,
         ignore_attr = TRUE
