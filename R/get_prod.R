@@ -1,13 +1,4 @@
-#' @title One Line Title
-#'
-#' @description Find the product term of two variables in a model.
-#'
-#' @details Details
-#'   (Include subjects for verbs.)
-#'   (Use 3rd person forms for verbs.)
-#'
-#' @return
-#' Specify what are returned.
+#' @title Get the Product Terms (if Any) Along a Path
 #'
 #' @param x Character. Variable name.
 #' @param y Character. Variable name.

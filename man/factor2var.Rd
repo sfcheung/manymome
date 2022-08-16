@@ -15,7 +15,7 @@ factor2var(
 \item{x_value}{The vector of categorical variable.}
 
 \item{x_contrasts}{The contrast to be used. Default
-is \code{constr.treatment}.}
+is \code{"constr.treatment"}.}
 
 \item{prefix}{The prefix to be added to the variables
 to be created. Default is \code{""}.}

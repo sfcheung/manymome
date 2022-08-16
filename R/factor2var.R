@@ -19,7 +19,7 @@
 #'
 #' @param x_value The vector of categorical variable.
 #' @param x_contrasts The contrast to be used. Default
-#'                    is `constr.treatment`.
+#'                    is `"constr.treatment"`.
 #' @param prefix The prefix to be added to the variables
 #'               to be created. Default is `""`.
 #' @param add_rownames Whether row names will be added

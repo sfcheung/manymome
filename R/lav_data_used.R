@@ -1,13 +1,4 @@
-#' @title One Line Title
-#'
-#' @description One paragraph description
-#'
-#' @details Details
-#'   (Include subjects for verbs.)
-#'   (Use 3rd person forms for verbs.)
-#'
-#' @return
-#' Specify what are returned.
+#' @title Extract data used in a lavaan fit object.
 #'
 #' @param fit The fit object. Currently only supports a
 #'            [lavaan::lavaan-class] object.

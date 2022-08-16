@@ -1,13 +1,4 @@
-#' @title One Line Title
-#'
-#' @description One paragraph description
-#'
-#' @details Details
-#'   (Include subjects for verbs.)
-#'   (Use 3rd person forms for verbs.)
-#'
-#' @return
-#' Specify what are returned.
+#' @title Get the intercept in lavaan fit object
 #'
 #' @param x Character. The variable for which the intercept will be extracted.
 #' @param fit The fit object. Currently only supports a

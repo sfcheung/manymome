@@ -1,13 +1,4 @@
-#' @title One Line Title
-#'
-#' @description One paragraph description
-#'
-#' @details Details
-#'   (Include subjects for verbs.)
-#'   (Use 3rd person forms for verbs.)
-#'
-#' @return
-#' Specify what are returned.
+#' @title Get the Path Coefficient from 'x' to 'y'
 #'
 #' @param x Character. The predictor.
 #' @param y Character. The outcome.
