@@ -26,9 +26,67 @@ if (basename(getwd()) == "manymome") {
 # Introduction
 
 This article is a brief illustration on how `manymome` functions are
-used in some typical cases. The model is intended to be
-simple for illustration but complicated enough to
+used in some typical cases. The models are intended to be
+simple enough for illustration but complicated enough to
 show the flexibility of `manymome`.
+
+## Workflow
+
+The use of `manymome` adopts a two-stage workflow:
+
+1. Fit the model by SEM (using `lavaan::sem`) or a series of regression
+  (using `lm()`).
+
+    - No need to label any parameters or denote any variables
+  as the predictors, mediators, moderators, or outcome variables for
+  computing indirect effects or conditional indirect effects.
+
+    - Bootstrapping in this stage is optional. If done at this stage,
+      bootstrap estimates can be reused by all main functions of
+      `manymome`. No need to do bootstrapping again and again.
+      Bootstrapping can also be done in the next stage.
+
+2. Use `manymome` functions to compute the indirect effects or
+   conditional indirect effects along
+   nearly any path in the model.
+
+    - Just specify the start (`x`), the mediator(s)
+   (`m`, if any), and the end (`y`). Indirect effects can be computed
+   for nearly any path in a model, and it can start nearly anywhere and end
+   nearly anywhere. Bootstrap confidence can be formed for the
+   indirect effects.
+
+     - If a path has one or more moderators, conditional
+   indirect effects can be computed, again along nearly any path.
+   The levels of the moderators can be decided in this stage. No need
+   to go back to Stage 1. Bootstrap confidence can be formed for the
+   conditional indirect effects.
+
+     - Bootstrapping can be done in this stage, and only needs to
+     be conducted once. The bootstrap estimates can be reused by
+     most main functions of `manymome`.
+
+## What Will Be Covered
+
+a. Using `cond_indirect_effects()` to compute conditional
+   indirect effects, with bootstrap confidence intervals.
+
+a. Using `indirect_effect()` to compute indirect effects,
+   with bootstrap confidence interval.
+
+b. Using `do_boot()` to generate bootstrap estimates for
+   `cond_indirect_effects()`, `indirect_effect()`,
+   and some other functions in `manymome`.
+
+c. Using `index_of_mome()` and `index_of_momome()` to
+   compute the index of moderated mediation and the
+   index of moderated moderated mediation, respectively,
+   with bootstrap confidence intervals.
+
+e. Compute standardized conditional indirect effects
+   and standardized indirect effect using
+   `cond_indirect_effects()` and `indirect_effect()`,
+   respectively.
 
 # Moderated Mediation by SEM using `lavaan`
 
@@ -293,6 +351,102 @@ Although `w1` and `w2` significantly moderate the component paths,
 they do not significantly moderate the moderating effect of each Other
 on the indirect effect.
 
+## Index of Moderated Mediation
+
+The `manymome` package also has a function to compute the *index of
+moderated mediation* (Hayes, 2015). Suppose we modify the model and remove
+one of the moderators:
+
+```{r echo = FALSE}
+library(semPlot)
+suppressMessages(library(lavaan))
+dat$xw1 <- dat$x * dat$w1
+dat$mw2 <- dat$m * dat$w2
+mod <-
+"
+xw1 ~ x + w1
+m ~ xw1
+# mw2 ~ m + w2
+y ~ m
+y ~ x
+"
+fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c("w1", NA, "m", NA, NA,
+                   NA, "xw1", NA, "mw2", NA,
+                   "x", NA, NA, NA, "y"), 3, 5, byrow = TRUE)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 10,
+              asize = 10,
+              DoNotPlot = TRUE)
+p$graphAttributes$Nodes$width[c(1)] <- .01
+p$graphAttributes$Nodes$height[c(1)] <- .01
+p$graphAttributes$Edges$asize[c(1)] <- 0
+plot(p)
+```
+
+This is the `lavaan` model:
+
+```{r}
+library(lavaan)
+dat$w1x <- dat$w1 * dat$x
+mod2 <-
+"
+m ~ x + w1 + w1x
+y ~ m + x
+"
+fit2 <- sem(model = mod2,
+           data = dat,
+           fixed.x = FALSE,
+           estimator = "MLR")
+```
+
+These are the parameterEstimates:
+
+```{r}
+parameterEstimates(fit2)[parameterEstimates(fit2)$op == "~", ]
+```
+
+We generate the bootstrap estimates first (`R` should be
+2000 or even 5000 in real research):
+
+```{r}
+fit2_boot <- do_boot(fit = fit2,
+                    R = 100,
+                    seed = 53253)
+```
+
+The function `index_of_mome()` can be used to compute
+the index of moderated mediation of `w1` on the
+path `x -> m -> y`:
+
+```{r}
+out_mome <- index_of_mome(x = "x",
+                          y = "y",
+                          m = "m",
+                          w = "w1",
+                          fit = fit2,
+                          boot_ci = TRUE,
+                          boot_out = fit2_boot)
+```
+
+The arguments are nearly identical to those of `index_of_momome()`,
+except that only `w` needs to be specified. This is the output:
+
+```{r}
+out_mome
+```
+
+In this model, the index of moderated mediation is
+`r formatC(coef(out_mome), digits = 3, format = "f")`,
+with 95% bootstrap confidence interval
+[`r paste0(formatC(unlist(confint(out_mome)[1, ]), digits = 3, format = "f"), collapse = ", ")`].
+The moderator `w1` does not significantly moderate the
+indirect effect of `x` on `y` through `m`.
+
 # Mediation Only
 
 The package can also be used for a mediation model.
@@ -463,43 +617,13 @@ The indirect effect along this path is not significant.
 
 Similarly, indirect effects from `m1` through `m2`  to `y`
 or from `x` through `m1` to `y` can also be tested
-by setting the three arguments accordingly.
+by setting the three arguments accordingly. Users do not
+need to decide in advance to compute the indirect effects
+for which path.
 
-Fit the models first, and explore as many pathways as we want.
+# Summary
 
-# Other Cases
-
-The following articles illustrate other uses of `manymome` (to be prepared):
-
-- Models estimated by multiple regression:
-    - Moderated mediation models with categorical and numeric moderators.
-    - Moderated mediation models with both categorical and numeric moderators.
-    - Parallel mediation models.
-    - Complex mediation models.
-- Models fitted by structural equation modeling using `lavaan::sem()`:
-    - Moderated mediation models with numeric moderators.
-    - Moderated mediation models with categorical moderators.
-    - Moderated mediation models with both numeric and categorical moderators.
-    - Complex mediation models.
-    - Indirect effects between latent factors.
-    - Models with missing data.
-
-# Moderation-Only Models
-
-Although `cond_indirect_effects()` can also be used for a moderated
-regression model without mediators, there are other packages
-specifically for this model. For example, `stdmod::cond_effect()`
-can be used to compute the conditional effects, and
-`stdmod::cond_effect_boot()`, when used with
-`stdmod::std_selected()`, can be used to form bootstrap
-confidence intervals for standardized conditional effects.
-`visreg::visreg()` and `stdmod::plotmod()` can be used to plot
-conditional effects in a moderated regression model.
-Interested researchers can check the package [stdmod](https://sfcheung.github.io/stdmod/) and
-and [visreg](http://pbreheny.github.io/visreg/).
-
-(Disclosure: `stdmod` is also developed by the maintainer
-of `manymome`.)
+(To be prepared)
 
 # References
 
