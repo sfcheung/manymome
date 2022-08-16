@@ -268,16 +268,3 @@ confint.cond_indirect_diff<- function(object, parm, level = .95, ...) {
                          full_output_attr$x)
     out
   }
-
-# Check the number of product terms
-#' @noRd
-
-n_prods <- function(prods) {
-    isna <- sapply(prods, function(x) all(is.na(x)))
-    if (all(isna)) {
-        return(0)
-      }
-    prod1 <- prods[!isna]
-    np <- sapply(prod1, function(x) length(unlist(x$prod)))
-    return(np)
-  }
