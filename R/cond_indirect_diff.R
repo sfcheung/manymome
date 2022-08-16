@@ -167,7 +167,16 @@ cond_indirect_diff <- function(output,
 print.cond_indirect_diff <- function(x, digits = 3, ...) {
     full_output_attr <- attr(x$output, "full_output")[[1]]
     print(x$output, digits = digits, annotation = FALSE, ...)
-    cat("\n== Difference in Conditional Indirect Effect ==")
+    x_type <- x$type
+    if (!is.null(x_type)) {
+        tmp <- switch(x_type,
+            index_of_mome = "\n== Index of Moderated Mediation ==",
+            index_of_momome = "\n== Index of Moderated Moderated Mediation =="
+          )
+      } else {
+        tmp <- "\n== Difference in Conditional Indirect Effect =="
+      }
+    cat(tmp)
     cat("\n")
     xto0 <- sapply(x$to, function(xx) {
                     ifelse(is.numeric(xx),
@@ -182,8 +191,22 @@ print.cond_indirect_diff <- function(x, digits = 3, ...) {
     tofrom <- rbind(xto0, xfrom0)
     rownames(tofrom) <- paste0(c("To:   ", "From: "),
                                c(rownames(x$to), rownames(x$from)))
-    cat("\nLevels: \n")
-    print(tofrom, quote = FALSE)
+    if (!is.null(x_type)) {
+        if (x_type == "index_of_mome") {
+            cat("\n")
+            cat("Levels compared: Row 1 - Row 2")
+            cat("\n")
+          }
+        if (x_type == "index_of_momome") {
+            cat("\n")
+            cat("Levels compared:\n")
+            cat("(Row 1 - Row 2) - (Row 3 - Row 4)")
+            cat("\n")
+          }
+      } else {
+        cat("\nLevels: \n")
+        print(tofrom, quote = FALSE)
+      }
     index_df <- data.frame(x = full_output_attr$x,
                            y = full_output_attr$y,
                            Change = formatC(x$index, digits = digits, format = "f"))
@@ -192,8 +215,22 @@ print.cond_indirect_diff <- function(x, digits = 3, ...) {
         index_df$CI.lo <- formatC(x$ci[1], digits = digits, format = "f")
         index_df$CI.hi <- formatC(x$ci[2], digits = digits, format = "f")
       }
-    rownames(index_df) <- "Change"
-    cat("\nChange in Indirect Effect:\n")
+    if (!is.null(x_type)) {
+        rownames(index_df) <- "Index"
+        colnames(index_df)[colnames(index_df) %in% "Change"] <- "Index"
+      } else {
+        rownames(index_df) <- "Change"
+      }
+    if (!is.null(x_type)) {
+        # tmp <- switch(x_type,
+        #         index_of_mome = "\nIndex of Moderated Mediation\n\n",
+        #         index_of_momome = "\nIndex of Moderated Moderated Mediation\n\n"
+        #       )
+        tmp <- "\n"
+      } else {
+        tmp <- "\nChange in Indirect Effect:\n\n"
+      }
+    cat(tmp)
     print(index_df, nd = digits)
     cat("\n ")
     if (has_ci) {

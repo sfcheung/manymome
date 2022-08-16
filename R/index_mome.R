@@ -235,7 +235,7 @@ index_of_momome <- function(x,
                 to1 = i1$to,
                 output = out,
                 boot_diff = ind_boot,
-                type = "index_of_mome")
+                type = "index_of_momome")
     class(out) <- c("cond_indirect_diff", class(out))
     out
   }
