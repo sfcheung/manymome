@@ -6,13 +6,13 @@
 #'
 #' @details
 #' The function [index_of_mome()] computes the index of moderated
-#' mediation proposed by Hayes. It supports any path in a model
+#' mediation proposed by Hayes. It supports any path in a model,
 #' with one component path moderated.
 #'
 #' The function [index_of_momome()] computes the index of
 #' moderated mediation proposed by Hayes. It supports any path
-#' in a model with two moderators, each moderates on component
-#' path.
+#' in a model, with two component paths each moderated by
+#' one moderator.
 #'
 #' @return
 #' It returns an `cond_indirect_diff`-class object. This class has a
@@ -116,9 +116,9 @@ index_of_mome <- function(x,
                           seed = NULL,
                           progress = TRUE,
                           ...) {
-    if (is.null(m) || length(m) != 1) {
-        stop("The path must have one and only one mediator (m).")
-      }
+    # if (is.null(m) || length(m) != 1) {
+    #     stop("The path must have one and only one mediator (m).")
+    #   }
     if (is.null(w) || length(w) != 1) {
         stop("The path must have exactly one moderator.")
       }
@@ -193,9 +193,9 @@ index_of_momome <- function(x,
                             seed = NULL,
                             progress = TRUE,
                             ...) {
-    if (is.null(m) || length(m) != 1) {
-        stop("The path must have one and only one mediator (m).")
-      }
+    # if (is.null(m) || length(m) != 1) {
+    #     stop("The path must have one and only one mediator (m).")
+    #   }
     if (is.null(w) || is.null(z) ||
         length(w) != 1 || length(z) != 1) {
         stop("The path must have exactly two moderators.")

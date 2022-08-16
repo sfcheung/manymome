@@ -97,9 +97,14 @@ Compute the index of moderated mediation and
 the index of moderated moderated mediation.
 }
 \details{
-The function \code{\link[=index_of_mome]{index_of_mome()}} compute the index of moderated
-mediation proposed by Hayes. It supports any path in a model
-with one component path moderated
+The function \code{\link[=index_of_mome]{index_of_mome()}} computes the index of moderated
+mediation proposed by Hayes. It supports any path in a model,
+with one component path moderated.
+
+The function \code{\link[=index_of_momome]{index_of_momome()}} computes the index of
+moderated mediation proposed by Hayes. It supports any path
+in a model, with two component paths each moderated by
+one moderator.
 }
 \section{Functions}{
 \itemize{
