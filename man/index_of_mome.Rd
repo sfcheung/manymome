@@ -130,7 +130,6 @@ moderated moderated mediation.
 
 \examples{
 
-\dontrun{
 library(lavaan)
 dat <- modmed_x1m3w4y1
 dat$xw1 <- dat$x * dat$w1
@@ -150,7 +149,7 @@ est <- parameterEstimates(fit)
 out_mome <- index_of_mome(x = "x", y = "y", m = "m1", w = "w1",
                           fit = fit,
                           boot_ci = TRUE,
-                          R = 500,
+                          R = 50,
                           seed = 4314,
                           parallel = FALSE)
 out_mome
@@ -158,11 +157,9 @@ coef(out_mome)
 # From lavaan
 print(est[19, ], nd = 8)
 confint(out_mome)
-}
 
 
 
-\dontrun{
 library(lavaan)
 dat <- modmed_x1m3w4y1
 dat$xw1 <- dat$x * dat$w1
@@ -178,20 +175,14 @@ fit <- sem(mod, dat,
            se = "none", baseline = FALSE)
 est <- parameterEstimates(fit)
 
-# R should be at least 2000 or even 5000 in real research.
-# parallel should be enabled (set to TRUE) in real research.
+# See the example of index_of_mome on how to request
+# bootstrap confidence interval.
 out_momome <- index_of_momome(x = "x", y = "y", m = "m1",
                           w = "w1", z = "w4",
-                          fit = fit,
-                          boot_ci = TRUE,
-                          R = 500,
-                          seed = 4314,
-                          parallel = FALSE)
+                          fit = fit)
 out_momome
 coef(out_momome)
 print(est[32, ], nd = 8)
-confint(out_momome)
-}
 
 }
 \references{

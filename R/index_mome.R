@@ -85,7 +85,6 @@
 #'
 #' @examples
 #'
-#' \dontrun{
 #' library(lavaan)
 #' dat <- modmed_x1m3w4y1
 #' dat$xw1 <- dat$x * dat$w1
@@ -105,7 +104,7 @@
 #' out_mome <- index_of_mome(x = "x", y = "y", m = "m1", w = "w1",
 #'                           fit = fit,
 #'                           boot_ci = TRUE,
-#'                           R = 500,
+#'                           R = 50,
 #'                           seed = 4314,
 #'                           parallel = FALSE)
 #' out_mome
@@ -113,7 +112,6 @@
 #' # From lavaan
 #' print(est[19, ], nd = 8)
 #' confint(out_mome)
-#' }
 #'
 #'
 #' @export
@@ -164,7 +162,6 @@ index_of_mome <- function(x,
 
 #' @examples
 #'
-#' \dontrun{
 #' library(lavaan)
 #' dat <- modmed_x1m3w4y1
 #' dat$xw1 <- dat$x * dat$w1
@@ -180,20 +177,14 @@ index_of_mome <- function(x,
 #'            se = "none", baseline = FALSE)
 #' est <- parameterEstimates(fit)
 #'
-#' # R should be at least 2000 or even 5000 in real research.
-#' # parallel should be enabled (set to TRUE) in real research.
+#' # See the example of index_of_mome on how to request
+#' # bootstrap confidence interval.
 #' out_momome <- index_of_momome(x = "x", y = "y", m = "m1",
 #'                           w = "w1", z = "w4",
-#'                           fit = fit,
-#'                           boot_ci = TRUE,
-#'                           R = 500,
-#'                           seed = 4314,
-#'                           parallel = FALSE)
+#'                           fit = fit)
 #' out_momome
 #' coef(out_momome)
 #' print(est[32, ], nd = 8)
-#' confint(out_momome)
-#' }
 #'
 #' @export
 #' @describeIn index_of_mome Compute the index of
@@ -243,17 +234,27 @@ index_of_momome <- function(x,
     i0 <- cond_indirect_diff(out, from = 4, to = 3, level = level)
     i1 <- cond_indirect_diff(out, from = 2, to = 1, level = level)
     ind <- stats::coef(i1) - stats::coef(i0)
-    ind_boot <- i1$boot_diff - i0$boot_diff
-    # levels0 <- c((1 - level) / 2, 1 - (1 - level) / 2)
-    # ind_ci <- stats::quantile(ind_boot, probs = levels0)
-    tmp <- list(t = matrix(ind_boot, nrow = length(ind_boot), ncol = 1),
-                t0 = ind,
-                R = length(ind_boot))
-    boot_ci <- boot::boot.ci(tmp, conf = level, type = "perc")
-    ind_ci <- boot_ci$percent[4:5]
-    names(ind_ci) <- paste0(formatC(c(100 * (1 - level) / 2,
-                                  100 * (1 - (1 - level) / 2)), 2,
-                                  format = "f"), "%")
+    if (identical(i1$boot_diff, NA) || identical(i0$boot_diff, NA)) {
+        has_boot <- FALSE
+      } else {
+        has_boot <- TRUE
+      }
+    if (has_boot) {
+        ind_boot <- i1$boot_diff - i0$boot_diff
+        # levels0 <- c((1 - level) / 2, 1 - (1 - level) / 2)
+        # ind_ci <- stats::quantile(ind_boot, probs = levels0)
+        tmp <- list(t = matrix(ind_boot, nrow = length(ind_boot), ncol = 1),
+                    t0 = ind,
+                    R = length(ind_boot))
+        boot_ci <- boot::boot.ci(tmp, conf = level, type = "perc")
+        ind_ci <- boot_ci$percent[4:5]
+        names(ind_ci) <- paste0(formatC(c(100 * (1 - level) / 2,
+                                      100 * (1 - (1 - level) / 2)), 2,
+                                      format = "f"), "%")
+      } else {
+        ind_boot <- NA
+        ind_ci <- NA
+      }
     out <- list(index = ind,
                 ci = ind_ci,
                 level = level,
