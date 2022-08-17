@@ -71,14 +71,13 @@ calls \code{\link[=lm2boot_out]{lm2boot_out()}}, \code{\link[=fit2boot_out]{fit2
 \code{\link[=fit2boot_out_do_boot]{fit2boot_out_do_boot()}}.
 }
 \examples{
-\dontrun{
 data(data_med_mod_ab1)
 dat <- data_med_mod_ab1
 lm_m <- lm(m ~ x*w + c1 + c2, dat)
 lm_y <- lm(y ~ m*w + x + c1 + c2, dat)
 lm_out <- lm2list(lm_m, lm_y)
 # In real research, R should be 2000 or even 5000
-lm_boot_out <- do_boot(lm_out, R = 100, seed = 1234)
+lm_boot_out <- do_boot(lm_out, R = 50, seed = 1234)
 wlevels <- mod_levels(w = "w", fit = lm_out)
 wlevels
 out <- cond_indirect_effects(wlevels = wlevels,
@@ -89,7 +88,6 @@ out <- cond_indirect_effects(wlevels = wlevels,
                              boot_ci = TRUE,
                              boot_out = lm_boot_out)
 out
-}
 
 }
 \seealso{
