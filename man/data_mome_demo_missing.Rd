@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_mome_demo_missing}
 \alias{data_mome_demo_missing}
-\title{A Complicated Moderated-Mediation Model for Demonstration (With Missing Data)}
+\title{Sample Dataset: A Complicated Moderated-Mediation Model With Missing Data}
 \format{
 A data frame with 200 rows and 11 variables:
 \describe{

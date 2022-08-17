@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_med_mod_b}
 \alias{data_med_mod_b}
-\title{Simple Mediation with b-Path Moderated: Sample Dataset}
+\title{Sample Dataset: Simple Mediation with b-Path Moderated}
 \format{
 A data frame with 100 rows and 6 variables:
 \describe{

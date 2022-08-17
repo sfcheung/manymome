@@ -1,4 +1,4 @@
-#' @title A Complicated Mediation Model: Sample Dataset
+#' @title Sample Dataset: A Complicated Mediation Model
 #'
 #' @description A mediation model with two predictors, two pathways,
 #'

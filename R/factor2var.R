@@ -19,13 +19,12 @@
 #'
 #' @param x_value The vector of categorical variable.
 #' @param x_contrasts The contrast to be used. Default
-#'                    is `constr.treatment`.
+#'                    is `"constr.treatment"`.
 #' @param prefix The prefix to be added to the variables
 #'               to be created. Default is `""`.
 #' @param add_rownames Whether row names will be added
 #'                     to the output. Default is `TRUE`.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @examples
 #' dat <- data_mod_cat

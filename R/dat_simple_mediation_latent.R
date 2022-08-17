@@ -1,8 +1,7 @@
-#' @title A Simple Latent Mediation Model
+#' @title Sample Dataset: A Simple Latent Mediation Model
 #'
-#' @description Generated from a simple mediation model among
-#'              three latent factors, `fx`, `fm`, and `fy`,
-#'              each has three indicators.
+#' @description Generated from a simple mediation model among xthree
+#'   latent factors, `fx`, `fm`, and `fy`, xeach has three indicators.
 #'
 #' @details
 #'

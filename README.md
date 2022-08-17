@@ -16,9 +16,11 @@ and path models fitted by linear regression.
     - No need to create any parameters or similar
   code when
   fitting a model. Just focus on fitting the model first. After a model has
-  been selected, users can compute the effect for *any* pathway, from
-  *any* variable, to *any* other variables, conditional on *any* moderators,
-  and at *any* levels of the moderators.
+  been selected, users can compute the effect for nearly any path, from
+  nearly any variable, to nearly any other variables, conditional on
+  nearly any moderators,
+  and at any levels of the moderators.
+  (See `vignette("manymome")` for details.)
 
 - **Supports Both SEM-Based Modelling and Regression-Based**
     - Supports structural equation models fitted by `lavaan::sem()` or by
@@ -27,7 +29,7 @@ and path models fitted by linear regression.
 
 - **Flexible in the Form of Models**
     - No limit on the number of predictors, mediators, and
-  outcome variables, other than that by `lavaan::sem()` and `lm()`.
+  outcome variables, other than those by `lavaan::sem()` and `lm()`.
 
 - **Supports Latent Variables Mediation and Moderated Mediation**
     - Supports indirect effects and conditional indirect effects among
@@ -46,18 +48,31 @@ and path models fitted by linear regression.
 - **Less Time for Bootstrapping**
     - Bootstrapping, which is time consuming, can
   be conducted just once. The main functions for computing indirect effects
-  and indirect effects can be called as many times as needed without redoing
+  and conditional indirect effects can be called as many times as needed without redoing
   bootstrapping.
 
-## Limitations (For Now)
+## Limitations
 
 - Does not support categorical predictors.
 
+- Does not support multisample models (although `lavaan` does).
+
+- Does not support multilevel models (although `lavaan` does).
+
+- Only supports nonparametric bootstrapping and percentile confidence interval. Does not support other methods such as
+Monte Carlo confidence interval or parametric bootstrapping.
+
+- Only supports OLS estimation when `lm()` is used.
+
+We would add more to this list ([suggestions are welcomed](#issues)) such that users (and we) know when to use
+other tools, or whether we can address these limitations
+in `manymome`.
+
 ## How To Use It?
 
-- A good starting point is the "Get Started" article (`vignette("manymome")`).
+- A good starting point is the Get-Started article (`vignette("manymome")`).
 
-- More articles can be found at [Articles](./articles/index.html)
+- More articles will be released at [Articles](./articles/index.html)
 
 ## Homepage
 
@@ -65,7 +80,7 @@ For more information on this package, please visit its GitHub page:
 
 https://sfcheung.github.io/manymome/
 
-# Installation
+## Installation
 
 Stable release versions of this package can be downloaded below:
 
@@ -77,9 +92,9 @@ The latest developmental version of this package can be installed by `remotes::i
 remotes::install_github("sfcheung/manymome")
 ```
 
-# Issues
+## Issues
 
-If you have any suggestions and found any bugs, please feel
+If you have any suggestions and found any bugs or limitations, please feel
 feel to open a GitHub issue. Thanks:
 
 https://github.com/sfcheung/manymome/issues

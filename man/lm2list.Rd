@@ -2,7 +2,7 @@
 % Please edit documentation in R/lm2list.R
 \name{lm2list}
 \alias{lm2list}
-\title{Join 'lm()' Output to Form an 'lm_list-class' Object}
+\title{Join 'lm()' Output to Form an 'lm_list`-Class Object}
 \usage{
 lm2list(...)
 }
@@ -10,25 +10,27 @@ lm2list(...)
 \item{...}{The \code{\link[=lm]{lm()}} outputs to be grouped in a list.}
 }
 \value{
-It returns a \code{lm_list}-class object that forms a path model represented
-by a set of regression models. This class has a \code{\link[=summary.lm_list]{summary.lm_list()}} method
-that prints the summary of each regression model stored.
+It returns an \code{lm_list}-class object that forms a path model represented
+by a set of regression models. This class has a \code{summary} method
+that shows the summary of each regression model stored
+(see \code{\link[=summary.lm_list]{summary.lm_list()}}), and
+a \code{print} method that prints the models stored (see \code{\link[=print.lm_list]{print.lm_list()}}).
 }
 \description{
-The resulting model can be used by \code{\link[=cond_indirect]{cond_indirect()}}
-and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} as a path method, as if fitted
-by \code{\link[lavaan:sem]{lavaan::sem()}}.
+The resulting model can be used by \code{\link[=indirect_effect]{indirect_effect()}},
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, or \code{\link[=cond_indirect]{cond_indirect()}} as a
+path method, as if fitted by \code{\link[lavaan:sem]{lavaan::sem()}}.
 }
 \details{
 If a path model with mediation and/or moderation is fitted
 by a set of regression models using \code{\link[=lm]{lm()}}, this function can
-combine them to an object of the class \code{lm_list-class} that
+combine them to an object of the class \code{lm_list} that
 represents a path model, as one fitted by structural equation
 model functions such as \code{\link[lavaan:sem]{lavaan::sem()}}. This class of object can
-be used by some functions, such as \code{\link[=cond_indirect]{cond_indirect()}} and
-\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} as if they are the output of fitting a
-path model, with the regression coefficients treated as path
-coefficients.
+be used by some functions, such as \code{\link[=indirect_effect]{indirect_effect()}},
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, and \code{\link[=cond_indirect]{cond_indirect()}} as if they were
+the output of fitting a path model, with the regression
+coefficients treated as path coefficients.
 
 The regression outputs to be combined need to meet
 the following requirements:
@@ -37,8 +39,8 @@ the following requirements:
 That is, a regression model must either have (a) at least
 on predictor that is the outcome variable of another model, or
 (b) its outcome variable the predictor of another model.
-\item The sample sizes of all regression outputs must be identical.
-\item All models must be fitted to the same sample.
+\item All models must be fitted to the same sample. This implies that
+the sample size must be the same in all analysis.
 }
 }
 \examples{
@@ -71,6 +73,8 @@ outm11m12 <- cond_indirect(x = "x", y = "y",
 outm11m12
 
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
+\seealso{
+\code{\link[=summary.lm_list]{summary.lm_list()}} and \code{\link[=print.lm_list]{print.lm_list()}} for related methods,
+\code{\link[=indirect_effect]{indirect_effect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} which accept
+\code{lm_list}-class objects as input.
 }

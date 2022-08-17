@@ -1,38 +1,50 @@
-#' @title Bootstrapping Estimates for a `lavaan` Output
+#' @title Bootstrap Estimates for a `lavaan` Output
 #'
-#' @description Extract the bootstrapping estimates from
+#' @description Generate bootstrap estimates from
 #'  the output of [lavaan::sem()].
 #'
 #' @details
+#' This function is for advanced users.
+#' [do_boot()] is a function users should
+#' try first because [do_boot()] has a general
+#' interface for input-specific functions
+#' like this one.
+#'
 #' If bootstrapping confidence intervals was requested
 #' when calling [lavaan::sem()] by setting `se = "boot"`,
 #' [fit2boot_out()] can be used to extract the stored
-#' bootstrap estimates such that they can be reused by
-#' [cond_indirect()] and [cond_indirect_effects()]
+#' bootstrap estimates so that they can be reused by
+#' [indirect_effect()], [cond_indirect_effects()] and
+#' related functions
 #' to form bootstrapping confidence intervals for
-#' conditional effects.
+#' effects such as indirect effects and conditional indirect effects.
 #'
-#' If bootstrapping confidence intervals was not requested,
+#' If bootstrapping confidence was not requested
+#' when fitting the model by [lavaan::sem()],
 #' [fit2boot_out_do_boot()] can be used to generate nonparametric
 #' bootstrap estimates from the output of [lavaan::sem()]
 #' and store them for use by
-#' [cond_indirect()] and [cond_indirect_effects()].
+#' [indirect_effect()], [cond_indirect_effects()], and related functions.
 #'
 #' This approach removes the need to repeat bootstrapping in
-#' each call to [cond_indirect()] and [cond_indirect_effects()].
+#' each call to [indirect_effect()], [cond_indirect_effects()],
+#' and related functions.
 #' It also ensures that the same set of bootstrap samples
-#' is used in all subsequent analysis.
+#' is used in all subsequent analyses.
 #'
 #' @return A `boot_out`-class object that can be used for the
-#' `boot_out` argument of [cond_indirect()] and
-#' [cond_indirect_effects()] for forming bootstrapping confidence
+#' `boot_out` argument of [indirect_effect()],
+#' [cond_indirect_effects()], and related
+#' functions for forming bootstrapping confidence
 #' intervals.
 #'
-#' @param fit The fit object. Currently only supports a
+#' @param fit The fit object. This function
+#'            only supports a
 #'            [lavaan::lavaan-class] object.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
-#'
+#' @seealso [do_boot()], the general purpose
+#'          function that users should try first before
+#'          using this function.
 #' @examples
 #'
 #' library(lavaan)
@@ -49,10 +61,11 @@
 #' # bootstrap should be set to 2000 or even 5000 in real study
 #' set.seed(1234)
 #' fit <- sem(model = mod, data = dat, fixed.x = FALSE,
-#'            se = "boot", bootstrap = 10)
+#'            se = "boot", bootstrap = 40,
+#'            warn = FALSE)
 #' fit_boot_out <- fit2boot_out(fit)
 #' wlevels <- mod_levels(w = "w", fit = fit)
-#' out <- cond_indirect_effects(wlevels = wlevels,
+#' out <- cond_indirect_effects(wlevels = "w",
 #'                              x = "x",
 #'                              y = "y",
 #'                              m = "m",
@@ -63,10 +76,9 @@
 #' # Bootstrapping not requested in calling lavaan::sem()
 #' fit <- sem(model = mod, data = dat, fixed.x = FALSE)
 #' fit_boot_out <- fit2boot_out_do_boot(fit = fit,
-#'                                      R = 10,
+#'                                      R = 40,
 #'                                      seed = 1234)
-#' wlevels <- mod_levels(w = "w", fit = fit)
-#' out <- cond_indirect_effects(wlevels = wlevels,
+#' out <- cond_indirect_effects(wlevels = "w",
 #'                              x = "x",
 #'                              y = "y",
 #'                              m = "m",
@@ -82,10 +94,10 @@
 #'
 
 fit2boot_out <- function(fit) {
-    if (length(lavaan::lavNames(fit, "lv")) != 0) {
-        stop(paste0("fit2boot_out() does not support a model with latent variables.",
-                    "\nPlease use fit2boot_out_do_boot()."))
-      }
+    # if (length(lavaan::lavNames(fit, "lv")) != 0) {
+    #     stop(paste0("fit2boot_out() does not support a model with latent variables.",
+    #                 "\nPlease use fit2boot_out_do_boot()."))
+    #   }
     boot_est <- boot2est(fit)
     boot_implied <- boot2implied(fit)
     out <- mapply(function(x, y) list(est = x,
@@ -98,15 +110,17 @@ fit2boot_out <- function(fit) {
     out
   }
 
-#' @param R Number of bootstrap samples. Default is 100.
+#' @param R The number of bootstrap samples. Default is 100.
 #' @param seed The seed for the random resampling. Default is `NULL`.
 #' @param parallel Logical. Whether parallel processing will be used.
 #'                 Default is `NULL`.
-#' @param ncores Integer. The number of CPU cores to use when `parallel` is `TRUE`.
-#'               Default is `NULL`, and the number of cores determined by
-#'               `getOption("cl.cores", 2)`. Will raise an error if greater than
-#'               the number of cores detected by [parallel::detectCores()].
-#'               If `ncores` is set, it will override `make_cluster_args`.
+#' @param ncores Integer. The number of CPU cores to use when
+#'               `parallel` is `TRUE`. Default is `NULL`, and the
+#'               number of cores determined by `getOption("cl.cores",
+#'               2)`. Will raise an error if greater than the number
+#'               of cores detected by [parallel::detectCores()]. If
+#'               `ncores` is set, it will override
+#'               `make_cluster_args`.
 #' @param make_cluster_args A named list of additional arguments to be passed
 #'                          to [parallel::makeCluster()]. For advanced users.
 #'                          See [parallel::makeCluster()] for details.
@@ -116,8 +130,7 @@ fit2boot_out <- function(fit) {
 #' @export
 #' @describeIn fit2boot_out Do bootstrapping and store information to be used
 #'                          by [cond_indirect_effects()] and related functions.
-#'                          Support parallel processing and can be faster than
-#'                          setting `se` to `"boot"` in [lavaan::sem()].
+#'                          Support parallel processing.
 #' @order 2
 #'
 fit2boot_out_do_boot <- function(fit,
@@ -223,6 +236,9 @@ fit2boot_out_do_boot <- function(fit,
     out
   }
 
+# Convert stored estimates to a list of parameter estimates tables.
+# This is preferred because it is what users usually see.
+#' @noRd
 
 boot2est <- function(fit) {
     opt <- lavaan::lavInspect(fit, "options")
@@ -239,6 +255,9 @@ boot2est <- function(fit) {
     out_all
   }
 
+# Get the implied statistics from stored parameter estimates
+#' @noRd
+
 boot2implied <- function(fit) {
     opt <- lavaan::lavInspect(fit, "options")
     if (opt$se != "bootstrap") {
@@ -253,6 +272,9 @@ boot2implied <- function(fit) {
                         fit = fit)
     out_all
   }
+
+# Convert set the estimates in a parameter estimates tables.
+#' @noRd
 
 set_est_i <- function(est0, fit, p_free) {
     fit@ParTable$est[p_free] <- unname(est0)
@@ -270,25 +292,54 @@ set_est_i <- function(est0, fit, p_free) {
     est0
   }
 
+# Get the implied statistics from a set of estimates
+#' @noRd
+
 get_implied_i <- function(est0, fit) {
-    # fit@ParTable$est[p_free] <- unname(est0)
-    # fit@Model@GLIST <- lavaan::lav_model_set_parameters(fit@Model,
-    #                                                     est0)@GLIST
-    # implied <- lavaan::lavInspect(fit, "implied")
-    # implied
-    mod0 <- lavaan::lav_model_set_parameters(fit@Model, est0)
-    implied <- lavaan::lav_model_implied(mod0,
-                                         GLIST = NULL,
-                                         delta = TRUE)
-    out <- lavaan::lavInspect(fit, "implied")
+    has_lv <- length(lavaan::lavNames(fit, "lv")) != 0
+    if (has_lv) {
+        p_free <- fit@ParTable$free > 0
+        fit@ParTable$est[p_free] <- unname(est0)
+        fit@Model@GLIST <- lavaan::lav_model_set_parameters(fit@Model,
+                                                            est0)@GLIST
+        implied_cov_all <- lavaan::lavInspect(fit, "cov.all")
+        mod0 <- lavaan::lav_model_set_parameters(fit@Model, est0)
+        implied_mean_ov <- lavaan::lavInspect(fit, "mean.ov")
+        implied_mean_ov[] <- lavaan::lav_model_implied(mod0,
+                                             GLIST = NULL,
+                                             delta = TRUE)$mean[[1]][, 1]
+        implied_mean_lv <- lavaan::lavInspect(fit, "mean.lv")
+        implied_mean_lv[] <- NA
+        implied <- list(cov = list(implied_cov_all),
+                        mean = list(c(implied_mean_ov,
+                                      implied_mean_lv)),
+                        mean_lv = list(implied_mean_lv))
+      } else {
+        mod0 <- lavaan::lav_model_set_parameters(fit@Model, est0)
+        implied <- lavaan::lav_model_implied(mod0,
+                                             GLIST = NULL,
+                                             delta = TRUE)
+      }
     out <- lav_implied_all(fit)
     out_names <- names(out)
+    implied_names <- names(implied)
     out1 <- out
     for (x in out_names) {
-        out1[[x]][] <- implied[[x]][[1]]
+        if (x %in% implied_names) {
+          out1[[x]][] <- implied[[x]][[1]]
+        } else {
+          out1[[x]][] <- NA
+        }
+      }
+    if (has_lv) {
+        out1$mean_lv <- implied$mean_lv[[1]]
       }
     out1
   }
+
+# Create the function for bootstrapping.
+# Return the parameter estimates and implied statistics.
+#' @noRd
 
 gen_boot_i <- function(fit) {
   fit_org <- eval(fit)

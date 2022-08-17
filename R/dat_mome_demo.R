@@ -1,4 +1,4 @@
-#' @title A Complicated Moderated-Mediation Model for Demonstration
+#' @title Sample Dataset: A Complicated Moderated-Mediation Model
 #'
 #' @description Generated from a complicated moderated-mediation model for
 #'   demonstration.

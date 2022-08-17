@@ -1,9 +1,11 @@
 #' @title Math Operators for 'indirect'-Class Objects
 #'
 #' @description Mathematic operators for
-#'  'indirect'-class object.
+#'  'indirect'-class object, the output of [indirect_effect()]
+#'  and [cond_indirect()].
 #'
-#' @details For now, only has a `+` operator and a `-` operator.
+#' @details For now, only `+` operator and `-` operator
+#'  are supported.
 #'  These operators can be used to estimate and test
 #'  a function of effects between the same pair of variables
 #'  but along different paths.
@@ -12,20 +14,27 @@
 #' along different paths. They can also be used to compute and
 #' test the difference between the effects along two paths.
 #'
-#' The operators will check whether an operation is valid. A operation
-#' is not valid if (a) the two paths do not start from the same variable,
-#' (b) the two paths do not end at the same variable, (c) a path appears
-#' in both objects, (d) moderators are involved but they are not
-#' set to the same values in both objects, and (e) bootstrap estimates
+#' The operators will check whether an operation is valid. An operation
+#' is not valid if
+#'
+#' 1. the two paths do not start from the same variable,
+#'
+#' 2. the two paths do not end at the same variable, (c) a path appears
+#' in both objects,
+#'
+#' 3. moderators are involved but they are not
+#' set to the same values in both objects, and
+#'
+#' 4. bootstrap estimates
 #' stored in `boot_out` are not identical.
 #'
-#' @return A 'indirect'-class object with list of effects stored.
+#' @return An 'indirect'-class object with a list of effects stored.
 #'
-#' @param e1 A 'indirect'-class object.
-#' @param e2 A 'indirect'-class object.
+#' @param e1 An 'indirect'-class object.
+#' @param e2 An 'indirect'-class object.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
+#' @seealso [indirect_effect()] and [cond_indirect()]
 #'
 #' @name math_indirect
 NULL
@@ -40,7 +49,9 @@ NULL
 #' m2 ~ m1 + a2 * x
 #' y  ~ b1 * m1 + b2 * m2 + cp * x
 #' "
-#' fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
+#' fit <- sem(mod, dat,
+#'            meanstructure = TRUE, fixed.x = FALSE,
+#'            se = "none", baseline = FALSE)
 #' est <- parameterEstimates(fit)
 #' hi_w1 <- mean(dat$w1) + sd(dat$w1)
 #'
@@ -169,6 +180,7 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
     out
   }
 
+# Check if the two objects are eligible for "+" and "-" operations
 #' @noRd
 
 check_xy <- function(e1, e2) {
@@ -237,6 +249,7 @@ check_xy <- function(e1, e2) {
     return(TRUE)
   }
 
+# Join the wvalues in the two elements
 #' @noRd
 
 join_wvalues <- function(e1, e2) {

@@ -10,11 +10,11 @@
 #' @param object The output of [cond_indirect_effects()].
 #' @param row The row number of the row to be retrieved.
 #'
-#' @return A `indirect`-class object, similar to the output of
+#' @return An `indirect`-class object, similar to the output of
 #'  [indirect_effect()] and [cond_indirect()].
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
+#' @seealso [cond_indirect_effects]
 #'
 #' @examples
 #'
@@ -31,22 +31,15 @@
 #'
 #' # Examples for cond_indirect():
 #'
-#' # Create levels of w1 and w4
-#' w1levels <- mod_levels("w1", fit = fit)
-#' w1levels
-#' w4levels <- mod_levels("w4", fit = fit)
-#' w4levels
-#' w1w4levels <- merge_mod_levels(w1levels, w4levels)
-#'
-#' # Conditional effects from x to m1 when w1 is equal to each of the levels
+#' # Conditional effects from x to m1 when w1 is equal to each of the default levels
 #' out1 <- cond_indirect_effects(x = "x", y = "m1",
-#'                       wlevels = w1levels, fit = fit)
+#'                       wlevels = c("w1", "w4"), fit = fit)
 #' get_one_cond_indirect_effect(out1, 3)
 #'
 #' # Conditional Indirect effect from x1 through m1 to y,
 #' # when w1 is equal to each of the levels
 #' out2 <- cond_indirect_effects(x = "x", y = "y", m = c("m1", "m2"),
-#'                       wlevels = w1w4levels, fit = fit)
+#'                       wlevels = c("w1", "w4"), fit = fit)
 #' get_one_cond_indirect_effect(out2, 4)
 #'
 #' @export

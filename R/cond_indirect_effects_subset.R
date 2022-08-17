@@ -1,8 +1,11 @@
-#' @title Extraction Methods for 'cond_indirect_effects'
+#' @title Extraction Methods for 'cond_indirect_effects' Outputs
 #'
 #' @description For subsetting a 'cond_indirect_effects'-class object.
 #'
-#' @details Customized `[` and `[[` for 'cond_indirect_effects'-class objects.
+#' @details Customized `[` for 'cond_indirect_effects'-class objects,
+#'  to ensure that these operations work as they would be on a
+#'  data frame object, while information specific to conditional
+#'  effects is modified correctly.
 #'
 #' @return A 'cond_indirect_effects'-class object.
 #'
@@ -15,7 +18,6 @@
 #'          a logical vector of column(s) to be selected.
 #' @param drop Whether dropping a dimension if it only have one row/column.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #'
 #' @name subsetting_cond_indirect_effects
@@ -37,22 +39,15 @@ NULL
 #'
 #' # Examples for cond_indirect():
 #'
-#' # Create levels of w1 and w4
-#' w1levels <- mod_levels("w1", fit = fit)
-#' w1levels
-#' w4levels <- mod_levels("w4", fit = fit)
-#' w4levels
-#' w1w4levels <- merge_mod_levels(w1levels, w4levels)
-#'
 #' # Conditional effects from x to m1 when w1 is equal to each of the levels
 #' out1 <- cond_indirect_effects(x = "x", y = "m1",
-#'                       wlevels = w1levels, fit = fit)
+#'                       wlevels = "w1", fit = fit)
 #' out1[2, ]
 #'
 #' # Conditional Indirect effect from x1 through m1 to y,
 #' # when w1 is equal to each of the levels
 #' out2 <- cond_indirect_effects(x = "x", y = "y", m = c("m1", "m2"),
-#'                       wlevels = w1w4levels, fit = fit)
+#'                       wlevels = c("w1", "w4"), fit = fit)
 #' out2[c(1, 3), ]
 #'
 #' @export

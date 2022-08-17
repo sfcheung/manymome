@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_med_mod_ab}
 \alias{data_med_mod_ab}
-\title{Simple Mediation with Both Paths Moderated (Two Moderators): Sample Dataset}
+\title{Sample Dataset: Simple Mediation with Both Paths Moderated (Two Moderators)}
 \format{
 A data frame with 100 rows and 7 variables:
 \describe{

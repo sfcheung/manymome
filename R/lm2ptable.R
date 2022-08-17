@@ -1,11 +1,12 @@
-#' @title Convert a 'lm' Output to a 'lavaan'-Like Object
+#' @title Convert a List of 'lm' Output to a List of 'lavaan'-Like Objects
 #'
-#' @description It only convert information necessary for
-#'  [cond_indirect()] to compute conditional effects or
+#' @description It only converts information necessary for
+#'  [indirect_effect()] and [cond_indirect_effects()] to compute
+#'  indirect effects or
 #'  conditional indirect effects.
 #'
 #' @details Users usually do not need to call this function
-#'  to use [cond_indirect()] and [cond_indirect_effects()].
+#'  to use [indirect_effect()] and [cond_indirect_effects()].
 #'  These two functions will do the conversion internally
 #'  if necessary.
 #'
@@ -20,9 +21,8 @@
 #'          means. They are used to compute standardized
 #'          effects or form levels of moderators.
 #'
-#' @param outputs A list of `lm` class objects.
+#' @param outputs A list of `lm`-class objects.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @examples
 #'
@@ -35,7 +35,7 @@
 #' out$est
 #'
 #'
-#' @export
+#' @noRd
 #'
 #'
 

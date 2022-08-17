@@ -2,16 +2,16 @@
 % Please edit documentation in R/predict_lm_list.R
 \name{predict.lm_list}
 \alias{predict.lm_list}
-\title{Predicted Values of a 'lm_list'-Class Object}
+\title{Predicted Values of an 'lm_list'-Class Object}
 \usage{
 \method{predict}{lm_list}(object, x = NULL, y = NULL, m = NULL, newdata, ...)
 }
 \arguments{
-\item{object}{A 'lm_list'-class object.}
+\item{object}{An 'lm_list'-class object.}
 
-\item{x}{The variable name at the start of a pathway.}
+\item{x}{The variable name at the start of a path.}
 
-\item{y}{The variable name at the end of a pathway.}
+\item{y}{The variable name at the end of a path.}
 
 \item{m}{Optional. The mediator(s) from \code{x} to \code{y}.
 A numeric vector of the names of the mediators.
@@ -30,11 +30,17 @@ the number of rows of user-supplied data.
 }
 \description{
 Compute the predicted values based on
-the models stored in a 'lm_list`-class object.
+the models stored in an 'lm_list`-class object.
 }
 \details{
-A \code{lm_list}-class object is a list
-of \code{lm}-class objects.
+An \code{lm_list}-class object is a list
+of \code{lm}-class objects, this function is similar
+to the \code{\link[stats:predict]{stats::predict()}} method of \code{\link[=lm]{lm()}} but
+it works on a system defined
+by a list of regression models.
+
+This is an advanced helper used by some functions
+in this package. Exported for advanced users.
 }
 \examples{
 data(data_serial_parallel)
@@ -56,7 +62,4 @@ predict(lm_serial_parallel,
 }
 \seealso{
 \code{\link[=lm2list]{lm2list()}}
-}
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
 }

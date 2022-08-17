@@ -1,20 +1,10 @@
-#' @title One Line Title
-#'
-#' @description One paragraph description
-#'
-#' @details Details
-#'   (Include subjects for verbs.)
-#'   (Use 3rd person forms for verbs.)
-#'
-#' @return
-#' Specify what are returned.
+#' @title Extract data used in a lavaan fit object.
 #'
 #' @param fit The fit object. Currently only supports a
 #'            [lavaan::lavaan-class] object.
 #' @param drop_colon Logical. Whether product terms (of the form "x:y")
 #'                   will be dropped. Default is `TRUE`.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @examples
 #' \donttest{

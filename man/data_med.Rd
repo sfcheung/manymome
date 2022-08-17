@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_med}
 \alias{data_med}
-\title{Simple Mediation: Sample Dataset}
+\title{Sample Dataset: Simple Mediation}
 \format{
 A data frame with 100 rows and 5 variables:
 \describe{

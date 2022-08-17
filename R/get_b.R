@@ -1,13 +1,4 @@
-#' @title One Line Title
-#'
-#' @description One paragraph description
-#'
-#' @details Details
-#'   (Include subjects for verbs.)
-#'   (Use 3rd person forms for verbs.)
-#'
-#' @return
-#' Specify what are returned.
+#' @title Get the Path Coefficient from 'x' to 'y'
 #'
 #' @param x Character. The predictor.
 #' @param y Character. The outcome.
@@ -17,7 +8,6 @@
 #'            default, it will be generated from `fit`. If supplied,
 #'            `fit` will ge ignored.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @examples
 #' \donttest{

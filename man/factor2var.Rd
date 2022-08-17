@@ -15,7 +15,7 @@ factor2var(
 \item{x_value}{The vector of categorical variable.}
 
 \item{x_contrasts}{The contrast to be used. Default
-is \code{constr.treatment}.}
+is \code{"constr.treatment"}.}
 
 \item{prefix}{The prefix to be added to the variables
 to be created. Default is \code{""}.}
@@ -48,7 +48,4 @@ dat <- data.frame(dat,
                   factor2var(dat$w, prefix = "gp", add_rownames = FALSE))
 head(dat[, c("w", "gpgroup2", "gpgroup3")], 15)
 
-}
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
 }

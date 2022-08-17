@@ -2,13 +2,13 @@
 % Please edit documentation in R/boot2est_lm.R
 \name{lm2boot_out}
 \alias{lm2boot_out}
-\title{Bootstrapping Estimates for \code{lm} Outputs}
+\title{Bootstrap Estimates for \code{lm} Outputs}
 \usage{
 lm2boot_out(outputs, R = 100, seed = NULL)
 }
 \arguments{
 \item{outputs}{A list of \code{lm} class objects, or
-the output of \code{\link[=lm2list]{lm2list()}} (i.e., a \code{lm_list}-class
+the output of \code{\link[=lm2list]{lm2list()}} (i.e., an \code{lm_list}-class
 object).}
 
 \item{R}{The number of bootstrap samples. Default is 100.}
@@ -18,26 +18,35 @@ Default is \code{NULL} and seed is not set.}
 }
 \value{
 A \code{boot_out}-class object that can be used for the \code{boot_out}
-argument of \code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
+argument of \code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+and related functions
 for forming bootstrapping confidence intervals.
 }
 \description{
-Generate bootstrapping estimates for models
+Generate bootstrap estimates for models
 in a list of 'lm' outputs.
 }
 \details{
-It do nonparametric bootstrapping to generate bootstrap
+This function is for advanced users.
+\code{\link[=do_boot]{do_boot()}} is a function users should
+try first because \code{\link[=do_boot]{do_boot()}} has a general
+interface for input-specific functions
+like this one.
+
+It does nonparametric bootstrapping to generate bootstrap
 estimates of the regression coefficients in the regression models
-of a list of \code{\link[=lm]{lm()}} outputs, or a \code{lm_list}-class object
-formed by \code{\link[=lm2list]{lm2list()}}. The stored estimates can be
-used to \code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
+of a list of \code{\link[=lm]{lm()}} outputs, or an \code{lm_list}-class object
+created by \code{\link[=lm2list]{lm2list()}}. The stored estimates can be
+used by \code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+and related functions
 in forming bootstrapping confidence intervals for
-conditional effects.
+effects such as indirect effect and conditional indirect effects.
 
 This approach removes the need to repeat bootstrapping in
-each call to \code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+each call to \code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+and related functions.
 It also ensures that the same set of bootstrap samples
-is used in all subsequent analysis.
+is used in all subsequent analyses.
 }
 \examples{
 
@@ -48,9 +57,7 @@ lm_y <- lm(y ~ m*w + x + c1 + c2, dat)
 lm_out <- lm2list(lm_m, lm_y)
 # In real research, R should be 2000 or even 5000
 lm_boot_out <- lm2boot_out(lm_out, R = 100, seed = 1234)
-wlevels <- mod_levels(w = "w", fit = lm_out)
-wlevels
-out <- cond_indirect_effects(wlevels = wlevels,
+out <- cond_indirect_effects(wlevels = "w",
                              x = "x",
                              y = "y",
                              m = "m",
@@ -60,6 +67,8 @@ out <- cond_indirect_effects(wlevels = wlevels,
 out
 
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
+\seealso{
+\code{\link[=do_boot]{do_boot()}}, the general purpose
+function that users should try first before
+using this function.
 }

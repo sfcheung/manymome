@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_mod}
 \alias{data_mod}
-\title{One Moderator: Sample Dataset}
+\title{Sample Dataset: One Moderator}
 \format{
 A data frame with 100 rows and 5 variables:
 \describe{

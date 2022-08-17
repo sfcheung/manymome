@@ -1,35 +1,47 @@
-#' @title Bootstrapping Estimates for `lm` Outputs
+#' @title Bootstrap Estimates for `lm` Outputs
 #'
-#' @description Generate bootstrapping estimates for models
+#' @description Generate bootstrap estimates for models
 #'  in a list of 'lm' outputs.
 #'
 #' @details
-#' It do nonparametric bootstrapping to generate bootstrap
+#' This function is for advanced users.
+#' [do_boot()] is a function users should
+#' try first because [do_boot()] has a general
+#' interface for input-specific functions
+#' like this one.
+#'
+#' It does nonparametric bootstrapping to generate bootstrap
 #' estimates of the regression coefficients in the regression models
-#' of a list of [lm()] outputs, or a `lm_list`-class object
-#' formed by [lm2list()]. The stored estimates can be
-#' used to [cond_indirect()] and [cond_indirect_effects()]
+#' of a list of [lm()] outputs, or an `lm_list`-class object
+#' created by [lm2list()]. The stored estimates can be
+#' used by [indirect_effect()], [cond_indirect_effects()],
+#' and related functions
 #' in forming bootstrapping confidence intervals for
-#' conditional effects.
+#' effects such as indirect effect and conditional indirect effects.
 #'
 #' This approach removes the need to repeat bootstrapping in
-#' each call to [cond_indirect()] and [cond_indirect_effects()].
+#' each call to [indirect_effect()], [cond_indirect_effects()],
+#' and related functions.
 #' It also ensures that the same set of bootstrap samples
-#' is used in all subsequent analysis.
+#' is used in all subsequent analyses.
 #'
 #' @return
 #' A `boot_out`-class object that can be used for the `boot_out`
-#' argument of [cond_indirect()] and [cond_indirect_effects()]
+#' argument of [indirect_effect()], [cond_indirect_effects()],
+#' and related functions
 #' for forming bootstrapping confidence intervals.
 #'
 #' @param outputs A list of `lm` class objects, or
-#'  the output of [lm2list()] (i.e., a `lm_list`-class
+#'  the output of [lm2list()] (i.e., an `lm_list`-class
 #'  object).
 #' @param R The number of bootstrap samples. Default is 100.
 #' @param seed The seed for the bootstrapping.
 #'             Default is `NULL` and seed is not set.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
+#'
+#' @seealso [do_boot()], the general purpose
+#'          function that users should try first before
+#'          using this function.
 #'
 #' @examples
 #'
@@ -40,9 +52,7 @@
 #' lm_out <- lm2list(lm_m, lm_y)
 #' # In real research, R should be 2000 or even 5000
 #' lm_boot_out <- lm2boot_out(lm_out, R = 100, seed = 1234)
-#' wlevels <- mod_levels(w = "w", fit = lm_out)
-#' wlevels
-#' out <- cond_indirect_effects(wlevels = wlevels,
+#' out <- cond_indirect_effects(wlevels = "w",
 #'                              x = "x",
 #'                              y = "y",
 #'                              m = "m",
@@ -69,6 +79,10 @@ lm2boot_out <- function(outputs, R = 100, seed = NULL) {
     class(out0) <- "boot_out"
     out0
   }
+
+# Generate the function for bootstrapping.
+# Return a parameter estimates tables.
+#' @noRd
 
 lm_boot2est_i <- function(d, i = NULL, outputs) {
     if (!is.null(i)) {

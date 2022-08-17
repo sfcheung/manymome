@@ -1,7 +1,8 @@
 #' @title Create Levels of Moderators
 #'
 #' @description Create levels of moderators to be used by
-#'  [indirect_i()], [cond_indirect()], and [cond_indirect_effects()].
+#'  [indirect_effect()], [cond_indirect_effects()],
+#'  and [cond_indirect()].
 #'
 #' @details
 #' It creates values of a moderator that can be used to compute
@@ -16,8 +17,8 @@
 #' [cond_indirect_effects()].
 #'
 #' If a model has more than one moderator, [mod_levels_list()] can be
-#' used to generate combinations of levels. The output can be merged
-#' and then passed to [cond_indirect_effects()] to compute the conditional
+#' used to generate combinations of levels. The output can then passed
+#' to [cond_indirect_effects()] to compute the conditional
 #' effects or conditional indirect effects for all the combinations.
 #'
 #' @return
@@ -90,7 +91,10 @@
 #' @param merge If `TRUE`, [mod_levels_list()] will call [merge_mod_levels()]
 #'              and return the merged levels. Default is `FALSE`.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
+#'
+#' @seealso [cond_indirect_effects()] for computing conditional
+#'   indiret effects; [merge_mod_levels()] for merging
+#'   levels of moderators.
 #'
 #' @examples
 #'
@@ -115,11 +119,11 @@
 #' w1_levels2
 #' # Form the levels from a lavaan output
 #' # Compute the product terms before fitting the model
-#' # Need to use the ":" to denote a product term
+#' dat$mw2 <- dat$m * dat$w2
 #' mod <-
 #' "
 #' m ~ x + w1 + x:w1 + c1 + c2
-#' y ~ m + x + w1 + w2 + m:w2 + c1 + c2
+#' y ~ m + x + w1 + w2 + mw2 + c1 + c2
 #' "
 #' fit <- sem(mod, dat, fixed.x = FALSE)
 #' cond_indirect(x = "x", y = "y", m = "m",

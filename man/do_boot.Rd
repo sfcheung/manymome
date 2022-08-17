@@ -2,7 +2,7 @@
 % Please edit documentation in R/do_boot.R
 \name{do_boot}
 \alias{do_boot}
-\title{Bootstrapping Estimates for 'cond_indirect_effects'}
+\title{Bootstrap Estimates for 'indirect_effects' and 'cond_indirect_effects'}
 \usage{
 do_boot(
   fit,
@@ -16,7 +16,7 @@ do_boot(
 }
 \arguments{
 \item{fit}{Either (a) a list of \code{lm} class objects, or
-the output of \code{\link[=lm2list]{lm2list()}} (i.e., a \code{lm_list}-class
+the output of \code{\link[=lm2list]{lm2list()}} (i.e., an \code{lm_list}-class
 object), or (b) the output of \code{\link[lavaan:sem]{lavaan::sem()}}.}
 
 \item{R}{The number of bootstrap samples. Default is 100.}
@@ -38,46 +38,47 @@ will override \code{make_cluster_args}.}
 \item{make_cluster_args}{A named list of additional arguments to be
 passed to \code{\link[parallel:makeCluster]{parallel::makeCluster()}}. For advanced
 users. See \code{\link[parallel:makeCluster]{parallel::makeCluster()}} for details.
-Default is \code{list()}.}
+Default is \code{list()}, no additional arguments.}
 
 \item{progress}{Logical. Display progress or not. Default is \code{TRUE}.}
 }
 \value{
 A \code{boot_out}-class object that can be used for the \code{boot_out}
-argument of \code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
-for forming bootstrapping confidence intervals.
+argument of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, \code{\link[=indirect_effect]{indirect_effect()}}, and
+\code{\link[=cond_indirect]{cond_indirect()}} for forming bootstrap confidence intervals.
 }
 \description{
-Generate bootstrapping estimates to be used
-by \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, \code{\link[=cond_indirect]{cond_indirect()}},
-and \code{\link[=indirect_effect]{indirect_effect()}}.
+Generate bootstrap estimates to be used
+by \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, \code{\link[=indirect_effect]{indirect_effect()}},
+and \code{\link[=cond_indirect]{cond_indirect()}},
 }
 \details{
-It do nonparametric bootstrapping to generate bootstrap
+It does nonparametric bootstrapping to generate bootstrap
 estimates of the parameter estimates in a model fitted
 either by \code{\link[lavaan:sem]{lavaan::sem()}} or by a sequence of calls to
 \code{\link[=lm]{lm()}}. The stored estimates can then be used by
-\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, \code{\link[=cond_indirect]{cond_indirect()}}, and
-\code{\link[=indirect_effect]{indirect_effect()}} to form bootstrapping confidence
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, \code{\link[=indirect_effect]{indirect_effect()}}, and
+\code{\link[=cond_indirect]{cond_indirect()}} to form bootstrapping confidence
 intervals.
 
-This approach removes the need to repeat bootstrapping in
-each call to \code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
-It also ensures that the same set of bootstrap samples
-is used in all subsequent analysis.
+This approach removes the need to repeat bootstrapping in each call
+to \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, \code{\link[=indirect_effect]{indirect_effect()}}, and
+\code{\link[=cond_indirect]{cond_indirect()}}. It also ensures that the same set of bootstrap
+samples is used in all subsequent analysis.
 
-It determines the type of the fit object and then call
-\code{\link[=lm2boot_out]{lm2boot_out()}}, \code{\link[=fit2boot_out]{fit2boot_out()}}, or \code{\link[=fit2boot_out_do_boot]{fit2boot_out_do_boot()}}.
+It determines the type of the fit object automatically and then
+calls \code{\link[=lm2boot_out]{lm2boot_out()}}, \code{\link[=fit2boot_out]{fit2boot_out()}}, or
+\code{\link[=fit2boot_out_do_boot]{fit2boot_out_do_boot()}}.
 }
 \examples{
-
+\dontrun{
 data(data_med_mod_ab1)
 dat <- data_med_mod_ab1
 lm_m <- lm(m ~ x*w + c1 + c2, dat)
 lm_y <- lm(y ~ m*w + x + c1 + c2, dat)
 lm_out <- lm2list(lm_m, lm_y)
 # In real research, R should be 2000 or even 5000
-lm_boot_out <- lm2boot_out(lm_out, R = 100, seed = 1234)
+lm_boot_out <- do_boot(lm_out, R = 100, seed = 1234)
 wlevels <- mod_levels(w = "w", fit = lm_out)
 wlevels
 out <- cond_indirect_effects(wlevels = wlevels,
@@ -88,8 +89,11 @@ out <- cond_indirect_effects(wlevels = wlevels,
                              boot_ci = TRUE,
                              boot_out = lm_boot_out)
 out
+}
 
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
+\seealso{
+\code{\link[=lm2boot_out]{lm2boot_out()}}, \code{\link[=fit2boot_out]{fit2boot_out()}}, and
+\code{\link[=fit2boot_out_do_boot]{fit2boot_out_do_boot()}}, which implemetns the
+bootstrapping.
 }

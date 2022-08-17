@@ -3,8 +3,8 @@
 \docType{data}
 \name{data_med_mod_serial_parallel_cat}
 \alias{data_med_mod_serial_parallel_cat}
-\title{Serial-Parallel Moderated Mediation with Two Categorical Moderators:
-Sample Dataset}
+\title{Sample Dataset: Serial-Parallel Moderated Mediation with Two
+Categorical Moderators}
 \format{
 A data frame with 300 rows and 8 variables:
 \describe{
@@ -12,7 +12,7 @@ A data frame with 300 rows and 8 variables:
 \item{w1}{Moderator. String. Values: "group1", "group2", "group3"}
 \item{w2}{Moderator. String. Values: "team1", "team2"}
 \item{m11}{Mediator 1 in Path 1. Numeric.}
-\item{m12}{Mediator 1 in Path 1. Numeric.}
+\item{m12}{Mediator 2 in Path 1. Numeric.}
 \item{m2}{Mediator in Path 2. Numeric.}
 \item{y}{Outcome variable. Numeric.}
 \item{c1}{Control variable. Numeric.}

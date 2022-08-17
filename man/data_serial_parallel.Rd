@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_serial_parallel}
 \alias{data_serial_parallel}
-\title{Serial-Parallel Mediation: Sample Dataset}
+\title{Sample Dataset: Serial-Parallel Mediation}
 \format{
 A data frame with 100 rows and 7 variables:
 \describe{

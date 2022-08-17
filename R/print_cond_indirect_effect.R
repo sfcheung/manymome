@@ -1,4 +1,4 @@
-#' @title Print the a 'cond_indirect_effects' Class Object
+#' @title Print a 'cond_indirect_effects' Class Object
 #'
 #' @description Print the content of the output of [cond_indirect_effects()]
 #'
@@ -12,7 +12,8 @@
 #' @param ...  Other arguments. Not used.
 #'
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
+#'
+#' @seealso [cond_indirect_effects()]
 #'
 #' @examples
 #'
@@ -24,22 +25,22 @@
 #' m2 ~ a2 * x
 #' y  ~ b1 * m1 + b2 * m2 + cp * x
 #' "
-#' fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
+#' fit <- sem(mod, dat,
+#'            meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
 #'
-#' # Examples for cond_indirect_effects():
-#'
-#' # Create levels of w1, the moderators
-#' w1levels <- mod_levels("w1", fit = fit)
-#' w1levels
-#'
-#' # Conditional effects from x to m1 when w1 is equal to each of the levels
+#' # Conditional effects from x to m1 when w1 is equal to each of the default levels
 #' cond_indirect_effects(x = "x", y = "m1",
-#'                       wlevels = w1levels, fit = fit)
+#'                       wlevels = "w1", fit = fit)
 #'
 #' # Conditional Indirect effect from x1 through m1 to y,
-#' # when w1 is equal to each of the levels
-#' cond_indirect_effects(x = "x", y = "y", m = "m1",
-#'                       wlevels = w1levels, fit = fit)
+#' # when w1 is equal to each of the default levels
+#' out <- cond_indirect_effects(x = "x", y = "y", m = "m1",
+#'                       wlevels = "w1", fit = fit)
+#' out
+#'
+#' print(out, digits = 5)
+#'
+#' print(out, annotation = FALSE)
 #'
 #'
 #' @export
@@ -57,9 +58,9 @@ print.cond_indirect_effects <- function(x, digits = 3,
   has_m <- isTRUE(!is.null(x_i$m))
   R <- ifelse(boot_ci, length(x_i$boot_indirect),
                        NA)
-  x0 <- my_call$x
-  y0 <- my_call$y
-  m0 <- my_call$m
+  x0 <- attr(x, "x")
+  y0 <- attr(x, "y")
+  m0 <- attr(x, "m")
   if (has_m) {
       path <- path <- paste0(x0, " -> ",
                              paste0(eval(m0), collapse = " -> "),

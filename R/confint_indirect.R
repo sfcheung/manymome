@@ -1,50 +1,74 @@
-#' @title Indirect effect or conditional indirect effect
+#' @title Confidence Interval of Indirect Effect or Conditional Indirect Effect
 #'
-#' @description Return the estimate of the indirect effect
-#'              in the output of [indirect_i()] or
+#' @description Return the  bootstrap confidence
+#'              interval of the indirect effect
+#'              or conditional indirect effect
+#'              stored in the output of [indirect_effect()] or
 #'              [cond_indirect()].
 #'
-#' @details It just extracts and returns the element `indirect`.
+#' @details It extracts and returns the stored bootstrap
+#'           confidence interval if available.
 #'
-#' @param object The output of [indirect_i()] or
+#' @param object The output of [indirect_effect()] or
 #'              [cond_indirect()].
-#' @param parm Ignored. Always return the bootstrap confidence interval
-#'              of the standardized moderation effect.
+#' @param parm Ignored because the stored object
+#'             always has only one parameter.
 #' @param level The level of confidence, default is .95, returning the
 #'               95% confidence interval.
 #' @param ...  Additional arguments. Ignored by the function.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
+#' @seealso [indirect_effect()] and [cond_indirect()]
 #'
 #' @examples
 #'
-#' library(lavaan)
 #' dat <- modmed_x1m3w4y1
-#' mod <-
-#' "
-#' m1 ~ a1 * x   + b1 * w1 + d1 * x:w1
-#' m2 ~ a2 * m1  + b2 * w2 + d2 * m1:w2
-#' m3 ~ a3 * m2  + b3 * w3 + d3 * m2:w3
-#' y  ~ a4 * m3  + b4 * w4 + d4 * m3:w4
-#' "
-#' fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
-#' est <- parameterEstimates(fit)
 #'
-#' wvalues <- c(w1 = 5, w2 = 4, w3 = 2, w4 = 3)
+#' # Indirect Effect
 #'
-#' indirect_1 <- indirect_i(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
-#'                        wvalues = wvalues)
-#' indirect_2 <- (est[est$label == "a1", "est"] +
-#'                 wvalues["w1"] * est[est$label == "d1", "est"]) *
-#'               (est[est$label == "a2", "est"] +
-#'                 wvalues["w2"] * est[est$label == "d2", "est"]) *
-#'               (est[est$label == "a3", "est"] +
-#'                 wvalues["w3"] * est[est$label == "d3", "est"]) *
-#'               (est[est$label == "a4", "est"] +
-#'                 wvalues["w4"] * est[est$label == "d4", "est"])
-#' indirect_1$indirect
-#' indirect_2
+#' library(lavaan)
+#' mod1 <-
+#' "
+#' m1 ~ x
+#' m2 ~ m1
+#' y  ~ m2 + x
+#' "
+#' fit <- sem(mod1, dat,
+#'            meanstructure = TRUE, fixed.x = FALSE,
+#'            se = "none", baseline = FALSE)
+#' # R should be at least 2000 or 5000 in real research.
+#' out1 <- indirect_effect(x = "x", y = "y",
+#'                         m = c("m1", "m2"),
+#'                         fit = fit,
+#'                         boot_ci = TRUE, R = 45, seed = 54151,
+#'                         parallel = FALSE)
+#' out1
+#' confint(out1)
+#'
+#' # Conditional indirect effect
+#'
+#' # Create levels of w1 and w4
+#' w1_hi <- mean(dat$w1) + sd(dat$w1)
+#' w4_lo <- mean(dat$w4) - sd(dat$w4)
+#'
+#' mod2 <-
+#' "
+#' m1 ~ x + w1 + x:w1
+#' m2 ~ m1
+#' y  ~ m2 + x + w4 + m2:w4
+#' "
+#' fit2 <- sem(mod2, dat,
+#'            meanstructure = TRUE, fixed.x = FALSE,
+#'            se = "none", baseline = FALSE)
+#' # R should be at least 2000 or 5000 in real research.
+#' out2 <- cond_indirect(x = "x", y = "y",
+#'                       m = c("m1", "m2"),
+#'                       wvalues = c(w1 = w1_hi, w4 = w4_lo),
+#'                       fit = fit,
+#'                       boot_ci = TRUE, R = 45, seed = 54151,
+#'                       parallel = FALSE)
+#' out2
+#' confint(out2)
 #'
 #' @export
 

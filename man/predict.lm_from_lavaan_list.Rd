@@ -2,16 +2,16 @@
 % Please edit documentation in R/lavaan2lm_list.R
 \name{predict.lm_from_lavaan_list}
 \alias{predict.lm_from_lavaan_list}
-\title{Predicted Values of a 'lm_from_lavaan_list'-Class Object}
+\title{Predicted Values of an 'lm_from_lavaan_list'-Class Object}
 \usage{
 \method{predict}{lm_from_lavaan_list}(object, x = NULL, y = NULL, m = NULL, newdata, ...)
 }
 \arguments{
 \item{object}{A 'lm_from_lavaan'-class object.}
 
-\item{x}{The variable name at the start of a pathway.}
+\item{x}{The variable name at the start of a path.}
 
-\item{y}{The variable name at the end of a pathway.}
+\item{y}{The variable name at the end of a path.}
 
 \item{m}{Optional. The mediator(s) from \code{x} to \code{y}.
 A numeric vector of the names of the mediators.
@@ -29,12 +29,15 @@ A numeric vector of the predicted values, with length equal to
 the number of rows of user-supplied data.
 }
 \description{
-Compute the predicted values based on
-the models stored in a 'lm_from_lavaan_list`-class object.
+It computes the predicted values based on
+the models stored in an 'lm_from_lavaan_list`-class object.
 }
 \details{
-A \code{lm_from_lavaan_list}-class object is a list
+An \code{lm_from_lavaan_list}-class object is a list
 of \code{lm_from_lavaan}-class objects.
+
+This is an advanced helper used by \code{\link[=plot.cond_indirect_effects]{plot.cond_indirect_effects()}}.
+Exported for advanced users and developers.
 }
 \examples{
 library(lavaan)
@@ -52,7 +55,4 @@ predict(fit_list, x = "x", y = "y", m = "m", newdata = tmp)
 }
 \seealso{
 \code{\link[=lm_from_lavaan_list]{lm_from_lavaan_list()}}
-}
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
 }

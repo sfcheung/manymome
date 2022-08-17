@@ -3,7 +3,7 @@
 \name{fit2boot_out}
 \alias{fit2boot_out}
 \alias{fit2boot_out_do_boot}
-\title{Bootstrapping Estimates for a \code{lavaan} Output}
+\title{Bootstrap Estimates for a \code{lavaan} Output}
 \usage{
 fit2boot_out(fit)
 
@@ -18,21 +18,23 @@ fit2boot_out_do_boot(
 )
 }
 \arguments{
-\item{fit}{The fit object. Currently only supports a
+\item{fit}{The fit object. This function
+only supports a
 \link[lavaan:lavaan-class]{lavaan::lavaan} object.}
 
-\item{R}{Number of bootstrap samples. Default is 100.}
+\item{R}{The number of bootstrap samples. Default is 100.}
 
 \item{seed}{The seed for the random resampling. Default is \code{NULL}.}
 
 \item{parallel}{Logical. Whether parallel processing will be used.
 Default is \code{NULL}.}
 
-\item{ncores}{Integer. The number of CPU cores to use when \code{parallel} is \code{TRUE}.
-Default is \code{NULL}, and the number of cores determined by
-\code{getOption("cl.cores", 2)}. Will raise an error if greater than
-the number of cores detected by \code{\link[parallel:detectCores]{parallel::detectCores()}}.
-If \code{ncores} is set, it will override \code{make_cluster_args}.}
+\item{ncores}{Integer. The number of CPU cores to use when
+\code{parallel} is \code{TRUE}. Default is \code{NULL}, and the
+number of cores determined by \code{getOption("cl.cores", 2)}. Will raise an error if greater than the number
+of cores detected by \code{\link[parallel:detectCores]{parallel::detectCores()}}. If
+\code{ncores} is set, it will override
+\code{make_cluster_args}.}
 
 \item{make_cluster_args}{A named list of additional arguments to be passed
 to \code{\link[parallel:makeCluster]{parallel::makeCluster()}}. For advanced users.
@@ -43,33 +45,43 @@ Default is \code{list(spec = getOption("cl.cores", 2))}.}
 }
 \value{
 A \code{boot_out}-class object that can be used for the
-\code{boot_out} argument of \code{\link[=cond_indirect]{cond_indirect()}} and
-\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} for forming bootstrapping confidence
+\code{boot_out} argument of \code{\link[=indirect_effect]{indirect_effect()}},
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, and related
+functions for forming bootstrapping confidence
 intervals.
 }
 \description{
-Extract the bootstrapping estimates from
+Generate bootstrap estimates from
 the output of \code{\link[lavaan:sem]{lavaan::sem()}}.
 }
 \details{
+This function is for advanced users.
+\code{\link[=do_boot]{do_boot()}} is a function users should
+try first because \code{\link[=do_boot]{do_boot()}} has a general
+interface for input-specific functions
+like this one.
+
 If bootstrapping confidence intervals was requested
 when calling \code{\link[lavaan:sem]{lavaan::sem()}} by setting \code{se = "boot"},
 \code{\link[=fit2boot_out]{fit2boot_out()}} can be used to extract the stored
-bootstrap estimates such that they can be reused by
-\code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
+bootstrap estimates so that they can be reused by
+\code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} and
+related functions
 to form bootstrapping confidence intervals for
-conditional effects.
+effects such as indirect effects and conditional indirect effects.
 
-If bootstrapping confidence intervals was not requested,
+If bootstrapping confidence was not requested
+when fitting the model by \code{\link[lavaan:sem]{lavaan::sem()}},
 \code{\link[=fit2boot_out_do_boot]{fit2boot_out_do_boot()}} can be used to generate nonparametric
 bootstrap estimates from the output of \code{\link[lavaan:sem]{lavaan::sem()}}
 and store them for use by
-\code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+\code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, and related functions.
 
 This approach removes the need to repeat bootstrapping in
-each call to \code{\link[=cond_indirect]{cond_indirect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+each call to \code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+and related functions.
 It also ensures that the same set of bootstrap samples
-is used in all subsequent analysis.
+is used in all subsequent analyses.
 }
 \section{Functions}{
 \itemize{
@@ -78,8 +90,7 @@ such as \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 
 \item \code{fit2boot_out_do_boot}: Do bootstrapping and store information to be used
 by \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} and related functions.
-Support parallel processing and can be faster than
-setting \code{se} to \code{"boot"} in \code{\link[lavaan:sem]{lavaan::sem()}}.
+Support parallel processing.
 }}
 
 \examples{
@@ -98,10 +109,11 @@ y ~ m + w + m:w + x + c1 + c2
 # bootstrap should be set to 2000 or even 5000 in real study
 set.seed(1234)
 fit <- sem(model = mod, data = dat, fixed.x = FALSE,
-           se = "boot", bootstrap = 10)
+           se = "boot", bootstrap = 40,
+           warn = FALSE)
 fit_boot_out <- fit2boot_out(fit)
 wlevels <- mod_levels(w = "w", fit = fit)
-out <- cond_indirect_effects(wlevels = wlevels,
+out <- cond_indirect_effects(wlevels = "w",
                              x = "x",
                              y = "y",
                              m = "m",
@@ -112,10 +124,9 @@ out
 # Bootstrapping not requested in calling lavaan::sem()
 fit <- sem(model = mod, data = dat, fixed.x = FALSE)
 fit_boot_out <- fit2boot_out_do_boot(fit = fit,
-                                     R = 10,
+                                     R = 40,
                                      seed = 1234)
-wlevels <- mod_levels(w = "w", fit = fit)
-out <- cond_indirect_effects(wlevels = wlevels,
+out <- cond_indirect_effects(wlevels = "w",
                              x = "x",
                              y = "y",
                              m = "m",
@@ -125,6 +136,8 @@ out <- cond_indirect_effects(wlevels = wlevels,
 out
 
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
+\seealso{
+\code{\link[=do_boot]{do_boot()}}, the general purpose
+function that users should try first before
+using this function.
 }

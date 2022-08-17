@@ -1,4 +1,4 @@
-#' @title Moderation with One Categorical Moderator: Sample Dataset
+#' @title Sample Dataset: Moderation with One Categorical Moderator
 #'
 #' @description A moderation model with a categorical moderator.
 #'
@@ -17,8 +17,8 @@
 #' summary(lm_y <- lm(y ~ x*w + c1 + c2, dat))
 "data_mod_cat"
 
-#' @title Serial Moderated Mediation with Two Categorical Moderators:
-#' Sample Dataset
+#' @title Sample Dataset: Serial Moderated Mediation with Two
+#' Categorical Moderators
 #'
 #' @description A serial mediation model with two categorical moderators.
 #'
@@ -42,8 +42,8 @@
 #' summary(lm_y <- lm(y ~ m2*w2 + m1 + x + w1 + c1 + c2, dat))
 "data_med_mod_serial_cat"
 
-#' @title Parallel Moderated Mediation with Two Categorical Moderators:
-#' Sample Dataset
+#' @title Sample Dataset: Parallel Moderated Mediation with Two
+#' Categorical Moderators
 #'
 #' @description A parallel mediation model with two categorical moderators.
 #'
@@ -69,8 +69,8 @@
 
 
 
-#' @title Serial-Parallel Moderated Mediation with Two Categorical Moderators:
-#' Sample Dataset
+#' @title Sample Dataset: Serial-Parallel Moderated Mediation with Two
+#' Categorical Moderators
 #'
 #' @description A serial-parallel mediation model with two categorical
 #' moderators.
@@ -81,7 +81,7 @@
 #'   \item{w1}{Moderator. String. Values: "group1", "group2", "group3"}
 #'   \item{w2}{Moderator. String. Values: "team1", "team2"}
 #'   \item{m11}{Mediator 1 in Path 1. Numeric.}
-#'   \item{m12}{Mediator 1 in Path 1. Numeric.}
+#'   \item{m12}{Mediator 2 in Path 1. Numeric.}
 #'   \item{m2}{Mediator in Path 2. Numeric.}
 #'   \item{y}{Outcome variable. Numeric.}
 #'   \item{c1}{Control variable. Numeric.}

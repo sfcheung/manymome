@@ -1,17 +1,17 @@
-#' @title Summary of a `lm_list`-Class Object
+#' @title Summary of an `lm_list`-Class Object
 #'
 #' @description The summary of content of the output of [lm2list()].
 #'
 #' @return
 #'  `x` is returned invisibly.
 #'
-#' @param object The output of the output of [lm2list()].
-#' @param x An object of class "summary_lm_list".
-#' @param digits The number of significant digits in printing numerical results.
+#' @param object The output of [lm2list()].
+#' @param x An object of class `summary_lm_list`.
+#' @param digits The number of significant digits in printing
+#' numerical results.
 #' @param ...  Other arguments. Not used.
 #'
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @examples
 #'

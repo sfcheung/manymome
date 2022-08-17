@@ -11,19 +11,21 @@
 \method{-}{indirect}(e1, e2)
 }
 \arguments{
-\item{e1}{A 'indirect'-class object.}
+\item{e1}{An 'indirect'-class object.}
 
-\item{e2}{A 'indirect'-class object.}
+\item{e2}{An 'indirect'-class object.}
 }
 \value{
-A 'indirect'-class object with list of effects stored.
+An 'indirect'-class object with a list of effects stored.
 }
 \description{
 Mathematic operators for
-'indirect'-class object.
+'indirect'-class object, the output of \code{\link[=indirect_effect]{indirect_effect()}}
+and \code{\link[=cond_indirect]{cond_indirect()}}.
 }
 \details{
-For now, only has a \code{+} operator and a \code{-} operator.
+For now, only \code{+} operator and \code{-} operator
+are supported.
 These operators can be used to estimate and test
 a function of effects between the same pair of variables
 but along different paths.
@@ -32,12 +34,17 @@ For example, they can be used to compute and test the total effects
 along different paths. They can also be used to compute and
 test the difference between the effects along two paths.
 
-The operators will check whether an operation is valid. A operation
-is not valid if (a) the two paths do not start from the same variable,
-(b) the two paths do not end at the same variable, (c) a path appears
-in both objects, (d) moderators are involved but they are not
-set to the same values in both objects, and (e) bootstrap estimates
+The operators will check whether an operation is valid. An operation
+is not valid if
+\enumerate{
+\item the two paths do not start from the same variable,
+\item the two paths do not end at the same variable, (c) a path appears
+in both objects,
+\item moderators are involved but they are not
+set to the same values in both objects, and
+\item bootstrap estimates
 stored in \code{boot_out} are not identical.
+}
 }
 \examples{
 library(lavaan)
@@ -48,7 +55,9 @@ m1 ~ a1 * x  + d1 * w1 + e1 * x:w1
 m2 ~ m1 + a2 * x
 y  ~ b1 * m1 + b2 * m2 + cp * x
 "
-fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
+fit <- sem(mod, dat,
+           meanstructure = TRUE, fixed.x = FALSE,
+           se = "none", baseline = FALSE)
 est <- parameterEstimates(fit)
 hi_w1 <- mean(dat$w1) + sd(dat$w1)
 
@@ -69,6 +78,6 @@ out123
 coef(out1) + coef(out2) + coef(out3)
 
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
+\seealso{
+\code{\link[=indirect_effect]{indirect_effect()}} and \code{\link[=cond_indirect]{cond_indirect()}}
 }

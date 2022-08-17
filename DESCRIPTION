@@ -1,19 +1,22 @@
 Package: manymome
-Title: Moderation, Mediation, and Moderated-Mediation in SEM
-Version: 0.0.1.9036
+Title: Moderation, Mediation, and Moderated-Mediation in SEM and Regression
+Version: 0.1.0.0
 Authors@R:
     c(person(given = "Shu Fai",
            family = "Cheung",
            role = c("aut", "cre"),
            email = "shufai.cheung@gmail.com",
-           comment = c(ORCID = "0000-0002-9871-9448")))
-Description: Functions for computing indirect effects, moderation effects,
-             and conditional indirect effects, and their bootstraping
-             confidence interval. Support standadized (partially or completely)
-             moderation effects and conditional indirect effects.
-             For standardized effects that involve the moderator, the
-             sampling variation in the standardization will be taken into
-             account.
+           comment = c(ORCID = "0000-0002-9871-9448")),
+      person(given = "Sing-Hang",
+           family = "Cheung",
+           role = c("aut"),
+           comment = c(ORCID = "0000-0001-5182-0752")))
+Description: Functions for computing indirect effects, cnoditioanl effects,
+  and conditional indirect effects, and their bootstraping
+  confidence intervals. Support standadized (partially or completely)
+  indirect effects, conditional effects, and conditional indirect effects.
+  Model fitting can be done by SEM (using 'sem()' in 'lavaan') or regression
+  (using 'lm()').
 URL: https://sfcheung.github.io/manymome/
 BugReports: https://github.com/sfcheung/manymome/issues
 License: GPL (>= 3)

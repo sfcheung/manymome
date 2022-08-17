@@ -2,41 +2,43 @@
 % Please edit documentation in R/check_path.R
 \name{check_path}
 \alias{check_path}
-\title{Check Whether an Indirect Path is Valid in a Model}
+\title{Check a Path Exists in a Model}
 \usage{
 check_path(x, y, m = NULL, fit = NULL, est = NULL)
 }
 \arguments{
-\item{x}{Character. The name of predictor at the start of the pathway.}
+\item{x}{Character. The name of predictor at the start of the path.}
 
 \item{y}{Character. The name of the outcome variable at
-the end of the pathway.}
+the end of the path.}
 
 \item{m}{A vector of the variable names of the
-mediators. The pathway goes from the first
+mediators. The path goes from the first
 mediator successively to the last mediator. If
-\code{NULL}, the default, the pathway goes from \code{x}
+\code{NULL}, the default, the path goes from \code{x}
 to \code{y}.}
 
 \item{fit}{The fit object. Currently only supports a
-\link[lavaan:lavaan-class]{lavaan::lavaan} object.}
+\link[lavaan:lavaan-class]{lavaan::lavaan} object or a list
+of outputs of \code{\link[=lm]{lm()}}.}
 
 \item{est}{The output of \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}. If \code{NULL}, the
 default, it will be generated from \code{fit}. If supplied,
 \code{fit} will ge ignored.}
 }
 \value{
-Boolean. \code{TRUE} is the path is valid, \code{FALSE} if the
-path is invalid.
+A logical vector of length one. \code{TRUE} if the path is
+valid, \code{FALSE} if the path is invalid.
 }
 \description{
-It checks whether an indirect path exists
-in a model.
+It checks whether a path, usually an indirect path,
+exists in a model.
 }
 \details{
-It checks whether the path defined by a predictor,
-an outcome, and sequence of mediators exists in
-a model.
+It checks whether the path defined by a predictor (\code{x}),
+an outcome (\code{y}), and optionally a sequence of mediators (\code{m}),
+exists in a model. It can check models in a \link[lavaan:lavaan-class]{lavaan::lavaan}
+object or a list of outputs of \code{\link[=lm]{lm()}}.
 
 For example, in the following model in \link{lavaan} syntax
 
@@ -74,7 +76,4 @@ check_path(x = "x", y = "y", m = "m2", fit = fit)
 check_path(x = "x", y = "y", m = c("m11", "m2"), fit = fit)
 check_path(x = "x", y = "y", m = c("m12", "m11"), fit = fit)
 
-}
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
 }

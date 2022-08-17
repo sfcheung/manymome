@@ -3,8 +3,8 @@
 \docType{data}
 \name{data_med_mod_parallel_cat}
 \alias{data_med_mod_parallel_cat}
-\title{Parallel Moderated Mediation with Two Categorical Moderators:
-Sample Dataset}
+\title{Sample Dataset: Parallel Moderated Mediation with Two
+Categorical Moderators}
 \format{
 A data frame with 300 rows and 8 variables:
 \describe{

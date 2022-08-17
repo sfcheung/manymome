@@ -2,12 +2,12 @@
 % Please edit documentation in R/print_lm_list.R
 \name{print.lm_list}
 \alias{print.lm_list}
-\title{Print a \code{lm_list}-Class Object}
+\title{Print an \code{lm_list}-Class Object}
 \usage{
 \method{print}{lm_list}(x, ...)
 }
 \arguments{
-\item{x}{The output of the output of \code{\link[=lm2list]{lm2list()}}.}
+\item{x}{The output of \code{\link[=lm2list]{lm2list()}}.}
 
 \item{...}{Other arguments. Not used.}
 }
@@ -28,7 +28,4 @@ lm_y <- lm(y ~ m11 + m12 + m2 + x + c1 + c2, data_serial_parallel)
 lm_serial_parallel <- lm2list(lm_m11, lm_m12, lm_m2, lm_y)
 lm_serial_parallel
 
-}
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
 }
