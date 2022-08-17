@@ -4,7 +4,7 @@
 #'              or [cond_indirect()].
 #'
 #' @return
-#'  `x` is returned invisibly.
+#'  `x` is returned invisibly. Called for its side effect.
 #'
 #' @param x The output of [indirect_effect()] or [cond_indirect()].
 #' @param digits Number of digits to display. Default is 3.

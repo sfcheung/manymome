@@ -21,7 +21,8 @@ a logical vector of column(s) to be selected.}
 \item{drop}{Whether dropping a dimension if it only have one row/column.}
 }
 \value{
-A 'cond_indirect_effects'-class object.
+A 'cond_indirect_effects'-class object. See
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} for details on this class.
 }
 \description{
 For subsetting a 'cond_indirect_effects'-class object.

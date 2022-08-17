@@ -17,6 +17,7 @@
 }
 \value{
 An 'indirect'-class object with a list of effects stored.
+See \code{\link[=indirect_effect]{indirect_effect()}} on details for this class.
 }
 \description{
 Mathematic operators for

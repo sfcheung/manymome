@@ -7,7 +7,8 @@
 #'  data frame object, while information specific to conditional
 #'  effects is modified correctly.
 #'
-#' @return A 'cond_indirect_effects'-class object.
+#' @return A 'cond_indirect_effects'-class object. See
+#'  [cond_indirect_effects()] for details on this class.
 #'
 #' @param x A 'cond_indirect_effects'-class object.
 #' @param i A numeric vector of row number(s),

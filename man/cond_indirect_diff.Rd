@@ -20,7 +20,7 @@ from Row \code{from} to Row \code{to}.}
 interval. Default is .95.}
 }
 \value{
-It returns a \code{cond_indirect_diff}-class object. This class has a
+A \code{cond_indirect_diff}-class object. This class has a
 \code{print} method (\code{\link[=print.cond_indirect_diff]{print.cond_indirect_diff()}}), a \code{coef} method
 (\code{\link[=coef.cond_indirect_diff]{coef.cond_indirect_diff()}}), and a \code{confint} method
 (\code{\link[=confint.cond_indirect_diff]{confint.cond_indirect_diff()}}).

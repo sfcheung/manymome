@@ -12,7 +12,7 @@
 \item{...}{Other arguments. Not used.}
 }
 \value{
-\code{x} is returned invisibly.
+\code{x} is returned invisibly. Called for its side effect.
 }
 \description{
 Print the content of the output of \code{\link[=lm2list]{lm2list()}}.

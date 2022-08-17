@@ -3,7 +3,7 @@
 #' @description Print the content of the output of [lm2list()].
 #'
 #' @return
-#'  `x` is returned invisibly.
+#'  `x` is returned invisibly. Called for its side effect.
 #'
 #' @param x The output of [lm2list()].
 #' @param ...  Other arguments. Not used.

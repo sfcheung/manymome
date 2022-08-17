@@ -29,6 +29,7 @@
 #' stored in `boot_out` are not identical.
 #'
 #' @return An 'indirect'-class object with a list of effects stored.
+#'   See [indirect_effect()] on details for this class.
 #'
 #' @param e1 An 'indirect'-class object.
 #' @param e2 An 'indirect'-class object.
