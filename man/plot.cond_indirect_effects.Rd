@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotmod.R
 \name{plot.cond_indirect_effects}
 \alias{plot.cond_indirect_effects}
-\title{Plot Conditional Total Effect}
+\title{Plot Conditional Effects}
 \usage{
 \method{plot}{cond_indirect_effects}(
   x,
@@ -111,7 +111,7 @@ A \link{ggplot2} graph. Plotted if not assigned to a name. It can
 be further modified like a usual \link{ggplot2} graph.
 }
 \description{
-Plot the conditional total effects for different
+Plot the conditional effects for different
 levels of moderators.
 }
 \details{
@@ -119,20 +119,11 @@ This function is a plot method of the output
 of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}. It will use the levels of moderators
 in the output.
 
-It plots the \emph{total} effect from \code{x} to \code{y} in a model for
+It plots the conditional effect from \code{x} to \code{y} in a model for
 different levels of the moderators.
 
-If \code{x} has only one path to \code{y} and there is no
-mediator along this path, then it plots the conditional (simple)
-effect of \code{x} on \code{y}.
-
-If \code{x} has one and only one path to \code{y} and there is one or more
-mediators along this path, then it plots the conditional
-\emph{indirect} effect along this path.
-
-If \code{x} has more than one path to \code{y}, for example, \code{x}
-has a direct path to \code{y}, then it plots the
-conditional \emph{total} effect from \code{x} to \code{y}.
+It does not support conditional indirect effects. If there
+is one or more mediators in \code{x}, it will raise an error.
 }
 \examples{
 library(lavaan)
@@ -152,20 +143,9 @@ fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
 out_mm_1 <- mod_levels_list("w4", c("gpgp2", "gpgp3"),
                             sd_from_mean = c(-1, 1),
                             fit = fit, merge = TRUE)
-out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit)
+out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "m3", fit = fit)
 plot(out_1)
 plot(out_1, graph_type = "tumble")
-
-# Regression
-lm_m3 <- lm(m3 ~ m1 + x*gp, dat)
-lm_y <- lm(y ~ m2 + m3 + x*w4, dat)
-fit_lm <- lm2list(lm_m3, lm_y)
-out_mm_1_lm <- mod_levels_list("w4", c("gpgp2", "gpgp3"),
-                            sd_from_mean = c(-1, 1),
-                            fit = fit_lm, merge = TRUE)
-out_1_lm <- cond_indirect_effects(wlevels = out_mm_1_lm, x = "x", y = "y", m = "m3", fit = fit_lm)
-plot(out_1_lm)
-plot(out_1_lm, graph_type = "tumble")
 
 }
 \references{

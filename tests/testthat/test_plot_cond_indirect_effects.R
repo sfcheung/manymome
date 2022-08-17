@@ -32,8 +32,11 @@ out_mm_1 <- mod_levels_list("w4", c("gpgp2", "gpgp3"),
 
 out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit)
 
-plot(out_1)
-plot(out_1, graph_type = "tumble")
+test_that("plot for indirect", {
+  expect_error(plot(out_1))
+  expect_error(plot(out_1, graph_type = "tumble"))
+})
+
 
 out_mm_1_lm <- mod_levels_list("w4", c("gpgp2", "gpgp3"),
                             sd_from_mean = c(-1, 1),
@@ -41,28 +44,35 @@ out_mm_1_lm <- mod_levels_list("w4", c("gpgp2", "gpgp3"),
 
 
 out_1_lm <- cond_indirect_effects(wlevels = out_mm_1_lm, x = "x", y = "y", m = "m3", fit = fit_lm)
-plot(out_1_lm)
-plot(out_1_lm, graph_type = "tumble")
 
+test_that("plot for indirect", {
+  expect_error(plot(out_1_lm))
+  expect_error(plot(out_1_lm, graph_type = "tumble"))
+})
 
 out_1_std <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                    standardized_x = TRUE, standardized_y = TRUE)
 
-plot(out_1_std)
-plot(out_1_std, graph_type = "tumble")
+test_that("plot for indirect", {
+  expect_error(plot(out_1_std))
+  expect_error(plot(out_1_std, graph_type = "tumble"))
+})
 
 out_1_stdx <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                    standardized_x = TRUE)
 
-plot(out_1_stdx)
-plot(out_1_stdx, graph_type = "tumble")
+test_that("plot for indirect", {
+  expect_error(plot(out_1_stdx))
+  expect_error(plot(out_1_stdx, graph_type = "tumble"))
+})
 
 out_1_stdy <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                    standardized_y = TRUE)
 
-plot(out_1_stdy)
-plot(out_1_stdy, graph_type = "tumble")
-
+test_that("plot for indirect", {
+  expect_error(plot(out_1_stdy))
+  expect_error(plot(out_1_stdy, graph_type = "tumble"))
+})
 
 out_mm_1_lm <- mod_levels_list("w4", c("gpgp2", "gpgp3"),
                             sd_from_mean = c(-1, 1),
@@ -71,18 +81,28 @@ out_mm_1_lm <- mod_levels_list("w4", c("gpgp2", "gpgp3"),
 
 out_1_lm_std <- cond_indirect_effects(wlevels = out_mm_1_lm, x = "x", y = "y", m = "m3", fit = fit_lm,
                                   standardized_x = TRUE, standardized_y = TRUE)
-plot(out_1_lm_std)
-plot(out_1_lm_std, graph_type = "tumble")
+
+test_that("plot for indirect", {
+  expect_error(plot(out_1_lm_std))
+  expect_error(plot(out_1_lm_std, graph_type = "tumble"))
+})
 
 out_1_lm_stdx <- cond_indirect_effects(wlevels = out_mm_1_lm, x = "x", y = "y", m = "m3", fit = fit_lm,
                                   standardized_x = TRUE)
-plot(out_1_lm_stdx)
-plot(out_1_lm_stdx, graph_type = "tumble")
+
+test_that("plot for indirect", {
+  expect_error(plot(out_1_lm_stdx))
+  expect_error(plot(out_1_lm_stdx, graph_type = "tumble"))
+})
 
 out_1_lm_stdy <- cond_indirect_effects(wlevels = out_mm_1_lm, x = "x", y = "y", m = "m3", fit = fit_lm,
                                   standardized_y = TRUE)
-plot(out_1_lm_stdy)
-plot(out_1_lm_stdy, graph_type = "tumble")
+
+test_that("plot for indirect", {
+  expect_error(plot(out_1_lm_stdy))
+  expect_error(plot(out_1_lm_stdy, graph_type = "tumble"))
+})
+
 
 mod_mod <-
 "
@@ -94,6 +114,7 @@ out_mm_mod <- mod_levels_list(c("gpgp2", "gpgp3"),
 out_mod_mod <- cond_indirect_effects(wlevels = list(c("gpgp2", "gpgp3")),
                                   x = "x", y = "m1",
                                   fit = fit_mod)
+
 plot(out_mod_mod)
 
 out_mod_mod <- cond_indirect_effects(wlevels = list(c("gpgp2", "gpgp3")),
