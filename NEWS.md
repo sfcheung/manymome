@@ -1,3 +1,3 @@
-# manymome 0.0.1.9042
+# manymome 0.1.0.0
 
-* Initial release.
+* Initial public release.
