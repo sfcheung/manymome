@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9036</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,16 +40,6 @@
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/mediation.html">Mediation</a>
-    <a class="dropdown-item" href="../articles/moderated_mediation.html">Moderated Mediation</a>
-    <a class="dropdown-item" href="../articles/moderated_mediation_cat.html">Moderated Mediation - Categorical Moderators</a>
-    <a class="dropdown-item" href="../articles/moderation.html">Moderation</a>
-    <a class="dropdown-item" href="../articles/moderation_cat.html">Moderation Models - Categorical Moderators</a>
-  </div>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
@@ -80,7 +70,7 @@
       <img src="" class="logo" alt=""><h1>manymome</h1>
                         <h4 data-toc-skip class="author">Shu Fai Cheung</h4>
             
-            <h4 data-toc-skip class="date">2022-08-08</h4>
+            <h4 data-toc-skip class="date">2022-08-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/HEAD/vignettes/manymome.Rmd" class="external-link"><code>vignettes/manymome.Rmd</code></a></small>
       <div class="d-none name"><code>manymome.Rmd</code></div>
@@ -91,10 +81,47 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This article is a brief illustration on how <code>manymome</code> functions are used in some typical cases. The model is intended to be simple (though with two moderators). See the section <a href="#other-cases">Other Cases</a> for other models supported, and how to use the function for models fitted by structural equation modelings using <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>, including models with latent variables.</p>
+<p>This article is a brief illustration of how <code>manymome</code> functions are used in some typical cases. It assumes that readers have basic understanding of mediation, moderation, moderated mediation, structural equation modeling (SEM), and bootstrapping.</p>
+<div class="section level3">
+<h3 id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a>
+</h3>
+<p>The use of <code>manymome</code> adopts a two-stage workflow:</p>
+<ul>
+<li>
+<p>Stage 1: <strong>Fit the model</strong></p>
+<ul>
+<li><p>This can be done by SEM (using <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem</a></code>) or a series of regression (using <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>) for now.</p></li>
+<li><p>No need to label any parameters or denote any variables as the predictors, mediators, moderators, or outcome variables for computing indirect effects or conditional indirect effects. Stage 2 will take care of this.</p></li>
+</ul>
+</li>
+<li>
+<p>Stage 2: <strong>Compute the indirect effects and conditional indirect effects</strong></p>
+<ul>
+<li><p>This can be done along nearly any path in the model for any levels of the moderators.</p></li>
+<li><p>Just specify the start (<code>x</code>), the mediator(s) (<code>m</code>, if any), and the end (<code>y</code>) for indirect effects. The functions will find the coefficients automatically.</p></li>
+<li><p>If a path has one or more moderators, conditional indirect effects can be computed. Product terms will be identified automatically.</p></li>
+<li><p>The levels of the moderators can be decided in this stage and can be changed as often as needed.</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Bootstrapping confidence intervals</strong>: All main functions support bootstrap confidence intervals for the effects. Bootstrapping can done in Stage 1 (e.g., by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem</a></code> using <code>se = "boot"</code>) or in Stage 2 in the first call to the main functions, and only needs to be conducted once. The bootstrap estimates can be reused by most main functions of <code>manymome</code> for any path and any levels of the moderators.</p>
+<p><strong>Standardized effects</strong>: All main functions in Stage 2 support standardized effects and form their bootstrap confidence interval correctly (Cheung, 2009; Friedrich, 1982). No need to standardize the variables in advance in Stage 1, even for paths with moderators.</p>
+</div>
+<div class="section level3">
+<h3 id="what-will-be-covered-in-this-get-started-article">What Will Be Covered In This Get-Started Article<a class="anchor" aria-label="anchor" href="#what-will-be-covered-in-this-get-started-article"></a>
+</h3>
+<ul>
+<li><p>Use <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> to compute <em>conditional</em> <em>indirect</em> <em>effects</em>, with bootstrap confidence intervals.</p></li>
+<li><p>Use <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> to compute <em>indirect</em> <em>effects</em>, with bootstrap confidence interval.</p></li>
+<li><p>Use <code>+</code> and <code>-</code> to compute a function of effects, such as total indirect effects or total effects.</p></li>
+<li><p>Use <code><a href="../reference/do_boot.html">do_boot()</a></code> to generate bootstrap estimates for <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>, <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>, and some other functions in <code>manymome</code>.</p></li>
+<li><p>Use <code><a href="../reference/index_of_mome.html">index_of_mome()</a></code> and <code><a href="../reference/index_of_mome.html">index_of_momome()</a></code> to compute the index of moderated mediation and the index of moderated moderated mediation, respectively, with bootstrap confidence intervals.</p></li>
+<li><p>Compute <em>standardized</em> conditional indirect effects and <em>standardized</em> indirect effect using <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> and <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>, respectively.</p></li>
+</ul>
+</div>
 </div>
 <div class="section level2">
-<h2 id="moderated-mediation-by-regression">Moderated Mediation by Regression<a class="anchor" aria-label="anchor" href="#moderated-mediation-by-regression"></a>
+<h2 id="moderated-mediation-by-sem-using-lavaan">Moderated Mediation by SEM using <code>lavaan</code><a class="anchor" aria-label="anchor" href="#moderated-mediation-by-sem-using-lavaan"></a>
 </h2>
 <p>This is the sample dataset comes with the package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -109,76 +136,122 @@
 <span><span class="co">#&gt; 5 10.00 4.38 2.95 4.65 8.39  9.58 4.26</span></span>
 <span><span class="co">#&gt; 6 12.25 5.81 4.04 4.73 9.65  9.51 4.01</span></span></code></pre></div>
 <p>Suppose this is the model being fitted:</p>
-<p><img src="manymome_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<p><img src="manymome_files/figure-html/draw_model-1.png" width="700"></p>
+<p>The models are intended to be simple enough for illustration but complicated enough to show the flexibility of <code>manymome</code>. More complicated models are also supported, discussed later.</p>
 <div class="section level3">
-<h3 id="estimating-the-coefficients">Estimating the Coefficients<a class="anchor" aria-label="anchor" href="#estimating-the-coefficients"></a>
+<h3 id="fitting-the-model">Fitting the Model<a class="anchor" aria-label="anchor" href="#fitting-the-model"></a>
 </h3>
 <p>This is a moderated mediation model with</p>
 <ul>
 <li><p>a mediation path <code>x -&gt; m -&gt; y</code>, and</p></li>
 <li><p>two moderators: <code>x -&gt; m</code> moderated by <code>w1</code> and <code>m -&gt; y</code> moderated by <code>w2</code>.</p></li>
 </ul>
-<p>The effects of interest are the <em>conditional indirect effects</em>: the indirect effects from <code>x</code> to <code>y</code> through <code>m</code> for different levels of <code>w1</code> and <code>w2</code>.</p>
-<p>The effects in this moderated mediation model can be estimated by multiple regression approach in R using <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.</p>
-<p>First, <code>m</code> is regressed on <code>x</code>, <code>w1</code>, and their interaction:</p>
+<p>The effects of interest are the <em>conditional</em> <em>indirect</em> <em>effects</em>: the indirect effects</p>
+<ul>
+<li><p>from <code>x</code> to <code>y</code></p></li>
+<li><p>through <code>m</code></p></li>
+<li><p>for different levels of <code>w1</code> and <code>w2</code>.</p></li>
+</ul>
+<p>The effects in this moderated mediation model can be estimated by SEM in R using <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>. There is not need to label any path coefficients or define any user parameters (but users can if so desired; they have no impact on the functions in <code>manymome</code>). To illustrate a more realistic scenario, two control variables, <code>c1</code> and <code>c2</code>, are also included.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">lm_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">m</span> <span class="op">~</span> <span class="va">x</span> <span class="op">*</span> <span class="va">w1</span>, <span class="va">dat</span><span class="op">)</span></span></code></pre></div>
-<p>Second, <code>y</code> is regressed on <code>m</code>, <code>w2</code>, their interaction, and <code>x</code>:</p>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lavaan.ugent.be" class="external-link">lavaan</a></span><span class="op">)</span></span>
+<span><span class="co"># Form the product terms</span></span>
+<span><span class="va">dat</span><span class="op">$</span><span class="va">w1x</span> <span class="op">&lt;-</span> <span class="va">dat</span><span class="op">$</span><span class="va">w1</span> <span class="op">*</span> <span class="va">dat</span><span class="op">$</span><span class="va">x</span></span>
+<span><span class="va">dat</span><span class="op">$</span><span class="va">w2m</span> <span class="op">&lt;-</span> <span class="va">dat</span><span class="op">$</span><span class="va">w2</span> <span class="op">*</span> <span class="va">dat</span><span class="op">$</span><span class="va">m</span></span>
+<span><span class="va">mod</span> <span class="op">&lt;-</span></span>
+<span><span class="st">"</span></span>
+<span><span class="st">m ~ x + w1 + w1x + c1 + c2</span></span>
+<span><span class="st">y ~ m + w2 + w2m + x + c1 + c2</span></span>
+<span><span class="st"># Covariances of the error term of m with w2m and w2</span></span>
+<span><span class="st">m ~~ w2m + w2</span></span>
+<span><span class="st"># Covariance between other variables</span></span>
+<span><span class="st"># They need to be added due to the covariances added above</span></span>
+<span><span class="st"># See Kwan and Chan (2018) and Miles et al. (2015)</span></span>
+<span><span class="st">w2m ~~ w2 + x + w1 + w1x + c1 + c2</span></span>
+<span><span class="st">w2  ~~ x + w1 + w1x + c1 + c2</span></span>
+<span><span class="st">x   ~~ w1 + w1x + c1 + c2</span></span>
+<span><span class="st">w1  ~~ w1x + c1 + c2</span></span>
+<span><span class="st">w1x ~~ c1 + c2</span></span>
+<span><span class="st">c1  ~~ c2</span></span>
+<span><span class="st">"</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">mod</span>,</span>
+<span>           data <span class="op">=</span> <span class="va">dat</span>,</span>
+<span>           fixed.x <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>           estimator <span class="op">=</span> <span class="st">"MLR"</span><span class="op">)</span></span></code></pre></div>
+<p><code>MLR</code> is used to take into account probable nonnormality due to the product terms. <code>fixed.x = FALSE</code> is used to allow the predictors to be random variables. This is usually necessary when the values of the predictor are also sampled from the populations, and so their SDs are sample statistics.</p>
+<p>These are the parameter estimates:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">lm_y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">m</span> <span class="op">*</span> <span class="va">w2</span> <span class="op">+</span> <span class="va">x</span>, <span class="va">dat</span><span class="op">)</span></span></code></pre></div>
-<p>These are the coefficients:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/printCoefmat.html" class="external-link">printCoefmat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lm_m</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span>, digits <span class="op">=</span> <span class="fl">3</span>, signif.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)  </span></span>
-<span><span class="co">#&gt; (Intercept)  11.6273     4.8501    2.40    0.018 *</span></span>
-<span><span class="co">#&gt; x            -0.6342     0.5006   -1.27    0.208  </span></span>
-<span><span class="co">#&gt; w1           -2.2551     0.9654   -2.34    0.022 *</span></span>
-<span><span class="co">#&gt; x:w1          0.1998     0.0958    2.09    0.040 *</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/printCoefmat.html" class="external-link">printCoefmat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lm_y</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span>, digits <span class="op">=</span> <span class="fl">3</span>, signif.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept)   8.1648     1.2779    6.39  6.2e-09 ***</span></span>
-<span><span class="co">#&gt; m            -0.0936     0.2763   -0.34   0.7357    </span></span>
-<span><span class="co">#&gt; w2           -0.8784     0.3409   -2.58   0.0115 *  </span></span>
-<span><span class="co">#&gt; x             0.0599     0.0892    0.67   0.5038    </span></span>
-<span><span class="co">#&gt; m:w2          0.1926     0.0726    2.65   0.0094 **</span></span></code></pre></div>
-<p>Both moderation effects are significant. Because the indirect effect is moderated on both stages (<code>x -&gt; m</code> and <code>m -&gt; y</code>), the magnitude of the indirect effect depends on <code>w1</code> and <code>w2</code>. The indirect effect conditional on the moderators is called the <em>conditional</em> <em>indirect</em> <em>effect</em>. Moreover, like a mediation effect without moderation, its confidence interval can be formed by nonparametric bootstrapping.</p>
-<p>To compute conditional indirect effects and form bootstrap confidence intervals, we can use <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">$</span><span class="va">op</span> <span class="op">==</span> <span class="st">"~"</span>, <span class="op">]</span></span>
+<span><span class="co">#&gt;    lhs op rhs    est    se      z pvalue ci.lower ci.upper</span></span>
+<span><span class="co">#&gt; 1    m  ~   x -0.663 0.533 -1.244  0.213   -1.707    0.381</span></span>
+<span><span class="co">#&gt; 2    m  ~  w1 -2.290 1.010 -2.267  0.023   -4.269   -0.310</span></span>
+<span><span class="co">#&gt; 3    m  ~ w1x  0.204 0.101  2.023  0.043    0.006    0.401</span></span>
+<span><span class="co">#&gt; 4    m  ~  c1 -0.020 0.079 -0.251  0.801   -0.175    0.135</span></span>
+<span><span class="co">#&gt; 5    m  ~  c2 -0.130 0.090 -1.444  0.149   -0.306    0.046</span></span>
+<span><span class="co">#&gt; 6    y  ~   m -0.153 0.248 -0.616  0.538   -0.638    0.333</span></span>
+<span><span class="co">#&gt; 7    y  ~  w2 -0.921 0.401 -2.300  0.021   -1.706   -0.136</span></span>
+<span><span class="co">#&gt; 8    y  ~ w2m  0.204 0.079  2.579  0.010    0.049    0.359</span></span>
+<span><span class="co">#&gt; 9    y  ~   x  0.056 0.086  0.653  0.514   -0.113    0.225</span></span>
+<span><span class="co">#&gt; 10   y  ~  c1 -0.102 0.081 -1.261  0.207   -0.261    0.056</span></span>
+<span><span class="co">#&gt; 11   y  ~  c2 -0.108 0.087 -1.249  0.212   -0.279    0.062</span></span></code></pre></div>
+<p>The moderation effects of both <code>w1</code> and <code>w2</code> are significant. The indirect effect from <code>x</code> to <code>y</code> through <code>m</code> depends on the level of <code>w1</code> and <code>w2</code>.</p>
 </div>
 <div class="section level3">
-<h3 id="estimating-conditional-indirect-effects">Estimating Conditional Indirect Effects<a class="anchor" aria-label="anchor" href="#estimating-conditional-indirect-effects"></a>
+<h3 id="conditional-indirect-effects">Conditional Indirect Effects<a class="anchor" aria-label="anchor" href="#conditional-indirect-effects"></a>
 </h3>
-<p>This is the call to compute the conditional indirect effects:</p>
+<p>To form bootstrap confidence intervals, bootstrapping needs to be done. There are several to do this. We first illustrate using <code><a href="../reference/do_boot.html">do_boot()</a></code>.</p>
+<div class="section level4">
+<h4 id="do-bootstrapping-once">Do Bootstrapping (Once)<a class="anchor" aria-label="anchor" href="#do-bootstrapping-once"></a>
+</h4>
+<p>Using <code><a href="../reference/do_boot.html">do_boot()</a></code> instead of setting <code>se</code> to <code>"boot"</code> when calling <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> allows users to use other method for standard errors and confidence intervals for other parameters, such as the various types of robust standard errors provided by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>.</p>
+<p>The function <code><a href="../reference/do_boot.html">do_boot()</a></code> is used to generate and store bootstrap estimates as well as implied variances and SDs of variables for standardized effects.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit_boot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_boot.html">do_boot</a></span><span class="op">(</span>fit <span class="op">=</span> <span class="va">fit</span>,</span>
+<span>                    R <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>                    seed <span class="op">=</span> <span class="fl">53253</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 1 processes started to run bootstrapping.</span></span>
+<span><span class="co">#&gt; The expected CPU time is about 23.3 second(s).</span></span></code></pre></div>
+<p>These are the major arguments:</p>
+<ul>
+<li><p><code>fit</code>: The output of <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>.</p></li>
+<li><p><code>R</code>: The number of bootstrap samples, which should be 2000 or even 5000 in real research. <code>R</code> is set to 100 here just for illustration.</p></li>
+<li><p><code>seed</code>: The seed to reproduce the results.</p></li>
+</ul>
+<p>By default, parallel processing is used, and so the results are reproducible with the same seed only if the number of processes is the same. See <code><a href="../reference/do_boot.html">do_boot()</a></code> for other options.</p>
+<p>The output, <code>fit_boot</code> in this case, can then be used for all subsequent analyses on this model.</p>
+</div>
+<div class="section level4">
+<h4 id="estimate-conditional-indirect-effects">Estimate Conditional Indirect Effects<a class="anchor" aria-label="anchor" href="#estimate-conditional-indirect-effects"></a>
+</h4>
+<p>To compute conditional indirect effects and form bootstrap confidence intervals, we can use <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">out_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>wlevels <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"w1"</span>, <span class="st">"w2"</span><span class="op">)</span>,</span>
-<span>                                x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span>                                y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span>                                m <span class="op">=</span> <span class="st">"m"</span>,</span>
-<span>                                fit <span class="op">=</span> <span class="fu"><a href="../reference/lm2list.html">lm2list</a></span><span class="op">(</span><span class="va">lm_m</span>, <span class="va">lm_y</span><span class="op">)</span>,</span>
-<span>                                boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                                R <span class="op">=</span> <span class="fl">500</span>,</span>
-<span>                                seed <span class="op">=</span> <span class="fl">43143</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">out_cond</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>wlevels <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"w1"</span>, <span class="st">"w2"</span><span class="op">)</span>,</span>
+<span>                                  x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>                                  y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>                                  m <span class="op">=</span> <span class="st">"m"</span>,</span>
+<span>                                  fit <span class="op">=</span> <span class="va">fit</span>,</span>
+<span>                                  boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                  boot_out <span class="op">=</span> <span class="va">fit_boot</span><span class="op">)</span></span></code></pre></div>
 <p>These are the major arguments:</p>
 <ul>
 <li>
-<code>wlevels</code>: The vector of the names of the moderators.</li>
+<code>wlevels</code>: The vector of the names of the moderators. Order does not matter. If the default levels are not suitable, custom levels can be created by functions like <code><a href="../reference/mod_levels.html">mod_levels()</a></code> and <code><a href="../reference/merge_mod_levels.html">merge_mod_levels()</a></code>.</li>
 <li>
 <code>x</code>: The name of the predictor.</li>
 <li>
 <code>y</code>: The name of the outcome variable.</li>
 <li>
-<code>m</code>: The name of the mediator, or a vector of names if the pathway has more than one mediator.</li>
+<code>m</code>: The name of the mediator, or a vector of names if the path has more than one mediator (see <a href="#est_indirect">this example</a>).</li>
 <li>
-<code>fit</code>: The list of the output of <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.</li>
+<code>fit</code>: The output of <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>.</li>
 <li>
-<code>boot_ci</code>: Set to <code>TRUE</code> to request bootstrapping confidence intervals. Default is <code>FALSE</code>.</li>
+<code>boot_ci</code>: Set to <code>TRUE</code> to request bootstrap confidence intervals. Default is <code>FALSE</code>.</li>
 <li>
-<code>R</code>: The number of bootstrap samples. Only 500 bootstrap samples for illustration. Set <code>R</code> to 2000 or even 5000 in real research.</li>
-<li>
-<code>seed</code>: The seed for the random number generator.</li>
+<code>boot_out</code>: The pregenerated bootstrap estimates generated by <code><a href="../reference/do_boot.html">do_boot()</a></code> or previous call to <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> or <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>.</li>
 </ul>
 <p>This is the output:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">out_lm</span></span>
+<code class="sourceCode R"><span><span class="va">out_cond</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; == Conditional indirect effects ==</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -187,36 +260,73 @@
 <span><span class="co">#&gt;  Moderator(s) represented by: w1, w2</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [w1]    [w2]  (w1)  (w2)   ind  CI.lo CI.hi Sig   m~x   y~m</span></span>
-<span><span class="co">#&gt; 1 M+1.0SD M+1.0SD 6.173 4.040 0.410  0.106 0.745 Sig 0.599 0.685</span></span>
-<span><span class="co">#&gt; 2 M+1.0SD M-1.0SD 6.173 2.055 0.181 -0.001 0.437     0.599 0.302</span></span>
-<span><span class="co">#&gt; 3 M-1.0SD M+1.0SD 4.038 4.040 0.118 -0.089 0.398     0.173 0.685</span></span>
-<span><span class="co">#&gt; 4 M-1.0SD M-1.0SD 4.038 2.055 0.052 -0.041 0.222     0.173 0.302</span></span>
+<span><span class="co">#&gt; 1 M+1.0SD M+1.0SD 6.173 4.040 0.399  0.121 0.654 Sig 0.596 0.671</span></span>
+<span><span class="co">#&gt; 2 M+1.0SD M-1.0SD 6.173 2.055 0.158 -0.012 0.359     0.596 0.266</span></span>
+<span><span class="co">#&gt; 3 M-1.0SD M+1.0SD 4.038 4.040 0.107 -0.166 0.372     0.160 0.671</span></span>
+<span><span class="co">#&gt; 4 M-1.0SD M-1.0SD 4.038 2.055 0.043 -0.066 0.216     0.160 0.266</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span></span>
-<span><span class="co">#&gt;    nonparametric bootstrapping with 500 samples.</span></span>
+<span><span class="co">#&gt;    nonparametric bootstrapping with 100 samples.</span></span>
 <span><span class="co">#&gt;  - The 'ind' column shows the indirect effects.</span></span>
 <span><span class="co">#&gt;  - 'm~x','y~m' is/are the path coefficient(s) along the path conditional</span></span>
 <span><span class="co">#&gt;    on the moderators.</span></span></code></pre></div>
-<p>For two or more moderators, the default levels for numeric moderators are one standard deviation below mean and one standard deviation above mean. For two moderators, there are four combinations. As shown above, among these levels, the indirect effect from <code>x</code> to <code>y</code> through <code>m</code> is significant only when both <code>w1</code> and <code>w2</code> are one standard deviation above mean. The indirect effect at these levels of <code>w1</code> and <code>w2</code> are 0.410, with 95% bootstrap confidence interval [0.106, 0.745].</p>
+<p>For two or more moderators, the default levels for numeric moderators are one standard deviation (SD) below mean and one SD above mean. For two moderators, there are four combinations.</p>
+<p>As shown above, among these levels, the indirect effect from <code>x</code> to <code>y</code> through <code>m</code> is significant only when both <code>w1</code> and <code>w2</code> are one SD above their means. The indirect effect at these levels of <code>w1</code> and <code>w2</code> are 0.399, with 95% bootstrap confidence interval [0.121, 0.654].</p>
+<div class="section level5">
+<h5 id="examine-the-effect-at-a-particular-set-of-levels-of-the-moderators">Examine the Effect at a Particular Set of Levels of the Moderators<a class="anchor" aria-label="anchor" href="#examine-the-effect-at-a-particular-set-of-levels-of-the-moderators"></a>
+</h5>
+<p>To learn more about the conditional effect for one combination of the levels of the moderators, <code><a href="../reference/get_one_cond_indirect_effect.html">get_one_cond_indirect_effect()</a></code> can be used, with the first argument the output of <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> and the second argument the row number. For example, this shows the details on the computation of the indirect effect when both <code>w1</code> and <code>w2</code> are one SD above their means (row 1):</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_one_cond_indirect_effect.html">get_one_cond_indirect_effect</a></span><span class="op">(</span><span class="va">out_cond</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Conditional Indirect Effect   ==</span></span>
+<span><span class="co">#&gt;                                                     </span></span>
+<span><span class="co">#&gt;  Path:                        x -&gt; m -&gt; y           </span></span>
+<span><span class="co">#&gt;  Moderators:                  w1, w2                </span></span>
+<span><span class="co">#&gt;  Conditional Indirect Effect: 0.399                 </span></span>
+<span><span class="co">#&gt;  95.0% Bootstrap CI:          [0.121 to 0.654]      </span></span>
+<span><span class="co">#&gt;  When:                        w1 = 6.173, w2 = 4.040</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computation Formula:</span></span>
+<span><span class="co">#&gt;   (b.m~x + (b.w1x)*(w1))*(b.y~m + (b.w2m)*(w2))</span></span>
+<span><span class="co">#&gt; Computation:</span></span>
+<span><span class="co">#&gt;   ((-0.66304) + (0.20389)*(6.17316))*((-0.15271) + (0.20376)*(4.04049))</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
+<span><span class="co">#&gt; with 100 bootstrap samples.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients of Component Paths:</span></span>
+<span><span class="co">#&gt;  Path Conditional Effect Original Coefficient</span></span>
+<span><span class="co">#&gt;   m~x              0.596               -0.663</span></span>
+<span><span class="co">#&gt;   y~m              0.671               -0.153</span></span></code></pre></div>
+</div>
+<div class="section level5">
+<h5 id="changing-the-levels-of-the-moderators">Changing the Levels of the Moderators<a class="anchor" aria-label="anchor" href="#changing-the-levels-of-the-moderators"></a>
+</h5>
+<p>The levels of the moderators, <code>w1</code> and <code>w2</code> in this example, can be controlled directly by users. For examples, percentiles or exact values of the moderators can be used. See <code><a href="../reference/mod_levels.html">mod_levels()</a></code> and <code><a href="../reference/merge_mod_levels.html">merge_mod_levels()</a></code> on how to specify other levels of the moderators, and the arguments <code>w_method</code>, <code>sd_from_mean</code>, and <code>percentiles</code> of <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>.</p>
+</div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="standardized-conditional-indirect-effects">Standardized Conditional Indirect Effects<a class="anchor" aria-label="anchor" href="#standardized-conditional-indirect-effects"></a>
 </h3>
-<p>To compute the conditional indirect effects, we can standardize only the predictor (<code>x</code>), only the outcome (<code>y</code>), or both.</p>
+<p>To compute the standardized conditional indirect effects, we can standardize only the predictor (<code>x</code>), only the outcome (<code>y</code>), or both.</p>
 <p>To standardize <code>x</code>, set <code>standardized_x</code> to <code>TRUE</code>. To standardize <code>y</code>, set <code>standardized_y</code> to <code>TRUE</code>. To standardize both, set both <code>standardized_x</code> and <code>standardized_y</code> to <code>TRUE</code>.</p>
 <p>This is the result when both <code>x</code> and <code>y</code> are standardized:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">out_lm_stdxy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>wlevels <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"w1"</span>, <span class="st">"w2"</span><span class="op">)</span>,</span>
-<span>                                x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span>                                y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span>                                m <span class="op">=</span> <span class="st">"m"</span>,</span>
-<span>                                fit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">lm_m</span>, <span class="va">lm_y</span><span class="op">)</span>,</span>
-<span>                                boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                                R <span class="op">=</span> <span class="fl">500</span>,</span>
-<span>                                seed <span class="op">=</span> <span class="fl">43143</span>,</span>
-<span>                                standardized_x <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                                standardized_y <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">out_lm_stdxy</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out_cond_stdxy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>wlevels <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"w1"</span>, <span class="st">"w2"</span><span class="op">)</span>,</span>
+<span>                                        x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>                                        y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>                                        m <span class="op">=</span> <span class="st">"m"</span>,</span>
+<span>                                        fit <span class="op">=</span> <span class="va">fit</span>,</span>
+<span>                                        boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                        boot_out <span class="op">=</span> <span class="va">fit_boot</span>,</span>
+<span>                                        standardized_x <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                        standardized_y <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>Note that <code>fit_boot</code> is used again, so that there is no need to do bootstrapping again.</p>
+<p>This is the output:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out_cond_stdxy</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; == Conditional indirect effects ==</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -225,29 +335,151 @@
 <span><span class="co">#&gt;  Moderator(s) represented by: w1, w2</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [w1]    [w2]  (w1)  (w2)   std  CI.lo CI.hi Sig   m~x   y~m   ind</span></span>
-<span><span class="co">#&gt; 1 M+1.0SD M+1.0SD 6.173 4.040 0.412  0.115 0.700 Sig 0.599 0.685 0.410</span></span>
-<span><span class="co">#&gt; 2 M+1.0SD M-1.0SD 6.173 2.055 0.182 -0.002 0.380     0.599 0.302 0.181</span></span>
-<span><span class="co">#&gt; 3 M-1.0SD M+1.0SD 4.038 4.040 0.119 -0.088 0.400     0.173 0.685 0.118</span></span>
-<span><span class="co">#&gt; 4 M-1.0SD M-1.0SD 4.038 2.055 0.052 -0.042 0.226     0.173 0.302 0.052</span></span>
+<span><span class="co">#&gt; 1 M+1.0SD M+1.0SD 6.173 4.040 0.401  0.129 0.607 Sig 0.596 0.671 0.399</span></span>
+<span><span class="co">#&gt; 2 M+1.0SD M-1.0SD 6.173 2.055 0.159 -0.013 0.351     0.596 0.266 0.158</span></span>
+<span><span class="co">#&gt; 3 M-1.0SD M+1.0SD 4.038 4.040 0.108 -0.154 0.416     0.160 0.671 0.107</span></span>
+<span><span class="co">#&gt; 4 M-1.0SD M-1.0SD 4.038 2.055 0.043 -0.068 0.224     0.160 0.266 0.043</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span></span>
-<span><span class="co">#&gt;    nonparametric bootstrapping with 500 samples.</span></span>
+<span><span class="co">#&gt;    nonparametric bootstrapping with 100 samples.</span></span>
 <span><span class="co">#&gt;  - std: The standardized indirect effects. </span></span>
 <span><span class="co">#&gt;  - ind: The unstandardized indirect effects.</span></span>
 <span><span class="co">#&gt;  - 'm~x','y~m' is/are the path coefficient(s) along the path conditional</span></span>
 <span><span class="co">#&gt;    on the moderators.</span></span></code></pre></div>
-<p>The standardized indirect effect when both <code>w1</code> and <code>w2</code> are one standard deviation above mean is 0.412, with 95% bootstrap confidence interval [0.115, 0.700].</p>
+<p>The standardized indirect effect when both <code>w1</code> and <code>w2</code> are one SD above mean is 0.401, with 95% bootstrap confidence interval [0.129, 0.607].</p>
+<p>That is, when both <code>w1</code> and <code>w2</code> are one SD above their means, if <code>x</code> increases by one SD, it leads to an increase of 0.401 SD of <code>y</code> through <code>m</code>.</p>
 </div>
 <div class="section level3">
-<h3 id="plotting-the-conditional-total-effects">Plotting the Conditional Total Effects<a class="anchor" aria-label="anchor" href="#plotting-the-conditional-total-effects"></a>
+<h3 id="index-of-moderated-moderated-mediation">Index of Moderated Moderated Mediation<a class="anchor" aria-label="anchor" href="#index-of-moderated-moderated-mediation"></a>
 </h3>
-<p>The output of <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> is a <code>cond_indirect_effects</code>-class object with a <code>plot</code> method, which plot the <em>total</em> effect along a path, conditional on different levels of the moderators:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">out_lm</span><span class="op">)</span></span></code></pre></div>
-<p><img src="manymome_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
-<p>By default, the two end points of each line are one standard deviation below and one standard above this mean of the predictor (<code>x</code>).</p>
-<p>The plot reveals patterns not apparent from the conditional effects. Although the indirect effect does increase when either <code>w1</code> or <code>w2</code> increases, the coefficients of <code>w1</code> (-2.2551) and <code>w2</code> (-0.8784) are both negative. Therefore, the combined effects of the increases of <code>w1</code> and <code>w2</code> decreases <code>y</code> and move the line downward.</p>
-<p>Options to customize the plot can be found on the help page of <code><a href="../reference/plot.cond_indirect_effects.html">plot.cond_indirect_effects()</a></code>.</p>
+<p>The index of moderated moderated mediation (Hayes, 2018) can be estimated, along with bootstrap confidence interval, using the function <code><a href="../reference/index_of_mome.html">index_of_momome()</a></code>:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out_momome</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/index_of_mome.html">index_of_momome</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>                              y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>                              m <span class="op">=</span> <span class="st">"m"</span>,</span>
+<span>                              w <span class="op">=</span> <span class="st">"w1"</span>,</span>
+<span>                              z <span class="op">=</span> <span class="st">"w2"</span>,</span>
+<span>                              fit <span class="op">=</span> <span class="va">fit</span>,</span>
+<span>                              boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                              boot_out <span class="op">=</span> <span class="va">fit_boot</span><span class="op">)</span></span></code></pre></div>
+<p>These are the major arguments:</p>
+<ul>
+<li>
+<code>x</code>: The name of the predictor.</li>
+<li>
+<code>y</code>: The name of the outcome variable.</li>
+<li>
+<code>m</code>: The name of the mediator, or a vector of names if the path has more than one mediator (see <a href="#est_indirect">this example</a>).</li>
+<li>
+<code>w</code>: The name of one of the moderator.</li>
+<li>
+<code>z</code>: The name of the other moderator. The order of <code>w</code> and <code>z</code> does not matter.</li>
+<li>
+<code>fit</code>: The output of <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>.</li>
+<li>
+<code>boot_ci</code>: Set to <code>TRUE</code> to request bootstrap confidence intervals. Default is <code>FALSE</code>.</li>
+<li>
+<code>boot_out</code>: The pregenerated bootstrap estimates generated by <code><a href="../reference/do_boot.html">do_boot()</a></code> or previous call to <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> and <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>.</li>
+</ul>
+<p>This is the result:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out_momome</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Conditional indirect effects ==</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Path: x -&gt; m -&gt; y</span></span>
+<span><span class="co">#&gt;  Conditional on moderator(s): w1, w2</span></span>
+<span><span class="co">#&gt;  Moderator(s) represented by: w1, w2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   [w1] [w2] (w1) (w2)    ind  CI.lo CI.hi Sig    m~x    y~m</span></span>
+<span><span class="co">#&gt; 1    1    1    1    1 -0.023 -0.244 0.353     -0.459  0.051</span></span>
+<span><span class="co">#&gt; 2    1    0    1    0  0.070 -0.238 0.705     -0.459 -0.153</span></span>
+<span><span class="co">#&gt; 3    0    1    0    1 -0.034 -0.335 0.496     -0.663  0.051</span></span>
+<span><span class="co">#&gt; 4    0    0    0    0  0.101 -0.272 0.936     -0.663 -0.153</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Index of Moderated Moderated Mediation ==</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Levels compared:</span></span>
+<span><span class="co">#&gt; (Row 1 - Row 2) - (Row 3 - Row 4)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;       x y Index  CI.lo CI.hi</span></span>
+<span><span class="co">#&gt; Index x y 0.042 -0.011 0.118</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  - [CI.lo, CI.hi]: 95% percentile confidence interval.</span></span></code></pre></div>
+<p>The index of moderated moderated mediation is 0.042, with 95% bootstrap confidence interval [-0.011, 0.118].</p>
+<p>Note that this index is specifically for the change when <code>w1</code> or <code>w2</code> increases by one unit.</p>
+</div>
+<div class="section level3">
+<h3 id="index-of-moderated-mediation">Index of Moderated Mediation<a class="anchor" aria-label="anchor" href="#index-of-moderated-mediation"></a>
+</h3>
+<p>The <code>manymome</code> package also has a function to compute the <em>index of moderated mediation</em> (Hayes, 2015). Suppose we modify the model and remove one of the moderators:</p>
+<p><img src="manymome_files/figure-html/plot_mome1-1.png" width="700"></p>
+<p>This is the <code>lavaan</code> model:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lavaan.ugent.be" class="external-link">lavaan</a></span><span class="op">)</span></span>
+<span><span class="va">dat</span><span class="op">$</span><span class="va">w1x</span> <span class="op">&lt;-</span> <span class="va">dat</span><span class="op">$</span><span class="va">w1</span> <span class="op">*</span> <span class="va">dat</span><span class="op">$</span><span class="va">x</span></span>
+<span><span class="va">mod2</span> <span class="op">&lt;-</span></span>
+<span><span class="st">"</span></span>
+<span><span class="st">m ~ x + w1 + w1x + c1 + c2</span></span>
+<span><span class="st">y ~ m + x + c1 + c2</span></span>
+<span><span class="st">"</span></span>
+<span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">mod2</span>,</span>
+<span>           data <span class="op">=</span> <span class="va">dat</span>,</span>
+<span>           fixed.x <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>           estimator <span class="op">=</span> <span class="st">"MLR"</span><span class="op">)</span></span></code></pre></div>
+<p>These are the parameterEstimates:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span><span class="op">$</span><span class="va">op</span> <span class="op">==</span> <span class="st">"~"</span>, <span class="op">]</span></span>
+<span><span class="co">#&gt;   lhs op rhs    est    se      z pvalue ci.lower ci.upper</span></span>
+<span><span class="co">#&gt; 1   m  ~   x -0.663 0.533 -1.244  0.213   -1.707    0.381</span></span>
+<span><span class="co">#&gt; 2   m  ~  w1 -2.290 1.010 -2.267  0.023   -4.269   -0.310</span></span>
+<span><span class="co">#&gt; 3   m  ~ w1x  0.204 0.101  2.023  0.043    0.006    0.401</span></span>
+<span><span class="co">#&gt; 4   m  ~  c1 -0.020 0.079 -0.251  0.801   -0.175    0.135</span></span>
+<span><span class="co">#&gt; 5   m  ~  c2 -0.130 0.090 -1.444  0.149   -0.306    0.046</span></span>
+<span><span class="co">#&gt; 6   y  ~   m  0.434 0.114  3.815  0.000    0.211    0.657</span></span>
+<span><span class="co">#&gt; 7   y  ~   x  0.053 0.093  0.570  0.569   -0.130    0.237</span></span>
+<span><span class="co">#&gt; 8   y  ~  c1 -0.108 0.080 -1.352  0.177   -0.265    0.049</span></span>
+<span><span class="co">#&gt; 9   y  ~  c2 -0.077 0.085 -0.904  0.366   -0.243    0.090</span></span></code></pre></div>
+<p>We generate the bootstrap estimates first (<code>R</code> should be 2000 or even 5000 in real research):</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit2_boot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_boot.html">do_boot</a></span><span class="op">(</span>fit <span class="op">=</span> <span class="va">fit2</span>,</span>
+<span>                    R <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>                    seed <span class="op">=</span> <span class="fl">53253</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 1 processes started to run bootstrapping.</span></span>
+<span><span class="co">#&gt; The expected CPU time is about 3 second(s).</span></span></code></pre></div>
+<p>The function <code><a href="../reference/index_of_mome.html">index_of_mome()</a></code> can be used to compute the index of moderated mediation of <code>w1</code> on the path <code>x -&gt; m -&gt; y</code>:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out_mome</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/index_of_mome.html">index_of_mome</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>                          y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>                          m <span class="op">=</span> <span class="st">"m"</span>,</span>
+<span>                          w <span class="op">=</span> <span class="st">"w1"</span>,</span>
+<span>                          fit <span class="op">=</span> <span class="va">fit2</span>,</span>
+<span>                          boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                          boot_out <span class="op">=</span> <span class="va">fit2_boot</span><span class="op">)</span></span></code></pre></div>
+<p>The arguments are nearly identical to those of <code><a href="../reference/index_of_mome.html">index_of_momome()</a></code>, except that only <code>w</code> needs to be specified. This is the output:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out_mome</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Conditional indirect effects ==</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Path: x -&gt; m -&gt; y</span></span>
+<span><span class="co">#&gt;  Conditional on moderator(s): w1</span></span>
+<span><span class="co">#&gt;  Moderator(s) represented by: w1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   [w1] (w1)    ind  CI.lo CI.hi Sig    m~x   y~m</span></span>
+<span><span class="co">#&gt; 1    1    1 -0.199 -0.698 0.304     -0.459 0.434</span></span>
+<span><span class="co">#&gt; 2    0    0 -0.288 -0.938 0.340     -0.663 0.434</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Index of Moderated Mediation ==</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Levels compared: Row 1 - Row 2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;       x y Index  CI.lo CI.hi</span></span>
+<span><span class="co">#&gt; Index x y 0.088 -0.032 0.228</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  - [CI.lo, CI.hi]: 95% percentile confidence interval.</span></span></code></pre></div>
+<p>In this model, the index of moderated mediation is 0.088, with 95% bootstrap confidence interval [-0.032, 0.228]. The indirect effect of <code>x</code> on <code>y</code> through <code>m</code> does not significantly change when <code>w1</code> increases by one unit.</p>
+<p>Note that this index is specifically for the change when <code>w1</code> increases by one unit. The index being not significant does not contradict with the significant moderation effect suggested by the product term.</p>
 </div>
 </div>
 <div class="section level2">
@@ -255,7 +487,7 @@
 </h2>
 <p>The package can also be used for a mediation model.</p>
 <p>This is the sample dataset comes with the package:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sfcheung.github.io/manymome/">manymome</a></span><span class="op">)</span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">data_serial</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
@@ -267,63 +499,63 @@
 <span><span class="co">#&gt; 5 11.91 20.5 10.05 14.26 -0.000932 5.34</span></span>
 <span><span class="co">#&gt; 6  9.13 16.5  8.93 10.01  1.802727 5.91</span></span></code></pre></div>
 <p>Suppose this is the model being fitted, with <code>c1</code> and <code>c2</code> the control variables.</p>
-<p><img src="manymome_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p><img src="manymome_files/figure-html/draw_med-1.png" width="700"></p>
 <div class="section level3">
-<h3 id="estimating-parameters">Estimating Parameters<a class="anchor" aria-label="anchor" href="#estimating-parameters"></a>
+<h3 id="fitting-the-model-1">Fitting the Model<a class="anchor" aria-label="anchor" href="#fitting-the-model-1"></a>
 </h3>
-<p>These coefficients can be estimated by three regression models:</p>
-<p>"m1 ~ x + c1 + c2 m2 ~ m1 + x + c1 + c2 y ~ m2 + m1 + x + c1 + c2</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">lm_m1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">m1</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="va">c1</span> <span class="op">+</span> <span class="va">c2</span>, <span class="va">dat</span><span class="op">)</span></span>
-<span><span class="va">lm_m2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">m2</span> <span class="op">~</span> <span class="va">m1</span> <span class="op">+</span> <span class="va">x</span> <span class="op">+</span> <span class="va">c1</span> <span class="op">+</span> <span class="va">c2</span>, <span class="va">dat</span><span class="op">)</span></span>
-<span><span class="va">lm_y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">m2</span> <span class="op">+</span> <span class="va">m1</span> <span class="op">+</span> <span class="va">x</span> <span class="op">+</span> <span class="va">c1</span> <span class="op">+</span> <span class="va">c2</span>, <span class="va">dat</span><span class="op">)</span></span></code></pre></div>
-<p>These are the coefficients:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/printCoefmat.html" class="external-link">printCoefmat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lm_m1</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span>, digits <span class="op">=</span> <span class="fl">3</span>, signif.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept)  10.8157     1.1438    9.46  2.2e-15 ***</span></span>
-<span><span class="co">#&gt; x             0.8224     0.0942    8.73  8.0e-14 ***</span></span>
-<span><span class="co">#&gt; c1            0.1715     0.0907    1.89    0.062 .  </span></span>
-<span><span class="co">#&gt; c2           -0.1889     0.0928   -2.04    0.045 *</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/printCoefmat.html" class="external-link">printCoefmat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lm_m2</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span>, digits <span class="op">=</span> <span class="fl">3</span>, signif.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept)   3.5194     1.5868    2.22   0.0289 *  </span></span>
-<span><span class="co">#&gt; m1            0.4208     0.1019    4.13  7.8e-05 ***</span></span>
-<span><span class="co">#&gt; x            -0.1161     0.1260   -0.92   0.3591    </span></span>
-<span><span class="co">#&gt; c1            0.2775     0.0922    3.01   0.0033 ** </span></span>
-<span><span class="co">#&gt; c2           -0.1619     0.0946   -1.71   0.0902 .</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/printCoefmat.html" class="external-link">printCoefmat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lm_y</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span>, digits <span class="op">=</span> <span class="fl">3</span>, signif.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)  </span></span>
-<span><span class="co">#&gt; (Intercept)   9.4679     3.6090    2.62    0.010 *</span></span>
-<span><span class="co">#&gt; m2            0.5208     0.2275    2.29    0.024 *</span></span>
-<span><span class="co">#&gt; m1           -0.4353     0.2454   -1.77    0.079 .</span></span>
-<span><span class="co">#&gt; x             0.4929     0.2806    1.76    0.082 .</span></span>
-<span><span class="co">#&gt; c1            0.0988     0.2140    0.46    0.645  </span></span>
-<span><span class="co">#&gt; c2           -0.0960     0.2130   -0.45    0.653</span></span></code></pre></div>
+<p>Fitting this model in <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> is very simple. With <code>manymome</code>, there is no need to label paths or define user parameters for the indirect effects.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mod_med</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
+<span><span class="st">m1 ~ x + c1 + c2</span></span>
+<span><span class="st">m2 ~ m1 + x + c1 + c2</span></span>
+<span><span class="st">y ~ m2 + m1 + x + c1 + c2</span></span>
+<span><span class="st">"</span></span>
+<span><span class="va">fit_med</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">mod_med</span>,</span>
+<span>               data <span class="op">=</span> <span class="va">dat</span>,</span>
+<span>               fixed.x <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>These are the estimates</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">fit_med</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">fit_med</span><span class="op">)</span><span class="op">$</span><span class="va">op</span> <span class="op">==</span> <span class="st">"~"</span>, <span class="op">]</span></span>
+<span><span class="co">#&gt;    lhs op rhs    est    se      z pvalue ci.lower ci.upper</span></span>
+<span><span class="co">#&gt; 1   m1  ~   x  0.822 0.092  8.907  0.000    0.641    1.003</span></span>
+<span><span class="co">#&gt; 2   m1  ~  c1  0.171 0.089  1.930  0.054   -0.003    0.346</span></span>
+<span><span class="co">#&gt; 3   m1  ~  c2 -0.189 0.091 -2.078  0.038   -0.367   -0.011</span></span>
+<span><span class="co">#&gt; 4   m2  ~  m1  0.421 0.099  4.237  0.000    0.226    0.615</span></span>
+<span><span class="co">#&gt; 5   m2  ~   x -0.116 0.123 -0.946  0.344   -0.357    0.125</span></span>
+<span><span class="co">#&gt; 6   m2  ~  c1  0.278 0.090  3.088  0.002    0.101    0.454</span></span>
+<span><span class="co">#&gt; 7   m2  ~  c2 -0.162 0.092 -1.756  0.079   -0.343    0.019</span></span>
+<span><span class="co">#&gt; 8    y  ~  m2  0.521 0.221  2.361  0.018    0.088    0.953</span></span>
+<span><span class="co">#&gt; 9    y  ~  m1 -0.435 0.238 -1.830  0.067   -0.902    0.031</span></span>
+<span><span class="co">#&gt; 10   y  ~   x  0.493 0.272  1.811  0.070   -0.040    1.026</span></span>
+<span><span class="co">#&gt; 11   y  ~  c1  0.099 0.208  0.476  0.634   -0.308    0.506</span></span>
+<span><span class="co">#&gt; 12   y  ~  c2 -0.096 0.207 -0.465  0.642   -0.501    0.309</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="estimating-indirect-effects">Estimating Indirect Effects<a class="anchor" aria-label="anchor" href="#estimating-indirect-effects"></a>
+<h3 id="est_indirect">Estimate Indirect Effects<a class="anchor" aria-label="anchor" href="#est_indirect"></a>
 </h3>
-<p><code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> can be used to estimate the indirect effect and form its bootstrapping confidence interval along a path in a model that starts with any variable (predictor), ends with any variable (outcome variable), through any variable(s) (mediator(s)).</p>
+<p><code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> can be used to estimate an indirect effect and form its bootstrapping confidence interval along a path in a model that starts with any variable, ends with any variable, through any variable(s).</p>
+<p>We illustrate another approach to generate bootstrap estimates: using <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> to do both bootstrapping and estimate the indirect effect.</p>
 <p>For example, this is the call for the indirect effect from <code>x</code> to <code>y</code> through <code>m1</code> and <code>m2</code>:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_med</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">indirect_effect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span>                          y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span>                          m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"m1"</span>, <span class="st">"m2"</span><span class="op">)</span>,</span>
-<span>                          fit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">lm_m1</span>, <span class="va">lm_m2</span>, <span class="va">lm_y</span><span class="op">)</span>,</span>
-<span>                          boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                          R <span class="op">=</span> <span class="fl">500</span>,</span>
-<span>                          seed <span class="op">=</span> <span class="fl">43143</span><span class="op">)</span></span></code></pre></div>
+<span>                           y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>                           m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"m1"</span>, <span class="st">"m2"</span><span class="op">)</span>,</span>
+<span>                           fit <span class="op">=</span> <span class="va">fit_med</span>,</span>
+<span>                           boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                           R <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>                           seed <span class="op">=</span> <span class="fl">43143</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 1 processes started to run bootstrapping.</span></span>
+<span><span class="co">#&gt; The expected CPU time is about 2.6 second(s).</span></span></code></pre></div>
 <p>The main arguments are:</p>
 <ul>
 <li>
-<code>x</code>: The name of the predictor. The start of the pathway.</li>
+<code>x</code>: The name of the predictor. The start of the path.</li>
 <li>
-<code>y</code>: The name of the outcome variable. The end of the pathway</li>
+<code>y</code>: The name of the outcome variable. The end of the path</li>
 <li>
-<code>m</code>: The name of the mediator, or the vector of names of the mediators if the pathway has more than one mediator.</li>
+<code>m</code>: The name of the mediator, or the vector of names of the mediators if the path has more than one mediator, as in this example. The path moves from the first mediator to the last mediator. In this example, the correct order is <code>c("m1", "m2")</code>.</li>
 <li>
-<code>fit</code>: The list of the output of <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.</li>
+<code>fit</code>: The output of <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>.</li>
 <li>
 <code>boot_ci</code>: Set to <code>TRUE</code> to request bootstrapping confidence intervals. Default is <code>FALSE</code>.</li>
 <li>
@@ -331,15 +563,16 @@
 <li>
 <code>seed</code>: The seed for the random number generator.</li>
 </ul>
+<p>Like <code><a href="../reference/do_boot.html">do_boot()</a></code>, by default, parallel processing is used, and so the results are reproducible with the same seed only if the number of processes is the same.</p>
 <p>This is the output:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_med</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; == Indirect Effect ==</span></span>
 <span><span class="co">#&gt;                                        </span></span>
 <span><span class="co">#&gt;  Path:               x -&gt; m1 -&gt; m2 -&gt; y</span></span>
 <span><span class="co">#&gt;  Indirect Effect     0.180             </span></span>
-<span><span class="co">#&gt;  95.0% Bootstrap CI: [0.034 to 0.396]  </span></span>
+<span><span class="co">#&gt;  95.0% Bootstrap CI: [0.043 to 0.332]  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m1~x)*(b.m2~m1)*(b.y~m2)</span></span>
@@ -347,45 +580,45 @@
 <span><span class="co">#&gt;   (0.82244)*(0.42078)*(0.52077)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
-<span><span class="co">#&gt; with 500 bootstrap samples.</span></span>
+<span><span class="co">#&gt; with 100 bootstrap samples.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients of Component Paths:</span></span>
 <span><span class="co">#&gt;   Path Coefficient</span></span>
 <span><span class="co">#&gt;   m1~x       0.822</span></span>
 <span><span class="co">#&gt;  m2~m1       0.421</span></span>
 <span><span class="co">#&gt;   y~m2       0.521</span></span></code></pre></div>
-<p>The indirect effect from <code>x</code> to <code>y</code> through <code>m1</code> and <code>m2</code> is 0.180, with a 95% confidence interval of [0.034, 0.396], significantly different from zero (<em>p</em> &lt; .05).</p>
+<p>The indirect effect from <code>x</code> to <code>y</code> through <code>m1</code> and <code>m2</code> is 0.180, with a 95% confidence interval of [0.043, 0.332], significantly different from zero (<em>p</em> &lt; .05).</p>
+<p>Because bootstrap confidence interval is requested, the bootstrap estimates are stored in <code>out_med</code>. This output from <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> can also be used in the argument <code>boot_out</code> of other functions.</p>
 </div>
 <div class="section level3">
 <h3 id="standardized-indirect-effect">Standardized Indirect Effect<a class="anchor" aria-label="anchor" href="#standardized-indirect-effect"></a>
 </h3>
 <p>To compute the indirect effect with the predictor standardized, set <code>standardized_x</code> to <code>TRUE</code>. To compute the indirect effect with the outcome variable standardized, set <code>standardized_y</code> to <code>TRUE</code>. To compute the (completely) standardized indirect effect, set both <code>standardized_x</code> and <code>standardized_y</code> to <code>TRUE</code>.</p>
 <p>This is the call to compute the (completely) standardized indirect effect:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_med_stdxy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">indirect_effect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span>                          y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span>                          m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"m1"</span>, <span class="st">"m2"</span><span class="op">)</span>,</span>
-<span>                          fit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">lm_m1</span>, <span class="va">lm_m2</span>, <span class="va">lm_y</span><span class="op">)</span>,</span>
-<span>                          boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                          R <span class="op">=</span> <span class="fl">500</span>,</span>
-<span>                          seed <span class="op">=</span> <span class="fl">43143</span>,</span>
-<span>                          standardized_x <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                          standardized_y <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>                                 y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>                                 m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"m1"</span>, <span class="st">"m2"</span><span class="op">)</span>,</span>
+<span>                                 fit <span class="op">=</span> <span class="va">fit_med</span>,</span>
+<span>                                 boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                 boot_out <span class="op">=</span> <span class="va">out_med</span>,</span>
+<span>                                 standardized_x <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                 standardized_y <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">out_med_stdxy</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; == Indirect Effect ==</span></span>
 <span><span class="co">#&gt;                                        </span></span>
 <span><span class="co">#&gt;  Path:               x -&gt; m1 -&gt; m2 -&gt; y</span></span>
 <span><span class="co">#&gt;  Indirect Effect     0.086             </span></span>
-<span><span class="co">#&gt;  95.0% Bootstrap CI: [0.017 to 0.183]  </span></span>
+<span><span class="co">#&gt;  95.0% Bootstrap CI: [0.022 to 0.157]  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m1~x)*(b.m2~m1)*(b.y~m2)*sd_x/sd_y</span></span>
 <span><span class="co">#&gt; Computation:</span></span>
-<span><span class="co">#&gt;   (0.82244)*(0.42078)*(0.52077)*(0.95489)/(2.00967)</span></span>
+<span><span class="co">#&gt;   (0.82244)*(0.42078)*(0.52077)*(0.95010)/(1.99960)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
-<span><span class="co">#&gt; with 500 bootstrap samples.</span></span>
+<span><span class="co">#&gt; with 100 bootstrap samples.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients of Component Paths:</span></span>
 <span><span class="co">#&gt;   Path Coefficient</span></span>
@@ -394,28 +627,27 @@
 <span><span class="co">#&gt;   y~m2       0.521</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; NOTE: The effects of the component paths are from the model, not standardized.</span></span></code></pre></div>
-<p>The indirect effect from <code>x</code> to <code>y</code> through <code>m1</code> and <code>m2</code> is 0.086, with a 95% confidence interval of [0.017, 0.183], significantly different from zero (<em>p</em> &lt; .05).</p>
+<p>The indirect effect from <code>x</code> to <code>y</code> through <code>m1</code> and <code>m2</code> is 0.086, with a 95% confidence interval of [0.022, 0.157], significantly different from zero (<em>p</em> &lt; .05). One SD increase of <code>x</code> leads to 0.086 increase in SD of <code>y</code> through <code>m1</code> and <code>m2</code>.</p>
 </div>
 <div class="section level3">
-<h3 id="estimating-indirect-effects-for-any-pathways">Estimating Indirect Effects For <em>Any</em> Pathways<a class="anchor" aria-label="anchor" href="#estimating-indirect-effects-for-any-pathways"></a>
+<h3 id="estimating-indirect-effects-for-any-paths">Estimating Indirect Effects For <em>Any</em> Paths<a class="anchor" aria-label="anchor" href="#estimating-indirect-effects-for-any-paths"></a>
 </h3>
-<p><code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> can be used for the indirect effect in any pathway in a path model. There is no need to specify the pathway when doing the regression analysis.</p>
-<p>For example, suppose we want to estimate and test the indirect effect from <code>x</code> through <code>m2</code> to <code>y</code>, bypassing <code>m1</code>, simply set <code>x</code> to <code>"x"</code>, <code>y</code> to <code>"y"</code>, and <code>m</code> to <code>"m2"</code>:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<p><code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> can be used for the indirect effect in <em>any</em> path in a path model.</p>
+<p>For example, to estimate and test the indirect effect from <code>x</code> through <code>m2</code> to <code>y</code>, bypassing <code>m1</code>, simply set <code>x</code> to <code>"x"</code>, <code>y</code> to <code>"y"</code>, and <code>m</code> to <code>"m2"</code>:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_x_m2_y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">indirect_effect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span>
 <span>                              y <span class="op">=</span> <span class="st">"y"</span>,</span>
 <span>                              m <span class="op">=</span> <span class="st">"m2"</span>,</span>
-<span>                              fit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">lm_m1</span>, <span class="va">lm_m2</span>, <span class="va">lm_y</span><span class="op">)</span>,</span>
+<span>                              fit <span class="op">=</span> <span class="va">fit_med</span>,</span>
 <span>                              boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                              R <span class="op">=</span> <span class="fl">500</span>,</span>
-<span>                              seed <span class="op">=</span> <span class="fl">43143</span><span class="op">)</span></span>
+<span>                              boot_out <span class="op">=</span> <span class="va">out_med</span><span class="op">)</span></span>
 <span><span class="va">out_x_m2_y</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; == Indirect Effect ==</span></span>
 <span><span class="co">#&gt;                                       </span></span>
 <span><span class="co">#&gt;  Path:               x -&gt; m2 -&gt; y     </span></span>
 <span><span class="co">#&gt;  Indirect Effect     -0.060           </span></span>
-<span><span class="co">#&gt;  95.0% Bootstrap CI: [-0.232 to 0.097]</span></span>
+<span><span class="co">#&gt;  95.0% Bootstrap CI: [-0.233 to 0.066]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m2~x)*(b.y~m2)</span></span>
@@ -423,48 +655,166 @@
 <span><span class="co">#&gt;   (-0.11610)*(0.52077)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
-<span><span class="co">#&gt; with 500 bootstrap samples.</span></span>
+<span><span class="co">#&gt; with 100 bootstrap samples.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients of Component Paths:</span></span>
 <span><span class="co">#&gt;  Path Coefficient</span></span>
 <span><span class="co">#&gt;  m2~x      -0.116</span></span>
 <span><span class="co">#&gt;  y~m2       0.521</span></span></code></pre></div>
 <p>The indirect effect along this path is not significant.</p>
-<p>Similarly, indirect effects from <code>m1</code> through <code>m2</code> to <code>y</code> or from <code>x</code> through <code>m1</code> to <code>y</code> can also be tested by setting the three arguments accordingly.</p>
-<p>This also means that the model can have more than one predictor and more than one outcome variable. For example, <code>c1</code> and <code>c2</code> can be other predictors in the model, and they may point to only one of the mediators. The model can also have more than one outcome variable. <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> works by extracting the path coefficients and compute their product. Therefore, it does not require users do anything in advance in fitting the models and also has not limit on the form of the models. <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> can be used as long as the indirect effect computed as the product of the component paths is meaningful.</p>
-<p>Fit the models first, and explore as many pathways as we want.</p>
+<p>Similarly, indirect effects from <code>m1</code> through <code>m2</code> to <code>y</code> or from <code>x</code> through <code>m1</code> to <code>y</code> can also be tested by setting the three arguments accordingly. Although <code>c1</code> and <code>c2</code> are labelled as control variables, if appropriated, their indirect effects on <code>y</code> through <code>m1</code> and/or <code>m2</code> can also be computed and tested.</p>
+</div>
+<div class="section level3">
+<h3 id="total-indirect-effects-and-total-effects">Total Indirect Effects and Total Effects<a class="anchor" aria-label="anchor" href="#total-indirect-effects-and-total-effects"></a>
+</h3>
+<p>Addition (<code>+</code>) and subtraction (<code>-</code>) can be applied to the outputs of <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>. For example, the total indirect effect from <code>x</code> to <code>y</code> is the sum of these indirect effects:</p>
+<ul>
+<li><p><code>x -&gt; m1 -&gt; m2 -&gt; y</code></p></li>
+<li><p><code>x -&gt; m1 -&gt; y</code></p></li>
+<li><p><code>x -&gt; m2 -&gt; y</code></p></li>
+</ul>
+<p>Two of them have been computed above (<code>out_med</code> and <code>out_x_m2_y</code>). We compute the indirect effect in <code>x -&gt; m1 -&gt; y</code></p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out_x_m1_y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">indirect_effect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>                              y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>                              m <span class="op">=</span> <span class="st">"m1"</span>,</span>
+<span>                              fit <span class="op">=</span> <span class="va">fit_med</span>,</span>
+<span>                              boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                              boot_out <span class="op">=</span> <span class="va">out_med</span><span class="op">)</span></span>
+<span><span class="va">out_x_m1_y</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Indirect Effect ==</span></span>
+<span><span class="co">#&gt;                                       </span></span>
+<span><span class="co">#&gt;  Path:               x -&gt; m1 -&gt; y     </span></span>
+<span><span class="co">#&gt;  Indirect Effect     -0.358           </span></span>
+<span><span class="co">#&gt;  95.0% Bootstrap CI: [-0.699 to 0.008]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computation Formula:</span></span>
+<span><span class="co">#&gt;   (b.m1~x)*(b.y~m1)</span></span>
+<span><span class="co">#&gt; Computation:</span></span>
+<span><span class="co">#&gt;   (0.82244)*(-0.43534)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
+<span><span class="co">#&gt; with 100 bootstrap samples.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients of Component Paths:</span></span>
+<span><span class="co">#&gt;  Path Coefficient</span></span>
+<span><span class="co">#&gt;  m1~x       0.822</span></span>
+<span><span class="co">#&gt;  y~m1      -0.435</span></span></code></pre></div>
+<p>We can then “add” the indirect effects to get the total indirect effect:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">total_ind</span> <span class="op">&lt;-</span> <span class="va">out_med</span> <span class="op">+</span> <span class="va">out_x_m1_y</span> <span class="op">+</span> <span class="va">out_x_m2_y</span></span>
+<span><span class="va">total_ind</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Indirect Effect ==</span></span>
+<span><span class="co">#&gt;                                         </span></span>
+<span><span class="co">#&gt;  Path:                x -&gt; m1 -&gt; m2 -&gt; y</span></span>
+<span><span class="co">#&gt;  Path:                x -&gt; m1 -&gt; y      </span></span>
+<span><span class="co">#&gt;  Path:                x -&gt; m2 -&gt; y      </span></span>
+<span><span class="co">#&gt;  Function of Effects: -0.238            </span></span>
+<span><span class="co">#&gt;  95.0% Bootstrap CI:  [-0.645 to 0.098] </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computation of the Function of Effects:</span></span>
+<span><span class="co">#&gt;  ((x-&gt;m1-&gt;m2-&gt;y)</span></span>
+<span><span class="co">#&gt; +(x-&gt;m1-&gt;y))</span></span>
+<span><span class="co">#&gt; +(x-&gt;m2-&gt;y) </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
+<span><span class="co">#&gt; with 100 bootstrap samples.</span></span></code></pre></div>
+<p>The total indirect effect is -0.238, not significant. This is an example of inconsistent mediation: some of the indirect Effects are positive and some are negative:</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">out_med</span><span class="op">)</span></span>
+<span><span class="co">#&gt;       y~x </span></span>
+<span><span class="co">#&gt; 0.1802238</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">out_x_m1_y</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        y~x </span></span>
+<span><span class="co">#&gt; -0.3580391</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">out_x_m2_y</span><span class="op">)</span></span>
+<span><span class="co">#&gt;       y~x </span></span>
+<span><span class="co">#&gt; -0.060461</span></span></code></pre></div>
+<p>Similarly, the total effect of <code>x</code> on <code>y</code> can be computed by adding all the effects, direct or indirect. The direct effect can be computed with <code>m</code> not set:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out_x_direct</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">indirect_effect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>                              y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>                              fit <span class="op">=</span> <span class="va">fit_med</span>,</span>
+<span>                              boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                              boot_out <span class="op">=</span> <span class="va">out_med</span><span class="op">)</span></span>
+<span><span class="va">out_x_direct</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ==  Effect ==</span></span>
+<span><span class="co">#&gt;                                       </span></span>
+<span><span class="co">#&gt;  Path:               x -&gt; y           </span></span>
+<span><span class="co">#&gt;  Effect              0.493            </span></span>
+<span><span class="co">#&gt;  95.0% Bootstrap CI: [-0.075 to 1.014]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computation Formula:</span></span>
+<span><span class="co">#&gt;   (b.y~x)</span></span>
+<span><span class="co">#&gt; Computation:</span></span>
+<span><span class="co">#&gt;   (0.49285)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
+<span><span class="co">#&gt; with 100 bootstrap samples.</span></span></code></pre></div>
+<p>This is the total effect:</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">total_effect</span> <span class="op">&lt;-</span> <span class="va">out_med</span> <span class="op">+</span> <span class="va">out_x_m1_y</span> <span class="op">+</span> <span class="va">out_x_m2_y</span> <span class="op">+</span> <span class="va">out_x_direct</span></span>
+<span><span class="va">total_effect</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Indirect Effect ==</span></span>
+<span><span class="co">#&gt;                                         </span></span>
+<span><span class="co">#&gt;  Path:                x -&gt; m1 -&gt; m2 -&gt; y</span></span>
+<span><span class="co">#&gt;  Path:                x -&gt; m1 -&gt; y      </span></span>
+<span><span class="co">#&gt;  Path:                x -&gt; m2 -&gt; y      </span></span>
+<span><span class="co">#&gt;  Path:                x -&gt; y            </span></span>
+<span><span class="co">#&gt;  Function of Effects: 0.255             </span></span>
+<span><span class="co">#&gt;  95.0% Bootstrap CI:  [-0.239 to 0.661] </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computation of the Function of Effects:</span></span>
+<span><span class="co">#&gt;  (((x-&gt;m1-&gt;m2-&gt;y)</span></span>
+<span><span class="co">#&gt; +(x-&gt;m1-&gt;y))</span></span>
+<span><span class="co">#&gt; +(x-&gt;m2-&gt;y))</span></span>
+<span><span class="co">#&gt; +(x-&gt;y) </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
+<span><span class="co">#&gt; with 100 bootstrap samples.</span></span></code></pre></div>
+<p>The total effect is 0.255, not significant. This illustrates that total effect can be misleading when the component paths are of different signs.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="other-cases">Other Cases<a class="anchor" aria-label="anchor" href="#other-cases"></a>
+<h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h2>
-<p>The following articles illustrate other uses of <code>manymome</code> (to be prepared):</p>
+<div class="section level3">
+<h3 id="advantages">Advantages<a class="anchor" aria-label="anchor" href="#advantages"></a>
+</h3>
+<p>The package <code>manymome</code> has these advantages:</p>
 <ul>
-<li>Models estimated by multiple regression:
-<ul>
-<li>Moderated mediation models with categorical and numeric moderators.</li>
-<li>Moderated mediation models with both categorical and numeric moderators.</li>
-<li>Parallel mediation models.</li>
-<li>Complex mediation models.</li>
-</ul>
-</li>
-<li>Models fitted by structural equation modeling using <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>:
-<ul>
-<li>Moderated mediation models with numeric moderators.</li>
-<li>Moderated mediation models with categorical moderators.</li>
-<li>Moderated mediation models with both numeric and categorical moderators.</li>
-<li>Complex mediation models.</li>
-<li>Indirect effects between latent factors.</li>
-<li>Models with missing data.</li>
-</ul>
-</li>
+<li><p>The model fitting step is easier. No need to label any parameters or define any effects. Users can also use other methods for confidence interval and use bootstrapping only for indirect effects and conditional indirect effects.</p></li>
+<li><p>Missing data can be be handled by <code>missing = "fiml"</code> in calling <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>. Because bootstrapping estimates are used in Stage 2, indirect effects and conditional indirect effects can also be computed with bootstrap confidence intervals, just like defining them in <code>lavaan</code>, in the presence of missing data.</p></li>
+<li><p>Bootstrapping only needs to be done once. The bootstrap estimates can be reused in computing indirect effects and conditional indirect effects. This is particularly useful when the sample size and there is missing data.</p></li>
+<li><p>Users can explore any path for any levels of the moderators without respecifying and refitting the model.</p></li>
 </ul>
 </div>
+<div class="section level3">
+<h3 id="limitations">Limitations<a class="anchor" aria-label="anchor" href="#limitations"></a>
+</h3>
+<p>The package <code>manymome</code> supports “many” models … but certainly not all. There are models that it does not yet support. For example, it does not support a path that starts with a nominal categorical variable. It also only supports percentile bootstrap confidence interval (although this is merely a preference of us). Other tools need to be used for these cases.</p>
+</div>
+<div class="section level3">
+<h3 id="other-uses-and-scenarios">Other Uses and Scenarios<a class="anchor" aria-label="anchor" href="#other-uses-and-scenarios"></a>
+</h3>
+<p>There are other options available in <code>manymome</code>. For example, it can be used for categorical moderators and models fitted by multiple regression. Please refer to the help page and examples of the functions or other forthcoming articles (vignettes).</p>
+</div>
+</div>
 <div class="section level2">
-<h2 id="moderation-only-models">Moderation-Only Models<a class="anchor" aria-label="anchor" href="#moderation-only-models"></a>
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<p>Although <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> can also be used for a moderated regression model without mediators, there are other packages specifically for this model. For example, <code>stdmod::cond_effect()</code> can be used to compute the conditional effects, and <code>stdmod::cond_effect_boot()</code>, when used with <code>stdmod::std_selected()</code>, can be used to form bootstrap confidence intervals for standardized conditional effects. <code>visreg::visreg()</code> and <code>stdmod::plotmod()</code> can be used to plot conditional effects in a moderated regression model. Interested researchers can check the package <a href="https://sfcheung.github.io/stdmod/" class="external-link">stdmod</a> and and <a href="http://pbreheny.github.io/visreg/" class="external-link">visreg</a>.</p>
-<p>(Disclosure: <code>stdmod</code> is also developed by the maintainer of <code>manymome</code>.)</p>
+<p>Cheung, M. W.-L. (2009). Comparison of methods for constructing confidence intervals of standardized indirect effects. <em>Behavior Research Methods, 41</em>(2), 425-438. <a href="https://doi.org/10.3758/BRM.41.2.425" class="external-link uri">https://doi.org/10.3758/BRM.41.2.425</a></p>
+<p>Friedrich, R. J. (1982). In defense of multiplicative terms in multiple regression equations. <em>American Journal of Political Science, 26</em>(4), 797-833. <a href="https://doi.org/10.2307/2110973" class="external-link uri">https://doi.org/10.2307/2110973</a></p>
+<p>Hayes, A. F. (2015). An index and test of linear moderated mediation. <em>Multivariate Behavioral Research, 50</em>(1), 1-22. <a href="https://doi.org/10.1080/00273171.2014.962683" class="external-link uri">https://doi.org/10.1080/00273171.2014.962683</a></p>
+<p>Hayes, A. F. (2018). Partial, conditional, and moderated moderated mediation: Quantification, inference, and interpretation. <em>Communication Monographs, 85</em>(1), 4-40. <a href="https://doi.org/10.1080/03637751.2017.1352100" class="external-link uri">https://doi.org/10.1080/03637751.2017.1352100</a></p>
+<p>Kwan, J. L. Y., &amp; Chan, W. (2018). Variable system: An alternative approach for the analysis of mediated moderation. <em>Psychological Methods, 23</em>(2), 262-277. <a href="https://doi.org/10.1037/met0000160" class="external-link uri">https://doi.org/10.1037/met0000160</a></p>
+<p>Miles, J. N. V., Kulesza, M., Ewing, B., Shih, R. A., Tucker, J. S., &amp; D’Amico, E. J. (2015). Moderated mediation analysis: An illustration using the association of gender with delinquency and mental health. <em>Journal of Criminal Psychology, 5</em>(2), 99-123. <a href="https://doi.org/10.1108/JCP-02-2015-0010" class="external-link uri">https://doi.org/10.1108/JCP-02-2015-0010</a></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
@@ -474,7 +824,7 @@
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Shu Fai Cheung.</p>
+<p>Developed by Shu Fai Cheung, Sing-Hang Cheung.</p>
 </div>
 
 <div class="pkgdown-footer-right">

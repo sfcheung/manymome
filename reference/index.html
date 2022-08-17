@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9036</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,16 +23,6 @@
 </li>
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/mediation.html">Mediation</a>
-    <a class="dropdown-item" href="../articles/moderated_mediation.html">Moderated Mediation</a>
-    <a class="dropdown-item" href="../articles/moderated_mediation_cat.html">Moderated Mediation - Categorical Moderators</a>
-    <a class="dropdown-item" href="../articles/moderation.html">Moderation</a>
-    <a class="dropdown-item" href="../articles/moderation_cat.html">Moderation Models - Categorical Moderators</a>
-  </div>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
@@ -73,7 +63,7 @@
         </dt>
         <dd>Conditional, Indirect, and Conditional Indirect Effects</dd>
       </dl></div><div class="section level2">
-      <h2 id="presenting-the-effects">Presenting the Effects<a class="anchor" aria-label="anchor" href="#presenting-the-effects"></a></h2>
+      <h2 id="presenting-and-exploring-the-effects">Presenting and Exploring the Effects<a class="anchor" aria-label="anchor" href="#presenting-and-exploring-the-effects"></a></h2>
       
       
 
@@ -85,14 +75,20 @@
 
       <dl><dt>
           
-          <code><a href="index_of_mome.html">index_of_mome()</a></code> 
+          <code><a href="index_of_mome.html">index_of_mome()</a></code> <code><a href="index_of_mome.html">index_of_momome()</a></code> 
         </dt>
-        <dd>Generalized Index of Moderated-Mediation</dd>
+        <dd>Index of Moderated Mediation and Index of Moderated
+Moderated Mediation</dd>
+      </dl><dl><dt>
+          
+          <code><a href="cond_indirect_diff.html">cond_indirect_diff()</a></code> 
+        </dt>
+        <dd>Differences In Conditional Indirect Effects</dd>
       </dl><dl><dt>
           
           <code><a href="plot.cond_indirect_effects.html">plot(<i>&lt;cond_indirect_effects&gt;</i>)</a></code> 
         </dt>
-        <dd>Plot Conditional ToTal Effect</dd>
+        <dd>Plot Conditional Total Effect</dd>
       </dl></div><div class="section level2">
       <h2 id="moderator-levels">Moderator Levels<a class="anchor" aria-label="anchor" href="#moderator-levels"></a></h2>
       
@@ -129,33 +125,17 @@
           
           <code><a href="do_boot.html">do_boot()</a></code> 
         </dt>
-        <dd>Bootstrapping Estimates for 'cond_indirect_effects'</dd>
+        <dd>Bootstrap Estimates for 'indirect_effects' and 'cond_indirect_effects'</dd>
       </dl><dl><dt>
           
           <code><a href="lm2boot_out.html">lm2boot_out()</a></code> 
         </dt>
-        <dd>Bootstrapping Estimates for <code>lm</code> Outputs</dd>
+        <dd>Bootstrap Estimates for <code>lm</code> Outputs</dd>
       </dl><dl><dt>
           
           <code><a href="fit2boot_out.html">fit2boot_out()</a></code> <code><a href="fit2boot_out.html">fit2boot_out_do_boot()</a></code> 
         </dt>
-        <dd>Bootstrapping Estimates for a <code>lavaan</code> Output</dd>
-      </dl></div><div class="section level2">
-      <h2 id="for-lm-">For ‘lm’<a class="anchor" aria-label="anchor" href="#for-lm-"></a></h2>
-      
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="lm2list.html">lm2list()</a></code> 
-        </dt>
-        <dd>Join 'lm()' Output to Form an 'lm_list-class' Object</dd>
+        <dd>Bootstrap Estimates for a <code>lavaan</code> Output</dd>
       </dl></div><div class="section level2">
       <h2 id="for-lavaan-">For ‘lavaan’<a class="anchor" aria-label="anchor" href="#for-lavaan-"></a></h2>
       
@@ -173,6 +153,22 @@
         </dt>
         <dd>Create Dummy Variables</dd>
       </dl></div><div class="section level2">
+      <h2 id="for-lm-">For ‘lm’<a class="anchor" aria-label="anchor" href="#for-lm-"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="lm2list.html">lm2list()</a></code> 
+        </dt>
+        <dd>Join 'lm()' Output to Form an 'lm_list`-Class Object</dd>
+      </dl></div><div class="section level2">
       <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
       
       <p class="section-desc"></p><p>Methods and utility functions for the output of the main functions.</p>
@@ -187,17 +183,17 @@
           
           <code><a href="coef.indirect.html">coef(<i>&lt;indirect&gt;</i>)</a></code> 
         </dt>
-        <dd>Indirect effect or conditional indirect effect</dd>
+        <dd>Extract the Indirect Effect or Conditional Indirect Effect</dd>
       </dl><dl><dt>
           
           <code><a href="confint.indirect.html">confint(<i>&lt;indirect&gt;</i>)</a></code> 
         </dt>
-        <dd>Indirect effect or conditional indirect effect</dd>
+        <dd>Confidence Interval of Indirect Effect or Conditional Indirect Effect</dd>
       </dl><dl><dt>
           
           <code><a href="print.indirect.html">print(<i>&lt;indirect&gt;</i>)</a></code> 
         </dt>
-        <dd>Print the a 'indirect' Class Object</dd>
+        <dd>Print an 'indirect' Class Object</dd>
       </dl><dl><dt>
           
           <code><a href="math_indirect.html">`+`(<i>&lt;indirect&gt;</i>)</a></code> <code><a href="math_indirect.html">`-`(<i>&lt;indirect&gt;</i>)</a></code> 
@@ -218,12 +214,12 @@ Indirect Effects</dd>
           
           <code><a href="print.cond_indirect_effects.html">print(<i>&lt;cond_indirect_effects&gt;</i>)</a></code> 
         </dt>
-        <dd>Print the a 'cond_indirect_effects' Class Object</dd>
+        <dd>Print a 'cond_indirect_effects' Class Object</dd>
       </dl><dl><dt>
           
           <code><a href="subsetting_cond_indirect_effects.html">`[`(<i>&lt;cond_indirect_effects&gt;</i>)</a></code> 
         </dt>
-        <dd>Extraction Methods for 'cond_indirect_effects'</dd>
+        <dd>Extraction Methods for 'cond_indirect_effects' Outputs</dd>
       </dl><dl><dt>
           
           <code><a href="get_one_cond_indirect_effect.html">get_one_cond_indirect_effect()</a></code> <code><a href="get_one_cond_indirect_effect.html">get_one_cond_effect()</a></code> 
@@ -232,158 +228,29 @@ Indirect Effects</dd>
 'cond_indirect_effects' Output</dd>
       </dl><dl><dt>
           
-          <code><a href="coef.index_of_mome.html">coef(<i>&lt;index_of_mome&gt;</i>)</a></code> 
+          <code><a href="coef.cond_indirect_diff.html">coef(<i>&lt;cond_indirect_diff&gt;</i>)</a></code> 
         </dt>
-        <dd>Print the Output of 'index_of_mome'</dd>
+        <dd>Print the Output of 'cond_indirect_diff()'</dd>
       </dl><dl><dt>
           
-          <code><a href="confint.index_of_mome.html">confint(<i>&lt;index_of_mome&gt;</i>)</a></code> 
+          <code><a href="confint.cond_indirect_diff.html">confint(<i>&lt;cond_indirect_diff&gt;</i>)</a></code> 
         </dt>
-        <dd>Confidence Interval of the Output of 'index_of_mome'</dd>
+        <dd>Confidence Interval of the Output of 'cond_indirect_diff()'</dd>
       </dl><dl><dt>
           
-          <code><a href="print.index_of_mome.html">print(<i>&lt;index_of_mome&gt;</i>)</a></code> 
+          <code><a href="print.cond_indirect_diff.html">print(<i>&lt;cond_indirect_diff&gt;</i>)</a></code> 
         </dt>
-        <dd>Print the Output of 'index_of_mome'</dd>
+        <dd>Print the Output of 'cond_indirect_diff'</dd>
       </dl><dl><dt>
           
           <code><a href="print.lm_list.html">print(<i>&lt;lm_list&gt;</i>)</a></code> 
         </dt>
-        <dd>Print a <code>lm_list</code>-Class Object</dd>
+        <dd>Print an <code>lm_list</code>-Class Object</dd>
       </dl><dl><dt>
           
           <code><a href="summary.lm_list.html">summary(<i>&lt;lm_list&gt;</i>)</a></code> <code><a href="summary.lm_list.html">print(<i>&lt;summary_lm_list&gt;</i>)</a></code> 
         </dt>
-        <dd>Summary of a <code>lm_list</code>-Class Object</dd>
-      </dl></div><div class="section level2">
-      <h2 id="datasets">Datasets<a class="anchor" aria-label="anchor" href="#datasets"></a></h2>
-      
-      <p class="section-desc"></p><p>Datasets used in examples.</p>
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="data_med.html">data_med</a></code> 
-        </dt>
-        <dd>Simple Mediation: Sample Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_med_complicated.html">data_med_complicated</a></code> 
-        </dt>
-        <dd>A Complicated Mediation Model: Sample Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_med_mod_a.html">data_med_mod_a</a></code> 
-        </dt>
-        <dd>Simple Mediation with a-Path Moderated: Sample Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_med_mod_ab.html">data_med_mod_ab</a></code> 
-        </dt>
-        <dd>Simple Mediation with Both Paths Moderated (Two Moderators): Sample Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_med_mod_ab1.html">data_med_mod_ab1</a></code> 
-        </dt>
-        <dd>Simple Mediation with Both Paths Moderated By a Moderator: Sample Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_med_mod_b.html">data_med_mod_b</a></code> 
-        </dt>
-        <dd>Simple Mediation with b-Path Moderated: Sample Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_med_mod_b_mod.html">data_med_mod_b_mod</a></code> 
-        </dt>
-        <dd>A Simple Mediation Model with b-Path Moderated-Moderation: Sample Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_med_mod_parallel.html">data_med_mod_parallel</a></code> 
-        </dt>
-        <dd>Parallel Mediation with Two Moderators: Sample Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_med_mod_parallel_cat.html">data_med_mod_parallel_cat</a></code> 
-        </dt>
-        <dd>Parallel Moderated Mediation with Two Categorical Moderators:
-Sample Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_med_mod_serial.html">data_med_mod_serial</a></code> 
-        </dt>
-        <dd>Serial Mediation with Two Moderators: Sample Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_med_mod_serial_cat.html">data_med_mod_serial_cat</a></code> 
-        </dt>
-        <dd>Serial Moderated Mediation with Two Categorical Moderators:
-Sample Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_med_mod_serial_parallel.html">data_med_mod_serial_parallel</a></code> 
-        </dt>
-        <dd>Serial-Parallel Mediation with Two Moderators: Sample Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_med_mod_serial_parallel_cat.html">data_med_mod_serial_parallel_cat</a></code> 
-        </dt>
-        <dd>Serial-Parallel Moderated Mediation with Two Categorical Moderators:
-Sample Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_mod.html">data_mod</a></code> 
-        </dt>
-        <dd>One Moderator: Sample Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_mod2.html">data_mod2</a></code> 
-        </dt>
-        <dd>Two Moderators: Sample Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_mod_cat.html">data_mod_cat</a></code> 
-        </dt>
-        <dd>Moderation with One Categorical Moderator: Sample Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_mome_demo.html">data_mome_demo</a></code> 
-        </dt>
-        <dd>A Complicated Moderated-Mediation Model for Demonstration</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_mome_demo_missing.html">data_mome_demo_missing</a></code> 
-        </dt>
-        <dd>A Complicated Moderated-Mediation Model for Demonstration (With Missing Data)</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_parallel.html">data_parallel</a></code> 
-        </dt>
-        <dd>Parallel Mediation: Sample Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_serial.html">data_serial</a></code> 
-        </dt>
-        <dd>Serial Mediation: Sample Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_serial_parallel.html">data_serial_parallel</a></code> 
-        </dt>
-        <dd>Serial-Parallel Mediation: Sample Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="modmed_x1m3w4y1.html">modmed_x1m3w4y1</a></code> 
-        </dt>
-        <dd>Sample Dataset: Moderated Serial Mediation</dd>
-      </dl><dl><dt>
-          
-          <code><a href="simple_mediation_latent.html">simple_mediation_latent</a></code> 
-        </dt>
-        <dd>A Simple Latent Mediation Model</dd>
+        <dd>Summary of an <code>lm_list</code>-Class Object</dd>
       </dl></div><div class="section level2">
       <h2 id="advanced-helpers">Advanced helpers<a class="anchor" aria-label="anchor" href="#advanced-helpers"></a></h2>
       
@@ -404,27 +271,22 @@ Sample Dataset</dd>
           
           <code><a href="check_path.html">check_path()</a></code> 
         </dt>
-        <dd>Check Whether an Indirect Path is Valid in a Model</dd>
-      </dl><dl><dt>
-          
-          <code><a href="lm2ptable.html">lm2ptable()</a></code> 
-        </dt>
-        <dd>Convert a 'lm' Output to a 'lavaan'-Like Object</dd>
+        <dd>Check a Path Exists in a Model</dd>
       </dl><dl><dt>
           
           <code><a href="lm_from_lavaan_list.html">lm_from_lavaan_list()</a></code> 
         </dt>
-        <dd>Convert a 'lavaan' Model to an 'lm_from_lavaan_list'-Class Object</dd>
+        <dd>'lavaan'-class to 'lm_from_lavaan_list'-Class</dd>
       </dl><dl><dt>
           
           <code><a href="coef.lm_from_lavaan.html">coef(<i>&lt;lm_from_lavaan&gt;</i>)</a></code> 
         </dt>
-        <dd>Coefficients of a 'lm_from_lavaan'-Class Object</dd>
+        <dd>Coefficients of an 'lm_from_lavaan'-Class Object</dd>
       </dl><dl><dt>
           
           <code><a href="terms.lm_from_lavaan.html">terms(<i>&lt;lm_from_lavaan&gt;</i>)</a></code> 
         </dt>
-        <dd>Model Terms of a 'lm_from_lavaan'-Class Object</dd>
+        <dd>Model Terms of an 'lm_from_lavaan'-Class Object</dd>
       </dl><dl><dt>
           
           <code><a href="predict.lm_from_lavaan.html">predict(<i>&lt;lm_from_lavaan&gt;</i>)</a></code> 
@@ -434,19 +296,149 @@ Sample Dataset</dd>
           
           <code><a href="predict.lm_from_lavaan_list.html">predict(<i>&lt;lm_from_lavaan_list&gt;</i>)</a></code> 
         </dt>
-        <dd>Predicted Values of a 'lm_from_lavaan_list'-Class Object</dd>
+        <dd>Predicted Values of an 'lm_from_lavaan_list'-Class Object</dd>
       </dl><dl><dt>
           
           <code><a href="predict.lm_list.html">predict(<i>&lt;lm_list&gt;</i>)</a></code> 
         </dt>
-        <dd>Predicted Values of a 'lm_list'-Class Object</dd>
+        <dd>Predicted Values of an 'lm_list'-Class Object</dd>
+      </dl></div><div class="section level2">
+      <h2 id="datasets">Datasets<a class="anchor" aria-label="anchor" href="#datasets"></a></h2>
+      
+      <p class="section-desc"></p><p>Datasets used in examples.</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="data_med.html">data_med</a></code> 
+        </dt>
+        <dd>Sample Dataset: Simple Mediation</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_med_complicated.html">data_med_complicated</a></code> 
+        </dt>
+        <dd>Sample Dataset: A Complicated Mediation Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_med_mod_a.html">data_med_mod_a</a></code> 
+        </dt>
+        <dd>Sample Dataset: Simple Mediation with a-Path Moderated</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_med_mod_ab.html">data_med_mod_ab</a></code> 
+        </dt>
+        <dd>Sample Dataset: Simple Mediation with Both Paths Moderated (Two Moderators)</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_med_mod_ab1.html">data_med_mod_ab1</a></code> 
+        </dt>
+        <dd>Sample Dataset: Simple Mediation with Both Paths Moderated By a Moderator</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_med_mod_b.html">data_med_mod_b</a></code> 
+        </dt>
+        <dd>Sample Dataset: Simple Mediation with b-Path Moderated</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_med_mod_b_mod.html">data_med_mod_b_mod</a></code> 
+        </dt>
+        <dd>Sample Dataset: A Simple Mediation Model with b-Path
+Moderated-Moderation</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_med_mod_parallel.html">data_med_mod_parallel</a></code> 
+        </dt>
+        <dd>Sample Dataset: Parallel Mediation with Two Moderators</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_med_mod_parallel_cat.html">data_med_mod_parallel_cat</a></code> 
+        </dt>
+        <dd>Sample Dataset: Parallel Moderated Mediation with Two
+Categorical Moderators</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_med_mod_serial.html">data_med_mod_serial</a></code> 
+        </dt>
+        <dd>Sample Dataset: Serial Mediation with Two Moderators</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_med_mod_serial_cat.html">data_med_mod_serial_cat</a></code> 
+        </dt>
+        <dd>Sample Dataset: Serial Moderated Mediation with Two
+Categorical Moderators</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_med_mod_serial_parallel.html">data_med_mod_serial_parallel</a></code> 
+        </dt>
+        <dd>Sample Dataset: Serial-Parallel Mediation with Two Moderators</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_med_mod_serial_parallel_cat.html">data_med_mod_serial_parallel_cat</a></code> 
+        </dt>
+        <dd>Sample Dataset: Serial-Parallel Moderated Mediation with Two
+Categorical Moderators</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_mod.html">data_mod</a></code> 
+        </dt>
+        <dd>Sample Dataset: One Moderator</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_mod2.html">data_mod2</a></code> 
+        </dt>
+        <dd>Sample Dataset: Two Moderators</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_mod_cat.html">data_mod_cat</a></code> 
+        </dt>
+        <dd>Sample Dataset: Moderation with One Categorical Moderator</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_mome_demo.html">data_mome_demo</a></code> 
+        </dt>
+        <dd>Sample Dataset: A Complicated Moderated-Mediation Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_mome_demo_missing.html">data_mome_demo_missing</a></code> 
+        </dt>
+        <dd>Sample Dataset: A Complicated Moderated-Mediation Model With Missing Data</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_parallel.html">data_parallel</a></code> 
+        </dt>
+        <dd>Sample Dataset: Parallel Mediation</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_serial.html">data_serial</a></code> 
+        </dt>
+        <dd>Sample Dataset: Serial Mediation</dd>
+      </dl><dl><dt>
+          
+          <code><a href="data_serial_parallel.html">data_serial_parallel</a></code> 
+        </dt>
+        <dd>Sample Dataset: Serial-Parallel Mediation</dd>
+      </dl><dl><dt>
+          
+          <code><a href="modmed_x1m3w4y1.html">modmed_x1m3w4y1</a></code> 
+        </dt>
+        <dd>Sample Dataset: Moderated Serial Mediation</dd>
+      </dl><dl><dt>
+          
+          <code><a href="simple_mediation_latent.html">simple_mediation_latent</a></code> 
+        </dt>
+        <dd>Sample Dataset: A Simple Latent Mediation Model</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Shu Fai Cheung.</p>
+  <p></p><p>Developed by Shu Fai Cheung, Sing-Hang Cheung.</p>
 </div>
 
 <div class="pkgdown-footer-right">

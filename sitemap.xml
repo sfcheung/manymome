@@ -13,21 +13,6 @@
     <loc>https://sfcheung.github.io/manymome/articles/manymome.html</loc>
   </url>
   <url>
-    <loc>https://sfcheung.github.io/manymome/articles/mediation.html</loc>
-  </url>
-  <url>
-    <loc>https://sfcheung.github.io/manymome/articles/moderated_mediation.html</loc>
-  </url>
-  <url>
-    <loc>https://sfcheung.github.io/manymome/articles/moderated_mediation_cat.html</loc>
-  </url>
-  <url>
-    <loc>https://sfcheung.github.io/manymome/articles/moderation.html</loc>
-  </url>
-  <url>
-    <loc>https://sfcheung.github.io/manymome/articles/moderation_cat.html</loc>
-  </url>
-  <url>
     <loc>https://sfcheung.github.io/manymome/authors.html</loc>
   </url>
   <url>
@@ -40,10 +25,10 @@
     <loc>https://sfcheung.github.io/manymome/reference/check_path.html</loc>
   </url>
   <url>
-    <loc>https://sfcheung.github.io/manymome/reference/coef.cond_indirect_effects.html</loc>
+    <loc>https://sfcheung.github.io/manymome/reference/coef.cond_indirect_diff.html</loc>
   </url>
   <url>
-    <loc>https://sfcheung.github.io/manymome/reference/coef.index_of_mome.html</loc>
+    <loc>https://sfcheung.github.io/manymome/reference/coef.cond_indirect_effects.html</loc>
   </url>
   <url>
     <loc>https://sfcheung.github.io/manymome/reference/coef.indirect.html</loc>
@@ -55,10 +40,13 @@
     <loc>https://sfcheung.github.io/manymome/reference/cond_indirect.html</loc>
   </url>
   <url>
-    <loc>https://sfcheung.github.io/manymome/reference/confint.cond_indirect_effects.html</loc>
+    <loc>https://sfcheung.github.io/manymome/reference/cond_indirect_diff.html</loc>
   </url>
   <url>
-    <loc>https://sfcheung.github.io/manymome/reference/confint.index_of_mome.html</loc>
+    <loc>https://sfcheung.github.io/manymome/reference/confint.cond_indirect_diff.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/manymome/reference/confint.cond_indirect_effects.html</loc>
   </url>
   <url>
     <loc>https://sfcheung.github.io/manymome/reference/confint.indirect.html</loc>
@@ -154,9 +142,6 @@
     <loc>https://sfcheung.github.io/manymome/reference/lm2list.html</loc>
   </url>
   <url>
-    <loc>https://sfcheung.github.io/manymome/reference/lm2ptable.html</loc>
-  </url>
-  <url>
     <loc>https://sfcheung.github.io/manymome/reference/lm_from_lavaan_list.html</loc>
   </url>
   <url>
@@ -187,10 +172,10 @@
     <loc>https://sfcheung.github.io/manymome/reference/predict.lm_list.html</loc>
   </url>
   <url>
-    <loc>https://sfcheung.github.io/manymome/reference/print.cond_indirect_effects.html</loc>
+    <loc>https://sfcheung.github.io/manymome/reference/print.cond_indirect_diff.html</loc>
   </url>
   <url>
-    <loc>https://sfcheung.github.io/manymome/reference/print.index_of_mome.html</loc>
+    <loc>https://sfcheung.github.io/manymome/reference/print.cond_indirect_effects.html</loc>
   </url>
   <url>
     <loc>https://sfcheung.github.io/manymome/reference/print.indirect.html</loc>

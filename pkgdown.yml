@@ -3,12 +3,7 @@ pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   manymome: manymome.html
-  mediation: mediation.html
-  moderated_mediation: moderated_mediation.html
-  moderated_mediation_cat: moderated_mediation_cat.html
-  moderation: moderation.html
-  moderation_cat: moderation_cat.html
-last_built: 2022-08-08T05:56Z
+last_built: 2022-08-17T06:01Z
 urls:
   reference: https://sfcheung.github.io/manymome/reference
   article: https://sfcheung.github.io/manymome/articles

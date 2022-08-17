@@ -14,7 +14,7 @@ cond_indirect_effects()."><!-- mathjax --><script src="https://cdnjs.cloudflare.
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9036</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,16 +27,6 @@ cond_indirect_effects()."><!-- mathjax --><script src="https://cdnjs.cloudflare.
 </li>
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/mediation.html">Mediation</a>
-    <a class="dropdown-item" href="../articles/moderated_mediation.html">Moderated Mediation</a>
-    <a class="dropdown-item" href="../articles/moderated_mediation_cat.html">Moderated Mediation - Categorical Moderators</a>
-    <a class="dropdown-item" href="../articles/moderation.html">Moderation</a>
-    <a class="dropdown-item" href="../articles/moderation_cat.html">Moderation Models - Categorical Moderators</a>
-  </div>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
@@ -93,12 +83,12 @@ or conditional indirect effects.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>It just extracts and returns the column <code>ind</code> or <code>std</code>
+    <p>It extracts and returns the column <code>ind</code> or <code>std</code>
 in the output of <code><a href="cond_indirect.html">cond_indirect_effects()</a></code>.</p>
     </div>
     <div class="section level2">
-    <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
-    <p>Shu Fai Cheung <a href="https://orcid.org/0000-0002-9871-9448" class="external-link">https://orcid.org/0000-0002-9871-9448</a></p>
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="cond_indirect.html">cond_indirect_effects()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -112,44 +102,90 @@ in the output of <code><a href="cond_indirect.html">cond_indirect_effects()</a><
 <span class="r-in"><span><span class="st">m2 ~ m1</span></span></span>
 <span class="r-in"><span><span class="st">y  ~ m2 + x + w4 + m2:w4</span></span></span>
 <span class="r-in"><span><span class="st">"</span></span></span>
-<span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">dat</span>, meanstructure <span class="op">=</span> <span class="cn">TRUE</span>, fixed.x <span class="op">=</span> <span class="cn">FALSE</span>, se <span class="op">=</span> <span class="st">"none"</span>, baseline <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">dat</span>,</span></span>
+<span class="r-in"><span>           meanstructure <span class="op">=</span> <span class="cn">TRUE</span>, fixed.x <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>           se <span class="op">=</span> <span class="st">"none"</span>, baseline <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">est</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Examples for cond_indirect():</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Create levels of w1 and w4</span></span></span>
-<span class="r-in"><span><span class="va">w1levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="mod_levels.html">mod_levels</a></span><span class="op">(</span><span class="st">"w1"</span>, fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">w1levels</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 w1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> M+1.0SD  1.2280576</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mean     0.2589999</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> M-1.0SD -0.7100578</span>
-<span class="r-in"><span><span class="va">w4levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="mod_levels.html">mod_levels</a></span><span class="op">(</span><span class="st">"w4"</span>, fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">w4levels</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 w4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> M+1.0SD  1.2087784</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mean     0.1532493</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> M-1.0SD -0.9022798</span>
-<span class="r-in"><span><span class="va">w1w4levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="merge_mod_levels.html">merge_mod_levels</a></span><span class="op">(</span><span class="va">w1levels</span>, <span class="va">w4levels</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Conditional effects from x to m1 when w1 is equal to each of the levels</span></span></span>
 <span class="r-in"><span><span class="va">out1</span> <span class="op">&lt;-</span> <span class="fu"><a href="cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"m1"</span>,</span></span>
-<span class="r-in"><span>                      wlevels <span class="op">=</span> <span class="va">w1levels</span>, fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                      wlevels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"w1"</span><span class="op">)</span>, fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">out1</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Conditional effects ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path: x -&gt; m1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Conditional on moderator(s): w1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [w1]   (w1)   ind  m1~x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD  1.228 0.750 0.750</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Mean     0.259 0.523 0.523</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M-1.0SD -0.710 0.297 0.297</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the  effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m1~x’ is/are the path coefficient(s) along the path conditional on</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    the moderators.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">out1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M+1.0SD      Mean   M-1.0SD </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.7498813 0.5233195 0.2967576 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD    w1: Mean w1: M-1.0SD </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.7498813   0.5233195   0.2967576 </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Conditional Indirect effect from x1 through m1 to y,</span></span></span>
-<span class="r-in"><span><span class="co"># when w1 is equal to each of the levels</span></span></span>
+<span class="r-in"><span><span class="co"># Conditional indirect effects from x1 through m1 and m2 to y,</span></span></span>
 <span class="r-in"><span><span class="va">out2</span> <span class="op">&lt;-</span> <span class="fu"><a href="cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"m1"</span>, <span class="st">"m2"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                      wlevels <span class="op">=</span> <span class="va">w1w4levels</span>, fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                      wlevels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"w1"</span>, <span class="st">"w4"</span><span class="op">)</span>, fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">out2</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Conditional indirect effects ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path: x -&gt; m1 -&gt; m2 -&gt; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Conditional on moderator(s): w1, w4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w1, w4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [w1]    [w4]   (w1)   (w4)   ind  m1~x m2~m1  y~m2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD M+1.0SD  1.228  1.209 0.137 0.750 0.399 0.458</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 M+1.0SD M-1.0SD  1.228 -0.902 0.121 0.750 0.399 0.404</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M-1.0SD M+1.0SD -0.710  1.209 0.054 0.297 0.399 0.458</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 M-1.0SD M-1.0SD -0.710 -0.902 0.048 0.297 0.399 0.404</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m1~x’,‘m2~m1’,‘y~m2’ is/are the path coefficient(s) along the path</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    conditional on the moderators.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">out2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w4: M+1.0SD    w1: M+1.0SD; w4: Mean w1: M+1.0SD; w4: M-1.0SD </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               0.13702585               0.12891180               0.12079774 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    w1: Mean; w4: M+1.0SD       w1: Mean; w4: Mean    w1: Mean; w4: M-1.0SD </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               0.09562619               0.08996364               0.08430108 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M-1.0SD; w4: M+1.0SD    w1: M-1.0SD; w4: Mean w1: M-1.0SD; w4: M-1.0SD </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               0.05422654               0.05101548               0.04780443 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w4: M+1.0SD w1: M+1.0SD; w4: M-1.0SD w1: M-1.0SD; w4: M+1.0SD </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               0.13702585               0.12079774               0.05422654 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M-1.0SD; w4: M-1.0SD </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               0.04780443 </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Standardized conditional indirect effects from x1 through m1 and m2 to y,</span></span></span>
+<span class="r-in"><span><span class="va">out2std</span> <span class="op">&lt;-</span> <span class="fu"><a href="cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"m1"</span>, <span class="st">"m2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                      wlevels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"w1"</span>, <span class="st">"w4"</span><span class="op">)</span>, fit <span class="op">=</span> <span class="va">fit</span>,</span></span>
+<span class="r-in"><span>                      standardized_x <span class="op">=</span> <span class="cn">TRUE</span>, standardized_y <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">out2std</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Conditional indirect effects ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path: x -&gt; m1 -&gt; m2 -&gt; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Conditional on moderator(s): w1, w4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w1, w4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [w1]    [w4]   (w1)   (w4)   std  m1~x m2~m1  y~m2   ind</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD M+1.0SD  1.228  1.209 0.031 0.750 0.399 0.458 0.137</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 M+1.0SD M-1.0SD  1.228 -0.902 0.028 0.750 0.399 0.404 0.121</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M-1.0SD M+1.0SD -0.710  1.209 0.012 0.297 0.399 0.458 0.054</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 M-1.0SD M-1.0SD -0.710 -0.902 0.011 0.297 0.399 0.404 0.048</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The standardized indirect effects. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - ind: The unstandardized indirect effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m1~x’,‘m2~m1’,‘y~m2’ is/are the path coefficient(s) along the path</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    conditional on the moderators.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">out2std</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w4: M+1.0SD w1: M+1.0SD; w4: M-1.0SD w1: M-1.0SD; w4: M+1.0SD </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               0.03124978               0.02754883               0.01236677 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M-1.0SD; w4: M-1.0SD </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               0.01090216 </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -158,7 +194,7 @@ in the output of <code><a href="cond_indirect.html">cond_indirect_effects()</a><
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Shu Fai Cheung.</p>
+  <p></p><p>Developed by Shu Fai Cheung, Sing-Hang Cheung.</p>
 </div>
 
 <div class="pkgdown-footer-right">
