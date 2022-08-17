@@ -56,6 +56,3 @@ predict(fit_list, x = "x", y = "y", m = "m", newdata = tmp)
 \seealso{
 \code{\link[=lm_from_lavaan_list]{lm_from_lavaan_list()}}
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
-}

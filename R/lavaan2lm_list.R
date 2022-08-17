@@ -17,7 +17,6 @@
 #' @param fit A `lavaan`-class object, usually the output of [lavaan::lavaan()]
 #'            or its wrappers.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [predict.lm_from_lavaan_list]
 #'
@@ -101,7 +100,6 @@ lm_from_lavaan_list <- function(fit) {
 #' @param x An 'lm_from_lavaan'-class object.
 #' @param ... Additional arguments. Ignored.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [terms.object], [lm_from_lavaan_list()]
 #'
@@ -144,7 +142,6 @@ terms.lm_from_lavaan <- function(x, ...) {
 #' @param object A 'lm_from_lavaan'-class object.
 #' @param ... Additional arguments. Ignored.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [lm_from_lavaan_list()]
 #'
@@ -189,7 +186,6 @@ coef.lm_from_lavaan <- function(object, ...) {
 #' data frame.
 #' @param ... Additional arguments. Ignored.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [lm_from_lavaan_list()]
 #'
@@ -249,7 +245,6 @@ predict.lm_from_lavaan <- function(object, newdata, ...) {
 #' data frame.
 #' @param ... Additional arguments. Ignored.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [lm_from_lavaan_list()]
 #'

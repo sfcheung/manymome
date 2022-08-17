@@ -177,6 +177,3 @@ Statistics, 41}(6), 593-604. \doi{10.3102/1076998616657080}
 \seealso{
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
-}

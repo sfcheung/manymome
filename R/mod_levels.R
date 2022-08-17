@@ -91,7 +91,6 @@
 #' @param merge If `TRUE`, [mod_levels_list()] will call [merge_mod_levels()]
 #'              and return the merged levels. Default is `FALSE`.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [cond_indirect_effects()] for computing conditional
 #'   indiret effects; [merge_mod_levels()] for merging

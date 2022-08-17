@@ -49,6 +49,3 @@ dat <- data.frame(dat,
 head(dat[, c("w", "gpgroup2", "gpgroup3")], 15)
 
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
-}

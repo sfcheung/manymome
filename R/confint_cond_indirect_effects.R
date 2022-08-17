@@ -16,7 +16,6 @@
 #'               use the level of the stored intervals.
 #' @param ...  Additional arguments. Ignored by the function.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [cond_indirect_effects()]
 #'

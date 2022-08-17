@@ -359,6 +359,3 @@ cond_indirect_effects(x = "x", y = "y", m = "m1",
 of moderators. \link{do_boot} for doing bootstrapping before calling these
 functions.
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
-}

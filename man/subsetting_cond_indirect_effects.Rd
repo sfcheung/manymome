@@ -59,6 +59,3 @@ out2 <- cond_indirect_effects(x = "x", y = "y", m = c("m1", "m2"),
 out2[c(1, 3), ]
 
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
-}

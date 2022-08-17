@@ -62,7 +62,6 @@
 #'   `FALSE` will suppress these warnings. Suppress them only when the
 #'   moderators are omitted intentionally.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [indirect_effect()], [cond_indirect_effects()], and
 #'   [cond_indirect()], the high level functions that should usually

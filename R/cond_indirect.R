@@ -163,7 +163,6 @@
 #' @param save_boot_out If `boot_out` is supplied, whether it will be saved
 #'             in the output. Default is `TRUE`.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [mod_levels()] and [merge_mod_levels()] for generating levels
 #'          of moderators. [do_boot] for doing bootstrapping before calling these

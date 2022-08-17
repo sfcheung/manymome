@@ -33,7 +33,6 @@
 #' @param e1 An 'indirect'-class object.
 #' @param e2 An 'indirect'-class object.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [indirect_effect()] and [cond_indirect()]
 #'

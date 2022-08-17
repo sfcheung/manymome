@@ -8,7 +8,6 @@
 #'            default, it will be generated from `fit`. If supplied,
 #'            `fit` will ge ignored.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @examples
 #' \donttest{

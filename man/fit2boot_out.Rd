@@ -141,6 +141,3 @@ out
 function that users should try first before
 using this function.
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
-}

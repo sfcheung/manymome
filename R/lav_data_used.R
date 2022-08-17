@@ -5,7 +5,6 @@
 #' @param drop_colon Logical. Whether product terms (of the form "x:y")
 #'                   will be dropped. Default is `TRUE`.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @examples
 #' \donttest{

@@ -142,6 +142,3 @@ indirect_2
 \code{\link[=cond_indirect]{cond_indirect()}}, the high level functions that should usually
 be used.
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
-}

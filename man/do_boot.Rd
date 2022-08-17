@@ -97,6 +97,3 @@ out
 \code{\link[=fit2boot_out_do_boot]{fit2boot_out_do_boot()}}, which implemetns the
 bootstrapping.
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
-}

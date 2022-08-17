@@ -64,6 +64,3 @@ coef(out2)
 \seealso{
 \code{\link[=indirect_effect]{indirect_effect()}} and \code{\link[=cond_indirect]{cond_indirect()}}.
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
-}

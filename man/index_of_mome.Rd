@@ -207,6 +207,3 @@ mediation: Quantification, inference, and interpretation.
 \seealso{
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
-}

@@ -77,6 +77,3 @@ check_path(x = "x", y = "y", m = c("m11", "m2"), fit = fit)
 check_path(x = "x", y = "y", m = c("m12", "m11"), fit = fit)
 
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
-}

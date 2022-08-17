@@ -48,6 +48,3 @@ merge_mod_levels(w1_levels, w2_levels)
 \seealso{
 \code{\link[=mod_levels]{mod_levels()}} on generating the levels of a moderator.
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
-}

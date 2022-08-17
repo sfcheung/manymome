@@ -34,7 +34,6 @@
 #'
 #' @param ... The [lm()] outputs to be grouped in a list.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [summary.lm_list()] and [print.lm_list()] for related methods,
 #'  [indirect_effect()] and [cond_indirect_effects()] which accept

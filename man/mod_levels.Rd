@@ -203,6 +203,3 @@ cond_indirect_effects(x = "x", y = "y", m = "m",
 indiret effects; \code{\link[=merge_mod_levels]{merge_mod_levels()}} for merging
 levels of moderators.
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
-}

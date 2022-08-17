@@ -78,6 +78,3 @@ outm11m12
 \code{\link[=indirect_effect]{indirect_effect()}} and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} which accept
 \code{lm_list}-class objects as input.
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
-}

@@ -58,7 +58,6 @@
 #' @param level The level of confidence for the bootstrap confidence
 #'    interval. Default is .95.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [index_of_mome()] for computing the index of moderated mediation,
 #'  [index_of_momome()] for computing the index of moderated moderated mediation,

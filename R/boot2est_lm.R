@@ -38,7 +38,6 @@
 #' @param seed The seed for the bootstrapping.
 #'             Default is `NULL` and seed is not set.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [do_boot()], the general purpose
 #'          function that users should try first before

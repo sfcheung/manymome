@@ -13,7 +13,6 @@
 #' @return An `indirect`-class object, similar to the output of
 #'  [indirect_effect()] and [cond_indirect()].
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [cond_indirect_effects]
 #'

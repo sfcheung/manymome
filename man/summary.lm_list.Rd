@@ -43,6 +43,3 @@ lm_serial_parallel
 summary(lm_serial_parallel)
 
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
-}

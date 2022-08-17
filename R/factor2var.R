@@ -25,7 +25,6 @@
 #' @param add_rownames Whether row names will be added
 #'                     to the output. Default is `TRUE`.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @examples
 #' dat <- data_mod_cat

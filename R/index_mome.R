@@ -70,7 +70,6 @@
 #'   Default is `TRUE`.
 #' @param ... Arguments to be passed to [cond_indirect_effects()]
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [cond_indirect_effects()]
 #'

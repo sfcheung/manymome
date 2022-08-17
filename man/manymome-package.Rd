@@ -4,9 +4,9 @@
 \name{manymome-package}
 \alias{manymome}
 \alias{manymome-package}
-\title{manymome: Moderation, Mediation, and Moderated-Mediation in SEM}
+\title{manymome: Moderation, Mediation, and Moderated-Mediation in SEM and Regression}
 \description{
-Functions for computing indirect effects, moderation effects, and conditional indirect effects, and their bootstraping confidence interval. Support standadized (partially or completely) moderation effects and conditional indirect effects. For standardized effects that involve the moderator, the sampling variation in the standardization will be taken into account.
+Functions for computing indirect effects, cnoditioanl effects, and conditional indirect effects, and their bootstraping confidence intervals. Support standadized (partially or completely) indirect effects, conditional effects, and conditional indirect effects. Model fitting can be done by SEM (using 'sem()' in 'lavaan') or regression (using 'lm()').
 }
 \seealso{
 Useful links:
@@ -18,6 +18,11 @@ Useful links:
 }
 \author{
 \strong{Maintainer}: Shu Fai Cheung \email{shufai.cheung@gmail.com} (\href{https://orcid.org/0000-0002-9871-9448}{ORCID})
+
+Authors:
+\itemize{
+  \item Sing-Hang Cheung (\href{https://orcid.org/0000-0001-5182-0752}{ORCID})
+}
 
 }
 \keyword{internal}

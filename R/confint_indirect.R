@@ -17,7 +17,6 @@
 #'               95% confidence interval.
 #' @param ...  Additional arguments. Ignored by the function.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [indirect_effect()] and [cond_indirect()]
 #'

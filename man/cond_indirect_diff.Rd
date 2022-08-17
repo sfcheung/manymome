@@ -118,6 +118,3 @@ Hayes, A. F. (2015). An index and test of linear moderated mediation.
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, \code{\link[=mod_levels]{mod_levels()}}, and \code{\link[=merge_mod_levels]{merge_mod_levels()}} for
 preparing the levels to be compared.
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
-}

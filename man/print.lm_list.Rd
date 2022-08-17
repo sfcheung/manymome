@@ -29,6 +29,3 @@ lm_serial_parallel <- lm2list(lm_m11, lm_m12, lm_m2, lm_y)
 lm_serial_parallel
 
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
-}

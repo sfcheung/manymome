@@ -47,9 +47,7 @@
 #'               users. See [parallel::makeCluster()] for details.
 #'               Default is `list()`, no additional arguments.
 #' @param progress Logical. Display progress or not. Default is `TRUE`.
-
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [lm2boot_out()], [fit2boot_out()], and
 #'  [fit2boot_out_do_boot()], which implemetns the

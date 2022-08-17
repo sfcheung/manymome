@@ -18,7 +18,6 @@
 #'          a logical vector of column(s) to be selected.
 #' @param drop Whether dropping a dimension if it only have one row/column.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #'
 #' @name subsetting_cond_indirect_effects

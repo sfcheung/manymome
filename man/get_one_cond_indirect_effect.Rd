@@ -62,6 +62,3 @@ get_one_cond_indirect_effect(out2, 4)
 \seealso{
 \link{cond_indirect_effects}
 }
-\author{
-Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
-}

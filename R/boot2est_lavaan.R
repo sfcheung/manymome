@@ -42,8 +42,6 @@
 #'            only supports a
 #'            [lavaan::lavaan-class] object.
 #'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
-#'
 #' @seealso [do_boot()], the general purpose
 #'          function that users should try first before
 #'          using this function.
