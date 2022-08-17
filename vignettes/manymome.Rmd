@@ -241,7 +241,8 @@ standardized effects.
 ```{r do_boot}
 fit_boot <- do_boot(fit = fit,
                     R = 100,
-                    seed = 53253)
+                    seed = 53253,
+                    ncores = 2)
 ```
 
 These are the major arguments:
@@ -253,6 +254,11 @@ These are the major arguments:
   for illustration.
 
 - `seed`: The seed to reproduce the results.
+
+- `ncores`: The number of processes in parallel processing.
+   The default number is the number of detected physical cores
+   minus 1. Can be omitted in real studies. Set to 2 here for
+   illustration.
 
 By default, parallel processing is used,
 and so the results are reproducible with the same seed
@@ -493,7 +499,8 @@ We generate the bootstrap estimates first (`R` should be
 ```{r do_boot2}
 fit2_boot <- do_boot(fit = fit2,
                     R = 100,
-                    seed = 53253)
+                    seed = 53253,
+                    ncores = 2)
 ```
 
 The function `index_of_mome()` can be used to compute
@@ -614,7 +621,8 @@ out_med <- indirect_effect(x = "x",
                            fit = fit_med,
                            boot_ci = TRUE,
                            R = 100,
-                           seed = 43143)
+                           seed = 43143,
+                           ncores = 2)
 ```
 
 The main arguments are:
@@ -632,6 +640,10 @@ The main arguments are:
 - `R`: The number of bootstrap samples. Only 500 bootstrap samples
         for illustration. Set `R` to 2000 or even 5000 in real research.
 - `seed`: The seed for the random number generator.
+- `ncores`: The number of processes in parallel processing.
+   The default number is the number of detected physical cores
+   minus 1. Can be omitted in real studies. Set to 2 here for
+   illustration.
 
 Like `do_boot()`, by default, parallel processing is used,
 and so the results are reproducible with the same seed
