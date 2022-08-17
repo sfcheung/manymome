@@ -27,10 +27,6 @@
 #' @param expand Whether the function will attempt to expand a lower order
 #'               term to their components. Default is `TRUE`.
 #'
-#' @examples
-#' \dontrun{
-#' # To be prepared
-#' }
 #'@noRd
 
 find_product <- function(data, target) {
