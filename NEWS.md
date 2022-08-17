@@ -1,3 +1,3 @@
-# manymome 0.0.0.9000
+# manymome 0.0.1.9042
 
-* Initialize the package.
+* Initial release.
