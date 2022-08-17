@@ -105,22 +105,7 @@ mod <-
 m ~ x + w + x:w + c1 + c2
 y ~ m + w + m:w + x + c1 + c2
 "
-# Bootstrapping confidence interval requested in lavaan::sem()
-# bootstrap should be set to 2000 or even 5000 in real study
-set.seed(1234)
-fit <- sem(model = mod, data = dat, fixed.x = FALSE,
-           se = "boot", bootstrap = 40,
-           warn = FALSE)
-fit_boot_out <- fit2boot_out(fit)
-wlevels <- mod_levels(w = "w", fit = fit)
-out <- cond_indirect_effects(wlevels = "w",
-                             x = "x",
-                             y = "y",
-                             m = "m",
-                             fit = fit,
-                             boot_ci = TRUE,
-                             boot_out = fit_boot_out)
-out
+
 # Bootstrapping not requested in calling lavaan::sem()
 fit <- sem(model = mod, data = dat, fixed.x = FALSE)
 fit_boot_out <- fit2boot_out_do_boot(fit = fit,
