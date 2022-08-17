@@ -25,66 +25,79 @@ if (basename(getwd()) == "manymome") {
 
 # Introduction
 
-This article is a brief illustration on how `manymome` functions are
-used in some typical cases. The models are intended to be
-simple enough for illustration but complicated enough to
-show the flexibility of `manymome`.
+This article is a brief illustration of how `manymome` functions are
+used in some typical cases. It assumes that readers have
+basic understanding of mediation, moderation, moderated
+mediation, structural equation modeling (SEM), and bootstrapping.
 
 ## Workflow
 
 The use of `manymome` adopts a two-stage workflow:
 
-1. Fit the model by SEM (using `lavaan::sem`) or a series of regression
-  (using `lm()`).
+- Stage 1: **Fit the model**
+
+    - This can be done by SEM (using `lavaan::sem`) or a series of regression
+  (using `lm()`) for now.
 
     - No need to label any parameters or denote any variables
   as the predictors, mediators, moderators, or outcome variables for
-  computing indirect effects or conditional indirect effects.
+  computing indirect effects or conditional indirect effects. Stage
+  2 will take care of this.
 
-    - Bootstrapping in this stage is optional. If done at this stage,
-      bootstrap estimates can be reused by all main functions of
-      `manymome`. No need to do bootstrapping again and again.
-      Bootstrapping can also be done in the next stage.
+- Stage 2: **Compute the indirect effects and conditional indirect effects**
 
-2. Use `manymome` functions to compute the indirect effects or
-   conditional indirect effects along
-   nearly any path in the model.
+    -  This can be done along
+       nearly any path in the model for any levels
+       of the moderators.
 
-    - Just specify the start (`x`), the mediator(s)
-   (`m`, if any), and the end (`y`). Indirect effects can be computed
-   for nearly any path in a model, and it can start nearly anywhere and end
-   nearly anywhere. Bootstrap confidence can be formed for the
-   indirect effects.
+    -  Just specify the start (`x`), the mediator(s)
+   (`m`, if any), and the end (`y`) for indirect effects. The
+    functions will find the coefficients automatically.
 
      - If a path has one or more moderators, conditional
-   indirect effects can be computed, again along nearly any path.
-   The levels of the moderators can be decided in this stage. No need
-   to go back to Stage 1. Bootstrap confidence can be formed for the
-   conditional indirect effects.
+   indirect effects can be computed. Product terms will be
+   identified automatically.
 
-     - Bootstrapping can be done in this stage, and only needs to
-     be conducted once. The bootstrap estimates can be reused by
-     most main functions of `manymome`.
+     - The levels of the moderators can be decided in this stage
+    and can be changed as often as needed.
 
-## What Will Be Covered
+**Bootstrapping confidence intervals**: All main functions
+support bootstrap confidence
+intervals for the effects. Bootstrapping can done in Stage 1
+(e.g., by `lavaan::sem` using `se = "boot"`) or in Stage 2
+in the first call to the main functions, and only needs
+to be conducted once. The bootstrap estimates can be reused by
+most main functions of `manymome` for any path and any levels
+of the moderators.
 
-a. Using `cond_indirect_effects()` to compute conditional
-   indirect effects, with bootstrap confidence intervals.
+**Standardized effects**: All main functions in Stage 2 support
+standardized effects and form their bootstrap confidence
+interval correctly (Cheung, 2009; Friedrich, 1982).
+No need to standardize the
+variables in advance in Stage 1, even for paths with moderators.
 
-a. Using `indirect_effect()` to compute indirect effects,
+## What Will Be Covered In This Get-Started Article
+
+- Use `cond_indirect_effects()` to compute *conditional*
+   *indirect* *effects*, with bootstrap confidence intervals.
+
+- Use `indirect_effect()` to compute *indirect* *effects*,
    with bootstrap confidence interval.
 
-b. Using `do_boot()` to generate bootstrap estimates for
+- Use `+` and `-` to compute a function of effects,
+  such as total indirect effects or total effects.
+
+- Use `do_boot()` to generate bootstrap estimates for
    `cond_indirect_effects()`, `indirect_effect()`,
    and some other functions in `manymome`.
 
-c. Using `index_of_mome()` and `index_of_momome()` to
+- Use `index_of_mome()` and `index_of_momome()` to
    compute the index of moderated mediation and the
    index of moderated moderated mediation, respectively,
    with bootstrap confidence intervals.
 
-e. Compute standardized conditional indirect effects
-   and standardized indirect effect using
+- Compute *standardized* conditional indirect effects
+   and *standardized* indirect effect using
    `cond_indirect_effects()` and `indirect_effect()`,
    respectively.
 
@@ -92,7 +105,7 @@ e. Compute standardized conditional indirect effects
 
 This is the sample dataset comes with the package:
 
-```{r}
+```{r dataset}
 library(manymome)
 dat <- data_med_mod_ab
 print(head(dat), digits = 3)
@@ -100,7 +113,7 @@ print(head(dat), digits = 3)
 
 Suppose this is the model being fitted:
 
-```{r echo = FALSE}
+```{r draw_model, echo = FALSE}
 library(semPlot)
 suppressMessages(library(lavaan))
 dat$xw1 <- dat$x * dat$w1
@@ -132,6 +145,11 @@ p$graphAttributes$Edges$asize[c(1, 4)] <- 0
 plot(p)
 ```
 
+The models are intended to be simple enough for
+illustration but complicated enough to
+show the flexibility of `manymome`. More
+complicated models are also supported, discussed later.
+
 ## Fitting the Model
 
 This is a moderated mediation model with
@@ -140,29 +158,44 @@ This is a moderated mediation model with
 
   - two moderators: `x -> m` moderated by `w1` and `m -> y` moderated by `w2`.
 
-The effects of interest are the *conditional
-indirect effects*: the indirect effects from `x` to `y` through `m` for
-different levels of `w1` and `w2`.
+The effects of interest are the *conditional*
+*indirect* *effects*: the indirect effects
+
+   - from `x` to `y`
+
+   - through `m`
+
+   - for different levels of `w1` and `w2`.
 
 The effects in this moderated mediation model can be
 estimated by SEM in R using
-`lavaan::sem()`.
+`lavaan::sem()`. There is not need to
+label any path coefficients or define any user parameters
+(but users can if so desired; they have no impact
+on the functions in `manymome`).
+To illustrate a more realistic scenario,
+two control variables, `c1` and `c2`, are also included.
 
-```{r}
+```{r fit_model}
 library(lavaan)
+# Form the product terms
 dat$w1x <- dat$w1 * dat$x
 dat$w2m <- dat$w2 * dat$m
 mod <-
 "
-m ~ x + w1 + w1x
-y ~ m + w2 + w2m + x
-# Covariance between w2m and the error term of m
-w2m ~~ m
-# Covariance between w2m and the error term of m
-w2m ~~ w2 + x + w1 + w1x
-w2  ~~ x + w1 + w1x
-x   ~~ w1 + w1x
-w1  ~~ w1x
+m ~ x + w1 + w1x + c1 + c2
+y ~ m + w2 + w2m + x + c1 + c2
+# Covariances of the error term of m with w2m and w2
+m ~~ w2m + w2
+# Covariance between other variables
+# They need to be added due to the covariances added above
+# See Kwan and Chan (2018) and Miles et al. (2015)
+w2m ~~ w2 + x + w1 + w1x + c1 + c2
+w2  ~~ x + w1 + w1x + c1 + c2
+x   ~~ w1 + w1x + c1 + c2
+w1  ~~ w1x + c1 + c2
+w1x ~~ c1 + c2
+c1  ~~ c2
 "
 fit <- sem(model = mod,
            data = dat,
@@ -171,68 +204,70 @@ fit <- sem(model = mod,
 ```
 
 `MLR` is used to take into account probable nonnormality
-due to the product terms and allowing the predictors to
-be random variables (`fixed.x = FALSE`), which is more
-natural in disciplines like social sciences.
+due to the product terms. `fixed.x = FALSE` is used
+to allow the predictors to be random variables. This is
+usually necessary when the values of the predictor are also
+sampled from the populations, and so their SDs are sample
+statistics.
 
 These are the parameter estimates:
 
-```{r}
+```{r estimates}
 parameterEstimates(fit)[parameterEstimates(fit)$op == "~", ]
 ```
 
-Both moderation effects are significant. Because the indirect effect
-is moderated on both stages (`x -> m` and `m -> y`), the magnitude
-of the indirect effect depends on `w1` and `w2`. The indirect
-effect conditional on the moderators is called the *conditional*
-*indirect* *effect*. Moreover, like a mediation effect without moderation,
-its confidence interval can be formed by nonparametric bootstrapping.
+The moderation effects of both `w1` and  `w2`
+are significant. The indirect effect from `x` to `y` through
+`m` depends on the level of `w1` and `w2`.
 
 ## Conditional Indirect Effects
 
-Conventionally, to compute the conditional indirect effects,
-we need to define user parameters, and we need to decide in advance
-the levels of the moderators. If standardized conditional
-indirect effect is needed, then the syntax will be much more complicated
-even in this model because the variance of `y` is not a free parameter
-and needs to be computed from (many) other parameters.
-
-Using `manymome`, no need to label any coefficients or define any
-user parameters, and also no need to request bootstrapping when
-calling `lavaan::sem()`. It has functions that (a) generate bootstrap
-estimates and this only need to be done once, and (b) compute
-the conditional indirect effects for any levels of the moderators
-along any path.
+To form bootstrap confidence intervals, bootstrapping needs
+to be done. There are several to do this. We first illustrate
+using `do_boot()`.
 
 ### Do Bootstrapping (Once)
 
-The function `do_boot()` can be used to generate and store bootstrap
-estimates as well as implied variances and SDs of variables:
+Using `do_boot()` instead of setting `se` to `"boot"`
+when calling `lavaan::sem()`
+allows users to use other
+method for standard errors and confidence intervals for other parameters,
+such as the various types of robust standard errors provided by `lavaan::sem()`.
 
-```{r}
+The function `do_boot()` is used to generate and store bootstrap
+estimates as well as implied variances and SDs of variables for
+standardized effects.
+
+```{r do_boot}
 fit_boot <- do_boot(fit = fit,
                     R = 100,
                     seed = 53253)
 ```
 
-The minium argument is `fit`, the output of `lavaan::sem()`.
-`R` is the number of bootstrap samples, which should be 2000
-or even 5000 in real research. `R` is set to 100 here just
-for illustration. The `seed` is to make the results
-reproducible. By default, parallel processing is used,
-and so the results are reproducible only if the number of
-processes is the same. See the help of `do_boot()` for
-other options.
+These are the major arguments:
+
+- `fit`: The output of `lavaan::sem()`.
+
+- `R`: The number of bootstrap samples, which should be 2000
+  or even 5000 in real research. `R` is set to 100 here just
+  for illustration.
+
+- `seed`: The seed to reproduce the results.
+
+By default, parallel processing is used,
+and so the results are reproducible with the same seed
+only if the number of processes is the same.
+See `do_boot()` for other options.
 
 The output, `fit_boot` in this case, can then be used for
 all subsequent analyses on this model.
 
-### Estimating Conditional Indirect Effects
+### Estimate Conditional Indirect Effects
 
 To compute conditional indirect effects and form bootstrap confidence
 intervals, we can use `cond_indirect_effects()`.
 
-```{r}
+```{r cond_indirect}
 out_cond <- cond_indirect_effects(wlevels =c("w1", "w2"),
                                   x = "x",
                                   y = "y",
@@ -245,38 +280,60 @@ out_cond <- cond_indirect_effects(wlevels =c("w1", "w2"),
 These are the major arguments:
 
 - `wlevels`: The vector of the names of the moderators.
+             Order does not matter. If the
+             default levels are not suitable, custom levels
+             can be created by functions like `mod_levels()`
+             and `merge_mod_levels()`.
 - `x`: The name of the predictor.
 - `y`: The name of the outcome variable.
 - `m`: The name of the mediator, or a vector of names
-       if the path has more than one mediator.
+       if the path has more than one mediator
+       (see [this example](#est_indirect)).
 - `fit`: The output of `lavaan::sem()`.
 - `boot_ci`: Set to `TRUE` to request bootstrap confidence intervals.
              Default is `FALSE`.
 - `boot_out`: The pregenerated bootstrap estimates generated
               by `do_boot()` or previous call to
-              `cond_indirect_effects()`.
+              `cond_indirect_effects()` or `indirect_effect()`.
 
 This is the output:
 
-```{r}
+```{r out_cond}
 out_cond
 ```
 
 For two or more moderators, the default levels for numeric moderators
-are one standard deviation below mean and one standard deviation above
-mean. For two moderators, there are four combinations. As shown
+are one standard deviation (SD) below mean and one SD above
+mean. For two moderators, there are four combinations.
+
+As shown
 above, among these levels, the indirect effect from `x` to `y` through
-`m` is significant only when both `w1` and `w2` are one standard deviation
-above mean. The indirect effect at these levels of `w1` and `w2` are
+`m` is significant only when both `w1` and `w2` are one SD
+above their means. The indirect effect at these levels of `w1` and `w2` are
 `r formatC(coef(out_cond)[1], digits = 3, format = "f")`, with
 95% bootstrap confidence interval
 [`r paste0(formatC(unlist(confint(out_cond)[1, ]), digits = 3, format = "f"), collapse = ", ")`].
 
+#### Examine the Effect at a Particular Set of Levels of the Moderators
+
+To learn more about the conditional effect for one combination
+of the levels of the moderators, `get_one_cond_indirect_effect()`
+can be used, with the first argument the output of
+`cond_indirect_effects()` and the second argument the row number.
+For example, this shows the details on the computation of the
+indirect effect when both `w1` and `w2` are one SD above their means (row 1):
+
+```{r get_one}
+get_one_cond_indirect_effect(out_cond, 1)
+```
+
+#### Changing the Levels of the Moderators
+
 The levels of the moderators, `w1` and `w2` in this example, can be
-controlled directly by users. See `mod_levels()` and `merge_mod_levels()`
-on how to specify other levels of the moderators. Because `boot_out`
-use pregenerated bootstrap estimates, changing the levels of the moderators
-does not require doing bootstrapping again.
+controlled directly by users. For examples, percentiles or exact values
+of the moderators can be used. See `mod_levels()` and `merge_mod_levels()`
+on how to specify other levels of the moderators, and the arguments
+`w_method`, `sd_from_mean`, and `percentiles` of `cond_indirect_effects()`.
 
 ## Standardized Conditional Indirect Effects
 
@@ -290,7 +347,7 @@ set both `standardized_x` and `standardized_y` to `TRUE`.
 
 This is the result when both `x` and `y` are standardized:
 
-```{r}
+```{r cond_stdxy}
 out_cond_stdxy <- cond_indirect_effects(wlevels =c("w1", "w2"),
                                         x = "x",
                                         y = "y",
@@ -307,15 +364,20 @@ do bootstrapping again.
 
 This is the output:
 
-```{r}
+```{r out_cond_stdxy}
 out_cond_stdxy
 ```
 
 The standardized indirect effect when both `w1` and `w2` are
-one standard deviation above mean is
+one SD above mean is
 `r formatC(coef(out_cond_stdxy)[1], digits = 3, format = "f")`, with
 95% bootstrap confidence interval
 [`r paste0(formatC(unlist(confint(out_cond_stdxy)[1, ]), digits = 3, format = "f"), collapse = ", ")`].
+
+That is, when both `w1` and `w2` are one SD above their
+means, if `x` increases by one SD, it leads to an increase
+of `r formatC(coef(out_cond_stdxy)[1], digits = 3, format = "f")`
+SD of `y` through `m`.
 
 ## Index of Moderated Moderated Mediation
 
@@ -323,7 +385,7 @@ The index of moderated moderated mediation (Hayes, 2018) can
 be estimated, along with bootstrap confidence interval, using
 the function `index_of_momome()`:
 
-```{r}
+```{r momome}
 out_momome <- index_of_momome(x = "x",
                               y = "y",
                               m = "m",
@@ -334,12 +396,27 @@ out_momome <- index_of_momome(x = "x",
                               boot_out = fit_boot)
 ```
 
-Again, setting `boot_out` to pregenerated bootstrap estimates
-save the time for bootstrapping.
+These are the major arguments:
+
+- `x`: The name of the predictor.
+- `y`: The name of the outcome variable.
+- `m`: The name of the mediator, or a vector of names
+       if the path has more than one mediator
+       (see [this example](#est_indirect)).
+- `w`: The name of one of the moderator.
+- `z`: The name of the other moderator. The order of `w`
+       and `z` does not matter.
+- `fit`: The output of `lavaan::sem()`.
+- `boot_ci`: Set to `TRUE` to request bootstrap confidence intervals.
+             Default is `FALSE`.
+- `boot_out`: The pregenerated bootstrap estimates generated
+              by `do_boot()` or previous call to
+              `cond_indirect_effects()` and `indirect_effect()`.
+
 
 This is the result:
 
-```{r}
+```{r out_momome}
 out_momome
 ```
 
@@ -347,9 +424,9 @@ The index of moderated moderated mediation is
 `r formatC(coef(out_momome), digits = 3, format = "f")`,
 with 95% bootstrap confidence interval
 [`r paste0(formatC(unlist(confint(out_momome)[1, ]), digits = 3, format = "f"), collapse = ", ")`].
-Although `w1` and `w2` significantly moderate the component paths,
-they do not significantly moderate the moderating effect of each Other
-on the indirect effect.
+
+Note that this index is specifically for the change when
+`w1` or `w2` increases by one unit.
 
 ## Index of Moderated Mediation
 
@@ -357,7 +434,7 @@ The `manymome` package also has a function to compute the *index of
 moderated mediation* (Hayes, 2015). Suppose we modify the model and remove
 one of the moderators:
 
-```{r echo = FALSE}
+```{r plot_mome1, echo = FALSE}
 library(semPlot)
 suppressMessages(library(lavaan))
 dat$xw1 <- dat$x * dat$w1
@@ -390,13 +467,13 @@ plot(p)
 
 This is the `lavaan` model:
 
-```{r}
+```{r fit_mome1}
 library(lavaan)
 dat$w1x <- dat$w1 * dat$x
 mod2 <-
 "
-m ~ x + w1 + w1x
-y ~ m + x
+m ~ x + w1 + w1x + c1 + c2
+y ~ m + x + c1 + c2
 "
 fit2 <- sem(model = mod2,
            data = dat,
@@ -406,14 +483,14 @@ fit2 <- sem(model = mod2,
 
 These are the parameterEstimates:
 
-```{r}
+```{r est_mome1}
 parameterEstimates(fit2)[parameterEstimates(fit2)$op == "~", ]
 ```
 
 We generate the bootstrap estimates first (`R` should be
 2000 or even 5000 in real research):
 
-```{r}
+```{r do_boot2}
 fit2_boot <- do_boot(fit = fit2,
                     R = 100,
                     seed = 53253)
@@ -423,7 +500,7 @@ The function `index_of_mome()` can be used to compute
 the index of moderated mediation of `w1` on the
 path `x -> m -> y`:
 
-```{r}
+```{r mome}
 out_mome <- index_of_mome(x = "x",
                           y = "y",
                           m = "m",
@@ -436,7 +513,7 @@ out_mome <- index_of_mome(x = "x",
 The arguments are nearly identical to those of `index_of_momome()`,
 except that only `w` needs to be specified. This is the output:
 
-```{r}
+```{r out_mome}
 out_mome
 ```
 
@@ -444,8 +521,14 @@ In this model, the index of moderated mediation is
 `r formatC(coef(out_mome), digits = 3, format = "f")`,
 with 95% bootstrap confidence interval
 [`r paste0(formatC(unlist(confint(out_mome)[1, ]), digits = 3, format = "f"), collapse = ", ")`].
-The moderator `w1` does not significantly moderate the
-indirect effect of `x` on `y` through `m`.
+The indirect effect of `x` on `y` through `m` does
+not significantly change when
+`w1` increases by one unit.
+
+Note that this index is specifically for the change when
+`w1` increases by one unit. The index being not significant
+does not contradict with the significant moderation effect
+suggested by the product term.
 
 # Mediation Only
 
@@ -453,7 +536,7 @@ The package can also be used for a mediation model.
 
 This is the sample dataset comes with the package:
 
-```{r}
+```{r dataset_me}
 library(manymome)
 dat <- data_serial
 print(head(dat), digits = 3)
@@ -462,7 +545,7 @@ print(head(dat), digits = 3)
 Suppose this is the model being fitted, with `c1` and
 `c2` the control variables.
 
-```{r echo = FALSE}
+```{r draw_med, echo = FALSE}
 library(semPlot)
 suppressMessages(library(lavaan))
 mod <-
@@ -488,7 +571,9 @@ plot(p)
 
 ## Fitting the Model
 
-Fitting this model in `lavaan::sem()` is very simple:
+Fitting this model in `lavaan::sem()` is very simple.
+With `manymome`, there is no need to label paths
+or define user parameters for the indirect effects.
 
 ```{r}
 mod_med <- "
@@ -500,28 +585,29 @@ fit_med <- sem(model = mod_med,
                data = dat,
                fixed.x = TRUE)
 ```
+
 These are the estimates
 
-```{r}
+```{r est_med}
 parameterEstimates(fit_med)[parameterEstimates(fit_med)$op == "~", ]
 ```
 
-## Estimating Indirect Effects
+## Estimate Indirect Effects {#est_indirect}
 
-`indirect_effect()` can be used to estimate the indirect effect
+`indirect_effect()` can be used to estimate an indirect effect
 and form its bootstrapping confidence interval along a path
 in a model
-that starts with any variable (predictor), ends with
-any variable (outcome variable), through any variable(s) (mediator(s)).
+that starts with any variable, ends with
+any variable, through any variable(s).
 
-Unlike the previous example, we illustrate how to
-generate bootstrap estimates when calling `indirect_effect()`
-instead of using `do_boot()`.
+We illustrate another approach to
+generate bootstrap estimates: using `indirect_effect()`
+to do both bootstrapping and estimate the indirect effect.
 
 For example, this is the call for the indirect effect
 from `x` to `y` through `m1` and `m2`:
 
-```{r}
+```{r do_indirect}
 out_med <- indirect_effect(x = "x",
                            y = "y",
                            m = c("m1", "m2"),
@@ -547,9 +633,13 @@ The main arguments are:
         for illustration. Set `R` to 2000 or even 5000 in real research.
 - `seed`: The seed for the random number generator.
 
+Like `do_boot()`, by default, parallel processing is used,
+and so the results are reproducible with the same seed
+only if the number of processes is the same.
+
 This is the output:
 
-```{r}
+```{r out_med}
 out_med
 ```
 
@@ -560,8 +650,9 @@ with a 95% confidence interval of
 significantly different from zero (*p* < .05).
 
 Because bootstrap confidence interval is requested, the
-bootstrap estimates are stored in `out_med` and so it
-can also be used in the argument `boot_out`.
+bootstrap estimates are stored in `out_med`. This output
+from `indirect_effect()` can also be used in the
+argument `boot_out` of other functions.
 
 ## Standardized Indirect Effect
 
@@ -575,7 +666,7 @@ indirect effect, set both `standardized_x` and
 This is the call to compute the (completely) standardized
 indirect effect:
 
-```{r}
+```{r do_indirect_stdxy}
 out_med_stdxy <- indirect_effect(x = "x",
                                  y = "y",
                                  m = c("m1", "m2"),
@@ -592,14 +683,15 @@ is `r formatC(coef(out_med_stdxy), digits = 3, format = "f")`,
 with a 95% confidence interval of
 [`r paste0(formatC(confint(out_med_stdxy), digits = 3, format = "f"), collapse = ", ")`],
 significantly different from zero (*p* < .05).
+One SD increase of `x` leads to `r formatC(coef(out_med_stdxy), digits = 3, format = "f")`
+increase in SD of `y` through `m1` and `m2`.
 
 ## Estimating Indirect Effects For *Any* Paths
 
 `indirect_effect()` can be used for the indirect effect
-in any path in a path model. There is no need to specify
-the path when specifying the model.
+in *any* path in a path model.
 
-For example, suppose we want to estimate and test the
+For example, to estimate and test the
 indirect effect from `x` through `m2` to `y`, bypassing
 `m1`, simply set `x` to `"x"`, `y` to `"y"`, and `m` to `"m2"`:
 
@@ -617,17 +709,162 @@ The indirect effect along this path is not significant.
 
 Similarly, indirect effects from `m1` through `m2`  to `y`
 or from `x` through `m1` to `y` can also be tested
-by setting the three arguments accordingly. Users do not
-need to decide in advance to compute the indirect effects
-for which path.
+by setting the three arguments accordingly. Although `c1`
+and `c2` are labelled as control variables, if appropriated,
+their indirect effects on `y` through `m1` and/or `m2` can
+also be computed and tested.
+
+## Total Indirect Effects and Total Effects
+
+Addition (`+`) and subtraction (`-`) can be applied to the outputs of
+`indirect_effect()`. For example, the total indirect effect
+from `x` to `y` is the sum of these indirect effects:
+
+- `x -> m1 -> m2 -> y`
+
+- `x -> m1 -> y`
+
+- `x -> m2 -> y`
+
+Two of them have been computed above (`out_med`
+and `out_x_m2_y`). We compute the indirect
+effect in `x -> m1 -> y`
+
+```{r xm1y}
+out_x_m1_y <- indirect_effect(x = "x",
+                              y = "y",
+                              m = "m1",
+                              fit = fit_med,
+                              boot_ci = TRUE,
+                              boot_out = out_med)
+out_x_m1_y
+```
+
+We can then "add" the indirect effects to get the total
+indirect effect:
+
+```{r total_ind}
+total_ind <- out_med + out_x_m1_y + out_x_m2_y
+total_ind
+```
+
+The total indirect effect is
+`r formatC(coef(total_ind), digits = 3, format = "f")`,
+not significant. This is an example
+of inconsistent mediation: some of the indirect Effects
+are positive and some are negative:
+
+```{r each_ind}
+coef(out_med)
+coef(out_x_m1_y)
+coef(out_x_m2_y)
+```
+
+Similarly, the total effect of `x` on `y` can be computed by adding
+all the effects, direct or indirect. The direct effect can
+be computed with `m` not set:
+
+```{r xdirect}
+out_x_direct <- indirect_effect(x = "x",
+                              y = "y",
+                              fit = fit_med,
+                              boot_ci = TRUE,
+                              boot_out = out_med)
+out_x_direct
+```
+
+This is the total effect:
+
+```{r total_effect}
+total_effect <- out_med + out_x_m1_y + out_x_m2_y + out_x_direct
+total_effect
+```
+
+The total effect is
+`r formatC(coef(total_effect), digits = 3, format = "f")`,
+not significant. This illustrates that total effect can be misleading
+when the component paths are of different signs.
 
 # Summary
 
-(To be prepared)
+## Advantages
+
+The package `manymome` has these advantages:
+
+- The model fitting step is easier. No need to label
+  any parameters or define any effects. Users can also
+  use other methods for confidence interval and use
+  bootstrapping only for indirect effects and conditional
+  indirect effects.
+
+- Missing data can be be handled by `missing = "fiml"`
+  in calling
+  `lavaan::sem()`. Because bootstrapping estimates are used in
+  Stage 2, indirect effects and conditional
+  indirect effects can also be computed with bootstrap
+  confidence intervals, just like defining them in
+  `lavaan`, in the presence of missing data.
+
+- Bootstrapping only needs to be done once. The bootstrap
+  estimates can be reused in computing indirect effects
+  and conditional indirect effects. This is particularly
+  useful when the sample size and there is missing data.
+
+- Users can explore any path for any levels of the moderators
+  without respecifying and refitting the model.
+
+## Limitations
+
+The package `manymome` supports "many" models ... but
+certainly not all.
+There are models that it does not yet support. For example,
+it does not support a path that starts with a nominal
+categorical variable.
+It also only supports percentile bootstrap confidence interval
+(although this is merely a preference of us). Other tools
+need to be used for these cases.
+
+## Other Uses and Scenarios
+
+There are other options available in `manymome`. For example,
+it can be used for categorical moderators and models fitted
+by multiple regression. Please
+refer to the help page and examples of the functions or
+other forthcoming
+articles (vignettes).
 
 # References
+
+Cheung, M. W.-L. (2009). Comparison of methods for constructing
+confidence intervals of standardized indirect effects.
+*Behavior Research Methods, 41*(2), 425-438.
+https://doi.org/10.3758/BRM.41.2.425
+
+Friedrich, R. J. (1982). In defense of multiplicative terms
+in multiple regression equations.
+*American Journal of Political Science, 26*(4), 797-833.
+https://doi.org/10.2307/2110973
+
+Hayes, A. F. (2015). An index and test of linear moderated
+mediation. *Multivariate Behavioral Research, 50*(1),
+1-22. https://doi.org/10.1080/00273171.2014.962683
+
 
 Hayes, A. F. (2018). Partial, conditional, and moderated moderated
 mediation: Quantification, inference, and interpretation.
 *Communication Monographs, 85*(1), 4-40.
 https://doi.org/10.1080/03637751.2017.1352100
+
+
+Kwan, J. L. Y., & Chan, W. (2018). Variable system:
+An alternative approach for the analysis of mediated moderation.
+*Psychological Methods, 23*(2), 262-277.
+https://doi.org/10.1037/met0000160
+
+Miles, J. N. V., Kulesza, M., Ewing, B., Shih, R. A.,
+Tucker, J. S., & D’Amico, E. J. (2015). Moderated
+mediation analysis: An illustration using the association
+of gender with delinquency and mental health.
+*Journal of Criminal Psychology, 5*(2), 99-123.
+https://doi.org/10.1108/JCP-02-2015-0010
+
