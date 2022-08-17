@@ -1,14 +1,14 @@
 
 #' @title Find Product Terms
 #'
-#' @description Find columns in a data frame or matrix that are the products
-#'              of two or more other columns.
+#' @description Find columns in a data frame or matrix that are the
+#'   products of two or more other columns.
 #'
-#' @details This function find probable product terms by comparing its values
-#'          to the products of other columns. It was developed for identifying
-#'          columns that are the products of two columns. It may be able to
-#'          identify columns that are the products of three or more columns
-#'          but there is no guarantee.
+#' @details This function finds probable product terms by comparing
+#'   its values to the products of other columns. It was developed for
+#'   identifying columns that are the products of two columns. It may
+#'   be able to identify columns that are the products of three or more
+#'   columns but there is no guarantee.
 #'
 #' @return
 #' [find_all_products()] returns a named list. For each element, the name is the
