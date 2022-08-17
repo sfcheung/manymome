@@ -100,16 +100,15 @@ fit2boot_out <- function(fit) {
 #' @param parallel Logical. Whether parallel processing will be used.
 #'                 Default is `NULL`.
 #' @param ncores Integer. The number of CPU cores to use when
-#'               `parallel` is `TRUE`. Default is `NULL`, and the
-#'               number of cores determined by `getOption("cl.cores",
-#'               2)`. Will raise an error if greater than the number
-#'               of cores detected by [parallel::detectCores()]. If
-#'               `ncores` is set, it will override
-#'               `make_cluster_args`.
+#'               `parallel` is `TRUE`. Default is the number of
+#'               non-logical cores minus one (one minimum). Will raise
+#'               an error if greater than the number of cores detected
+#'               by [parallel::detectCores()]. If `ncores` is set, it
+#'               will override `make_cluster_args`.
 #' @param make_cluster_args A named list of additional arguments to be passed
 #'                          to [parallel::makeCluster()]. For advanced users.
 #'                          See [parallel::makeCluster()] for details.
-#'                          Default is `list(spec = getOption("cl.cores", 2))`.
+#'                          Default is `list()`.
 #' @param progress Logical. Display progress or not. Default is `TRUE`.
 #'
 #' @export
@@ -122,9 +121,8 @@ fit2boot_out_do_boot <- function(fit,
                                  R = 100,
                                  seed = NULL,
                                  parallel = FALSE,
-                                 ncores = NULL,
-                                 make_cluster_args =
-                                    list(spec = getOption("cl.cores", 2)),
+                                 ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                                 make_cluster_args = list(),
                                  progress = TRUE) {
     environment(gen_boot_i) <- parent.frame()
     boot_i <- gen_boot_i(fit)
@@ -138,11 +136,10 @@ fit2boot_out_do_boot <- function(fit,
                     "Please fit the model with se = 'boot'"))
       }
     ft <- lavaan::lavInspect(boot_test, "timing")$total
-    set.seed(seed)
+    requireNamespace("parallel", quietly = TRUE)
+    if (!is.null(seed)) set.seed(seed)
     ids <- replicate(R, sample.int(n, replace = TRUE), simplify = FALSE)
-    if (parallel & requireNamespace("parallel", quietly = TRUE)) {
-        pkgs <- .packages()
-        pkgs <- rev(pkgs)
+    if (parallel) {
         if (is.numeric(ncores)) {
             ncores0 <- parallel::detectCores()
             if (ncores == ncores0) {
@@ -153,25 +150,42 @@ fit2boot_out_do_boot <- function(fit,
                 utils::flush.console()
               }
             if (ncores > ncores0) {
-                stop(paste0("'ncores' cannot be greater than",
-                            " the detected number of cores (", ncores0,")."))
+                ncores <- max(ncores0 - 1, 1L)
+                # stop(paste0("'ncores' cannot be greater than",
+                #             " the detected number of cores (", ncores0,")."))
               }
-            make_cluster_args <- utils::modifyList(make_cluster_args,
-                                            list(spec = ncores))
+          } else {
+            ncores <- 1L
           }
-        cl <- do.call(parallel::makeCluster, make_cluster_args)
-        texp <-  R * ft[[1]] / length(cl)
+      } else {
+        ncores <- 1L
+      }
+    if (ncores > 1L) {
+        make_cluster_args <- utils::modifyList(make_cluster_args,
+                                        list(spec = ncores))
+        tmp <- tryCatch({cl <- do.call(parallel::makeCluster,
+                                      make_cluster_args)},
+                        error = function(e) e)
+        has_cl <- !inherits(tmp, "error")
+      } else {
+        has_cl <- FALSE
+      }
+    if (has_cl) {
+        texp <-  1.2 * R * ft[[1]] / length(cl)
         message(paste0(length(cl), " processes started to run bootstrapping."))
         message(paste0("The expected CPU time is about ",
                         round(texp, 2),
                         " second(s)."))
         utils::flush.console()
+        pkgs <- .packages()
+        pkgs <- rev(pkgs)
         parallel::clusterExport(cl, "pkgs", envir = environment())
         parallel::clusterEvalQ(cl, {
                         sapply(pkgs,
                         function(x) library(x, character.only = TRUE))
                       })
-        parallel::clusterSetRNGStream(cl, seed)
+        # No need. ids pregenerated.
+        # parallel::clusterSetRNGStream(cl, seed)
         if (progress) {
             op_old <- pbapply::pboptions(type = "timer")
             tmp <- tryCatch({rt <- system.time(out <- suppressWarnings(
@@ -192,12 +206,12 @@ fit2boot_out_do_boot <- function(fit,
           }
         parallel::stopCluster(cl)
       } else {
-        texp <-  R * ft[[1]]
-        message(paste0("The expected CPU time is ",
-                        round(texp, 2),
-                        " second(s).\n",
-                        "Could be faster if 'parallel' set to TRUE."))
-        utils::flush.console()
+        # texp <-  R * ft[[1]]
+        # message(paste0("The expected CPU time is ",
+        #                 round(texp, 2),
+        #                 " second(s).\n",
+        #                 "Could be faster if 'parallel' set to TRUE."))
+        # utils::flush.console()
         rt <- system.time(out <- suppressWarnings(lapply(ids, boot_i,
                                                          d = dat_org)))
       }
@@ -328,7 +342,7 @@ get_implied_i <- function(est0, fit) {
 
 gen_boot_i <- function(fit) {
   fit_org <- eval(fit)
-  data_full <- lavaan::lavInspect(fit_org, "data")
+  # data_full <- lavaan::lavInspect(fit_org, "data")
   function(d, i = NULL) {
       if (is.null(i)) {
           return(lavaan::update(fit_org,
