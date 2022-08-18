@@ -12,7 +12,7 @@ between two sets of levels of the moderators."><!-- mathjax --><script src="http
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9002</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,7 +86,7 @@ interval. Default is .95.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>It returns a <code>cond_indirect_diff</code>-class object. This class has a
+<p>A <code>cond_indirect_diff</code>-class object. This class has a
 <code>print</code> method (<code><a href="print.cond_indirect_diff.html">print.cond_indirect_diff()</a></code>), a <code>coef</code> method
 (<code><a href="coef.cond_indirect_diff.html">coef.cond_indirect_diff()</a></code>), and a <code>confint</code> method
 (<code><a href="confint.cond_indirect_diff.html">confint.cond_indirect_diff()</a></code>).</p>
@@ -171,8 +171,6 @@ preparing the levels to be compared.</p></div>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Conditional effects from x to y when w1 is equal to each of the levels</span></span></span>
 <span class="r-in"><span><span class="va">boot_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit2boot_out.html">fit2boot_out_do_boot</a></span><span class="op">(</span><span class="va">fit</span>, R <span class="op">=</span> <span class="fl">50</span>, seed <span class="op">=</span> <span class="fl">4314</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The expected CPU time is 1.8 second(s).</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Could be faster if 'parallel' set to TRUE.</span>
 <span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, m <span class="op">=</span> <span class="st">"m1"</span>,</span></span>
 <span class="r-in"><span>                      wlevels <span class="op">=</span> <span class="va">w1levels</span>, fit <span class="op">=</span> <span class="va">fit</span>,</span></span>
 <span class="r-in"><span>                      boot_ci <span class="op">=</span> <span class="cn">TRUE</span>, boot_out <span class="op">=</span> <span class="va">boot_out</span><span class="op">)</span></span></span>

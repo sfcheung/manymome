@@ -12,7 +12,7 @@ the output of lavaan::sem()."><!-- mathjax --><script src="https://cdnjs.cloudfl
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9002</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,8 +64,8 @@ the output of <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="ext
 <span>  R <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  parallel <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  ncores <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  make_cluster_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>spec <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"cl.cores"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  make_cluster_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  progress <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -93,18 +93,18 @@ Default is <code>NULL</code>.</p></dd>
 
 <dt>ncores</dt>
 <dd><p>Integer. The number of CPU cores to use when
-<code>parallel</code> is <code>TRUE</code>. Default is <code>NULL</code>, and the
-number of cores determined by <code>getOption("cl.cores", 2)</code>. Will raise an error if greater than the number
-of cores detected by <code><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">parallel::detectCores()</a></code>. If
-<code>ncores</code> is set, it will override
-<code>make_cluster_args</code>.</p></dd>
+<code>parallel</code> is <code>TRUE</code>. Default is the number of
+non-logical cores minus one (one minimum). Will raise
+an error if greater than the number of cores detected
+by <code><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">parallel::detectCores()</a></code>. If <code>ncores</code> is set, it
+will override <code>make_cluster_args</code>.</p></dd>
 
 
 <dt>make_cluster_args</dt>
 <dd><p>A named list of additional arguments to be passed
 to <code><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">parallel::makeCluster()</a></code>. For advanced users.
 See <code><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">parallel::makeCluster()</a></code> for details.
-Default is <code>list(spec = getOption("cl.cores", 2))</code>.</p></dd>
+Default is <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>.</p></dd>
 
 
 <dt>progress</dt>
@@ -177,47 +177,12 @@ using this function.</p></div>
 <span class="r-in"><span><span class="st">m ~ x + w + x:w + c1 + c2</span></span></span>
 <span class="r-in"><span><span class="st">y ~ m + w + m:w + x + c1 + c2</span></span></span>
 <span class="r-in"><span><span class="st">"</span></span></span>
-<span class="r-in"><span><span class="co"># Bootstrapping confidence interval requested in lavaan::sem()</span></span></span>
-<span class="r-in"><span><span class="co"># bootstrap should be set to 2000 or even 5000 in real study</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">mod</span>, data <span class="op">=</span> <span class="va">dat</span>, fixed.x <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
-<span class="r-in"><span>           se <span class="op">=</span> <span class="st">"boot"</span>, bootstrap <span class="op">=</span> <span class="fl">40</span>,</span></span>
-<span class="r-in"><span>           warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">fit_boot_out</span> <span class="op">&lt;-</span> <span class="fu">fit2boot_out</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">wlevels</span> <span class="op">&lt;-</span> <span class="fu"><a href="mod_levels.html">mod_levels</a></span><span class="op">(</span>w <span class="op">=</span> <span class="st">"w"</span>, fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>wlevels <span class="op">=</span> <span class="st">"w"</span>,</span></span>
-<span class="r-in"><span>                             x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
-<span class="r-in"><span>                             y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
-<span class="r-in"><span>                             m <span class="op">=</span> <span class="st">"m"</span>,</span></span>
-<span class="r-in"><span>                             fit <span class="op">=</span> <span class="va">fit</span>,</span></span>
-<span class="r-in"><span>                             boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>                             boot_out <span class="op">=</span> <span class="va">fit_boot_out</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">out</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> == Conditional indirect effects ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path: x -&gt; m -&gt; y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Conditional on moderator(s): w</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       [w]   (w)    ind  CI.lo CI.hi Sig    m~x   y~m</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD 6.046  0.248  0.033 0.459 Sig  0.342 0.725</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Mean    4.990  0.024 -0.065 0.237      0.063 0.375</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M-1.0SD 3.934 -0.006 -0.069 0.113     -0.216 0.026</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m~x’,‘y~m’ is/are the path coefficient(s) along the path conditional</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    on the moderators.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Bootstrapping not requested in calling lavaan::sem()</span></span></span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">mod</span>, data <span class="op">=</span> <span class="va">dat</span>, fixed.x <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fit_boot_out</span> <span class="op">&lt;-</span> <span class="fu">fit2boot_out_do_boot</span><span class="op">(</span>fit <span class="op">=</span> <span class="va">fit</span>,</span></span>
 <span class="r-in"><span>                                     R <span class="op">=</span> <span class="fl">40</span>,</span></span>
 <span class="r-in"><span>                                     seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The expected CPU time is 1.36 second(s).</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Could be faster if 'parallel' set to TRUE.</span>
 <span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>wlevels <span class="op">=</span> <span class="st">"w"</span>,</span></span>
 <span class="r-in"><span>                             x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
 <span class="r-in"><span>                             y <span class="op">=</span> <span class="st">"y"</span>,</span></span>

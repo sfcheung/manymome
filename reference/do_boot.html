@@ -14,7 +14,7 @@ and cond_indirect(),"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9002</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -150,16 +150,19 @@ bootstrapping.</p></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_med_mod_ab1</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_med_mod_ab1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">data_med_mod_ab1</span></span></span>
 <span class="r-in"><span><span class="va">lm_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">m</span> <span class="op">~</span> <span class="va">x</span><span class="op">*</span><span class="va">w</span> <span class="op">+</span> <span class="va">c1</span> <span class="op">+</span> <span class="va">c2</span>, <span class="va">dat</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lm_y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">m</span><span class="op">*</span><span class="va">w</span> <span class="op">+</span> <span class="va">x</span> <span class="op">+</span> <span class="va">c1</span> <span class="op">+</span> <span class="va">c2</span>, <span class="va">dat</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lm_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="lm2list.html">lm2list</a></span><span class="op">(</span><span class="va">lm_m</span>, <span class="va">lm_y</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># In real research, R should be 2000 or even 5000</span></span></span>
-<span class="r-in"><span><span class="va">lm_boot_out</span> <span class="op">&lt;-</span> <span class="fu">do_boot</span><span class="op">(</span><span class="va">lm_out</span>, R <span class="op">=</span> <span class="fl">100</span>, seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lm_boot_out</span> <span class="op">&lt;-</span> <span class="fu">do_boot</span><span class="op">(</span><span class="va">lm_out</span>, R <span class="op">=</span> <span class="fl">50</span>, seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">wlevels</span> <span class="op">&lt;-</span> <span class="fu"><a href="mod_levels.html">mod_levels</a></span><span class="op">(</span>w <span class="op">=</span> <span class="st">"w"</span>, fit <span class="op">=</span> <span class="va">lm_out</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">wlevels</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                w</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M+1.0SD 6.046455</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mean    4.990179</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M-1.0SD 3.933902</span>
 <span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>wlevels <span class="op">=</span> <span class="va">wlevels</span>,</span></span>
 <span class="r-in"><span>                             x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
 <span class="r-in"><span>                             y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
@@ -168,7 +171,24 @@ bootstrapping.</p></div>
 <span class="r-in"><span>                             boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>                             boot_out <span class="op">=</span> <span class="va">lm_boot_out</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">out</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Conditional indirect effects ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path: x -&gt; m -&gt; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Conditional on moderator(s): w</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [w]   (w)    ind  CI.lo CI.hi Sig    m~x   y~m</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD 6.046  0.248  0.029 0.452 Sig  0.342 0.725</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Mean    4.990  0.024 -0.084 0.219      0.063 0.375</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M-1.0SD 3.934 -0.006 -0.066 0.108     -0.216 0.026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 50 samples.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m~x’,‘y~m’ is/are the path coefficient(s) along the path conditional</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    on the moderators.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

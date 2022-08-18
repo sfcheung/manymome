@@ -16,7 +16,7 @@ Hayes (2015, 2018)."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/a
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9002</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -228,7 +228,6 @@ mediation: Quantification, inference, and interpretation.
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lavaan.ugent.be" class="external-link">lavaan</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">modmed_x1m3w4y1</span></span></span>
 <span class="r-in"><span><span class="va">dat</span><span class="op">$</span><span class="va">xw1</span> <span class="op">&lt;-</span> <span class="va">dat</span><span class="op">$</span><span class="va">x</span> <span class="op">*</span> <span class="va">dat</span><span class="op">$</span><span class="va">w1</span></span></span>
@@ -248,19 +247,43 @@ mediation: Quantification, inference, and interpretation.
 <span class="r-in"><span><span class="va">out_mome</span> <span class="op">&lt;-</span> <span class="fu">index_of_mome</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, m <span class="op">=</span> <span class="st">"m1"</span>, w <span class="op">=</span> <span class="st">"w1"</span>,</span></span>
 <span class="r-in"><span>                          fit <span class="op">=</span> <span class="va">fit</span>,</span></span>
 <span class="r-in"><span>                          boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>                          R <span class="op">=</span> <span class="fl">500</span>,</span></span>
+<span class="r-in"><span>                          R <span class="op">=</span> <span class="fl">50</span>,</span></span>
 <span class="r-in"><span>                          seed <span class="op">=</span> <span class="fl">4314</span>,</span></span>
 <span class="r-in"><span>                          parallel <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">out_mome</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Conditional indirect effects ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path: x -&gt; m1 -&gt; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Conditional on moderator(s): w1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [w1] (w1)   ind  CI.lo CI.hi Sig  m1~x  y~m1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    1    1 0.063 -0.610 0.468     0.697 0.091</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    0    0 0.042 -0.388 0.312     0.463 0.091</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Index of Moderated Mediation ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Levels compared: Row 1 - Row 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       x y Index  CI.lo CI.hi</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Index x y 0.021 -0.221 0.169</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo, CI.hi]: 95% percentile confidence interval.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">out_mome</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     y~m1~x </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.02126577 </span>
 <span class="r-in"><span><span class="co"># From lavaan</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">est</span><span class="op">[</span><span class="fl">19</span>, <span class="op">]</span>, nd <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         lhs op rhs    label        est</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 ind_mome := d*b ind_mome 0.02126577</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">out_mome</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             2.50%    97.50%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> y~m1~x -0.2214757 0.1689108</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lavaan.ugent.be" class="external-link">lavaan</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">modmed_x1m3w4y1</span></span></span>
 <span class="r-in"><span><span class="va">dat</span><span class="op">$</span><span class="va">xw1</span> <span class="op">&lt;-</span> <span class="va">dat</span><span class="op">$</span><span class="va">x</span> <span class="op">*</span> <span class="va">dat</span><span class="op">$</span><span class="va">w1</span></span></span>
@@ -276,20 +299,40 @@ mediation: Quantification, inference, and interpretation.
 <span class="r-in"><span>           se <span class="op">=</span> <span class="st">"none"</span>, baseline <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">est</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># R should be at least 2000 or even 5000 in real research.</span></span></span>
-<span class="r-in"><span><span class="co"># parallel should be enabled (set to TRUE) in real research.</span></span></span>
+<span class="r-in"><span><span class="co"># See the example of index_of_mome on how to request</span></span></span>
+<span class="r-in"><span><span class="co"># bootstrap confidence interval.</span></span></span>
 <span class="r-in"><span><span class="va">out_momome</span> <span class="op">&lt;-</span> <span class="fu">index_of_momome</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, m <span class="op">=</span> <span class="st">"m1"</span>,</span></span>
 <span class="r-in"><span>                          w <span class="op">=</span> <span class="st">"w1"</span>, z <span class="op">=</span> <span class="st">"w4"</span>,</span></span>
-<span class="r-in"><span>                          fit <span class="op">=</span> <span class="va">fit</span>,</span></span>
-<span class="r-in"><span>                          boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>                          R <span class="op">=</span> <span class="fl">500</span>,</span></span>
-<span class="r-in"><span>                          seed <span class="op">=</span> <span class="fl">4314</span>,</span></span>
-<span class="r-in"><span>                          parallel <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                          fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">out_momome</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Conditional indirect effects ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path: x -&gt; m1 -&gt; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Conditional on moderator(s): w1, w4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w1, w4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [w1] [w4] (w1) (w4)    ind  m1~x   y~m1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    1    1    1    1 -0.119 0.697 -0.172</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    1    0    1    0 -0.070 0.697 -0.101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    0    1    0    1 -0.079 0.463 -0.172</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    0    0    0    0 -0.047 0.463 -0.101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Index of Moderated Moderated Mediation ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Levels compared:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Row 1 - Row 2) - (Row 3 - Row 4)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       x y  Index</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Index x y -0.017</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">out_momome</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      y~m1~x </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.01659796 </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">est</span><span class="op">[</span><span class="fl">32</span>, <span class="op">]</span>, nd <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">out_momome</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           lhs op   rhs      label         est</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32 ind_momome := d1*d4 ind_momome -0.01659796</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
