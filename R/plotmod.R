@@ -1,26 +1,17 @@
-#' @title Plot Conditional Total Effect
+#' @title Plot Conditional Effects
 #'
-#' @description Plot the conditional total effects for different
+#' @description Plot the conditional effects for different
 #'   levels of moderators.
 #'
 #' @details This function is a plot method of the output
 #'  of [cond_indirect_effects()]. It will use the levels of moderators
 #'  in the output.
 #'
-#' It plots the *total* effect from `x` to `y` in a model for
+#' It plots the conditional effect from `x` to `y` in a model for
 #' different levels of the moderators.
 #'
-#' If `x` has only one path to `y` and there is no
-#' mediator along this path, then it plots the conditional (simple)
-#' effect of `x` on `y`.
-#'
-#' If `x` has one and only one path to `y` and there is one or more
-#' mediators along this path, then it plots the conditional
-#' *indirect* effect along this path.
-#'
-#' If `x` has more than one path to `y`, for example, `x`
-#' has a direct path to `y`, then it plots the
-#' conditional *total* effect from `x` to `y`.
+#' It does not support conditional indirect effects. If there
+#' is one or more mediators in `x`, it will raise an error.
 #'
 #' @return
 #'  A [ggplot2] graph. Plotted if not assigned to a name. It can
@@ -123,20 +114,9 @@
 #' out_mm_1 <- mod_levels_list("w4", c("gpgp2", "gpgp3"),
 #'                             sd_from_mean = c(-1, 1),
 #'                             fit = fit, merge = TRUE)
-#' out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit)
+#' out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "m3", fit = fit)
 #' plot(out_1)
 #' plot(out_1, graph_type = "tumble")
-#'
-#' # Regression
-#' lm_m3 <- lm(m3 ~ m1 + x*gp, dat)
-#' lm_y <- lm(y ~ m2 + m3 + x*w4, dat)
-#' fit_lm <- lm2list(lm_m3, lm_y)
-#' out_mm_1_lm <- mod_levels_list("w4", c("gpgp2", "gpgp3"),
-#'                             sd_from_mean = c(-1, 1),
-#'                             fit = fit_lm, merge = TRUE)
-#' out_1_lm <- cond_indirect_effects(wlevels = out_mm_1_lm, x = "x", y = "y", m = "m3", fit = fit_lm)
-#' plot(out_1_lm)
-#' plot(out_1_lm, graph_type = "tumble")
 #'
 #' @export
 
@@ -167,6 +147,9 @@ plot.cond_indirect_effects <- function(
     x <- full_output_1$x
     y <- full_output_1$y
     m <- full_output_1$m
+    if (!is.null(m)) {
+        stop("The plot method does not support indirect effects.")
+      }
     wlevels <- attr(output, "wlevels")
     if (fit_type == "lm") {
         wlevels <- ind_to_cat(wlevels)

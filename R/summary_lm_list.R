@@ -3,7 +3,7 @@
 #' @description The summary of content of the output of [lm2list()].
 #'
 #' @return
-#'  `x` is returned invisibly.
+#'  `x` is returned invisibly. Called for its side effect.
 #'
 #' @param object The output of [lm2list()].
 #' @param x An object of class `summary_lm_list`.

@@ -12,7 +12,7 @@
 \item{...}{Optional arguments. Ignored.}
 }
 \value{
-Scalar: The change of conditional indirect effect \code{object}.
+Scalar: The change of conditional indirect effect in \code{object}.
 }
 \description{
 Extract the change in conditional indirect effect.

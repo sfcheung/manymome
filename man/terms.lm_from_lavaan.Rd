@@ -19,9 +19,8 @@ It extracts the terms object from an \code{lm_from_lavaan}-class
 object.
 }
 \details{
-A \code{lm_from_lavaan}-class object converts a regression model
-for a variable in a \verb{lavaan`` model to a }formula\verb{object. This function simply calls [stats::terms()] on the}formula` object
-to extract the predictors of a variable.
+A method for \code{lm_from_lavaan}-class that converts a
+regression model for a variable in a \verb{lavaan`` model to a }formula\verb{object. This function simply calls [stats::terms()] on the}formula` object to extract the predictors of a variable.
 }
 \examples{
 library(lavaan)

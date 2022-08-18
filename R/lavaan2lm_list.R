@@ -89,10 +89,10 @@ lm_from_lavaan_list <- function(fit) {
 #' @description It extracts the terms object from an `lm_from_lavaan`-class
 #'  object.
 #'
-#' @details A `lm_from_lavaan`-class object converts a regression model
-#'  for a variable in a `lavaan`` model to a `formula` object.
-#'  This function simply calls [stats::terms()] on the `formula` object
-#'  to extract the predictors of a variable.
+#' @details A method for `lm_from_lavaan`-class that converts a
+#'  regression model for a variable in a `lavaan`` model to a
+#'  `formula` object. This function simply calls [stats::terms()] on
+#'  the `formula` object to extract the predictors of a variable.
 #'
 #' @return
 #' A `terms`-class object. See [terms.object] for details.
@@ -169,10 +169,10 @@ coef.lm_from_lavaan <- function(object, ...) {
 #' @description Compute the predicted values based on
 #'  the model stored in a 'lm_from_lavaan`-class object.
 #'
-#' @details A `lm_from_lavaan`-class object converts a regression model
-#'  for a variable in a `lavaan`` model to a `formula` object.
-#'  This function uses the stored model to compute predicted
-#'  values using user-supplied data.
+#' @details An `lm_from_lavaan`-class method that converts a
+#'  regression model for a variable in a `lavaan`` model to a
+#'  `formula` object. This function uses the stored model to compute
+#'  predicted values using user-supplied data.
 #'
 #' This is an advanced helper used by [plot.cond_indirect_effects()].
 #' Exported for advanced users and developers.

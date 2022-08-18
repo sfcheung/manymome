@@ -20,7 +20,7 @@
 numerical results.}
 }
 \value{
-\code{x} is returned invisibly.
+\code{x} is returned invisibly. Called for its side effect.
 }
 \description{
 The summary of content of the output of \code{\link[=lm2list]{lm2list()}}.

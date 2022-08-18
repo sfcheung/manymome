@@ -12,8 +12,8 @@ fit2boot_out_do_boot(
   R = 100,
   seed = NULL,
   parallel = FALSE,
-  ncores = NULL,
-  make_cluster_args = list(spec = getOption("cl.cores", 2)),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  make_cluster_args = list(),
   progress = TRUE
 )
 }
@@ -30,16 +30,16 @@ only supports a
 Default is \code{NULL}.}
 
 \item{ncores}{Integer. The number of CPU cores to use when
-\code{parallel} is \code{TRUE}. Default is \code{NULL}, and the
-number of cores determined by \code{getOption("cl.cores", 2)}. Will raise an error if greater than the number
-of cores detected by \code{\link[parallel:detectCores]{parallel::detectCores()}}. If
-\code{ncores} is set, it will override
-\code{make_cluster_args}.}
+\code{parallel} is \code{TRUE}. Default is the number of
+non-logical cores minus one (one minimum). Will raise
+an error if greater than the number of cores detected
+by \code{\link[parallel:detectCores]{parallel::detectCores()}}. If \code{ncores} is set, it
+will override \code{make_cluster_args}.}
 
 \item{make_cluster_args}{A named list of additional arguments to be passed
 to \code{\link[parallel:makeCluster]{parallel::makeCluster()}}. For advanced users.
 See \code{\link[parallel:makeCluster]{parallel::makeCluster()}} for details.
-Default is \code{list(spec = getOption("cl.cores", 2))}.}
+Default is \code{list()}.}
 
 \item{progress}{Logical. Display progress or not. Default is \code{TRUE}.}
 }
@@ -105,22 +105,7 @@ mod <-
 m ~ x + w + x:w + c1 + c2
 y ~ m + w + m:w + x + c1 + c2
 "
-# Bootstrapping confidence interval requested in lavaan::sem()
-# bootstrap should be set to 2000 or even 5000 in real study
-set.seed(1234)
-fit <- sem(model = mod, data = dat, fixed.x = FALSE,
-           se = "boot", bootstrap = 40,
-           warn = FALSE)
-fit_boot_out <- fit2boot_out(fit)
-wlevels <- mod_levels(w = "w", fit = fit)
-out <- cond_indirect_effects(wlevels = "w",
-                             x = "x",
-                             y = "y",
-                             m = "m",
-                             fit = fit,
-                             boot_ci = TRUE,
-                             boot_out = fit_boot_out)
-out
+
 # Bootstrapping not requested in calling lavaan::sem()
 fit <- sem(model = mod, data = dat, fixed.x = FALSE)
 fit_boot_out <- fit2boot_out_do_boot(fit = fit,

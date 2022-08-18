@@ -17,7 +17,7 @@ is to be printed. Default is \code{TRUE.}}
 \item{...}{Other arguments. Not used.}
 }
 \value{
-\code{x} is returned invisibly.
+\code{x} is returned invisibly. Called for its side effect.
 }
 \description{
 Print the content of the output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}

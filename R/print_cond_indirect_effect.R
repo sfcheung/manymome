@@ -3,7 +3,7 @@
 #' @description Print the content of the output of [cond_indirect_effects()]
 #'
 #' @return
-#'  `x` is returned invisibly.
+#'  `x` is returned invisibly. Called for its side effect.
 #'
 #' @param x The output of [cond_indirect_effects()].
 #' @param digits Number of digits to display. Default is 3.

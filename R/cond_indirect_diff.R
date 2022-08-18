@@ -43,7 +43,7 @@
 #' for the difference in conditional indirect effects.
 #'
 #' @return
-#' It returns a `cond_indirect_diff`-class object. This class has a
+#' A `cond_indirect_diff`-class object. This class has a
 #' `print` method ([print.cond_indirect_diff()]), a `coef` method
 #' ([coef.cond_indirect_diff()]), and a `confint` method
 #' ([confint.cond_indirect_diff()]).
@@ -171,7 +171,7 @@ cond_indirect_diff <- function(output,
 #'
 #' @details The `print` method of the `cond_indirect_diff`-class object.
 #'
-#' @return Return `x` invisibly. Called for its side effect.
+#' @return It returns `x` invisibly. Called for its side effect.
 #'
 #' @param x The output of [cond_indirect_diff()].
 #' @param digits The number of decimal places in the printout.
@@ -270,7 +270,7 @@ print.cond_indirect_diff <- function(x, digits = 3, ...) {
 #'
 #' @details The `coef` method of the `cond_indirect_diff`-class object.
 #'
-#' @return Scalar: The change of conditional indirect effect `object`.
+#' @return Scalar: The change of conditional indirect effect in `object`.
 #'
 #' @param object The output of [cond_indirect_diff()].
 #' @param ... Optional arguments. Ignored.

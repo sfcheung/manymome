@@ -14,7 +14,7 @@
 \item{...}{Optional arguments. Ignored.}
 }
 \value{
-Return \code{x} invisibly. Called for its side effect.
+It returns \code{x} invisibly. Called for its side effect.
 }
 \description{
 Print the output of \code{\link[=cond_indirect_diff]{cond_indirect_diff()}}.
