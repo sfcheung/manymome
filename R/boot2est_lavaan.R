@@ -212,8 +212,13 @@ fit2boot_out_do_boot <- function(fit,
         #                 " second(s).\n",
         #                 "Could be faster if 'parallel' set to TRUE."))
         # utils::flush.console()
-        rt <- system.time(out <- suppressWarnings(lapply(ids, boot_i,
-                                                         d = dat_org)))
+        if (progress) {
+            rt <- system.time(out <- suppressWarnings(pbapply::pblapply(ids, boot_i,
+                                                            d = dat_org)))
+          } else {
+            rt <- system.time(out <- suppressWarnings(lapply(ids, boot_i,
+                                                            d = dat_org)))
+          }
       }
     i_ok <- sapply(out, function(x) x$ok)
     out <- out[i_ok]

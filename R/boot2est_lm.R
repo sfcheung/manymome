@@ -37,6 +37,8 @@
 #' @param R The number of bootstrap samples. Default is 100.
 #' @param seed The seed for the bootstrapping.
 #'             Default is `NULL` and seed is not set.
+#' @param progress Whether progress will be displayed.
+#' Default is `TRUE`.
 #'
 #'
 #' @seealso [do_boot()], the general purpose
@@ -65,7 +67,8 @@
 #'
 #'
 
-lm2boot_out <- function(outputs, R = 100, seed = NULL) {
+lm2boot_out <- function(outputs, R = 100, seed = NULL,
+                        progress = TRUE) {
     out_type <- cond_indirect_check_fit(outputs)
     if (out_type != "lm") {
         stop("'outputs' must be a list of 'lm()' outputs.")
@@ -73,9 +76,15 @@ lm2boot_out <- function(outputs, R = 100, seed = NULL) {
     dat <- merge_model_frame(outputs)
     n <- nrow(dat)
     if (!is.null(seed)) set.seed(seed)
-    out0 <- replicate(R, lm_boot2est_i(d = dat,
-                                       i = sample.int(n, replace = TRUE),
-                                       outputs = outputs), simplify = FALSE)
+    if (progress) {
+        out0 <- pbapply::pbreplicate(R, lm_boot2est_i(d = dat,
+                                          i = sample.int(n, replace = TRUE),
+                                          outputs = outputs), simplify = FALSE)
+      } else {
+        out0 <- replicate(R, lm_boot2est_i(d = dat,
+                                          i = sample.int(n, replace = TRUE),
+                                          outputs = outputs), simplify = FALSE)
+      }
     class(out0) <- "boot_out"
     out0
   }

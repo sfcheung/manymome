@@ -107,7 +107,8 @@ do_boot <- function(fit,
     if (fit_type == "lm") {
         out <- lm2boot_out(outputs = fit,
                            R = R,
-                           seed = seed)
+                           seed = seed,
+                           progress = progress)
       }
     return(out)
   }
