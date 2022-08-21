@@ -4,7 +4,7 @@
 \alias{lm2boot_out}
 \title{Bootstrap Estimates for \code{lm} Outputs}
 \usage{
-lm2boot_out(outputs, R = 100, seed = NULL)
+lm2boot_out(outputs, R = 100, seed = NULL, progress = TRUE)
 }
 \arguments{
 \item{outputs}{A list of \code{lm} class objects, or
@@ -15,6 +15,9 @@ object).}
 
 \item{seed}{The seed for the bootstrapping.
 Default is \code{NULL} and seed is not set.}
+
+\item{progress}{Whether progress will be displayed.
+Default is \code{TRUE}.}
 }
 \value{
 A \code{boot_out}-class object that can be used for the \code{boot_out}
