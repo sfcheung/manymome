@@ -1,5 +1,7 @@
 # manymome
 
+(Version 0.1.0.9004), updated on 2022-08-23, [release history](https://sfcheung.github.io/manymome/news/index.html))
+
 Moderation, mediation, and moderated mediation in structural equation modelling (SEM)
 and path models fitted by linear regression.
 
@@ -82,15 +84,19 @@ https://sfcheung.github.io/manymome/
 
 ## Installation
 
-Stable release versions of this package can be downloaded below:
-
-https://github.com/sfcheung/manymome/releases
-
-The latest developmental version of this package can be installed by `remotes::install_github`:
+The latest stable version at GitHub can be installed by `remotes::install_github()`:
 
 ```
 remotes::install_github("sfcheung/manymome")
 ```
+
+The latest developmental version at GitHub can be installed
+from the `devel` branch:
+
+```
+remotes::install_github("sfcheung/manymome@devel")
+```
+
 
 ## Issues
 
