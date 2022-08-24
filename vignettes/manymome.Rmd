@@ -1,6 +1,6 @@
 ---
 title: "manymome"
-author: "Shu Fai Cheung"
+author: "Shu Fai Cheung & Sing-Hang Cheung"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
