@@ -59,6 +59,7 @@ reference:
   - print.cond_indirect_diff
   - print.lm_list
   - summary.lm_list
+  - subsetting_wlevels
 - title: Advanced helpers
   desc: Helper functions exported for advanced users.
 - contents:
