@@ -1,7 +1,3 @@
-# manymome 0.1.0.9006
+# manymome 0.1.1.0
 
-* Minor bug fixes.
-
-# manymome 0.1.0.0
-
-* Initial public release.
+* First public release.
