@@ -1,4 +1,4 @@
-# manymome 0.1.0.9005
+# manymome 0.1.0.9006
 
 * Minor bug fixes.
 
