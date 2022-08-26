@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -209,18 +209,13 @@
 <code class="sourceCode R"><span><span class="va">fit_boot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_boot.html">do_boot</a></span><span class="op">(</span>fit <span class="op">=</span> <span class="va">fit</span>,</span>
 <span>                    R <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>                    seed <span class="op">=</span> <span class="fl">53253</span>,</span>
-<span>                    ncores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in fit2boot_out_do_boot(fit = fit, R = R, seed = seed, parallel =</span></span>
-<span><span class="co">#&gt; parallel, : 'ncores' &gt;= The number of detected cores (2). The computer may not</span></span>
-<span><span class="co">#&gt; be responsive when bootstrapping is running.</span></span>
-<span><span class="co">#&gt; 2 processes started to run bootstrapping.</span></span>
-<span><span class="co">#&gt; The expected CPU time is about 14.34 second(s).</span></span></code></pre></div>
+<span>                    ncores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p>These are the major arguments:</p>
 <ul>
 <li><p><code>fit</code>: The output of <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>.</p></li>
 <li><p><code>R</code>: The number of bootstrap samples, which should be 2000 or even 5000 in real research. <code>R</code> is set to 100 here just for illustration.</p></li>
 <li><p><code>seed</code>: The seed to reproduce the results.</p></li>
-<li><p><code>ncores</code>: The number of processes in parallel processing. The default number is the number of detected physical cores minus 1. Can be omitted in real studies. Set to 2 here for illustration.</p></li>
+<li><p><code>ncores</code>: The number of processes in parallel processing. The default number is the number of detected physical cores minus 1. Can be omitted in real studies. Set to 1 here for illustration.</p></li>
 </ul>
 <p>By default, parallel processing is used, and so the results are reproducible with the same seed only if the number of processes is the same. See <code><a href="../reference/do_boot.html">do_boot()</a></code> for other options.</p>
 <p>The output, <code>fit_boot</code> in this case, can then be used for all subsequent analyses on this model.</p>
@@ -450,12 +445,7 @@
 <code class="sourceCode R"><span><span class="va">fit2_boot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_boot.html">do_boot</a></span><span class="op">(</span>fit <span class="op">=</span> <span class="va">fit2</span>,</span>
 <span>                    R <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>                    seed <span class="op">=</span> <span class="fl">53253</span>,</span>
-<span>                    ncores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in fit2boot_out_do_boot(fit = fit, R = R, seed = seed, parallel =</span></span>
-<span><span class="co">#&gt; parallel, : 'ncores' &gt;= The number of detected cores (2). The computer may not</span></span>
-<span><span class="co">#&gt; be responsive when bootstrapping is running.</span></span>
-<span><span class="co">#&gt; 2 processes started to run bootstrapping.</span></span>
-<span><span class="co">#&gt; The expected CPU time is about 1.86 second(s).</span></span></code></pre></div>
+<span>                    ncores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p>The function <code><a href="../reference/index_of_mome.html">index_of_mome()</a></code> can be used to compute the index of moderated mediation of <code>w1</code> on the path <code>x -&gt; m -&gt; y</code>:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_mome</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/index_of_mome.html">index_of_mome</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span>
@@ -553,12 +543,7 @@
 <span>                           boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                           R <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>                           seed <span class="op">=</span> <span class="fl">43143</span>,</span>
-<span>                           ncores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in fit2boot_out_do_boot(fit = fit, R = R, seed = seed, parallel =</span></span>
-<span><span class="co">#&gt; parallel, : 'ncores' &gt;= The number of detected cores (2). The computer may not</span></span>
-<span><span class="co">#&gt; be responsive when bootstrapping is running.</span></span>
-<span><span class="co">#&gt; 2 processes started to run bootstrapping.</span></span>
-<span><span class="co">#&gt; The expected CPU time is about 1.56 second(s).</span></span></code></pre></div>
+<span>                           ncores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p>The main arguments are:</p>
 <ul>
 <li>
@@ -576,7 +561,7 @@
 <li>
 <code>seed</code>: The seed for the random number generator.</li>
 <li>
-<code>ncores</code>: The number of processes in parallel processing. The default number is the number of detected physical cores minus 1. Can be omitted in real studies. Set to 2 here for illustration.</li>
+<code>ncores</code>: The number of processes in parallel processing. The default number is the number of detected physical cores minus 1. Can be omitted in real studies. Set to 1 here for illustration.</li>
 </ul>
 <p>Like <code><a href="../reference/do_boot.html">do_boot()</a></code>, by default, parallel processing is used, and so the results are reproducible with the same seed only if the number of processes is the same.</p>
 <p>This is the output:</p>
