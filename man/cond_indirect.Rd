@@ -296,19 +296,19 @@ will be ignored.
 }
 \section{Functions}{
 \itemize{
-\item \code{cond_indirect}: Compute conditional, indirect, or
+\item \code{cond_indirect()}: Compute conditional, indirect, or
 conditional indirect effects for one set
 of levels.
 
-\item \code{cond_indirect_effects}: Compute the conditional effects or
+\item \code{cond_indirect_effects()}: Compute the conditional effects or
 conditional indirect effects for several
 sets of levels of the moderator(s).
 
-\item \code{indirect_effect}: Compute the indirect effect. A wrapper of
+\item \code{indirect_effect()}: Compute the indirect effect. A wrapper of
 \code{\link[=cond_indirect]{cond_indirect()}}. Can be used
 when there is no moderator.
-}}
 
+}}
 \examples{
 
 library(lavaan)

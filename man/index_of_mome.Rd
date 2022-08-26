@@ -121,13 +121,13 @@ of one moderator when the other moderator increases by one unit.
 }
 \section{Functions}{
 \itemize{
-\item \code{index_of_mome}: Compute the index of
+\item \code{index_of_mome()}: Compute the index of
 moderated mediation.
 
-\item \code{index_of_momome}: Compute the index of
+\item \code{index_of_momome()}: Compute the index of
 moderated moderated mediation.
-}}
 
+}}
 \examples{
 
 library(lavaan)

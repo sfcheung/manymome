@@ -34,9 +34,9 @@ from the requested row.
 }
 \section{Functions}{
 \itemize{
-\item \code{get_one_cond_effect}: An alias to \code{\link[=get_one_cond_indirect_effect]{get_one_cond_indirect_effect()}}
-}}
+\item \code{get_one_cond_effect()}: An alias to \code{\link[=get_one_cond_indirect_effect]{get_one_cond_indirect_effect()}}
 
+}}
 \examples{
 
 library(lavaan)

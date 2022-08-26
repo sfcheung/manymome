@@ -85,14 +85,14 @@ is used in all subsequent analyses.
 }
 \section{Functions}{
 \itemize{
-\item \code{fit2boot_out}: Process stored bootstrap estimates for functions
+\item \code{fit2boot_out()}: Process stored bootstrap estimates for functions
 such as \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 
-\item \code{fit2boot_out_do_boot}: Do bootstrapping and store information to be used
+\item \code{fit2boot_out_do_boot()}: Do bootstrapping and store information to be used
 by \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} and related functions.
 Support parallel processing.
-}}
 
+}}
 \examples{
 
 library(lavaan)
