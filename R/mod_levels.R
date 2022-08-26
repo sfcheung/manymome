@@ -137,6 +137,11 @@
 #'                       fit = fit,
 #'                       wlevels = w1w2_levels)
 #'
+#'
+#' @return A `wlevels`-class object which is
+#' a data frame with additional
+#' attributes about the levels.
+#'
 #' @export
 #'
 #'
@@ -201,6 +206,7 @@ mod_levels <- function(w,
     colnames(tmp) <- attr(out, "wname")
     attr(out, "wlevels") <- tmp
     attr(out, "w_type") <- w_type
+    class(out) <- c("wlevels", class(out))
     out
   }
 
@@ -220,6 +226,12 @@ mod_levels <- function(w,
 #' w1w2_levels
 #' cond_indirect_effects(x = "x", y = "y", m = "m",
 #'                       fit = fit, wlevels = w1w2_levels)
+#'
+#' @return If `merge` is `TRUE`, return
+#' a `wlevels`-class object. If `merge`
+#' is `FALSE`, return a list of
+#' `wlevels`-class objects.
+#'
 #' @export
 #' @describeIn mod_levels Generate levels for several moderators.
 #' @order 2

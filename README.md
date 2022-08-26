@@ -1,4 +1,12 @@
+  <!-- badges: start -->
+  [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+  [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+  [![R-CMD-check](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml)
+  <!-- badges: end -->
+
 # manymome
+
+(Version 0.1.1.0), updated on 2022-08-25, [release history](https://sfcheung.github.io/manymome/news/index.html))
 
 Moderation, mediation, and moderated mediation in structural equation modelling (SEM)
 and path models fitted by linear regression.
@@ -13,6 +21,7 @@ and path models fitted by linear regression.
 ## Advantages
 
 - **A Simpler Workflow**
+
     - No need to create any parameters or similar
   code when
   fitting a model. Just focus on fitting the model first. After a model has
@@ -82,15 +91,19 @@ https://sfcheung.github.io/manymome/
 
 ## Installation
 
-Stable release versions of this package can be downloaded below:
-
-https://github.com/sfcheung/manymome/releases
-
-The latest developmental version of this package can be installed by `remotes::install_github`:
+The latest stable version at GitHub can be installed by `remotes::install_github()`:
 
 ```
 remotes::install_github("sfcheung/manymome")
 ```
+
+The latest developmental version at GitHub can be installed
+from the `devel` branch:
+
+```
+remotes::install_github("sfcheung/manymome@devel")
+```
+
 
 ## Issues
 
