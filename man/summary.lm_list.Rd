@@ -27,9 +27,9 @@ The summary of content of the output of \code{\link[=lm2list]{lm2list()}}.
 }
 \section{Functions}{
 \itemize{
-\item \code{print.summary_lm_list}: Print method for output of summary for lm_list.
-}}
+\item \code{print(summary_lm_list)}: Print method for output of summary for lm_list.
 
+}}
 \examples{
 
 data(data_serial_parallel)

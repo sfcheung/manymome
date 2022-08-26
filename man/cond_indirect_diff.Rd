@@ -69,11 +69,11 @@ for the difference in conditional indirect effects.
 }
 \section{Functions}{
 \itemize{
-\item \code{cond_indirect_diff}: Compute the difference in
+\item \code{cond_indirect_diff()}: Compute the difference in
 in conditional indirect effect between two rows
 in the output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
-}}
 
+}}
 \examples{
 
 library(lavaan)

@@ -145,11 +145,11 @@ effects or conditional indirect effects for all the combinations.
 }
 \section{Functions}{
 \itemize{
-\item \code{mod_levels}: Generate levels for one moderator.
+\item \code{mod_levels()}: Generate levels for one moderator.
 
-\item \code{mod_levels_list}: Generate levels for several moderators.
+\item \code{mod_levels_list()}: Generate levels for several moderators.
+
 }}
-
 \examples{
 
 library(lavaan)

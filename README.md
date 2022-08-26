@@ -6,7 +6,7 @@
 
 # manymome
 
-(Version 0.1.1.0), updated on 2022-08-25, [release history](https://sfcheung.github.io/manymome/news/index.html))
+(Version 0.1.1.1), updated on 2022-08-26, [release history](https://sfcheung.github.io/manymome/news/index.html))
 
 Moderation, mediation, and moderated mediation in structural equation modelling (SEM)
 and path models fitted by linear regression.
