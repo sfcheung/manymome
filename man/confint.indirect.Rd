@@ -18,6 +18,11 @@ always has only one parameter.}
 
 \item{...}{Additional arguments. Ignored by the function.}
 }
+\value{
+A numeric vector of
+two elements, the limits of
+the confidence interval.
+}
 \description{
 Return the  bootstrap confidence
 interval of the indirect effect

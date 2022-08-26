@@ -16,6 +16,11 @@
 #'               use the level of the stored intervals.
 #' @param ...  Additional arguments. Ignored by the function.
 #'
+#' @return A data frame with two
+#' columns, one for each confidence
+#' limit of the confidence intervals.
+#' The number of rows is equal to the
+#' number of rows of `object`.
 #'
 #' @seealso [cond_indirect_effects()]
 #'
