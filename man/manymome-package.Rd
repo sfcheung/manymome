@@ -6,7 +6,7 @@
 \alias{manymome-package}
 \title{manymome: Moderation, Mediation, and Moderated-Mediation in SEM and Regression}
 \description{
-Functions for computing indirect effects, conditional effects, and conditional indirect effects, and their bootstrap confidence intervals. Support standardized (partially or completely) indirect effects, conditional effects, and conditional indirect effects. Model fitting can be done by structural equation modeling (using 'sem()' in 'lavaan') or regression (using 'lm()').
+Functions for computing indirect effects, conditional effects, and conditional indirect effects, and their bootstrap confidence intervals. Support standardized (partially or completely) indirect effects, conditional effects, and conditional indirect effects. Model fitting can be done by structural equation modeling using lavaan() or regression using lm().
 }
 \seealso{
 Useful links:

@@ -19,6 +19,13 @@ use the level of the stored intervals.}
 
 \item{...}{Additional arguments. Ignored by the function.}
 }
+\value{
+A data frame with two
+columns, one for each confidence
+limit of the confidence intervals.
+The number of rows is equal to the
+number of rows of \code{object}.
+}
 \description{
 Return the confidence intervals of the conditional
 indirect effects or conditional effects in the output of

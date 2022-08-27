@@ -17,6 +17,9 @@
 #'               95% confidence interval.
 #' @param ...  Additional arguments. Ignored by the function.
 #'
+#' @return A numeric vector of
+#' two elements, the limits of
+#' the confidence interval.
 #'
 #' @seealso [indirect_effect()] and [cond_indirect()]
 #'

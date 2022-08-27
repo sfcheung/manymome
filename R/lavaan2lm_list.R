@@ -90,7 +90,7 @@ lm_from_lavaan_list <- function(fit) {
 #'  object.
 #'
 #' @details A method for `lm_from_lavaan`-class that converts a
-#'  regression model for a variable in a `lavaan`` model to a
+#'  regression model for a variable in a `lavaan` model to a
 #'  `formula` object. This function simply calls [stats::terms()] on
 #'  the `formula` object to extract the predictors of a variable.
 #'
@@ -170,7 +170,7 @@ coef.lm_from_lavaan <- function(object, ...) {
 #'  the model stored in a 'lm_from_lavaan`-class object.
 #'
 #' @details An `lm_from_lavaan`-class method that converts a
-#'  regression model for a variable in a `lavaan`` model to a
+#'  regression model for a variable in a `lavaan` model to a
 #'  `formula` object. This function uses the stored model to compute
 #'  predicted values using user-supplied data.
 #'

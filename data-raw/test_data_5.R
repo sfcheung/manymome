@@ -1,5 +1,3 @@
-options(width = 132)
-
 # Generate data
 library(lavaan)
 set.seed(235452)
