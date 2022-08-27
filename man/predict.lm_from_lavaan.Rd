@@ -24,7 +24,8 @@ the model stored in a 'lm_from_lavaan`-class object.
 }
 \details{
 An \code{lm_from_lavaan}-class method that converts a
-regression model for a variable in a \verb{lavaan`` model to a }formula` object. This function uses the stored model to compute
+regression model for a variable in a \code{lavaan} model to a
+\code{formula} object. This function uses the stored model to compute
 predicted values using user-supplied data.
 
 This is an advanced helper used by \code{\link[=plot.cond_indirect_effects]{plot.cond_indirect_effects()}}.

@@ -20,7 +20,9 @@ object.
 }
 \details{
 A method for \code{lm_from_lavaan}-class that converts a
-regression model for a variable in a \verb{lavaan`` model to a }formula\verb{object. This function simply calls [stats::terms()] on the}formula` object to extract the predictors of a variable.
+regression model for a variable in a \code{lavaan} model to a
+\code{formula} object. This function simply calls \code{\link[stats:terms]{stats::terms()}} on
+the \code{formula} object to extract the predictors of a variable.
 }
 \examples{
 library(lavaan)
