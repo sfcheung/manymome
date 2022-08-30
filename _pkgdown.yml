@@ -4,6 +4,17 @@ url: https://sfcheung.github.io/manymome/
 template:
   bootstrap: 5
 
+articles:
+- title: Articles
+  navbar: ~
+  contents:
+  - manymome
+  - med_lav
+  - mod_levels
+  - do_boot
+  - med_lm
+  - mome_lm
+
 reference:
 - title: Main Functions
   desc:  >

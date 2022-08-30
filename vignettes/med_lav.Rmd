@@ -1,12 +1,12 @@
 ---
-title: "Latent Mediation Models"
+title: "Mediation Models with Latent Variables"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     number_sections: true
 vignette: >
-  %\VignetteIndexEntry{Latent Mediation Models}
+  %\VignetteIndexEntry{Mediation Models with Latent Variables}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

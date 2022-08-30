@@ -1,95 +1,124 @@
-  <!-- badges: start -->
-  [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
-  [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-  [![R-CMD-check](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml)
-  <!-- badges: end -->
+<!-- badges: start -->
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![R-CMD-check](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
+(Version 0.1.1.4), updated on 2022-08-30, [release history](https://sfcheung.github.io/manymome/news/index.html))
 
 # manymome
 
-(Version 0.1.1.3), updated on 2022-08-30, [release history](https://sfcheung.github.io/manymome/news/index.html))
+Functions for estimating indirect effects, conditional indirect
+effects, and conditional effects in a model with
+moderation, mediation, and/or moderated mediation fitted
+by structural equation modelling (SEM) or estimated
+by multiple regression.
 
-Moderation, mediation, and moderated mediation in structural equation modelling (SEM)
-and path models fitted by linear regression.
-
-## What It Can Do?
+# What It Can Do?
 
 - Compute an unstandardized or standardized indirect effect or
   conditional indirect effect in a path model.
 
 - Form the bootstrap confidence interval for this effect.
 
-## Advantages
+# Advantages
 
 - **A Simpler Workflow**
 
-    - No need to create any parameters or similar
-  code when
-  fitting a model. Just focus on fitting the model first. After a model has
-  been selected, users can compute the effect for nearly any path, from
-  nearly any variable, to nearly any other variables, conditional on
-  nearly any moderators,
-  and at any levels of the moderators.
-  (See `vignette("manymome")` for details.)
+No need to create any parameters or similar
+code when
+fitting a model. Just focus on fitting the model first. After a model has
+been selected, users can compute the effect for nearly any path, from
+nearly any variable, to nearly any other variables, conditional on
+nearly any moderators,
+and at any levels of the moderators.
+(See `vignette("manymome")` for details.)
 
 - **Supports Both SEM-Based Modelling and Regression-Based**
-    - Supports structural equation models fitted by `lavaan::sem()` or by
-  path models fitted by regression using `lm()`. The interface of the main
-  functions are similar for both approaches.
+
+Supports structural equation models fitted by `lavaan::sem()` or by
+path models fitted by regression using `lm()`, although the
+focus of this package is on structural equation models.
+The interface of the main functions are nearly the same for
+both approaches.
 
 - **Flexible in the Form of Models**
-    - No limit on the number of predictors, mediators, and
-  outcome variables, other than those by `lavaan::sem()` and `lm()`.
 
-- **Supports Latent Variables Mediation and Moderated Mediation**
-    - Supports indirect effects and conditional indirect effects among
-      latent variables for models fitted by `lavaan::sem()`.
+No limit on the number of predictors, mediators, and
+outcome variables, other than those by `lavaan::sem()` and `lm()`.
+
+- **Supports Standardized Effects**
+
+Can estimate standardized indirect effects and standardized
+conditional indirect effects without the need to standardize
+the variables. The  bootstrap confidence intervals for standardized
+effects correctly take into account the sampling variation
+of the standardizers (the standard deviations of the predictor
+and the outcome variable).
 
 - **Supports Missing Data**
-    - Supports dataset with missing data
-   through `lavaan::sem()` with full information maximum likelihood (`fiml`).
+
+Supports dataset with missing data
+through `lavaan::sem()` with full information maximum likelihood (`fiml`).
 
 - **Supports Numeric and Categorical Moderators**
-    - Supports numeric and
-  categorical moderators. Capitalizes on the native support of categorical
-  moderators in `lm()` and has a function (`factor2var()`) for the easy
-   creation of dummy variables in `lavaan::sem()`.
+
+Supports numeric and
+categorical moderators. It has a function (`factor2var()`) for the easy
+creation of dummy variables in `lavaan::sem()`, and can capitalizes on
+the native support of categorical moderators in `lm()`.
 
 - **Less Time for Bootstrapping**
-    - Bootstrapping, which is time consuming, can
-  be conducted just once. The main functions for computing indirect effects
-  and conditional indirect effects can be called as many times as needed without redoing
-  bootstrapping.
 
-## Limitations
+Bootstrapping, which is time consuming, can
+be conducted just once. The main functions for computing indirect effects
+and conditional indirect effects can be called as many times as needed without redoing
+bootstrapping because they can reuse bootstrap estiamtes (see `vignette("manymome")`
+and `vignetted("do_boot")`).
 
-- Does not support categorical predictors.
+- **Supports Latent Variables Mediation**
+
+Supports indirect effects among
+latent variables for models fitted by `lavaan::sem()` (see
+`vignette("med_lav")`).
+
+# Limitations
+
+Despite the aforementioned advantages, the current version of
+`manymome` have the following limitations:
+
+- Does not (officially) support categorical predictors.
 
 - Does not support multisample models (although `lavaan` does).
 
 - Does not support multilevel models (although `lavaan` does).
 
-- Only supports nonparametric bootstrapping and percentile confidence interval. Does not support other methods such as
+- Only supports nonparametric bootstrapping and percentile
+confidence interval. Does not support other methods such as
 Monte Carlo confidence interval or parametric bootstrapping.
 
 - Only supports OLS estimation when `lm()` is used.
 
-We would add more to this list ([suggestions are welcomed](#issues)) such that users (and we) know when to use
-other tools, or whether we can address these limitations
-in `manymome`.
+We would add more to this list (suggestions are welcomed by
+adding [GitHub issues](#issues)) so that users (and we) know when
+other tools should be used instead of `manymome`, or whether
+we can address these limitations in `manymome` in the future.
 
-## How To Use It?
+# How To Use It?
 
-- A good starting point is the Get-Started article (`vignette("manymome")`).
+A good starting point is the Get-Started article (`vignette("manymome")`).
 
-- More articles will be released at [Articles](./articles/index.html)
+There are also [articles](./articles/index.html) (vignettes) on
+special topics, such as how to use `mod_levels()` to set
+the levels of the moderators. More will be added.
 
-## Homepage
+# Homepage
 
 For more information on this package, please visit its GitHub page:
 
 https://sfcheung.github.io/manymome/
 
-## Installation
+# Installation
 
 The latest stable version at GitHub can be installed by `remotes::install_github()`:
 
@@ -97,15 +126,21 @@ The latest stable version at GitHub can be installed by `remotes::install_github
 remotes::install_github("sfcheung/manymome")
 ```
 
-The latest developmental version at GitHub can be installed
-from the `devel` branch:
+# Background
 
-```
-remotes::install_github("sfcheung/manymome@devel")
-```
+We developed the package [`stdmod`](https://sfcheung.github.io/stdmod/)
+for moderated regression. We included a function (`stdmod::stdmod_lavaan()`)
+for standardized moderation effect in path models fitted
+by `lavaan::sem()`. However, in practice, path models nearly
+always included indirect effects and so moderated mediation
+is common in path models. Moreover, that package is intended for
+moderated regression, not on structural equation modeling. We
+thought perhaps we can develop a more general tools for
+models fitted by structural equation modelling based on
+the interface we used in `stdmod::stdmod_lavaan()`. The product
+is this package, `manymome`.
 
-
-## Issues
+# Issues
 
 If you have any suggestions and found any bugs or limitations, please feel
 feel to open a GitHub issue. Thanks:
