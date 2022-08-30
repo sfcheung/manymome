@@ -1,0 +1,355 @@
+---
+title: "Mediation Analysis by Multiple Regression"
+author: "Shu Fai Cheung & Sing-Hang Cheung"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    number_sections: true
+vignette: >
+  %\VignetteIndexEntry{Mediation Analysis by Multiple Regression}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+This article is a brief illustration of how `indirect_effect()`
+can be used to estimate the indirect effects
+when the model parameters are estimate by
+ordinary least squares (OLS) multiple regression
+using `lm()`.
+
+# Data Set and Model
+
+This is the sample dataset used for
+illustration:
+
+```{r data}
+library(manymome)
+dat <- data_med_complicated
+print(round(head(dat), 2))
+```
+
+This dataset has 9 variables: 2
+predictors (`x1` and `x2`),
+three mediators (`m11`, `m12`, and `m2`),
+two outcome variables (`y1` and `y2`),
+and two control variables (`c1` and `c2`).
+
+Suppose this is the model to be fitted:
+
+```{r draw_model, echo = FALSE}
+library(semPlot)
+suppressMessages(library(lavaan))
+mod <-
+"
+m11 ~ x1 + x2
+m12 ~ m11 + x1 + x2
+m2 ~ x1 + x2
+y1 ~ m2 + m12 + m11 + x1 + x2
+y2 ~ m2 + m12 + m11 + x1 + x2
+"
+fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c(  NA,  "m11",   NA, "m12",   NA,
+                     "x1",     NA,   NA,    NA, "y1",
+                     "x2",     NA,   NA,    NA, "y2",
+                       NA,     NA, "m2",    NA,   NA), byrow = TRUE, 4, 5)
+p <- semPaths(fit0,
+              residuals = FALSE,
+              sizeMan = 8,
+              exoCov = FALSE,
+              node.width = 1,
+              edge.label.cex = .50,
+              label.cex = .75,
+              style = "ram",
+              mar = c(5, 5, 5, 5),
+              layout = layout_m,
+              DoNotPlot = TRUE)
+p$graphAttributes$Edges$color[18:19] <- "white"
+plot(p)
+text(-1.2, -1, paste("(Covariances and\ncontrol variables",
+                    "omitted for readability)", sep = "\n"),
+     adj = c(0, .5))
+```
+
+Despite the apparent complexity, the path parameters
+can be estimated by multiple regression models:
+
+```{r fit_lm}
+lm_m11 <- lm(m11 ~ x1 + x2 + c1 + c2, dat)
+lm_m12 <- lm(m12 ~ m11 + x1 + x2 + c1 + c2, dat)
+lm_m2 <- lm(m2 ~ x1 + x2 + c1 + c2, dat)
+lm_y1 <- lm(y1 ~ m12 + m2 + m11 + x1 + x2 + c1 + c2, dat)
+lm_y2 <- lm(y2 ~ m12 + m2 + m11 + x1 + x2 + c1 + c2, dat)
+```
+
+These are the regression coefficient estimates of
+the paths (those of control variables omitted):
+
+```{r est, echo = FALSE}
+est <- matrix("", 5, 5)
+colnames(est) <- c("m11", "m12", "m2", "y1", "y2")
+rownames(est) <- c("x1", "x2", "m11", "m12", "m2")
+tmp <- coef(lm_m11)[-c(1, 4, 5)]
+est[names(tmp), "m11"] <- formatC(tmp, digits = 3, format = "f")
+tmp <- coef(lm_m12)[-c(1, 5, 6)]
+est[names(tmp), "m12"] <- formatC(tmp, digits = 3, format = "f")
+tmp <- coef(lm_m2)[-c(1, 4, 5)]
+est[names(tmp), "m2"] <- formatC(tmp, digits = 3, format = "f")
+tmp <- coef(lm_y1)[-c(1, 7, 8)]
+est[names(tmp), "y1"] <- formatC(tmp, digits = 3, format = "f")
+tmp <- coef(lm_y2)[-c(1, 7, 8)]
+est[names(tmp), "y2"] <- formatC(tmp, digits = 3, format = "f")
+print(as.data.frame(est), quote = FALSE)
+```
+
+Although not mandatory, it is recommended to combine these
+five models into one object (a system of regression models)
+using `lm2list()`:
+
+```{r lm2list}
+fit_lm <- lm2list(lm_m11, lm_m12, lm_m2, lm_y1, lm_y2)
+fit_lm
+```
+
+Simply use the `lm()` outputs as arguments. Order does not
+matter. `lm2list()` will also check (a) whether the same
+sample is used in all regression analysis (not just
+same sample size, but the same set of cases), and (b)
+whether the models are "connected", to ensure that
+the regression outputs can be validly combined.
+
+# Generating Bootstrap Estimates
+
+To form nonparametric bootstrap confidence interval for
+indirect effects to be computed, `do_boot()` can be used
+to generate bootstrap estimates for all regression
+coefficients first. These estimates can be reused for
+any indirect effects to be estimated.
+
+
+```{r do_boo}
+boot_out_lm <- do_boot(fit_lm,
+                       R = 100,
+                       seed = 54532,
+                       ncores = 1)
+```
+
+Please see `vignette("do_boot")` or
+the help page of `do_boot()` on how
+to use this function. In real research,
+`R`, the number of bootstrap samples,
+should be set to 2000 or even 5000.
+The argument `ncores` can usually be omitted
+unless users want to manually control
+the number of CPU cores used in
+parallel processing.
+
+# Indirect Effects
+
+We can now use `indirect_effect()` to
+estimate the indirect effect and form its
+bootstrap confidence interval for any path
+in the model. By reusing the generated bootstrap
+estimates, there is no need to repeat the
+resampling and estimation.
+
+Suppose we want to estimate the indirect
+effect from `x1` to `y1` through `m11` and `m12`:
+
+(Refer to `vignette(manymome)` and the help page
+of `indirect_effect()` on the arguments.)
+
+```{r ind_x1m11m12y1}
+out_x1m11m12y1 <- indirect_effect(x = "x1",
+                                  y = "y1",
+                                  m = c("m11", "m12"),
+                                  fit = fit_lm,
+                                  boot_ci = TRUE,
+                                  boot_out = boot_out_lm)
+out_x1m11m12y1
+```
+
+The indirect effect is
+`r formatC(coef(out_x1m11m12y1), digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(confint(out_x1m11m12y1), digits = 3, format = "f"), collapse = ","), "]")`.
+
+Similarly, we can estimate the indirect
+effect from `x2` to `y2` through `m2`:
+
+```{r ind_x2y2m2}
+out_x2m2y2 <- indirect_effect(x = "x2",
+                              y = "y2",
+                              m = "m2",
+                              fit = fit_lm,
+                              boot_ci = TRUE,
+                              boot_out = boot_out_lm)
+out_x2m2y2
+```
+
+The indirect effect is
+`r formatC(coef(out_x2m2y2), digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(confint(out_x2m2y2), digits = 3, format = "f"), collapse = ","), "]")`.
+
+Note that any indirect path in the model can be
+estimated this way. Suppose, after doing the regression analysis,
+we want to estimate the indirect effect from `x2` to `m12`
+through `m11`, we just call `indirect_effect()`:
+
+```{r ind_x2m11m12}
+out_x2m11m12 <- indirect_effect(x = "x2",
+                                y = "m12",
+                                m = "m11",
+                                fit = fit_lm,
+                                boot_ci = TRUE,
+                                boot_out = boot_out_lm)
+out_x2m11m12
+```
+
+The indirect effect is
+`r formatC(coef(out_x2m11m12), digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(confint(out_x2m11m12), digits = 3, format = "f"), collapse = ","), "]")`.
+
+There is no limit on the path to be estimated, as long
+as all required path coefficients are in the model.
+`indirect_effect()` will also check whether a path is valid.
+Therefore, estimating the effect from `x1` to `m2` through
+`m11` will result in an error because this path does not
+exist in the model defined by the regression outputs.
+
+# Standardized Indirect effects
+
+The standardized indirect
+effect from `x1` to `y1` through `m11` and `m12`
+can be estimated by setting
+`standardized_x` and `standardized_y` to `TRUE:
+
+```{r std_x1m11m12y1}
+std_x1m11m12y1 <- indirect_effect(x = "x1",
+                                y = "y1",
+                                m = c("m11", "m12"),
+                                fit = fit_lm,
+                                boot_ci = TRUE,
+                                boot_out = boot_out_lm,
+                                standardized_x = TRUE,
+                                standardized_y = TRUE)
+std_x1m11m12y1
+```
+
+The standardized indirect effect is
+`r formatC(coef(std_x1m11m12y1), digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(confint(std_x1m11m12y1), digits = 3, format = "f"), collapse = ","), "]")`.
+
+Similarly, we can estimate the standardized indirect
+effect from `x1` to `y1` through `m2`:
+
+```{r std_x1m2y1}
+std_x1m2y1 <- indirect_effect(x = "x1",
+                              y = "y1",
+                              m = "m2",
+                              fit = fit_lm,
+                              boot_ci = TRUE,
+                              boot_out = boot_out_lm,
+                              standardized_x = TRUE,
+                              standardized_y = TRUE)
+std_x1m2y1
+```
+
+The standardized indirect effect is
+`r formatC(coef(std_x1m2y1), digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(confint(std_x1m2y1), digits = 3, format = "f"), collapse = ","), "]")`.
+
+# Adding Effects
+
+Note that the results of `indirect_effect()`
+can be added using `+`.
+
+For example, to find the *total* *indirect* effect of
+`x1` on `y1`, we need to compute
+the indirect effects along the following paths:
+
+a. `x1` to `m11` to `m12` to `y1`
+b. `x1` to `m11` to `y1`
+c. `x1` to `m12` to `y1`
+d. `x1` to `m2` to `y1`
+
+The indirect effects along Path a has
+already been computed. We compute
+the indirect effects along Paths b, c, and d below:
+
+```{r ind_x1m11y1}
+out_x1m11y1 <- indirect_effect(x = "x1",
+                               y = "y1",
+                               m = "m11",
+                               fit = fit_lm,
+                               boot_ci = TRUE,
+                               boot_out = boot_out_lm)
+out_x1m11y1
+```
+
+```{r ind_x1m12y1}
+out_x1m12y1 <- indirect_effect(x = "x1",
+                               y = "y1",
+                               m = "m12",
+                               fit = fit_lm,
+                               boot_ci = TRUE,
+                               boot_out = boot_out_lm)
+out_x1m12y1
+```
+
+```{r ind_x1m2y1}
+out_x1m2y1 <- indirect_effect(x = "x1",
+                               y = "y1",
+                               m = "m2",
+                               fit = fit_lm,
+                               boot_ci = TRUE,
+                               boot_out = boot_out_lm)
+out_x1m2y1
+```
+
+We can now compute the total *indirect* effect:
+
+```{r total_ind_x1y1}
+out_x1y1_total <- out_x1m11m12y1 + out_x1m11y1 + out_x1m12y1 + out_x1m2y1
+out_x1y1_total
+```
+
+The total effect of `f1` on `f4` is
+`r formatC(coef(out_x1y1_total), digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(confint(out_x1y1_total), digits = 3, format = "f"), collapse = ","), "]")`.
+
+# Differences in Effects
+
+Subtraction can also be conducted using `-`. For
+example, we can compute the difference between
+the indirect effect of `x1` on `y1` through `m11` and `m12`
+and the indirect effect of `x1` on `y1` through `m2`:
+
+```{r ind_diff}
+out_x1_diff <- out_x1m11m12y1 - out_x1m2y1
+out_x1_diff
+```
+
+The difference in effects is
+`r formatC(coef(out_x1_diff), digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(confint(out_x1_diff), digits = 3, format = "f"), collapse = ","), "]")`.
+
+# Further Information
+
+For further information on `do_boot()`
+and `indirect_effect()`,
+please refer to their help pages.
