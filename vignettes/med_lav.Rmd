@@ -1,0 +1,313 @@
+---
+title: "Mediation Models with Latent Variables"
+author: "Shu Fai Cheung & Sing-Hang Cheung"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    number_sections: true
+vignette: >
+  %\VignetteIndexEntry{Mediation Models with Latent Variables}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+This article is a brief illustration of how `indirect_effect()`
+can be used to estimate the indirect effects among
+latent variables and form bootstrap confidence
+intervals for these effects.
+
+# Data Set and Model
+
+This is the sample dataset used for
+illustration:
+
+```{r data}
+library(manymome)
+dat <- data_sem
+print(round(head(dat), 1))
+```
+
+This dataset has 14 variables, which
+are indicators of four latent factors.
+
+Suppose this is the model to be fitted:
+
+```{r draw_model, echo = FALSE}
+# Adapted from vignette("set_sem_layout")
+# of the semptools package
+library(semPlot)
+suppressMessages(library(lavaan))
+mod <-
+"
+f1 =~ x01 + x02 + x03
+f2 =~ x04 + x05 + x06 + x07
+f3 =~ x08 + x09 + x10
+f4 =~ x11 + x12 + x13 + x14
+f3 ~  f1 + f2
+f4 ~  f1 + f3
+"
+fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
+p <- semPaths(fit0,
+              residuals = FALSE,
+              sizeMan = 5,
+              node.width = 1,
+              edge.label.cex = .75,
+              style = "ram",
+              mar = c(5, 5, 5, 5),
+              DoNotPlot = TRUE)
+if (requireNamespace("semptools", quietly = TRUE)) {
+    library(semptools)
+    indicator_order  <- c("x07", "x06", "x05", "x04",
+                          "x03", "x02", "x01",
+                          "x14", "x13", "x12", "x11",
+                          "x08", "x09", "x10")
+    indicator_factor <- c( "f2",  "f2",  "f2",  "f2",
+                          "f1",  "f1",  "f1",
+                          "f4",  "f4",  "f4",  "f4",
+                          "f3",  "f3",  "f3")
+    factor_layout <- matrix(c("f1",   NA,   NA,
+                              NA, "f3", "f4",
+                            "f2",   NA,   NA), byrow = TRUE, 3, 3)
+    factor_point_to <- matrix(c("left",     NA,      NA,
+                                    NA, "down", "right",
+                                "left",     NA,      NA), byrow = TRUE, 3, 3)
+    indicator_push <- c(f3 = 1.5,
+                        f4 = 1.5,
+                        f1 = 1.5,
+                        f2 = 1.5)
+    indicator_spread <- c(f1 = 1.5,
+                          f2 = 1.75,
+                          f3 = 1,
+                          f4 = 1.75)
+    p2 <- set_sem_layout(p,
+                        indicator_order = indicator_order,
+                        indicator_factor = indicator_factor,
+                        factor_layout = factor_layout,
+                        factor_point_to = factor_point_to,
+                        indicator_push = indicator_push,
+                        indicator_spread = indicator_spread)
+    p2 <- set_curve(p2, c("f2 ~~ f1" = -2.5))
+    plot(p2)
+  } else {
+    plot(p)
+  }
+```
+
+This model can be fitted by `lavaan::sem()`:
+
+```{r fit_mode}
+mod <-
+"
+f1 =~ x01 + x02 + x03
+f2 =~ x04 + x05 + x06 + x07
+f3 =~ x08 + x09 + x10
+f4 =~ x11 + x12 + x13 + x14
+f3 ~  f1 + f2
+f4 ~  f1 + f3
+"
+fit_med <- sem(model = mod,
+               data = dat)
+```
+
+This is the parameter estimates of
+the paths between the latent variables:
+
+```{r est}
+est <- parameterEstimates(fit_med)
+est[est$op == "~", ]
+```
+
+Suppose that for the free parameters,
+we would like to use ML to form the
+confidence intervals. For indirect
+effects, we want to use bootstrapping.
+
+# Generating Bootstrap Estimates
+
+Although bootstrap estimates can
+be generated and stored the first time
+we call `indirect_effect()`, we illustrate
+using `do_boot()` to generate the
+bootstrap estimates to be used by
+`indirect_effect()`:
+
+```{r do_boo}
+boot_out_med <- do_boot(fit_med,
+                        R = 100,
+                        seed = 98171,
+                        ncores = 1)
+```
+
+Please see `vignette("do_boot")` or
+the help page of `do_boot()` on how
+to use this function. In real research,
+`R`, the number of bootstrap samples,
+should be set to 2000 or even 5000.
+The argument `ncores` can usually be omitted
+unless users want to manually control
+the number of CPU cores used in
+parallel processing.
+
+# Indirect Effects
+
+Even though path coefficients are not labelled,
+we can still use `indirect_effect()` to
+estimate the indirect effect and form its
+bootstrap confidence interval for any path
+in the model. By reusing the generated bootstrap
+estimates, there is no need to repeat the
+resampling and estimation.
+
+Suppose we want to estimate the indirect
+effect from `f1` to `f4` through `f3`:
+
+```{r med_f1_f3_f4}
+out_f1f3f4 <- indirect_effect(x = "f1",
+                              y = "f4",
+                              m = "f3",
+                              fit = fit_med,
+                              boot_ci = TRUE,
+                              boot_out = boot_out_med)
+out_f1f3f4
+```
+
+The indirect effect is
+`r formatC(coef(out_f1f3f4), digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(confint(out_f1f3f4), digits = 3, format = "f"), collapse = ","), "]")`.
+
+Similarly, we can estimate the indirect
+effect from `f2` to `f4` through `f3`:
+
+```{r med_f2_f3_f4}
+out_f2f3f4 <- indirect_effect(x = "f2",
+                              y = "f4",
+                              m = "f3",
+                              fit = fit_med,
+                              boot_ci = TRUE,
+                              boot_out = boot_out_med)
+out_f2f3f4
+```
+
+The indirect effect is
+`r formatC(coef(out_f2f3f4), digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(confint(out_f2f3f4), digits = 3, format = "f"), collapse = ","), "]")`.
+
+# Standardized Indirect effects
+
+The standardized indirect
+effect from `f1` to `f4` through `f3`
+can be estimated by setting
+`standardized_x` and `standardized_y` to `TRUE:
+
+```{r med_f1_f3_f4_std}
+std_f1f3f4 <- indirect_effect(x = "f1",
+                              y = "f4",
+                              m = "f3",
+                              fit = fit_med,
+                              boot_ci = TRUE,
+                              boot_out = boot_out_med,
+                              standardized_x = TRUE,
+                              standardized_y = TRUE)
+std_f1f3f4
+```
+
+The standardized indirect effect is
+`r formatC(coef(std_f1f3f4), digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(confint(std_f1f3f4), digits = 3, format = "f"), collapse = ","), "]")`.
+
+Similarly, we can estimate the standardized indirect
+effect from `f2` to `f4` through `f3`:
+
+```{r std_f2_f3_f4}
+std_f2f3f4 <- indirect_effect(x = "f2",
+                              y = "f4",
+                              m = "f3",
+                              fit = fit_med,
+                              boot_ci = TRUE,
+                              boot_out = boot_out_med,
+                              standardized_x = TRUE,
+                              standardized_y = TRUE)
+std_f2f3f4
+```
+
+The standardized indirect effect is
+`r formatC(coef(std_f2f3f4), digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(confint(std_f2f3f4), digits = 3, format = "f"), collapse = ","), "]")`.
+
+Note that, unlike the confidence intervals in
+`lavaan::standardizedSolution()`, the confidence
+intervals formed by `indirect_effect()`
+are the bootstrap confidence intervals formed
+based on the bootstrap estimates, rather than
+intervals based on the delta method.
+
+# Adding Effects
+
+Note that the results of `indirect_effect()`
+can be added using `+`.
+
+For example, to find the total effect of
+`f1` on `f4`, we also need to compute
+the direct effect from `f1` to `f4`. Although
+it is already available in the `lavaan` output,
+we still use `indirect_effect()` to compute it
+so that it can be added to the indirect effect
+computed above with bootstrap confidence
+interval:
+
+```{r direct_f1f4}
+out_f1f4 <- indirect_effect(x = "f1",
+                            y = "f4",
+                            fit = fit_med,
+                            boot_ci = TRUE,
+                            boot_out = boot_out_med)
+out_f1f4
+```
+
+We can now compute the total effect:
+
+```{r total_f1f4}
+out_f1_total <- out_f1f3f4 + out_f1f4
+out_f1_total
+```
+
+The total effect of `f1` on `f4` is
+`r formatC(coef(out_f1_total), digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(confint(out_f1_total), digits = 3, format = "f"), collapse = ","), "]")`.
+
+# Differences in Effects
+
+Subtraction can also be conducted using `-`. For
+example, we can compute the difference between
+the indirect effect of `f1` on `f4` and the
+direct effect of `f1` on `f4`:
+
+```{r ind_diff}
+out_f1_diff <- out_f1f4 - out_f1f3f4
+out_f1_diff
+```
+
+The difference in effects is
+`r formatC(coef(out_f1_diff), digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(confint(out_f1_diff), digits = 3, format = "f"), collapse = ","), "]")`.
+
+# Further Information
+
+For further information on `do_boot()`
+and `indirect_effect()`,
+please refer to their help pages.
