@@ -45,7 +45,6 @@ Suppose this is the model to be fitted:
 # Adapted from vignette("set_sem_layout")
 # of the semptools package
 library(semPlot)
-library(semptools)
 suppressMessages(library(lavaan))
 mod <-
 "
@@ -65,10 +64,11 @@ p <- semPaths(fit0,
               style = "ram",
               mar = c(5, 5, 5, 5),
               DoNotPlot = TRUE)
-if (requireNamespace(semptools, quietly = TRUE)) {
-    indicator_order  <- c("x04", "x05", "x06", "x07",
-                          "x01", "x02", "x03",
-                          "x11", "x12", "x13", "x14",
+if (requireNamespace("semptools", quietly = TRUE)) {
+    library(semptools)
+    indicator_order  <- c("x07", "x06", "x05", "x04",
+                          "x03", "x02", "x01",
+                          "x14", "x13", "x12", "x11",
                           "x08", "x09", "x10")
     indicator_factor <- c( "f2",  "f2",  "f2",  "f2",
                           "f1",  "f1",  "f1",
@@ -84,10 +84,10 @@ if (requireNamespace(semptools, quietly = TRUE)) {
                         f4 = 1.5,
                         f1 = 1.5,
                         f2 = 1.5)
-    indicator_spread <- c(f1 = 1.25,
-                          f2 = 1.5,
-                          f3 = 1.25,
-                          f4 = 1.5)
+    indicator_spread <- c(f1 = 1.5,
+                          f2 = 1.75,
+                          f3 = 1,
+                          f4 = 1.75)
     p2 <- set_sem_layout(p,
                         indicator_order = indicator_order,
                         indicator_factor = indicator_factor,
