@@ -65,37 +65,41 @@ p <- semPaths(fit0,
               style = "ram",
               mar = c(5, 5, 5, 5),
               DoNotPlot = TRUE)
-indicator_order  <- c("x04", "x05", "x06", "x07",
-                      "x01", "x02", "x03",
-                      "x11", "x12", "x13", "x14",
-                      "x08", "x09", "x10")
-indicator_factor <- c( "f2",  "f2",  "f2",  "f2",
-                       "f1",  "f1",  "f1",
-                       "f4",  "f4",  "f4",  "f4",
-                       "f3",  "f3",  "f3")
-factor_layout <- matrix(c("f1",   NA,   NA,
-                           NA, "f3", "f4",
-                         "f2",   NA,   NA), byrow = TRUE, 3, 3)
-factor_point_to <- matrix(c("left",     NA,      NA,
-                                NA, "down", "right",
-                            "left",     NA,      NA), byrow = TRUE, 3, 3)
-indicator_push <- c(f3 = 1.5,
-                    f4 = 1.5,
-                    f1 = 1.5,
-                    f2 = 1.5)
-indicator_spread <- c(f1 = 1.25,
-                      f2 = 1.5,
-                      f3 = 1.25,
-                      f4 = 1.5)
-p2 <- set_sem_layout(p,
-                     indicator_order = indicator_order,
-                     indicator_factor = indicator_factor,
-                     factor_layout = factor_layout,
-                     factor_point_to = factor_point_to,
-                     indicator_push = indicator_push,
-                     indicator_spread = indicator_spread)
-p2 <- set_curve(p2, c("f2 ~~ f1" = -2.5))
-plot(p2)
+if (requireNamespace(semptools, quietly = TRUE)) {
+    indicator_order  <- c("x04", "x05", "x06", "x07",
+                          "x01", "x02", "x03",
+                          "x11", "x12", "x13", "x14",
+                          "x08", "x09", "x10")
+    indicator_factor <- c( "f2",  "f2",  "f2",  "f2",
+                          "f1",  "f1",  "f1",
+                          "f4",  "f4",  "f4",  "f4",
+                          "f3",  "f3",  "f3")
+    factor_layout <- matrix(c("f1",   NA,   NA,
+                              NA, "f3", "f4",
+                            "f2",   NA,   NA), byrow = TRUE, 3, 3)
+    factor_point_to <- matrix(c("left",     NA,      NA,
+                                    NA, "down", "right",
+                                "left",     NA,      NA), byrow = TRUE, 3, 3)
+    indicator_push <- c(f3 = 1.5,
+                        f4 = 1.5,
+                        f1 = 1.5,
+                        f2 = 1.5)
+    indicator_spread <- c(f1 = 1.25,
+                          f2 = 1.5,
+                          f3 = 1.25,
+                          f4 = 1.5)
+    p2 <- set_sem_layout(p,
+                        indicator_order = indicator_order,
+                        indicator_factor = indicator_factor,
+                        factor_layout = factor_layout,
+                        factor_point_to = factor_point_to,
+                        indicator_push = indicator_push,
+                        indicator_spread = indicator_spread)
+    p2 <- set_curve(p2, c("f2 ~~ f1" = -2.5))
+    plot(p2)
+  } else {
+    plot(p)
+  }
 ```
 
 This model can be fitted by `lavaan::sem()`:
