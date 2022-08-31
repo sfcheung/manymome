@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +80,7 @@
       <img src="" class="logo" alt=""><h1>Generating Bootstrap Estimates</h1>
                         <h4 data-toc-skip class="author">Shu Fai Cheung &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2022-08-30</h4>
+            <h4 data-toc-skip class="date">2022-08-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/HEAD/vignettes/do_boot.Rmd" class="external-link"><code>vignettes/do_boot.Rmd</code></a></small>
       <div class="d-none name"><code>do_boot.Rmd</code></div>
@@ -91,8 +91,8 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This article is a brief illustration of how <code><a href="../reference/do_boot.html">do_boot()</a></code> can be used to generate bootstrap estimates for use by <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> and <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> to form percentile bootstrap confidence interval.</p>
-<p>Although <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> and <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> can also be used to generate bootstrap estimates, there may be situations in which users prefer generating the bootstrap estimates first before calling <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> and <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>.</p>
+<p>This article is a brief illustration of how to use <code><a href="../reference/do_boot.html">do_boot()</a></code> to generate bootstrap estimates for use by <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> and <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> to form percentile bootstrap confidence intervals.</p>
+<p>Although <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> and <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> can also be used to generate bootstrap estimates when they are called (see <code><a href="../articles/manymome.html">vignette("manymome")</a></code>), there may be situations in which users prefer generating the bootstrap estimates first before calling <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> and <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>. <code><a href="../reference/do_boot.html">do_boot()</a></code> is for this purpose.</p>
 </div>
 <div class="section level2">
 <h2 id="data-set-and-model">Data Set and Model<a class="anchor" aria-label="anchor" href="#data-set-and-model"></a>
@@ -109,7 +109,8 @@
 <span><span class="co">#&gt; 4 11.196969 20.01750 25.05038 3.120056 4.654931</span></span>
 <span><span class="co">#&gt; 5 11.887811 22.08645 28.47312 4.440018 3.959033</span></span>
 <span><span class="co">#&gt; 6  8.198297 16.95198 20.73549 2.495083 3.763712</span></span></code></pre></div>
-<p>This simple mediation model with two control variables (<code>c1</code> and <code>c2</code>) will be fitted.</p>
+<p>It has one predictors (<code>x</code>), one mediator (<code>m</code>), one outcome variable (<code>y</code>), and two control variables (<code>c1</code> and <code>c2</code>).</p>
+<p>This simple mediation model with two control variables (<code>c1</code> and <code>c2</code>) will be fitted:</p>
 <p><img src="do_boot_files/figure-html/draw_model-1.png" width="700"></p>
 </div>
 <div class="section level2">
@@ -172,7 +173,8 @@
 <span><span class="co">#&gt;     x                 1.102    0.150    7.338    0.000</span></span>
 <span><span class="co">#&gt;     c1                1.218    0.161    7.540    0.000</span></span>
 <span><span class="co">#&gt;     c2                0.685    0.073    9.340    0.000</span></span></code></pre></div>
-<p>Suppose we would like to robust “sandwich” standard errors and confidence intervals provided by MLR for the free parameters, but want percentile nonparametric bootstrap confidence interval for indirect effect. We can call <code><a href="../reference/do_boot.html">do_boot()</a></code> on the output of <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> to generate the bootstrap estimates of all free parameters <em>and</em> the implied statistics, such as the variances of <code>m</code> and <code>y</code>, which are not free parameters but are needed to forming the confidence intervals of standardized indirect effect.</p>
+<p>Suppose we would like to use robust “sandwich” standard errors and confidence intervals provided by MLR for the free parameters, but want to use percentile nonparametric bootstrap confidence interval for the indirect effect. In the call above, we used <code>estimator = "MLR"</code> and did not set <code>se = "boot"</code>.</p>
+<p>We can then call <code><a href="../reference/do_boot.html">do_boot()</a></code> on the output of <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> to generate the bootstrap estimates of all free parameters <em>and</em> the implied statistics, such as the variances of <code>m</code> and <code>y</code>, which are not free parameters but are needed to form the confidence interval of the <em>standardized</em> indirect effect.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">boot_out_lavaan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_boot.html">do_boot</a></span><span class="op">(</span>fit <span class="op">=</span> <span class="va">fit_lavaan</span>,</span>
 <span>                           R <span class="op">=</span> <span class="fl">100</span>,</span>
@@ -181,10 +183,11 @@
 <ul>
 <li><p><code>fit</code>: The output of <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>.</p></li>
 <li><p><code>R</code>: The number of bootstrap samples. Should be at least 2000 or even 5000 in real research. 100 is used here just for illustration.</p></li>
-<li><p><code>ncores</code>: The number of CPU cores to be used in generating bootstrap estimates.</p></li>
+<li><p><code>ncores</code>: The number of CPU cores to be used in generating bootstrap estimates in parallel processing.</p></li>
 </ul>
-<p>Parallel processing is enabled by default, and a progress bar (generated by the package <code>pbapply</code>) will be displayed. The number of cores (<code>ncores</code>) to be used will be decided automatically and so users usually do not need to change it. It is set to 1 here just for illustration.</p>
-<p>In real research with a complicated model and moderate to large sample size, even with parallel processing, it may take several minutes, or even over twenty minutes in some cases. Therefore, it is nearly always good to save the output using <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code> or <code><a href="https://rdrr.io/r/base/save.html" class="external-link">save()</a></code>:</p>
+<p>Parallel processing is enabled by default, and a text progress bar (generated by the package <code>pbapply</code>) will be displayed. If <code>ncores</code> is omitted, the number of cores (<code>ncores</code>) to be used will be decided automatically. Therefore, users usually do not need to use <code>ncores</code>. It is set to 1 here just for illustration.</p>
+<p>In real research with a complicated model and moderate to large sample size, even with parallel processing, it may take several minutes, or even over twenty minutes in some cases. Nevertheless, this only need to be conducted once in the workflow of <code>manymome</code>.</p>
+<p>If bootstrapping takes an appreciable time to run, it is recommended to save the output using <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code> or <code><a href="https://rdrr.io/r/base/save.html" class="external-link">save()</a></code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">### Use saveRDS() ###</span></span>
 <span><span class="co"># Save the output</span></span>
@@ -206,34 +209,34 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">boot_out_lavaan</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">est</span></span>
 <span><span class="co">#&gt;    lhs op rhs    est</span></span>
-<span><span class="co">#&gt; 1    m  ~   x  0.936</span></span>
-<span><span class="co">#&gt; 2    m  ~  c1  0.224</span></span>
-<span><span class="co">#&gt; 3    m  ~  c2 -0.168</span></span>
-<span><span class="co">#&gt; 4    y  ~   m  0.895</span></span>
-<span><span class="co">#&gt; 5    y  ~   x  0.381</span></span>
-<span><span class="co">#&gt; 6    y  ~  c1  0.355</span></span>
-<span><span class="co">#&gt; 7    y  ~  c2 -0.208</span></span>
-<span><span class="co">#&gt; 8    m ~~   m  0.630</span></span>
-<span><span class="co">#&gt; 9    y ~~   y  3.459</span></span>
-<span><span class="co">#&gt; 10   x ~~   x  1.065</span></span>
-<span><span class="co">#&gt; 11   x ~~  c1 -0.188</span></span>
-<span><span class="co">#&gt; 12   x ~~  c2  0.248</span></span>
-<span><span class="co">#&gt; 13  c1 ~~  c1  1.335</span></span>
-<span><span class="co">#&gt; 14  c1 ~~  c2 -0.094</span></span>
-<span><span class="co">#&gt; 15  c2 ~~  c2  0.795</span></span>
-<span><span class="co">#&gt; 16   m r2   m  0.581</span></span>
-<span><span class="co">#&gt; 17   y r2   y  0.385</span></span></code></pre></div>
+<span><span class="co">#&gt; 1    m  ~   x  1.062</span></span>
+<span><span class="co">#&gt; 2    m  ~  c1  0.191</span></span>
+<span><span class="co">#&gt; 3    m  ~  c2 -0.213</span></span>
+<span><span class="co">#&gt; 4    y  ~   m  1.151</span></span>
+<span><span class="co">#&gt; 5    y  ~   x  0.034</span></span>
+<span><span class="co">#&gt; 6    y  ~  c1 -0.110</span></span>
+<span><span class="co">#&gt; 7    y  ~  c2 -0.255</span></span>
+<span><span class="co">#&gt; 8    m ~~   m  0.805</span></span>
+<span><span class="co">#&gt; 9    y ~~   y  4.089</span></span>
+<span><span class="co">#&gt; 10   x ~~   x  1.230</span></span>
+<span><span class="co">#&gt; 11   x ~~  c1 -0.024</span></span>
+<span><span class="co">#&gt; 12   x ~~  c2  0.153</span></span>
+<span><span class="co">#&gt; 13  c1 ~~  c1  1.327</span></span>
+<span><span class="co">#&gt; 14  c1 ~~  c2 -0.232</span></span>
+<span><span class="co">#&gt; 15  c2 ~~  c2  0.816</span></span>
+<span><span class="co">#&gt; 16   m r2   m  0.637</span></span>
+<span><span class="co">#&gt; 17   y r2   y  0.427</span></span></code></pre></div>
 <p>The content is just the first four columns of the output of <code><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">lavaan::parameterEstimates()</a></code>.</p>
 <p>This is the content of <code>implied_stats</code> of the first list:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">boot_out_lavaan</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">implied_stats</span></span>
 <span><span class="co">#&gt; $cov</span></span>
 <span><span class="co">#&gt;    m      y      x      c1     c2    </span></span>
-<span><span class="co">#&gt; m   1.503                            </span></span>
-<span><span class="co">#&gt; y   1.726  5.624                     </span></span>
-<span><span class="co">#&gt; x   0.913  1.104  1.065              </span></span>
-<span><span class="co">#&gt; c1  0.138  0.545 -0.188  1.335       </span></span>
-<span><span class="co">#&gt; c2  0.078 -0.034  0.248 -0.094  0.795</span></span>
+<span><span class="co">#&gt; m   2.217                            </span></span>
+<span><span class="co">#&gt; y   2.578  7.142                     </span></span>
+<span><span class="co">#&gt; x   1.269  1.465  1.230              </span></span>
+<span><span class="co">#&gt; c1  0.277  0.231 -0.024  1.327       </span></span>
+<span><span class="co">#&gt; c2 -0.056 -0.242  0.153 -0.232  0.816</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $mean</span></span>
 <span><span class="co">#&gt; numeric(0)</span></span>
@@ -246,7 +249,7 @@
 <div class="section level3">
 <h3 id="using-the-output-of-do_boot">Using the Output of <code>do_boot()</code><a class="anchor" aria-label="anchor" href="#using-the-output-of-do_boot"></a>
 </h3>
-<p>When calling <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> or <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> and set the argument <code>boot_out</code> to the output of <code>do_bout()</code>:</p>
+<p>When calling <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> or <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>, the argument <code>boot_out</code> can be assigned the output of <code>do_bout()</code>. They will then retrieve he stored bootstrap estimates to form the bootstrap confidence intervals, if requested.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_lavaan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">indirect_effect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span>
 <span>                              y <span class="op">=</span> <span class="st">"y"</span>,</span>
@@ -260,7 +263,7 @@
 <span><span class="co">#&gt;                                      </span></span>
 <span><span class="co">#&gt;  Path:               x -&gt; m -&gt; y     </span></span>
 <span><span class="co">#&gt;  Indirect Effect     0.733           </span></span>
-<span><span class="co">#&gt;  95.0% Bootstrap CI: [0.353 to 1.219]</span></span>
+<span><span class="co">#&gt;  95.0% Bootstrap CI: [0.315 to 1.202]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m~x)*(b.y~m)</span></span>
@@ -274,6 +277,7 @@
 <span><span class="co">#&gt;  Path Coefficient</span></span>
 <span><span class="co">#&gt;   m~x       0.935</span></span>
 <span><span class="co">#&gt;   y~m       0.785</span></span></code></pre></div>
+<p>Reusing the bootstrap estimates can ensure that all analysis with bootstrap confidence intervals are based on the same set of bootstrap samples.</p>
 </div>
 </div>
 <div class="section level2">
@@ -281,8 +285,11 @@
 </h2>
 <p>Suppose we estimate the parameters using multiple regression. We need to fit two regression models, one predicts <code>m</code> and the other predicts <code>y</code>:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">lm_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">m</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="va">c1</span> <span class="op">+</span> <span class="va">c2</span>, <span class="va">dat</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Fit Models</span></span>
+<span><span class="va">lm_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">m</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="va">c1</span> <span class="op">+</span> <span class="va">c2</span>, <span class="va">dat</span><span class="op">)</span></span>
 <span><span class="va">lm_y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">m</span> <span class="op">+</span> <span class="va">x</span> <span class="op">+</span> <span class="va">c1</span> <span class="op">+</span> <span class="va">c2</span>, <span class="va">dat</span><span class="op">)</span></span>
+<span><span class="co">#</span></span>
+<span><span class="co"># ###### Regression: Predict m ######</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lm_m</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
@@ -304,6 +311,9 @@
 <span><span class="co">#&gt; Residual standard error: 0.8425 on 96 degrees of freedom</span></span>
 <span><span class="co">#&gt; Multiple R-squared:  0.5981, Adjusted R-squared:  0.5855 </span></span>
 <span><span class="co">#&gt; F-statistic: 47.62 on 3 and 96 DF,  p-value: &lt; 2.2e-16</span></span>
+<span><span class="co">#</span></span>
+<span><span class="co"># ###### Regression: Predict y ######</span></span>
+<span><span class="co">#</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lm_y</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
@@ -326,7 +336,7 @@
 <span><span class="co">#&gt; Residual standard error: 2.06 on 95 degrees of freedom</span></span>
 <span><span class="co">#&gt; Multiple R-squared:  0.3576, Adjusted R-squared:  0.3305 </span></span>
 <span><span class="co">#&gt; F-statistic: 13.22 on 4 and 95 DF,  p-value: 1.336e-08</span></span></code></pre></div>
-<p>To use <code><a href="../reference/do_boot.html">do_boot()</a></code>, we first combine the regression outputs to one object using <code><a href="../reference/lm2list.html">lm2list()</a></code>.</p>
+<p>To use <code><a href="../reference/do_boot.html">do_boot()</a></code>, we first combine the regression outputs to one object using <code><a href="../reference/lm2list.html">lm2list()</a></code>. The output is an <code>lm_list</code>-class object.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lm2list.html">lm2list</a></span><span class="op">(</span><span class="va">lm_m</span>, <span class="va">lm_y</span><span class="op">)</span></span>
 <span><span class="va">fit_lm</span></span>
@@ -334,12 +344,12 @@
 <span><span class="co">#&gt; The models:</span></span>
 <span><span class="co">#&gt; m ~ x + c1 + c2</span></span>
 <span><span class="co">#&gt; y ~ m + x + c1 + c2</span></span></code></pre></div>
-<p>We can now use <code><a href="../reference/do_boot.html">do_boot()</a></code> as described above:</p>
+<p>We can now use <code><a href="../reference/do_boot.html">do_boot()</a></code> as described above, using the output of <code><a href="../reference/lm2list.html">lm2list()</a></code> instead of the output of <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">boot_out_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_boot.html">do_boot</a></span><span class="op">(</span>fit <span class="op">=</span> <span class="va">fit_lm</span>,</span>
 <span>                       R <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>                       seed <span class="op">=</span> <span class="fl">98715</span><span class="op">)</span></span></code></pre></div>
-<p>Speed is rarely a concern for a model with parameters estimated by <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>. Therefore, parallel processing is not used. Because the output may not be saved, it is recommended to set the seed of the random number generation using <code>seed</code>, set to 98715 in the above example (it can be any integer within the range allowed in R, see <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code>). This ensures that the same <code>R</code> set of bootstrap samples will be generated every time.</p>
+<p>Speed is rarely a concern for a model with parameters estimated by <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>. Therefore, parallel processing is not used. Because the output may not be saved, it is recommended to set the seed of the random number generation using <code>seed</code>, set to 98715 in the above example. The seed can be any integer within the range allowed in R, see <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code>. Setting the seed ensures that the same <code>R</code> set of bootstrap samples will be generated every time.</p>
 <div class="section level3">
 <h3 id="the-structure-of-the-output-1">The Structure of the Output<a class="anchor" aria-label="anchor" href="#the-structure-of-the-output-1"></a>
 </h3>
@@ -372,12 +382,12 @@
 <span><span class="co">#&gt; $mean</span></span>
 <span><span class="co">#&gt;         m         x        c1        c2         y </span></span>
 <span><span class="co">#&gt; 18.487194  9.848009  2.329366  5.065314 23.967238</span></span></code></pre></div>
-<p>It has two elements. <code>cov</code> is the variances and covariances of all variables. Unlike the output based on <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>, the content is just the sample variances and covariances of the variables in each bootstrap samples, generated using <code><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cov()</a></code>. The other element, <code>mean</code>, stores sample means of all variables in each bootstrap samples.</p>
+<p>It has two elements. <code>cov</code> is the variances and covariances of all variables. Unlike the output based on <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>, the content is just the sample variances and covariances of the variables in each bootstrap sample, generated using <code><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cov()</a></code>. The other element, <code>mean</code>, stores sample means of all variables in each bootstrap sample.</p>
 </div>
 <div class="section level3">
 <h3 id="using-the-output-of-do_boot-1">Using the Output of <code>do_boot()</code><a class="anchor" aria-label="anchor" href="#using-the-output-of-do_boot-1"></a>
 </h3>
-<p>When calling <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> or <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> and set the argument <code>boot_out</code> to the output of <code>do_bout()</code>:</p>
+<p>When calling <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> or <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>, we cab set the argument <code>boot_out</code> to the output of <code>do_bout()</code>:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">indirect_effect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span>
 <span>                          y <span class="op">=</span> <span class="st">"y"</span>,</span>
@@ -410,7 +420,7 @@
 <div class="section level2">
 <h2 id="further-information">Further Information<a class="anchor" aria-label="anchor" href="#further-information"></a>
 </h2>
-<p>For further information on <code><a href="../reference/do_boot.html">do_boot()</a></code>, please refer to their help pages.</p>
+<p>For further information on <code><a href="../reference/do_boot.html">do_boot()</a></code>, please refer to its help page.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

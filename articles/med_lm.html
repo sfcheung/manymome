@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +80,7 @@
       <img src="" class="logo" alt=""><h1>Mediation Analysis by Multiple Regression</h1>
                         <h4 data-toc-skip class="author">Shu Fai Cheung &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2022-08-30</h4>
+            <h4 data-toc-skip class="date">2022-08-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/HEAD/vignettes/med_lm.Rmd" class="external-link"><code>vignettes/med_lm.Rmd</code></a></small>
       <div class="d-none name"><code>med_lm.Rmd</code></div>
@@ -91,7 +91,7 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This article is a brief illustration of how <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> can be used to estimate the indirect effects when the model parameters are estimate by ordinary least squares (OLS) multiple regression using <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.</p>
+<p>This article is a brief illustration of how to use <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> to estimate the indirect effects when the model parameters are estimated by ordinary least squares (OLS) multiple regression using <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.</p>
 </div>
 <div class="section level2">
 <h2 id="data-set-and-model">Data Set and Model<a class="anchor" aria-label="anchor" href="#data-set-and-model"></a>
@@ -111,7 +111,7 @@
 <p>This dataset has 9 variables: 2 predictors (<code>x1</code> and <code>x2</code>), three mediators (<code>m11</code>, <code>m12</code>, and <code>m2</code>), two outcome variables (<code>y1</code> and <code>y2</code>), and two control variables (<code>c1</code> and <code>c2</code>).</p>
 <p>Suppose this is the model to be fitted:</p>
 <p><img src="med_lm_files/figure-html/draw_model-1.png" width="700"></p>
-<p>Despite the apparent complexity, the path parameters can be estimated by multiple regression models:</p>
+<p>Despite the apparent complexity, the path parameters can be estimated by five multiple regression models:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lm_m11</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">m11</span> <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span> <span class="op">+</span> <span class="va">c1</span> <span class="op">+</span> <span class="va">c2</span>, <span class="va">dat</span><span class="op">)</span></span>
 <span><span class="va">lm_m12</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">m12</span> <span class="op">~</span> <span class="va">m11</span> <span class="op">+</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span> <span class="op">+</span> <span class="va">c1</span> <span class="op">+</span> <span class="va">c2</span>, <span class="va">dat</span><span class="op">)</span></span>
@@ -136,7 +136,11 @@
 <span><span class="co">#&gt; m2 ~ x1 + x2 + c1 + c2</span></span>
 <span><span class="co">#&gt; y1 ~ m12 + m2 + m11 + x1 + x2 + c1 + c2</span></span>
 <span><span class="co">#&gt; y2 ~ m12 + m2 + m11 + x1 + x2 + c1 + c2</span></span></code></pre></div>
-<p>Simply use the <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> outputs as arguments. Order does not matter. <code><a href="../reference/lm2list.html">lm2list()</a></code> will also check (a) whether the same sample is used in all regression analysis (not just same sample size, but the same set of cases), and (b) whether the models are “connected”, to ensure that the regression outputs can be validly combined.</p>
+<p>Simply use the <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> outputs as arguments. Order does not matter. To ensure that the regression outputs can be validly combined, <code><a href="../reference/lm2list.html">lm2list()</a></code> will also check:</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>whether the same sample is used in all regression analysis (not just same sample size, but the same set of cases), and</p></li>
+<li><p>whether the models are “connected”, to ensure that the regression outputs can be validly combined.</p></li>
+</ol>
 </div>
 <div class="section level2">
 <h2 id="generating-bootstrap-estimates">Generating Bootstrap Estimates<a class="anchor" aria-label="anchor" href="#generating-bootstrap-estimates"></a>
@@ -152,9 +156,9 @@
 <div class="section level2">
 <h2 id="indirect-effects">Indirect Effects<a class="anchor" aria-label="anchor" href="#indirect-effects"></a>
 </h2>
-<p>We can now use <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> to estimate the indirect effect and form its bootstrap confidence interval for any path in the model. By reusing the generated bootstrap estimates, there is no need to repeat the resampling and estimation.</p>
+<p>We can now use <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> to estimate the indirect effect and form its bootstrap confidence interval for any path in the model. By reusing the generated bootstrap estimates, there is no need to repeat the resampling.</p>
 <p>Suppose we want to estimate the indirect effect from <code>x1</code> to <code>y1</code> through <code>m11</code> and <code>m12</code>:</p>
-<p>(Refer to <code>vignette(manymome)</code> and the help page of <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> on the arguments.)</p>
+<p>(Refer to <code><a href="../articles/manymome.html">vignette("manymome")</a></code> and the help page of <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> on the arguments.)</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_x1m11m12y1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">indirect_effect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x1"</span>,</span>
 <span>                                  y <span class="op">=</span> <span class="st">"y1"</span>,</span>
@@ -183,7 +187,7 @@
 <span><span class="co">#&gt;   m11~x1       0.352</span></span>
 <span><span class="co">#&gt;  m12~m11       0.454</span></span>
 <span><span class="co">#&gt;   y1~m12       0.234</span></span></code></pre></div>
-<p>The indirect effect is 0.037, with 95% confidence interval [0.003,0.077].</p>
+<p>The indirect effect is 0.037, with 95% confidence interval [0.003, 0.077].</p>
 <p>Similarly, we can estimate the indirect effect from <code>x2</code> to <code>y2</code> through <code>m2</code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_x2m2y2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">indirect_effect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x2"</span>,</span>
@@ -212,7 +216,7 @@
 <span><span class="co">#&gt;   Path Coefficient</span></span>
 <span><span class="co">#&gt;  m2~x2       0.289</span></span>
 <span><span class="co">#&gt;  y2~m2      -0.436</span></span></code></pre></div>
-<p>The indirect effect is -0.126, with 95% confidence interval [-0.233,-0.043].</p>
+<p>The indirect effect is -0.126, with 95% confidence interval [-0.233, -0.043].</p>
 <p>Note that any indirect path in the model can be estimated this way. Suppose, after doing the regression analysis, we want to estimate the indirect effect from <code>x2</code> to <code>m12</code> through <code>m11</code>, we just call <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_x2m11m12</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">indirect_effect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x2"</span>,</span>
@@ -241,7 +245,7 @@
 <span><span class="co">#&gt;     Path Coefficient</span></span>
 <span><span class="co">#&gt;   m11~x2     -0.0447</span></span>
 <span><span class="co">#&gt;  m12~m11      0.4541</span></span></code></pre></div>
-<p>The indirect effect is -0.020, with 95% confidence interval [-0.139,0.110].</p>
+<p>The indirect effect is -0.020, with 95% confidence interval [-0.139, 0.110].</p>
 <p>There is no limit on the path to be estimated, as long as all required path coefficients are in the model. <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> will also check whether a path is valid. Therefore, estimating the effect from <code>x1</code> to <code>m2</code> through <code>m11</code> will result in an error because this path does not exist in the model defined by the regression outputs.</p>
 </div>
 <div class="section level2">
@@ -250,13 +254,13 @@
 <p>The standardized indirect effect from <code>x1</code> to <code>y1</code> through <code>m11</code> and <code>m12</code> can be estimated by setting <code>standardized_x</code> and <code>standardized_y</code> to `TRUE:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">std_x1m11m12y1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">indirect_effect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x1"</span>,</span>
-<span>                                y <span class="op">=</span> <span class="st">"y1"</span>,</span>
-<span>                                m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"m11"</span>, <span class="st">"m12"</span><span class="op">)</span>,</span>
-<span>                                fit <span class="op">=</span> <span class="va">fit_lm</span>,</span>
-<span>                                boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                                boot_out <span class="op">=</span> <span class="va">boot_out_lm</span>,</span>
-<span>                                standardized_x <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                                standardized_y <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>                                  y <span class="op">=</span> <span class="st">"y1"</span>,</span>
+<span>                                  m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"m11"</span>, <span class="st">"m12"</span><span class="op">)</span>,</span>
+<span>                                  fit <span class="op">=</span> <span class="va">fit_lm</span>,</span>
+<span>                                  boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                  boot_out <span class="op">=</span> <span class="va">boot_out_lm</span>,</span>
+<span>                                  standardized_x <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                  standardized_y <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">std_x1m11m12y1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; == Indirect Effect ==</span></span>
@@ -313,7 +317,7 @@
 <span><span class="co">#&gt;  y1~m2     -0.4330</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; NOTE: The effects of the component paths are from the model, not standardized.</span></span></code></pre></div>
-<p>The standardized indirect effect is -0.010, with 95% confidence interval [-0.069,0.067].</p>
+<p>The standardized indirect effect is -0.010, with 95% confidence interval [-0.069, 0.067].</p>
 </div>
 <div class="section level2">
 <h2 id="adding-effects">Adding Effects<a class="anchor" aria-label="anchor" href="#adding-effects"></a>
@@ -439,7 +443,8 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span></code></pre></div>
-<p>The total effect of <code>f1</code> on <code>f4</code> is 0.030, with 95% confidence interval [-0.088,0.132].</p>
+<p>The total effect of <code>f1</code> on <code>f4</code> is 0.030, with 95% confidence interval [-0.088, 0.132].</p>
+<p>See <code><a href="../reference/math_indirect.html">help("math_indirect")</a></code> for further details on addition for <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> outputs.</p>
 </div>
 <div class="section level2">
 <h2 id="differences-in-effects">Differences in Effects<a class="anchor" aria-label="anchor" href="#differences-in-effects"></a>
@@ -463,7 +468,8 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span></code></pre></div>
-<p>The difference in effects is 0.047, with 95% confidence interval [-0.038,0.118].</p>
+<p>The difference in effects is 0.047, with 95% confidence interval [-0.038, 0.118].</p>
+<p>See <code><a href="../reference/math_indirect.html">help("math_indirect")</a></code> for further details on subtraction for <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> outputs.</p>
 </div>
 <div class="section level2">
 <h2 id="further-information">Further Information<a class="anchor" aria-label="anchor" href="#further-information"></a>

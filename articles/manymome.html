@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +80,7 @@
       <img src="" class="logo" alt=""><h1>manymome</h1>
                         <h4 data-toc-skip class="author">Shu Fai Cheung &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2022-08-30</h4>
+            <h4 data-toc-skip class="date">2022-08-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/HEAD/vignettes/manymome.Rmd" class="external-link"><code>vignettes/manymome.Rmd</code></a></small>
       <div class="d-none name"><code>manymome.Rmd</code></div>
@@ -100,8 +100,8 @@
 <li>
 <p>Stage 1: <strong>Fit the model</strong></p>
 <ul>
-<li><p>This can be done by SEM (using <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem</a></code>) or a series of regression (using <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>) for now.</p></li>
-<li><p>No need to label any parameters or denote any variables as the predictors, mediators, moderators, or outcome variables for computing indirect effects or conditional indirect effects. Stage 2 will take care of this.</p></li>
+<li><p>This can be done by SEM (using <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>) or a series of regression (using <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>).</p></li>
+<li><p>When <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> is used, no need to label any parameters or denote any variables as the predictors, mediators, moderators, or outcome variables for computing indirect effects or conditional indirect effects. Stage 2 will take care of this.</p></li>
 </ul>
 </li>
 <li>
@@ -114,7 +114,7 @@
 </ul>
 </li>
 </ul>
-<p><strong>Bootstrapping confidence intervals</strong>: All main functions support bootstrap confidence intervals for the effects. Bootstrapping can done in Stage 1 (e.g., by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem</a></code> using <code>se = "boot"</code>) or in Stage 2 in the first call to the main functions, and only needs to be conducted once. The bootstrap estimates can be reused by most main functions of <code>manymome</code> for any path and any levels of the moderators.</p>
+<p><strong>Bootstrapping confidence intervals</strong>: All main functions support bootstrap confidence intervals for the effects. Bootstrapping can done in Stage 1 (e.g., by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> using <code>se = "boot"</code>) or in Stage 2 in the first call to the main functions, and only needs to be conducted once. Alternatively, <code><a href="../reference/do_boot.html">do_boot()</a></code> can be use (see <code><a href="../articles/do_boot.html">vignette("do_boot")</a></code>). The bootstrap estimates can be reused by most main functions of <code>manymome</code> for any path and any level of the moderators.</p>
 <p><strong>Standardized effects</strong>: All main functions in Stage 2 support standardized effects and form their bootstrap confidence interval correctly (Cheung, 2009; Friedrich, 1982). No need to standardize the variables in advance in Stage 1, even for paths with moderators.</p>
 </div>
 <div class="section level3">
@@ -122,8 +122,8 @@
 </h3>
 <ul>
 <li><p>Use <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> to compute <em>conditional</em> <em>indirect</em> <em>effects</em>, with bootstrap confidence intervals.</p></li>
-<li><p>Use <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> to compute <em>indirect</em> <em>effects</em>, with bootstrap confidence interval.</p></li>
-<li><p>Use <code>+</code> and <code>-</code> to compute a function of effects, such as total indirect effects or total effects.</p></li>
+<li><p>Use <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> to compute an <em>indirect</em> <em>effect</em>, with bootstrap confidence interval.</p></li>
+<li><p>Use <code>+</code> and <code>-</code> to compute a <em>function</em> of effects, such as total indirect effects or total effects.</p></li>
 <li><p>Use <code><a href="../reference/do_boot.html">do_boot()</a></code> to generate bootstrap estimates for <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>, <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>, and some other functions in <code>manymome</code>.</p></li>
 <li><p>Use <code><a href="../reference/index_of_mome.html">index_of_mome()</a></code> and <code><a href="../reference/index_of_mome.html">index_of_momome()</a></code> to compute the index of moderated mediation and the index of moderated moderated mediation, respectively, with bootstrap confidence intervals.</p></li>
 <li><p>Compute <em>standardized</em> conditional indirect effects and <em>standardized</em> indirect effect using <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> and <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>, respectively.</p></li>
@@ -133,7 +133,7 @@
 <div class="section level2">
 <h2 id="moderated-mediation-by-sem-using-lavaan">Moderated Mediation by SEM using <code>lavaan</code><a class="anchor" aria-label="anchor" href="#moderated-mediation-by-sem-using-lavaan"></a>
 </h2>
-<p>This is the sample dataset comes with the package:</p>
+<p>This is the sample data set comes with the package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sfcheung.github.io/manymome/">manymome</a></span><span class="op">)</span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">data_med_mod_ab</span></span>
@@ -151,10 +151,16 @@
 <div class="section level3">
 <h3 id="fitting-the-model">Fitting the Model<a class="anchor" aria-label="anchor" href="#fitting-the-model"></a>
 </h3>
-<p>This is a moderated mediation model with</p>
+<p>The model fitted above is a moderated mediation model with</p>
 <ul>
 <li><p>a mediation path <code>x -&gt; m -&gt; y</code>, and</p></li>
-<li><p>two moderators: <code>x -&gt; m</code> moderated by <code>w1</code> and <code>m -&gt; y</code> moderated by <code>w2</code>.</p></li>
+<li>
+<p>two moderators:</p>
+<ul>
+<li><p><code>x -&gt; m</code> moderated by <code>w1</code></p></li>
+<li><p><code>m -&gt; y</code> moderated by <code>w2</code>.</p></li>
+</ul>
+</li>
 </ul>
 <p>The effects of interest are the <em>conditional</em> <em>indirect</em> <em>effects</em>: the indirect effects</p>
 <ul>
@@ -162,7 +168,7 @@
 <li><p>through <code>m</code></p></li>
 <li><p>for different levels of <code>w1</code> and <code>w2</code>.</p></li>
 </ul>
-<p>The effects in this moderated mediation model can be estimated by SEM in R using <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>. There is not need to label any path coefficients or define any user parameters (but users can if so desired; they have no impact on the functions in <code>manymome</code>). To illustrate a more realistic scenario, two control variables, <code>c1</code> and <code>c2</code>, are also included.</p>
+<p><code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> can estimate these effects in the model fitted by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>. There is no need to label any path coefficients or define any user parameters (but users can, if so desired; they have no impact on the functions in <code>manymome</code>). To illustrate a more realistic scenario, two control variables, <code>c1</code> and <code>c2</code>, are also included.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lavaan.ugent.be" class="external-link">lavaan</a></span><span class="op">)</span></span>
 <span><span class="co"># Form the product terms</span></span>
@@ -188,8 +194,8 @@
 <span>           data <span class="op">=</span> <span class="va">dat</span>,</span>
 <span>           fixed.x <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>           estimator <span class="op">=</span> <span class="st">"MLR"</span><span class="op">)</span></span></code></pre></div>
-<p><code>MLR</code> is used to take into account probable nonnormality due to the product terms. <code>fixed.x = FALSE</code> is used to allow the predictors to be random variables. This is usually necessary when the values of the predictor are also sampled from the populations, and so their SDs are sample statistics.</p>
-<p>These are the parameter estimates:</p>
+<p><code>MLR</code> is used to take into account probable nonnormality due to the product terms. <code>fixed.x = FALSE</code> is used to allow the predictors to be random variables. This is usually necessary when the values of the predictor are also sampled from the populations, and so their standard deviations are sample statistics.</p>
+<p>These are the parameter estimates of the paths:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">$</span><span class="va">op</span> <span class="op">==</span> <span class="st">"~"</span>, <span class="op">]</span></span>
 <span><span class="co">#&gt;    lhs op rhs    est    se      z pvalue ci.lower ci.upper</span></span>
@@ -209,12 +215,12 @@
 <div class="section level3">
 <h3 id="conditional-indirect-effects">Conditional Indirect Effects<a class="anchor" aria-label="anchor" href="#conditional-indirect-effects"></a>
 </h3>
-<p>To form bootstrap confidence intervals, bootstrapping needs to be done. There are several to do this. We first illustrate using <code><a href="../reference/do_boot.html">do_boot()</a></code>.</p>
+<p>To form bootstrap confidence intervals, bootstrapping needs to be done. There are several ways to do this. We first illustrate using <code><a href="../reference/do_boot.html">do_boot()</a></code>.</p>
 <div class="section level4">
 <h4 id="do-bootstrapping-once">Do Bootstrapping (Once)<a class="anchor" aria-label="anchor" href="#do-bootstrapping-once"></a>
 </h4>
 <p>Using <code><a href="../reference/do_boot.html">do_boot()</a></code> instead of setting <code>se</code> to <code>"boot"</code> when calling <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> allows users to use other method for standard errors and confidence intervals for other parameters, such as the various types of robust standard errors provided by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>.</p>
-<p>The function <code><a href="../reference/do_boot.html">do_boot()</a></code> is used to generate and store bootstrap estimates as well as implied variances and SDs of variables for standardized effects.</p>
+<p>The function <code><a href="../reference/do_boot.html">do_boot()</a></code> is used to generate and store bootstrap estimates as well as implied variances of variables, which are needed to estimate standardized effects.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_boot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_boot.html">do_boot</a></span><span class="op">(</span>fit <span class="op">=</span> <span class="va">fit</span>,</span>
 <span>                    R <span class="op">=</span> <span class="fl">100</span>,</span>
@@ -227,7 +233,7 @@
 <li><p><code>seed</code>: The seed to reproduce the results.</p></li>
 <li><p><code>ncores</code>: The number of processes in parallel processing. The default number is the number of detected physical cores minus 1. Can be omitted in real studies. Set to 1 here for illustration.</p></li>
 </ul>
-<p>By default, parallel processing is used, and so the results are reproducible with the same seed only if the number of processes is the same. See <code><a href="../reference/do_boot.html">do_boot()</a></code> for other options.</p>
+<p>By default, parallel processing is used, and so the results are reproducible with the same seed only if the number of processes is the same. See <code><a href="../reference/do_boot.html">do_boot()</a></code> for other options and <code><a href="../articles/do_boot.html">vignette("do_boot")</a></code> on the output of <code><a href="../reference/do_boot.html">do_boot()</a></code>.</p>
 <p>The output, <code>fit_boot</code> in this case, can then be used for all subsequent analyses on this model.</p>
 </div>
 <div class="section level4">
@@ -245,7 +251,7 @@
 <p>These are the major arguments:</p>
 <ul>
 <li>
-<code>wlevels</code>: The vector of the names of the moderators. Order does not matter. If the default levels are not suitable, custom levels can be created by functions like <code><a href="../reference/mod_levels.html">mod_levels()</a></code> and <code><a href="../reference/merge_mod_levels.html">merge_mod_levels()</a></code>.</li>
+<code>wlevels</code>: The vector of the names of the moderators. Order does not matter. If the default levels are not suitable, custom levels can be created by functions like <code><a href="../reference/mod_levels.html">mod_levels()</a></code> and <code><a href="../reference/merge_mod_levels.html">merge_mod_levels()</a></code> (see <code><a href="../articles/mod_levels.html">vignette("mod_levels")</a></code>).</li>
 <li>
 <code>x</code>: The name of the predictor.</li>
 <li>
@@ -281,7 +287,7 @@
 <span><span class="co">#&gt;  - 'm~x','y~m' is/are the path coefficient(s) along the path conditional</span></span>
 <span><span class="co">#&gt;    on the moderators.</span></span></code></pre></div>
 <p>For two or more moderators, the default levels for numeric moderators are one standard deviation (SD) below mean and one SD above mean. For two moderators, there are four combinations.</p>
-<p>As shown above, among these levels, the indirect effect from <code>x</code> to <code>y</code> through <code>m</code> is significant only when both <code>w1</code> and <code>w2</code> are one SD above their means. The indirect effect at these levels of <code>w1</code> and <code>w2</code> are 0.399, with 95% bootstrap confidence interval [0.121, 0.654].</p>
+<p>As shown above, among these four sets of levels, the indirect effect from <code>x</code> to <code>y</code> through <code>m</code> is significant only when both <code>w1</code> and <code>w2</code> are one SD above their means. The indirect effect at these levels of <code>w1</code> and <code>w2</code> are 0.399, with 95% bootstrap confidence interval [0.121, 0.654].</p>
 <div class="section level5">
 <h5 id="examine-the-effect-at-a-particular-set-of-levels-of-the-moderators">Examine the Effect at a Particular Set of Levels of the Moderators<a class="anchor" aria-label="anchor" href="#examine-the-effect-at-a-particular-set-of-levels-of-the-moderators"></a>
 </h5>
@@ -313,7 +319,7 @@
 <div class="section level5">
 <h5 id="changing-the-levels-of-the-moderators">Changing the Levels of the Moderators<a class="anchor" aria-label="anchor" href="#changing-the-levels-of-the-moderators"></a>
 </h5>
-<p>The levels of the moderators, <code>w1</code> and <code>w2</code> in this example, can be controlled directly by users. For examples, percentiles or exact values of the moderators can be used. See <code><a href="../reference/mod_levels.html">mod_levels()</a></code> and <code><a href="../reference/merge_mod_levels.html">merge_mod_levels()</a></code> on how to specify other levels of the moderators, and the arguments <code>w_method</code>, <code>sd_from_mean</code>, and <code>percentiles</code> of <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>.</p>
+<p>The levels of the moderators, <code>w1</code> and <code>w2</code> in this example, can be controlled directly by users. For examples, percentiles or exact values of the moderators can be used. See <code><a href="../articles/mod_levels.html">vignette("mod_levels")</a></code> on how to specify other levels of the moderators, and the arguments <code>w_method</code>, <code>sd_from_mean</code>, and <code>percentiles</code> of <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>.</p>
 </div>
 </div>
 </div>
@@ -333,7 +339,7 @@
 <span>                                        boot_out <span class="op">=</span> <span class="va">fit_boot</span>,</span>
 <span>                                        standardized_x <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                                        standardized_y <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>Note that <code>fit_boot</code> is used again, so that there is no need to do bootstrapping again.</p>
+<p>Note that <code>fit_boot</code> is used so that there is no need to do bootstrapping again.</p>
 <p>This is the output:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_cond_stdxy</span></span>
@@ -437,7 +443,7 @@
 <span>           data <span class="op">=</span> <span class="va">dat</span>,</span>
 <span>           fixed.x <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>           estimator <span class="op">=</span> <span class="st">"MLR"</span><span class="op">)</span></span></code></pre></div>
-<p>These are the parameterEstimates:</p>
+<p>These are the parameter estimates of the paths:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span><span class="op">$</span><span class="va">op</span> <span class="op">==</span> <span class="st">"~"</span>, <span class="op">]</span></span>
 <span><span class="co">#&gt;   lhs op rhs    est    se      z pvalue ci.lower ci.upper</span></span>
@@ -495,7 +501,7 @@
 <h2 id="mediation-only">Mediation Only<a class="anchor" aria-label="anchor" href="#mediation-only"></a>
 </h2>
 <p>The package can also be used for a mediation model.</p>
-<p>This is the sample dataset comes with the package:</p>
+<p>This is the sample data set that comes with the package:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sfcheung.github.io/manymome/">manymome</a></span><span class="op">)</span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">data_serial</span></span>
@@ -522,7 +528,7 @@
 <span><span class="va">fit_med</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">mod_med</span>,</span>
 <span>               data <span class="op">=</span> <span class="va">dat</span>,</span>
 <span>               fixed.x <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>These are the estimates</p>
+<p>These are the estimates of the paths:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">fit_med</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">fit_med</span><span class="op">)</span><span class="op">$</span><span class="va">op</span> <span class="op">==</span> <span class="st">"~"</span>, <span class="op">]</span></span>
 <span><span class="co">#&gt;    lhs op rhs    est    se      z pvalue ci.lower ci.upper</span></span>
@@ -542,7 +548,7 @@
 <div class="section level3">
 <h3 id="est_indirect">Estimate Indirect Effects<a class="anchor" aria-label="anchor" href="#est_indirect"></a>
 </h3>
-<p><code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> can be used to estimate an indirect effect and form its bootstrapping confidence interval along a path in a model that starts with any variable, ends with any variable, through any variable(s).</p>
+<p><code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> can be used to estimate an indirect effect and form its bootstrapping confidence interval along a path in a model that starts with any numeric variable, ends with any numeric variable, through any numeric variable(s).</p>
 <p>We illustrate another approach to generate bootstrap estimates: using <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> to do both bootstrapping and estimate the indirect effect.</p>
 <p>For example, this is the call for the indirect effect from <code>x</code> to <code>y</code> through <code>m1</code> and <code>m2</code>:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
@@ -559,7 +565,7 @@
 <li>
 <code>x</code>: The name of the predictor. The start of the path.</li>
 <li>
-<code>y</code>: The name of the outcome variable. The end of the path</li>
+<code>y</code>: The name of the outcome variable. The end of the path.</li>
 <li>
 <code>m</code>: The name of the mediator, or the vector of names of the mediators if the path has more than one mediator, as in this example. The path moves from the first mediator to the last mediator. In this example, the correct order is <code>c("m1", "m2")</code>.</li>
 <li>
@@ -567,13 +573,13 @@
 <li>
 <code>boot_ci</code>: Set to <code>TRUE</code> to request bootstrapping confidence intervals. Default is <code>FALSE</code>.</li>
 <li>
-<code>R</code>: The number of bootstrap samples. Only 500 bootstrap samples for illustration. Set <code>R</code> to 2000 or even 5000 in real research.</li>
+<code>R</code>: The number of bootstrap samples. Only 100 bootstrap samples for illustration. Set <code>R</code> to 2000 or even 5000 in real research.</li>
 <li>
 <code>seed</code>: The seed for the random number generator.</li>
 <li>
 <code>ncores</code>: The number of processes in parallel processing. The default number is the number of detected physical cores minus 1. Can be omitted in real studies. Set to 1 here for illustration.</li>
 </ul>
-<p>Like <code><a href="../reference/do_boot.html">do_boot()</a></code>, by default, parallel processing is used, and so the results are reproducible with the same seed only if the number of processes is the same.</p>
+<p>Like <code><a href="../reference/do_boot.html">do_boot()</a></code>, by default, parallel processing is used, and so the results are reproducible with the same seed only if the number of processes (cores) is the same.</p>
 <p>This is the output:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_med</span></span>
@@ -672,12 +678,12 @@
 <span><span class="co">#&gt;  m2~x      -0.116</span></span>
 <span><span class="co">#&gt;  y~m2       0.521</span></span></code></pre></div>
 <p>The indirect effect along this path is not significant.</p>
-<p>Similarly, indirect effects from <code>m1</code> through <code>m2</code> to <code>y</code> or from <code>x</code> through <code>m1</code> to <code>y</code> can also be tested by setting the three arguments accordingly. Although <code>c1</code> and <code>c2</code> are labelled as control variables, if appropriated, their indirect effects on <code>y</code> through <code>m1</code> and/or <code>m2</code> can also be computed and tested.</p>
+<p>Similarly, indirect effects from <code>m1</code> through <code>m2</code> to <code>y</code> or from <code>x</code> through <code>m1</code> to <code>y</code> can also be tested by setting the three arguments accordingly. Although <code>c1</code> and <code>c2</code> are labelled as control variables, if appropriate, their indirect effects on <code>y</code> through <code>m1</code> and/or <code>m2</code> can also be computed and tested.</p>
 </div>
 <div class="section level3">
 <h3 id="total-indirect-effects-and-total-effects">Total Indirect Effects and Total Effects<a class="anchor" aria-label="anchor" href="#total-indirect-effects-and-total-effects"></a>
 </h3>
-<p>Addition (<code>+</code>) and subtraction (<code>-</code>) can be applied to the outputs of <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>. For example, the total indirect effect from <code>x</code> to <code>y</code> is the sum of these indirect effects:</p>
+<p>Addition (<code>+</code>) and subtraction (<code>-</code>) can be applied to the outputs of <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>. For example, the total <em>indirect</em> effect from <code>x</code> to <code>y</code> is the sum of these indirect effects:</p>
 <ul>
 <li><p><code>x -&gt; m1 -&gt; m2 -&gt; y</code></p></li>
 <li><p><code>x -&gt; m1 -&gt; y</code></p></li>
@@ -746,10 +752,10 @@
 <p>Similarly, the total effect of <code>x</code> on <code>y</code> can be computed by adding all the effects, direct or indirect. The direct effect can be computed with <code>m</code> not set:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_x_direct</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">indirect_effect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span>                              y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span>                              fit <span class="op">=</span> <span class="va">fit_med</span>,</span>
-<span>                              boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                              boot_out <span class="op">=</span> <span class="va">out_med</span><span class="op">)</span></span>
+<span>                                y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>                                fit <span class="op">=</span> <span class="va">fit_med</span>,</span>
+<span>                                boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                boot_out <span class="op">=</span> <span class="va">out_med</span><span class="op">)</span></span>
 <span><span class="va">out_x_direct</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ==  Effect ==</span></span>
@@ -789,6 +795,7 @@
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span></code></pre></div>
 <p>The total effect is 0.255, not significant. This illustrates that total effect can be misleading when the component paths are of different signs.</p>
+<p>See <code><a href="../reference/math_indirect.html">help(math_indirect)</a></code> for more information of addition and subtraction for the output of <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>.</p>
 </div>
 </div>
 <div class="section level2">
@@ -797,23 +804,24 @@
 <div class="section level3">
 <h3 id="advantages">Advantages<a class="anchor" aria-label="anchor" href="#advantages"></a>
 </h3>
-<p>The package <code>manymome</code> has these advantages:</p>
 <ul>
-<li><p>The model fitting step is easier. No need to label any parameters or define any effects. Users can also use other methods for confidence interval and use bootstrapping only for indirect effects and conditional indirect effects.</p></li>
+<li><p>The model fitting stage is easier. No need to label any parameters or define any effects. Users can also use other methods for confidence interval and use bootstrapping only for indirect effects and conditional indirect effects.</p></li>
 <li><p>Missing data can be be handled by <code>missing = "fiml"</code> in calling <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>. Because bootstrapping estimates are used in Stage 2, indirect effects and conditional indirect effects can also be computed with bootstrap confidence intervals, just like defining them in <code>lavaan</code>, in the presence of missing data.</p></li>
-<li><p>Bootstrapping only needs to be done once. The bootstrap estimates can be reused in computing indirect effects and conditional indirect effects. This is particularly useful when the sample size and there is missing data.</p></li>
+<li><p>Bootstrapping only needs to be done once. The bootstrap estimates can be reused in computing indirect effects and conditional indirect effects. This is particularly useful when the sample size is large and there is missing data.</p></li>
 <li><p>Users can explore any path for any levels of the moderators without respecifying and refitting the model.</p></li>
+<li><p>Flexibility makes it difficult to test all possible scenarios. Therefore, the print methods will also print the details of the computation (e.g., how an indirect effect is computed) so that users can (a) understand how each effect is computed, and (b) verify the computation if necessary.</p></li>
 </ul>
+<p>See <a href="https://sfcheung.github.io/manymome/index.html#advantages">this section</a> for other advantages.</p>
 </div>
 <div class="section level3">
 <h3 id="limitations">Limitations<a class="anchor" aria-label="anchor" href="#limitations"></a>
 </h3>
-<p>The package <code>manymome</code> supports “many” models … but certainly not all. There are models that it does not yet support. For example, it does not support a path that starts with a nominal categorical variable. It also only supports percentile bootstrap confidence interval (although this is merely a preference of us). Other tools need to be used for these cases.</p>
+<p>The package <code>manymome</code> supports “many” models … but certainly not all. There are models that it does not yet support. For example, it does not support a path that starts with a nominal categorical variable. It also only supports percentile bootstrap confidence interval (although this is merely a preference of us). Other tools need to be used for these cases. See <a href="https://sfcheung.github.io/manymome/index.html#limitations">this section</a> for other limitations.</p>
 </div>
 <div class="section level3">
 <h3 id="other-uses-and-scenarios">Other Uses and Scenarios<a class="anchor" aria-label="anchor" href="#other-uses-and-scenarios"></a>
 </h3>
-<p>There are other options available in <code>manymome</code>. For example, it can be used for categorical moderators and models fitted by multiple regression. Please refer to the help page and examples of the functions or other forthcoming articles (vignettes).</p>
+<p>There are other options available in <code>manymome</code>. For example, it can be used for categorical moderators and models fitted by multiple regression. Please refer to the help page and examples of the functions, or other <a href="https://sfcheung.github.io/manymome/articles/">articles</a>. More articles will be added in the future for other scenarios.</p>
 </div>
 </div>
 <div class="section level2">

@@ -12,7 +12,7 @@ the output of lavaan::sem()."><!-- mathjax --><script src="https://cdnjs.cloudfl
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -129,7 +129,12 @@ Default is <code><a href="https://rdrr.io/r/base/list.html" class="external-link
 <code>boot_out</code> argument of <code><a href="cond_indirect.html">indirect_effect()</a></code>,
 <code><a href="cond_indirect.html">cond_indirect_effects()</a></code>, and related
 functions for forming bootstrapping confidence
-intervals.</p>
+intervals.
+The object is a list with the number of
+elements equal to the number of bootstrap samples.
+Each element is a list of the parameter estimates
+and sample variances and covariances of the variables
+in each bootstrap sample.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

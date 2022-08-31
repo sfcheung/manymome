@@ -36,7 +36,7 @@
     
     <a class="navbar-brand me-2" href="index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,7 +84,7 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9">
-<p>(Version 0.1.1.4), updated on 2022-08-30, <a href="https://sfcheung.github.io/manymome/news/index.html">release history</a>)</p>
+<p>(Version 0.1.1.5), updated on 2022-08-31, <a href="https://sfcheung.github.io/manymome/news/index.html">release history</a>)</p>
 <div class="section level1">
 <div class="page-header"><h1 id="manymome">manymome<a class="anchor" aria-label="anchor" href="#manymome"></a>
 </h1></div>
@@ -94,15 +94,15 @@
 <h1 id="what-it-can-do">What It Can Do?<a class="anchor" aria-label="anchor" href="#what-it-can-do"></a>
 </h1>
 <ul>
-<li><p>Compute an unstandardized or standardized indirect effect or conditional indirect effect in a path model.</p></li>
-<li><p>Form the bootstrap confidence interval for this effect.</p></li>
+<li><p>Compute an unstandardized or <em>standardized</em> <em>indirect</em> <em>effect</em> or <em>conditional</em> <em>indirect</em> <em>effect</em> in a path model.</p></li>
+<li><p>Form the <em>bootstrap</em> <em>confidence</em> <em>interval</em> for this effect.</p></li>
 </ul>
 </div>
 <div class="section level1">
 <h1 id="advantages">Advantages<a class="anchor" aria-label="anchor" href="#advantages"></a>
 </h1>
 <ul><li><strong>A Simpler Workflow</strong></li></ul>
-<p>No need to create any parameters or similar code when fitting a model. Just focus on fitting the model first. After a model has been selected, users can compute the effect for nearly any path, from nearly any variable, to nearly any other variables, conditional on nearly any moderators, and at any levels of the moderators. (See <code><a href="articles/manymome.html">vignette("manymome")</a></code> for details.)</p>
+<p>No need to define any parameters or similar code when fitting a model in <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>. Just focus on fitting the model first. After a model has been selected, users can compute the effect for nearly any path, from nearly any variable, to nearly any other variables, conditional on nearly any moderators, and at any levels of the moderators. (See <code><a href="articles/manymome.html">vignette("manymome")</a></code> for details.)</p>
 <ul><li><strong>Supports Both SEM-Based Modelling and Regression-Based</strong></li></ul>
 <p>Supports structural equation models fitted by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> or by path models fitted by regression using <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>, although the focus of this package is on structural equation models. The interface of the main functions are nearly the same for both approaches.</p>
 <ul><li><strong>Flexible in the Form of Models</strong></li></ul>
@@ -112,16 +112,16 @@
 <ul><li><strong>Supports Missing Data</strong></li></ul>
 <p>Supports dataset with missing data through <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> with full information maximum likelihood (<code>fiml</code>).</p>
 <ul><li><strong>Supports Numeric and Categorical Moderators</strong></li></ul>
-<p>Supports numeric and categorical moderators. It has a function (<code><a href="reference/factor2var.html">factor2var()</a></code>) for the easy creation of dummy variables in <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>, and can capitalizes on the native support of categorical moderators in <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.</p>
+<p>Supports numeric and categorical moderators. It has a function (<code><a href="reference/factor2var.html">factor2var()</a></code>) for the easy creation of dummy variables in <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>, and can also capitalize on the native support of categorical moderators in <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.</p>
 <ul><li><strong>Less Time for Bootstrapping</strong></li></ul>
-<p>Bootstrapping, which is time consuming, can be conducted just once. The main functions for computing indirect effects and conditional indirect effects can be called as many times as needed without redoing bootstrapping because they can reuse bootstrap estiamtes (see <code><a href="articles/manymome.html">vignette("manymome")</a></code> and <code>vignetted("do_boot")</code>).</p>
+<p>Bootstrapping, which can be time consuming, can be conducted just once. The main functions for computing indirect effects and conditional indirect effects can be called as many times as needed without redoing bootstrapping because they can reuse pregenerated bootstrap estimates (see <code><a href="articles/manymome.html">vignette("manymome")</a></code> and <code>vignetted("do_boot")</code>).</p>
 <ul><li><strong>Supports Latent Variables Mediation</strong></li></ul>
 <p>Supports indirect effects among latent variables for models fitted by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> (see <code><a href="articles/med_lav.html">vignette("med_lav")</a></code>).</p>
 </div>
 <div class="section level1">
 <h1 id="limitations">Limitations<a class="anchor" aria-label="anchor" href="#limitations"></a>
 </h1>
-<p>Despite the aforementioned advantages, the current version of <code>manymome</code> have the following limitations:</p>
+<p>Despite the aforementioned advantages, the current version of <code>manymome</code> has the following limitations:</p>
 <ul>
 <li><p>Does not (officially) support categorical predictors.</p></li>
 <li><p>Does not support multisample models (although <code>lavaan</code> does).</p></li>
@@ -147,17 +147,17 @@
 <h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h1>
 <p>The latest stable version at GitHub can be installed by <code>remotes::install_github()</code>:</p>
-<pre><code><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"sfcheung/manymome"</span><span class="op">)</span></span></code></pre>
+<pre class="{r}"><code><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"sfcheung/manymome"</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level1">
 <h1 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
 </h1>
-<p>We developed the package <a href="https://sfcheung.github.io/stdmod/" class="external-link"><code>stdmod</code></a> for moderated regression. We included a function (<code>stdmod::stdmod_lavaan()</code>) for standardized moderation effect in path models fitted by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>. However, in practice, path models nearly always included indirect effects and so moderated mediation is common in path models. Moreover, that package is intended for moderated regression, not on structural equation modeling. We thought perhaps we can develop a more general tools for models fitted by structural equation modelling based on the interface we used in <code>stdmod::stdmod_lavaan()</code>. The product is this package, <code>manymome</code>.</p>
+<p>We developed the package <a href="https://sfcheung.github.io/stdmod/" class="external-link"><code>stdmod</code></a> in 2021 for moderated regression. We included a function (<code>stdmod::stdmod_lavaan()</code>) for standardized moderation effect in path models fitted by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>. However, in practice, path models nearly always included indirect effects and so moderated mediation is common in path models. Moreover, <code>stdmod</code> is intended for moderated regression, not for structural equation modeling. We thought perhaps we could develop a more general tool for models fitted by structural equation modelling based on the interface we used in <code>stdmod::stdmod_lavaan()</code>. In our own projects, we also need to estimate indirect effects in models frequently. Large sample sizes with missing data are also common to us, for which bootstrapping is slow even with parallel processing. Therefore, we developed <code>manymome</code> to address these needs.</p>
 </div>
 <div class="section level1">
 <h1 id="issues">Issues<a class="anchor" aria-label="anchor" href="#issues"></a>
 </h1>
-<p>If you have any suggestions and found any bugs or limitations, please feel feel to open a GitHub issue. Thanks:</p>
+<p>If you have any suggestions and found any bugs or limitations, please feel feel to open a GitHub issue. Thanks.</p>
 <p><a href="https://github.com/sfcheung/manymome/issues" class="external-link uri">https://github.com/sfcheung/manymome/issues</a></p>
 </div>
 

@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +80,7 @@
       <img src="" class="logo" alt=""><h1>Mediation Models with Latent Variables</h1>
                         <h4 data-toc-skip class="author">Shu Fai Cheung &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2022-08-30</h4>
+            <h4 data-toc-skip class="date">2022-08-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/HEAD/vignettes/med_lav.Rmd" class="external-link"><code>vignettes/med_lav.Rmd</code></a></small>
       <div class="d-none name"><code>med_lav.Rmd</code></div>
@@ -108,7 +108,7 @@
 <span><span class="co">#&gt; 4 -0.5  1.1 -0.7 -0.5  1.0 -0.6 -0.9 -1.5 -1.5 -0.5 -2.2 -1.6 -0.8 -0.2</span></span>
 <span><span class="co">#&gt; 5 -0.8 -0.3 -0.9 -0.2  0.3 -2.1 -0.5 -1.8 -0.1 -2.7 -0.4 -1.2  0.3 -2.6</span></span>
 <span><span class="co">#&gt; 6  0.9  0.3  0.3  1.0 -1.8 -0.4  0.8 -0.4 -1.1 -2.1  0.4  0.0 -0.3  2.2</span></span></code></pre></div>
-<p>This dataset has 14 variables, which are indicators of four latent factors.</p>
+<p>This dataset has 14 variables, which are indicators of four latent factors: <code>f1</code>, <code>f2</code>, <code>f3</code>, and <code>f4</code>.</p>
 <p>Suppose this is the model to be fitted:</p>
 <p><img src="med_lav_files/figure-html/draw_model-1.png" width="700"></p>
 <p>This model can be fitted by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>:</p>
@@ -124,7 +124,7 @@
 <span><span class="st">"</span></span>
 <span><span class="va">fit_med</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">mod</span>,</span>
 <span>               data <span class="op">=</span> <span class="va">dat</span><span class="op">)</span></span></code></pre></div>
-<p>This is the parameter estimates of the paths between the latent variables:</p>
+<p>These are the estimates of the paths between the latent variables:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">est</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">fit_med</span><span class="op">)</span></span>
 <span><span class="va">est</span><span class="op">[</span><span class="va">est</span><span class="op">$</span><span class="va">op</span> <span class="op">==</span> <span class="st">"~"</span>, <span class="op">]</span></span>
@@ -144,7 +144,7 @@
 <span>                        R <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>                        seed <span class="op">=</span> <span class="fl">98171</span>,</span>
 <span>                        ncores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p>Please see <code><a href="../articles/do_boot.html">vignette("do_boot")</a></code> or the help page of <code><a href="../reference/do_boot.html">do_boot()</a></code> on how to use this function. In real research, <code>R</code>, the number of bootstrap samples, should be set to 2000 or even 5000. The argument <code>ncores</code> can usually be omitted unless users want to manually control the number of CPU cores used in parallel processing.</p>
+<p>Please see <code><a href="../articles/do_boot.html">vignette("do_boot")</a></code> or the help page of <code><a href="../reference/do_boot.html">do_boot()</a></code> on how to use this function. In real research, <code>R</code>, the number of bootstrap samples, should be set to 2000 or even 5000. The argument <code>ncores</code> can usually be omitted unless users want to manually control the number of CPU cores to be used in parallel processing.</p>
 </div>
 <div class="section level2">
 <h2 id="indirect-effects">Indirect Effects<a class="anchor" aria-label="anchor" href="#indirect-effects"></a>
@@ -178,7 +178,7 @@
 <span><span class="co">#&gt;   Path Coefficient</span></span>
 <span><span class="co">#&gt;  f3~f1       0.243</span></span>
 <span><span class="co">#&gt;  f4~f3       0.402</span></span></code></pre></div>
-<p>The indirect effect is 0.098, with 95% confidence interval [-0.007,0.216].</p>
+<p>The indirect effect is 0.098, with 95% confidence interval [-0.007, 0.216].</p>
 <p>Similarly, we can estimate the indirect effect from <code>f2</code> to <code>f4</code> through <code>f3</code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_f2f3f4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">indirect_effect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"f2"</span>,</span>
@@ -207,7 +207,7 @@
 <span><span class="co">#&gt;   Path Coefficient</span></span>
 <span><span class="co">#&gt;  f3~f2       0.326</span></span>
 <span><span class="co">#&gt;  f4~f3       0.402</span></span></code></pre></div>
-<p>The indirect effect is 0.131, with 95% confidence interval [0.049,0.254].</p>
+<p>The indirect effect is 0.131, with 95% confidence interval [0.049, 0.254].</p>
 </div>
 <div class="section level2">
 <h2 id="standardized-indirect-effects">Standardized Indirect effects<a class="anchor" aria-label="anchor" href="#standardized-indirect-effects"></a>
@@ -244,7 +244,7 @@
 <span><span class="co">#&gt;  f4~f3       0.402</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; NOTE: The effects of the component paths are from the model, not standardized.</span></span></code></pre></div>
-<p>The standardized indirect effect is 0.073, with 95% confidence interval [-0.005,0.157].</p>
+<p>The standardized indirect effect is 0.073, with 95% confidence interval [-0.005, 0.157].</p>
 <p>Similarly, we can estimate the standardized indirect effect from <code>f2</code> to <code>f4</code> through <code>f3</code>:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">std_f2f3f4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">indirect_effect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"f2"</span>,</span>
@@ -277,7 +277,7 @@
 <span><span class="co">#&gt;  f4~f3       0.402</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; NOTE: The effects of the component paths are from the model, not standardized.</span></span></code></pre></div>
-<p>The standardized indirect effect is 0.116, with 95% confidence interval [0.044,0.204].</p>
+<p>The standardized indirect effect is 0.116, with 95% confidence interval [0.044, 0.204].</p>
 <p>Note that, unlike the confidence intervals in <code><a href="https://rdrr.io/pkg/lavaan/man/standardizedSolution.html" class="external-link">lavaan::standardizedSolution()</a></code>, the confidence intervals formed by <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> are the bootstrap confidence intervals formed based on the bootstrap estimates, rather than intervals based on the delta method.</p>
 </div>
 <div class="section level2">
@@ -325,7 +325,7 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span></code></pre></div>
-<p>The total effect of <code>f1</code> on <code>f4</code> is 0.545, with 95% confidence interval [0.318,0.858].</p>
+<p>The total effect of <code>f1</code> on <code>f4</code> is 0.545, with 95% confidence interval [0.318, 0.858].</p>
 </div>
 <div class="section level2">
 <h2 id="differences-in-effects">Differences in Effects<a class="anchor" aria-label="anchor" href="#differences-in-effects"></a>
@@ -349,12 +349,12 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span></code></pre></div>
-<p>The difference in effects is 0.350, with 95% confidence interval [-0.027,0.700].</p>
+<p>The difference in effects is 0.350, with 95% confidence interval [-0.027, 0.700].</p>
 </div>
 <div class="section level2">
 <h2 id="further-information">Further Information<a class="anchor" aria-label="anchor" href="#further-information"></a>
 </h2>
-<p>For further information on <code><a href="../reference/do_boot.html">do_boot()</a></code> and <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>, please refer to their help pages.</p>
+<p>For further information on <code><a href="../reference/do_boot.html">do_boot()</a></code> and <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>, please refer to their help pages, or <code><a href="../articles/manymome.html">vignette("manymome")</a></code> and <code><a href="../articles/do_boot.html">vignette("do_boot")</a></code>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

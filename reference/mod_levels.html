@@ -14,7 +14,7 @@ and cond_indirect()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -203,24 +203,15 @@ and return the merged levels. Default is <code>FALSE</code>.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p><code>mod_levels()</code> returns a data frame of the levels created.</p>
-
-
-<p><code>mod_levels_list()</code> returns a list of data frames, or a merged data frame
-if <code>merge = TRUE</code>.</p>
-
-
-<p>A <code>wlevels</code>-class object which is
+<p><code>mod_levels()</code> returns a <code>wlevels</code>-class object which is
 a data frame with additional
 attributes about the levels.</p>
 
 
-<p>If <code>merge</code> is <code>TRUE</code>, return
-a <code>wlevels</code>-class object. If <code>merge</code></p>
-
-
-<p>is <code>FALSE</code>, return a list of
-<code>wlevels</code>-class objects.</p>
+<p><code>mod_levels_list()</code> returns a list of <code>wlevels</code>-class
+objects, or a <code>wlevels</code>-class object which is a data frame
+of the merged levels
+if <code>merge = TRUE</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -363,6 +354,7 @@ levels of moderators.</p></div>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># mod_levels_list() forms a combinations of levels in one call</span></span></span>
 <span class="r-in"><span><span class="co"># It returns a list, by default.</span></span></span>
 <span class="r-in"><span><span class="co"># Form the levels from a list of lm() outputs</span></span></span>
@@ -426,6 +418,7 @@ levels of moderators.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m~x’,‘y~m’ is/are the path coefficient(s) along the path conditional</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    on the moderators.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

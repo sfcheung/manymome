@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +80,7 @@
       <img src="" class="logo" alt=""><h1>Moderated Mediation Analysis by Multiple Regression</h1>
                         <h4 data-toc-skip class="author">Shu Fai Cheung &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2022-08-30</h4>
+            <h4 data-toc-skip class="date">2022-08-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/HEAD/vignettes/mome_lm.Rmd" class="external-link"><code>vignettes/mome_lm.Rmd</code></a></small>
       <div class="d-none name"><code>mome_lm.Rmd</code></div>
@@ -91,12 +91,12 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This article is a brief illustration of how <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> can be used to estimate the conditional indirect effects when the model parameters are estimate by ordinary least squares (OLS) multiple regression using <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.</p>
+<p>This article is a brief illustration of how to use <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> to estimate the conditional indirect effects when the model parameters are estimate by ordinary least squares (OLS) multiple regression using <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.</p>
 </div>
 <div class="section level2">
 <h2 id="data-set-and-model">Data Set and Model<a class="anchor" aria-label="anchor" href="#data-set-and-model"></a>
 </h2>
-<p>This is the sample dataset used for illustration:</p>
+<p>This is the sample data set used for illustration:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sfcheung.github.io/manymome/">manymome</a></span><span class="op">)</span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">data_med_mod_a</span></span>
@@ -108,16 +108,18 @@
 <span><span class="co">#&gt; 4  9.53 3.16 32.6 37.9 2.94 6.01</span></span>
 <span><span class="co">#&gt; 5 11.34 3.84 49.2 59.0 6.12 5.05</span></span>
 <span><span class="co">#&gt; 6  9.66 2.22 26.4 35.4 4.02 5.03</span></span></code></pre></div>
-<p>This dataset has 7 variables: one predictor (<code>x</code>), one mediators (<code>m</code>), one outcome variable (<code>y</code>), one moderator (<code>w</code>) and two control variables (<code>c1</code> and <code>c2</code>).</p>
+<p>This dataset has 6 variables: one predictor (<code>x</code>), one mediators (<code>m</code>), one outcome variable (<code>y</code>), one moderator (<code>w</code>) and two control variables (<code>c1</code> and <code>c2</code>).</p>
 <p>Suppose this is the model being fitted:</p>
 <p><img src="mome_lm_files/figure-html/draw_model-1.png" width="700"></p>
-<p>The path parameters can be estimated by multiple regression models:</p>
+<p>The path parameters can be estimated by two multiple regression models:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lm_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">m</span> <span class="op">~</span> <span class="va">x</span><span class="op">*</span><span class="va">w</span> <span class="op">+</span> <span class="va">c1</span> <span class="op">+</span> <span class="va">c2</span>, <span class="va">dat</span><span class="op">)</span></span>
 <span><span class="va">lm_y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">m</span> <span class="op">+</span> <span class="va">x</span> <span class="op">+</span> <span class="va">c1</span> <span class="op">+</span> <span class="va">c2</span>, <span class="va">dat</span><span class="op">)</span></span></code></pre></div>
-<p>These are the regression coefficient estimates of the paths (those of control variables omitted):</p>
+<p>These are the estimates of the regression coefficient of the paths:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lm_m</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># ###### Predict m ######</span></span>
+<span><span class="co">#</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lm_m</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
 <span><span class="co">#&gt; lm(formula = m ~ x * w + c1 + c2, data = dat)</span></span>
@@ -140,6 +142,9 @@
 <span><span class="co">#&gt; Residual standard error: 3.998 on 94 degrees of freedom</span></span>
 <span><span class="co">#&gt; Multiple R-squared:  0.7479, Adjusted R-squared:  0.7345 </span></span>
 <span><span class="co">#&gt; F-statistic: 55.79 on 5 and 94 DF,  p-value: &lt; 2.2e-16</span></span>
+<span><span class="co">#</span></span>
+<span><span class="co"># ###### Predict y ######</span></span>
+<span><span class="co">#</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lm_y</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
@@ -170,12 +175,16 @@
 <span><span class="co">#&gt; The models:</span></span>
 <span><span class="co">#&gt; m ~ x * w + c1 + c2</span></span>
 <span><span class="co">#&gt; y ~ m + x + c1 + c2</span></span></code></pre></div>
-<p>Simply use the <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> outputs as arguments. Order does not matter. <code><a href="../reference/lm2list.html">lm2list()</a></code> will also check (a) whether the same sample is used in all regression analysis (not just same sample size, but the same set of cases), and (b) whether the models are “connected”, to ensure that the regression outputs can be validly combined.</p>
+<p>Simply use the <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> outputs as arguments. Order does not matter. To ensure that the regression outputs can be validly combined, <code><a href="../reference/lm2list.html">lm2list()</a></code> will also check:</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>whether the same sample is used in all regression analysis (not just same sample size, but the same set of cases), and</p></li>
+<li><p>whether the models are “connected”, to ensure that the regression outputs can be validly combined.</p></li>
+</ol>
 </div>
 <div class="section level2">
 <h2 id="generating-bootstrap-estimates">Generating Bootstrap Estimates<a class="anchor" aria-label="anchor" href="#generating-bootstrap-estimates"></a>
 </h2>
-<p>To form nonparametric bootstrap confidence interval for indirect effects to be computed, <code><a href="../reference/do_boot.html">do_boot()</a></code> can be used to generate bootstrap estimates for all regression coefficients first. These estimates can be reused for any indirect effects to be estimated.</p>
+<p>To form nonparametric bootstrap confidence interval for effects to be computed, <code><a href="../reference/do_boot.html">do_boot()</a></code> can be used to generate bootstrap estimates for all regression coefficients first. These estimates can be reused for any effects to be estimated.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">boot_out_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_boot.html">do_boot</a></span><span class="op">(</span><span class="va">fit_lm</span>,</span>
 <span>                       R <span class="op">=</span> <span class="fl">100</span>,</span>
@@ -186,9 +195,9 @@
 <div class="section level2">
 <h2 id="conditional-indirect-effects">Conditional Indirect Effects<a class="anchor" aria-label="anchor" href="#conditional-indirect-effects"></a>
 </h2>
-<p>We can now use <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> to estimate the indirect effects for different levels of the moderator (<code>w</code>) and form their bootstrap confidence interval. By reusing the generated bootstrap estimates, there is no need to repeat the resampling and estimation.</p>
+<p>We can now use <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> to estimate the indirect effects for different levels of the moderator (<code>w</code>) and form their bootstrap confidence interval. By reusing the generated bootstrap estimates, there is no need to repeat the resampling.</p>
 <p>Suppose we want to estimate the indirect effect from <code>x</code> to <code>y</code> through <code>m</code>, conditional on <code>w</code>:</p>
-<p>(Refer to <code>vignette(manymome)</code> and the help page of <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> on the arguments.)</p>
+<p>(Refer to <code><a href="../articles/manymome.html">vignette("manymome")</a></code> and the help page of <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> on the arguments.)</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_xmy_on_w</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>wlevels <span class="op">=</span> <span class="st">"w"</span>,</span>
 <span>                                      x <span class="op">=</span> <span class="st">"x"</span>,</span>
@@ -215,9 +224,10 @@
 <span><span class="co">#&gt;  - The 'ind' column shows the indirect effects.</span></span>
 <span><span class="co">#&gt;  - 'm~x','y~m' is/are the path coefficient(s) along the path conditional</span></span>
 <span><span class="co">#&gt;    on the moderators.</span></span></code></pre></div>
-<p>When <code>w</code> is one standard deviation below mean, the indirect effect is 1.212, with 95% confidence interval [-0.288,2.564].</p>
-<p>When <code>w</code> is one standard deviation above mean, the indirect effect is 3.060, with 95% confidence interval [2.168,4.039].</p>
-<p>Note that any indirect path in the model can be estimated this way. There is no limit on the path to be estimated, as long as all required path coefficients are in the model. <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> will also check whether a path is valid. However, for complicated models, structural equation modelling may be a more flexible approach than multiple regression.</p>
+<p>When <code>w</code> is one standard deviation below mean, the indirect effect is 1.212, with 95% confidence interval [-0.288, 2.564].</p>
+<p>When <code>w</code> is one standard deviation above mean, the indirect effect is 3.060, with 95% confidence interval [2.168, 4.039].</p>
+<p>Note that any conditional indirect path in the model can be estimated this way. There is no limit on the path to be estimated, as long as all required path coefficients are in the model. <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> will also check whether a path is valid. However, for complicated models, structural equation modelling may be a more flexible approach than multiple regression.</p>
+<p>Not covered here, but the index of moderated moderated mediation can also be estimated in models with two moderators on the same path, estimated by regression. See <code><a href="../articles/manymome.html">vignette("manymome")</a></code> for an example.</p>
 </div>
 <div class="section level2">
 <h2 id="index-of-moderated-mediation">Index of Moderated Mediation<a class="anchor" aria-label="anchor" href="#index-of-moderated-mediation"></a>
@@ -287,12 +297,12 @@
 <span><span class="co">#&gt;  - ind: The unstandardized indirect effects.</span></span>
 <span><span class="co">#&gt;  - 'm~x','y~m' is/are the path coefficient(s) along the path conditional</span></span>
 <span><span class="co">#&gt;    on the moderators.</span></span></code></pre></div>
-<p>The standardized indirect effect is 0.126, with 95% confidence interval [-0.031,0.260].</p>
+<p>The standardized indirect effect is 0.126, with 95% confidence interval [-0.031, 0.260].</p>
 </div>
 <div class="section level2">
 <h2 id="more-complicated-models">More Complicated Models<a class="anchor" aria-label="anchor" href="#more-complicated-models"></a>
 </h2>
-<p>After the regression coefficients are estimated, <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>, <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>, and related functions are used in the same way as for models fitted by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>. The levels for the moderators are controlled by <code><a href="../reference/mod_levels.html">mod_levels()</a></code> and related functions in the same way whether a model is fitted by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> or <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>. Therefore, please refer to other articles (e.g., <code><a href="../articles/manymome.html">vignette("manymome")</a></code> and <code><a href="../articles/mod_levels.html">vignette("mod_levels")</a></code>) on how to estimate effects in model analyzed by multiple regression.</p>
+<p>After the regression coefficients are estimated, <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>, <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>, and related functions are used in the same way as for models fitted by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>. The levels for the moderators are controlled by <code><a href="../reference/mod_levels.html">mod_levels()</a></code> and related functions in the same way whether a model is fitted by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> or <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>. Pplease refer to other articles (e.g., <code><a href="../articles/manymome.html">vignette("manymome")</a></code> and <code><a href="../articles/mod_levels.html">vignette("mod_levels")</a></code>) on how to estimate effects in other model analyzed by multiple regression.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
