@@ -107,19 +107,14 @@ it should be a vector of variable names.}
 and return the merged levels. Default is \code{FALSE}.}
 }
 \value{
-\code{\link[=mod_levels]{mod_levels()}} returns a data frame of the levels created.
-
-\code{\link[=mod_levels_list]{mod_levels_list()}} returns a list of data frames, or a merged data frame
-if \code{merge = TRUE}.
-
-A \code{wlevels}-class object which is
+\code{\link[=mod_levels]{mod_levels()}} returns a \code{wlevels}-class object which is
 a data frame with additional
 attributes about the levels.
 
-If \code{merge} is \code{TRUE}, return
-a \code{wlevels}-class object. If \code{merge}
-is \code{FALSE}, return a list of
-\code{wlevels}-class objects.
+\code{\link[=mod_levels_list]{mod_levels_list()}} returns a list of \code{wlevels}-class
+objects, or a \code{wlevels}-class object which is a data frame
+of the merged levels
+if \code{merge = TRUE}.
 }
 \description{
 Create levels of moderators to be used by
@@ -193,6 +188,7 @@ cond_indirect_effects(x = "x", y = "y", m = "m",
 
 
 
+
 # mod_levels_list() forms a combinations of levels in one call
 # It returns a list, by default.
 # Form the levels from a list of lm() outputs
@@ -207,6 +203,7 @@ w1w2_levels <- mod_levels_list("w1", "w2", fit = fit)
 w1w2_levels
 cond_indirect_effects(x = "x", y = "y", m = "m",
                       fit = fit, wlevels = w1w2_levels)
+
 
 }
 \seealso{

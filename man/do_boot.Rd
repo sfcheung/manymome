@@ -46,6 +46,11 @@ Default is \code{list()}, no additional arguments.}
 A \code{boot_out}-class object that can be used for the \code{boot_out}
 argument of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, \code{\link[=indirect_effect]{indirect_effect()}}, and
 \code{\link[=cond_indirect]{cond_indirect()}} for forming bootstrap confidence intervals.
+The object is a list with the number of
+elements equal to the number of bootstrap samples.
+Each element is a list of the parameter estimates
+and sample variances and covariances of the variables
+in each bootstrap sample.
 }
 \description{
 Generate bootstrap estimates to be used

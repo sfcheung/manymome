@@ -24,6 +24,11 @@ A \code{boot_out}-class object that can be used for the \code{boot_out}
 argument of \code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
 and related functions
 for forming bootstrapping confidence intervals.
+The object is a list with the number of
+elements equal to the number of bootstrap samples.
+Each element is a list of the parameter estimates
+and sample variances and covariances of the variables
+in each bootstrap sample.
 }
 \description{
 Generate bootstrap estimates for models

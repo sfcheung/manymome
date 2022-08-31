@@ -18,11 +18,11 @@ get_one_cond_effect(object, row)
 \value{
 An \code{indirect}-class object, similar to the output of
 \code{\link[=indirect_effect]{indirect_effect()}} and \code{\link[=cond_indirect]{cond_indirect()}}.
-See [indirect_effect)] and [cond_indirect_effects()] for details
+See [indirect_effect)] and \code{\link[=cond_indirect]{cond_indirect()}} for details
 on these classes.
 
 [indirect_effect)]: R:indirect_effect)
-[cond_indirect_effects()]: R:cond_indirect_effects()
+\code{\link[=cond_indirect]{cond_indirect()}}: R:cond_indirect()
 }
 \description{
 Return the conditional indirect effect of one row of the output of

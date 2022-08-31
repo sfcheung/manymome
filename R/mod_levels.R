@@ -22,9 +22,13 @@
 #' effects or conditional indirect effects for all the combinations.
 #'
 #' @return
-#' [mod_levels()] returns a data frame of the levels created.
+#' [mod_levels()] returns a `wlevels`-class object which is
+#' a data frame with additional
+#' attributes about the levels.
 #'
-#' [mod_levels_list()] returns a list of data frames, or a merged data frame
+#' [mod_levels_list()] returns a list of `wlevels`-class
+#' objects, or a `wlevels`-class object which is a data frame
+#' of the merged levels
 #' if `merge = TRUE`.
 #'
 #' @param w Character. The names of the moderator. If the moderator is
@@ -138,9 +142,6 @@
 #'                       wlevels = w1w2_levels)
 #'
 #'
-#' @return A `wlevels`-class object which is
-#' a data frame with additional
-#' attributes about the levels.
 #'
 #' @export
 #'
@@ -227,10 +228,6 @@ mod_levels <- function(w,
 #' cond_indirect_effects(x = "x", y = "y", m = "m",
 #'                       fit = fit, wlevels = w1w2_levels)
 #'
-#' @return If `merge` is `TRUE`, return
-#' a `wlevels`-class object. If `merge`
-#' is `FALSE`, return a list of
-#' `wlevels`-class objects.
 #'
 #' @export
 #' @describeIn mod_levels Generate levels for several moderators.
