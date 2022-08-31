@@ -26,6 +26,11 @@
 #' A `boot_out`-class object that can be used for the `boot_out`
 #' argument of [cond_indirect_effects()], [indirect_effect()], and
 #' [cond_indirect()] for forming bootstrap confidence intervals.
+#' The object is a list with the number of
+#' elements equal to the number of bootstrap samples.
+#' Each element is a list of the parameter estimates
+#' and sample variances and covariances of the variables
+#' in each bootstrap sample.
 #'
 #' @param fit Either (a) a list of `lm` class objects, or
 #'  the output of [lm2list()] (i.e., an `lm_list`-class

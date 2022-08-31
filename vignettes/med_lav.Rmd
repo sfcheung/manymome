@@ -37,7 +37,8 @@ print(round(head(dat), 1))
 ```
 
 This dataset has 14 variables, which
-are indicators of four latent factors.
+are indicators of four latent factors:
+`f1`, `f2`, `f3`, and `f4`.
 
 Suppose this is the model to be fitted:
 
@@ -118,7 +119,7 @@ fit_med <- sem(model = mod,
                data = dat)
 ```
 
-This is the parameter estimates of
+These are the estimates of
 the paths between the latent variables:
 
 ```{r est}
@@ -154,7 +155,7 @@ to use this function. In real research,
 should be set to 2000 or even 5000.
 The argument `ncores` can usually be omitted
 unless users want to manually control
-the number of CPU cores used in
+the number of CPU cores to be used in
 parallel processing.
 
 # Indirect Effects
@@ -183,7 +184,7 @@ out_f1f3f4
 The indirect effect is
 `r formatC(coef(out_f1f3f4), digits = 3, format = "f")`,
 with 95% confidence interval
-`r paste0("[", paste(formatC(confint(out_f1f3f4), digits = 3, format = "f"), collapse = ","), "]")`.
+`r paste0("[", paste(formatC(confint(out_f1f3f4), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 Similarly, we can estimate the indirect
 effect from `f2` to `f4` through `f3`:
@@ -201,7 +202,7 @@ out_f2f3f4
 The indirect effect is
 `r formatC(coef(out_f2f3f4), digits = 3, format = "f")`,
 with 95% confidence interval
-`r paste0("[", paste(formatC(confint(out_f2f3f4), digits = 3, format = "f"), collapse = ","), "]")`.
+`r paste0("[", paste(formatC(confint(out_f2f3f4), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 # Standardized Indirect effects
 
@@ -225,7 +226,7 @@ std_f1f3f4
 The standardized indirect effect is
 `r formatC(coef(std_f1f3f4), digits = 3, format = "f")`,
 with 95% confidence interval
-`r paste0("[", paste(formatC(confint(std_f1f3f4), digits = 3, format = "f"), collapse = ","), "]")`.
+`r paste0("[", paste(formatC(confint(std_f1f3f4), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 Similarly, we can estimate the standardized indirect
 effect from `f2` to `f4` through `f3`:
@@ -245,7 +246,7 @@ std_f2f3f4
 The standardized indirect effect is
 `r formatC(coef(std_f2f3f4), digits = 3, format = "f")`,
 with 95% confidence interval
-`r paste0("[", paste(formatC(confint(std_f2f3f4), digits = 3, format = "f"), collapse = ","), "]")`.
+`r paste0("[", paste(formatC(confint(std_f2f3f4), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 Note that, unlike the confidence intervals in
 `lavaan::standardizedSolution()`, the confidence
@@ -287,7 +288,7 @@ out_f1_total
 The total effect of `f1` on `f4` is
 `r formatC(coef(out_f1_total), digits = 3, format = "f")`,
 with 95% confidence interval
-`r paste0("[", paste(formatC(confint(out_f1_total), digits = 3, format = "f"), collapse = ","), "]")`.
+`r paste0("[", paste(formatC(confint(out_f1_total), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 # Differences in Effects
 
@@ -304,10 +305,12 @@ out_f1_diff
 The difference in effects is
 `r formatC(coef(out_f1_diff), digits = 3, format = "f")`,
 with 95% confidence interval
-`r paste0("[", paste(formatC(confint(out_f1_diff), digits = 3, format = "f"), collapse = ","), "]")`.
+`r paste0("[", paste(formatC(confint(out_f1_diff), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 # Further Information
 
 For further information on `do_boot()`
 and `indirect_effect()`,
-please refer to their help pages.
+please refer to their help pages,
+or `vignette("manymome")` and
+`vignette("do_boot")`.

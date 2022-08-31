@@ -3,7 +3,11 @@
 #' @description The summary of content of the output of [lm2list()].
 #'
 #' @return
-#'  `x` is returned invisibly. Called for its side effect.
+#' [summary.lm_list()] returns a `summary_lm_list`-class object,
+#' which is a list of the [summary()] outputs of
+#' the [lm()] outputs stored.
+#'
+#' [print.summary_lm_list()] returns `x` invisibly. Called for its side effect.
 #'
 #' @param object The output of [lm2list()].
 #' @param x An object of class `summary_lm_list`.

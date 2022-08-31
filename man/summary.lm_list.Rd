@@ -20,7 +20,11 @@
 numerical results.}
 }
 \value{
-\code{x} is returned invisibly. Called for its side effect.
+\code{\link[=summary.lm_list]{summary.lm_list()}} returns a \code{summary_lm_list}-class object,
+which is a list of the \code{\link[=summary]{summary()}} outputs of
+the \code{\link[=lm]{lm()}} outputs stored.
+
+\code{\link[=print.summary_lm_list]{print.summary_lm_list()}} returns \code{x} invisibly. Called for its side effect.
 }
 \description{
 The summary of content of the output of \code{\link[=lm2list]{lm2list()}}.

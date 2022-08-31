@@ -12,7 +12,7 @@
 #'
 #' @return An `indirect`-class object, similar to the output of
 #'  [indirect_effect()] and [cond_indirect()].
-#'  See [indirect_effect)] and [cond_indirect_effects()] for details
+#'  See [indirect_effect)] and [cond_indirect()] for details
 #'  on these classes.
 #'
 #'

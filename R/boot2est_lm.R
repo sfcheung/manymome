@@ -30,6 +30,11 @@
 #' argument of [indirect_effect()], [cond_indirect_effects()],
 #' and related functions
 #' for forming bootstrapping confidence intervals.
+#' The object is a list with the number of
+#' elements equal to the number of bootstrap samples.
+#' Each element is a list of the parameter estimates
+#' and sample variances and covariances of the variables
+#' in each bootstrap sample.
 #'
 #' @param outputs A list of `lm` class objects, or
 #'  the output of [lm2list()] (i.e., an `lm_list`-class
