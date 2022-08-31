@@ -20,9 +20,10 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This article is a brief illustration of how `indirect_effect()`
-can be used to estimate the indirect effects
-when the model parameters are estimate by
+This article is a brief illustration of how
+to use `indirect_effect()`
+to estimate the indirect effects
+when the model parameters are estimated by
 ordinary least squares (OLS) multiple regression
 using `lm()`.
 
@@ -80,7 +81,7 @@ text(-1.2, -1, paste("(Covariances and\ncontrol variables",
 ```
 
 Despite the apparent complexity, the path parameters
-can be estimated by multiple regression models:
+can be estimated by five multiple regression models:
 
 ```{r fit_lm}
 lm_m11 <- lm(m11 ~ x1 + x2 + c1 + c2, dat)
@@ -120,10 +121,15 @@ fit_lm
 ```
 
 Simply use the `lm()` outputs as arguments. Order does not
-matter. `lm2list()` will also check (a) whether the same
+matter. To ensure that
+the regression outputs can be validly combined,
+`lm2list()` will also check:
+
+a. whether the same
 sample is used in all regression analysis (not just
-same sample size, but the same set of cases), and (b)
-whether the models are "connected", to ensure that
+same sample size, but the same set of cases), and
+
+b. whether the models are "connected", to ensure that
 the regression outputs can be validly combined.
 
 # Generating Bootstrap Estimates
@@ -159,12 +165,12 @@ estimate the indirect effect and form its
 bootstrap confidence interval for any path
 in the model. By reusing the generated bootstrap
 estimates, there is no need to repeat the
-resampling and estimation.
+resampling.
 
 Suppose we want to estimate the indirect
 effect from `x1` to `y1` through `m11` and `m12`:
 
-(Refer to `vignette(manymome)` and the help page
+(Refer to `vignette("manymome")` and the help page
 of `indirect_effect()` on the arguments.)
 
 ```{r ind_x1m11m12y1}
@@ -180,7 +186,7 @@ out_x1m11m12y1
 The indirect effect is
 `r formatC(coef(out_x1m11m12y1), digits = 3, format = "f")`,
 with 95% confidence interval
-`r paste0("[", paste(formatC(confint(out_x1m11m12y1), digits = 3, format = "f"), collapse = ","), "]")`.
+`r paste0("[", paste(formatC(confint(out_x1m11m12y1), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 Similarly, we can estimate the indirect
 effect from `x2` to `y2` through `m2`:
@@ -198,7 +204,7 @@ out_x2m2y2
 The indirect effect is
 `r formatC(coef(out_x2m2y2), digits = 3, format = "f")`,
 with 95% confidence interval
-`r paste0("[", paste(formatC(confint(out_x2m2y2), digits = 3, format = "f"), collapse = ","), "]")`.
+`r paste0("[", paste(formatC(confint(out_x2m2y2), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 Note that any indirect path in the model can be
 estimated this way. Suppose, after doing the regression analysis,
@@ -218,7 +224,7 @@ out_x2m11m12
 The indirect effect is
 `r formatC(coef(out_x2m11m12), digits = 3, format = "f")`,
 with 95% confidence interval
-`r paste0("[", paste(formatC(confint(out_x2m11m12), digits = 3, format = "f"), collapse = ","), "]")`.
+`r paste0("[", paste(formatC(confint(out_x2m11m12), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 There is no limit on the path to be estimated, as long
 as all required path coefficients are in the model.
@@ -236,13 +242,13 @@ can be estimated by setting
 
 ```{r std_x1m11m12y1}
 std_x1m11m12y1 <- indirect_effect(x = "x1",
-                                y = "y1",
-                                m = c("m11", "m12"),
-                                fit = fit_lm,
-                                boot_ci = TRUE,
-                                boot_out = boot_out_lm,
-                                standardized_x = TRUE,
-                                standardized_y = TRUE)
+                                  y = "y1",
+                                  m = c("m11", "m12"),
+                                  fit = fit_lm,
+                                  boot_ci = TRUE,
+                                  boot_out = boot_out_lm,
+                                  standardized_x = TRUE,
+                                  standardized_y = TRUE)
 std_x1m11m12y1
 ```
 
@@ -269,7 +275,7 @@ std_x1m2y1
 The standardized indirect effect is
 `r formatC(coef(std_x1m2y1), digits = 3, format = "f")`,
 with 95% confidence interval
-`r paste0("[", paste(formatC(confint(std_x1m2y1), digits = 3, format = "f"), collapse = ","), "]")`.
+`r paste0("[", paste(formatC(confint(std_x1m2y1), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 # Adding Effects
 
@@ -329,7 +335,10 @@ out_x1y1_total
 The total effect of `f1` on `f4` is
 `r formatC(coef(out_x1y1_total), digits = 3, format = "f")`,
 with 95% confidence interval
-`r paste0("[", paste(formatC(confint(out_x1y1_total), digits = 3, format = "f"), collapse = ","), "]")`.
+`r paste0("[", paste(formatC(confint(out_x1y1_total), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+See `help("math_indirect")` for further details on addition
+for `indirect_effect()` outputs.
 
 # Differences in Effects
 
@@ -346,7 +355,10 @@ out_x1_diff
 The difference in effects is
 `r formatC(coef(out_x1_diff), digits = 3, format = "f")`,
 with 95% confidence interval
-`r paste0("[", paste(formatC(confint(out_x1_diff), digits = 3, format = "f"), collapse = ","), "]")`.
+`r paste0("[", paste(formatC(confint(out_x1_diff), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+See `help("math_indirect")` for further details on subtraction
+for `indirect_effect()` outputs.
 
 # Further Information
 
