@@ -1,43 +1,66 @@
-#' @title Join 'lm()' Output to Form an 'lm_list`-Class Object
+#' @title Join 'lm()' Output to Form an
+#' 'lm_list`-Class Object
 #'
-#' @description The resulting model can be used by [indirect_effect()],
-#'  [cond_indirect_effects()], or [cond_indirect()] as a
-#'  path method, as if fitted by [lavaan::sem()].
+#' @description The resulting model can
+#' be used by [indirect_effect()],
+#' [cond_indirect_effects()], or
+#' [cond_indirect()] as a path method,
+#' as if fitted by [lavaan::sem()].
 #'
-#' @details If a path model with mediation and/or moderation is fitted
-#'  by a set of regression models using [lm()], this function can
-#'  combine them to an object of the class `lm_list` that
-#'  represents a path model, as one fitted by structural equation
-#'  model functions such as [lavaan::sem()]. This class of object can
-#'  be used by some functions, such as [indirect_effect()],
-#'  [cond_indirect_effects()], and [cond_indirect()] as if they were
-#'  the output of fitting a path model, with the regression
-#'  coefficients treated as path coefficients.
+#' @details If a path model with
+#' mediation and/or moderation is fitted
+#' by a set of regression models using
+#' [lm()], this function can combine
+#' them to an object of the class
+#' `lm_list` that represents a path
+#' model, as one fitted by structural
+#' equation model functions such as
+#' [lavaan::sem()]. This class of object
+#' can be used by some functions, such
+#' as [indirect_effect()],
+#' [cond_indirect_effects()], and
+#' [cond_indirect()] as if they were the
+#' output of fitting a path model, with
+#' the regression coefficients treated
+#' as path coefficients.
 #'
-#'  The regression outputs to be combined need to meet
-#'  the following requirements:
+#' The regression outputs to be combined
+#' need to meet the following
+#' requirements:
 #'
-#'  - All models must be connected to at least one another model.
-#'    That is, a regression model must either have (a) at least
-#'    on predictor that is the outcome variable of another model, or
-#'    (b) its outcome variable the predictor of another model.
+#' - All models must be connected to at
+#' least one another model. That is, a
+#' regression model must either have (a)
+#' at least on predictor that is the
+#' outcome variable of another model, or
+#' (b) its outcome variable the
+#' predictor of another model.
 #'
-#'  - All models must be fitted to the same sample. This implies that
-#'    the sample size must be the same in all analysis.
+#' - All models must be fitted to the
+#' same sample. This implies that the
+#' sample size must be the same in all
+#' analysis.
 #'
-#' @return
-#'  It returns an `lm_list`-class object that forms a path model represented
-#'  by a set of regression models. This class has a `summary` method
-#'  that shows the summary of each regression model stored
-#'  (see [summary.lm_list()]), and
-#'  a `print` method that prints the models stored (see [print.lm_list()]).
+#' @return It returns an `lm_list`-class
+#'  object that forms a path model
+#'  represented by a set of regression
+#'  models. This class has a `summary`
+#'  method that shows the summary of
+#'  each regression model stored (see
+#'  [summary.lm_list()]), and a `print`
+#'  method that prints the models stored
+#'  (see [print.lm_list()]).
 #'
-#' @param ... The [lm()] outputs to be grouped in a list.
+#' @param ... The [lm()] outputs to be
+#' grouped in a list.
 #'
 #'
-#' @seealso [summary.lm_list()] and [print.lm_list()] for related methods,
-#'  [indirect_effect()] and [cond_indirect_effects()] which accept
-#'  `lm_list`-class objects as input.
+#' @seealso [summary.lm_list()] and
+#' [print.lm_list()] for related
+#' methods, [indirect_effect()] and
+#' [cond_indirect_effects()] which
+#' accept `lm_list`-class objects as
+#' input.
 #'
 #' @examples
 #'
@@ -58,7 +81,8 @@
 #'                            m = c("m11", "m12"),
 #'                            fit = lm_serial_parallel)
 #' outm11m12
-#' # Compute indirect effect from x to y through m11 and m12 with bootstrapping CI
+#' # Compute indirect effect from x to y
+#' # through m11 and m12 with bootstrapping CI
 #' # R should be at least 2000 or even 5000 in read study.
 #' outm11m12 <- cond_indirect(x = "x", y = "y",
 #'                            m = c("m11", "m12"),

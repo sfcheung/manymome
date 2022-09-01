@@ -1,5 +1,7 @@
 # To be examined in an interactive session
 
+library(manymome)
+
 dat <- data_med_mod_b_mod
 lm_m <- lm(m ~ x*w1 + c1 + c2, dat)
 lm_y <- lm(y ~ w1*m*w2 + x + c1 + c2, dat)

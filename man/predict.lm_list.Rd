@@ -2,45 +2,56 @@
 % Please edit documentation in R/predict_lm_list.R
 \name{predict.lm_list}
 \alias{predict.lm_list}
-\title{Predicted Values of an 'lm_list'-Class Object}
+\title{Predicted Values of an
+'lm_list'-Class Object}
 \usage{
 \method{predict}{lm_list}(object, x = NULL, y = NULL, m = NULL, newdata, ...)
 }
 \arguments{
-\item{object}{An 'lm_list'-class object.}
+\item{object}{An 'lm_list'-class
+object.}
 
-\item{x}{The variable name at the start of a path.}
+\item{x}{The variable name at the
+start of a path.}
 
-\item{y}{The variable name at the end of a path.}
+\item{y}{The variable name at the end
+of a path.}
 
-\item{m}{Optional. The mediator(s) from \code{x} to \code{y}.
-A numeric vector of the names of the mediators.
-The path goes from the first element to the last element.
-For example, if \code{m = c("m1", "m2")}, then the path
-is \code{x -> m1 -> m2 -> y}.}
+\item{m}{Optional. The mediator(s)
+from \code{x} to \code{y}. A numeric vector of
+the names of the mediators. The path
+goes from the first element to the
+last element. For example, if \code{m = c("m1", "m2")}, then the path is \code{x -> m1 -> m2 -> y}.}
 
-\item{newdata}{Required. A data frame of the new data. It must be a
+\item{newdata}{Required. A data frame
+of the new data. It must be a
 data frame.}
 
-\item{...}{Additional arguments. Ignored.}
+\item{...}{Additional arguments.
+Ignored.}
 }
 \value{
-A numeric vector of the predicted values, with length equal to
-the number of rows of user-supplied data.
+A numeric vector of the
+predicted values, with length equal
+to the number of rows of
+user-supplied data.
 }
 \description{
-Compute the predicted values based on
-the models stored in an 'lm_list`-class object.
+Compute the predicted
+values based on the models stored in
+an 'lm_list`-class object.
 }
 \details{
-An \code{lm_list}-class object is a list
-of \code{lm}-class objects, this function is similar
-to the \code{\link[stats:predict]{stats::predict()}} method of \code{\link[=lm]{lm()}} but
-it works on a system defined
-by a list of regression models.
+An \code{lm_list}-class object is
+a list of \code{lm}-class objects, this
+function is similar to the
+\code{\link[stats:predict]{stats::predict()}} method of \code{\link[=lm]{lm()}}
+but it works on a system defined by a
+list of regression models.
 
-This is an advanced helper used by some functions
-in this package. Exported for advanced users.
+This is an advanced helper used by
+some functions in this package.
+Exported for advanced users.
 }
 \examples{
 data(data_serial_parallel)

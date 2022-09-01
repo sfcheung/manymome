@@ -1,7 +1,7 @@
-# To be examined in an interactive session
-
+library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
+
 dat <- modmed_x1m3w4y1
 dat <- add_na(dat, seed = 4589)
 length(complete.cases(dat))

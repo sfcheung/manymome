@@ -1,15 +1,25 @@
-#' @title Print a 'cond_indirect_effects' Class Object
+#' @title Print a
+#' 'cond_indirect_effects' Class Object
 #'
-#' @description Print the content of the output of [cond_indirect_effects()]
+#' @description Print the content of the
+#' output of [cond_indirect_effects()]
 #'
-#' @return
-#'  `x` is returned invisibly. Called for its side effect.
+#' @return `x` is returned invisibly.
+#'  Called for its side effect.
 #'
-#' @param x The output of [cond_indirect_effects()].
-#' @param digits Number of digits to display. Default is 3.
-#' @param annotation Logical. Whether the annotation after the table of effects
-#'                   is to be printed. Default is `TRUE.`
-#' @param ...  Other arguments. Not used.
+#' @param x The output of
+#' [cond_indirect_effects()].
+#'
+#' @param digits Number of digits to
+#' display. Default is 3.
+#'
+#' @param annotation Logical. Whether
+#' the annotation after the table of
+#' effects is to be printed. Default is
+#' `TRUE.`
+#'
+#' @param ...  Other arguments. Not
+#' used.
 #'
 #'
 #'

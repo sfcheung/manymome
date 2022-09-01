@@ -4,7 +4,8 @@
 \alias{cond_indirect}
 \alias{cond_indirect_effects}
 \alias{indirect_effect}
-\title{Conditional, Indirect, and Conditional Indirect Effects}
+\title{Conditional, Indirect, and
+Conditional Indirect Effects}
 \usage{
 cond_indirect(
   x,
@@ -78,235 +79,349 @@ indirect_effect(
 )
 }
 \arguments{
-\item{x}{Character. The name of the predictor at the start of the
+\item{x}{Character. The name of the
+predictor at the start of the path.}
+
+\item{y}{Character. The name of the
+outcome variable at the end of the
 path.}
 
-\item{y}{Character. The name of the outcome variable at the end of
-the path.}
-
-\item{m}{A vector of the variable names of the mediator(s). The
-path goes from the first mediator successively to the last
-mediator. If \code{NULL}, the default, the path goes from \code{x} to
-\code{y}.}
+\item{m}{A vector of the variable
+names of the mediator(s). The path
+goes from the first mediator
+successively to the last mediator. If
+\code{NULL}, the default, the path goes
+from \code{x} to \code{y}.}
 
 \item{fit}{The fit object. Can be a
-\link[lavaan:lavaan-class]{lavaan::lavaan} object or a list of \code{\link[=lm]{lm()}} outputs.}
+\link[lavaan:lavaan-class]{lavaan::lavaan} object or a
+list of \code{\link[=lm]{lm()}} outputs.}
 
-\item{est}{The output of \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}. If \code{NULL},
-the default, it will be generated from \code{fit}. If supplied, \code{fit}
-will be ignored.}
+\item{est}{The output of
+\code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}. If
+\code{NULL}, the default, it will be
+generated from \code{fit}. If supplied,
+\code{fit} will be ignored.}
 
-\item{implied_stats}{Implied means, variances, and covariances of
-observed variables, of the form of the output of
-\code{\link[lavaan:lavInspect]{lavaan::lavInspect()}} with \code{what} set to \code{"implied"}. The
-standard deviations are extracted from this object for
-standardization. Default is \code{NULL}, and implied statistics will
-be computed from \code{fit} if required.}
+\item{implied_stats}{Implied means,
+variances, and covariances of
+observed variables, of the form of
+the output of \code{\link[lavaan:lavInspect]{lavaan::lavInspect()}}
+with \code{what} set to \code{"implied"}. The
+standard deviations are extracted
+from this object for standardization.
+Default is \code{NULL}, and implied
+statistics will be computed from
+\code{fit} if required.}
 
-\item{wvalues}{A numeric vector of named elements. The names are
-the variable names of the moderators, and the values are the
-values to which the moderators will be set to. Default is
-\code{NULL}.}
+\item{wvalues}{A numeric vector of
+named elements. The names are the
+variable names of the moderators, and
+the values are the values to which
+the moderators will be set to.
+Default is \code{NULL}.}
 
-\item{standardized_x}{Logical. Whether \code{x} will be standardized.
+\item{standardized_x}{Logical.
+Whether \code{x} will be standardized.
 Default is \code{FALSE}.}
 
-\item{standardized_y}{Logical. Whether \code{y} will be standardized.
+\item{standardized_y}{Logical.
+Whether \code{y} will be standardized.
 Default is \code{FALSE}.}
 
-\item{boot_ci}{Logical. Whether bootstrap confidence interval will
-be formed. Default is \code{FALSE}.}
+\item{boot_ci}{Logical. Whether
+bootstrap confidence interval will be
+formed. Default is \code{FALSE}.}
 
-\item{level}{The level of confidence for the bootstrap confidence
+\item{level}{The level of confidence
+for the bootstrap confidence
 interval. Default is .95.}
 
-\item{boot_out}{If \code{boot_ci} is \code{TRUE}, users can supply
-pregenerated bootstrap estimates. This can be the output of
-\code{\link[=do_boot]{do_boot()}}. For \code{\link[=indirect_effect]{indirect_effect()}} and
-\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, this can be the output of a previous
-call to \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, \code{\link[=indirect_effect]{indirect_effect()}}, or
-\code{\link[=cond_indirect]{cond_indirect()}} with bootstrap confidence intervals requested.
-These stored estimates will be reused such that there is no need
-to do bootstrapping again. If not supplied, the function will try
-to generate them from \code{fit}.}
+\item{boot_out}{If \code{boot_ci} is
+\code{TRUE}, users can supply pregenerated
+bootstrap estimates. This can be the
+output of \code{\link[=do_boot]{do_boot()}}. For
+\code{\link[=indirect_effect]{indirect_effect()}} and
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, this can
+be the output of a previous call to
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+\code{\link[=indirect_effect]{indirect_effect()}}, or
+\code{\link[=cond_indirect]{cond_indirect()}} with bootstrap
+confidence intervals requested. These
+stored estimates will be reused such
+that there is no need to do
+bootstrapping again. If not supplied,
+the function will try to generate
+them from \code{fit}.}
 
-\item{R}{Integer. If \code{boot_ci} is \code{TRUE}, \code{boot_out} is \code{NULL}, and
-bootstrap standard errors not requested if \code{fit} is a
-\linkS4class{lavaan} object, this function will do bootstrapping on
-\code{fit}. \code{R} is the number of bootstrap samples. Default is 100.}
+\item{R}{Integer. If \code{boot_ci} is
+\code{TRUE}, \code{boot_out} is \code{NULL}, and
+bootstrap standard errors not
+requested if \code{fit} is a
+\linkS4class{lavaan} object, this function
+will do bootstrapping on \code{fit}. \code{R}
+is the number of bootstrap samples.
+Default is 100.}
 
-\item{seed}{If bootstrapping is conducted, this is the seed for the
-bootstrapping. Default is \code{NULL} and seed is not set.}
+\item{seed}{If bootstrapping is
+conducted, this is the seed for the
+bootstrapping. Default is \code{NULL} and
+seed is not set.}
 
-\item{parallel}{Logical. If bootstrapping is conducted,
-whether parallel processing will be used.
-Default is \code{TRUE}. If \code{fit} is a list of
-\code{\link[=lm]{lm()}} outputs, parallel processing will not be used.}
+\item{parallel}{Logical. If
+bootstrapping is conducted, whether
+parallel processing will be used.
+Default is \code{TRUE}. If \code{fit} is a list
+of \code{\link[=lm]{lm()}} outputs, parallel
+processing will not be used.}
 
-\item{ncores}{Integer. The number of CPU cores to use when
-\code{parallel} is \code{TRUE}. Default is the number of
-non-logical cores minus one (one minimum). Will raise
-an error if greater than the number of cores detected
-by \code{\link[parallel:detectCores]{parallel::detectCores()}}. If \code{ncores} is set, it
-will override \code{make_cluster_args} in \code{\link[=do_boot]{do_boot()}}.}
+\item{ncores}{Integer. The number of
+CPU cores to use when \code{parallel} is
+\code{TRUE}. Default is the number of
+non-logical cores minus one (one
+minimum). Will raise an error if
+greater than the number of cores
+detected by
+\code{\link[parallel:detectCores]{parallel::detectCores()}}. If
+\code{ncores} is set, it will override
+\code{make_cluster_args} in \code{\link[=do_boot]{do_boot()}}.}
 
-\item{make_cluster_args}{A named list of additional arguments to be
-passed to \code{\link[parallel:makeCluster]{parallel::makeCluster()}}. For advanced
-users. See \code{\link[parallel:makeCluster]{parallel::makeCluster()}} for details.
-Default is \code{list()}.}
+\item{make_cluster_args}{A named list
+of additional arguments to be passed
+to \code{\link[parallel:makeCluster]{parallel::makeCluster()}}. For
+advanced users. See
+\code{\link[parallel:makeCluster]{parallel::makeCluster()}} for
+details. Default is \code{list()}.}
 
-\item{progress}{Logical. Display bootstrapping progress or not.
+\item{progress}{Logical. Display
+bootstrapping progress or not.
 Default is \code{TRUE}.}
 
-\item{save_boot_full}{If \code{TRUE}, full bootstrapping results will be
-stored. Default is \code{FALSE.}}
+\item{save_boot_full}{If \code{TRUE}, full
+bootstrapping results will be stored.
+Default is \code{FALSE.}}
 
 \item{prods}{The product terms found. For internal use.}
 
-\item{get_prods_only}{IF \code{TRUE}, will quit early and return the product
-terms found. The results can be passed to the \code{prod} argument
-when calling this function. Default is \code{FALSE}. This function
-is for internal use.}
+\item{get_prods_only}{IF \code{TRUE}, will
+quit early and return the product
+terms found. The results can be
+passed to the \code{prod} argument when
+calling this function. Default is
+\code{FALSE}. This function is for
+internal use.}
 
-\item{save_boot_out}{If \code{boot_out} is supplied, whether it will be saved
-in the output. Default is \code{TRUE}.}
+\item{save_boot_out}{If \code{boot_out} is
+supplied, whether it will be saved in
+the output. Default is \code{TRUE}.}
 
-\item{wlevels}{The output of \code{\link[=merge_mod_levels]{merge_mod_levels()}}, or the
-moderator(s) to be passed to \code{\link[=mod_levels_list]{mod_levels_list()}}. If all the
-moderators can be represented by one variable, that is, each
-moderator is (a) a numeric variable, (b) a dichotomous
-categorical variable, or (c) a factor or string variable
-used in \code{\link[=lm]{lm()}} in \code{fit}, then it is a vector of the names of
-the moderators as appeared in the data frame. If at least
-one of the moderators is a categorical variable represented
-by more than one variable, such as user-created dummy
-variables used in \code{\link[lavaan:sem]{lavaan::sem()}}, then it must be a list of
-the names of the moderators, with such moderators
-represented by a vector of names. For example: \verb{list("w1", c("gpgp2", "gpgp3")}, the first moderator \code{w1} and the
-second moderator a three-categorical variable represented by
-\code{gpgp2} and \code{gpgp3}.}
+\item{wlevels}{The output of
+\code{\link[=merge_mod_levels]{merge_mod_levels()}}, or the
+moderator(s) to be passed to
+\code{\link[=mod_levels_list]{mod_levels_list()}}. If all the
+moderators can be represented by one
+variable, that is, each moderator is
+(a) a numeric variable, (b) a
+dichotomous categorical variable, or
+(c) a factor or string variable used
+in \code{\link[=lm]{lm()}} in \code{fit}, then it is a
+vector of the names of the moderators
+as appeared in the data frame. If at
+least one of the moderators is a
+categorical variable represented by
+more than one variable, such as
+user-created dummy variables used in
+\code{\link[lavaan:sem]{lavaan::sem()}}, then it must be a
+list of the names of the moderators,
+with such moderators represented by a
+vector of names. For example:
+\verb{list("w1", c("gpgp2", "gpgp3")}, the
+first moderator \code{w1} and the second
+moderator a three-categorical
+variable represented by \code{gpgp2} and
+\code{gpgp3}.}
 
-\item{w_type}{Character. Whether the moderator is a \code{"numeric"}
-variable or a \code{"categorical"} variable. If \code{"auto"},
-the function will try to determine the type
-automatically.  See \code{\link[=mod_levels_list]{mod_levels_list()}} for
-further information.}
-
-\item{w_method}{Character, either \code{"sd"} or \code{"percentile"}. If
-\code{"sd"}, the levels are defined by the distance from
-the mean in terms of standard deviation. if
-\code{"percentile"}, the levels are defined in
-percentiles.  See \code{\link[=mod_levels_list]{mod_levels_list()}} for further
+\item{w_type}{Character. Whether the
+moderator is a \code{"numeric"} variable
+or a \code{"categorical"} variable. If
+\code{"auto"}, the function will try to
+determine the type automatically.
+See \code{\link[=mod_levels_list]{mod_levels_list()}} for further
 information.}
 
-\item{sd_from_mean}{A numeric vector. Specify the distance in
-standard deviation from the mean for each
-level. Default is \code{c(-1, 0, 1)} when there is
-only one moderator, and \code{c(-1, 1)} when there
-are more than one moderator. Ignored if
-\code{w_method} is not equal to \code{"sd"}. See
-\code{\link[=mod_levels_list]{mod_levels_list()}} for further information.}
+\item{w_method}{Character, either
+\code{"sd"} or \code{"percentile"}. If \code{"sd"},
+the levels are defined by the
+distance from the mean in terms of
+standard deviation. if
+\code{"percentile"}, the levels are
+defined in percentiles.  See
+\code{\link[=mod_levels_list]{mod_levels_list()}} for further
+information.}
 
-\item{percentiles}{A numeric vector. Specify the percentile (in
-proportion) for each level. Default is \code{c(.16, .50, .84)} if there is one moderator, and \code{c(.16, .84)} when there are more than one moderator.
+\item{sd_from_mean}{A numeric vector.
+Specify the distance in standard
+deviation from the mean for each
+level. Default is \code{c(-1, 0, 1)} when
+there is only one moderator, and
+\code{c(-1, 1)} when there are more than
+one moderator. Ignored if \code{w_method}
+is not equal to \code{"sd"}. See
+\code{\link[=mod_levels_list]{mod_levels_list()}} for further
+information.}
+
+\item{percentiles}{A numeric vector.
+Specify the percentile (in
+proportion) for each level. Default
+is \code{c(.16, .50, .84)} if there is one
+moderator, and \code{c(.16, .84)} when
+there are more than one moderator.
 Ignored if \code{w_method} is not equal to
-\code{"percentile"}. See \code{\link[=mod_levels_list]{mod_levels_list()}} for
-further information.}
+\code{"percentile"}. See
+\code{\link[=mod_levels_list]{mod_levels_list()}} for further
+information.}
 
-\item{output_type}{The type of output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
-If \code{"data.frame"}, the default, the output will be converted to
-a data frame. If any other values, the output is a list of the
-outputs from \code{\link[=cond_indirect]{cond_indirect()}}.}
+\item{output_type}{The type of output
+of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}. If
+\code{"data.frame"}, the default, the
+output will be converted to a data
+frame. If any other values, the
+output is a list of the outputs from
+\code{\link[=cond_indirect]{cond_indirect()}}.}
 
-\item{mod_levels_list_args}{Additional arguments to be passed
-to \code{\link[=mod_levels_list]{mod_levels_list()}} if it is called for creating
-the levels of moderators. Default is \code{list()}.}
+\item{mod_levels_list_args}{Additional arguments to be passed to
+\code{\link[=mod_levels_list]{mod_levels_list()}} if it is called
+for creating the levels of
+moderators. Default is \code{list()}.}
 
-\item{...}{Arguments to be passed to \code{\link[=cond_indirect]{cond_indirect()}}}
+\item{...}{Arguments to be passed to
+\code{\link[=cond_indirect]{cond_indirect()}}}
 }
 \value{
-\code{\link[=indirect_effect]{indirect_effect()}} and \code{\link[=cond_indirect]{cond_indirect()}} return an
+\code{\link[=indirect_effect]{indirect_effect()}} and
+\code{\link[=cond_indirect]{cond_indirect()}} return an
 \code{indirect}-class object.
 
-\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} returns a \code{cond_indirect_effects}-class
-object.
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} returns a
+\code{cond_indirect_effects}-class object.
 
-These two classes of objects have their own print methods for
-printing the results (see \code{\link[=print.indirect]{print.indirect()}} and
-\code{\link[=print.cond_indirect_effects]{print.cond_indirect_effects()}}). They also have a \code{coef}
-method for extracting the estimates (\code{\link[=coef.indirect]{coef.indirect()}} and
-\code{\link[=coef.cond_indirect_effects]{coef.cond_indirect_effects()}}) and a \code{confint} method
-for extracting the confidence intervals (\code{\link[=confint.indirect]{confint.indirect()}}
-and \code{\link[=confint.cond_indirect_effects]{confint.cond_indirect_effects()}}). Addition and subtraction
-can also be conducted on \code{indirect}-class object to estimate
-and test a function of effects (see \link{math_indirect})
+These two classes of objects have
+their own print methods for printing
+the results (see \code{\link[=print.indirect]{print.indirect()}}
+and \code{\link[=print.cond_indirect_effects]{print.cond_indirect_effects()}}).
+They also have a \code{coef} method for
+extracting the estimates
+(\code{\link[=coef.indirect]{coef.indirect()}} and
+\code{\link[=coef.cond_indirect_effects]{coef.cond_indirect_effects()}}) and a
+\code{confint} method for extracting the
+confidence intervals
+(\code{\link[=confint.indirect]{confint.indirect()}} and
+\code{\link[=confint.cond_indirect_effects]{confint.cond_indirect_effects()}}).
+Addition and subtraction can also be
+conducted on \code{indirect}-class object
+to estimate and test a function of
+effects (see \link{math_indirect})
 }
 \description{
-Compute the conditional effects, indirect effects, or
-conditional indirect effects in a structural model fitted by
-\code{\link[=lm]{lm()}} or \code{\link[lavaan:sem]{lavaan::sem()}}.
+Compute the conditional
+effects, indirect effects, or
+conditional indirect effects in a
+structural model fitted by \code{\link[=lm]{lm()}} or
+\code{\link[lavaan:sem]{lavaan::sem()}}.
 }
 \details{
-For a model with a mediation path moderated by one or more
-moderators, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} can be
-used to compute the conditional indirect effect from one variable
-to another variable, at one or more set of
-selected value(s) of the moderator(s).
+For a model with a mediation path
+moderated by one or more moderators,
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} can be used
+to compute the conditional indirect
+effect from one variable to another
+variable, at one or more set of
+selected value(s) of the
+moderator(s).
 
-If only the effect for one set of value(s) of the moderator(s)
-is needed, \code{\link[=cond_indirect]{cond_indirect()}} can be used.
+If only the effect for one set of
+value(s) of the moderator(s) is
+needed, \code{\link[=cond_indirect]{cond_indirect()}} can be
+used.
 
-If only the mediator(s) is/are specified (\code{m}) and no values of
-moderator(s) are specified, then the indirect effect from one
-variable (\code{x}) to another variable (\code{y}) is computed. A convenient
-wrapper \code{\link[=indirect_effect]{indirect_effect()}} can be used to compute the indirect
-effect.
+If only the mediator(s) is/are
+specified (\code{m}) and no values of
+moderator(s) are specified, then the
+indirect effect from one variable
+(\code{x}) to another variable (\code{y}) is
+computed. A convenient wrapper
+\code{\link[=indirect_effect]{indirect_effect()}} can be used to
+compute the indirect effect.
 
-If only the value(s) of moderator(s) is/are specified (\code{wvalues} or
-\code{wlevels}) and no mediators (\code{m}) are specified when
-calling \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} or \code{\link[=cond_indirect]{cond_indirect()}}, then the
-conditional direct effects from one variable to another are
-computed.
+If only the value(s) of moderator(s)
+is/are specified (\code{wvalues} or
+\code{wlevels}) and no mediators (\code{m}) are
+specified when calling
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} or
+\code{\link[=cond_indirect]{cond_indirect()}}, then the
+conditional direct effects from one
+variable to another are computed.
 
-All three functions support using nonparametric bootstrapping to
-form percentile confidence intervals. Bootstrapping
-only needs to be done once. These are the possible ways to form
-bootstrapping:
+All three functions support using
+nonparametric bootstrapping to form
+percentile confidence intervals.
+Bootstrapping only needs to be done
+once. These are the possible ways to
+form bootstrapping:
 \enumerate{
-\item Do bootstrapping in the first call to one of these functions,
-by setting \code{boot_ci} to \code{TRUE} and \code{R} to the number of
-bootstrap samples, \code{level} to the level of confidence (default .95
-or 95\%), and \code{seed} to reproduce the results (\code{parallel} and
-\code{ncores} are optional). This will take some time to run. The output
-will have all bootstrap estimates stored. This output, whether it
-is from \code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, or
-\code{\link[=cond_indirect]{cond_indirect()}}, can be reused by any of these three functions
-by setting \code{boot_out} to this output. They will form the confidence
-intervals using the stored bootstrap estimates.
-\item Do bootstrapping using \code{\link[=do_boot]{do_boot()}}. The output can be used
-in the \code{boot_out} argument of \code{\link[=indirect_effect]{indirect_effect()}},
-\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} and \code{\link[=cond_indirect]{cond_indirect()}}.
-\item If \code{\link[lavaan:sem]{lavaan::sem()}} is used to fit a model and \code{se = "boot"} is
-used, \code{\link[=do_boot]{do_boot()}} can extract them to generate a \code{boot_out}-class
-object that again can be used in the \code{boot_out} argument.
+\item Do bootstrapping in the first call
+to one of these functions, by setting
+\code{boot_ci} to \code{TRUE} and \code{R} to the
+number of bootstrap samples, \code{level}
+to the level of confidence (default
+.95 or 95\%), and \code{seed} to reproduce
+the results (\code{parallel} and \code{ncores}
+are optional). This will take some
+time to run. The output will have all
+bootstrap estimates stored. This
+output, whether it is from
+\code{\link[=indirect_effect]{indirect_effect()}},
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, or
+\code{\link[=cond_indirect]{cond_indirect()}}, can be reused by
+any of these three functions by
+setting \code{boot_out} to this output.
+They will form the confidence
+intervals using the stored bootstrap
+estimates.
+\item Do bootstrapping using
+\code{\link[=do_boot]{do_boot()}}. The output can be used
+in the \code{boot_out} argument of
+\code{\link[=indirect_effect]{indirect_effect()}},
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} and
+\code{\link[=cond_indirect]{cond_indirect()}}.
+\item If \code{\link[lavaan:sem]{lavaan::sem()}} is used to fit
+a model and \code{se = "boot"} is used,
+\code{\link[=do_boot]{do_boot()}} can extract them to
+generate a \code{boot_out}-class object
+that again can be used in the
+\code{boot_out} argument.
 }
 
-If \code{boot_out} is set, arguments such as \code{R}, \code{seed}, and \code{parallel}
-will be ignored.
+If \code{boot_out} is set, arguments such
+as \code{R}, \code{seed}, and \code{parallel} will
+be ignored.
 }
 \section{Functions}{
 \itemize{
-\item \code{cond_indirect()}: Compute conditional, indirect, or
-conditional indirect effects for one set
-of levels.
+\item \code{cond_indirect()}: Compute
+conditional, indirect, or conditional
+indirect effects for one set of
+levels.
 
-\item \code{cond_indirect_effects()}: Compute the conditional effects or
-conditional indirect effects for several
-sets of levels of the moderator(s).
+\item \code{cond_indirect_effects()}: Compute the
+conditional effects or conditional
+indirect effects for several sets of
+levels of the moderator(s).
 
-\item \code{indirect_effect()}: Compute the indirect effect. A wrapper of
-\code{\link[=cond_indirect]{cond_indirect()}}. Can be used
-when there is no moderator.
+\item \code{indirect_effect()}: Compute the
+indirect effect. A wrapper of
+\code{\link[=cond_indirect]{cond_indirect()}}. Can be used when
+there is no moderator.
 
 }}
 \examples{
@@ -355,7 +470,9 @@ cond_indirect_effects(x = "x", y = "y", m = "m1",
 
 }
 \seealso{
-\code{\link[=mod_levels]{mod_levels()}} and \code{\link[=merge_mod_levels]{merge_mod_levels()}} for generating levels
-of moderators. \link{do_boot} for doing bootstrapping before calling these
-functions.
+\code{\link[=mod_levels]{mod_levels()}} and
+\code{\link[=merge_mod_levels]{merge_mod_levels()}} for generating
+levels of moderators. \link{do_boot} for
+doing bootstrapping before calling
+these functions.
 }

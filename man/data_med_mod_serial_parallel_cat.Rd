@@ -3,10 +3,12 @@
 \docType{data}
 \name{data_med_mod_serial_parallel_cat}
 \alias{data_med_mod_serial_parallel_cat}
-\title{Sample Dataset: Serial-Parallel Moderated Mediation with Two
-Categorical Moderators}
+\title{Sample Dataset:
+Serial-Parallel Moderated Mediation
+with Two Categorical Moderators}
 \format{
-A data frame with 300 rows and 8 variables:
+A data frame with 300 rows
+and 8 variables:
 \describe{
 \item{x}{Predictor. Numeric.}
 \item{w1}{Moderator. String. Values: "group1", "group2", "group3"}
@@ -23,7 +25,8 @@ A data frame with 300 rows and 8 variables:
 data_med_mod_serial_parallel_cat
 }
 \description{
-A serial-parallel mediation model with two categorical
+A serial-parallel
+mediation model with two categorical
 moderators.
 }
 \examples{

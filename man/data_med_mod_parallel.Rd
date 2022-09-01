@@ -3,9 +3,11 @@
 \docType{data}
 \name{data_med_mod_parallel}
 \alias{data_med_mod_parallel}
-\title{Sample Dataset: Parallel Mediation with Two Moderators}
+\title{Sample Dataset: Parallel
+Mediation with Two Moderators}
 \format{
-A data frame with 100 rows and 8 variables:
+A data frame with 100 rows
+and 8 variables:
 \describe{
 \item{x}{Predictor. Numeric.}
 \item{w1}{Moderator 1. Numeric.}
@@ -21,7 +23,8 @@ A data frame with 100 rows and 8 variables:
 data_med_mod_parallel
 }
 \description{
-A parallel mediation model with a1-path and b2-path
+A parallel mediation
+model with a1-path and b2-path
 moderated.
 }
 \examples{

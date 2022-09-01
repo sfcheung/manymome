@@ -2,25 +2,32 @@
 % Please edit documentation in R/cond_indirect_diff.R
 \name{print.cond_indirect_diff}
 \alias{print.cond_indirect_diff}
-\title{Print the Output of 'cond_indirect_diff'}
+\title{Print the Output of
+'cond_indirect_diff'}
 \usage{
 \method{print}{cond_indirect_diff}(x, digits = 3, ...)
 }
 \arguments{
-\item{x}{The output of \code{\link[=cond_indirect_diff]{cond_indirect_diff()}}.}
+\item{x}{The output of
+\code{\link[=cond_indirect_diff]{cond_indirect_diff()}}.}
 
-\item{digits}{The number of decimal places in the printout.}
+\item{digits}{The number of decimal
+places in the printout.}
 
-\item{...}{Optional arguments. Ignored.}
+\item{...}{Optional arguments.
+Ignored.}
 }
 \value{
-It returns \code{x} invisibly. Called for its side effect.
+It returns \code{x} invisibly.
+Called for its side effect.
 }
 \description{
-Print the output of \code{\link[=cond_indirect_diff]{cond_indirect_diff()}}.
+Print the output of
+\code{\link[=cond_indirect_diff]{cond_indirect_diff()}}.
 }
 \details{
-The \code{print} method of the \code{cond_indirect_diff}-class object.
+The \code{print} method of the
+\code{cond_indirect_diff}-class object.
 }
 \seealso{
 \code{\link[=cond_indirect_diff]{cond_indirect_diff()}}

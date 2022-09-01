@@ -1,62 +1,99 @@
-#' @title Bootstrap Estimates for 'indirect_effects' and 'cond_indirect_effects'
+#' @title Bootstrap Estimates for
+#' 'indirect_effects' and
+#' 'cond_indirect_effects'
 #'
-#' @description Generate bootstrap estimates to be used
-#'  by [cond_indirect_effects()], [indirect_effect()],
-#'  and [cond_indirect()],
+#' @description Generate bootstrap
+#' estimates to be used by
+#' [cond_indirect_effects()],
+#' [indirect_effect()], and
+#' [cond_indirect()],
 #'
-#' @details
-#' It does nonparametric bootstrapping to generate bootstrap
-#' estimates of the parameter estimates in a model fitted
-#' either by [lavaan::sem()] or by a sequence of calls to
-#' [lm()]. The stored estimates can then be used by
-#' [cond_indirect_effects()], [indirect_effect()], and
-#' [cond_indirect()] to form bootstrapping confidence
-#' intervals.
+#' @details It does nonparametric
+#' bootstrapping to generate bootstrap
+#' estimates of the parameter estimates
+#' in a model fitted either by
+#' [lavaan::sem()] or by a sequence of
+#' calls to [lm()]. The stored estimates
+#' can then be used by
+#' [cond_indirect_effects()],
+#' [indirect_effect()], and
+#' [cond_indirect()] to form
+#' bootstrapping confidence intervals.
 #'
-#' This approach removes the need to repeat bootstrapping in each call
-#' to [cond_indirect_effects()], [indirect_effect()], and
-#' [cond_indirect()]. It also ensures that the same set of bootstrap
-#' samples is used in all subsequent analysis.
+#' This approach removes the need to
+#' repeat bootstrapping in each call to
+#' [cond_indirect_effects()],
+#' [indirect_effect()], and
+#' [cond_indirect()]. It also ensures
+#' that the same set of bootstrap
+#' samples is used in all subsequent
+#' analysis.
 #'
-#' It determines the type of the fit object automatically and then
-#' calls [lm2boot_out()], [fit2boot_out()], or
+#' It determines the type of the fit
+#' object automatically and then calls
+#' [lm2boot_out()], [fit2boot_out()], or
 #' [fit2boot_out_do_boot()].
 #'
-#' @return
-#' A `boot_out`-class object that can be used for the `boot_out`
-#' argument of [cond_indirect_effects()], [indirect_effect()], and
-#' [cond_indirect()] for forming bootstrap confidence intervals.
-#' The object is a list with the number of
-#' elements equal to the number of bootstrap samples.
-#' Each element is a list of the parameter estimates
-#' and sample variances and covariances of the variables
-#' in each bootstrap sample.
+#' @return A `boot_out`-class object
+#' that can be used for the `boot_out`
+#' argument of
+#' [cond_indirect_effects()],
+#' [indirect_effect()], and
+#' [cond_indirect()] for forming
+#' bootstrap confidence intervals. The
+#' object is a list with the number of
+#' elements equal to the number of
+#' bootstrap samples. Each element is a
+#' list of the parameter estimates and
+#' sample variances and covariances of
+#' the variables in each bootstrap
+#' sample.
 #'
-#' @param fit Either (a) a list of `lm` class objects, or
-#'  the output of [lm2list()] (i.e., an `lm_list`-class
-#'  object), or (b) the output of [lavaan::sem()].
-#' @param R The number of bootstrap samples. Default is 100.
-#' @param seed The seed for the bootstrapping.
-#'             Default is `NULL` and seed is not set.
-#' @param parallel Logical. Whether parallel processing will be used.
-#'                 Default is `TRUE`. If `fit` is a list of
-#'                 [lm()] outputs, parallel processing will not be used.
-#' @param ncores Integer. The number of CPU cores to use when
-#'               `parallel` is `TRUE`. Default is the number of
-#'               non-logical cores minus one (one minimum). Will raise
-#'               an error if greater than the number of cores detected
-#'               by [parallel::detectCores()]. If `ncores` is set, it
-#'               will override `make_cluster_args`.
-#' @param make_cluster_args A named list of additional arguments to be
-#'               passed to [parallel::makeCluster()]. For advanced
-#'               users. See [parallel::makeCluster()] for details.
-#'               Default is `list()`, no additional arguments.
-#' @param progress Logical. Display progress or not. Default is `TRUE`.
+#' @param fit Either (a) a list of `lm`
+#' class objects, or the output of
+#' [lm2list()] (i.e., an `lm_list`-class
+#' object), or (b) the output of
+#' [lavaan::sem()].
 #'
+#' @param R The number of bootstrap
+#' samples. Default is 100.
 #'
-#' @seealso [lm2boot_out()], [fit2boot_out()], and
-#'  [fit2boot_out_do_boot()], which implemetns the
-#'  bootstrapping.
+#' @param seed The seed for the
+#' bootstrapping. Default is `NULL` and
+#' seed is not set.
+#'
+#' @param parallel Logical. Whether
+#' parallel processing will be used.
+#' Default is `TRUE`. If `fit` is a list
+#' of [lm()] outputs, parallel
+#' processing will not be used.
+#'
+#' @param ncores Integer. The number of
+#' CPU cores to use when `parallel` is
+#' `TRUE`. Default is the number of
+#' non-logical cores minus one (one
+#' minimum). Will raise an error if
+#' greater than the number of cores
+#' detected by
+#' [parallel::detectCores()]. If
+#' `ncores` is set, it will override
+#' `make_cluster_args`.
+#'
+#' @param make_cluster_args A named list
+#' of additional arguments to be passed
+#' to [parallel::makeCluster()]. For
+#' advanced users. See
+#' [parallel::makeCluster()] for
+#' details. Default is `list()`, no
+#' additional arguments.
+#'
+#' @param progress Logical. Display
+#' progress or not. Default is `TRUE`.
+#'
+#' @seealso [lm2boot_out()],
+#' [fit2boot_out()], and
+#' [fit2boot_out_do_boot()], which
+#' implements the bootstrapping.
 #'
 #' @examples
 #' data(data_med_mod_ab1)

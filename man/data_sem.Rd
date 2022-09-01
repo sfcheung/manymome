@@ -3,9 +3,12 @@
 \docType{data}
 \name{data_sem}
 \alias{data_sem}
-\title{Sample Dataset: A Latent Variable Mediation Model With 4 Factors}
+\title{Sample Dataset: A Latent
+Variable Mediation Model With 4
+Factors}
 \format{
-A data frame with 200 rows and 14 variables:
+A data frame with 200 rows
+and 14 variables:
 \describe{
 \item{x01}{Indicator. Numeric.}
 \item{x02}{Indicator. Numeric.}
@@ -27,8 +30,9 @@ A data frame with 200 rows and 14 variables:
 data_sem
 }
 \description{
-This data set is for testing functions in a
-four-factor structural model.
+This data set is for
+testing functions in a four-factor
+structural model.
 }
 \examples{
 data(data_sem)

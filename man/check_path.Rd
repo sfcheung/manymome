@@ -7,40 +7,52 @@
 check_path(x, y, m = NULL, fit = NULL, est = NULL)
 }
 \arguments{
-\item{x}{Character. The name of predictor at the start of the path.}
+\item{x}{Character. The name of
+predictor at the start of the path.}
 
-\item{y}{Character. The name of the outcome variable at
-the end of the path.}
+\item{y}{Character. The name of the
+outcome variable at the end of the
+path.}
 
-\item{m}{A vector of the variable names of the
-mediators. The path goes from the first
-mediator successively to the last mediator. If
-\code{NULL}, the default, the path goes from \code{x}
-to \code{y}.}
+\item{m}{A vector of the variable
+names of the mediators. The path goes
+from the first mediator successively
+to the last mediator. If \code{NULL}, the
+default, the path goes from \code{x} to
+\code{y}.}
 
-\item{fit}{The fit object. Currently only supports a
-\link[lavaan:lavaan-class]{lavaan::lavaan} object or a list
-of outputs of \code{\link[=lm]{lm()}}.}
+\item{fit}{The fit object. Currently
+only supports a
+\link[lavaan:lavaan-class]{lavaan::lavaan} object or a
+list of outputs of \code{\link[=lm]{lm()}}.}
 
-\item{est}{The output of \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}. If \code{NULL}, the
-default, it will be generated from \code{fit}. If supplied,
+\item{est}{The output of
+\code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}. If
+\code{NULL}, the default, it will be
+generated from \code{fit}. If supplied,
 \code{fit} will ge ignored.}
 }
 \value{
-A logical vector of length one. \code{TRUE} if the path is
-valid, \code{FALSE} if the path is invalid.
+A logical vector of length
+one. \code{TRUE} if the path is valid,
+\code{FALSE} if the path is invalid.
 }
 \description{
-It checks whether a path, usually an indirect path,
+It checks whether a
+path, usually an indirect path,
 exists in a model.
 }
 \details{
-It checks whether the path defined by a predictor (\code{x}),
-an outcome (\code{y}), and optionally a sequence of mediators (\code{m}),
-exists in a model. It can check models in a \link[lavaan:lavaan-class]{lavaan::lavaan}
-object or a list of outputs of \code{\link[=lm]{lm()}}.
+It checks whether the path
+defined by a predictor (\code{x}), an
+outcome (\code{y}), and optionally a
+sequence of mediators (\code{m}), exists
+in a model. It can check models in a
+\link[lavaan:lavaan-class]{lavaan::lavaan} object or a
+list of outputs of \code{\link[=lm]{lm()}}.
 
-For example, in the following model in \link{lavaan} syntax
+For example, in the ql
+in \link{lavaan} syntax
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{m1 ~ x
 m2 ~ m1
@@ -48,11 +60,11 @@ m3 ~ x
 y ~ m2 + m3
 }\if{html}{\out{</div>}}
 
-This path is valid: `x = "x", y = "y", m = c("m1", "m2")``
+This path is valid: \verb{x = "x", y = "y", m = c("m1", "m2")}
 
-This path is invalid: `x = "x", y = "y", m = c("m2")``
+This path is invalid: \verb{x = "x", y = "y", m = c("m2")}
 
-This path is also invalid: `x = "x", y = "y", m = c("m1", "m2")``
+This path is also invalid: \verb{x = "x", y = "y", m = c("m1", "m2")}
 }
 \examples{
 

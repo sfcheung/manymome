@@ -2,27 +2,36 @@
 % Please edit documentation in R/lavaan2lm_list.R
 \name{terms.lm_from_lavaan}
 \alias{terms.lm_from_lavaan}
-\title{Model Terms of an 'lm_from_lavaan'-Class Object}
+\title{Model Terms of an
+'lm_from_lavaan'-Class Object}
 \usage{
 \method{terms}{lm_from_lavaan}(x, ...)
 }
 \arguments{
-\item{x}{An 'lm_from_lavaan'-class object.}
+\item{x}{An 'lm_from_lavaan'-class
+object.}
 
-\item{...}{Additional arguments. Ignored.}
+\item{...}{Additional arguments.
+Ignored.}
 }
 \value{
-A \code{terms}-class object. See \link{terms.object} for details.
+A \code{terms}-class object. See
+\link{terms.object} for details.
 }
 \description{
-It extracts the terms object from an \code{lm_from_lavaan}-class
+It extracts the terms
+object from an \code{lm_from_lavaan}-class
 object.
 }
 \details{
-A method for \code{lm_from_lavaan}-class that converts a
-regression model for a variable in a \code{lavaan} model to a
-\code{formula} object. This function simply calls \code{\link[stats:terms]{stats::terms()}} on
-the \code{formula} object to extract the predictors of a variable.
+A method for
+\code{lm_from_lavaan}-class that converts
+a regression model for a variable in
+a \code{lavaan} model to a \code{formula}
+object. This function simply calls
+\code{\link[stats:terms]{stats::terms()}} on the \code{formula}
+object to extract the predictors of a
+variable.
 }
 \examples{
 library(lavaan)
@@ -39,5 +48,6 @@ terms(fit_list$y)
 
 }
 \seealso{
-\link{terms.object}, \code{\link[=lm_from_lavaan_list]{lm_from_lavaan_list()}}
+\link{terms.object},
+\code{\link[=lm_from_lavaan_list]{lm_from_lavaan_list()}}
 }

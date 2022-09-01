@@ -2,20 +2,24 @@
 % Please edit documentation in R/print_lm_list.R
 \name{print.lm_list}
 \alias{print.lm_list}
-\title{Print an \code{lm_list}-Class Object}
+\title{Print an \code{lm_list}-Class
+Object}
 \usage{
 \method{print}{lm_list}(x, ...)
 }
 \arguments{
 \item{x}{The output of \code{\link[=lm2list]{lm2list()}}.}
 
-\item{...}{Other arguments. Not used.}
+\item{...}{Other arguments. Not
+used.}
 }
 \value{
-\code{x} is returned invisibly. Called for its side effect.
+\code{x} is returned invisibly.
+Called for its side effect.
 }
 \description{
-Print the content of the output of \code{\link[=lm2list]{lm2list()}}.
+Print the content of the
+output of \code{\link[=lm2list]{lm2list()}}.
 }
 \examples{
 

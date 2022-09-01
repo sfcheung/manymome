@@ -1,5 +1,7 @@
+library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
+
 dat <- modmed_x1m3w4y1
 lm_m1 <- lm(m1 ~ x * w1, dat)
 lm_m2 <- lm(m2 ~ m1 * w2, dat)

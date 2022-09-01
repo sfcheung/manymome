@@ -1,32 +1,49 @@
-#' @title Predicted Values of an 'lm_list'-Class Object
+#' @title Predicted Values of an
+#' 'lm_list'-Class Object
 #'
-#' @description Compute the predicted values based on
-#'  the models stored in an 'lm_list`-class object.
+#' @description Compute the predicted
+#' values based on the models stored in
+#' an 'lm_list`-class object.
 #'
-#' @details An `lm_list`-class object is a list
-#'  of `lm`-class objects, this function is similar
-#'  to the [stats::predict()] method of [lm()] but
-#'  it works on a system defined
-#'  by a list of regression models.
+#' @details An `lm_list`-class object is
+#' a list of `lm`-class objects, this
+#' function is similar to the
+#' [stats::predict()] method of [lm()]
+#' but it works on a system defined by a
+#' list of regression models.
 #'
-#' This is an advanced helper used by some functions
-#' in this package. Exported for advanced users.
+#' This is an advanced helper used by
+#' some functions in this package.
+#' Exported for advanced users.
 #'
-#' @return
-#' A numeric vector of the predicted values, with length equal to
-#' the number of rows of user-supplied data.
+#' @return A numeric vector of the
+#' predicted values, with length equal
+#' to the number of rows of
+#' user-supplied data.
 #'
-#' @param object An 'lm_list'-class object.
-#' @param x The variable name at the start of a path.
-#' @param y The variable name at the end of a path.
-#' @param m Optional. The mediator(s) from `x` to `y`.
-#'          A numeric vector of the names of the mediators.
-#'          The path goes from the first element to the last element.
-#'          For example, if `m = c("m1", "m2")`, then the path
-#'          is `x -> m1 -> m2 -> y`.
-#' @param newdata Required. A data frame of the new data. It must be a
+#' @param object An 'lm_list'-class
+#' object.
+#'
+#' @param x The variable name at the
+#' start of a path.
+#'
+#' @param y The variable name at the end
+#' of a path.
+#'
+#' @param m Optional. The mediator(s)
+#' from `x` to `y`. A numeric vector of
+#' the names of the mediators. The path
+#' goes from the first element to the
+#' last element. For example, if `m =
+#' c("m1", "m2")`, then the path is `x
+#' -> m1 -> m2 -> y`.
+#'
+#' @param newdata Required. A data frame
+#' of the new data. It must be a
 #' data frame.
-#' @param ... Additional arguments. Ignored.
+#'
+#' @param ... Additional arguments.
+#' Ignored.
 #'
 #'
 #' @seealso [lm2list()]

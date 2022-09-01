@@ -1,14 +1,19 @@
 #' @title Check a Path Exists in a Model
 #'
-#' @description It checks whether a path, usually an indirect path,
-#'  exists in a model.
+#' @description It checks whether a
+#' path, usually an indirect path,
+#' exists in a model.
 #'
-#' @details It checks whether the path defined by a predictor (`x`),
-#'  an outcome (`y`), and optionally a sequence of mediators (`m`),
-#'  exists in a model. It can check models in a [lavaan::lavaan-class]
-#'  object or a list of outputs of [lm()].
+#' @details It checks whether the path
+#' defined by a predictor (`x`), an
+#' outcome (`y`), and optionally a
+#' sequence of mediators (`m`), exists
+#' in a model. It can check models in a
+#' [lavaan::lavaan-class] object or a
+#' list of outputs of [lm()].
 #'
-#' For example, in the following model in [lavaan] syntax
+#' For example, in the ql
+#' in [lavaan] syntax
 #'
 #' ```
 #' m1 ~ x
@@ -17,29 +22,40 @@
 #' y ~ m2 + m3
 #' ```
 #'
-#' This path is valid: `x = "x", y = "y", m = c("m1", "m2")``
+#' This path is valid: `x = "x", y = "y", m = c("m1", "m2")`
 #'
-#' This path is invalid: `x = "x", y = "y", m = c("m2")``
+#' This path is invalid: `x = "x", y = "y", m = c("m2")`
 #'
-#' This path is also invalid: `x = "x", y = "y", m = c("m1", "m2")``
+#' This path is also invalid: `x = "x", y = "y", m = c("m1", "m2")`
 #'
-#' @return A logical vector of length one. `TRUE` if the path is
-#' valid, `FALSE` if the path is invalid.
+#' @return A logical vector of length
+#' one. `TRUE` if the path is valid,
+#' `FALSE` if the path is invalid.
 #'
-#' @param fit The fit object. Currently only supports a
-#'            [lavaan::lavaan-class] object or a list
-#'            of outputs of [lm()].
-#' @param x Character. The name of predictor at the start of the path.
-#' @param y Character. The name of the outcome variable at
-#'          the end of the path.
-#' @param m A vector of the variable names of the
-#'          mediators. The path goes from the first
-#'          mediator successively to the last mediator. If
-#'          `NULL`, the default, the path goes from `x`
-#'          to `y`.
-#' @param est The output of [lavaan::parameterEstimates()]. If `NULL`, the
-#'            default, it will be generated from `fit`. If supplied,
-#'            `fit` will ge ignored.
+#' @param fit The fit object. Currently
+#' only supports a
+#' [lavaan::lavaan-class] object or a
+#' list of outputs of [lm()].
+#'
+#' @param x Character. The name of
+#' predictor at the start of the path.
+#'
+#' @param y Character. The name of the
+#' outcome variable at the end of the
+#' path.
+#'
+#' @param m A vector of the variable
+#' names of the mediators. The path goes
+#' from the first mediator successively
+#' to the last mediator. If `NULL`, the
+#' default, the path goes from `x` to
+#' `y`.
+#'
+#' @param est The output of
+#' [lavaan::parameterEstimates()]. If
+#' `NULL`, the default, it will be
+#' generated from `fit`. If supplied,
+#' `fit` will ge ignored.
 #'
 #'
 #' @examples

@@ -1,23 +1,38 @@
-#' @title Extraction Methods for 'cond_indirect_effects' Outputs
+#' @title Extraction Methods for
+#' 'cond_indirect_effects' Outputs
 #'
-#' @description For subsetting a 'cond_indirect_effects'-class object.
+#' @description For subsetting a
+#' 'cond_indirect_effects'-class object.
 #'
-#' @details Customized `[` for 'cond_indirect_effects'-class objects,
-#'  to ensure that these operations work as they would be on a
-#'  data frame object, while information specific to conditional
-#'  effects is modified correctly.
+#' @details Customized `[` for
+#' 'cond_indirect_effects'-class
+#' objects, to ensure that these
+#' operations work as they would be on a
+#' data frame object, while information
+#' specific to conditional effects is
+#' modified correctly.
 #'
-#' @return A 'cond_indirect_effects'-class object. See
-#'  [cond_indirect_effects()] for details on this class.
+#' @return A
+#' 'cond_indirect_effects'-class object.
+#' See [cond_indirect_effects()] for
+#' details on this class.
 #'
-#' @param x A 'cond_indirect_effects'-class object.
-#' @param i A numeric vector of row number(s),
-#'          a character vector of row name(s),
-#'          or a logical vector of row(s) to be selected.
-#' @param j A numeric vector of column number(s),
-#'          a character vector of column name(s), or
-#'          a logical vector of column(s) to be selected.
-#' @param drop Whether dropping a dimension if it only have one row/column.
+#' @param x A
+#' 'cond_indirect_effects'-class object.
+#'
+#' @param i A numeric vector of row
+#' number(s), a character vector of row
+#' name(s), or a logical vector of
+#' row(s) to be selected.
+#'
+#' @param j A numeric vector of column
+#' number(s), a character vector of
+#' column name(s), or a logical vector
+#' of column(s) to be selected.
+#'
+#' @param drop Whether dropping a
+#' dimension if it only have one
+#' row/column.
 #'
 #'
 #'

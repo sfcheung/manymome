@@ -3,9 +3,11 @@
 \docType{data}
 \name{data_mome_demo}
 \alias{data_mome_demo}
-\title{Sample Dataset: A Complicated Moderated-Mediation Model}
+\title{Sample Dataset: A Complicated
+Moderated-Mediation Model}
 \format{
-A data frame with 200 rows and 11 variables:
+A data frame with 200 rows
+and 11 variables:
 \describe{
 \item{x1}{Predictor 1. Numeric.}
 \item{x2}{Predictor 2. Numeric.}
@@ -24,8 +26,9 @@ A data frame with 200 rows and 11 variables:
 data_mome_demo
 }
 \description{
-Generated from a complicated moderated-mediation model for
-demonstration.
+Generated from a
+complicated moderated-mediation model
+for demonstration.
 }
 \details{
 The model:

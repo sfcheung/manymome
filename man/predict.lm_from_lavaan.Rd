@@ -2,34 +2,46 @@
 % Please edit documentation in R/lavaan2lm_list.R
 \name{predict.lm_from_lavaan}
 \alias{predict.lm_from_lavaan}
-\title{Predicted Values of a 'lm_from_lavaan'-Class Object}
+\title{Predicted Values of a
+'lm_from_lavaan'-Class Object}
 \usage{
 \method{predict}{lm_from_lavaan}(object, newdata, ...)
 }
 \arguments{
-\item{object}{A 'lm_from_lavaan'-class object.}
+\item{object}{A
+'lm_from_lavaan'-class object.}
 
-\item{newdata}{Required. A data frame of the new data. It must be a
-data frame.}
+\item{newdata}{Required. A data frame
+of the new data. It must be a data
+frame.}
 
-\item{...}{Additional arguments. Ignored.}
+\item{...}{Additional arguments.
+Ignored.}
 }
 \value{
-A numeric vector of the predicted values, with length equal to
-the number of rows of user-supplied data.
+A numeric vector of the
+predicted values, with length equal
+to the number of rows of
+user-supplied data.
 }
 \description{
-Compute the predicted values based on
-the model stored in a 'lm_from_lavaan`-class object.
+Compute the predicted
+values based on the model stored in a
+'lm_from_lavaan`-class object.
 }
 \details{
-An \code{lm_from_lavaan}-class method that converts a
-regression model for a variable in a \code{lavaan} model to a
-\code{formula} object. This function uses the stored model to compute
-predicted values using user-supplied data.
+An \code{lm_from_lavaan}-class
+method that converts a regression
+model for a variable in a \code{lavaan}
+model to a \code{formula} object. This
+function uses the stored model to
+compute predicted values using
+user-supplied data.
 
-This is an advanced helper used by \code{\link[=plot.cond_indirect_effects]{plot.cond_indirect_effects()}}.
-Exported for advanced users and developers.
+This is an advanced helper used by
+\code{\link[=plot.cond_indirect_effects]{plot.cond_indirect_effects()}}.
+Exported for advanced users and
+developers.
 }
 \examples{
 library(lavaan)

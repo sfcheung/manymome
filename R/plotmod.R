@@ -1,90 +1,127 @@
 #' @title Plot Conditional Effects
 #'
-#' @description Plot the conditional effects for different
-#'   levels of moderators.
+#' @description Plot the conditional
+#' effects for different levels of
+#' moderators.
 #'
-#' @details This function is a plot method of the output
-#'  of [cond_indirect_effects()]. It will use the levels of moderators
-#'  in the output.
+#' @details This function is a plot
+#' method of the output of
+#' [cond_indirect_effects()]. It will
+#' use the levels of moderators in the
+#' output.
 #'
-#' It plots the conditional effect from `x` to `y` in a model for
-#' different levels of the moderators.
+#' It plots the conditional effect from
+#' `x` to `y` in a model for different
+#' levels of the moderators.
 #'
-#' It does not support conditional indirect effects. If there
-#' is one or more mediators in `x`, it will raise an error.
+#' It does not support conditional
+#' indirect effects. If there is one or
+#' more mediators in `x`, it will raise
+#' an error.
 #'
-#' @return
-#'  A [ggplot2] graph. Plotted if not assigned to a name. It can
-#'  be further modified like a usual [ggplot2] graph.
+#' @return A [ggplot2] graph. Plotted if
+#' not assigned to a name. It can be
+#' further modified like a usual
+#' [ggplot2] graph.
 #'
-#' @param x The output of [cond_indirect_effects()]. (Named `x`
-#'          because it is required in the naming of arguments
-#'          of the `plot` generic function.)
-#' @param x_label The label for the X-axis. Default is the value of the
-#'                predictor in the output of [cond_indirect_effects()].
-#' @param w_label The label for the legend for the lines.
-#'                Default is `"Moderator(s)"`.
-#' @param y_label The label for the Y-axis. Default is the
-#'                name of the response variable in the model.
-#' @param title The title of the graph. If not supplied, it will be
-#'               generated from the variable
-#'               names or labels (in `x_label`, `y_label`,
-#'               and `w_label`). If `""`, no title will be printed.
-#'               This can be used when the plot is for manuscript
-#'               submission and figures are required to have no
-#'               titles.
-#' @param x_from_mean_in_sd How many SD from mean is used to define
-#'                          "low" and
-#'                          "high" for the focal variable.
-#'                          Default is 1.
-#' @param x_method How to define "high" and "low" for the focal
-#'                  variable levels.
-#'                  Default is in terms of the
-#'                  standard deviation of the focal variable, `"sd"`.
-#'                  If equal to
-#'                  `"percentile"`, then the percentiles of the
-#'                  focal variable in the
-#'                  dataset is used.
-#' @param x_percentiles If `x_method` is `"percentile"`, then this
-#'                      argument
-#'                      specifies the two percentiles to be used,
-#'                      divided by 100.
-#'                        It must be a
-#'                      vector of two numbers. The default is
-#'                      `c(.16, .84)`,
-#'                      the 16th and 84th percentiles,
-#'                      which corresponds approximately
-#'                      to one SD below and above mean for a
-#'                      normal distribution, respectively.
-#' @param x_sd_to_percentiles If `x_method` is `"percentile"` and this
-#'                            argument is
-#'                            set to a number, this number will be used
-#'                            to determine the percentiles to be used. The
-#'                            lower percentile is the percentile in a
-#'                            normal
-#'                            distribution
-#'                            that is `x_sd_to_percentiles` SD below the mean.
-#'                            The upper percentile is the percentile in a normal
-#'                            distribution that is `x_sd_to_percentiles` SD
-#'                            above the mean. Therefore, if
-#'                            `x_sd_to_percentiles` is set to 1, then the lower
-#'                            and upper percentiles are 16th and 84th,
-#'                            respectively. Default is `NA`.
-#' @param note_standardized If `TRUE`, will check whether a variable has SD
-#'                          nearly equal to one. If yes, will report this in the
-#'                          plot.
-#'                          Default is `TRUE`.
-#' @param no_title If `TRUE`, title will be suppressed. Default is `FALSE`.
-#' @param line_width The width of the lines as used in
-#'                   [ggplot2::geom_segment()].
-#'                   Default is 1.
-#' @param point_size The size of the points as used in [ggplot2::geom_point()].
-#'                    Default is 5.
-#' @param graph_type If `"default"`, the typical line-graph with equal end-points
-#'                   will be plotted. If `"tubmle"`, then the tumble graph
-#'                   proposed by Bodner (2016) will be plotted. Default is
-#'                   `"default"`.
-#' @param ... Additional arguments. Ignored.
+#' @param x The output of
+#' [cond_indirect_effects()]. (Named `x`
+#' because it is required in the naming
+#' of arguments of the `plot` generic
+#' function.)
+#'
+#' @param x_label The label for the
+#' X-axis. Default is the value of the
+#' predictor in the output of
+#' [cond_indirect_effects()].
+#'
+#' @param w_label The label for the
+#' legend for the lines. Default is
+#' `"Moderator(s)"`.
+#'
+#' @param y_label The label for the
+#' Y-axis. Default is the name of the
+#' response variable in the model.
+#'
+#' @param title The title of the graph.
+#' If not supplied, it will be generated
+#' from the variable names or labels (in
+#' `x_label`, `y_label`, and `w_label`).
+#' If `""`, no title will be printed.
+#' This can be used when the plot is for
+#' manuscript submission and figures are
+#' required to have no titles.
+#'
+#' @param x_from_mean_in_sd How many SD
+#' from mean is used to define "low" and
+#' "high" for the focal variable.
+#' Default is 1.
+#'
+#' @param x_method How to define "high"
+#' and "low" for the focal variable
+#' levels. Default is in terms of the
+#' standard deviation of the focal
+#' variable, `"sd"`. If equal to
+#' `"percentile"`, then the percentiles
+#' of the focal variable in the dataset
+#' is used.
+#'
+#' @param x_percentiles If `x_method` is
+#' `"percentile"`, then this argument
+#' specifies the two percentiles to be
+#' used, divided by 100. It must be a
+#'   vector of two numbers. The default
+#' is `c(.16, .84)`, the 16th and 84th
+#' percentiles, which corresponds
+#' approximately to one SD below and
+#' above mean for a normal distribution,
+#' respectively.
+#'
+#' @param x_sd_to_percentiles If
+#' `x_method` is `"percentile"` and this
+#' argument is set to a number, this
+#' number will be used to determine the
+#' percentiles to be used. The lower
+#' percentile is the percentile in a
+#' normal distribution that is
+#' `x_sd_to_percentiles` SD below the
+#' mean. The upper percentile is the
+#' percentile in a normal distribution
+#' that is `x_sd_to_percentiles` SD
+#' above the mean. Therefore, if
+#' `x_sd_to_percentiles` is set to 1,
+#' then the lower and upper percentiles
+#' are 16th and 84th, respectively.
+#' Default is `NA`.
+#'
+#' @param note_standardized If `TRUE`,
+#' will check whether a variable has SD
+#' nearly equal to one. If yes, will
+#' report this in the plot. Default is
+#' `TRUE`.
+#'
+#' @param no_title If `TRUE`, title will
+#' be suppressed. Default is `FALSE`.
+#'
+#' @param line_width The width of the
+#' lines as used in
+#' [ggplot2::geom_segment()]. Default is
+#' 1.
+#'
+#' @param point_size The size of the
+#' points as used in
+#' [ggplot2::geom_point()]. Default is
+#' 5.
+#'
+#' @param graph_type If `"default"`, the
+#' typical line-graph with equal
+#' end-points will be plotted. If
+#' `"tubmle"`, then the tumble graph
+#' proposed by Bodner (2016) will be
+#' plotted. Default is `"default"`.
+#'
+#' @param ... Additional arguments.
+#' Ignored.
 #'
 #'
 #' @seealso [cond_indirect_effects()]

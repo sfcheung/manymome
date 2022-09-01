@@ -2,21 +2,27 @@
 % Please edit documentation in R/confint_indirect.R
 \name{confint.indirect}
 \alias{confint.indirect}
-\title{Confidence Interval of Indirect Effect or Conditional Indirect Effect}
+\title{Confidence Interval of
+Indirect Effect or Conditional
+Indirect Effect}
 \usage{
 \method{confint}{indirect}(object, parm, level = 0.95, ...)
 }
 \arguments{
-\item{object}{The output of \code{\link[=indirect_effect]{indirect_effect()}} or
+\item{object}{The output of
+\code{\link[=indirect_effect]{indirect_effect()}} or
 \code{\link[=cond_indirect]{cond_indirect()}}.}
 
-\item{parm}{Ignored because the stored object
-always has only one parameter.}
+\item{parm}{Ignored because the
+stored object always has only one
+parameter.}
 
-\item{level}{The level of confidence, default is .95, returning the
-95\% confidence interval.}
+\item{level}{The level of confidence,
+default is .95, returning the 95\%
+confidence interval.}
 
-\item{...}{Additional arguments. Ignored by the function.}
+\item{...}{Additional arguments.
+Ignored by the function.}
 }
 \value{
 A numeric vector of
@@ -24,15 +30,17 @@ two elements, the limits of
 the confidence interval.
 }
 \description{
-Return the  bootstrap confidence
-interval of the indirect effect
-or conditional indirect effect
-stored in the output of \code{\link[=indirect_effect]{indirect_effect()}} or
+Return the  bootstrap
+confidence interval of the indirect
+effect or conditional indirect effect
+stored in the output of
+\code{\link[=indirect_effect]{indirect_effect()}} or
 \code{\link[=cond_indirect]{cond_indirect()}}.
 }
 \details{
-It extracts and returns the stored bootstrap
-confidence interval if available.
+It extracts and returns the
+stored bootstrap confidence interval
+if available.
 }
 \examples{
 
@@ -59,32 +67,9 @@ out1 <- indirect_effect(x = "x", y = "y",
 out1
 confint(out1)
 
-# Conditional indirect effect
-
-# Create levels of w1 and w4
-w1_hi <- mean(dat$w1) + sd(dat$w1)
-w4_lo <- mean(dat$w4) - sd(dat$w4)
-
-mod2 <-
-"
-m1 ~ x + w1 + x:w1
-m2 ~ m1
-y  ~ m2 + x + w4 + m2:w4
-"
-fit2 <- sem(mod2, dat,
-           meanstructure = TRUE, fixed.x = FALSE,
-           se = "none", baseline = FALSE)
-# R should be at least 2000 or 5000 in real research.
-out2 <- cond_indirect(x = "x", y = "y",
-                      m = c("m1", "m2"),
-                      wvalues = c(w1 = w1_hi, w4 = w4_lo),
-                      fit = fit,
-                      boot_ci = TRUE, R = 45, seed = 54151,
-                      parallel = FALSE)
-out2
-confint(out2)
 
 }
 \seealso{
-\code{\link[=indirect_effect]{indirect_effect()}} and \code{\link[=cond_indirect]{cond_indirect()}}
+\code{\link[=indirect_effect]{indirect_effect()}} and
+\code{\link[=cond_indirect]{cond_indirect()}}
 }

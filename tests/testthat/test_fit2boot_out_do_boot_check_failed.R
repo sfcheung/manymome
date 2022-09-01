@@ -1,3 +1,4 @@
+library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
 

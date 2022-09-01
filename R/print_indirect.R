@@ -1,18 +1,26 @@
-#' @title Print an 'indirect' Class Object
+#' @title Print an 'indirect' Class
+#' Object
 #'
-#' @description Print the content of the output of [indirect_effect()]
-#'              or [cond_indirect()].
+#' @description Print the content of the
+#' output of [indirect_effect()] or
+#' [cond_indirect()].
 #'
-#' @return
-#'  `x` is returned invisibly. Called for its side effect.
+#' @return `x` is returned invisibly.
+#' Called for its side effect.
 #'
-#' @param x The output of [indirect_effect()] or [cond_indirect()].
-#' @param digits Number of digits to display. Default is 3.
-#' @param ...  Other arguments. Not used.
+#' @param x The output of
+#' [indirect_effect()] or
+#' [cond_indirect()].
+#'
+#' @param digits Number of digits to
+#' display. Default is 3.
+#'
+#' @param ... Other arguments. Not used.
 #'
 #'
 #'
-#' @seealso [indirect_effect()] and [cond_indirect()]
+#' @seealso [indirect_effect()] and
+#' [cond_indirect()]
 #'
 #' @examples
 #'
@@ -26,13 +34,16 @@
 #' y  ~ a4 * m3  + b4 * w4 + d4 * m3:w4
 #' "
 #' fit <- sem(mod, dat,
-#'            meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
+#'            meanstructure = TRUE, fixed.x = FALSE,
+#'            se = "none", baseline = FALSE)
 #' est <- parameterEstimates(fit)
 #'
 #' wvalues <- c(w1 = 5, w2 = 4, w3 = 2, w4 = 3)
 #'
-#' indirect_1 <- cond_indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
-#'                               wvalues = wvalues)
+#' indirect_1 <- cond_indirect(x = "x", y = "y",
+#'                             m = c("m1", "m2", "m3"),
+#'                             fit = fit,
+#'                             wvalues = wvalues)
 #' indirect_1
 #'
 #' dat <- modmed_x1m3w4y1
@@ -44,10 +55,13 @@
 #' y  ~ a4 * m3 + x
 #' "
 #' fit2 <- sem(mod2, dat,
-#'            meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
+#'             meanstructure = TRUE, fixed.x = FALSE,
+#'             se = "none", baseline = FALSE)
 #' est <- parameterEstimates(fit)
 #'
-#' indirect_2 <- indirect_effect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit2)
+#' indirect_2 <- indirect_effect(x = "x", y = "y",
+#'                               m = c("m1", "m2", "m3"),
+#'                               fit = fit2)
 #' indirect_2
 #' print(indirect_2, digits = 5)
 #'
@@ -133,10 +147,8 @@ print.indirect <- function(x, digits = 3, ...) {
         cat("\n==", cond_str2, "Effect ==")
       }
     cat("\n")
-    # cat("\nPath: ", path)
     ptable <- data.frame(Factor = "Path:", Value = path)
     if (has_w) {
-      # cat("\nModerators: ", paste0(wnames, collapse = ", "))
       ptable <- rbind(ptable,
                       c("Moderators:", paste0(wnames, collapse = ", ")))
     }
@@ -156,9 +168,6 @@ print.indirect <- function(x, digits = 3, ...) {
         b_row <- c(b_str1, b_str2)
       }
     if (has_w) {
-        # cat("\nConditional", cond_str, "effect",
-        #     "from", sQuote(x0), "to", sQuote(y0),
-        #     ":", formatC(x$indirect, digits = digits, format = "f"))
         if (is.null(x$op)) {
             ptable <- rbind(ptable,
                             c(ifelse(has_m, "Conditional Indirect Effect:",
@@ -172,14 +181,10 @@ print.indirect <- function(x, digits = 3, ...) {
         tmp <- paste(paste(wnames, "=", formatC(w0,
                                                 digits = digits,
                                                 format = "f")), collapse = ", ")
-        # cat("\nWhen:", tmp)
         if (has_boot_ci) {ptable <- rbind(ptable, b_row)}
         ptable <- rbind(ptable,
                         c("When:", tmp))
       } else {
-        # if (has_m) {cat("\nEffect ")} else {cat("\nIndirect Effect ")}
-        # cat("from", sQuote(x0), "to", sQuote(y0),
-        #     ":", formatC(x$indirect, digits = digits, format = "f"))
         if (is.null(x$op)) {
             ptable <- rbind(ptable,
                             c(ifelse(has_m, "Indirect Effect", "Effect"),
@@ -233,7 +238,6 @@ print.indirect <- function(x, digits = 3, ...) {
           rownames(out) <- NULL
           colnames(out) <- c("Path", "Coefficient")
         }
-        # cat("\n")
         cat("\nCoefficients of Component Paths:")
         cat("\n")
         print(out, digits = digits, row.names = FALSE)

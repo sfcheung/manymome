@@ -1,29 +1,39 @@
 #' @title Create Dummy Variables
 #'
-#' @description Create dummy variables from a categorical
-#'  variable.
+#' @description Create dummy variables
+#' from a categorical variable.
 #'
-#' @details Its main use is for creating dummy variables
-#'  (indicator variables) from a categorical variable,
-#'  to be used in [lavaan::sem()].
+#' @details Its main use is for creating
+#' dummy variables (indicator variables)
+#' from a categorical variable, to be
+#' used in [lavaan::sem()].
 #'
-#' Optionally, the other contrasts can be used through
-#' the argument `x_contrasts`.
+#' Optionally, the other contrasts can
+#' be used through the argument
+#' `x_contrasts`.
 #'
-#' @return
-#' It always returns a matrix with the number of rows
-#' equal to the length of the vector (`x_value`). If
-#' the categorical has only two categories and so
-#' only one dummy variable is needed, the output is
+#' @return It always returns a matrix
+#' with the number of rows equal to the
+#' length of the vector (`x_value`). If
+#' the categorical has only two
+#' categories and so only one dummy
+#' variable is needed, the output is
 #' still a one-column "matrix" in R.
 #'
-#' @param x_value The vector of categorical variable.
-#' @param x_contrasts The contrast to be used. Default
-#'                    is `"constr.treatment"`.
-#' @param prefix The prefix to be added to the variables
-#'               to be created. Default is `""`.
-#' @param add_rownames Whether row names will be added
-#'                     to the output. Default is `TRUE`.
+#' @param x_value The vector of
+#' categorical variable.
+#'
+#' @param x_contrasts The contrast to be
+#' used. Default is
+#' `"constr.treatment"`.
+#'
+#' @param prefix The prefix to be added
+#' to the variables to be created.
+#' Default is `""`.
+#'
+#' @param add_rownames Whether row names
+#' will be added to the output. Default
+#' is `TRUE`.
 #'
 #'
 #' @examples

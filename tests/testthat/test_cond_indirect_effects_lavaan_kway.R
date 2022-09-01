@@ -1,7 +1,6 @@
 # To be examined in an interactive session
 
 library(manymome)
-
 suppressMessages(suppressMessages(library(lavaan)))
 
 dat <- data_med_mod_b_mod

@@ -3,35 +3,47 @@
 \name{subsetting_cond_indirect_effects}
 \alias{subsetting_cond_indirect_effects}
 \alias{[.cond_indirect_effects}
-\title{Extraction Methods for 'cond_indirect_effects' Outputs}
+\title{Extraction Methods for
+'cond_indirect_effects' Outputs}
 \usage{
 \method{[}{cond_indirect_effects}(x, i, j, drop = if (missing(i)) TRUE else length(j) == 1)
 }
 \arguments{
-\item{x}{A 'cond_indirect_effects'-class object.}
+\item{x}{A
+'cond_indirect_effects'-class object.}
 
-\item{i}{A numeric vector of row number(s),
-a character vector of row name(s),
-or a logical vector of row(s) to be selected.}
+\item{i}{A numeric vector of row
+number(s), a character vector of row
+name(s), or a logical vector of
+row(s) to be selected.}
 
-\item{j}{A numeric vector of column number(s),
-a character vector of column name(s), or
-a logical vector of column(s) to be selected.}
+\item{j}{A numeric vector of column
+number(s), a character vector of
+column name(s), or a logical vector
+of column(s) to be selected.}
 
-\item{drop}{Whether dropping a dimension if it only have one row/column.}
+\item{drop}{Whether dropping a
+dimension if it only have one
+row/column.}
 }
 \value{
-A 'cond_indirect_effects'-class object. See
-\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} for details on this class.
+A
+'cond_indirect_effects'-class object.
+See \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} for
+details on this class.
 }
 \description{
-For subsetting a 'cond_indirect_effects'-class object.
+For subsetting a
+'cond_indirect_effects'-class object.
 }
 \details{
-Customized \code{[} for 'cond_indirect_effects'-class objects,
-to ensure that these operations work as they would be on a
-data frame object, while information specific to conditional
-effects is modified correctly.
+Customized \code{[} for
+'cond_indirect_effects'-class
+objects, to ensure that these
+operations work as they would be on a
+data frame object, while information
+specific to conditional effects is
+modified correctly.
 }
 \examples{
 

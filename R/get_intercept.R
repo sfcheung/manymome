@@ -1,11 +1,19 @@
-#' @title Get the intercept in lavaan fit object
+#' @title Get the intercept in 'lavaan'
+#' fit object
 #'
-#' @param x Character. The variable for which the intercept will be extracted.
-#' @param fit The fit object. Currently only supports a
-#'            [lavaan::lavaan-class] object.
-#' @param est The output of [lavaan::parameterEstimates()]. If `NULL`, the
-#'            default, it will be generated from `fit`. If supplied,
-#'            `fit` will ge ignored.
+#' @param x Character. The variable for
+#' which the intercept will be
+#' extracted.
+#'
+#' @param fit The fit object. Currently
+#' only supports a
+#' [lavaan::lavaan-class] object.
+#'
+#' @param est The output of
+#' [lavaan::parameterEstimates()]. If
+#' `NULL`, the default, it will be
+#' generated from `fit`. If supplied,
+#' `fit` will ge ignored.
 #'
 #'
 #' @examples

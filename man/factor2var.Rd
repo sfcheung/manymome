@@ -12,35 +12,43 @@ factor2var(
 )
 }
 \arguments{
-\item{x_value}{The vector of categorical variable.}
+\item{x_value}{The vector of
+categorical variable.}
 
-\item{x_contrasts}{The contrast to be used. Default
-is \code{"constr.treatment"}.}
+\item{x_contrasts}{The contrast to be
+used. Default is
+\code{"constr.treatment"}.}
 
-\item{prefix}{The prefix to be added to the variables
-to be created. Default is \code{""}.}
+\item{prefix}{The prefix to be added
+to the variables to be created.
+Default is \code{""}.}
 
-\item{add_rownames}{Whether row names will be added
-to the output. Default is \code{TRUE}.}
+\item{add_rownames}{Whether row names
+will be added to the output. Default
+is \code{TRUE}.}
 }
 \value{
-It always returns a matrix with the number of rows
-equal to the length of the vector (\code{x_value}). If
-the categorical has only two categories and so
-only one dummy variable is needed, the output is
+It always returns a matrix
+with the number of rows equal to the
+length of the vector (\code{x_value}). If
+the categorical has only two
+categories and so only one dummy
+variable is needed, the output is
 still a one-column "matrix" in R.
 }
 \description{
-Create dummy variables from a categorical
-variable.
+Create dummy variables
+from a categorical variable.
 }
 \details{
-Its main use is for creating dummy variables
-(indicator variables) from a categorical variable,
-to be used in \code{\link[lavaan:sem]{lavaan::sem()}}.
+Its main use is for creating
+dummy variables (indicator variables)
+from a categorical variable, to be
+used in \code{\link[lavaan:sem]{lavaan::sem()}}.
 
-Optionally, the other contrasts can be used through
-the argument \code{x_contrasts}.
+Optionally, the other contrasts can
+be used through the argument
+\code{x_contrasts}.
 }
 \examples{
 dat <- data_mod_cat

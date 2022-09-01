@@ -2,33 +2,39 @@
 % Please edit documentation in R/coef_indirect.R
 \name{coef.indirect}
 \alias{coef.indirect}
-\title{Extract the Indirect Effect or Conditional Indirect Effect}
+\title{Extract the Indirect Effect or
+Conditional Indirect Effect}
 \usage{
 \method{coef}{indirect}(object, ...)
 }
 \arguments{
-\item{object}{The output of \code{\link[=indirect_effect]{indirect_effect()}} or
+\item{object}{The output of
+\code{\link[=indirect_effect]{indirect_effect()}} or
 \code{\link[=cond_indirect]{cond_indirect()}}.}
 
-\item{...}{Optional arguments. Ignored by the function.}
+\item{...}{Optional arguments.
+Ignored by the function.}
 }
 \value{
-A scalar: The estimate of the indirect effect or
-conditional indirect effect.
+A scalar: The estimate of the
+indirect effect or conditional
+indirect effect.
 }
 \description{
-Return the estimate of the indirect effect
-in the output of \code{\link[=indirect_effect]{indirect_effect()}} or
-or the conditional indirect
-in the output of \code{\link[=cond_indirect]{cond_indirect()}}.
+Return the estimate of
+the indirect effect in the output of
+\code{\link[=indirect_effect]{indirect_effect()}} or or the
+conditional indirect in the output of
+\code{\link[=cond_indirect]{cond_indirect()}}.
 }
 \details{
-It extracts and returns the element \code{indirect}.
-in an object.
+It extracts and returns the
+element \code{indirect}. in an object.
 
-If standardized effect is requested when calling
-\code{\link[=indirect_effect]{indirect_effect()}} or \code{\link[=cond_indirect]{cond_indirect()}}, the
-effect returned is also standardized.
+If standardized effect is requested
+when calling \code{\link[=indirect_effect]{indirect_effect()}} or
+\code{\link[=cond_indirect]{cond_indirect()}}, the effect
+returned is also standardized.
 }
 \examples{
 
@@ -62,5 +68,6 @@ coef(out2)
 
 }
 \seealso{
-\code{\link[=indirect_effect]{indirect_effect()}} and \code{\link[=cond_indirect]{cond_indirect()}}.
+\code{\link[=indirect_effect]{indirect_effect()}} and
+\code{\link[=cond_indirect]{cond_indirect()}}.
 }

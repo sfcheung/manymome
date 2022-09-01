@@ -3,9 +3,11 @@
 \docType{data}
 \name{modmed_x1m3w4y1}
 \alias{modmed_x1m3w4y1}
-\title{Sample Dataset: Moderated Serial Mediation}
+\title{Sample Dataset: Moderated
+Serial Mediation}
 \format{
-A data frame with 200 rows and 11 variables:
+A data frame with 200 rows
+and 11 variables:
 \describe{
 \item{x}{Predictor. Numeric.}
 \item{w1}{Moderator 1. Numeric.}
@@ -24,8 +26,10 @@ A data frame with 200 rows and 11 variables:
 modmed_x1m3w4y1
 }
 \description{
-Generated from a serial mediation model with
-one predictor, three mediators, and one outcome
-variable, with one moderator in each stage.
+Generated from a serial
+mediation model with one predictor,
+three mediators, and one outcome
+variable, with one moderator in each
+stage.
 }
 \keyword{datasets}

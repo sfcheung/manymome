@@ -1,9 +1,13 @@
-#' @title Sample Dataset: A Simple Mediation Model with b-Path
+#' @title Sample Dataset: A Simple
+#' Mediation Model with b-Path
 #' Moderated-Moderation
 #'
-#' @description A simple mediation model with moderated-mediation on the b-path.
+#' @description A simple mediation model
+#' with moderated-mediation on the
+#' b-path.
 #'
-#' @format A data frame with 100 rows and 5 variables:
+#' @format A data frame with 100 rows
+#' and 5 variables:
 #' \describe{
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{w1}{Moderator on b-path. Numeric.}

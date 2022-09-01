@@ -3,8 +3,9 @@
 \name{index_of_mome}
 \alias{index_of_mome}
 \alias{index_of_momome}
-\title{Index of Moderated Mediation and Index of Moderated
-Moderated Mediation}
+\title{Index of Moderated Mediation
+and Index of Moderated Moderated
+Mediation}
 \usage{
 index_of_mome(
   x,
@@ -38,94 +39,131 @@ index_of_momome(
 )
 }
 \arguments{
-\item{x}{Character. The name of the predictor at the start of the
+\item{x}{Character. The name of the
+predictor at the start of the path.}
+
+\item{y}{Character. The name of the
+outcome variable at the end of the
 path.}
 
-\item{y}{Character. The name of the outcome variable at the end of
-the path.}
+\item{m}{A vector of the variable
+names of the mediator(s). The path
+goes from the first mediator
+successively to the last mediator. If
+\code{NULL}, the default, the path goes
+from \code{x} to \code{y}.}
 
-\item{m}{A vector of the variable names of the mediator(s). The
-path goes from the first mediator successively to the last
-mediator. If \code{NULL}, the default, the path goes from \code{x} to
-\code{y}.}
-
-\item{w}{Character. The name of the moderator.}
+\item{w}{Character. The name of the
+moderator.}
 
 \item{fit}{The fit object. Can be a
-\link[lavaan:lavaan-class]{lavaan::lavaan} object, a list of \code{\link[=lm]{lm()}} outputs,
-or an object created by \code{\link[=lm2list]{lm2list()}}.}
+\link[lavaan:lavaan-class]{lavaan::lavaan} object, a list
+of \code{\link[=lm]{lm()}} outputs, or an object
+created by \code{\link[=lm2list]{lm2list()}}.}
 
-\item{boot_ci}{Logical. Whether bootstrap confidence interval will
-be formed. Default is \code{FALSE}.}
+\item{boot_ci}{Logical. Whether
+bootstrap confidence interval will be
+formed. Default is \code{FALSE}.}
 
-\item{level}{The level of confidence for the bootstrap confidence
+\item{level}{The level of confidence
+for the bootstrap confidence
 interval. Default is .95.}
 
-\item{boot_out}{If \code{boot_ci} is \code{TRUE}, users can supply
-pregenerated bootstrap estimates. This can be the output of
-\code{\link[=do_boot]{do_boot()}}. For \code{\link[=indirect_effect]{indirect_effect()}} and
-\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, this can be the output of a previous
-call to \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, \code{\link[=indirect_effect]{indirect_effect()}}, or
-\code{\link[=cond_indirect]{cond_indirect()}} with bootstrap confidence intervals requested.
-These stored estimates will be reused such that there is no need
-to do bootstrapping again. If not supplied, the function will try
-to generate them from \code{fit}.}
+\item{boot_out}{If \code{boot_ci} is
+\code{TRUE}, users can supply pregenerated
+bootstrap estimates. This can be the
+output of \code{\link[=do_boot]{do_boot()}}. For
+\code{\link[=indirect_effect]{indirect_effect()}} and
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, this can
+be the output of a previous call to
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+\code{\link[=indirect_effect]{indirect_effect()}}, or
+\code{\link[=cond_indirect]{cond_indirect()}} with bootstrap
+confidence intervals requested. These
+stored estimates will be reused such
+that there is no need to do
+bootstrapping again. If not supplied,
+the function will try to generate
+them from \code{fit}.}
 
-\item{R}{Integer. If \code{boot_ci} is \code{TRUE}, \code{boot_out} is \code{NULL}, and
-bootstrap standard errors not requested if \code{fit} is a
-\linkS4class{lavaan} object, this function will do bootstrapping on
-\code{fit}. \code{R} is the number of bootstrap samples. Default is 100.}
+\item{R}{Integer. If \code{boot_ci} is
+\code{TRUE}, \code{boot_out} is \code{NULL}, and
+bootstrap standard errors not
+requested if \code{fit} is a
+\linkS4class{lavaan} object, this function
+will do bootstrapping on \code{fit}. \code{R}
+is the number of bootstrap samples.
+Default is 100.}
 
-\item{seed}{If bootstrapping is conducted, this is the seed for the
-bootstrapping. Default is \code{NULL} and seed is not set.}
+\item{seed}{If bootstrapping is
+conducted, this is the seed for the
+bootstrapping. Default is \code{NULL} and
+seed is not set.}
 
-\item{progress}{Logical. Display bootstrapping progress or not.
+\item{progress}{Logical. Display
+bootstrapping progress or not.
 Default is \code{TRUE}.}
 
-\item{...}{Arguments to be passed to \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}}
+\item{...}{Arguments to be passed to
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}}
 
-\item{z}{Character. The name of the second moderator, for computing
-the index of moderated moderated mediation.}
+\item{z}{Character. The name of the
+second moderator, for computing the
+index of moderated moderated
+mediation.}
 }
 \value{
-It returns a \code{cond_indirect_diff}-class object. This class has a
-\code{print} method (\code{\link[=print.cond_indirect_diff]{print.cond_indirect_diff()}}), a \code{coef} method
-for extracting the index
-(\code{\link[=coef.cond_indirect_diff]{coef.cond_indirect_diff()}}), and a \code{confint} method
-for extracting the bootstrap confidence interval if available
+It returns a
+\code{cond_indirect_diff}-class object.
+This class has a \code{print} method
+(\code{\link[=print.cond_indirect_diff]{print.cond_indirect_diff()}}), a
+\code{coef} method for extracting the
+index (\code{\link[=coef.cond_indirect_diff]{coef.cond_indirect_diff()}}),
+and a \code{confint} method for extracting
+the bootstrap confidence interval if
+available
 (\code{\link[=confint.cond_indirect_diff]{confint.cond_indirect_diff()}}).
 }
 \description{
-It computes the index of moderated mediation and
-the index of moderated moderated mediation proposed by
-Hayes (2015, 2018).
+It computes the index of
+moderated mediation and the index of
+moderated moderated mediation
+proposed by Hayes (2015, 2018).
 }
 \details{
-The function \code{\link[=index_of_mome]{index_of_mome()}} computes the
-\emph{index of moderated mediation} proposed by Hayes (2015).
-It supports any path
-in a model with one (and only one) component path moderated.
-For example, \code{x->m1->m2->y} with \code{x->m1} moderated by \code{w}.
-It measures the change in indirect effect when the moderator
-increases by one unit.
+The function
+\code{\link[=index_of_mome]{index_of_mome()}} computes the \emph{index
+of moderated mediation} proposed by
+Hayes (2015). It supports any path in
+a model with one (and only one)
+component path moderated. For
+example, \code{x->m1->m2->y} with \code{x->m1}
+moderated by \code{w}. It measures the
+change in indirect effect when the
+moderator increases by one unit.
 
-The function \code{\link[=index_of_momome]{index_of_momome()}} computes the
-\emph{index of moderated moderated mediation} proposed by Hayes (2018).
-It supports any path
-in a model, with two component paths moderated,
-each by one moderator.
-For example, \code{x->m1->m2->y} with \code{x->m1} moderated by \code{w}
-and \code{m2->y} moderated by \code{z}.
-It measures the change in the index of moderated mediation
-of one moderator when the other moderator increases by one unit.
+The function \code{\link[=index_of_momome]{index_of_momome()}}
+computes the \emph{index of moderated
+moderated mediation} proposed by
+Hayes (2018). It supports any path in
+a model, with two component paths
+moderated, each by one moderator. For
+example, \code{x->m1->m2->y} with \code{x->m1}
+moderated by \code{w} and \code{m2->y}
+moderated by \code{z}. It measures the
+change in the index of moderated
+mediation of one moderator when the
+other moderator increases by one
+unit.
 }
 \section{Functions}{
 \itemize{
-\item \code{index_of_mome()}: Compute the index of
-moderated mediation.
+\item \code{index_of_mome()}: Compute the
+index of moderated mediation.
 
-\item \code{index_of_momome()}: Compute the index of
-moderated moderated mediation.
+\item \code{index_of_momome()}: Compute the
+index of moderated moderated
+mediation.
 
 }}
 \examples{
@@ -149,7 +187,7 @@ est <- parameterEstimates(fit)
 out_mome <- index_of_mome(x = "x", y = "y", m = "m1", w = "w1",
                           fit = fit,
                           boot_ci = TRUE,
-                          R = 50,
+                          R = 42,
                           seed = 4314,
                           parallel = FALSE)
 out_mome
@@ -178,8 +216,8 @@ est <- parameterEstimates(fit)
 # See the example of index_of_mome on how to request
 # bootstrap confidence interval.
 out_momome <- index_of_momome(x = "x", y = "y", m = "m1",
-                          w = "w1", z = "w4",
-                          fit = fit)
+                              w = "w1", z = "w4",
+                              fit = fit)
 out_momome
 coef(out_momome)
 print(est[32, ], nd = 8)

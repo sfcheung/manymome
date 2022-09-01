@@ -3,9 +3,12 @@
 \docType{data}
 \name{data_mome_demo_missing}
 \alias{data_mome_demo_missing}
-\title{Sample Dataset: A Complicated Moderated-Mediation Model With Missing Data}
+\title{Sample Dataset: A Complicated
+Moderated-Mediation Model With
+Missing Data}
 \format{
-A data frame with 200 rows and 11 variables:
+A data frame with 200 rows
+and 11 variables:
 \describe{
 \item{x1}{Predictor 1. Numeric.}
 \item{x2}{Predictor 2. Numeric.}
@@ -24,12 +27,15 @@ A data frame with 200 rows and 11 variables:
 data_mome_demo_missing
 }
 \description{
-Generated from a complicated moderated-mediation model for
-demonstration, with missing data
+Generated from a
+complicated moderated-mediation model
+for demonstration, with missing data
 }
 \details{
-A copy of \link{data_mome_demo} with some randomly selected cells changed to \code{NA}.
-The number of cases with no missing data is 169.
+A copy of \link{data_mome_demo} with some
+randomly selected cells changed to
+\code{NA}. The number of cases with no
+missing data is 169.
 
 The model:
 

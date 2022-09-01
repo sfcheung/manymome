@@ -1,3 +1,4 @@
+library(testthat)
 library(manymome)
 
 dat <- data_med_mod_b_mod

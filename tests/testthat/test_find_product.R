@@ -1,3 +1,5 @@
+library(testthat)
+
 set.seed(897041)
 n <- 100
 dat <- matrix(rexp(n * 5)^2, n, 5)

@@ -2,27 +2,35 @@
 % Please edit documentation in R/coef_cond_indirect_effects.R
 \name{coef.cond_indirect_effects}
 \alias{coef.cond_indirect_effects}
-\title{Estimates of Conditional Indirect Effects or Conditional Effects}
+\title{Estimates of Conditional
+Indirect Effects or Conditional
+Effects}
 \usage{
 \method{coef}{cond_indirect_effects}(object, ...)
 }
 \arguments{
-\item{object}{The output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
+\item{object}{The output of
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
 
-\item{...}{Optional arguments. Ignored by the function.}
+\item{...}{Optional arguments.
+Ignored by the function.}
 }
 \value{
-A numeric vector: The estimates of the conditional effects
+A numeric vector: The
+estimates of the conditional effects
 or conditional indirect effects.
 }
 \description{
-Return the estimates of the conditional indirect
-effects or conditional effects for all levels in the output of
+Return the estimates of
+the conditional indirect effects or
+conditional effects for all levels in
+the output of
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 }
 \details{
-It extracts and returns the column \code{ind} or \code{std}
-in the output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+It extracts and returns the
+column \code{ind} or \code{std} in the output
+of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 }
 \examples{
 

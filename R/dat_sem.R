@@ -1,9 +1,13 @@
-#' @title Sample Dataset: A Latent Variable Mediation Model With 4 Factors
+#' @title Sample Dataset: A Latent
+#' Variable Mediation Model With 4
+#' Factors
 #'
-#' @description This data set is for testing functions in a
-#'  four-factor structural model.
+#' @description This data set is for
+#' testing functions in a four-factor
+#' structural model.
 #'
-#' @format A data frame with 200 rows and 14 variables:
+#' @format A data frame with 200 rows
+#' and 14 variables:
 #' \describe{
 #'   \item{x01}{Indicator. Numeric.}
 #'   \item{x02}{Indicator. Numeric.}

@@ -2,31 +2,42 @@
 % Please edit documentation in R/lavaan2lm_list.R
 \name{coef.lm_from_lavaan}
 \alias{coef.lm_from_lavaan}
-\title{Coefficients of an 'lm_from_lavaan'-Class Object}
+\title{Coefficients of an
+'lm_from_lavaan'-Class Object}
 \usage{
 \method{coef}{lm_from_lavaan}(object, ...)
 }
 \arguments{
-\item{object}{A 'lm_from_lavaan'-class object.}
+\item{object}{A
+'lm_from_lavaan'-class object.}
 
-\item{...}{Additional arguments. Ignored.}
+\item{...}{Additional arguments.
+Ignored.}
 }
 \value{
-A numeric vector of the path coefficients.
+A numeric vector of the path
+coefficients.
 }
 \description{
-Returns the path coefficients of the terms in
-an \code{lm_from_lavaan}-class object.
+Returns the path
+coefficients of the terms in an
+\code{lm_from_lavaan}-class object.
 }
 \details{
-An \code{lm_from_lavaan}-class object converts a regression model
-for a variable in a \code{lavaan}-class object to a \code{formula}-class object.
-This function simply extracts the path coefficients estimates.
-Intercept is always included, and set to zero if mean structure
-is not in the source \code{lavaan}-class object.
+An \code{lm_from_lavaan}-class
+object converts a regression model
+for a variable in a \code{lavaan}-class
+object to a \code{formula}-class object.
+This function simply extracts the
+path coefficients estimates.
+Intercept is always included, and set
+to zero if mean structure is not in
+the source \code{lavaan}-class object.
 
-This is an advanced helper used by \code{\link[=plot.cond_indirect_effects]{plot.cond_indirect_effects()}}.
-Exported for advanced users and developers.
+This is an advanced helper used by
+\code{\link[=plot.cond_indirect_effects]{plot.cond_indirect_effects()}}.
+Exported for advanced users and
+developers.
 }
 \examples{
 library(lavaan)

@@ -2,25 +2,33 @@
 % Please edit documentation in R/print_cond_indirect_effect.R
 \name{print.cond_indirect_effects}
 \alias{print.cond_indirect_effects}
-\title{Print a 'cond_indirect_effects' Class Object}
+\title{Print a
+'cond_indirect_effects' Class Object}
 \usage{
 \method{print}{cond_indirect_effects}(x, digits = 3, annotation = TRUE, ...)
 }
 \arguments{
-\item{x}{The output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
+\item{x}{The output of
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
 
-\item{digits}{Number of digits to display. Default is 3.}
+\item{digits}{Number of digits to
+display. Default is 3.}
 
-\item{annotation}{Logical. Whether the annotation after the table of effects
-is to be printed. Default is \code{TRUE.}}
+\item{annotation}{Logical. Whether
+the annotation after the table of
+effects is to be printed. Default is
+\code{TRUE.}}
 
-\item{...}{Other arguments. Not used.}
+\item{...}{Other arguments. Not
+used.}
 }
 \value{
-\code{x} is returned invisibly. Called for its side effect.
+\code{x} is returned invisibly.
+Called for its side effect.
 }
 \description{
-Print the content of the output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
+Print the content of the
+output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
 }
 \examples{
 

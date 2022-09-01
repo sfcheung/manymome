@@ -1,12 +1,19 @@
-#' @title Get the Path Coefficient from 'x' to 'y'
+#' @title Get the Path Coefficient from
+#' 'x' to 'y'
 #'
 #' @param x Character. The predictor.
+#'
 #' @param y Character. The outcome.
-#' @param fit The fit object. Currently only supports a
-#'            [lavaan::lavaan-class] object.
-#' @param est The output of [lavaan::parameterEstimates()]. If `NULL`, the
-#'            default, it will be generated from `fit`. If supplied,
-#'            `fit` will ge ignored.
+#'
+#' @param fit The fit object. Currently
+#' only supports a
+#' [lavaan::lavaan-class] object.
+#'
+#' @param est The output of
+#' [lavaan::parameterEstimates()]. If
+#' `NULL`, the default, it will be
+#' generated from `fit`. If supplied,
+#' `fit` will ge ignored.
 #'
 #'
 #' @examples

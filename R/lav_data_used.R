@@ -1,9 +1,13 @@
-#' @title Extract data used in a lavaan fit object.
+#' @title Extract data used in a lavaan
+#' fit object.
 #'
-#' @param fit The fit object. Currently only supports a
-#'            [lavaan::lavaan-class] object.
-#' @param drop_colon Logical. Whether product terms (of the form "x:y")
-#'                   will be dropped. Default is `TRUE`.
+#' @param fit The fit object. Currently
+#' only supports a
+#' [lavaan::lavaan-class] object.
+#'
+#' @param drop_colon Logical. Whether
+#' product terms (of the form "x:y")
+#' will be dropped. Default is `TRUE`.
 #'
 #'
 #' @examples

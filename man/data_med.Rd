@@ -3,9 +3,11 @@
 \docType{data}
 \name{data_med}
 \alias{data_med}
-\title{Sample Dataset: Simple Mediation}
+\title{Sample Dataset: Simple
+Mediation}
 \format{
-A data frame with 100 rows and 5 variables:
+A data frame with 100 rows
+and 5 variables:
 \describe{
 \item{x}{Predictor. Numeric.}
 \item{m}{Mediator. Numeric.}
@@ -18,7 +20,8 @@ A data frame with 100 rows and 5 variables:
 data_med
 }
 \description{
-A simple mediation model.
+A simple mediation
+model.
 }
 \examples{
 library(lavaan)

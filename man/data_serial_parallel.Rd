@@ -3,9 +3,11 @@
 \docType{data}
 \name{data_serial_parallel}
 \alias{data_serial_parallel}
-\title{Sample Dataset: Serial-Parallel Mediation}
+\title{Sample Dataset:
+Serial-Parallel Mediation}
 \format{
-A data frame with 100 rows and 7 variables:
+A data frame with 100 rows
+and 7 variables:
 \describe{
 \item{x}{Predictor. Numeric.}
 \item{m11}{Mediator 1 in Path 1. Numeric.}
@@ -20,8 +22,8 @@ A data frame with 100 rows and 7 variables:
 data_serial_parallel
 }
 \description{
-A mediation model with both serial and parallel
-components.
+A mediation model with
+both serial and parallel components.
 }
 \examples{
 library(lavaan)

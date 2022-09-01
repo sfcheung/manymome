@@ -1,8 +1,11 @@
-#' @title Sample Dataset: Moderation with One Categorical Moderator
+#' @title Sample Dataset: Moderation
+#' with One Categorical Moderator
 #'
-#' @description A moderation model with a categorical moderator.
+#' @description A moderation model with
+#' a categorical moderator.
 #'
-#' @format A data frame with 300 rows and 5 variables:
+#' @format A data frame with 300 rows
+#' and 5 variables:
 #' \describe{
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{w}{Moderator. String. Values: "group1", "group2", "group3"}
@@ -17,12 +20,15 @@
 #' summary(lm_y <- lm(y ~ x*w + c1 + c2, dat))
 "data_mod_cat"
 
-#' @title Sample Dataset: Serial Moderated Mediation with Two
+#' @title Sample Dataset: Serial
+#' Moderated Mediation with Two
 #' Categorical Moderators
 #'
-#' @description A serial mediation model with two categorical moderators.
+#' @description A serial mediation model
+#' with two categorical moderators.
 #'
-#' @format A data frame with 300 rows and 8 variables:
+#' @format A data frame with 300 rows
+#' and 8 variables:
 #' \describe{
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{w1}{Moderator. String. Values: "group1", "group2", "group3"}
@@ -42,12 +48,16 @@
 #' summary(lm_y <- lm(y ~ m2*w2 + m1 + x + w1 + c1 + c2, dat))
 "data_med_mod_serial_cat"
 
-#' @title Sample Dataset: Parallel Moderated Mediation with Two
+#' @title Sample Dataset: Parallel
+#' Moderated Mediation with Two
 #' Categorical Moderators
 #'
-#' @description A parallel mediation model with two categorical moderators.
+#' @description A parallel mediation
+#' model with two categorical
+#' moderators.
 #'
-#' @format A data frame with 300 rows and 8 variables:
+#' @format A data frame with 300 rows
+#' and 8 variables:
 #' \describe{
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{w1}{Moderator. String. Values: "group1", "group2", "group3"}
@@ -69,13 +79,16 @@
 
 
 
-#' @title Sample Dataset: Serial-Parallel Moderated Mediation with Two
-#' Categorical Moderators
+#' @title Sample Dataset:
+#' Serial-Parallel Moderated Mediation
+#' with Two Categorical Moderators
 #'
-#' @description A serial-parallel mediation model with two categorical
+#' @description A serial-parallel
+#' mediation model with two categorical
 #' moderators.
 #'
-#' @format A data frame with 300 rows and 8 variables:
+#' @format A data frame with 300 rows
+#' and 8 variables:
 #' \describe{
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{w1}{Moderator. String. Values: "group1", "group2", "group3"}
