@@ -1,6 +1,7 @@
-
+library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
+
 dat <- modmed_x1m3w4y1
 mod <-
 "
@@ -23,10 +24,6 @@ est_boot_9[est_boot_9$free > 0, "est"] <- unname(boot_est[i, ])
 fit0 <- fit
 fit0@ParTable$est[fit0@ParTable$free > 0] <- unname(boot_est[i, ])
 est0 <- parameterEstimates(fit0, se = FALSE, zstat = FALSE, pvalue = FALSE, ci = FALSE)
-
-# waldo::compare(est, parameterEstimates(fit0))
-identical(est0[, -5], est[, -5])
-identical(est0[, 5], est[, 5])
 
 out <- boot2est(fit)
 out[[i]]

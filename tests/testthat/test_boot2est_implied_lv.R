@@ -1,5 +1,7 @@
+library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
+
 dat <- simple_mediation_latent
 mod <-
 "
@@ -27,7 +29,6 @@ fit_1 <- sem(mod, dat[1:100, ], meanstructure = TRUE,
                   baseline = FALSE,
                   h1 = FALSE)
 
-# p_free <- parameterTable(fit_1)$free > 0
 implied <- get_implied_i(coef(fit_0), fit_1)
 implied_check_cov <- lavInspect(fit_0, "cov.all")
 implied_check_mean <- c(lavInspect(fit_0, "mean.ov"), lavInspect(fit_0, "mean.lv"))
@@ -40,7 +41,7 @@ out <- boot2implied(fit)
 out_check <- get_implied_i(unname(boot_est[9, ]), fit_1)
 out[[9]]
 
-test_that("boot2est with implied stat", {
+test_that("boot2est with implied stat: latent variables", {
     expect_equal(
         implied$cov,
         implied_check_cov,

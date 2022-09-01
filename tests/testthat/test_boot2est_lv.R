@@ -1,6 +1,7 @@
-
+library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
+
 dat <- simple_mediation_latent
 mod <-
 "
@@ -28,10 +29,6 @@ fit0 <- fit
 fit0@ParTable$est[fit0@ParTable$free > 0] <- unname(boot_est[i, ])
 est0 <- parameterEstimates(fit0, se = FALSE, zstat = FALSE, pvalue = FALSE, ci = FALSE)
 
-# waldo::compare(est, parameterEstimates(fit0))
-identical(est0[, -5], est[, -5])
-identical(est0[, 5], est[, 5])
-
 out <- boot2est(fit)
 out[[i]]
 
@@ -40,7 +37,7 @@ fit_noboot <- sem(mod, dat, meanstructure = TRUE,
                   baseline = FALSE,
                   h1 = FALSE)
 
-test_that("boot2est", {
+test_that("boot2est: Latent variables", {
     expect_identical(
         out[[i]][1:26, -5],
         est[1:26, -5]

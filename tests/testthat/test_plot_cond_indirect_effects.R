@@ -1,5 +1,6 @@
 # To be examined in an interactive session.
 
+library(testthat)
 library(manymome)
 
 suppressMessages(library(lavaan))
