@@ -60,30 +60,6 @@
 #' out1
 #' confint(out1)
 #'
-#' # Conditional indirect effect
-#'
-#' # Create levels of w1 and w4
-#' w1_hi <- mean(dat$w1) + sd(dat$w1)
-#' w4_lo <- mean(dat$w4) - sd(dat$w4)
-#'
-#' mod2 <-
-#' "
-#' m1 ~ x + w1 + x:w1
-#' m2 ~ m1
-#' y  ~ m2 + x + w4 + m2:w4
-#' "
-#' fit2 <- sem(mod2, dat,
-#'            meanstructure = TRUE, fixed.x = FALSE,
-#'            se = "none", baseline = FALSE)
-#' # R should be at least 2000 or 5000 in real research.
-#' out2 <- cond_indirect(x = "x", y = "y",
-#'                       m = c("m1", "m2"),
-#'                       wvalues = c(w1 = w1_hi, w4 = w4_lo),
-#'                       fit = fit,
-#'                       boot_ci = TRUE, R = 45, seed = 54151,
-#'                       parallel = FALSE)
-#' out2
-#' confint(out2)
 #'
 #' @export
 

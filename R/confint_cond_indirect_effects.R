@@ -65,14 +65,6 @@
 #'                       parallel = FALSE))
 #' confint(out1)
 #'
-#' # Conditional Indirect effect from x1 through m1 to y,
-#' # when w1 is equal to each of the levels
-#' # R should be at least 2000 or 5000 in real research.
-#' out2 <- suppressWarnings(cond_indirect_effects(x = "x", y = "y", m = c("m1", "m2"),
-#'                       wlevels = w1w4levels, fit = fit,
-#'                       boot_ci = TRUE, R = 20, seed = 54151,
-#'                       parallel = FALSE))
-#' confint(out2)
 #'
 #' @export
 
