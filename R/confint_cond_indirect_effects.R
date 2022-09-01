@@ -1,20 +1,31 @@
-#' @title Confidence Intervals of Indirect Effects or Conditional
-#'        Indirect Effects
+#' @title Confidence Intervals of
+#' Indirect Effects or Conditional
+#' Indirect Effects
 #'
-#' @description Return the confidence intervals of the conditional
-#'        indirect effects or conditional effects in the output of
-#'        [cond_indirect_effects()].
+#' @description Return the confidence
+#' intervals of the conditional indirect
+#' effects or conditional effects in the
+#' output of [cond_indirect_effects()].
 #'
-#' @details It extracts and returns the columns for confidence
-#'  intervals, if available.
+#' @details It extracts and returns the
+#' columns for confidence intervals, if
+#' available.
 #'
-#' @param object The output of [cond_indirect_effects()].
-#' @param parm Ignored. Always returns the bootstrap confidence interval
-#'              of the effects for all levels stored.
-#' @param level The level of confidence, default is .95, returning the
-#'               95% confidence interval. Ignored for now and will
-#'               use the level of the stored intervals.
-#' @param ...  Additional arguments. Ignored by the function.
+#' @param object The output of
+#' [cond_indirect_effects()].
+#'
+#' @param parm Ignored. Always returns
+#' the bootstrap confidence interval of
+#' the effects for all levels stored.
+#'
+#' @param level The level of confidence,
+#' default is .95, returning the 95%
+#' confidence interval. Ignored for now
+#' and will use the level of the stored
+#' intervals.
+#'
+#' @param ...  Additional arguments.
+#' Ignored by the function.
 #'
 #' @return A data frame with two
 #' columns, one for each confidence

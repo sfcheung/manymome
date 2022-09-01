@@ -1,19 +1,30 @@
-#' @title Summary of an `lm_list`-Class Object
+#' @title Summary of an `lm_list`-Class
+#' Object
 #'
-#' @description The summary of content of the output of [lm2list()].
+#' @description The summary of content
+#' of the output of [lm2list()].
 #'
-#' @return
-#' [summary.lm_list()] returns a `summary_lm_list`-class object,
-#' which is a list of the [summary()] outputs of
-#' the [lm()] outputs stored.
+#' @return [summary.lm_list()] returns a
+#' `summary_lm_list`-class object, which
+#' is a list of the [summary()] outputs
+#' of the [lm()] outputs stored.
 #'
-#' [print.summary_lm_list()] returns `x` invisibly. Called for its side effect.
+#' [print.summary_lm_list()] returns `x`
+#' invisibly. Called for its side
+#' effect.
 #'
-#' @param object The output of [lm2list()].
-#' @param x An object of class `summary_lm_list`.
-#' @param digits The number of significant digits in printing
+#' @param object The output of
+#' [lm2list()].
+#'
+#' @param x An object of class
+#' `summary_lm_list`.
+#'
+#' @param digits The number of
+#' significant digits in printing
 #' numerical results.
-#' @param ...  Other arguments. Not used.
+#'
+#' @param ...  Other arguments. Not
+#' used.
 #'
 #'
 #'
@@ -37,7 +48,10 @@ summary.lm_list <- function(object, ...) {
     out
   }
 
-#' @describeIn summary.lm_list Print method for output of summary for lm_list.
+#' @describeIn summary.lm_list Print
+#' method for output of summary for
+#' lm_list.
+#'
 #' @export
 
 print.summary_lm_list <- function(x, digits = 3, ...) {

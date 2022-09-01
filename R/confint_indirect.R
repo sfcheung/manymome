@@ -1,27 +1,39 @@
-#' @title Confidence Interval of Indirect Effect or Conditional Indirect Effect
+#' @title Confidence Interval of
+#' Indirect Effect or Conditional
+#' Indirect Effect
 #'
-#' @description Return the  bootstrap confidence
-#'              interval of the indirect effect
-#'              or conditional indirect effect
-#'              stored in the output of [indirect_effect()] or
-#'              [cond_indirect()].
+#' @description Return the  bootstrap
+#' confidence interval of the indirect
+#' effect or conditional indirect effect
+#' stored in the output of
+#' [indirect_effect()] or
+#' [cond_indirect()].
 #'
-#' @details It extracts and returns the stored bootstrap
-#'           confidence interval if available.
+#' @details It extracts and returns the
+#' stored bootstrap confidence interval
+#' if available.
 #'
-#' @param object The output of [indirect_effect()] or
-#'              [cond_indirect()].
-#' @param parm Ignored because the stored object
-#'             always has only one parameter.
-#' @param level The level of confidence, default is .95, returning the
-#'               95% confidence interval.
-#' @param ...  Additional arguments. Ignored by the function.
+#' @param object The output of
+#' [indirect_effect()] or
+#' [cond_indirect()].
+#'
+#' @param parm Ignored because the
+#' stored object always has only one
+#' parameter.
+#'
+#' @param level The level of confidence,
+#' default is .95, returning the 95%
+#' confidence interval.
+#'
+#' @param ...  Additional arguments.
+#' Ignored by the function.
 #'
 #' @return A numeric vector of
 #' two elements, the limits of
 #' the confidence interval.
 #'
-#' @seealso [indirect_effect()] and [cond_indirect()]
+#' @seealso [indirect_effect()] and
+#' [cond_indirect()]
 #'
 #' @examples
 #'

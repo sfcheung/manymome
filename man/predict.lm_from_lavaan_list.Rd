@@ -2,42 +2,56 @@
 % Please edit documentation in R/lavaan2lm_list.R
 \name{predict.lm_from_lavaan_list}
 \alias{predict.lm_from_lavaan_list}
-\title{Predicted Values of an 'lm_from_lavaan_list'-Class Object}
+\title{Predicted Values of an
+'lm_from_lavaan_list'-Class Object}
 \usage{
 \method{predict}{lm_from_lavaan_list}(object, x = NULL, y = NULL, m = NULL, newdata, ...)
 }
 \arguments{
-\item{object}{A 'lm_from_lavaan'-class object.}
+\item{object}{A
+'lm_from_lavaan'-class object.}
 
-\item{x}{The variable name at the start of a path.}
+\item{x}{The variable name at the
+start of a path.}
 
-\item{y}{The variable name at the end of a path.}
+\item{y}{The variable name at the end
+of a path.}
 
-\item{m}{Optional. The mediator(s) from \code{x} to \code{y}.
-A numeric vector of the names of the mediators.
-The path goes from the first element to the last element.
-For example, if \code{m = c("m1", "m2")}, then the path
-is \code{x -> m1 -> m2 -> y}.}
+\item{m}{Optional. The mediator(s)
+from \code{x} to \code{y}. A numeric vector of
+the names of the mediators. The path
+goes from the first element to the
+last element. For example, if \code{m = c("m1", "m2")}, then the path is \code{x -> m1 -> m2 -> y}.}
 
-\item{newdata}{Required. A data frame of the new data. It must be a
-data frame.}
+\item{newdata}{Required. A data frame
+of the new data. It must be a data
+frame.}
 
-\item{...}{Additional arguments. Ignored.}
+\item{...}{Additional arguments.
+Ignored.}
 }
 \value{
-A numeric vector of the predicted values, with length equal to
-the number of rows of user-supplied data.
+A numeric vector of the
+predicted values, with length equal
+to the number of rows of
+user-supplied data.
 }
 \description{
-It computes the predicted values based on
-the models stored in an 'lm_from_lavaan_list`-class object.
+It computes the
+predicted values based on the models
+stored in an
+'lm_from_lavaan_list`-class object.
 }
 \details{
-An \code{lm_from_lavaan_list}-class object is a list
-of \code{lm_from_lavaan}-class objects.
+An
+\code{lm_from_lavaan_list}-class object
+is a list of \code{lm_from_lavaan}-class
+objects.
 
-This is an advanced helper used by \code{\link[=plot.cond_indirect_effects]{plot.cond_indirect_effects()}}.
-Exported for advanced users and developers.
+This is an advanced helper used by
+\code{\link[=plot.cond_indirect_effects]{plot.cond_indirect_effects()}}.
+Exported for advanced users and
+developers.
 }
 \examples{
 library(lavaan)

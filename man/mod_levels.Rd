@@ -38,111 +38,164 @@ categorical with 3 or more groups, this is the vector of the
 indicator variables.}
 
 \item{fit}{The fit object. Can be a
-\link[lavaan:lavaan-class]{lavaan::lavaan} object or a list of \code{\link[=lm]{lm()}} outputs.}
+\link[lavaan:lavaan-class]{lavaan::lavaan} object or a
+list of \code{\link[=lm]{lm()}} outputs.}
 
-\item{w_type}{Character. Whether the moderator is a \code{"numeric"}
-variable or a \code{"categorical"} variable. If \code{"auto"},
-the function will try to determine the type automatically.}
+\item{w_type}{Character. Whether the
+moderator is a \code{"numeric"} variable
+or a \code{"categorical"} variable. If
+\code{"auto"}, the function will try to
+determine the type automatically.}
 
-\item{w_method}{Character, either \code{"sd"} or \code{"percentile"}.
-If \code{"sd"}, the levels are defined by the
-distance from the mean in terms of standard deviation.
-if \code{"percentile"}, the levels are defined in percentiles.}
+\item{w_method}{Character, either
+\code{"sd"} or \code{"percentile"}. If \code{"sd"},
+the levels are defined by the
+distance from the mean in terms of
+standard deviation. if
+\code{"percentile"}, the levels are
+defined in percentiles.}
 
-\item{sd_from_mean}{A numeric vector. Specify the distance in
-standard deviation from the mean for each
+\item{sd_from_mean}{A numeric vector.
+Specify the distance in standard
+deviation from the mean for each
 level. Default is \code{c(-1, 0, 1)} for
-\code{\link[=mod_levels]{mod_levels()}}. For \code{\link[=mod_levels_list]{mod_levels_list()}}, the
-default is \code{c(-1, 0, 1)} when there is only one
-moderator, and \code{c(-1, 1)} when there are more
-than one moderator. Ignored if \code{w_method} is
-not equal to \code{"sd"}.}
+\code{\link[=mod_levels]{mod_levels()}}. For
+\code{\link[=mod_levels_list]{mod_levels_list()}}, the default is
+\code{c(-1, 0, 1)} when there is only one
+moderator, and \code{c(-1, 1)} when there
+are more than one moderator. Ignored
+if \code{w_method} is not equal to \code{"sd"}.}
 
-\item{percentiles}{A numeric vector. Specify the percentile (in
-proportion) for each level. Default is \code{c(.16, .50, .84)} for \code{\link[=mod_levels]{mod_levels()}}, corresponding
-approximately to one standard deviation below
-mean, mean, and one standard deviation above
-mean in a normal distribution. For
-\code{\link[=mod_levels_list]{mod_levels_list()}}, default is \code{c(.16, .50, .84)} if there is one moderator, and \code{c(.16, .84)} when there are more than one moderator.
+\item{percentiles}{A numeric vector.
+Specify the percentile (in
+proportion) for each level. Default
+is \code{c(.16, .50, .84)} for
+\code{\link[=mod_levels]{mod_levels()}}, corresponding
+approximately to one standard
+deviation below mean, mean, and one
+standard deviation above mean in a
+normal distribution. For
+\code{\link[=mod_levels_list]{mod_levels_list()}}, default is
+\code{c(.16, .50, .84)} if there is one
+moderator, and \code{c(.16, .84)} when
+there are more than one moderator.
 Ignored if \code{w_method} is not equal to
 \code{"percentile"}.}
 
-\item{extract_gp_names}{Logical. If \code{TRUE}, the default, the function will
-try to determine the name of each group from the
+\item{extract_gp_names}{Logical. If
+\code{TRUE}, the default, the function
+will try to determine the name of
+each group from the variable names.}
+
+\item{prefix}{Character. If
+\code{extract_gp_names} is \code{TRUE} and
+\code{prefix} is supplied, it will be
+removed from the variable names to
+create the group names. Default is
+\code{NULL}, and the function will try to
+determine the prefix automatically.}
+
+\item{values}{For numeric moderators,
+a numeric vector. These are the
+values to be used and will override
+other options. For categorical
+moderators, a named list of numeric
+vector, each vector has length equal
+to the number of indicator variables.
+If the vector is named, the names
+will be used to label the values. For
+example, if set to \verb{list(gp1 = c(0, 0), gp3 = c(0, 1)}, two levels will
+be returned, one named \code{gp1} with the
+indicator variables equal to 0 and 0,
+the other named \code{gp3} with the
+indicator variables equal to 0 and 1.
+Default is \code{NULL}.}
+
+\item{reference_group_label}{For
+categorical moderator, if the label
+for the reference group (group with
+all indicators equal to zero) cannot
+be determined, the default label is
+\code{"Reference"}. To change it, set
+\code{reference_group_label} to the
+desired label. Ignored if \code{values} is
+set.}
+
+\item{descending}{If \code{TRUE}
+(default), the rows are sorted in
+descending order for numerical
+moderators: The highest value on the
+first row and the lowest values on
+the last row. For user supplied
+values, the first value is on the
+last row and the last value is on the
+first row. If \code{FALSE}, the rows are
+sorted in ascending order.}
+
+\item{...}{The names of moderators
+variables. For a categorical
+variable, it should be a vector of
 variable names.}
 
-\item{prefix}{Character. If \code{extract_gp_names} is \code{TRUE} and \code{prefix} is
-supplied, it will be removed from the variable names
-to create the group names. Default is \code{NULL}, and the function
-will try to determine the prefix automatically.}
-
-\item{values}{For numeric moderators, a numeric vector. These are the values
-to be used and will override other options. For categorical
-moderators, a named list of numeric vector, each vector
-has length equal to the number of indicator variables. If
-the vector is named, the names will be used to label the values.
-For example, if set to \verb{list(gp1 = c(0, 0), gp3 = c(0, 1)},
-two levels will be returned, one named \code{gp1} with the indicator
-variables equal to 0 and 0, the other named \code{gp3} with the
-indicator variables equal to 0 and 1. Default is \code{NULL}.}
-
-\item{reference_group_label}{For categorical moderator, if the label for
-the reference group (group with all indicators equal to zero)
-cannot be determined, the default label is \code{"Reference"}.
-To change it, set \code{reference_group_label} to the desired
-label. Ignored if \code{values} is set.}
-
-\item{descending}{If \code{TRUE} (default), the rows are sorted in
-descending order for numerical moderators: The
-highest value on the first row and the lowest values
-on the last row. For user supplied values, the first
-value is on the last row and the last value is on the
-first row. If \code{FALSE}, the rows are sorted in
-ascending order.}
-
-\item{...}{The names of moderators variables. For a categorical variable,
-it should be a vector of variable names.}
-
-\item{merge}{If \code{TRUE}, \code{\link[=mod_levels_list]{mod_levels_list()}} will call \code{\link[=merge_mod_levels]{merge_mod_levels()}}
-and return the merged levels. Default is \code{FALSE}.}
+\item{merge}{If \code{TRUE},
+\code{\link[=mod_levels_list]{mod_levels_list()}} will call
+\code{\link[=merge_mod_levels]{merge_mod_levels()}} and return the
+merged levels. Default is \code{FALSE}.}
 }
 \value{
-\code{\link[=mod_levels]{mod_levels()}} returns a \code{wlevels}-class object which is
-a data frame with additional
-attributes about the levels.
+\code{\link[=mod_levels]{mod_levels()}} returns a
+\code{wlevels}-class object which is a
+data frame with additional attributes
+about the levels.
 
-\code{\link[=mod_levels_list]{mod_levels_list()}} returns a list of \code{wlevels}-class
-objects, or a \code{wlevels}-class object which is a data frame
-of the merged levels
-if \code{merge = TRUE}.
+\code{\link[=mod_levels_list]{mod_levels_list()}} returns a list of
+\code{wlevels}-class objects, or a
+\code{wlevels}-class object which is a
+data frame of the merged levels if
+\code{merge = TRUE}.
 }
 \description{
-Create levels of moderators to be used by
-\code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
-and \code{\link[=cond_indirect]{cond_indirect()}}.
+Create levels of
+moderators to be used by
+\code{\link[=indirect_effect]{indirect_effect()}},
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, and
+\code{\link[=cond_indirect]{cond_indirect()}}.
 }
 \details{
-It creates values of a moderator that can be used to compute
-conditional effect or conditional indirect effect. By default,
-for a numeric moderator, it uses one standard deviation below mean,
-mean, and one standard deviation above mean. The percentiles
-of these three levels in a normal distribution (16th, 50th, and 84th)
-can also be used. For categorical variable, it will simply collect
-the unique categories in the data.
+It creates values of a
+moderator that can be used to compute
+conditional effect or conditional
+indirect effect. By default, for a
+numeric moderator, it uses one
+standard deviation below mean, mean,
+and one standard deviation above
+mean. The percentiles of these three
+levels in a normal distribution
+(16th, 50th, and 84th) can also be
+used. For categorical variable, it
+will simply collect the unique
+categories in the data.
 
-The generated levels are then used by \code{\link[=cond_indirect]{cond_indirect()}} and
+The generated levels are then used by
+\code{\link[=cond_indirect]{cond_indirect()}} and
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 
-If a model has more than one moderator, \code{\link[=mod_levels_list]{mod_levels_list()}} can be
-used to generate combinations of levels. The output can then passed
-to \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} to compute the conditional
-effects or conditional indirect effects for all the combinations.
+If a model has more than one
+moderator, \code{\link[=mod_levels_list]{mod_levels_list()}} can be
+used to generate combinations of
+levels. The output can then passed to
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} to compute
+the conditional effects or
+conditional indirect effects for all
+the combinations.
 }
 \section{Functions}{
 \itemize{
-\item \code{mod_levels()}: Generate levels for one moderator.
+\item \code{mod_levels()}: Generate
+levels for one moderator.
 
-\item \code{mod_levels_list()}: Generate levels for several moderators.
+\item \code{mod_levels_list()}: Generate
+levels for several moderators.
 
 }}
 \examples{

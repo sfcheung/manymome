@@ -1,7 +1,10 @@
-#' @title Sample Dataset: A Simple Latent Mediation Model
+#' @title Sample Dataset: A Simple
+#' Latent Mediation Model
 #'
-#' @description Generated from a simple mediation model among xthree
-#'   latent factors, `fx`, `fm`, and `fy`, xeach has three indicators.
+#' @description Generated from a simple
+#' mediation model among xthree latent
+#' factors, `fx`, `fm`, and `fy`, xeach
+#' has three indicators.
 #'
 #' @details
 #'
@@ -16,7 +19,8 @@
 #' indirect := a * b
 #' ```
 #'
-#' @format A data frame with 200 rows and 11 variables:
+#' @format A data frame with 200 rows
+#' and 11 variables:
 #' \describe{
 #'   \item{x1}{Indicator of `fx`. Numeric.}
 #'   \item{x2}{Indicator of `fx`. Numeric.}

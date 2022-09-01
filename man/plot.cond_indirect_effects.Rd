@@ -23,107 +23,131 @@
 )
 }
 \arguments{
-\item{x}{The output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}. (Named \code{x}
-because it is required in the naming of arguments
-of the \code{plot} generic function.)}
+\item{x}{The output of
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}. (Named \code{x}
+because it is required in the naming
+of arguments of the \code{plot} generic
+function.)}
 
-\item{x_label}{The label for the X-axis. Default is the value of the
-predictor in the output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
+\item{x_label}{The label for the
+X-axis. Default is the value of the
+predictor in the output of
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
 
-\item{w_label}{The label for the legend for the lines.
-Default is \code{"Moderator(s)"}.}
+\item{w_label}{The label for the
+legend for the lines. Default is
+\code{"Moderator(s)"}.}
 
-\item{y_label}{The label for the Y-axis. Default is the
-name of the response variable in the model.}
+\item{y_label}{The label for the
+Y-axis. Default is the name of the
+response variable in the model.}
 
-\item{title}{The title of the graph. If not supplied, it will be
-generated from the variable
-names or labels (in \code{x_label}, \code{y_label},
-and \code{w_label}). If \code{""}, no title will be printed.
-This can be used when the plot is for manuscript
-submission and figures are required to have no
-titles.}
+\item{title}{The title of the graph.
+If not supplied, it will be generated
+from the variable names or labels (in
+\code{x_label}, \code{y_label}, and \code{w_label}).
+If \code{""}, no title will be printed.
+This can be used when the plot is for
+manuscript submission and figures are
+required to have no titles.}
 
-\item{x_from_mean_in_sd}{How many SD from mean is used to define
-"low" and
+\item{x_from_mean_in_sd}{How many SD
+from mean is used to define "low" and
 "high" for the focal variable.
 Default is 1.}
 
-\item{x_method}{How to define "high" and "low" for the focal
-variable levels.
-Default is in terms of the
-standard deviation of the focal variable, \code{"sd"}.
-If equal to
-\code{"percentile"}, then the percentiles of the
-focal variable in the
-dataset is used.}
+\item{x_method}{How to define "high"
+and "low" for the focal variable
+levels. Default is in terms of the
+standard deviation of the focal
+variable, \code{"sd"}. If equal to
+\code{"percentile"}, then the percentiles
+of the focal variable in the dataset
+is used.}
 
-\item{x_percentiles}{If \code{x_method} is \code{"percentile"}, then this
-argument
-specifies the two percentiles to be used,
-divided by 100.
-It must be a
-vector of two numbers. The default is
-\code{c(.16, .84)},
-the 16th and 84th percentiles,
-which corresponds approximately
-to one SD below and above mean for a
-normal distribution, respectively.}
+\item{x_percentiles}{If \code{x_method} is
+\code{"percentile"}, then this argument
+specifies the two percentiles to be
+used, divided by 100. It must be a
+vector of two numbers. The default
+is \code{c(.16, .84)}, the 16th and 84th
+percentiles, which corresponds
+approximately to one SD below and
+above mean for a normal distribution,
+respectively.}
 
-\item{x_sd_to_percentiles}{If \code{x_method} is \code{"percentile"} and this
-argument is
-set to a number, this number will be used
-to determine the percentiles to be used. The
-lower percentile is the percentile in a
-normal
-distribution
-that is \code{x_sd_to_percentiles} SD below the mean.
-The upper percentile is the percentile in a normal
-distribution that is \code{x_sd_to_percentiles} SD
+\item{x_sd_to_percentiles}{If
+\code{x_method} is \code{"percentile"} and this
+argument is set to a number, this
+number will be used to determine the
+percentiles to be used. The lower
+percentile is the percentile in a
+normal distribution that is
+\code{x_sd_to_percentiles} SD below the
+mean. The upper percentile is the
+percentile in a normal distribution
+that is \code{x_sd_to_percentiles} SD
 above the mean. Therefore, if
-\code{x_sd_to_percentiles} is set to 1, then the lower
-and upper percentiles are 16th and 84th,
-respectively. Default is \code{NA}.}
+\code{x_sd_to_percentiles} is set to 1,
+then the lower and upper percentiles
+are 16th and 84th, respectively.
+Default is \code{NA}.}
 
-\item{note_standardized}{If \code{TRUE}, will check whether a variable has SD
-nearly equal to one. If yes, will report this in the
-plot.
-Default is \code{TRUE}.}
+\item{note_standardized}{If \code{TRUE},
+will check whether a variable has SD
+nearly equal to one. If yes, will
+report this in the plot. Default is
+\code{TRUE}.}
 
-\item{no_title}{If \code{TRUE}, title will be suppressed. Default is \code{FALSE}.}
+\item{no_title}{If \code{TRUE}, title will
+be suppressed. Default is \code{FALSE}.}
 
-\item{line_width}{The width of the lines as used in
-\code{\link[ggplot2:geom_segment]{ggplot2::geom_segment()}}.
-Default is 1.}
+\item{line_width}{The width of the
+lines as used in
+\code{\link[ggplot2:geom_segment]{ggplot2::geom_segment()}}. Default is
+1.}
 
-\item{point_size}{The size of the points as used in \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}}.
-Default is 5.}
+\item{point_size}{The size of the
+points as used in
+\code{\link[ggplot2:geom_point]{ggplot2::geom_point()}}. Default is
+5.}
 
-\item{graph_type}{If \code{"default"}, the typical line-graph with equal end-points
-will be plotted. If \code{"tubmle"}, then the tumble graph
-proposed by Bodner (2016) will be plotted. Default is
-\code{"default"}.}
+\item{graph_type}{If \code{"default"}, the
+typical line-graph with equal
+end-points will be plotted. If
+\code{"tubmle"}, then the tumble graph
+proposed by Bodner (2016) will be
+plotted. Default is \code{"default"}.}
 
-\item{...}{Additional arguments. Ignored.}
+\item{...}{Additional arguments.
+Ignored.}
 }
 \value{
-A \link{ggplot2} graph. Plotted if not assigned to a name. It can
-be further modified like a usual \link{ggplot2} graph.
+A \link{ggplot2} graph. Plotted if
+not assigned to a name. It can be
+further modified like a usual
+\link{ggplot2} graph.
 }
 \description{
-Plot the conditional effects for different
-levels of moderators.
+Plot the conditional
+effects for different levels of
+moderators.
 }
 \details{
-This function is a plot method of the output
-of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}. It will use the levels of moderators
-in the output.
+This function is a plot
+method of the output of
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}. It will
+use the levels of moderators in the
+output.
 
-It plots the conditional effect from \code{x} to \code{y} in a model for
-different levels of the moderators.
+It plots the conditional effect from
+\code{x} to \code{y} in a model for different
+levels of the moderators.
 
-It does not support conditional indirect effects. If there
-is one or more mediators in \code{x}, it will raise an error.
+It does not support conditional
+indirect effects. If there is one or
+more mediators in \code{x}, it will raise
+an error.
 }
 \examples{
 library(lavaan)

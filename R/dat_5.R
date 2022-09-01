@@ -1,8 +1,11 @@
-#' @title Sample Dataset: A Complicated Mediation Model
+#' @title Sample Dataset: A Complicated
+#' Mediation Model
 #'
-#' @description A mediation model with two predictors, two pathways,
+#' @description A mediation model with
+#' two predictors, two pathways,
 #'
-#' @format A data frame with 300 rows and 5 variables:
+#' @format A data frame with 300 rows
+#' and 5 variables:
 #' \describe{
 #'   \item{x1}{Predictor 1. Numeric.}
 #'   \item{x2}{Predictor 2. Numeric.}

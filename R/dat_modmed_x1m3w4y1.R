@@ -1,10 +1,14 @@
-#' @title Sample Dataset: Moderated Serial Mediation
+#' @title Sample Dataset: Moderated
+#' Serial Mediation
 #'
-#' @description Generated from a serial mediation model with
-#'   one predictor, three mediators, and one outcome
-#'   variable, with one moderator in each stage.
+#' @description Generated from a serial
+#' mediation model with one predictor,
+#' three mediators, and one outcome
+#' variable, with one moderator in each
+#' stage.
 #'
-#' @format A data frame with 200 rows and 11 variables:
+#' @format A data frame with 200 rows
+#' and 11 variables:
 #' \describe{
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{w1}{Moderator 1. Numeric.}

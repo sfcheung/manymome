@@ -1,19 +1,33 @@
-#' @title Get the Product Terms (if Any) Along a Path
+#' @title Get the Product Terms (if Any)
+#' Along a Path
 #'
 #' @param x Character. Variable name.
+#'
 #' @param y Character. Variable name.
-#' @param operator Character. The string used to indicate a product term.
-#'                 Default is `":"`, used in both [lm()] and [lavaan::sem()]
-#'                 for observed variables.
-#' @param fit The fit object. Currently only supports a
-#'            [lavaan::lavaan-class] object.
-#' @param est The output of [lavaan::parameterEstimates()]. If `NULL`, the
-#'            default, it will be generated from `fit`. If supplied,
-#'            `fit` will ge ignored.
-#' @param data Data frame (optional). If supplied, it will be used to
-#'             identify the product terms.
-#' @param expand Whether products of more than two terms will be searched.
-#'               `FALSE` by default.
+#'
+#' @param operator Character. The string
+#' used to indicate a product term.
+#' Default is `":"`, used in both [lm()]
+#' and [lavaan::sem()] for observed
+#' variables.
+#'
+#' @param fit The fit object. Currently
+#' only supports a
+#' [lavaan::lavaan-class] object.
+#'
+#' @param est The output of
+#' [lavaan::parameterEstimates()]. If
+#' `NULL`, the default, it will be
+#' generated from `fit`. If supplied,
+#' `fit` will ge ignored.
+#'
+#' @param data Data frame (optional). If
+#' supplied, it will be used to identify
+#' the product terms.
+#'
+#' @param expand Whether products of
+#' more than two terms will be searched.
+#' `FALSE` by default.
 #'
 #' @examples
 #' \donttest{

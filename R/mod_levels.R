@@ -1,99 +1,158 @@
 #' @title Create Levels of Moderators
 #'
-#' @description Create levels of moderators to be used by
-#'  [indirect_effect()], [cond_indirect_effects()],
-#'  and [cond_indirect()].
+#' @description Create levels of
+#' moderators to be used by
+#' [indirect_effect()],
+#' [cond_indirect_effects()], and
+#' [cond_indirect()].
 #'
-#' @details
-#' It creates values of a moderator that can be used to compute
-#' conditional effect or conditional indirect effect. By default,
-#' for a numeric moderator, it uses one standard deviation below mean,
-#' mean, and one standard deviation above mean. The percentiles
-#' of these three levels in a normal distribution (16th, 50th, and 84th)
-#' can also be used. For categorical variable, it will simply collect
-#' the unique categories in the data.
+#' @details It creates values of a
+#' moderator that can be used to compute
+#' conditional effect or conditional
+#' indirect effect. By default, for a
+#' numeric moderator, it uses one
+#' standard deviation below mean, mean,
+#' and one standard deviation above
+#' mean. The percentiles of these three
+#' levels in a normal distribution
+#' (16th, 50th, and 84th) can also be
+#' used. For categorical variable, it
+#' will simply collect the unique
+#' categories in the data.
 #'
-#' The generated levels are then used by [cond_indirect()] and
+#' The generated levels are then used by
+#' [cond_indirect()] and
 #' [cond_indirect_effects()].
 #'
-#' If a model has more than one moderator, [mod_levels_list()] can be
-#' used to generate combinations of levels. The output can then passed
-#' to [cond_indirect_effects()] to compute the conditional
-#' effects or conditional indirect effects for all the combinations.
+#' If a model has more than one
+#' moderator, [mod_levels_list()] can be
+#' used to generate combinations of
+#' levels. The output can then passed to
+#' [cond_indirect_effects()] to compute
+#' the conditional effects or
+#' conditional indirect effects for all
+#' the combinations.
 #'
-#' @return
-#' [mod_levels()] returns a `wlevels`-class object which is
-#' a data frame with additional
-#' attributes about the levels.
+#' @return [mod_levels()] returns a
+#' `wlevels`-class object which is a
+#' data frame with additional attributes
+#' about the levels.
 #'
-#' [mod_levels_list()] returns a list of `wlevels`-class
-#' objects, or a `wlevels`-class object which is a data frame
-#' of the merged levels
-#' if `merge = TRUE`.
+#' [mod_levels_list()] returns a list of
+#' `wlevels`-class objects, or a
+#' `wlevels`-class object which is a
+#' data frame of the merged levels if
+#' `merge = TRUE`.
 #'
 #' @param w Character. The names of the moderator. If the moderator is
-#'          categorical with 3 or more groups, this is the vector of the
-#'          indicator variables.
+#' categorical with 3 or more groups, this is the vector of the
+#' indicator variables.
+#'
 #' @param fit The fit object. Can be a
-#'            [lavaan::lavaan-class] object or a list of [lm()] outputs.
-#' @param w_type Character. Whether the moderator is a `"numeric"`
-#'               variable or a `"categorical"` variable. If `"auto"`,
-#'               the function will try to determine the type automatically.
-#' @param w_method Character, either `"sd"` or `"percentile"`.
-#'                 If `"sd"`, the levels are defined by the
-#'                 distance from the mean in terms of standard deviation.
-#'                 if `"percentile"`, the levels are defined in percentiles.
-#' @param sd_from_mean A numeric vector. Specify the distance in
-#'                     standard deviation from the mean for each
-#'                     level. Default is `c(-1, 0, 1)` for
-#'                     [mod_levels()]. For [mod_levels_list()], the
-#'                     default is `c(-1, 0, 1)` when there is only one
-#'                     moderator, and `c(-1, 1)` when there are more
-#'                     than one moderator. Ignored if `w_method` is
-#'                     not equal to `"sd"`.
-#' @param percentiles A numeric vector. Specify the percentile (in
-#'                    proportion) for each level. Default is `c(.16,
-#'                    .50, .84)` for [mod_levels()], corresponding
-#'                    approximately to one standard deviation below
-#'                    mean, mean, and one standard deviation above
-#'                    mean in a normal distribution. For
-#'                    [mod_levels_list()], default is `c(.16, .50,
-#'                    .84)` if there is one moderator, and `c(.16,
-#'                    .84)` when there are more than one moderator.
-#'                    Ignored if `w_method` is not equal to
-#'                    `"percentile"`.
-#' @param extract_gp_names Logical. If `TRUE`, the default, the function will
-#'                         try to determine the name of each group from the
-#'                         variable names.
-#' @param prefix Character. If `extract_gp_names` is `TRUE` and `prefix` is
-#'               supplied, it will be removed from the variable names
-#'               to create the group names. Default is `NULL`, and the function
-#'               will try to determine the prefix automatically.
-#' @param values For numeric moderators, a numeric vector. These are the values
-#'               to be used and will override other options. For categorical
-#'               moderators, a named list of numeric vector, each vector
-#'               has length equal to the number of indicator variables. If
-#'               the vector is named, the names will be used to label the values.
-#'               For example, if set to `list(gp1 = c(0, 0), gp3 = c(0, 1)`,
-#'               two levels will be returned, one named `gp1` with the indicator
-#'               variables equal to 0 and 0, the other named `gp3` with the
-#'               indicator variables equal to 0 and 1. Default is `NULL`.
-#' @param reference_group_label For categorical moderator, if the label for
-#'               the reference group (group with all indicators equal to zero)
-#'               cannot be determined, the default label is `"Reference"`.
-#'               To change it, set `reference_group_label` to the desired
-#'               label. Ignored if `values` is set.
-#' @param descending If `TRUE` (default), the rows are sorted in
-#'               descending order for numerical moderators: The
-#'               highest value on the first row and the lowest values
-#'               on the last row. For user supplied values, the first
-#'               value is on the last row and the last value is on the
-#'               first row. If `FALSE`, the rows are sorted in
-#'               ascending order.
-#' @param ... The names of moderators variables. For a categorical variable,
-#'            it should be a vector of variable names.
-#' @param merge If `TRUE`, [mod_levels_list()] will call [merge_mod_levels()]
-#'              and return the merged levels. Default is `FALSE`.
+#' [lavaan::lavaan-class] object or a
+#' list of [lm()] outputs.
+#'
+#' @param w_type Character. Whether the
+#' moderator is a `"numeric"` variable
+#' or a `"categorical"` variable. If
+#' `"auto"`, the function will try to
+#' determine the type automatically.
+#'
+#' @param w_method Character, either
+#' `"sd"` or `"percentile"`. If `"sd"`,
+#' the levels are defined by the
+#' distance from the mean in terms of
+#' standard deviation. if
+#' `"percentile"`, the levels are
+#' defined in percentiles.
+#'
+#' @param sd_from_mean A numeric vector.
+#' Specify the distance in standard
+#' deviation from the mean for each
+#' level. Default is `c(-1, 0, 1)` for
+#' [mod_levels()]. For
+#' [mod_levels_list()], the default is
+#' `c(-1, 0, 1)` when there is only one
+#' moderator, and `c(-1, 1)` when there
+#' are more than one moderator. Ignored
+#' if `w_method` is not equal to `"sd"`.
+#'
+#' @param percentiles A numeric vector.
+#' Specify the percentile (in
+#' proportion) for each level. Default
+#' is `c(.16, .50, .84)` for
+#' [mod_levels()], corresponding
+#' approximately to one standard
+#' deviation below mean, mean, and one
+#' standard deviation above mean in a
+#' normal distribution. For
+#' [mod_levels_list()], default is
+#' `c(.16, .50, .84)` if there is one
+#' moderator, and `c(.16, .84)` when
+#' there are more than one moderator.
+#' Ignored if `w_method` is not equal to
+#' `"percentile"`.
+#'
+#' @param extract_gp_names Logical. If
+#' `TRUE`, the default, the function
+#' will try to determine the name of
+#' each group from the variable names.
+#'
+#' @param prefix Character. If
+#' `extract_gp_names` is `TRUE` and
+#' `prefix` is supplied, it will be
+#' removed from the variable names to
+#' create the group names. Default is
+#' `NULL`, and the function will try to
+#' determine the prefix automatically.
+#'
+#' @param values For numeric moderators,
+#' a numeric vector. These are the
+#' values to be used and will override
+#' other options. For categorical
+#' moderators, a named list of numeric
+#' vector, each vector has length equal
+#' to the number of indicator variables.
+#' If the vector is named, the names
+#' will be used to label the values. For
+#' example, if set to `list(gp1 = c(0,
+#' 0), gp3 = c(0, 1)`, two levels will
+#' be returned, one named `gp1` with the
+#' indicator variables equal to 0 and 0,
+#' the other named `gp3` with the
+#' indicator variables equal to 0 and 1.
+#' Default is `NULL`.
+#'
+#' @param reference_group_label For
+#' categorical moderator, if the label
+#' for the reference group (group with
+#' all indicators equal to zero) cannot
+#' be determined, the default label is
+#' `"Reference"`. To change it, set
+#' `reference_group_label` to the
+#' desired label. Ignored if `values` is
+#' set.
+#'
+#' @param descending If `TRUE`
+#' (default), the rows are sorted in
+#' descending order for numerical
+#' moderators: The highest value on the
+#' first row and the lowest values on
+#' the last row. For user supplied
+#' values, the first value is on the
+#' last row and the last value is on the
+#' first row. If `FALSE`, the rows are
+#' sorted in ascending order.
+#'
+#' @param ... The names of moderators
+#' variables. For a categorical
+#' variable, it should be a vector of
+#' variable names.
+#'
+#' @param merge If `TRUE`,
+#' [mod_levels_list()] will call
+#' [merge_mod_levels()] and return the
+#' merged levels. Default is `FALSE`.
 #'
 #'
 #' @seealso [cond_indirect_effects()] for computing conditional
@@ -146,7 +205,9 @@
 #' @export
 #'
 #'
-#' @describeIn mod_levels Generate levels for one moderator.
+#' @describeIn mod_levels Generate
+#' levels for one moderator.
+#'
 #' @order 1
 
 mod_levels <- function(w,
@@ -230,7 +291,10 @@ mod_levels <- function(w,
 #'
 #'
 #' @export
-#' @describeIn mod_levels Generate levels for several moderators.
+#'
+#' @describeIn mod_levels Generate
+#' levels for several moderators.
+#'
 #' @order 2
 
 mod_levels_list <- function(...,
@@ -268,23 +332,6 @@ mod_levels_list <- function(...,
                   extract_gp_names = extract_gp_names,
                   prefix = prefix,
                   descending = descending)
-    # if (!is.list(sd_from_mean)) {
-    #     sd_from_mean <- list(sd_from_mean)
-    #   }
-    # if (!is.list(percentiles)) {
-    #     percentiles <- list(percentiles)
-    #   }
-    # out <- mapply(mod_levels,
-    #               w = x,
-    #               w_type = w_type,
-    #               w_method = w_method,
-    #               sd_from_mean = sd_from_mean,
-    #               percentiles = percentiles,
-    #               extract_gp_names = extract_gp_names,
-    #               prefix = prefix,
-    #               descending = descending,
-    #               MoreArgs = list(fit = fit),
-    #               SIMPLIFY = FALSE)
     if (merge) {
         out2 <- merge_mod_levels(out)
         return(out2)

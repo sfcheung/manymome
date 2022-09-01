@@ -2,29 +2,41 @@
 % Please edit documentation in R/lavaan2lm_list.R
 \name{lm_from_lavaan_list}
 \alias{lm_from_lavaan_list}
-\title{'lavaan'-class to 'lm_from_lavaan_list'-Class}
+\title{'lavaan'-class to
+'lm_from_lavaan_list'-Class}
 \usage{
 lm_from_lavaan_list(fit)
 }
 \arguments{
-\item{fit}{A \code{lavaan}-class object, usually the output of \code{\link[lavaan:lavaan]{lavaan::lavaan()}}
-or its wrappers.}
+\item{fit}{A \code{lavaan}-class object,
+usually the output of
+\code{\link[lavaan:lavaan]{lavaan::lavaan()}} or its wrappers.}
 }
 \value{
-An \code{lm_from_lavaan_list}-class object, which is a list of \code{lm_from_lavaan}
-objects. It has a \code{predict}-method (\code{\link[=predict.lm_from_lavaan_list]{predict.lm_from_lavaan_list()}}) for
-computing the predicted values from one variable to another.
+An
+\code{lm_from_lavaan_list}-class object,
+which is a list of \code{lm_from_lavaan}
+objects. It has a \code{predict}-method
+(\code{\link[=predict.lm_from_lavaan_list]{predict.lm_from_lavaan_list()}}) for
+computing the predicted values from
+one variable to another.
 }
 \description{
-Converts the regression models in a \code{lavaan}-class model to an
-\code{lm_from_lavaan_list}-class object.
+Converts the regression
+models in a \code{lavaan}-class model to
+an \code{lm_from_lavaan_list}-class
+object.
 }
 \details{
-It identifies all dependent variables in a \code{lavaan} model
-and creates an \code{lm_from_lavaan}-class object for each of them.
+It identifies all dependent
+variables in a \code{lavaan} model and
+creates an \code{lm_from_lavaan}-class
+object for each of them.
 
-This is an advanced helper used by \code{\link[=plot.cond_indirect_effects]{plot.cond_indirect_effects()}}.
-Exported for advanced users and developers.
+This is an advanced helper used by
+\code{\link[=plot.cond_indirect_effects]{plot.cond_indirect_effects()}}.
+Exported for advanced users and
+developers.
 }
 \examples{
 library(lavaan)

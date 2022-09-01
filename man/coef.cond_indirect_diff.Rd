@@ -2,23 +2,30 @@
 % Please edit documentation in R/cond_indirect_diff.R
 \name{coef.cond_indirect_diff}
 \alias{coef.cond_indirect_diff}
-\title{Print the Output of 'cond_indirect_diff()'}
+\title{Print the Output of
+'cond_indirect_diff()'}
 \usage{
 \method{coef}{cond_indirect_diff}(object, ...)
 }
 \arguments{
-\item{object}{The output of \code{\link[=cond_indirect_diff]{cond_indirect_diff()}}.}
+\item{object}{The output of
+\code{\link[=cond_indirect_diff]{cond_indirect_diff()}}.}
 
-\item{...}{Optional arguments. Ignored.}
+\item{...}{Optional arguments.
+Ignored.}
 }
 \value{
-Scalar: The change of conditional indirect effect in \code{object}.
+Scalar: The change of
+conditional indirect effect in
+\code{object}.
 }
 \description{
-Extract the change in conditional indirect effect.
+Extract the change in
+conditional indirect effect.
 }
 \details{
-The \code{coef} method of the \code{cond_indirect_diff}-class object.
+The \code{coef} method of the
+\code{cond_indirect_diff}-class object.
 }
 \seealso{
 \code{\link[=cond_indirect_diff]{cond_indirect_diff()}}

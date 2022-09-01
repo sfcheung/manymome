@@ -1,4 +1,5 @@
-# An internal function for creating missing data.
+# An internal function for creating
+# missing data.
 # For demonstration.
 #
 #' @noRd

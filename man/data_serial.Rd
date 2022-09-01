@@ -3,9 +3,11 @@
 \docType{data}
 \name{data_serial}
 \alias{data_serial}
-\title{Sample Dataset: Serial Mediation}
+\title{Sample Dataset: Serial
+Mediation}
 \format{
-A data frame with 100 rows and 6 variables:
+A data frame with 100 rows
+and 6 variables:
 \describe{
 \item{x}{Predictor. Numeric.}
 \item{m1}{Mediator 1. Numeric.}
@@ -19,7 +21,8 @@ A data frame with 100 rows and 6 variables:
 data_serial
 }
 \description{
-A serial mediation model.
+A serial mediation
+model.
 }
 \examples{
 library(lavaan)

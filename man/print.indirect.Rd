@@ -2,23 +2,29 @@
 % Please edit documentation in R/print_indirect.R
 \name{print.indirect}
 \alias{print.indirect}
-\title{Print an 'indirect' Class Object}
+\title{Print an 'indirect' Class
+Object}
 \usage{
 \method{print}{indirect}(x, digits = 3, ...)
 }
 \arguments{
-\item{x}{The output of \code{\link[=indirect_effect]{indirect_effect()}} or \code{\link[=cond_indirect]{cond_indirect()}}.}
+\item{x}{The output of
+\code{\link[=indirect_effect]{indirect_effect()}} or
+\code{\link[=cond_indirect]{cond_indirect()}}.}
 
-\item{digits}{Number of digits to display. Default is 3.}
+\item{digits}{Number of digits to
+display. Default is 3.}
 
 \item{...}{Other arguments. Not used.}
 }
 \value{
-\code{x} is returned invisibly. Called for its side effect.
+\code{x} is returned invisibly.
+Called for its side effect.
 }
 \description{
-Print the content of the output of \code{\link[=indirect_effect]{indirect_effect()}}
-or \code{\link[=cond_indirect]{cond_indirect()}}.
+Print the content of the
+output of \code{\link[=indirect_effect]{indirect_effect()}} or
+\code{\link[=cond_indirect]{cond_indirect()}}.
 }
 \examples{
 
@@ -32,13 +38,16 @@ m3 ~ a3 * m2  + b3 * w3 + d3 * m2:w3
 y  ~ a4 * m3  + b4 * w4 + d4 * m3:w4
 "
 fit <- sem(mod, dat,
-           meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
+           meanstructure = TRUE, fixed.x = FALSE,
+           se = "none", baseline = FALSE)
 est <- parameterEstimates(fit)
 
 wvalues <- c(w1 = 5, w2 = 4, w3 = 2, w4 = 3)
 
-indirect_1 <- cond_indirect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit,
-                              wvalues = wvalues)
+indirect_1 <- cond_indirect(x = "x", y = "y",
+                            m = c("m1", "m2", "m3"),
+                            fit = fit,
+                            wvalues = wvalues)
 indirect_1
 
 dat <- modmed_x1m3w4y1
@@ -50,15 +59,19 @@ m3 ~ a3 * m2
 y  ~ a4 * m3 + x
 "
 fit2 <- sem(mod2, dat,
-           meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
+            meanstructure = TRUE, fixed.x = FALSE,
+            se = "none", baseline = FALSE)
 est <- parameterEstimates(fit)
 
-indirect_2 <- indirect_effect(x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit2)
+indirect_2 <- indirect_effect(x = "x", y = "y",
+                              m = c("m1", "m2", "m3"),
+                              fit = fit2)
 indirect_2
 print(indirect_2, digits = 5)
 
 
 }
 \seealso{
-\code{\link[=indirect_effect]{indirect_effect()}} and \code{\link[=cond_indirect]{cond_indirect()}}
+\code{\link[=indirect_effect]{indirect_effect()}} and
+\code{\link[=cond_indirect]{cond_indirect()}}
 }

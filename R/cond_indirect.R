@@ -1,172 +1,294 @@
-#' @title Conditional, Indirect, and Conditional Indirect Effects
+#' @title Conditional, Indirect, and
+#' Conditional Indirect Effects
 #'
-#' @description Compute the conditional effects, indirect effects, or
-#'   conditional indirect effects in a structural model fitted by
-#'   [lm()] or [lavaan::sem()].
+#' @description Compute the conditional
+#' effects, indirect effects, or
+#' conditional indirect effects in a
+#' structural model fitted by [lm()] or
+#' [lavaan::sem()].
 #'
 #' @details
 #'
-#' For a model with a mediation path moderated by one or more
-#' moderators, [cond_indirect_effects()] can be
-#' used to compute the conditional indirect effect from one variable
-#' to another variable, at one or more set of
-#' selected value(s) of the moderator(s).
+#' For a model with a mediation path
+#' moderated by one or more moderators,
+#' [cond_indirect_effects()] can be used
+#' to compute the conditional indirect
+#' effect from one variable to another
+#' variable, at one or more set of
+#' selected value(s) of the
+#' moderator(s).
 #'
-#' If only the effect for one set of value(s) of the moderator(s)
-#' is needed, [cond_indirect()] can be used.
+#' If only the effect for one set of
+#' value(s) of the moderator(s) is
+#' needed, [cond_indirect()] can be
+#' used.
 #'
-#' If only the mediator(s) is/are specified (`m`) and no values of
-#' moderator(s) are specified, then the indirect effect from one
-#' variable (`x`) to another variable (`y`) is computed. A convenient
-#' wrapper [indirect_effect()] can be used to compute the indirect
-#' effect.
+#' If only the mediator(s) is/are
+#' specified (`m`) and no values of
+#' moderator(s) are specified, then the
+#' indirect effect from one variable
+#' (`x`) to another variable (`y`) is
+#' computed. A convenient wrapper
+#' [indirect_effect()] can be used to
+#' compute the indirect effect.
 #'
-#' If only the value(s) of moderator(s) is/are specified (`wvalues` or
-#' `wlevels`) and no mediators (`m`) are specified when
-#' calling [cond_indirect_effects()] or [cond_indirect()], then the
-#' conditional direct effects from one variable to another are
-#' computed.
+#' If only the value(s) of moderator(s)
+#' is/are specified (`wvalues` or
+#' `wlevels`) and no mediators (`m`) are
+#' specified when calling
+#' [cond_indirect_effects()] or
+#' [cond_indirect()], then the
+#' conditional direct effects from one
+#' variable to another are computed.
 #'
-#' All three functions support using nonparametric bootstrapping to
-#' form percentile confidence intervals. Bootstrapping
-#' only needs to be done once. These are the possible ways to form
-#' bootstrapping:
+#' All three functions support using
+#' nonparametric bootstrapping to form
+#' percentile confidence intervals.
+#' Bootstrapping only needs to be done
+#' once. These are the possible ways to
+#' form bootstrapping:
 #'
-#' 1. Do bootstrapping in the first call to one of these functions,
-#'    by setting `boot_ci` to `TRUE` and `R` to the number of
-#'    bootstrap samples, `level` to the level of confidence (default .95
-#'    or 95%), and `seed` to reproduce the results (`parallel` and
-#'    `ncores` are optional). This will take some time to run. The output
-#'    will have all bootstrap estimates stored. This output, whether it
-#'    is from [indirect_effect()], [cond_indirect_effects()], or
-#'    [cond_indirect()], can be reused by any of these three functions
-#'   by setting `boot_out` to this output. They will form the confidence
-#'   intervals using the stored bootstrap estimates.
+#' 1. Do bootstrapping in the first call
+#' to one of these functions, by setting
+#' `boot_ci` to `TRUE` and `R` to the
+#' number of bootstrap samples, `level`
+#' to the level of confidence (default
+#' .95 or 95%), and `seed` to reproduce
+#' the results (`parallel` and `ncores`
+#' are optional). This will take some
+#' time to run. The output will have all
+#' bootstrap estimates stored. This
+#' output, whether it is from
+#' [indirect_effect()],
+#' [cond_indirect_effects()], or
+#' [cond_indirect()], can be reused by
+#' any of these three functions by
+#' setting `boot_out` to this output.
+#' They will form the confidence
+#' intervals using the stored bootstrap
+#' estimates.
 #'
-#' 2. Do bootstrapping using [do_boot()]. The output can be used
-#'    in the `boot_out` argument of [indirect_effect()],
-#'    [cond_indirect_effects()] and [cond_indirect()].
+#' 2. Do bootstrapping using
+#' [do_boot()]. The output can be used
+#' in the `boot_out` argument of
+#' [indirect_effect()],
+#' [cond_indirect_effects()] and
+#' [cond_indirect()].
 #'
-#' 3. If [lavaan::sem()] is used to fit a model and `se = "boot"` is
-#'    used, [do_boot()] can extract them to generate a `boot_out`-class
-#'    object that again can be used in the `boot_out` argument.
+#' 3. If [lavaan::sem()] is used to fit
+#' a model and `se = "boot"` is used,
+#' [do_boot()] can extract them to
+#' generate a `boot_out`-class object
+#' that again can be used in the
+#' `boot_out` argument.
 #'
-#' If `boot_out` is set, arguments such as `R`, `seed`, and `parallel`
-#' will be ignored.
+#' If `boot_out` is set, arguments such
+#' as `R`, `seed`, and `parallel` will
+#' be ignored.
 #'
-#' @return
-#' [indirect_effect()] and [cond_indirect()] return an
+#' @return [indirect_effect()] and
+#' [cond_indirect()] return an
 #' `indirect`-class object.
 #'
-#' [cond_indirect_effects()] returns a `cond_indirect_effects`-class
-#' object.
+#' [cond_indirect_effects()] returns a
+#' `cond_indirect_effects`-class object.
 #'
-#' These two classes of objects have their own print methods for
-#' printing the results (see [print.indirect()] and
-#' [print.cond_indirect_effects()]). They also have a `coef`
-#' method for extracting the estimates ([coef.indirect()] and
-#' [coef.cond_indirect_effects()]) and a `confint` method
-#' for extracting the confidence intervals ([confint.indirect()]
-#' and [confint.cond_indirect_effects()]). Addition and subtraction
-#' can also be conducted on `indirect`-class object to estimate
-#' and test a function of effects (see [math_indirect])
+#' These two classes of objects have
+#' their own print methods for printing
+#' the results (see [print.indirect()]
+#' and [print.cond_indirect_effects()]).
+#' They also have a `coef` method for
+#' extracting the estimates
+#' ([coef.indirect()] and
+#' [coef.cond_indirect_effects()]) and a
+#' `confint` method for extracting the
+#' confidence intervals
+#' ([confint.indirect()] and
+#' [confint.cond_indirect_effects()]).
+#' Addition and subtraction can also be
+#' conducted on `indirect`-class object
+#' to estimate and test a function of
+#' effects (see [math_indirect])
 #'
-#' @param x Character. The name of the predictor at the start of the
-#'    path.
-#' @param y Character. The name of the outcome variable at the end of
-#'    the path.
-#' @param m A vector of the variable names of the mediator(s). The
-#'    path goes from the first mediator successively to the last
-#'    mediator. If `NULL`, the default, the path goes from `x` to
-#'    `y`.
+#' @param x Character. The name of the
+#' predictor at the start of the path.
+#'
+#' @param y Character. The name of the
+#' outcome variable at the end of the
+#' path.
+#'
+#' @param m A vector of the variable
+#' names of the mediator(s). The path
+#' goes from the first mediator
+#' successively to the last mediator. If
+#' `NULL`, the default, the path goes
+#' from `x` to `y`.
+#'
 #' @param fit The fit object. Can be a
-#'    [lavaan::lavaan-class] object or a list of [lm()] outputs.
-#' @param est The output of [lavaan::parameterEstimates()]. If `NULL`,
-#'    the default, it will be generated from `fit`. If supplied, `fit`
-#'    will be ignored.
-#' @param implied_stats Implied means, variances, and covariances of
-#'    observed variables, of the form of the output of
-#'    [lavaan::lavInspect()] with `what` set to `"implied"`. The
-#'    standard deviations are extracted from this object for
-#'    standardization. Default is `NULL`, and implied statistics will
-#'    be computed from `fit` if required.
-#' @param wvalues A numeric vector of named elements. The names are
-#'    the variable names of the moderators, and the values are the
-#'    values to which the moderators will be set to. Default is
-#'    `NULL`.
-#' @param standardized_x Logical. Whether `x` will be standardized.
-#'    Default is `FALSE`.
-#' @param standardized_y Logical. Whether `y` will be standardized.
-#'    Default is `FALSE`.
-#' @param boot_ci Logical. Whether bootstrap confidence interval will
-#'    be formed. Default is `FALSE`.
-#' @param level The level of confidence for the bootstrap confidence
-#'    interval. Default is .95.
-#' @param boot_out If `boot_ci` is `TRUE`, users can supply
-#'   pregenerated bootstrap estimates. This can be the output of
-#'   [do_boot()]. For [indirect_effect()] and
-#'   [cond_indirect_effects()], this can be the output of a previous
-#'   call to [cond_indirect_effects()], [indirect_effect()], or
-#'   [cond_indirect()] with bootstrap confidence intervals requested.
-#'   These stored estimates will be reused such that there is no need
-#'   to do bootstrapping again. If not supplied, the function will try
-#'   to generate them from `fit`.
-#' @param R Integer. If `boot_ci` is `TRUE`, `boot_out` is `NULL`, and
-#'   bootstrap standard errors not requested if `fit` is a
-#'   [lavaan-class] object, this function will do bootstrapping on
-#'   `fit`. `R` is the number of bootstrap samples. Default is 100.
-#' @param seed If bootstrapping is conducted, this is the seed for the
-#'   bootstrapping. Default is `NULL` and seed is not set.
-#' @param parallel Logical. If bootstrapping is conducted,
-#'                 whether parallel processing will be used.
-#'                 Default is `TRUE`. If `fit` is a list of
-#'                 [lm()] outputs, parallel processing will not be used.
-#' @param ncores Integer. The number of CPU cores to use when
-#'               `parallel` is `TRUE`. Default is the number of
-#'               non-logical cores minus one (one minimum). Will raise
-#'               an error if greater than the number of cores detected
-#'               by [parallel::detectCores()]. If `ncores` is set, it
-#'               will override `make_cluster_args` in [do_boot()].
-#' @param make_cluster_args A named list of additional arguments to be
-#'               passed to [parallel::makeCluster()]. For advanced
-#'               users. See [parallel::makeCluster()] for details.
-#'               Default is `list()`.
-#' @param progress Logical. Display bootstrapping progress or not.
-#'   Default is `TRUE`.
-#' @param wlevels The output of [merge_mod_levels()], or the
-#'        moderator(s) to be passed to [mod_levels_list()]. If all the
-#'        moderators can be represented by one variable, that is, each
-#'        moderator is (a) a numeric variable, (b) a dichotomous
-#'        categorical variable, or (c) a factor or string variable
-#'        used in [lm()] in `fit`, then it is a vector of the names of
-#'        the moderators as appeared in the data frame. If at least
-#'        one of the moderators is a categorical variable represented
-#'        by more than one variable, such as user-created dummy
-#'        variables used in [lavaan::sem()], then it must be a list of
-#'        the names of the moderators, with such moderators
-#'        represented by a vector of names. For example: `list("w1",
-#'        c("gpgp2", "gpgp3")`, the first moderator `w1` and the
-#'        second moderator a three-categorical variable represented by
-#'        `gpgp2` and `gpgp3`.
-#' @param ... Arguments to be passed to [cond_indirect()]
-#' @param output_type The type of output of [cond_indirect_effects()].
-#'    If `"data.frame"`, the default, the output will be converted to
-#'    a data frame. If any other values, the output is a list of the
-#'    outputs from [cond_indirect()].
-#' @param save_boot_full If `TRUE`, full bootstrapping results will be
-#'    stored. Default is `FALSE.`
+#' [lavaan::lavaan-class] object or a
+#' list of [lm()] outputs.
+#'
+#' @param est The output of
+#' [lavaan::parameterEstimates()]. If
+#' `NULL`, the default, it will be
+#' generated from `fit`. If supplied,
+#' `fit` will be ignored.
+#'
+#' @param implied_stats Implied means,
+#' variances, and covariances of
+#' observed variables, of the form of
+#' the output of [lavaan::lavInspect()]
+#' with `what` set to `"implied"`. The
+#' standard deviations are extracted
+#' from this object for standardization.
+#' Default is `NULL`, and implied
+#' statistics will be computed from
+#' `fit` if required.
+#'
+#' @param wvalues A numeric vector of
+#' named elements. The names are the
+#' variable names of the moderators, and
+#' the values are the values to which
+#' the moderators will be set to.
+#' Default is `NULL`.
+#'
+#' @param standardized_x Logical.
+#' Whether `x` will be standardized.
+#' Default is `FALSE`.
+#'
+#' @param standardized_y Logical.
+#' Whether `y` will be standardized.
+#' Default is `FALSE`.
+#'
+#' @param boot_ci Logical. Whether
+#' bootstrap confidence interval will be
+#' formed. Default is `FALSE`.
+#'
+#' @param level The level of confidence
+#' for the bootstrap confidence
+#' interval. Default is .95.
+#'
+#' @param boot_out If `boot_ci` is
+#' `TRUE`, users can supply pregenerated
+#' bootstrap estimates. This can be the
+#' output of [do_boot()]. For
+#' [indirect_effect()] and
+#' [cond_indirect_effects()], this can
+#' be the output of a previous call to
+#' [cond_indirect_effects()],
+#' [indirect_effect()], or
+#' [cond_indirect()] with bootstrap
+#' confidence intervals requested. These
+#' stored estimates will be reused such
+#' that there is no need to do
+#' bootstrapping again. If not supplied,
+#' the function will try to generate
+#' them from `fit`.
+#'
+#' @param R Integer. If `boot_ci` is
+#' `TRUE`, `boot_out` is `NULL`, and
+#' bootstrap standard errors not
+#' requested if `fit` is a
+#' [lavaan-class] object, this function
+#' will do bootstrapping on `fit`. `R`
+#' is the number of bootstrap samples.
+#' Default is 100.
+#'
+#' @param seed If bootstrapping is
+#' conducted, this is the seed for the
+#' bootstrapping. Default is `NULL` and
+#' seed is not set.
+#'
+#' @param parallel Logical. If
+#' bootstrapping is conducted, whether
+#' parallel processing will be used.
+#' Default is `TRUE`. If `fit` is a list
+#' of [lm()] outputs, parallel
+#' processing will not be used.
+#'
+#' @param ncores Integer. The number of
+#' CPU cores to use when `parallel` is
+#' `TRUE`. Default is the number of
+#' non-logical cores minus one (one
+#' minimum). Will raise an error if
+#' greater than the number of cores
+#' detected by
+#' [parallel::detectCores()]. If
+#' `ncores` is set, it will override
+#' `make_cluster_args` in [do_boot()].
+#'
+#' @param make_cluster_args A named list
+#' of additional arguments to be passed
+#' to [parallel::makeCluster()]. For
+#' advanced users. See
+#' [parallel::makeCluster()] for
+#' details. Default is `list()`.
+#'
+#' @param progress Logical. Display
+#' bootstrapping progress or not.
+#' Default is `TRUE`.
+#'
+#' @param wlevels The output of
+#' [merge_mod_levels()], or the
+#' moderator(s) to be passed to
+#' [mod_levels_list()]. If all the
+#' moderators can be represented by one
+#' variable, that is, each moderator is
+#' (a) a numeric variable, (b) a
+#' dichotomous categorical variable, or
+#' (c) a factor or string variable used
+#' in [lm()] in `fit`, then it is a
+#' vector of the names of the moderators
+#' as appeared in the data frame. If at
+#' least one of the moderators is a
+#' categorical variable represented by
+#' more than one variable, such as
+#' user-created dummy variables used in
+#' [lavaan::sem()], then it must be a
+#' list of the names of the moderators,
+#' with such moderators represented by a
+#' vector of names. For example:
+#' `list("w1", c("gpgp2", "gpgp3")`, the
+#' first moderator `w1` and the second
+#' moderator a three-categorical
+#' variable represented by `gpgp2` and
+#' `gpgp3`.
+#'
+#' @param ... Arguments to be passed to
+#' [cond_indirect()]
+#'
+#' @param output_type The type of output
+#' of [cond_indirect_effects()]. If
+#' `"data.frame"`, the default, the
+#' output will be converted to a data
+#' frame. If any other values, the
+#' output is a list of the outputs from
+#' [cond_indirect()].
+#'
+#' @param save_boot_full If `TRUE`, full
+#' bootstrapping results will be stored.
+#' Default is `FALSE.`
+#'
 #' @param prods The product terms found. For internal use.
-#' @param get_prods_only IF `TRUE`, will quit early and return the product
-#'             terms found. The results can be passed to the `prod` argument
-#'             when calling this function. Default is `FALSE`. This function
-#'             is for internal use.
-#' @param save_boot_out If `boot_out` is supplied, whether it will be saved
-#'             in the output. Default is `TRUE`.
+#'
+#' @param get_prods_only IF `TRUE`, will
+#' quit early and return the product
+#' terms found. The results can be
+#' passed to the `prod` argument when
+#' calling this function. Default is
+#' `FALSE`. This function is for
+#' internal use.
+#'
+#' @param save_boot_out If `boot_out` is
+#' supplied, whether it will be saved in
+#' the output. Default is `TRUE`.
 #'
 #'
-#' @seealso [mod_levels()] and [merge_mod_levels()] for generating levels
-#'          of moderators. [do_boot] for doing bootstrapping before calling these
-#'          functions.
+#' @seealso [mod_levels()] and
+#' [merge_mod_levels()] for generating
+#' levels of moderators. [do_boot] for
+#' doing bootstrapping before calling
+#' these functions.
 #'
 #' @examples
 #'
@@ -199,9 +321,11 @@
 #'
 #' @export
 #'
-#' @describeIn cond_indirect Compute conditional, indirect, or
-#'                           conditional indirect effects for one set
-#'                           of levels.
+#' @describeIn cond_indirect Compute
+#' conditional, indirect, or conditional
+#' indirect effects for one set of
+#' levels.
+#'
 #' @order 1
 
 cond_indirect <- function(x,
@@ -267,7 +391,6 @@ cond_indirect <- function(x,
     if (fit_type == "lavaan") {
         fit0 <- fit
         if (is.null(est)) est <- lavaan::parameterEstimates(fit)
-        # if (is.null(implied_stats)) lavaan::lavInspect(fit, "implied")
         if (is.null(implied_stats)) implied_stats <- lav_implied_all(fit)
         fit_data <- lavaan::lavInspect(fit, "data")
       }
@@ -343,9 +466,12 @@ cond_indirect <- function(x,
   }
 
 #' @export
-#' @describeIn cond_indirect Compute the indirect effect. A wrapper of
-#'                           [cond_indirect()]. Can be used
-#'                           when there is no moderator.
+#'
+#' @describeIn cond_indirect Compute the
+#' indirect effect. A wrapper of
+#' [cond_indirect()]. Can be used when
+#' there is no moderator.
+#'
 #' @order 3
 
 indirect_effect <- function(x,
@@ -386,34 +512,52 @@ indirect_effect <- function(x,
                   save_boot_full = save_boot_full)
   }
 
-#' @param w_type Character. Whether the moderator is a `"numeric"`
-#'               variable or a `"categorical"` variable. If `"auto"`,
-#'               the function will try to determine the type
-#'               automatically.  See [mod_levels_list()] for
-#'               further information.
-#' @param w_method Character, either `"sd"` or `"percentile"`. If
-#'                `"sd"`, the levels are defined by the distance from
-#'                the mean in terms of standard deviation. if
-#'                `"percentile"`, the levels are defined in
-#'                percentiles.  See [mod_levels_list()] for further
-#'                information.
-#' @param sd_from_mean A numeric vector. Specify the distance in
-#'                     standard deviation from the mean for each
-#'                     level. Default is `c(-1, 0, 1)` when there is
-#'                     only one moderator, and `c(-1, 1)` when there
-#'                     are more than one moderator. Ignored if
-#'                     `w_method` is not equal to `"sd"`. See
-#'                    [mod_levels_list()] for further information.
-#' @param percentiles A numeric vector. Specify the percentile (in
-#'                    proportion) for each level. Default is `c(.16, .50,
-#'                    .84)` if there is one moderator, and `c(.16,
-#'                    .84)` when there are more than one moderator.
-#'                    Ignored if `w_method` is not equal to
-#'                    `"percentile"`. See [mod_levels_list()] for
-#'                    further information.
-#' @param mod_levels_list_args Additional arguments to be passed
-#'     to [mod_levels_list()] if it is called for creating
-#'     the levels of moderators. Default is `list()`.
+#' @param w_type Character. Whether the
+#' moderator is a `"numeric"` variable
+#' or a `"categorical"` variable. If
+#' `"auto"`, the function will try to
+#' determine the type automatically.
+#' See [mod_levels_list()] for further
+#' information.
+#'
+#' @param w_method Character, either
+#' `"sd"` or `"percentile"`. If `"sd"`,
+#' the levels are defined by the
+#' distance from the mean in terms of
+#' standard deviation. if
+#' `"percentile"`, the levels are
+#' defined in percentiles.  See
+#' [mod_levels_list()] for further
+#' information.
+#'
+#' @param sd_from_mean A numeric vector.
+#' Specify the distance in standard
+#' deviation from the mean for each
+#' level. Default is `c(-1, 0, 1)` when
+#' there is only one moderator, and
+#' `c(-1, 1)` when there are more than
+#' one moderator. Ignored if `w_method`
+#' is not equal to `"sd"`. See
+#' [mod_levels_list()] for further
+#' information.
+#'
+#' @param percentiles A numeric vector.
+#' Specify the percentile (in
+#' proportion) for each level. Default
+#' is `c(.16, .50, .84)` if there is one
+#' moderator, and `c(.16, .84)` when
+#' there are more than one moderator.
+#' Ignored if `w_method` is not equal to
+#' `"percentile"`. See
+#' [mod_levels_list()] for further
+#' information.
+#'
+#' @param mod_levels_list_args
+#' Additional arguments to be passed to
+#' [mod_levels_list()] if it is called
+#' for creating the levels of
+#' moderators. Default is `list()`.
+#'
 #' @examples
 #' # Examples for cond_indirect_effects():
 #'
@@ -431,9 +575,12 @@ indirect_effect <- function(x,
 #'                       wlevels = w1levels, fit = fit)
 #'
 #' @export
-#' @describeIn cond_indirect Compute the conditional effects or
-#'                           conditional indirect effects for several
-#'                           sets of levels of the moderator(s).
+#'
+#' @describeIn cond_indirect Compute the
+#' conditional effects or conditional
+#' indirect effects for several sets of
+#' levels of the moderator(s).
+#'
 #' @order 2
 
 
@@ -460,9 +607,6 @@ cond_indirect_effects <- function(wlevels,
                                   mod_levels_list_args = list(),
                                   ...) {
     if (!missing(wlevels)) {
-        # if (is.list(wlevels) && !is.data.frame(wlevels)) {
-            # wlevels <- merge_mod_levels(wlevels)
-          # }
         wlevels_check <- check_wlevels(wlevels)
         if (!is.null(wlevels_check)) {
             wlevels <- wlevels_check
@@ -521,23 +665,6 @@ cond_indirect_effects <- function(wlevels,
                                 make_cluster_args = make_cluster_args,
                                 progress = progress)
           }
-        # if (fit_type == "lavaan") {
-        #     opt <- lavaan::lavInspect(fit, "options")
-        #     if (opt$se != "bootstrap" && is.null(boot_out)) {
-        #         stop("If 'boot_ci' is TRUE, 'se' needs to be 'bootstrap' in 'fit'.")
-        #       }
-        #     if (is.null(boot_out) && opt$se == "bootstrap") {
-        #         boot_out <- fit2boot_out(fit = fit)
-        #       }
-        #   }
-        # if (fit_type == "lm") {
-        #     if (is.null(boot_out)) {
-        #         # Do bootstrap here.
-        #         boot_out <- lm2boot_out(outputs = fit,
-        #                                 R = R,
-        #                                 seed = seed)
-        #       }
-        #   }
       }
     prods <- cond_indirect(wvalues = wlevels2[[1]],
                             x = x,

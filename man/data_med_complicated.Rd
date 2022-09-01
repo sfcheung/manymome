@@ -3,9 +3,11 @@
 \docType{data}
 \name{data_med_complicated}
 \alias{data_med_complicated}
-\title{Sample Dataset: A Complicated Mediation Model}
+\title{Sample Dataset: A Complicated
+Mediation Model}
 \format{
-A data frame with 300 rows and 5 variables:
+A data frame with 300 rows
+and 5 variables:
 \describe{
 \item{x1}{Predictor 1. Numeric.}
 \item{x2}{Predictor 2. Numeric.}
@@ -22,7 +24,8 @@ A data frame with 300 rows and 5 variables:
 data_med_complicated
 }
 \description{
-A mediation model with two predictors, two pathways,
+A mediation model with
+two predictors, two pathways,
 }
 \examples{
 data(data_med_complicated)

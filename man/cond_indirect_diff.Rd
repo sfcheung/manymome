@@ -2,76 +2,110 @@
 % Please edit documentation in R/cond_indirect_diff.R
 \name{cond_indirect_diff}
 \alias{cond_indirect_diff}
-\title{Differences In Conditional Indirect Effects}
+\title{Differences In Conditional
+Indirect Effects}
 \usage{
 cond_indirect_diff(output, from = NULL, to = NULL, level = 0.95)
 }
 \arguments{
-\item{output}{A \code{cond_indirect_effects}-class object: The output
-of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
+\item{output}{A
+\code{cond_indirect_effects}-class object:
+The output of
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
 
 \item{from}{A row number of \code{output}.}
 
-\item{to}{A row number of \code{output}. The change in indirect effects
-is computed by the change in the level(s) of the moderator(s)
-from Row \code{from} to Row \code{to}.}
+\item{to}{A row number of \code{output}.
+The change in indirect effects is
+computed by the change in the
+level(s) of the moderator(s) from Row
+\code{from} to Row \code{to}.}
 
-\item{level}{The level of confidence for the bootstrap confidence
+\item{level}{The level of confidence
+for the bootstrap confidence
 interval. Default is .95.}
 }
 \value{
-A \code{cond_indirect_diff}-class object. This class has a
-\code{print} method (\code{\link[=print.cond_indirect_diff]{print.cond_indirect_diff()}}), a \code{coef} method
-(\code{\link[=coef.cond_indirect_diff]{coef.cond_indirect_diff()}}), and a \code{confint} method
+A \code{cond_indirect_diff}-class
+object. This class has a \code{print}
+method
+(\code{\link[=print.cond_indirect_diff]{print.cond_indirect_diff()}}), a
+\code{coef} method
+(\code{\link[=coef.cond_indirect_diff]{coef.cond_indirect_diff()}}), and a
+\code{confint} method
 (\code{\link[=confint.cond_indirect_diff]{confint.cond_indirect_diff()}}).
 }
 \description{
-Compute the difference in conditional indirect effects
-between two sets of levels of the moderators.
+Compute the difference
+in conditional indirect effects
+between two sets of levels of the
+moderators.
 }
 \details{
-Ths function takes the output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} and
-computes the difference in conditional indirect effects
-between any two rows, that is, between levels of the moderator,
-or two sets of levels of the moderators when the path has
-more than one moderator.
+Ths function takes the output of
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} and
+computes the difference in
+conditional indirect effects between
+any two rows, that is, between levels
+of the moderator, or two sets of
+levels of the moderators when the
+path has more than one moderator.
 
-The difference is meaningful when the difference between the two
-levels or sets of levels are meaningful. For example, if the two
-levels are the mean of the moderator and one standard deviation
-above mean of the moderator, then this difference is the change in
-indirect effect when the moderator increases by one standard
-deviation.
+The difference is meaningful when the
+difference between the two levels or
+sets of levels are meaningful. For
+example, if the two levels are the
+mean of the moderator and one
+standard deviation above mean of the
+moderator, then this difference is
+the change in indirect effect when
+the moderator increases by one
+standard deviation.
 
-If the two levels are 0 and 1, then this difference is the
-index of moderated mediation as proposed by Hayes (2015).
-(This index can also be computed directly by
-\code{\link[=index_of_mome]{index_of_mome()}}, designed specifically for this purpose.)
+If the two levels are 0 and 1, then
+this difference is the index of
+moderated mediation as proposed by
+Hayes (2015). (This index can also be
+computed directly by
+\code{\link[=index_of_mome]{index_of_mome()}}, designed
+specifically for this purpose.)
 
-The function can also compute the change in the standardized
-indirect effect between two levels of a moderator or two sets of
-levels of the moderators.
+The function can also compute the
+change in the standardized indirect
+effect between two levels of a
+moderator or two sets of levels of
+the moderators.
 
-This function is intended to be a general purpose function
-that allows users to compute the difference between any
-two levels or sets of levels that are meaningful in a context.
+This function is intended to be a
+general purpose function that allows
+users to compute the difference
+between any two levels or sets of
+levels that are meaningful in a
+context.
 
-This function itself does not set the levels of comparison. The levels
-to be compared need to be set when calling \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
-This function extracts required information from the output of
+This function itself does not set the
+levels of comparison. The levels to
+be compared need to be set when
+calling \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+This function extracts required
+information from the output of
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 
-If bootstrap estimates are available in the input or
-bootstrap confidence intervals are requested in calling
-\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, \code{\link[=cond_indirect_diff]{cond_indirect_diff()}} will
-also form the percentile bootstrap confidence interval
-for the difference in conditional indirect effects.
+If bootstrap estimates are available
+in the input or bootstrap confidence
+intervals are requested in calling
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+\code{\link[=cond_indirect_diff]{cond_indirect_diff()}} will also form
+the percentile bootstrap confidence
+interval for the difference in
+conditional indirect effects.
 }
 \section{Functions}{
 \itemize{
-\item \code{cond_indirect_diff()}: Compute the difference in
-in conditional indirect effect between two rows
-in the output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+\item \code{cond_indirect_diff()}: Compute the difference in in
+conditional indirect effect between
+two rows in the output of
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 
 }}
 \examples{
@@ -113,8 +147,13 @@ Hayes, A. F. (2015). An index and test of linear moderated mediation.
 \doi{10.1080/00273171.2014.962683}
 }
 \seealso{
-\code{\link[=index_of_mome]{index_of_mome()}} for computing the index of moderated mediation,
-\code{\link[=index_of_momome]{index_of_momome()}} for computing the index of moderated moderated mediation,
-\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, \code{\link[=mod_levels]{mod_levels()}}, and \code{\link[=merge_mod_levels]{merge_mod_levels()}} for
-preparing the levels to be compared.
+\code{\link[=index_of_mome]{index_of_mome()}} for
+computing the index of moderated
+mediation, \code{\link[=index_of_momome]{index_of_momome()}} for
+computing the index of moderated
+moderated mediation,
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+\code{\link[=mod_levels]{mod_levels()}}, and
+\code{\link[=merge_mod_levels]{merge_mod_levels()}} for preparing
+the levels to be compared.
 }

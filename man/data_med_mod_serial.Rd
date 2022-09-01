@@ -3,9 +3,11 @@
 \docType{data}
 \name{data_med_mod_serial}
 \alias{data_med_mod_serial}
-\title{Sample Dataset: Serial Mediation with Two Moderators}
+\title{Sample Dataset: Serial
+Mediation with Two Moderators}
 \format{
-A data frame with 100 rows and 8 variables:
+A data frame with 100 rows
+and 8 variables:
 \describe{
 \item{x}{Predictor. Numeric.}
 \item{w1}{Moderator 1. Numeric.}
@@ -21,8 +23,8 @@ A data frame with 100 rows and 8 variables:
 data_med_mod_serial
 }
 \description{
-A simple mediation model with a-path and b2-path
-moderated.
+A simple mediation model
+with a-path and b2-path moderated.
 }
 \examples{
 library(lavaan)

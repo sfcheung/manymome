@@ -3,35 +3,46 @@
 \name{summary.lm_list}
 \alias{summary.lm_list}
 \alias{print.summary_lm_list}
-\title{Summary of an \code{lm_list}-Class Object}
+\title{Summary of an \code{lm_list}-Class
+Object}
 \usage{
 \method{summary}{lm_list}(object, ...)
 
 \method{print}{summary_lm_list}(x, digits = 3, ...)
 }
 \arguments{
-\item{object}{The output of \code{\link[=lm2list]{lm2list()}}.}
+\item{object}{The output of
+\code{\link[=lm2list]{lm2list()}}.}
 
-\item{...}{Other arguments. Not used.}
+\item{...}{Other arguments. Not
+used.}
 
-\item{x}{An object of class \code{summary_lm_list}.}
+\item{x}{An object of class
+\code{summary_lm_list}.}
 
-\item{digits}{The number of significant digits in printing
+\item{digits}{The number of
+significant digits in printing
 numerical results.}
 }
 \value{
-\code{\link[=summary.lm_list]{summary.lm_list()}} returns a \code{summary_lm_list}-class object,
-which is a list of the \code{\link[=summary]{summary()}} outputs of
-the \code{\link[=lm]{lm()}} outputs stored.
+\code{\link[=summary.lm_list]{summary.lm_list()}} returns a
+\code{summary_lm_list}-class object, which
+is a list of the \code{\link[=summary]{summary()}} outputs
+of the \code{\link[=lm]{lm()}} outputs stored.
 
-\code{\link[=print.summary_lm_list]{print.summary_lm_list()}} returns \code{x} invisibly. Called for its side effect.
+\code{\link[=print.summary_lm_list]{print.summary_lm_list()}} returns \code{x}
+invisibly. Called for its side
+effect.
 }
 \description{
-The summary of content of the output of \code{\link[=lm2list]{lm2list()}}.
+The summary of content
+of the output of \code{\link[=lm2list]{lm2list()}}.
 }
 \section{Functions}{
 \itemize{
-\item \code{print(summary_lm_list)}: Print method for output of summary for lm_list.
+\item \code{print(summary_lm_list)}: Print
+method for output of summary for
+lm_list.
 
 }}
 \examples{

@@ -1,54 +1,72 @@
-#' @title Bootstrap Estimates for `lm` Outputs
+#' @title Bootstrap Estimates for `lm`
+#' Outputs
 #'
-#' @description Generate bootstrap estimates for models
-#'  in a list of 'lm' outputs.
+#' @description Generate bootstrap
+#' estimates for models in a list of
+#' 'lm' outputs.
 #'
-#' @details
-#' This function is for advanced users.
-#' [do_boot()] is a function users should
-#' try first because [do_boot()] has a general
-#' interface for input-specific functions
-#' like this one.
+#' @details This function is for
+#' advanced users. [do_boot()] is a
+#' function users should try first
+#' because [do_boot()] has a general
+#' interface for input-specific
+#' functions like this one.
 #'
-#' It does nonparametric bootstrapping to generate bootstrap
-#' estimates of the regression coefficients in the regression models
-#' of a list of [lm()] outputs, or an `lm_list`-class object
-#' created by [lm2list()]. The stored estimates can be
-#' used by [indirect_effect()], [cond_indirect_effects()],
-#' and related functions
-#' in forming bootstrapping confidence intervals for
-#' effects such as indirect effect and conditional indirect effects.
+#' It does nonparametric bootstrapping
+#' to generate bootstrap estimates of
+#' the regression coefficients in the
+#' regression models of a list of [lm()]
+#' outputs, or an `lm_list`-class object
+#' created by [lm2list()]. The stored
+#' estimates can be used by
+#' [indirect_effect()],
+#' [cond_indirect_effects()], and
+#' related functions in forming
+#' bootstrapping confidence intervals
+#' for effects such as indirect effect
+#' and conditional indirect effects.
 #'
-#' This approach removes the need to repeat bootstrapping in
-#' each call to [indirect_effect()], [cond_indirect_effects()],
-#' and related functions.
-#' It also ensures that the same set of bootstrap samples
-#' is used in all subsequent analyses.
+#' This approach removes the need to
+#' repeat bootstrapping in each call to
+#' [indirect_effect()],
+#' [cond_indirect_effects()], and
+#' related functions. It also ensures
+#' that the same set of bootstrap
+#' samples is used in all subsequent
+#' analyses.
 #'
-#' @return
-#' A `boot_out`-class object that can be used for the `boot_out`
-#' argument of [indirect_effect()], [cond_indirect_effects()],
-#' and related functions
-#' for forming bootstrapping confidence intervals.
-#' The object is a list with the number of
-#' elements equal to the number of bootstrap samples.
-#' Each element is a list of the parameter estimates
-#' and sample variances and covariances of the variables
-#' in each bootstrap sample.
+#' @return A `boot_out`-class object
+#' that can be used for the `boot_out`
+#' argument of [indirect_effect()],
+#' [cond_indirect_effects()], and
+#' related functions for forming
+#' bootstrapping confidence intervals.
+#' The object is a list with the number
+#' of elements equal to the number of
+#' bootstrap samples. Each element is a
+#' list of the parameter estimates and
+#' sample variances and covariances of
+#' the variables in each bootstrap
+#' sample.
 #'
-#' @param outputs A list of `lm` class objects, or
-#'  the output of [lm2list()] (i.e., an `lm_list`-class
-#'  object).
-#' @param R The number of bootstrap samples. Default is 100.
-#' @param seed The seed for the bootstrapping.
-#'             Default is `NULL` and seed is not set.
-#' @param progress Whether progress will be displayed.
-#' Default is `TRUE`.
+#' @param outputs A list of `lm` class
+#' objects, or the output of [lm2list()]
+#' (i.e., an `lm_list`-class object).
+#'
+#' @param R The number of bootstrap
+#' samples. Default is 100.
+#'
+#' @param seed The seed for the
+#' bootstrapping. Default is `NULL` and
+#' seed is not set.
+#'
+#' @param progress Whether progress will
+#' be displayed. Default is `TRUE`.
 #'
 #'
-#' @seealso [do_boot()], the general purpose
-#'          function that users should try first before
-#'          using this function.
+#' @seealso [do_boot()], the general
+#' purpose function that users should
+#' try first before using this function.
 #'
 #' @examples
 #'

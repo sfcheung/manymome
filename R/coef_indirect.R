@@ -1,27 +1,34 @@
-#' @title Extract the Indirect Effect or Conditional Indirect Effect
+#' @title Extract the Indirect Effect or
+#' Conditional Indirect Effect
 #'
-#' @description Return the estimate of the indirect effect
-#'              in the output of [indirect_effect()] or
-#'              or the conditional indirect
-#'              in the output of [cond_indirect()].
+#' @description Return the estimate of
+#' the indirect effect in the output of
+#' [indirect_effect()] or or the
+#' conditional indirect in the output of
+#' [cond_indirect()].
 #'
-#' @details It extracts and returns the element `indirect`.
-#'           in an object.
+#' @details It extracts and returns the
+#' element `indirect`. in an object.
 #'
-#' If standardized effect is requested when calling
-#' [indirect_effect()] or [cond_indirect()], the
-#' effect returned is also standardized.
+#' If standardized effect is requested
+#' when calling [indirect_effect()] or
+#' [cond_indirect()], the effect
+#' returned is also standardized.
 #'
-#' @return
-#'  A scalar: The estimate of the indirect effect or
-#'            conditional indirect effect.
+#' @return A scalar: The estimate of the
+#'  indirect effect or conditional
+#'            indirect effect.
 #'
-#' @param object The output of [indirect_effect()] or
-#'              [cond_indirect()].
-#' @param ...  Optional arguments. Ignored by the function.
+#' @param object The output of
+#' [indirect_effect()] or
+#' [cond_indirect()].
+#'
+#' @param ...  Optional arguments.
+#' Ignored by the function.
 #'
 #'
-#' @seealso [indirect_effect()] and [cond_indirect()].
+#' @seealso [indirect_effect()] and
+#' [cond_indirect()].
 #'
 #' @examples
 #'

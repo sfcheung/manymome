@@ -1,12 +1,17 @@
-#' @title Sample Dataset: A Complicated Moderated-Mediation Model With Missing Data
+#' @title Sample Dataset: A Complicated
+#' Moderated-Mediation Model With
+#' Missing Data
 #'
-#' @description Generated from a complicated moderated-mediation model for
-#'   demonstration, with missing data
+#' @description Generated from a
+#' complicated moderated-mediation model
+#' for demonstration, with missing data
 #'
 #' @details
 #'
-#' A copy of [data_mome_demo] with some randomly selected cells changed to `NA`.
-#' The number of cases with no missing data is 169.
+#' A copy of [data_mome_demo] with some
+#' randomly selected cells changed to
+#' `NA`. The number of cases with no
+#' missing data is 169.
 #'
 #' The model:
 #'
@@ -21,7 +26,8 @@
 #' # Covariances excluded for brevity
 #' ```
 #'
-#' @format A data frame with 200 rows and 11 variables:
+#' @format A data frame with 200 rows
+#' and 11 variables:
 #' \describe{
 #'   \item{x1}{Predictor 1. Numeric.}
 #'   \item{x2}{Predictor 2. Numeric.}

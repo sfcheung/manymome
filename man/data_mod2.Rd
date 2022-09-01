@@ -5,7 +5,8 @@
 \alias{data_mod2}
 \title{Sample Dataset: Two Moderators}
 \format{
-A data frame with 100 rows and 6 variables:
+A data frame with 100 rows
+and 6 variables:
 \describe{
 \item{x}{Predictor. Numeric.}
 \item{w1}{Moderator 1. Numeric.}

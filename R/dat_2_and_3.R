@@ -1,8 +1,11 @@
-#' @title Sample Dataset: Simple Mediation
+#' @title Sample Dataset: Simple
+#' Mediation
 #'
-#' @description A simple mediation model.
+#' @description A simple mediation
+#' model.
 #'
-#' @format A data frame with 100 rows and 5 variables:
+#' @format A data frame with 100 rows
+#' and 5 variables:
 #' \describe{
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{m}{Mediator. Numeric.}
@@ -28,7 +31,8 @@
 #'
 #' @description A one-moderator model.
 #'
-#' @format A data frame with 100 rows and 5 variables:
+#' @format A data frame with 100 rows
+#' and 5 variables:
 #' \describe{
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{w}{Moderator. Numeric.}
@@ -58,7 +62,8 @@
 #'
 #' @description A two-moderator model.
 #'
-#' @format A data frame with 100 rows and 6 variables:
+#' @format A data frame with 100 rows
+#' and 6 variables:
 #' \describe{
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{w1}{Moderator 1. Numeric.}
@@ -90,11 +95,14 @@
 "data_mod2"
 
 
-#' @title Sample Dataset: Serial Mediation
+#' @title Sample Dataset: Serial
+#' Mediation
 #'
-#' @description A serial mediation model.
+#' @description A serial mediation
+#' model.
 #'
-#' @format A data frame with 100 rows and 6 variables:
+#' @format A data frame with 100 rows
+#' and 6 variables:
 #' \describe{
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{m1}{Mediator 1. Numeric.}
@@ -153,12 +161,14 @@
 
 
 
-#' @title Sample Dataset: Serial-Parallel Mediation
+#' @title Sample Dataset:
+#' Serial-Parallel Mediation
 #'
-#' @description A mediation model with both serial and parallel
-#' components.
+#' @description A mediation model with
+#' both serial and parallel components.
 #'
-#' @format A data frame with 100 rows and 7 variables:
+#' @format A data frame with 100 rows
+#' and 7 variables:
 #' \describe{
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{m11}{Mediator 1 in Path 1. Numeric.}
@@ -188,11 +198,14 @@
 "data_serial_parallel"
 
 
-#' @title Sample Dataset: Simple Mediation with a-Path Moderated
+#' @title Sample Dataset: Simple
+#' Mediation with a-Path Moderated
 #'
-#' @description A simple mediation model with a-path moderated.
+#' @description A simple mediation model
+#' with a-path moderated.
 #'
-#' @format A data frame with 100 rows and 6 variables:
+#' @format A data frame with 100 rows
+#' and 6 variables:
 #' \describe{
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{w}{Moderator. Numeric.}
@@ -225,11 +238,14 @@
 
 
 
-#' @title Sample Dataset: Simple Mediation with b-Path Moderated
+#' @title Sample Dataset: Simple
+#' Mediation with b-Path Moderated
 #'
-#' @description A simple mediation model with b-path moderated.
+#' @description A simple mediation model
+#' with b-path moderated.
 #'
-#' @format A data frame with 100 rows and 6 variables:
+#' @format A data frame with 100 rows
+#' and 6 variables:
 #' \describe{
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{w}{Moderator. Numeric.}
@@ -261,12 +277,16 @@
 "data_med_mod_b"
 
 
-#' @title Sample Dataset: Simple Mediation with Both Paths Moderated (Two Moderators)
+#' @title Sample Dataset: Simple
+#' Mediation with Both Paths Moderated
+#' (Two Moderators)
 #'
-#' @description A simple mediation model with a-path and b-path
-#' each moderated by a moderator.
+#' @description A simple mediation model
+#' with a-path and b-path each moderated
+#' by a moderator.
 #'
-#' @format A data frame with 100 rows and 7 variables:
+#' @format A data frame with 100 rows
+#' and 7 variables:
 #' \describe{
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{w1}{Moderator 1. Numeric.}
@@ -306,12 +326,16 @@
 "data_med_mod_ab"
 
 
-#' @title Sample Dataset: Simple Mediation with Both Paths Moderated By a Moderator
+#' @title Sample Dataset: Simple
+#' Mediation with Both Paths Moderated
+#' By a Moderator
 #'
-#' @description A simple mediation model with a-path and b-path
-#' moderated by one moderator.
+#' @description A simple mediation model
+#' with a-path and b-path moderated by
+#' one moderator.
 #'
-#' @format A data frame with 100 rows and 6 variables:
+#' @format A data frame with 100 rows
+#' and 6 variables:
 #' \describe{
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{w}{Moderator. Numeric.}
@@ -345,12 +369,14 @@
 #' parameterEstimates(fit)[c(1, 3, 6, 9, 38:40), ]
 "data_med_mod_ab1"
 
-#' @title Sample Dataset: Serial Mediation with Two Moderators
+#' @title Sample Dataset: Serial
+#' Mediation with Two Moderators
 #'
-#' @description A simple mediation model with a-path and b2-path
-#' moderated.
+#' @description A simple mediation model
+#' with a-path and b2-path moderated.
 #'
-#' @format A data frame with 100 rows and 8 variables:
+#' @format A data frame with 100 rows
+#' and 8 variables:
 #' \describe{
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{w1}{Moderator 1. Numeric.}
@@ -392,12 +418,15 @@
 "data_med_mod_serial"
 
 
-#' @title Sample Dataset: Parallel Mediation with Two Moderators
+#' @title Sample Dataset: Parallel
+#' Mediation with Two Moderators
 #'
-#' @description A parallel mediation model with a1-path and b2-path
+#' @description A parallel mediation
+#' model with a1-path and b2-path
 #' moderated.
 #'
-#' @format A data frame with 100 rows and 8 variables:
+#' @format A data frame with 100 rows
+#' and 8 variables:
 #' \describe{
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{w1}{Moderator 1. Numeric.}
@@ -441,12 +470,16 @@
 
 
 
-#' @title Sample Dataset: Serial-Parallel Mediation with Two Moderators
+#' @title Sample Dataset:
+#' Serial-Parallel Mediation with Two
+#' Moderators
 #'
-#' @description A serial-parallel mediation model with some paths
+#' @description A serial-parallel
+#' mediation model with some paths
 #' moderated.
 #'
-#' @format A data frame with 100 rows and 9 variables:
+#' @format A data frame with 100 rows
+#' and 9 variables:
 #' \describe{
 #'   \item{x}{Predictor. Numeric.}
 #'   \item{w1}{Moderator 1. Numeric.}

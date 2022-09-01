@@ -4,7 +4,8 @@
 \alias{math_indirect}
 \alias{+.indirect}
 \alias{-.indirect}
-\title{Math Operators for 'indirect'-Class Objects}
+\title{Math Operators for
+'indirect'-Class Objects}
 \usage{
 \method{+}{indirect}(e1, e2)
 
@@ -16,35 +17,46 @@
 \item{e2}{An 'indirect'-class object.}
 }
 \value{
-An 'indirect'-class object with a list of effects stored.
-See \code{\link[=indirect_effect]{indirect_effect()}} on details for this class.
+An 'indirect'-class object
+with a list of effects stored. See
+\code{\link[=indirect_effect]{indirect_effect()}} on details for
+this class.
 }
 \description{
 Mathematic operators for
-'indirect'-class object, the output of \code{\link[=indirect_effect]{indirect_effect()}}
-and \code{\link[=cond_indirect]{cond_indirect()}}.
+'indirect'-class object, the output
+of \code{\link[=indirect_effect]{indirect_effect()}} and
+\code{\link[=cond_indirect]{cond_indirect()}}.
 }
 \details{
-For now, only \code{+} operator and \code{-} operator
-are supported.
-These operators can be used to estimate and test
-a function of effects between the same pair of variables
-but along different paths.
+For now, only \code{+} operator
+and \code{-} operator are supported. These
+operators can be used to estimate and
+test a function of effects between
+the same pair of variables but along
+different paths.
 
-For example, they can be used to compute and test the total effects
-along different paths. They can also be used to compute and
-test the difference between the effects along two paths.
+For example, they can be used to
+compute and test the total effects
+along different paths. They can also
+be used to compute and test the
+difference between the effects along
+two paths.
 
-The operators will check whether an operation is valid. An operation
-is not valid if
+The operators will check whether an
+operation is valid. An operation is
+not valid if
 \enumerate{
-\item the two paths do not start from the same variable,
-\item the two paths do not end at the same variable, (c) a path appears
-in both objects,
-\item moderators are involved but they are not
-set to the same values in both objects, and
-\item bootstrap estimates
-stored in \code{boot_out} are not identical.
+\item the two paths do not start from
+the same variable,
+\item the two paths do not end at the
+same variable, (c) a path appears in
+both objects,
+\item moderators are involved but they
+are not set to the same values in
+both objects, and
+\item bootstrap estimates stored in
+\code{boot_out} are not identical.
 }
 }
 \examples{
@@ -80,5 +92,6 @@ coef(out1) + coef(out2) + coef(out3)
 
 }
 \seealso{
-\code{\link[=indirect_effect]{indirect_effect()}} and \code{\link[=cond_indirect]{cond_indirect()}}
+\code{\link[=indirect_effect]{indirect_effect()}} and
+\code{\link[=cond_indirect]{cond_indirect()}}
 }

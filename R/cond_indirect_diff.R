@@ -1,68 +1,108 @@
-#' @title Differences In Conditional Indirect Effects
+#' @title Differences In Conditional
+#' Indirect Effects
 #'
-#' @description Compute the difference in conditional indirect effects
-#'   between two sets of levels of the moderators.
+#' @description Compute the difference
+#' in conditional indirect effects
+#' between two sets of levels of the
+#' moderators.
 #'
 #' @details
 #'
-#' Ths function takes the output of [cond_indirect_effects()] and
-#' computes the difference in conditional indirect effects
-#' between any two rows, that is, between levels of the moderator,
-#' or two sets of levels of the moderators when the path has
-#' more than one moderator.
+#' Ths function takes the output of
+#' [cond_indirect_effects()] and
+#' computes the difference in
+#' conditional indirect effects between
+#' any two rows, that is, between levels
+#' of the moderator, or two sets of
+#' levels of the moderators when the
+#' path has more than one moderator.
 #'
-#' The difference is meaningful when the difference between the two
-#' levels or sets of levels are meaningful. For example, if the two
-#' levels are the mean of the moderator and one standard deviation
-#' above mean of the moderator, then this difference is the change in
-#' indirect effect when the moderator increases by one standard
-#' deviation.
+#' The difference is meaningful when the
+#' difference between the two levels or
+#' sets of levels are meaningful. For
+#' example, if the two levels are the
+#' mean of the moderator and one
+#' standard deviation above mean of the
+#' moderator, then this difference is
+#' the change in indirect effect when
+#' the moderator increases by one
+#' standard deviation.
 #'
-#' If the two levels are 0 and 1, then this difference is the
-#' index of moderated mediation as proposed by Hayes (2015).
-#' (This index can also be computed directly by
-#' [index_of_mome()], designed specifically for this purpose.)
+#' If the two levels are 0 and 1, then
+#' this difference is the index of
+#' moderated mediation as proposed by
+#' Hayes (2015). (This index can also be
+#' computed directly by
+#' [index_of_mome()], designed
+#' specifically for this purpose.)
 #'
-#' The function can also compute the change in the standardized
-#' indirect effect between two levels of a moderator or two sets of
-#' levels of the moderators.
+#' The function can also compute the
+#' change in the standardized indirect
+#' effect between two levels of a
+#' moderator or two sets of levels of
+#' the moderators.
 #'
-#' This function is intended to be a general purpose function
-#' that allows users to compute the difference between any
-#' two levels or sets of levels that are meaningful in a context.
+#' This function is intended to be a
+#' general purpose function that allows
+#' users to compute the difference
+#' between any two levels or sets of
+#' levels that are meaningful in a
+#' context.
 #'
-#' This function itself does not set the levels of comparison. The levels
-#' to be compared need to be set when calling [cond_indirect_effects()].
-#' This function extracts required information from the output of
+#' This function itself does not set the
+#' levels of comparison. The levels to
+#' be compared need to be set when
+#' calling [cond_indirect_effects()].
+#' This function extracts required
+#' information from the output of
 #' [cond_indirect_effects()].
 #'
-#' If bootstrap estimates are available in the input or
-#' bootstrap confidence intervals are requested in calling
-#' [cond_indirect_effects()], [cond_indirect_diff()] will
-#' also form the percentile bootstrap confidence interval
-#' for the difference in conditional indirect effects.
+#' If bootstrap estimates are available
+#' in the input or bootstrap confidence
+#' intervals are requested in calling
+#' [cond_indirect_effects()],
+#' [cond_indirect_diff()] will also form
+#' the percentile bootstrap confidence
+#' interval for the difference in
+#' conditional indirect effects.
 #'
-#' @return
-#' A `cond_indirect_diff`-class object. This class has a
-#' `print` method ([print.cond_indirect_diff()]), a `coef` method
-#' ([coef.cond_indirect_diff()]), and a `confint` method
+#' @return A `cond_indirect_diff`-class
+#' object. This class has a `print`
+#' method
+#' ([print.cond_indirect_diff()]), a
+#' `coef` method
+#' ([coef.cond_indirect_diff()]), and a
+#' `confint` method
 #' ([confint.cond_indirect_diff()]).
 #'
 #'
-#' @param output A `cond_indirect_effects`-class object: The output
-#'               of [cond_indirect_effects()].
+#' @param output A
+#' `cond_indirect_effects`-class object:
+#' The output of
+#' [cond_indirect_effects()].
+#'
 #' @param from A row number of `output`.
-#' @param to A row number of `output`. The change in indirect effects
-#'           is computed by the change in the level(s) of the moderator(s)
-#'           from Row `from` to Row `to`.
-#' @param level The level of confidence for the bootstrap confidence
-#'    interval. Default is .95.
+#'
+#' @param to A row number of `output`.
+#' The change in indirect effects is
+#' computed by the change in the
+#' level(s) of the moderator(s) from Row
+#' `from` to Row `to`.
+#'
+#' @param level The level of confidence
+#' for the bootstrap confidence
+#' interval. Default is .95.
 #'
 #'
-#' @seealso [index_of_mome()] for computing the index of moderated mediation,
-#'  [index_of_momome()] for computing the index of moderated moderated mediation,
-#'  [cond_indirect_effects()], [mod_levels()], and [merge_mod_levels()] for
-#'  preparing the levels to be compared.
+#' @seealso [index_of_mome()] for
+#' computing the index of moderated
+#' mediation, [index_of_momome()] for
+#' computing the index of moderated
+#' moderated mediation,
+#' [cond_indirect_effects()],
+#' [mod_levels()], and
+#' [merge_mod_levels()] for preparing
+#' the levels to be compared.
 #'
 #' @references
 #' Hayes, A. F. (2015). An index and test of linear moderated mediation.
@@ -102,9 +142,13 @@
 #'
 #'
 #' @export
-#' @describeIn cond_indirect_diff Compute the difference in
-#'   in conditional indirect effect between two rows
-#'   in the output of [cond_indirect_effects()].
+#'
+#' @describeIn cond_indirect_diff
+#' Compute the difference in in
+#' conditional indirect effect between
+#' two rows in the output of
+#' [cond_indirect_effects()].
+#'
 #' @order 1
 
 cond_indirect_diff <- function(output,
@@ -165,18 +209,29 @@ cond_indirect_diff <- function(output,
     out
   }
 
-#' @title Print the Output of 'cond_indirect_diff'
+#' @title Print the Output of
+#' 'cond_indirect_diff'
 #'
-#' @description Print the output of [cond_indirect_diff()].
+#' @description Print the output of
+#' [cond_indirect_diff()].
 #'
-#' @details The `print` method of the `cond_indirect_diff`-class object.
+#' @details The `print` method of the
+#' `cond_indirect_diff`-class object.
 #'
-#' @return It returns `x` invisibly. Called for its side effect.
+#' @return It returns `x` invisibly.
+#' Called for its side effect.
 #'
-#' @param x The output of [cond_indirect_diff()].
-#' @param digits The number of decimal places in the printout.
-#' @param ... Optional arguments. Ignored.
+#' @param x The output of
+#' [cond_indirect_diff()].
+#'
+#' @param digits The number of decimal
+#' places in the printout.
+#'
+#' @param ... Optional arguments.
+#' Ignored.
+#'
 #' @seealso [cond_indirect_diff()]
+#'
 #' @export
 
 print.cond_indirect_diff <- function(x, digits = 3, ...) {
@@ -237,10 +292,6 @@ print.cond_indirect_diff <- function(x, digits = 3, ...) {
         rownames(index_df) <- "Change"
       }
     if (!is.null(x_type)) {
-        # tmp <- switch(x_type,
-        #         index_of_mome = "\nIndex of Moderated Mediation\n\n",
-        #         index_of_momome = "\nIndex of Moderated Moderated Mediation\n\n"
-        #       )
         tmp <- "\n"
       } else {
         tmp <- "\nChange in Indirect Effect:\n\n"
@@ -264,17 +315,27 @@ print.cond_indirect_diff <- function(x, digits = 3, ...) {
     invisible(x)
   }
 
-#' @title Print the Output of 'cond_indirect_diff()'
+#' @title Print the Output of
+#' 'cond_indirect_diff()'
 #'
-#' @description Extract the change in conditional indirect effect.
+#' @description Extract the change in
+#' conditional indirect effect.
 #'
-#' @details The `coef` method of the `cond_indirect_diff`-class object.
+#' @details The `coef` method of the
+#' `cond_indirect_diff`-class object.
 #'
-#' @return Scalar: The change of conditional indirect effect in `object`.
+#' @return Scalar: The change of
+#' conditional indirect effect in
+#' `object`.
 #'
-#' @param object The output of [cond_indirect_diff()].
-#' @param ... Optional arguments. Ignored.
+#' @param object The output of
+#' [cond_indirect_diff()].
+#'
+#' @param ... Optional arguments.
+#' Ignored.
+#'
 #' @seealso [cond_indirect_diff()]
+#'
 #' @export
 
 coef.cond_indirect_diff <- function(object, ...) {
@@ -289,21 +350,35 @@ coef.cond_indirect_diff <- function(object, ...) {
   }
 
 
-#' @title Confidence Interval of the Output of 'cond_indirect_diff()'
+#' @title Confidence Interval of the
+#' Output of 'cond_indirect_diff()'
 #'
-#' @description Extract the confidence interval the output of [cond_indirect_diff()].
+#' @description Extract the confidence
+#' interval the output of
+#' [cond_indirect_diff()].
 #'
-#' @details The `confint` method of the `cond_indirect_diff`-class object.
+#' @details The `confint` method of the
+#' `cond_indirect_diff`-class object.
 #'
-#' @return A one-row-two-column data frame of the confidence limits.
-#'  If confidence interval is not available, the limits are `NA`s.
+#' @return A one-row-two-column data
+#' frame of the confidence limits. If
+#' confidence interval is not available,
+#' the limits are `NA`s.
 #'
-#' @param object The output of [cond_indirect_diff()].
+#' @param object The output of
+#' [cond_indirect_diff()].
+#'
 #' @param parm Ignored.
-#' @param level The level of confidence for the bootstrap confidence
-#'    interval. Default is .95. Must match the level of the stored
-#'    confidence interval.
-#' @param ... Optional arguments. Ignored.
+#'
+#' @param level The level of confidence
+#' for the bootstrap confidence
+#' interval. Default is .95. Must match
+#' the level of the stored confidence
+#' interval.
+#'
+#' @param ... Optional arguments.
+#' Ignored.
+#'
 #' @export
 
 confint.cond_indirect_diff<- function(object, parm, level = .95, ...) {

@@ -1,7 +1,9 @@
-#' @title Sample Dataset: A Complicated Moderated-Mediation Model
+#' @title Sample Dataset: A Complicated
+#' Moderated-Mediation Model
 #'
-#' @description Generated from a complicated moderated-mediation model for
-#'   demonstration.
+#' @description Generated from a
+#' complicated moderated-mediation model
+#' for demonstration.
 #'
 #' @details
 #'
@@ -18,7 +20,8 @@
 #' # Covariances excluded for brevity
 #' ```
 #'
-#' @format A data frame with 200 rows and 11 variables:
+#' @format A data frame with 200 rows
+#' and 11 variables:
 #' \describe{
 #'   \item{x1}{Predictor 1. Numeric.}
 #'   \item{x2}{Predictor 2. Numeric.}

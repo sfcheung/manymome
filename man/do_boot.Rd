@@ -2,7 +2,9 @@
 % Please edit documentation in R/do_boot.R
 \name{do_boot}
 \alias{do_boot}
-\title{Bootstrap Estimates for 'indirect_effects' and 'cond_indirect_effects'}
+\title{Bootstrap Estimates for
+'indirect_effects' and
+'cond_indirect_effects'}
 \usage{
 do_boot(
   fit,
@@ -15,64 +17,95 @@ do_boot(
 )
 }
 \arguments{
-\item{fit}{Either (a) a list of \code{lm} class objects, or
-the output of \code{\link[=lm2list]{lm2list()}} (i.e., an \code{lm_list}-class
-object), or (b) the output of \code{\link[lavaan:sem]{lavaan::sem()}}.}
+\item{fit}{Either (a) a list of \code{lm}
+class objects, or the output of
+\code{\link[=lm2list]{lm2list()}} (i.e., an \code{lm_list}-class
+object), or (b) the output of
+\code{\link[lavaan:sem]{lavaan::sem()}}.}
 
-\item{R}{The number of bootstrap samples. Default is 100.}
+\item{R}{The number of bootstrap
+samples. Default is 100.}
 
-\item{seed}{The seed for the bootstrapping.
-Default is \code{NULL} and seed is not set.}
+\item{seed}{The seed for the
+bootstrapping. Default is \code{NULL} and
+seed is not set.}
 
-\item{parallel}{Logical. Whether parallel processing will be used.
-Default is \code{TRUE}. If \code{fit} is a list of
-\code{\link[=lm]{lm()}} outputs, parallel processing will not be used.}
+\item{parallel}{Logical. Whether
+parallel processing will be used.
+Default is \code{TRUE}. If \code{fit} is a list
+of \code{\link[=lm]{lm()}} outputs, parallel
+processing will not be used.}
 
-\item{ncores}{Integer. The number of CPU cores to use when
-\code{parallel} is \code{TRUE}. Default is the number of
-non-logical cores minus one (one minimum). Will raise
-an error if greater than the number of cores detected
-by \code{\link[parallel:detectCores]{parallel::detectCores()}}. If \code{ncores} is set, it
-will override \code{make_cluster_args}.}
+\item{ncores}{Integer. The number of
+CPU cores to use when \code{parallel} is
+\code{TRUE}. Default is the number of
+non-logical cores minus one (one
+minimum). Will raise an error if
+greater than the number of cores
+detected by
+\code{\link[parallel:detectCores]{parallel::detectCores()}}. If
+\code{ncores} is set, it will override
+\code{make_cluster_args}.}
 
-\item{make_cluster_args}{A named list of additional arguments to be
-passed to \code{\link[parallel:makeCluster]{parallel::makeCluster()}}. For advanced
-users. See \code{\link[parallel:makeCluster]{parallel::makeCluster()}} for details.
-Default is \code{list()}, no additional arguments.}
+\item{make_cluster_args}{A named list
+of additional arguments to be passed
+to \code{\link[parallel:makeCluster]{parallel::makeCluster()}}. For
+advanced users. See
+\code{\link[parallel:makeCluster]{parallel::makeCluster()}} for
+details. Default is \code{list()}, no
+additional arguments.}
 
-\item{progress}{Logical. Display progress or not. Default is \code{TRUE}.}
+\item{progress}{Logical. Display
+progress or not. Default is \code{TRUE}.}
 }
 \value{
-A \code{boot_out}-class object that can be used for the \code{boot_out}
-argument of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, \code{\link[=indirect_effect]{indirect_effect()}}, and
-\code{\link[=cond_indirect]{cond_indirect()}} for forming bootstrap confidence intervals.
-The object is a list with the number of
-elements equal to the number of bootstrap samples.
-Each element is a list of the parameter estimates
-and sample variances and covariances of the variables
-in each bootstrap sample.
+A \code{boot_out}-class object
+that can be used for the \code{boot_out}
+argument of
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+\code{\link[=indirect_effect]{indirect_effect()}}, and
+\code{\link[=cond_indirect]{cond_indirect()}} for forming
+bootstrap confidence intervals. The
+object is a list with the number of
+elements equal to the number of
+bootstrap samples. Each element is a
+list of the parameter estimates and
+sample variances and covariances of
+the variables in each bootstrap
+sample.
 }
 \description{
-Generate bootstrap estimates to be used
-by \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, \code{\link[=indirect_effect]{indirect_effect()}},
-and \code{\link[=cond_indirect]{cond_indirect()}},
+Generate bootstrap
+estimates to be used by
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+\code{\link[=indirect_effect]{indirect_effect()}}, and
+\code{\link[=cond_indirect]{cond_indirect()}},
 }
 \details{
-It does nonparametric bootstrapping to generate bootstrap
-estimates of the parameter estimates in a model fitted
-either by \code{\link[lavaan:sem]{lavaan::sem()}} or by a sequence of calls to
-\code{\link[=lm]{lm()}}. The stored estimates can then be used by
-\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, \code{\link[=indirect_effect]{indirect_effect()}}, and
-\code{\link[=cond_indirect]{cond_indirect()}} to form bootstrapping confidence
-intervals.
+It does nonparametric
+bootstrapping to generate bootstrap
+estimates of the parameter estimates
+in a model fitted either by
+\code{\link[lavaan:sem]{lavaan::sem()}} or by a sequence of
+calls to \code{\link[=lm]{lm()}}. The stored estimates
+can then be used by
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+\code{\link[=indirect_effect]{indirect_effect()}}, and
+\code{\link[=cond_indirect]{cond_indirect()}} to form
+bootstrapping confidence intervals.
 
-This approach removes the need to repeat bootstrapping in each call
-to \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, \code{\link[=indirect_effect]{indirect_effect()}}, and
-\code{\link[=cond_indirect]{cond_indirect()}}. It also ensures that the same set of bootstrap
-samples is used in all subsequent analysis.
+This approach removes the need to
+repeat bootstrapping in each call to
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+\code{\link[=indirect_effect]{indirect_effect()}}, and
+\code{\link[=cond_indirect]{cond_indirect()}}. It also ensures
+that the same set of bootstrap
+samples is used in all subsequent
+analysis.
 
-It determines the type of the fit object automatically and then
-calls \code{\link[=lm2boot_out]{lm2boot_out()}}, \code{\link[=fit2boot_out]{fit2boot_out()}}, or
+It determines the type of the fit
+object automatically and then calls
+\code{\link[=lm2boot_out]{lm2boot_out()}}, \code{\link[=fit2boot_out]{fit2boot_out()}}, or
 \code{\link[=fit2boot_out_do_boot]{fit2boot_out_do_boot()}}.
 }
 \examples{
@@ -96,7 +129,8 @@ out
 
 }
 \seealso{
-\code{\link[=lm2boot_out]{lm2boot_out()}}, \code{\link[=fit2boot_out]{fit2boot_out()}}, and
-\code{\link[=fit2boot_out_do_boot]{fit2boot_out_do_boot()}}, which implemetns the
-bootstrapping.
+\code{\link[=lm2boot_out]{lm2boot_out()}},
+\code{\link[=fit2boot_out]{fit2boot_out()}}, and
+\code{\link[=fit2boot_out_do_boot]{fit2boot_out_do_boot()}}, which
+implements the bootstrapping.
 }

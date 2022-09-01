@@ -2,21 +2,27 @@
 % Please edit documentation in R/confint_indirect.R
 \name{confint.indirect}
 \alias{confint.indirect}
-\title{Confidence Interval of Indirect Effect or Conditional Indirect Effect}
+\title{Confidence Interval of
+Indirect Effect or Conditional
+Indirect Effect}
 \usage{
 \method{confint}{indirect}(object, parm, level = 0.95, ...)
 }
 \arguments{
-\item{object}{The output of \code{\link[=indirect_effect]{indirect_effect()}} or
+\item{object}{The output of
+\code{\link[=indirect_effect]{indirect_effect()}} or
 \code{\link[=cond_indirect]{cond_indirect()}}.}
 
-\item{parm}{Ignored because the stored object
-always has only one parameter.}
+\item{parm}{Ignored because the
+stored object always has only one
+parameter.}
 
-\item{level}{The level of confidence, default is .95, returning the
-95\% confidence interval.}
+\item{level}{The level of confidence,
+default is .95, returning the 95\%
+confidence interval.}
 
-\item{...}{Additional arguments. Ignored by the function.}
+\item{...}{Additional arguments.
+Ignored by the function.}
 }
 \value{
 A numeric vector of
@@ -24,15 +30,17 @@ two elements, the limits of
 the confidence interval.
 }
 \description{
-Return the  bootstrap confidence
-interval of the indirect effect
-or conditional indirect effect
-stored in the output of \code{\link[=indirect_effect]{indirect_effect()}} or
+Return the  bootstrap
+confidence interval of the indirect
+effect or conditional indirect effect
+stored in the output of
+\code{\link[=indirect_effect]{indirect_effect()}} or
 \code{\link[=cond_indirect]{cond_indirect()}}.
 }
 \details{
-It extracts and returns the stored bootstrap
-confidence interval if available.
+It extracts and returns the
+stored bootstrap confidence interval
+if available.
 }
 \examples{
 
@@ -86,5 +94,6 @@ confint(out2)
 
 }
 \seealso{
-\code{\link[=indirect_effect]{indirect_effect()}} and \code{\link[=cond_indirect]{cond_indirect()}}
+\code{\link[=indirect_effect]{indirect_effect()}} and
+\code{\link[=cond_indirect]{cond_indirect()}}
 }

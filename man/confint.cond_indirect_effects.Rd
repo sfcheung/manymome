@@ -2,22 +2,28 @@
 % Please edit documentation in R/confint_cond_indirect_effects.R
 \name{confint.cond_indirect_effects}
 \alias{confint.cond_indirect_effects}
-\title{Confidence Intervals of Indirect Effects or Conditional
+\title{Confidence Intervals of
+Indirect Effects or Conditional
 Indirect Effects}
 \usage{
 \method{confint}{cond_indirect_effects}(object, parm, level = 0.95, ...)
 }
 \arguments{
-\item{object}{The output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
+\item{object}{The output of
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
 
-\item{parm}{Ignored. Always returns the bootstrap confidence interval
-of the effects for all levels stored.}
+\item{parm}{Ignored. Always returns
+the bootstrap confidence interval of
+the effects for all levels stored.}
 
-\item{level}{The level of confidence, default is .95, returning the
-95\% confidence interval. Ignored for now and will
-use the level of the stored intervals.}
+\item{level}{The level of confidence,
+default is .95, returning the 95\%
+confidence interval. Ignored for now
+and will use the level of the stored
+intervals.}
 
-\item{...}{Additional arguments. Ignored by the function.}
+\item{...}{Additional arguments.
+Ignored by the function.}
 }
 \value{
 A data frame with two
@@ -27,13 +33,15 @@ The number of rows is equal to the
 number of rows of \code{object}.
 }
 \description{
-Return the confidence intervals of the conditional
-indirect effects or conditional effects in the output of
-\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+Return the confidence
+intervals of the conditional indirect
+effects or conditional effects in the
+output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 }
 \details{
-It extracts and returns the columns for confidence
-intervals, if available.
+It extracts and returns the
+columns for confidence intervals, if
+available.
 }
 \examples{
 

@@ -3,7 +3,8 @@
 \name{get_one_cond_indirect_effect}
 \alias{get_one_cond_indirect_effect}
 \alias{get_one_cond_effect}
-\title{Get The Conditional Indirect Effect for One Row of
+\title{Get The Conditional Indirect
+Effect for One Row of
 'cond_indirect_effects' Output}
 \usage{
 get_one_cond_indirect_effect(object, row)
@@ -11,30 +12,39 @@ get_one_cond_indirect_effect(object, row)
 get_one_cond_effect(object, row)
 }
 \arguments{
-\item{object}{The output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
+\item{object}{The output of
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
 
-\item{row}{The row number of the row to be retrieved.}
+\item{row}{The row number of the row
+to be retrieved.}
 }
 \value{
-An \code{indirect}-class object, similar to the output of
-\code{\link[=indirect_effect]{indirect_effect()}} and \code{\link[=cond_indirect]{cond_indirect()}}.
-See [indirect_effect)] and \code{\link[=cond_indirect]{cond_indirect()}} for details
-on these classes.
+An \code{indirect}-class object,
+similar to the output of
+\code{\link[=indirect_effect]{indirect_effect()}} and
+\code{\link[=cond_indirect]{cond_indirect()}}. See
+[indirect_effect)] and
+\code{\link[=cond_indirect]{cond_indirect()}} for details on
+these classes.
 
 [indirect_effect)]: R:indirect_effect)
 \code{\link[=cond_indirect]{cond_indirect()}}: R:cond_indirect()
 }
 \description{
-Return the conditional indirect effect of one row of the output of
-\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+Return the conditional
+indirect effect of one row of the
+output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 }
 \details{
-It just extracts the corresponding output of \code{\link[=cond_indirect]{cond_indirect()}}
-from the requested row.
+It just extracts the
+corresponding output of
+\code{\link[=cond_indirect]{cond_indirect()}} from the requested
+row.
 }
 \section{Functions}{
 \itemize{
-\item \code{get_one_cond_effect()}: An alias to \code{\link[=get_one_cond_indirect_effect]{get_one_cond_indirect_effect()}}
+\item \code{get_one_cond_effect()}: An alias
+to \code{\link[=get_one_cond_indirect_effect]{get_one_cond_indirect_effect()}}
 
 }}
 \examples{
@@ -47,20 +57,23 @@ m1 ~ x  + w1 + x:w1
 m2 ~ m1
 y  ~ m2 + x + w4 + m2:w4
 "
-fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
+fit <- sem(mod, dat,
+           meanstructure = TRUE, fixed.x = FALSE,
+           se = "none", baseline = FALSE)
 est <- parameterEstimates(fit)
 
 # Examples for cond_indirect():
 
-# Conditional effects from x to m1 when w1 is equal to each of the default levels
+# Conditional effects from x to m1
+# when w1 is equal to each of the default levels
 out1 <- cond_indirect_effects(x = "x", y = "m1",
-                      wlevels = c("w1", "w4"), fit = fit)
+                              wlevels = c("w1", "w4"), fit = fit)
 get_one_cond_indirect_effect(out1, 3)
 
 # Conditional Indirect effect from x1 through m1 to y,
 # when w1 is equal to each of the levels
 out2 <- cond_indirect_effects(x = "x", y = "y", m = c("m1", "m2"),
-                      wlevels = c("w1", "w4"), fit = fit)
+                              wlevels = c("w1", "w4"), fit = fit)
 get_one_cond_indirect_effect(out2, 4)
 
 }

@@ -1,46 +1,61 @@
-#' @title Math Operators for 'indirect'-Class Objects
+#' @title Math Operators for
+#' 'indirect'-Class Objects
 #'
 #' @description Mathematic operators for
-#'  'indirect'-class object, the output of [indirect_effect()]
-#'  and [cond_indirect()].
+#' 'indirect'-class object, the output
+#' of [indirect_effect()] and
+#' [cond_indirect()].
 #'
-#' @details For now, only `+` operator and `-` operator
-#'  are supported.
-#'  These operators can be used to estimate and test
-#'  a function of effects between the same pair of variables
-#'  but along different paths.
+#' @details For now, only `+` operator
+#' and `-` operator are supported. These
+#' operators can be used to estimate and
+#' test a function of effects between
+#' the same pair of variables but along
+#' different paths.
 #'
-#' For example, they can be used to compute and test the total effects
-#' along different paths. They can also be used to compute and
-#' test the difference between the effects along two paths.
+#' For example, they can be used to
+#' compute and test the total effects
+#' along different paths. They can also
+#' be used to compute and test the
+#' difference between the effects along
+#' two paths.
 #'
-#' The operators will check whether an operation is valid. An operation
-#' is not valid if
+#' The operators will check whether an
+#' operation is valid. An operation is
+#' not valid if
 #'
-#' 1. the two paths do not start from the same variable,
+#' 1. the two paths do not start from
+#' the same variable,
 #'
-#' 2. the two paths do not end at the same variable, (c) a path appears
-#' in both objects,
+#' 2. the two paths do not end at the
+#' same variable, (c) a path appears in
+#' both objects,
 #'
-#' 3. moderators are involved but they are not
-#' set to the same values in both objects, and
+#' 3. moderators are involved but they
+#' are not set to the same values in
+#' both objects, and
 #'
-#' 4. bootstrap estimates
-#' stored in `boot_out` are not identical.
+#' 4. bootstrap estimates stored in
+#' `boot_out` are not identical.
 #'
-#' @return An 'indirect'-class object with a list of effects stored.
-#'   See [indirect_effect()] on details for this class.
+#' @return An 'indirect'-class object
+#' with a list of effects stored. See
+#' [indirect_effect()] on details for
+#' this class.
 #'
 #' @param e1 An 'indirect'-class object.
+#'
 #' @param e2 An 'indirect'-class object.
 #'
 #'
-#' @seealso [indirect_effect()] and [cond_indirect()]
+#' @seealso [indirect_effect()] and
+#' [cond_indirect()]
 #'
 #' @name math_indirect
 NULL
 
 #' @rdname math_indirect
+#'
 #' @examples
 #' library(lavaan)
 #' dat <- modmed_x1m3w4y1

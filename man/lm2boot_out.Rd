@@ -2,59 +2,76 @@
 % Please edit documentation in R/boot2est_lm.R
 \name{lm2boot_out}
 \alias{lm2boot_out}
-\title{Bootstrap Estimates for \code{lm} Outputs}
+\title{Bootstrap Estimates for \code{lm}
+Outputs}
 \usage{
 lm2boot_out(outputs, R = 100, seed = NULL, progress = TRUE)
 }
 \arguments{
-\item{outputs}{A list of \code{lm} class objects, or
-the output of \code{\link[=lm2list]{lm2list()}} (i.e., an \code{lm_list}-class
-object).}
+\item{outputs}{A list of \code{lm} class
+objects, or the output of \code{\link[=lm2list]{lm2list()}}
+(i.e., an \code{lm_list}-class object).}
 
-\item{R}{The number of bootstrap samples. Default is 100.}
+\item{R}{The number of bootstrap
+samples. Default is 100.}
 
-\item{seed}{The seed for the bootstrapping.
-Default is \code{NULL} and seed is not set.}
+\item{seed}{The seed for the
+bootstrapping. Default is \code{NULL} and
+seed is not set.}
 
-\item{progress}{Whether progress will be displayed.
-Default is \code{TRUE}.}
+\item{progress}{Whether progress will
+be displayed. Default is \code{TRUE}.}
 }
 \value{
-A \code{boot_out}-class object that can be used for the \code{boot_out}
-argument of \code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
-and related functions
-for forming bootstrapping confidence intervals.
-The object is a list with the number of
-elements equal to the number of bootstrap samples.
-Each element is a list of the parameter estimates
-and sample variances and covariances of the variables
-in each bootstrap sample.
+A \code{boot_out}-class object
+that can be used for the \code{boot_out}
+argument of \code{\link[=indirect_effect]{indirect_effect()}},
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, and
+related functions for forming
+bootstrapping confidence intervals.
+The object is a list with the number
+of elements equal to the number of
+bootstrap samples. Each element is a
+list of the parameter estimates and
+sample variances and covariances of
+the variables in each bootstrap
+sample.
 }
 \description{
-Generate bootstrap estimates for models
-in a list of 'lm' outputs.
+Generate bootstrap
+estimates for models in a list of
+'lm' outputs.
 }
 \details{
-This function is for advanced users.
-\code{\link[=do_boot]{do_boot()}} is a function users should
-try first because \code{\link[=do_boot]{do_boot()}} has a general
-interface for input-specific functions
-like this one.
+This function is for
+advanced users. \code{\link[=do_boot]{do_boot()}} is a
+function users should try first
+because \code{\link[=do_boot]{do_boot()}} has a general
+interface for input-specific
+functions like this one.
 
-It does nonparametric bootstrapping to generate bootstrap
-estimates of the regression coefficients in the regression models
-of a list of \code{\link[=lm]{lm()}} outputs, or an \code{lm_list}-class object
-created by \code{\link[=lm2list]{lm2list()}}. The stored estimates can be
-used by \code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
-and related functions
-in forming bootstrapping confidence intervals for
-effects such as indirect effect and conditional indirect effects.
+It does nonparametric bootstrapping
+to generate bootstrap estimates of
+the regression coefficients in the
+regression models of a list of \code{\link[=lm]{lm()}}
+outputs, or an \code{lm_list}-class object
+created by \code{\link[=lm2list]{lm2list()}}. The stored
+estimates can be used by
+\code{\link[=indirect_effect]{indirect_effect()}},
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, and
+related functions in forming
+bootstrapping confidence intervals
+for effects such as indirect effect
+and conditional indirect effects.
 
-This approach removes the need to repeat bootstrapping in
-each call to \code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
-and related functions.
-It also ensures that the same set of bootstrap samples
-is used in all subsequent analyses.
+This approach removes the need to
+repeat bootstrapping in each call to
+\code{\link[=indirect_effect]{indirect_effect()}},
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, and
+related functions. It also ensures
+that the same set of bootstrap
+samples is used in all subsequent
+analyses.
 }
 \examples{
 
@@ -76,7 +93,7 @@ out
 
 }
 \seealso{
-\code{\link[=do_boot]{do_boot()}}, the general purpose
-function that users should try first before
-using this function.
+\code{\link[=do_boot]{do_boot()}}, the general
+purpose function that users should
+try first before using this function.
 }

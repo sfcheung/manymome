@@ -1,18 +1,26 @@
-#' @title Estimates of Conditional Indirect Effects or Conditional Effects
+#' @title Estimates of Conditional
+#' Indirect Effects or Conditional
+#' Effects
 #'
-#' @description Return the estimates of the conditional indirect
-#'   effects or conditional effects for all levels in the output of
-#'   [cond_indirect_effects()].
+#' @description Return the estimates of
+#' the conditional indirect effects or
+#' conditional effects for all levels in
+#' the output of
+#' [cond_indirect_effects()].
 #'
-#' @details It extracts and returns the column `ind` or `std`
-#'  in the output of [cond_indirect_effects()].
+#' @details It extracts and returns the
+#' column `ind` or `std` in the output
+#' of [cond_indirect_effects()].
 #'
-#' @return
-#'  A numeric vector: The estimates of the conditional effects
-#'  or conditional indirect effects.
+#' @return A numeric vector: The
+#' estimates of the conditional effects
+#' or conditional indirect effects.
 #'
-#' @param object The output of [cond_indirect_effects()].
-#' @param ...  Optional arguments. Ignored by the function.
+#' @param object The output of
+#' [cond_indirect_effects()].
+#'
+#' @param ...  Optional arguments.
+#' Ignored by the function.
 #'
 #'
 #' @seealso [cond_indirect_effects()]

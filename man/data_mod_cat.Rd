@@ -3,9 +3,11 @@
 \docType{data}
 \name{data_mod_cat}
 \alias{data_mod_cat}
-\title{Sample Dataset: Moderation with One Categorical Moderator}
+\title{Sample Dataset: Moderation
+with One Categorical Moderator}
 \format{
-A data frame with 300 rows and 5 variables:
+A data frame with 300 rows
+and 5 variables:
 \describe{
 \item{x}{Predictor. Numeric.}
 \item{w}{Moderator. String. Values: "group1", "group2", "group3"}
@@ -18,7 +20,8 @@ A data frame with 300 rows and 5 variables:
 data_mod_cat
 }
 \description{
-A moderation model with a categorical moderator.
+A moderation model with
+a categorical moderator.
 }
 \examples{
 data(data_mod_cat)
