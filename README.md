@@ -109,7 +109,7 @@ we can address these limitations in `manymome` in the future.
 
 A good starting point is the Get-Started article (`vignette("manymome")`).
 
-There are also [articles](./articles/index.html) (vignettes) on
+There are also [articles](https://sfcheung.github.io/manymome/articles/index.html) (vignettes) on
 special topics, such as how to use `mod_levels()` to set
 the levels of the moderators. More will be added.
 
