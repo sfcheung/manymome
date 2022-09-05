@@ -1,7 +1,8 @@
-# manymome 0.1.3.1
+# manymome 0.1.3.2
 
 - Checked examples and vignettes to ensure
   parallel processing is not used. (0.1.3.1)
+- Updated the DESCRIPTION (0.1.3.2)
 
 # manymome 0.1.3.0
 
