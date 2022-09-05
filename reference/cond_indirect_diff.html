@@ -18,7 +18,7 @@ moderators."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -227,7 +227,7 @@ the levels to be compared.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> M-1.0SD -0.7100578</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Conditional effects from x to y when w1 is equal to each of the levels</span></span></span>
-<span class="r-in"><span><span class="va">boot_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit2boot_out.html">fit2boot_out_do_boot</a></span><span class="op">(</span><span class="va">fit</span>, R <span class="op">=</span> <span class="fl">40</span>, seed <span class="op">=</span> <span class="fl">4314</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">boot_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit2boot_out.html">fit2boot_out_do_boot</a></span><span class="op">(</span><span class="va">fit</span>, R <span class="op">=</span> <span class="fl">40</span>, seed <span class="op">=</span> <span class="fl">4314</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, m <span class="op">=</span> <span class="st">"m1"</span>,</span></span>
 <span class="r-in"><span>                             wlevels <span class="op">=</span> <span class="va">w1levels</span>, fit <span class="op">=</span> <span class="va">fit</span>,</span></span>
 <span class="r-in"><span>                             boot_ci <span class="op">=</span> <span class="cn">TRUE</span>, boot_out <span class="op">=</span> <span class="va">boot_out</span><span class="op">)</span></span></span>
