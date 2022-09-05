@@ -145,12 +145,12 @@
 #' mod <-
 #' "
 #' m3 ~ m1 + x + gpgp2 + gpgp3 + x:gpgp2 + x:gpgp3
-#' y ~ m2 + m3 + x + w4 + x:w4
+#' y ~ m2 + m3 + x
 #' "
 #' fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
-#' out_mm_1 <- mod_levels_list("w4", c("gpgp2", "gpgp3"),
-#'                             sd_from_mean = c(-1, 1),
-#'                             fit = fit, merge = TRUE)
+#' out_mm_1 <- mod_levels(c("gpgp2", "gpgp3"),
+#'                        sd_from_mean = c(-1, 1),
+#'                        fit = fit)
 #' out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "m3", fit = fit)
 #' plot(out_1)
 #' plot(out_1, graph_type = "tumble")

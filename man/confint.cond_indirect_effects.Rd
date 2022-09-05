@@ -70,7 +70,8 @@ w1w4levels <- merge_mod_levels(w1levels, w4levels)
 out1 <- suppressWarnings(cond_indirect_effects(x = "x", y = "m1",
                       wlevels = w1levels, fit = fit,
                       boot_ci = TRUE, R = 20, seed = 54151,
-                      parallel = FALSE))
+                      parallel = FALSE,
+                      progress = FALSE))
 confint(out1)
 
 

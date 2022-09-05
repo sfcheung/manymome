@@ -81,7 +81,10 @@ lm_m <- lm(m ~ x*w + c1 + c2, dat)
 lm_y <- lm(y ~ m*w + x + c1 + c2, dat)
 lm_out <- lm2list(lm_m, lm_y)
 # In real research, R should be 2000 or even 5000
-lm_boot_out <- lm2boot_out(lm_out, R = 100, seed = 1234)
+# In real research, no need to set progress to FALSE
+# Progress is displayed by default.
+lm_boot_out <- lm2boot_out(lm_out, R = 100, seed = 1234,
+                           progress = FALSE)
 out <- cond_indirect_effects(wlevels = "w",
                              x = "x",
                              y = "y",
