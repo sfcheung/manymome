@@ -62,7 +62,8 @@
 #' out1 <- suppressWarnings(cond_indirect_effects(x = "x", y = "m1",
 #'                       wlevels = w1levels, fit = fit,
 #'                       boot_ci = TRUE, R = 20, seed = 54151,
-#'                       parallel = FALSE))
+#'                       parallel = FALSE,
+#'                       progress = FALSE))
 #' confint(out1)
 #'
 #'

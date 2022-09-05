@@ -129,7 +129,7 @@
 #' w1levels
 #'
 #' # Conditional effects from x to y when w1 is equal to each of the levels
-#' boot_out <- fit2boot_out_do_boot(fit, R = 40, seed = 4314)
+#' boot_out <- fit2boot_out_do_boot(fit, R = 40, seed = 4314, progress = FALSE)
 #' out <- cond_indirect_effects(x = "x", y = "y", m = "m1",
 #'                              wlevels = w1levels, fit = fit,
 #'                              boot_ci = TRUE, boot_out = boot_out)

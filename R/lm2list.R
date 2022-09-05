@@ -84,12 +84,16 @@
 #' # Compute indirect effect from x to y
 #' # through m11 and m12 with bootstrapping CI
 #' # R should be at least 2000 or even 5000 in read study.
+#' # In real research, parallel and progress can be omitted.
+#' # They are est to TRUE by default.
 #' outm11m12 <- cond_indirect(x = "x", y = "y",
 #'                            m = c("m11", "m12"),
 #'                            fit = lm_serial_parallel,
 #'                            boot_ci = TRUE,
 #'                            R = 100,
-#'                            seed = 1234)
+#'                            seed = 1234,
+#'                            parallel = FALSE,
+#'                            progress = FALSE)
 #' outm11m12
 #'
 #' @export

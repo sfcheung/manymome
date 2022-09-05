@@ -183,13 +183,15 @@ fit <- sem(mod, dat,
 est <- parameterEstimates(fit)
 
 # R should be at least 2000 or even 5000 in real research.
-# parallel should be enabled (set to TRUE) in real research.
+# parallel is set to TRUE by default.
+# Therefore, in research, the argument parallel can be omitted.
 out_mome <- index_of_mome(x = "x", y = "y", m = "m1", w = "w1",
                           fit = fit,
                           boot_ci = TRUE,
                           R = 42,
                           seed = 4314,
-                          parallel = FALSE)
+                          parallel = FALSE,
+                          progress = FALSE)
 out_mome
 coef(out_mome)
 # From lavaan
