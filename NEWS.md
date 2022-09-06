@@ -1,3 +1,7 @@
+# manymome 0.1.4.1
+
+- Updated README.md with code for installing from CRAN. (0.1.4.1).
+
 # manymome 0.1.4.0
 
 - Checked examples and vignettes to ensure

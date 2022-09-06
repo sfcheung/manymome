@@ -1,10 +1,14 @@
 <!-- badges: start -->
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![CRAN status](https://www.r-pkg.org/badges/version/manymome?color=blue)](https://CRAN.R-project.org/package=manymome)
+[![CRAN: Release Date](https://www.r-pkg.org/badges/last-release/manymome?color=blue)](https://cran.r-project.org/package=manymome)
+[![Code size](https://img.shields.io/github/languages/code-size/sfcheung/manymome.svg)](https://github.com/sfcheung/manymome)
+[![Last Commit at Master](https://img.shields.io/github/last-commit/sfcheung/manymome.svg)](https://github.com/sfcheung/manymome/commits/master)
 [![R-CMD-check](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-(Version 0.1.4.0, updated on 2022-09-06, [release history](https://sfcheung.github.io/manymome/news/index.html))
+(Version 0.1.4.1, updated on 2022-09-06, [release history](https://sfcheung.github.io/manymome/news/index.html))
 
 # manymome
 
@@ -121,7 +125,13 @@ https://sfcheung.github.io/manymome/
 
 # Installation
 
-The latest stable version at GitHub can be installed by `remotes::install_github()`:
+The stable version at CRAN can be installed by `install.packages()`:
+
+```{r}
+install.packages("manymome")
+```
+
+The latest developmental version at GitHub can be installed by `remotes::install_github()`:
 
 ```{r}
 remotes::install_github("sfcheung/manymome")
