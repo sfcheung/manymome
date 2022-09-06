@@ -79,7 +79,7 @@ Bootstrapping, which can be time consuming, can
 be conducted just once. The main functions for computing indirect effects
 and conditional indirect effects can be called as many times as needed without redoing
 bootstrapping because they can reuse pregenerated bootstrap
-estimates (see `vignette("manymome")` and `vignetted("do_boot")`).
+estimates (see `vignette("manymome")` and `vignette("do_boot")`).
 
 - **Supports Latent Variables Mediation**
 
