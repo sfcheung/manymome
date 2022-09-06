@@ -80,7 +80,7 @@
       <img src="" class="logo" alt=""><h1>Generating Bootstrap Estimates</h1>
                         <h4 data-toc-skip class="author">Shu Fai Cheung &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2022-09-05</h4>
+            <h4 data-toc-skip class="date">2022-09-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/HEAD/vignettes/do_boot.Rmd" class="external-link"><code>vignettes/do_boot.Rmd</code></a></small>
       <div class="d-none name"><code>do_boot.Rmd</code></div>
@@ -209,34 +209,34 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">boot_out_lavaan</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">est</span></span>
 <span><span class="co">#&gt;    lhs op rhs    est</span></span>
-<span><span class="co">#&gt; 1    m  ~   x  0.893</span></span>
-<span><span class="co">#&gt; 2    m  ~  c1  0.046</span></span>
-<span><span class="co">#&gt; 3    m  ~  c2 -0.136</span></span>
-<span><span class="co">#&gt; 4    y  ~   m  0.960</span></span>
-<span><span class="co">#&gt; 5    y  ~   x  0.307</span></span>
-<span><span class="co">#&gt; 6    y  ~  c1 -0.060</span></span>
-<span><span class="co">#&gt; 7    y  ~  c2 -0.273</span></span>
-<span><span class="co">#&gt; 8    m ~~   m  0.611</span></span>
-<span><span class="co">#&gt; 9    y ~~   y  4.294</span></span>
-<span><span class="co">#&gt; 10   x ~~   x  1.139</span></span>
-<span><span class="co">#&gt; 11   x ~~  c1  0.099</span></span>
-<span><span class="co">#&gt; 12   x ~~  c2  0.149</span></span>
-<span><span class="co">#&gt; 13  c1 ~~  c1  0.943</span></span>
-<span><span class="co">#&gt; 14  c1 ~~  c2 -0.035</span></span>
-<span><span class="co">#&gt; 15  c2 ~~  c2  0.691</span></span>
-<span><span class="co">#&gt; 16   m r2   m  0.595</span></span>
-<span><span class="co">#&gt; 17   y r2   y  0.326</span></span></code></pre></div>
+<span><span class="co">#&gt; 1    m  ~   x  0.813</span></span>
+<span><span class="co">#&gt; 2    m  ~  c1  0.260</span></span>
+<span><span class="co">#&gt; 3    m  ~  c2 -0.239</span></span>
+<span><span class="co">#&gt; 4    y  ~   m  1.044</span></span>
+<span><span class="co">#&gt; 5    y  ~   x  0.180</span></span>
+<span><span class="co">#&gt; 6    y  ~  c1 -0.148</span></span>
+<span><span class="co">#&gt; 7    y  ~  c2 -0.359</span></span>
+<span><span class="co">#&gt; 8    m ~~   m  0.455</span></span>
+<span><span class="co">#&gt; 9    y ~~   y  4.389</span></span>
+<span><span class="co">#&gt; 10   x ~~   x  1.442</span></span>
+<span><span class="co">#&gt; 11   x ~~  c1 -0.122</span></span>
+<span><span class="co">#&gt; 12   x ~~  c2  0.235</span></span>
+<span><span class="co">#&gt; 13  c1 ~~  c1  1.099</span></span>
+<span><span class="co">#&gt; 14  c1 ~~  c2 -0.214</span></span>
+<span><span class="co">#&gt; 15  c2 ~~  c2  0.666</span></span>
+<span><span class="co">#&gt; 16   m r2   m  0.676</span></span>
+<span><span class="co">#&gt; 17   y r2   y  0.312</span></span></code></pre></div>
 <p>The content is just the first four columns of the output of <code><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">lavaan::parameterEstimates()</a></code>.</p>
 <p>This is the content of <code>implied_stats</code> of the first list:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">boot_out_lavaan</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">implied_stats</span></span>
 <span><span class="co">#&gt; $cov</span></span>
 <span><span class="co">#&gt;    m      y      x      c1     c2    </span></span>
-<span><span class="co">#&gt; m   1.506                            </span></span>
-<span><span class="co">#&gt; y   1.734  6.367                     </span></span>
-<span><span class="co">#&gt; x   1.001  1.264  1.139              </span></span>
-<span><span class="co">#&gt; c1  0.137  0.115  0.099  0.943       </span></span>
-<span><span class="co">#&gt; c2  0.037 -0.105  0.149 -0.035  0.691</span></span>
+<span><span class="co">#&gt; m   1.405                            </span></span>
+<span><span class="co">#&gt; y   1.636  6.383                     </span></span>
+<span><span class="co">#&gt; x   1.085  1.325  1.442              </span></span>
+<span><span class="co">#&gt; c1  0.237  0.140 -0.122  1.099       </span></span>
+<span><span class="co">#&gt; c2 -0.024 -0.190  0.235 -0.214  0.666</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $mean</span></span>
 <span><span class="co">#&gt; numeric(0)</span></span>
@@ -263,7 +263,7 @@
 <span><span class="co">#&gt;                                      </span></span>
 <span><span class="co">#&gt;  Path:               x -&gt; m -&gt; y     </span></span>
 <span><span class="co">#&gt;  Indirect Effect     0.733           </span></span>
-<span><span class="co">#&gt;  95.0% Bootstrap CI: [0.281 to 1.106]</span></span>
+<span><span class="co">#&gt;  95.0% Bootstrap CI: [0.307 to 1.082]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m~x)*(b.y~m)</span></span>
