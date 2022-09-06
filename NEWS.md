@@ -1,6 +1,7 @@
-# manymome 0.1.4.1
+# manymome 0.1.4.2
 
 - Updated README.md with code for installing from CRAN. (0.1.4.1).
+- Fix a typo in README.md. (0.1.4.2)
 
 # manymome 0.1.4.0
 

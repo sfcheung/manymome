@@ -8,7 +8,7 @@
 [![R-CMD-check](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-(Version 0.1.4.1, updated on 2022-09-06, [release history](https://sfcheung.github.io/manymome/news/index.html))
+(Version 0.1.4.2, updated on 2022-09-06, [release history](https://sfcheung.github.io/manymome/news/index.html))
 
 # manymome
 
