@@ -37,6 +37,6 @@ suppressWarnings(out_5c <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y 
                                boot_ci = TRUE, seed = 87415, R = 10, parallel = FALSE, progress = FALSE))
 
 test_that("cond_indirect_effects: do_boot", {
-  expect_identical(unlist(out_5), unlist(out_5b))
-  expect_identical(unlist(out_5), unlist(out_5c))
+  expect_equal(out_5[-c(1:5)], out_5b[-c(1:5)])
+  expect_equal(out_5[-c(1:5)], out_5c[-c(1:5)])
   })

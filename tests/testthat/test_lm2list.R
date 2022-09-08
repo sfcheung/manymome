@@ -26,7 +26,7 @@ out_list <- out
 class(out_list) <- "list"
 
 test_that("lm2list", {
-    expect_identical(out_list, out_chk, ignore_attr = FALSE)
+    expect_equal(out_list, out_chk, ignore_attr = FALSE)
     expect_error(lm2list(lm_m2, lm_ext))
     expect_error(lm2list(lm_m1, lm_m2, lm_m3, lm_diffn))
     expect_error(lm2list(lm_m1b, lm_m2b, lm_m3b, lm_yb))

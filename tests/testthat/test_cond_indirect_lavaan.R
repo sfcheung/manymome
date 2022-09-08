@@ -122,13 +122,13 @@ outmo_boot_chk <- mapply(indirect_i,
                        SIMPLIFY = FALSE)
 
 test_that("cond_indirect: lavaan", {
-    expect_identical(out$indirect, out_chk$indirect)
+    expect_equal(out$indirect, out_chk$indirect)
     # expect_identical(out_boot$boot_indirect,
     #                  sapply(out_boot_chk, function(x) x$indirect))
   })
 
 test_that("cond_indirect: lavaan, mediation only", {
-    expect_identical(outm$indirect, outm_chk$indirect)
+    expect_equal(outm$indirect, outm_chk$indirect)
     # expect_identical(outm_boot$boot_indirect,
     #                  sapply(outm_boot_chk, function(x) x$indirect))
     expect_identical(outm[-which(names(outm) == "cond_indirect_call")],
@@ -136,7 +136,7 @@ test_that("cond_indirect: lavaan, mediation only", {
   })
 
 test_that("cond_indirect: lavaan, moderation only", {
-    expect_identical(outmo$indirect, outmo_chk$indirect)
+    expect_equal(outmo$indirect, outmo_chk$indirect)
     # expect_identical(outmo_boot$boot_indirect,
     #                  sapply(outmo_boot_chk, function(x) x$indirect))
   })

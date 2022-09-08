@@ -62,6 +62,6 @@ test_that("indirect: latent variable", {
                  std[i, "est.std"])
     expect_equal(out_cond$indirect,
                  out$indirect)
-    expect_identical(out_cond_boot$boot_indirect,
+    expect_equal(out_cond_boot$boot_indirect,
                      sapply(out_cond_boot_chk, function(x) x$indirect))
   })

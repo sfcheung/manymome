@@ -52,7 +52,7 @@ test_that("boot2est with implied stat: latent variables", {
         unclass(implied_check_mean[1:9]),
         tolerance = 1e-5
       )
-    expect_identical(
+    expect_equal(
         out[[9]],
         out_check
       )

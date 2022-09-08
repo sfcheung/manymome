@@ -19,5 +19,5 @@ class(out_sum) <- "list"
 out_sum_chk <- lapply(out, summary)
 
 test_that("summary_lm_list", {
-    expect_identical(out_sum, out_sum_chk, ignore_attr = FALSE)
+    expect_equal(out_sum, out_sum_chk, ignore_attr = FALSE)
   })

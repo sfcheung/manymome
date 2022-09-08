@@ -63,7 +63,7 @@ test_that("boot2est with implied stat", {
         unclass(implied_check$mean),
         tolerance = 1e-5
       )
-    expect_identical(
+    expect_equal(
         out[[9]],
         out_check
       )
@@ -73,11 +73,11 @@ test_that("boot2est with implied stat", {
     expect_error(
         boot2implied(fit_fixedx)
       )
-    expect_identical(
+    expect_equal(
         out2[[5]]$est,
         out2_est_chk[[5]]
       )
-    expect_identical(
+    expect_equal(
         out2[[5]]$implied,
         out2_implied_chk[[5]]
       )

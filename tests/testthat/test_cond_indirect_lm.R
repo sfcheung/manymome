@@ -127,7 +127,7 @@ outmo_boot_chk <- mapply(indirect_i,
 
 
 test_that("cond_indirect: lm", {
-    expect_identical(out$indirect, out_chk$indirect)
+    expect_equal(out$indirect, out_chk$indirect)
     # expect_identical(out_boot$boot_indirect,
     #                  sapply(out_boot_chk, function(x) x$indirect))
   })
@@ -139,8 +139,8 @@ test_that("confint for indirect: lm", {
   })
 
 test_that("cond_indirect: lm, mediation only", {
-    expect_identical(outm$indirect, outm_chk$indirect)
-    expect_identical(outm_boot$boot_indirect,
+    expect_equal(outm$indirect, outm_chk$indirect)
+    expect_equal(outm_boot$boot_indirect,
                      sapply(outm_boot_chk, function(x) x$indirect))
     expect_identical(outm[-which(names(outm) == "cond_indirect_call")],
                      outi[-which(names(outi) == "cond_indirect_call")])
@@ -154,7 +154,7 @@ test_that("confint for indirect, mediation only", {
   })
 
 test_that("cond_indirect: lm, moderation only", {
-    expect_identical(outmo$indirect, outmo_chk$indirect)
+    expect_equal(outmo$indirect, outmo_chk$indirect)
     # expect_identical(outmo_boot$boot_indirect,
     #                  sapply(outmo_boot_chk, function(x) x$indirect))
   })
