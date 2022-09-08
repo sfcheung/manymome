@@ -41,8 +41,8 @@ out12 <- out1 + out2
 out12boot <- out1_boot + out2_boot
 
 test_that("math for indirect: moderated mediation", {
-    expect_identical(out12$indirect, out1$indirect + out2$indirect)
-    expect_identical(out12boot$indirect, out1_boot$indirect + out2_boot$indirect)
+    expect_equal(out12$indirect, out1$indirect + out2$indirect)
+    expect_equal(out12boot$indirect, out1_boot$indirect + out2_boot$indirect)
   })
 
 # Mediation only
@@ -115,18 +115,18 @@ outm1minus2boot <- outm_boot - outm2_boot
 outm1minus3boot <- outm_boot - outm3_boot
 
 test_that("math for indirect: mediation", {
-    expect_identical(outm1plus2$indirect, outm$indirect + outm2$indirect)
-    expect_identical(outm1plus3$indirect, outm$indirect + outm3$indirect)
-    expect_identical(outm1m2m3$indirect, outm$indirect + outm2$indirect + outm3$indirect)
-    expect_identical(out123pm$indirect, outm$indirect + outm2$indirect - outm3$indirect)
+    expect_equal(outm1plus2$indirect, outm$indirect + outm2$indirect)
+    expect_equal(outm1plus3$indirect, outm$indirect + outm3$indirect)
+    expect_equal(outm1m2m3$indirect, outm$indirect + outm2$indirect + outm3$indirect)
+    expect_equal(out123pm$indirect, outm$indirect + outm2$indirect - outm3$indirect)
     expect_error(outm + outm4)
     expect_error(outm + outm5)
-    expect_identical(outm1plus2boot$indirect, outm_boot$indirect + outm2_boot$indirect)
-    expect_identical(outm1plus3boot$indirect, outm_boot$indirect + outm3_boot$indirect)
-    expect_identical(outm1m2m3boot$indirect, outm1plus2boot$indirect + outm3_boot$indirect)
-    expect_identical(out1m1m2m3boot2$indirect, outm_boot$indirect + outm2_boot$indirect + outm3_boot$indirect)
-    expect_identical(outm1minus2boot$indirect, outm_boot$indirect - outm2_boot$indirect)
-    expect_identical(outm1minus3boot$indirect, outm_boot$indirect - outm3_boot$indirect)
+    expect_equal(outm1plus2boot$indirect, outm_boot$indirect + outm2_boot$indirect)
+    expect_equal(outm1plus3boot$indirect, outm_boot$indirect + outm3_boot$indirect)
+    expect_equal(outm1m2m3boot$indirect, outm1plus2boot$indirect + outm3_boot$indirect)
+    expect_equal(out1m1m2m3boot2$indirect, outm_boot$indirect + outm2_boot$indirect + outm3_boot$indirect)
+    expect_equal(outm1minus2boot$indirect, outm_boot$indirect - outm2_boot$indirect)
+    expect_equal(outm1minus3boot$indirect, outm_boot$indirect - outm3_boot$indirect)
     expect_error(outm_boot + outm_boot)
     expect_equal(coef(outm1minus2), outm1minus2$indirect, ignore_attr = TRUE)
     expect_equal(coef(outm1plus3), outm1plus3$indirect, ignore_attr = TRUE)

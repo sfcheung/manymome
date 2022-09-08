@@ -61,7 +61,7 @@ test_that("fit2boot_out_do_boot", {
         unclass(out_chk[[i]]$implied_stats$mean),
         tolerance = 1e-5
       )
-    expect_identical(
+    expect_equal(
         out_db,
         out_chk
       )
