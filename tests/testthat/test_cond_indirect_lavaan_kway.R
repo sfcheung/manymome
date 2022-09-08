@@ -58,7 +58,7 @@ out_boot_chk <- mapply(indirect_i,
                        SIMPLIFY = FALSE)
 
 test_that("cond_indirect: lavaan, 3-way", {
-    expect_identical(out$indirect, out_chk$indirect)
-    expect_identical(out_boot$boot_indirect,
+    expect_equal(out$indirect, out_chk$indirect)
+    expect_equal(out_boot$boot_indirect,
                      sapply(out_boot_chk, function(x) x$indirect))
   })

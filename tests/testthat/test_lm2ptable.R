@@ -40,7 +40,7 @@ mod_chk_lav <- lavaanify(mod_chk)
 
 test_that("lm2ptable", {
     expect_true(all.equal(chk$est.x, chk$est.y, tolerance = .0001))
-    expect_identical(
+    expect_equal(
         mod_lav,
         mod_chk_lav
       )
