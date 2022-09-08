@@ -9,6 +9,7 @@
 <!-- badges: end -->
 
 (Version 0.1.5.0, updated on 2022-09-08, [release history](https://sfcheung.github.io/manymome/news/index.html))
+(No changes in functions since 0.1.4.0. Just fixing typo errors and changing some tests.)
 
 # manymome
 
