@@ -1,6 +1,6 @@
 Package: manymome
 Title: Mediation, Moderation and Moderated-Mediation After Model Fitting
-Version: 0.1.5.0
+Version: 0.1.4.3
 Authors@R:
     c(person(given = "Shu Fai",
            family = "Cheung",
