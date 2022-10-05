@@ -138,3 +138,81 @@ test_that("Check y", {
     expect_true(all(get_y(outb4) %in% c("y1", "m12", "m2")))
   })
 
+# Test many_indirect_effects.
+
+# TODO: Add tests
+
+fit_boot_out <- do_boot(fit, R = 100, seed = 98743, ncores = 2)
+out_tmp <- outa4[c(1, 3, 5, 6)]
+
+ind_1_no_ci <- many_indirect_effects(out_tmp,
+                               fit = fit)
+ind_1_no_ci
+
+ind_1_no_ci_stdx <- many_indirect_effects(out_tmp,
+                               fit = fit,
+                               standardized_x = TRUE)
+ind_1_no_ci_stdx
+
+ind_1_no_ci_stdy <- many_indirect_effects(out_tmp,
+                               fit = fit,
+                               standardized_y = TRUE)
+ind_1_no_ci_stdy
+
+ind_1_no_ci_std <- many_indirect_effects(out_tmp,
+                               fit = fit,
+                               standardized_x = TRUE,
+                               standardized_y = TRUE)
+ind_1_no_ci_std
+
+ind_1 <- many_indirect_effects(out_tmp,
+                               fit = fit,
+                               boot_ci = TRUE,
+                               boot_out = fit_boot_out)
+ind_1
+
+ind_1_stdx <- many_indirect_effects(out_tmp,
+                               fit = fit,
+                               standardized_x = TRUE,
+                               boot_ci = TRUE,
+                               boot_out = fit_boot_out)
+ind_1_stdx
+
+ind_1_stdy <- many_indirect_effects(out_tmp,
+                               fit = fit,
+                               standardized_y = TRUE,
+                               boot_ci = TRUE,
+                               boot_out = fit_boot_out)
+ind_1_stdy
+
+ind_1_std <- many_indirect_effects(out_tmp,
+                               fit = fit,
+                               standardized_x = TRUE,
+                               standardized_y = TRUE,
+                               boot_ci = TRUE,
+                               boot_out = fit_boot_out)
+ind_1_std
+
+coef(ind_1_no_ci)
+coef(ind_1_no_ci_stdx)
+coef(ind_1_no_ci_stdy)
+coef(ind_1_no_ci_std)
+
+coef(ind_1)
+coef(ind_1_stdx)
+coef(ind_1_stdy)
+coef(ind_1_std)
+
+test_that("Check confint warning", {
+    expect_warning(confint(ind_1_no_ci))
+    expect_warning(confint(ind_1_no_ci_stdx))
+    expect_warning(confint(ind_1_no_ci_stdy))
+    expect_warning(confint(ind_1_no_ci_std))
+  })
+
+
+confint(ind_1)
+confint(ind_1_stdx)
+confint(ind_1_stdy)
+confint(ind_1_std)
+

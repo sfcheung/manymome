@@ -25,6 +25,7 @@ reference:
   - cond_indirect
   - indirect_effect
   - all_indirect_paths
+  - indirect_effects_from_list
 - title: Presenting and Exploring the Effects
 - contents:
   - index_of_mome
@@ -61,6 +62,9 @@ reference:
   - confint.indirect
   - print.indirect
   - math_indirect
+  - coef.indirect_list
+  - confint.indirect_list
+  - print.indirect_list
   - coef.cond_indirect_effects
   - confint.cond_indirect_effects
   - print.cond_indirect_effects
