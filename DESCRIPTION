@@ -43,7 +43,8 @@ Imports:
     parallel,
     pbapply,
     stats,
-    ggplot2
+    ggplot2,
+    igraph
 Depends:
     R (>= 3.5.0)
 LazyData: true
