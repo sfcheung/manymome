@@ -47,6 +47,10 @@ list of three character vectors,
 the name of the outcome that ends a path, and \code{m}, a
 character vector of one or more names of the mediators,
 from \code{x} to \code{y}. This class has a print method.
+
+\code{\link[=all_paths_to_df]{all_paths_to_df()}} returns a data frame with three
+columns, \code{x}, \code{y}, and \code{m}, which can be used by
+functions such as \code{\link[=indirect_effect]{indirect_effect()}}.
 }
 \description{
 Check all indirect paths in a model and

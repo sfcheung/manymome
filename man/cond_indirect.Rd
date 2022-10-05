@@ -4,6 +4,7 @@
 \alias{cond_indirect}
 \alias{cond_indirect_effects}
 \alias{indirect_effect}
+\alias{many_indirect_effects}
 \title{Conditional, Indirect, and
 Conditional Indirect Effects}
 \usage{
@@ -77,6 +78,8 @@ indirect_effect(
   progress = TRUE,
   save_boot_full = FALSE
 )
+
+many_indirect_effects(paths, ...)
 }
 \arguments{
 \item{x}{Character. The name of the
@@ -294,8 +297,11 @@ output is a list of the outputs from
 for creating the levels of
 moderators. Default is \code{list()}.}
 
-\item{...}{Arguments to be passed to
-\code{\link[=cond_indirect]{cond_indirect()}}}
+\item{...}{For \code{\link[=many_indirect_effects]{many_indirect_effects()}},
+these are arguments to be passed to
+\code{\link[=indirect_effect]{indirect_effect()}}.}
+
+\item{paths}{The output of \code{\link[=all_indirect_paths]{all_indirect_paths()}}}
 }
 \value{
 \code{\link[=indirect_effect]{indirect_effect()}} and
@@ -423,6 +429,11 @@ indirect effect. A wrapper of
 \code{\link[=cond_indirect]{cond_indirect()}}. Can be used when
 there is no moderator.
 
+\item \code{many_indirect_effects()}: Compute the
+indirect effects along more than one paths.
+It call \code{\link[=indirect_effect]{indirect_effect()}} once for
+each of the path.
+
 }}
 \examples{
 
@@ -467,6 +478,9 @@ cond_indirect_effects(x = "x", y = "m1",
 # when w1 is equal to each of the levels
 cond_indirect_effects(x = "x", y = "y", m = "m1",
                       wlevels = w1levels, fit = fit)
+
+# Examples for many_indirect_effects():
+# TODO
 
 }
 \seealso{

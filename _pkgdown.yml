@@ -24,6 +24,7 @@ reference:
   - cond_indirect_effects
   - cond_indirect
   - indirect_effect
+  - all_indirect_paths
 - title: Presenting and Exploring the Effects
 - contents:
   - index_of_mome
@@ -71,6 +72,7 @@ reference:
   - print.lm_list
   - summary.lm_list
   - subsetting_wlevels
+  - print.all_paths
 - title: Advanced helpers
   desc: Helper functions exported for advanced users.
 - contents:

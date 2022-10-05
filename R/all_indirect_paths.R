@@ -16,6 +16,10 @@
 #' character vector of one or more names of the mediators,
 #' from `x` to `y`. This class has a print method.
 #'
+#' [all_paths_to_df()] returns a data frame with three
+#' columns, `x`, `y`, and `m`, which can be used by
+#' functions such as [indirect_effect()].
+#'
 #' @param fit A fit object. Either the output of
 #' [lavaan::lavaan()] or its wrapper such as [lavaan::sem()],
 #' or a list of the output of [lm()] or the output of
