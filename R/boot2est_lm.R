@@ -128,3 +128,111 @@ lm_boot2est_i <- function(d, i = NULL, outputs) {
     out_i <- lapply(outputs, stats::update, data = d_i)
     lm2ptable(out_i)
   }
+
+#' @noRd
+# Test lm with parallel
+
+lm2boot_out_parallel <- function(outputs,
+                                 R = 100,
+                                 seed = NULL,
+                                 parallel = FALSE,
+                                 ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                                 make_cluster_args = list(),
+                                 progress = TRUE) {
+    out_type <- cond_indirect_check_fit(outputs)
+    if (out_type != "lm") {
+        stop("'outputs' must be a list of 'lm()' outputs.")
+      }
+    dat_org <- merge_model_frame(outputs)
+    n <- nrow(dat_org)
+    ft <- system.time(lapply(outputs, stats::update, data = dat_org))[3]
+    if (isTRUE(ft == 0)) ft <- .00001
+    requireNamespace("parallel", quietly = TRUE)
+    if (!is.null(seed)) set.seed(seed)
+    ids <- replicate(R, sample.int(n, replace = TRUE), simplify = FALSE)
+    if (parallel) {
+        if (is.numeric(ncores)) {
+            ncores0 <- parallel::detectCores()
+            if (ncores == ncores0) {
+                warning(paste0("'ncores' >= The number of detected cores (",
+                               ncores0,"). The computer may not be responsive",
+                               " when bootstrapping is running."),
+                        immediate. = TRUE)
+                utils::flush.console()
+              }
+            if (ncores > ncores0) {
+                ncores <- max(ncores0 - 1, 1L)
+              }
+          } else {
+            ncores <- 1L
+          }
+      } else {
+        ncores <- 1L
+      }
+    if (ncores > 1L) {
+        make_cluster_args <- utils::modifyList(make_cluster_args,
+                                        list(spec = ncores))
+        tmp <- tryCatch({cl <- do.call(parallel::makeCluster,
+                                      make_cluster_args)},
+                        error = function(e) e)
+        has_cl <- !inherits(tmp, "error")
+      } else {
+        has_cl <- FALSE
+      }
+    if (has_cl) {
+        texp <-  1.2 * R * ft[[1]] / length(cl)
+        message(paste0(length(cl), " processes started to run bootstrapping."))
+        # message(paste0("The expected CPU time is about ",
+        #                 round(texp, 2),
+        #                 " second(s)."))
+        utils::flush.console()
+        pkgs <- .packages()
+        pkgs <- rev(pkgs)
+        parallel::clusterExport(cl, "pkgs", envir = environment())
+        parallel::clusterEvalQ(cl, {
+                        sapply(pkgs,
+                        function(x) library(x, character.only = TRUE))
+                      })
+        # No need. ids pregenerated.
+        # parallel::clusterSetRNGStream(cl, seed)
+
+        if (progress) {
+            op_old <- pbapply::pboptions(type = "timer")
+            tmp <- tryCatch({rt <- system.time(out <- suppressWarnings(
+                              pbapply::pblapply(ids,
+                                                lm_boot2est_i,
+                                                d = dat_org,
+                                                outputs = outputs,
+                                                cl = cl)))},
+                              error = function(e) e)
+            pbapply::pboptions(op_old)
+          } else {
+            tmp <- tryCatch({rt <- system.time(out <- suppressWarnings(
+                              parallel::parLapplyLB(cl,
+                                                    ids,
+                                                    lm_boot2est_i,
+                                                    d = dat_org,
+                                                    outputs = outputs)))},
+                              error = function(e) e)
+          }
+        if (inherits(tmp, "error")) {
+            try(parallel::stopCluster(cl), silent = TRUE)
+            stop("Running in parallel failed. Please set 'parallel' to FALSE.")
+          }
+        parallel::stopCluster(cl)
+      } else {
+        if (progress) {
+            rt <- system.time(out <- suppressWarnings(pbapply::pblapply(ids,
+                                                            lm_boot2est_i,
+                                                            d = dat_org,
+                                                            outputs = outputs)))
+          } else {
+            rt <- system.time(out <- suppressWarnings(lapply(ids,
+                                                            lm_boot2est_i,
+                                                            d = dat_org,
+                                                            outputs = outputs)))
+          }
+      }
+    class(out) <- "boot_out"
+    out
+  }
