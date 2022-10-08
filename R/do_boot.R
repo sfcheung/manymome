@@ -64,9 +64,7 @@
 #'
 #' @param parallel Logical. Whether
 #' parallel processing will be used.
-#' Default is `TRUE`. If `fit` is a list
-#' of [lm()] outputs, parallel
-#' processing will not be used.
+#' Default is `TRUE`.
 #'
 #' @param ncores Integer. The number of
 #' CPU cores to use when `parallel` is
@@ -152,10 +150,20 @@ do_boot <- function(fit,
           }
       }
     if (fit_type == "lm") {
-        out <- lm2boot_out(outputs = fit,
-                           R = R,
-                           seed = seed,
-                           progress = progress)
+        if (parallel) {
+            out <- lm2boot_out_parallel(outputs = fit,
+                                        R = R,
+                                        seed = seed,
+                                        parallel = parallel,
+                                        ncores = ncores,
+                                        make_cluster_args = make_cluster_args,
+                                        progress = progress)
+          } else {
+            out <- lm2boot_out(outputs = fit,
+                              R = R,
+                              seed = seed,
+                              progress = progress)
+          }
       }
     return(out)
   }

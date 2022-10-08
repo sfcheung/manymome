@@ -32,9 +32,7 @@ seed is not set.}
 
 \item{parallel}{Logical. Whether
 parallel processing will be used.
-Default is \code{TRUE}. If \code{fit} is a list
-of \code{\link[=lm]{lm()}} outputs, parallel
-processing will not be used.}
+Default is \code{TRUE}.}
 
 \item{ncores}{Integer. The number of
 CPU cores to use when \code{parallel} is
