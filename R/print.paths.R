@@ -41,7 +41,11 @@ print.all_paths <- function(x, ...) {
   call0 <- attr(x, "call")
   cat("Call:", "\n")
   print(call0)
-  cat("Path(s):", "\n")
-  print(out, right = FALSE)
+  if (isTRUE(length(x) == 0)) {
+      cat("No indirect paths were found.\n")
+    } else {
+      cat("Path(s):", "\n")
+      print(out, right = FALSE)
+    }
   invisible(x)
 }
