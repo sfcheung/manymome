@@ -60,6 +60,5 @@ coef(out)
 
 }
 \seealso{
-\code{\link[=indirect_effect]{indirect_effect()}} and
-\code{\link[=cond_indirect]{cond_indirect()}}.
+\code{\link[=many_indirect_effects]{many_indirect_effects()}}
 }
