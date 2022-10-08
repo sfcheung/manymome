@@ -269,12 +269,14 @@ instead of the output of `lavaan::sem()`:
 ```{r do_boot_lm}
 boot_out_lm <- do_boot(fit = fit_lm,
                        R = 100,
-                       seed = 98715)
+                       seed = 98715,
+                       ncores = 1)
 ```
 
-Speed is rarely a concern for a model with
-parameters estimated by `lm()`. Therefore,
-parallel processing is not used. Because
+Like working on the outputs of `lavaan::lavaan()`,
+parallel processing is also used by default.
+`ncores` is the number of CPU cores to
+be used. Because
 the output may not be saved, it is
 recommended to set the seed of the random
 number generation using `seed`, set
