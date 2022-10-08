@@ -24,8 +24,7 @@
 #' Ignored by the function.
 #'
 #'
-#' @seealso [indirect_effect()] and
-#' [cond_indirect()].
+#' @seealso [many_indirect_effects()]
 #'
 #' @examples
 #'
