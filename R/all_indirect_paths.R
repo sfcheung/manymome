@@ -1,8 +1,8 @@
 #' @title Enumerate All Indirect Effects in a Model
 #'
 #' @description Check all indirect paths in a model and
-#' return them as a list of arguments for `x`, `y`,
-#' and `m` to be used by `indirect_effect()`.
+#' return them as a list of arguments of `x`, `y`,
+#' and `m`, to be used by `indirect_effect()`.
 #'
 #' @details It makes use of [igraph::all_simple_paths()]
 #' to identify paths in a model.

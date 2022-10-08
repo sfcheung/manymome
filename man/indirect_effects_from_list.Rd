@@ -19,13 +19,17 @@ will be added. Default is \code{TRUE}.}
 \value{
 A data frame with the
 indirect effect estimates and
-confidence interval (if available).
+confidence intervals (if available).
+It also has A string column, \code{"Sig"},
+for #' significant test results
+if \code{add_sig} is \code{TRUE} and bootstrap
+confidence intervals are available.
 }
 \description{
 Create a coefficient table
 for the point estimates and
 confidence intervals (if available)
-for the
+in the
 output of \code{\link[=many_indirect_effects]{many_indirect_effects()}}.
 }
 \examples{
@@ -41,11 +45,13 @@ y ~ m12 + m2 + m11 + x + c1 + c2
 "
 fit <- sem(mod, data_serial_parallel,
            fixed.x = FALSE)
+
 # All indirect paths from x to y
 paths <- all_indirect_paths(fit,
                            x = "x",
                            y = "y")
 paths
+
 # Indirect effect estimates
 out <- many_indirect_effects(paths,
                              fit = fit)

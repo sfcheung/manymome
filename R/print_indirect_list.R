@@ -149,12 +149,16 @@ print.indirect_list <- function(x, digits = 3,
 #' @description Create a coefficient table
 #' for the point estimates and
 #' confidence intervals (if available)
-#' for the
+#' in the
 #' output of [many_indirect_effects()].
 #'
 #' @return A data frame with the
 #' indirect effect estimates and
-#' confidence interval (if available).
+#' confidence intervals (if available).
+#' It also has A string column, `"Sig"`,
+#' for #' significant test results
+#' if `add_sig` is `TRUE` and bootstrap
+#' confidence intervals are available.
 #'
 #' @param object The output of
 #' [indirect_effect()] or
@@ -179,11 +183,13 @@ print.indirect_list <- function(x, digits = 3,
 #' "
 #' fit <- sem(mod, data_serial_parallel,
 #'            fixed.x = FALSE)
+#'
 #' # All indirect paths from x to y
 #' paths <- all_indirect_paths(fit,
 #'                            x = "x",
 #'                            y = "y")
 #' paths
+#'
 #' # Indirect effect estimates
 #' out <- many_indirect_effects(paths,
 #'                              fit = fit)

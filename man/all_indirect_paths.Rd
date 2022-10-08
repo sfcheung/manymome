@@ -54,8 +54,8 @@ functions such as \code{\link[=indirect_effect]{indirect_effect()}}.
 }
 \description{
 Check all indirect paths in a model and
-return them as a list of arguments for \code{x}, \code{y},
-and \code{m} to be used by \code{indirect_effect()}.
+return them as a list of arguments of \code{x}, \code{y},
+and \code{m}, to be used by \code{indirect_effect()}.
 }
 \details{
 It makes use of \code{\link[igraph:all_simple_paths]{igraph::all_simple_paths()}}

@@ -6,7 +6,8 @@
 #' variables in the paths estimated by
 #' [many_indirect_effects()].
 #'
-#' @details It extracts the estimates
+#' @details It extracts the
+#' `indirect`-class objects
 #' of relevant paths and then add
 #' the indirect effects together
 #' using the `+` operator.
@@ -18,11 +19,11 @@
 #' [many_indirect_effects()], or a list
 #' of `indirect`-class objects.
 #'
-#' @param x The name of the `x` variable.
+#' @param x Character. The name of the `x` variable.
 #' All paths start from `x` will be
 #' included.
 #'
-#' @param y The name of the `y` variable.
+#' @param y Character. The name of the `y` variable.
 #' All paths end at `y` will be included.
 #'
 #'
@@ -41,14 +42,17 @@
 #' "
 #' fit <- sem(mod, data_serial_parallel,
 #'            fixed.x = FALSE)
+#'
 #' # All indirect paths, control variables excluded
 #' paths <- all_indirect_paths(fit,
 #'                             exclude = c("c1", "c2"))
 #' paths
+#'
 #' # Indirect effect estimates
 #' out <- many_indirect_effects(paths,
 #'                              fit = fit)
 #' out
+#'
 #' # Total indirect effect from x to y
 #' total_indirect_effect(out,
 #'                       x = "x",

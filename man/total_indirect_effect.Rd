@@ -12,11 +12,11 @@ total_indirect_effect(object, x, y)
 \code{\link[=many_indirect_effects]{many_indirect_effects()}}, or a list
 of \code{indirect}-class objects.}
 
-\item{x}{The name of the \code{x} variable.
+\item{x}{Character. The name of the \code{x} variable.
 All paths start from \code{x} will be
 included.}
 
-\item{y}{The name of the \code{y} variable.
+\item{y}{Character. The name of the \code{y} variable.
 All paths end at \code{y} will be included.}
 }
 \value{
@@ -30,7 +30,8 @@ variables in the paths estimated by
 \code{\link[=many_indirect_effects]{many_indirect_effects()}}.
 }
 \details{
-It extracts the estimates
+It extracts the
+\code{indirect}-class objects
 of relevant paths and then add
 the indirect effects together
 using the \code{+} operator.
@@ -48,14 +49,17 @@ y ~ m12 + m2 + m11 + x + c1 + c2
 "
 fit <- sem(mod, data_serial_parallel,
            fixed.x = FALSE)
+
 # All indirect paths, control variables excluded
 paths <- all_indirect_paths(fit,
                             exclude = c("c1", "c2"))
 paths
+
 # Indirect effect estimates
 out <- many_indirect_effects(paths,
                              fit = fit)
 out
+
 # Total indirect effect from x to y
 total_indirect_effect(out,
                       x = "x",

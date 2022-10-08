@@ -759,11 +759,13 @@ cond_indirect_effects <- function(wlevels,
 #' "
 #' fit <- sem(mod, data_serial_parallel,
 #'            fixed.x = FALSE)
+#'
 #' # All indirect paths from x to y
 #' paths <- all_indirect_paths(fit,
 #'                            x = "x",
 #'                            y = "y")
 #' paths
+#'
 #' # Indirect effect estimates
 #' out <- many_indirect_effects(paths,
 #'                              fit = fit)
