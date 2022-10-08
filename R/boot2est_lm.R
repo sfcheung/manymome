@@ -89,6 +89,12 @@
 #'                              boot_out = lm_boot_out)
 #' out
 #'
+#' @describeIn lm2boot_out Generate
+#' bootstrap estimates using one process
+#' (serial, without parallelization).
+#'
+#' @order 1
+#'
 #' @export
 #'
 #'
@@ -129,8 +135,44 @@ lm_boot2est_i <- function(d, i = NULL, outputs) {
     lm2ptable(out_i)
   }
 
-#' @noRd
-# Test lm with parallel
+#' @param R The number of bootstrap
+#' samples. Default is 100.
+#'
+#' @param seed The seed for the random
+#' resampling. Default is `NULL`.
+#'
+#' @param parallel Logical. Whether
+#' parallel processing will be used.
+#' Default is `NULL`.
+#'
+#' @param ncores Integer. The number of
+#' CPU cores to use when `parallel` is
+#' `TRUE`. Default is the number of
+#' non-logical cores minus one (one
+#' minimum). Will raise an error if
+#' greater than the number of cores
+#' detected by
+#' [parallel::detectCores()]. If
+#' `ncores` is set, it will override
+#' `make_cluster_args`.
+#'
+#' @param make_cluster_args A named list
+#' of additional arguments to be passed
+#' to [parallel::makeCluster()]. For
+#' advanced users. See
+#' [parallel::makeCluster()] for
+#' details. Default is `list()`.
+#'
+#' @param progress Logical. Display
+#' progress or not. Default is `TRUE`.
+#'
+#' @describeIn lm2boot_out Generate
+#' bootstrap estimates using parallel
+#' processing.
+#'
+#' @order 2
+#'
+#' @export
 
 lm2boot_out_parallel <- function(outputs,
                                  R = 100,
