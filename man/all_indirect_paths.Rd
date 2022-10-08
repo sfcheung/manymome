@@ -36,7 +36,7 @@ the outcome variables in at least one regression
 equation will be
 included in the search.}
 
-\item{all_paths}{A \code{all_paths}-class object. For example,
+\item{all_paths}{An \code{all_paths}-class object. For example,
 the output of \code{\link[=all_indirect_paths]{all_indirect_paths()}}.}
 }
 \value{
@@ -103,6 +103,7 @@ names(out3)
 }
 \seealso{
 \code{\link[=indirect_effect]{indirect_effect()}}, \code{\link[=lm2list]{lm2list()}}.
+\code{\link[=many_indirect_effects]{many_indirect_effects()}}
 }
 \author{
 Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}

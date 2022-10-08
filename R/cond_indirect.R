@@ -745,8 +745,30 @@ cond_indirect_effects <- function(wlevels,
 #' [indirect_effect()].
 #'
 #' @examples
+#'
 #' # Examples for many_indirect_effects():
-#' # TODO
+#'
+#' library(lavaan)
+#' data(data_serial_parallel)
+#' mod <-
+#' "
+#' m11 ~ x + c1 + c2
+#' m12 ~ m11 + x + c1 + c2
+#' m2 ~ x + c1 + c2
+#' y ~ m12 + m2 + m11 + x + c1 + c2
+#' "
+#' fit <- sem(mod, data_serial_parallel,
+#'            fixed.x = FALSE)
+#' # All indirect paths from x to y
+#' paths <- all_indirect_paths(fit,
+#'                            x = "x",
+#'                            y = "y")
+#' paths
+#' # Indirect effect estimates
+#' out <- many_indirect_effects(paths,
+#'                              fit = fit)
+#' out
+#'
 #'
 #' @export
 #'

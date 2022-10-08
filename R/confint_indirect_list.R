@@ -32,8 +32,34 @@
 #'
 #' @examples
 #'
-#' dat <- modmed_x1m3w4y1
-#' # TODO
+#' library(lavaan)
+#' data(data_serial_parallel)
+#' mod <-
+#' "
+#' m11 ~ x + c1 + c2
+#' m12 ~ m11 + x + c1 + c2
+#' m2 ~ x + c1 + c2
+#' y ~ m12 + m2 + m11 + x + c1 + c2
+#' "
+#' fit <- sem(mod, data_serial_parallel,
+#'            fixed.x = FALSE)
+#' # All indirect paths from x to y
+#' paths <- all_indirect_paths(fit,
+#'                            x = "x",
+#'                            y = "y")
+#' paths
+#' # Indirect effect estimates
+#' # R should be 2000 or even 5000 in real research
+#' # parallel should be used in real research.
+#' fit_boot <- do_boot(fit, R = 45, seed = 8974,
+#'                     parallel = FALSE)
+#' out <- many_indirect_effects(paths,
+#'                              fit = fit,
+#'                              boot_ci = TRUE,
+#'                              boot_out = fit_boot)
+#' out
+#' confint(out)
+#'
 #'
 #'
 #' @export

@@ -46,12 +46,13 @@
 #' equation will be
 #' included in the search.
 #'
-#' @param all_paths A `all_paths`-class object. For example,
+#' @param all_paths An `all_paths`-class object. For example,
 #' the output of [all_indirect_paths()].
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [indirect_effect()], [lm2list()].
+#' [many_indirect_effects()]
 #'
 #'
 #' @examples

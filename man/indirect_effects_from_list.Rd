@@ -30,8 +30,10 @@ output of \code{\link[=many_indirect_effects]{many_indirect_effects()}}.
 }
 \examples{
 
-library(lavaan)
-# TODO
+# Create a data frame of the indirect effect estimates
+
+out_df <- indirect_effects_from_list(out)
+out_df
 
 
 }
