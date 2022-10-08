@@ -360,6 +360,124 @@ with 95% confidence interval
 See `help("math_indirect")` for further details on subtraction
 for `indirect_effect()` outputs.
 
+# Identifying All Indirect paths
+
+If there are several indirect paths in
+a model, the function `all_indirect_paths()`
+can
+be used to automatically identify all
+indirect paths (a path with at least
+one mediator) in a model:
+
+```{r all_paths}
+all_paths <- all_indirect_paths(fit = fit_lm)
+all_paths
+```
+
+The initial list is very long because
+control variables (`c1` and `c2`) are
+included in the search. Moreover, paths
+that start from a mediator or end at
+a mediator are also included.
+Users can customize the search:
+
+```{r}
+all_paths <- all_indirect_paths(fit = fit_lm,
+                                x = c("x1", "x2"),
+                                y = c("y1", "y2"),
+                                exclude = c("c1", "c2"))
+all_paths
+```
+
+- `x` is a vector of names. Only paths
+  start from these variables will be
+  included.
+
+- `y` is a vector of names. Only paths
+  end at these variables will be
+  included.
+
+- `exclude` is a vector of names. Paths
+  that involve these variables will be
+  excluded.
+
+The output is a `all_paths`-class object.
+It can be used in `many_indirect_effects()`
+
+```{r all_indirect_est}
+out_all <- many_indirect_effects(paths = all_paths,
+                                 fit = fit_lm,
+                                 boot_ci = TRUE,
+                                 boot_out = boot_out_lm)
+```
+
+The first argument, `paths`, is the output
+of `all_indirect_paths()`. The other
+arguments
+will be passed to `indirect_effect()`.
+
+The output is an `indirect_list`-class
+object, which is a list of the outputs
+of `indirect_effects()`. If printed,
+a summary of the indirect effects will
+be printed:
+
+```{r}
+out_all
+```
+
+The output of `many_indirect_effects()`
+is a named list, names being the path
+name as appeared in the output.
+Individual indirect
+effects can be extracted using either
+the indices or the path names
+
+An example using index:
+
+```{r}
+out1 <- out_all[[1]]
+out1
+```
+
+An example using path name (though not
+recommended because the name is usually
+long):
+
+```{r}
+out2 <- out_all[["x2 -> m2 -> y2"]]
+out2
+```
+
+The extracted element can be used just
+like the outputs of `indirect_effect()`
+in previous section.
+
+
+See the help page of `all_indirect_paths()`
+and `many_indirect_effects()` for other
+arguments available.
+
+## Total Indirect Effect
+
+The total indirect effect between two
+variables in a list of paths can be
+computed by `total_indirect_effect()`.
+
+```{r}
+total_x1_y1 <- total_indirect_effect(out_all,
+                                     x = "x1",
+                                     y = "y1")
+total_x1_y1
+```
+
+The first argument is the output
+of `many_indirect_effects()` or a list
+of `indirect`-class object. `x` is the
+name of the variable that starts the paths.
+`y` is the name of the variable that
+ends the paths.
+
 # Further Information
 
 For further information on `do_boot()`

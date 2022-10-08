@@ -1,9 +1,19 @@
-# manymome 0.1.4.3
+# manymome 0.1.4.5
 
 - Updated README.md with code for installing from CRAN. (0.1.4.1).
 - Fixed a typo in README.md. (0.1.4.2)
 - Fixed tests that should be done by `expect_equal` on numbers rather
   than on characters. No change in the functions. (0.1.4.3)
+- Added `lm2boot_out_parallel()` to do bootstrapping with
+  the output of `lm()` using parallel processing. This is
+  the default when `do_boot()` is used on the outputs of
+  `lm()`. (0.1.4.4)
+- Added `all_indirect_paths()` for identifying all indirect paths
+  in a model. (0.1.4.5)
+- Added `many_indirect_effects()` for computing indirect
+  effects for a list of paths. (0.1.4.5)
+- Added `total_indirect_effect()` for computing the total
+  indirect effect between two variables. (0.1.4.5)
 
 # manymome 0.1.4.0
 

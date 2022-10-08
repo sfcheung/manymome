@@ -738,6 +738,65 @@ cond_indirect_effects <- function(wlevels,
       }
   }
 
+#' @param paths The output of [all_indirect_paths()]
+#'
+#' @param ... For [many_indirect_effects()],
+#' these are arguments to be passed to
+#' [indirect_effect()].
+#'
+#' @examples
+#'
+#' # Examples for many_indirect_effects():
+#'
+#' library(lavaan)
+#' data(data_serial_parallel)
+#' mod <-
+#' "
+#' m11 ~ x + c1 + c2
+#' m12 ~ m11 + x + c1 + c2
+#' m2 ~ x + c1 + c2
+#' y ~ m12 + m2 + m11 + x + c1 + c2
+#' "
+#' fit <- sem(mod, data_serial_parallel,
+#'            fixed.x = FALSE)
+#'
+#' # All indirect paths from x to y
+#' paths <- all_indirect_paths(fit,
+#'                            x = "x",
+#'                            y = "y")
+#' paths
+#'
+#' # Indirect effect estimates
+#' out <- many_indirect_effects(paths,
+#'                              fit = fit)
+#' out
+#'
+#'
+#' @export
+#'
+#' @describeIn cond_indirect Compute the
+#' indirect effects along more than one paths.
+#' It call [indirect_effect()] once for
+#' each of the path.
+#'
+#' @order 4
+
+many_indirect_effects <- function(paths, ...) {
+    path_names <- names(paths)
+    xym <- all_paths_to_df(paths)
+    out <- mapply(indirect_effect,
+                  x = xym$x,
+                  y = xym$y,
+                  m = xym$m,
+                  MoreArgs = list(...),
+                  SIMPLIFY = FALSE)
+    names(out) <- path_names
+    class(out) <- c("indirect_list", class(out))
+    attr(out, "paths") <- paths
+    attr(out, "call") <- match.call()
+    out
+  }
+
 # Check the type of `fit` and return the type as a string
 #' @noRd
 #'

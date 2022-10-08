@@ -1,3 +1,5 @@
+skip("Test parallel processing: Test in interactive sections")
+
 library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
@@ -24,7 +26,8 @@ out_chk <- lm(m1 ~ x * w1, data = out[[2]]$data)
 out2 <- lm_boot2est_i(dat, outputs = outputs)
 
 out2_db <- do_boot(fit = outputs, R = 5, seed = 81674958,
-                   parallel = FALSE)
+                   parallel = TRUE,
+                   ncores = 5)
 
 test_that("lm2boot_out", {
     expect_equal(

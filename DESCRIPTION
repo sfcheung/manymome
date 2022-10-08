@@ -1,6 +1,6 @@
 Package: manymome
 Title: Mediation, Moderation and Moderated-Mediation After Model Fitting
-Version: 0.1.4.3
+Version: 0.1.4.5
 Authors@R:
     c(person(given = "Shu Fai",
            family = "Cheung",
@@ -43,7 +43,8 @@ Imports:
     parallel,
     pbapply,
     stats,
-    ggplot2
+    ggplot2,
+    igraph
 Depends:
     R (>= 3.5.0)
 LazyData: true
