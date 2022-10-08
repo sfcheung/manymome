@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +80,7 @@
       <img src="" class="logo" alt=""><h1>Mediation Models with Latent Variables</h1>
                         <h4 data-toc-skip class="author">Shu Fai Cheung &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2022-09-08</h4>
+            <h4 data-toc-skip class="date">2022-10-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/HEAD/vignettes/med_lav.Rmd" class="external-link"><code>vignettes/med_lav.Rmd</code></a></small>
       <div class="d-none name"><code>med_lav.Rmd</code></div>
@@ -350,6 +350,90 @@
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span></code></pre></div>
 <p>The difference in effects is 0.350, with 95% confidence interval [-0.027, 0.700].</p>
+</div>
+<div class="section level2">
+<h2 id="identifying-all-indirect-paths">Identifying All Indirect paths<a class="anchor" aria-label="anchor" href="#identifying-all-indirect-paths"></a>
+</h2>
+<p>If there are several indirect paths in a model, the function <code><a href="../reference/all_indirect_paths.html">all_indirect_paths()</a></code> can be used to automatically identify all indirect paths (a path with at least one mediator) in a model:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">all_paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/all_indirect_paths.html">all_indirect_paths</a></span><span class="op">(</span>fit <span class="op">=</span> <span class="va">fit_med</span><span class="op">)</span></span>
+<span><span class="va">all_paths</span></span>
+<span><span class="co">#&gt; Call: </span></span>
+<span><span class="co">#&gt; all_indirect_paths(fit = fit_med)</span></span>
+<span><span class="co">#&gt; Path(s): </span></span>
+<span><span class="co">#&gt;   path          </span></span>
+<span><span class="co">#&gt; 1 f1 -&gt; f3 -&gt; f4</span></span>
+<span><span class="co">#&gt; 2 f2 -&gt; f3 -&gt; f4</span></span></code></pre></div>
+<p>The output is a <code>all_paths</code>-class object. It can be used in <code><a href="../reference/cond_indirect.html">many_indirect_effects()</a></code></p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">many_indirect_effects</a></span><span class="op">(</span>paths <span class="op">=</span> <span class="va">all_paths</span>,</span>
+<span>                                 fit <span class="op">=</span> <span class="va">fit_med</span>,</span>
+<span>                                 boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                 boot_out <span class="op">=</span> <span class="va">boot_out_med</span><span class="op">)</span></span></code></pre></div>
+<p>The first argument, <code>paths</code>, is the output of <code><a href="../reference/all_indirect_paths.html">all_indirect_paths()</a></code>. The other arguments will be passed to <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>.</p>
+<p>The output is an <code>indirect_list</code>-class object, which is a list of the outputs of <code>indirect_effects()</code>. If printed, a summary of the indirect effects will be printed:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out_all</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ==  Indirect Effect(s)   ==</span></span>
+<span><span class="co">#&gt;                  ind  CI.lo CI.hi Sig</span></span>
+<span><span class="co">#&gt; f1 -&gt; f3 -&gt; f4 0.098 -0.007 0.216    </span></span>
+<span><span class="co">#&gt; f2 -&gt; f3 -&gt; f4 0.131  0.049 0.254 Sig</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span></span>
+<span><span class="co">#&gt;    nonparametric bootstrapping with 100 samples.</span></span>
+<span><span class="co">#&gt;  - The 'ind' column shows the indirect effects.</span></span>
+<span><span class="co">#&gt; </span></span></code></pre></div>
+<p>The output of <code><a href="../reference/cond_indirect.html">many_indirect_effects()</a></code> is a named list, names being the path name as appeared in the output. Individual indirect effects can be extracted using either the indices or the path names</p>
+<p>An example using index:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out1</span> <span class="op">&lt;-</span> <span class="va">out_all</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">out1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Indirect Effect ==</span></span>
+<span><span class="co">#&gt;                                       </span></span>
+<span><span class="co">#&gt;  Path:               f1 -&gt; f3 -&gt; f4   </span></span>
+<span><span class="co">#&gt;  Indirect Effect     0.098            </span></span>
+<span><span class="co">#&gt;  95.0% Bootstrap CI: [-0.007 to 0.216]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computation Formula:</span></span>
+<span><span class="co">#&gt;   (b.f3~f1)*(b.f4~f3)</span></span>
+<span><span class="co">#&gt; Computation:</span></span>
+<span><span class="co">#&gt;   (0.24307)*(0.40186)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
+<span><span class="co">#&gt; with 100 bootstrap samples.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients of Component Paths:</span></span>
+<span><span class="co">#&gt;   Path Coefficient</span></span>
+<span><span class="co">#&gt;  f3~f1       0.243</span></span>
+<span><span class="co">#&gt;  f4~f3       0.402</span></span></code></pre></div>
+<p>An example using path name (though not recommended because the name is usually long):</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out2</span> <span class="op">&lt;-</span> <span class="va">out_all</span><span class="op">[[</span><span class="st">"f2 -&gt; f3 -&gt; f4"</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">out2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Indirect Effect ==</span></span>
+<span><span class="co">#&gt;                                      </span></span>
+<span><span class="co">#&gt;  Path:               f2 -&gt; f3 -&gt; f4  </span></span>
+<span><span class="co">#&gt;  Indirect Effect     0.131           </span></span>
+<span><span class="co">#&gt;  95.0% Bootstrap CI: [0.049 to 0.254]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Computation Formula:</span></span>
+<span><span class="co">#&gt;   (b.f3~f2)*(b.f4~f3)</span></span>
+<span><span class="co">#&gt; Computation:</span></span>
+<span><span class="co">#&gt;   (0.32561)*(0.40186)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
+<span><span class="co">#&gt; with 100 bootstrap samples.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients of Component Paths:</span></span>
+<span><span class="co">#&gt;   Path Coefficient</span></span>
+<span><span class="co">#&gt;  f3~f2       0.326</span></span>
+<span><span class="co">#&gt;  f4~f3       0.402</span></span></code></pre></div>
+<p>The extracted element can be used just like the outputs of <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> in previous section.</p>
+<p>Users can customize the search. For example, if a model has control variables, they can be excluded in the search for indirect paths. Users can also limit the search to paths that start from or end at selected variables. See the help page of <code><a href="../reference/all_indirect_paths.html">all_indirect_paths()</a></code> and <code><a href="../reference/cond_indirect.html">many_indirect_effects()</a></code> for the arguments available.</p>
+<p>Not demonstrated in this document, total indirect effect can be computed by <code><a href="../reference/total_indirect_effect.html">total_indirect_effect()</a></code> from the output of <code><a href="../reference/cond_indirect.html">many_indirect_effects()</a></code>. Please refer to <code><a href="../articles/med_lm.html">vignette("med_lm")</a></code> for an example and the help page of <code><a href="../reference/total_indirect_effect.html">total_indirect_effect()</a></code>.</p>
 </div>
 <div class="section level2">
 <h2 id="further-information">Further Information<a class="anchor" aria-label="anchor" href="#further-information"></a>

@@ -16,7 +16,7 @@ estimates for models in a list of
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,17 @@ estimates for models in a list of
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">lm2boot_out</span><span class="op">(</span><span class="va">outputs</span>, R <span class="op">=</span> <span class="fl">100</span>, seed <span class="op">=</span> <span class="cn">NULL</span>, progress <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">lm2boot_out</span><span class="op">(</span><span class="va">outputs</span>, R <span class="op">=</span> <span class="fl">100</span>, seed <span class="op">=</span> <span class="cn">NULL</span>, progress <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">lm2boot_out_parallel</span><span class="op">(</span></span>
+<span>  <span class="va">outputs</span>,</span>
+<span>  R <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  parallel <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  make_cluster_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  progress <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -90,14 +100,41 @@ samples. Default is 100.</p></dd>
 
 
 <dt>seed</dt>
-<dd><p>The seed for the
-bootstrapping. Default is <code>NULL</code> and
-seed is not set.</p></dd>
+<dd><p>The seed for the random
+resampling. Default is <code>NULL</code>.</p></dd>
 
 
 <dt>progress</dt>
-<dd><p>Whether progress will
-be displayed. Default is <code>TRUE</code>.</p></dd>
+<dd><p>Logical. Display
+progress or not. Default is <code>TRUE</code>.</p></dd>
+
+
+<dt>parallel</dt>
+<dd><p>Logical. Whether
+parallel processing will be used.
+Default is <code>NULL</code>.</p></dd>
+
+
+<dt>ncores</dt>
+<dd><p>Integer. The number of
+CPU cores to use when <code>parallel</code> is
+<code>TRUE</code>. Default is the number of
+non-logical cores minus one (one
+minimum). Will raise an error if
+greater than the number of cores
+detected by
+<code><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">parallel::detectCores()</a></code>. If
+<code>ncores</code> is set, it will override
+<code>make_cluster_args</code>.</p></dd>
+
+
+<dt>make_cluster_args</dt>
+<dd><p>A named list
+of additional arguments to be passed
+to <code><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">parallel::makeCluster()</a></code>. For
+advanced users. See
+<code><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">parallel::makeCluster()</a></code> for
+details. Default is <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -150,6 +187,16 @@ that the same set of bootstrap
 samples is used in all subsequent
 analyses.</p>
     </div>
+    <div class="section level2">
+    <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
+    
+<ul><li><p><code>lm2boot_out()</code>: Generate
+bootstrap estimates using one process
+(serial, without parallelization).</p></li>
+<li><p><code>lm2boot_out_parallel()</code>: Generate
+bootstrap estimates using parallel
+processing.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="do_boot.html">do_boot()</a></code>, the general
