@@ -453,9 +453,30 @@ The extracted element can be used just
 like the outputs of `indirect_effect()`
 in previous section.
 
+
 See the help page of `all_indirect_paths()`
 and `many_indirect_effects()` for other
 arguments available.
+
+## Total Indirect Effect
+
+The total indirect effect between two
+variables in a list of paths can be
+computed by `total_indirect_effect()`.
+
+```{r}
+total_x1_y1 <- total_indirect_effect(out_all,
+                                     x = "x1",
+                                     y = "y1")
+total_x1_y1
+```
+
+The first argument is the output
+of `many_indirect_effects()` or a list
+of `indirect`-class object. `x` is the
+name of the variable that starts the paths.
+`y` is the name of the variable that
+ends the paths.
 
 # Further Information
 

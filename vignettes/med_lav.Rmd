@@ -383,6 +383,14 @@ See the help page of `all_indirect_paths()`
 and `many_indirect_effects()` for the
 arguments available.
 
+Not demonstrated in this document,
+total indirect effect can be computed
+by `total_indirect_effect()` from the
+output of `many_indirect_effects()`.
+Please refer to `vignette("med_lm")`
+for an example and the help page of
+`total_indirect_effect()`.
+
 # Further Information
 
 For further information on `do_boot()`
