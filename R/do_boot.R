@@ -64,9 +64,7 @@
 #'
 #' @param parallel Logical. Whether
 #' parallel processing will be used.
-#' Default is `TRUE`. If `fit` is a list
-#' of [lm()] outputs, parallel
-#' processing will not be used.
+#' Default is `TRUE`.
 #'
 #' @param ncores Integer. The number of
 #' CPU cores to use when `parallel` is
