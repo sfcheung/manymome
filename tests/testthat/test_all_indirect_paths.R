@@ -216,3 +216,19 @@ confint(ind_1_stdx)
 confint(ind_1_stdy)
 confint(ind_1_std)
 
+# Test total_indirect_effect
+
+tot1_no_ci <- total_indirect_effect(ind_1_no_ci, x = "x1", y = "y1")
+tot1_no_ci_chk <- ind_1_no_ci[[2]] + ind_1_no_ci[[3]] + ind_1_no_ci[[4]]
+
+tot1_stdx <- total_indirect_effect(ind_1_stdx, x = "x1", y = "y1")
+tot1_stdx_chk <- ind_1_stdx[[2]] + ind_1_stdx[[3]] + ind_1_stdx[[4]]
+
+tot1_no_ci_m11 <- total_indirect_effect(ind_1_no_ci, x = "m11", y = "y1")
+
+test_that("Check total indirect effect", {
+    expect_identical(tot1_no_ci, tot1_no_ci_chk)
+    expect_identical(tot1_stdx, tot1_stdx_chk)
+    expect_identical(tot1_no_ci_m11, ind_1_no_ci[[1]])
+    expect_error(total_indirect_effect(ind_1_stdx, x = "x2", y = "y1"))
+  })
