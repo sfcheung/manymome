@@ -41,6 +41,6 @@ a2mb12 := a2m * b12
 fit <- sem(mod, dat)
 fit
 parameterEstimates(fit)
-serial_parallel_latent <- dat
-usethis::use_data(serial_parallel_latent, overwrite = TRUE)
+data_serial_parallel_latent <- dat
+usethis::use_data(data_serial_parallel_latent, overwrite = TRUE)
 

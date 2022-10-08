@@ -57,4 +57,4 @@
 #'   \item{y6}{Indicator of `fy2`. Numeric.}
 #' }
 #'
-"serial_parallel_latent"
+"data_serial_parallel_latent"
