@@ -26,6 +26,7 @@ reference:
   - indirect_effect
   - all_indirect_paths
   - indirect_effects_from_list
+  - total_indirect_effect
 - title: Presenting and Exploring the Effects
 - contents:
   - index_of_mome
