@@ -217,7 +217,7 @@ indirect_effects_from_list <- function(object, add_sig = TRUE) {
     rownames(out) <- path_names
     has_boot_ci <- isTRUE(!is.null(object[[1]]$boot_ci))
     if (has_boot_ci) {
-        ci0 <- sapply(object, stats::confint)
+        ci0 <- t(sapply(object, stats::confint))
         out$CI.lo <- ci0[, 1]
         out$CI.hi <- ci0[, 2]
         if (add_sig) {
