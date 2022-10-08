@@ -2,10 +2,21 @@
 % Please edit documentation in R/boot2est_lm.R
 \name{lm2boot_out}
 \alias{lm2boot_out}
+\alias{lm2boot_out_parallel}
 \title{Bootstrap Estimates for \code{lm}
 Outputs}
 \usage{
 lm2boot_out(outputs, R = 100, seed = NULL, progress = TRUE)
+
+lm2boot_out_parallel(
+  outputs,
+  R = 100,
+  seed = NULL,
+  parallel = FALSE,
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  make_cluster_args = list(),
+  progress = TRUE
+)
 }
 \arguments{
 \item{outputs}{A list of \code{lm} class
@@ -15,12 +26,33 @@ objects, or the output of \code{\link[=lm2list]{lm2list()}}
 \item{R}{The number of bootstrap
 samples. Default is 100.}
 
-\item{seed}{The seed for the
-bootstrapping. Default is \code{NULL} and
-seed is not set.}
+\item{seed}{The seed for the random
+resampling. Default is \code{NULL}.}
 
-\item{progress}{Whether progress will
-be displayed. Default is \code{TRUE}.}
+\item{progress}{Logical. Display
+progress or not. Default is \code{TRUE}.}
+
+\item{parallel}{Logical. Whether
+parallel processing will be used.
+Default is \code{NULL}.}
+
+\item{ncores}{Integer. The number of
+CPU cores to use when \code{parallel} is
+\code{TRUE}. Default is the number of
+non-logical cores minus one (one
+minimum). Will raise an error if
+greater than the number of cores
+detected by
+\code{\link[parallel:detectCores]{parallel::detectCores()}}. If
+\code{ncores} is set, it will override
+\code{make_cluster_args}.}
+
+\item{make_cluster_args}{A named list
+of additional arguments to be passed
+to \code{\link[parallel:makeCluster]{parallel::makeCluster()}}. For
+advanced users. See
+\code{\link[parallel:makeCluster]{parallel::makeCluster()}} for
+details. Default is \code{list()}.}
 }
 \value{
 A \code{boot_out}-class object
@@ -73,6 +105,17 @@ that the same set of bootstrap
 samples is used in all subsequent
 analyses.
 }
+\section{Functions}{
+\itemize{
+\item \code{lm2boot_out()}: Generate
+bootstrap estimates using one process
+(serial, without parallelization).
+
+\item \code{lm2boot_out_parallel()}: Generate
+bootstrap estimates using parallel
+processing.
+
+}}
 \examples{
 
 data(data_med_mod_ab1)
