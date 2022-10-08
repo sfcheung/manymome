@@ -1,0 +1,82 @@
+#' @title Confidence Intervals of
+#' Indirect Effects in an 'indirect_list'
+#' Object
+#'
+#' @description Return the  bootstrap
+#' confidence intervals of the indirect
+#' effects
+#' stored in the output of
+#' [many_indirect_effects()].
+#'
+#' @details It extracts and returns the
+#' stored bootstrap confidence interval
+#' if available.
+#'
+#' @param object The output of
+#' [many_indirect_effects()].
+#'
+#' @param parm Ignored for now.
+#'
+#' @param level The level of confidence,
+#' default is .95, returning the 95%
+#' confidence interval.
+#'
+#' @param ...  Additional arguments.
+#' Ignored by the function.
+#'
+#' @return A two-column data frame.
+#' The columns are the limits of
+#' the confidence intervals.
+#'
+#' @seealso [many_indirect_effects()]
+#'
+#' @examples
+#'
+#' library(lavaan)
+#' data(data_serial_parallel)
+#' mod <-
+#' "
+#' m11 ~ x + c1 + c2
+#' m12 ~ m11 + x + c1 + c2
+#' m2 ~ x + c1 + c2
+#' y ~ m12 + m2 + m11 + x + c1 + c2
+#' "
+#' fit <- sem(mod, data_serial_parallel,
+#'            fixed.x = FALSE)
+#' # All indirect paths from x to y
+#' paths <- all_indirect_paths(fit,
+#'                            x = "x",
+#'                            y = "y")
+#' paths
+#' # Indirect effect estimates
+#' # R should be 2000 or even 5000 in real research
+#' # parallel should be used in real research.
+#' fit_boot <- do_boot(fit, R = 45, seed = 8974,
+#'                     parallel = FALSE)
+#' out <- many_indirect_effects(paths,
+#'                              fit = fit,
+#'                              boot_ci = TRUE,
+#'                              boot_out = fit_boot)
+#' out
+#' confint(out)
+#'
+#'
+#'
+#' @export
+
+confint.indirect_list <- function(object, parm = NULL, level = .95, ...) {
+    p <- length(object)
+    if (isTRUE(!is.null(object[[1]]$boot_ci))) {
+        confint0 <- lapply(object, stats::confint,
+                           parm = parm,
+                           level = level, ...)
+        confint0 <- do.call(rbind, confint0)
+        rownames(confint0) <- names(object)
+      } else {
+        warning("Bootstrapping interval not in the object.")
+        confint0 <- array(data = rep(NA, p * 2),
+                          dim = c(p, 2),
+                          dimnames = list(names(object), c("CI.lo", "CI.hi")))
+      }
+    confint0
+  }

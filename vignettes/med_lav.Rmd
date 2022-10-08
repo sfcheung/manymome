@@ -307,6 +307,90 @@ The difference in effects is
 with 95% confidence interval
 `r paste0("[", paste(formatC(confint(out_f1_diff), digits = 3, format = "f"), collapse = ", "), "]")`.
 
+# Identifying All Indirect paths
+
+If there are several indirect paths in
+a model, the function `all_indirect_paths()`
+can
+be used to automatically identify all
+indirect paths (a path with at least
+one mediator) in a model:
+
+```{r all_paths}
+all_paths <- all_indirect_paths(fit = fit_med)
+all_paths
+```
+
+The output is a `all_paths`-class object.
+It can be used in `many_indirect_effects()`
+
+```{r all_indirect_est}
+out_all <- many_indirect_effects(paths = all_paths,
+                                 fit = fit_med,
+                                 boot_ci = TRUE,
+                                 boot_out = boot_out_med)
+```
+
+The first argument, `paths`, is the output
+of `all_indirect_paths()`. The other arguments
+will be passed to `indirect_effect()`.
+
+The output is an `indirect_list`-class
+object, which is a list of the outputs
+of `indirect_effects()`. If printed,
+a summary of the indirect effects will
+be printed:
+
+```{r}
+out_all
+```
+
+The output of `many_indirect_effects()`
+is a named list, names being the path
+name as appeared in the output.
+Individual indirect
+effects can be extracted using either
+the indices or the path names
+
+An example using index:
+
+```{r}
+out1 <- out_all[[1]]
+out1
+```
+
+An example using path name (though not
+recommended because the name is usually
+long):
+
+```{r}
+out2 <- out_all[["f2 -> f3 -> f4"]]
+out2
+```
+
+The extracted element can be used just
+like the outputs of `indirect_effect()`
+in previous section.
+
+Users can customize the search.
+For example, if
+a model has control variables, they can
+be excluded in the search for indirect
+paths. Users can also limit the search
+to paths that start from or end at
+selected variables.
+See the help page of `all_indirect_paths()`
+and `many_indirect_effects()` for the
+arguments available.
+
+Not demonstrated in this document,
+total indirect effect can be computed
+by `total_indirect_effect()` from the
+output of `many_indirect_effects()`.
+Please refer to `vignette("med_lm")`
+for an example and the help page of
+`total_indirect_effect()`.
+
 # Further Information
 
 For further information on `do_boot()`

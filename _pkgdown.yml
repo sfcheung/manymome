@@ -24,6 +24,9 @@ reference:
   - cond_indirect_effects
   - cond_indirect
   - indirect_effect
+  - all_indirect_paths
+  - indirect_effects_from_list
+  - total_indirect_effect
 - title: Presenting and Exploring the Effects
 - contents:
   - index_of_mome
@@ -60,6 +63,9 @@ reference:
   - confint.indirect
   - print.indirect
   - math_indirect
+  - coef.indirect_list
+  - confint.indirect_list
+  - print.indirect_list
   - coef.cond_indirect_effects
   - confint.cond_indirect_effects
   - print.cond_indirect_effects
@@ -71,6 +77,7 @@ reference:
   - print.lm_list
   - summary.lm_list
   - subsetting_wlevels
+  - print.all_paths
 - title: Advanced helpers
   desc: Helper functions exported for advanced users.
 - contents:
