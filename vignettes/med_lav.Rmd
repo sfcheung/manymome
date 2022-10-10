@@ -309,6 +309,11 @@ with 95% confidence interval
 
 # Identifying All Indirect paths
 
+(This section is on functions not yet
+available in the CRAN version. Please
+[install the GitHub version](https://sfcheung.github.io/manymome/#installation)
+to use these functions.)
+
 If there are several indirect paths in
 a model, the function `all_indirect_paths()`
 can

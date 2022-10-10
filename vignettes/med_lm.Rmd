@@ -158,6 +158,12 @@ unless users want to manually control
 the number of CPU cores used in
 parallel processing.
 
+(Parallel processing multiple regression
+is not yet
+available in the CRAN version. Please
+[install the GitHub version](https://sfcheung.github.io/manymome/#installation)
+to use `ncores` with `lm()` outputs.)
+
 # Indirect Effects
 
 We can now use `indirect_effect()` to
@@ -361,6 +367,11 @@ See `help("math_indirect")` for further details on subtraction
 for `indirect_effect()` outputs.
 
 # Identifying All Indirect paths
+
+(This section is on functions not yet
+available in the CRAN version. Please
+[install the GitHub version](https://sfcheung.github.io/manymome/#installation)
+to use these functions.)
 
 If there are several indirect paths in
 a model, the function `all_indirect_paths()`
