@@ -1,4 +1,4 @@
-# manymome 0.1.4.6
+# manymome 0.1.4.7
 
 - Updated README.md with code for installing from CRAN. (0.1.4.1).
 - Fixed a typo in README.md. (0.1.4.2)
@@ -17,6 +17,7 @@
 - Noted in the vignettes that some new functions are not
   yet on the CRAN version and available in the GitHub
   version. (0.1.4.6)
+- Added a print method for the output of `do_boot()`. (0.1.4.7)
 
 # manymome 0.1.4.0
 
