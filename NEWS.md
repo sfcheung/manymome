@@ -1,4 +1,4 @@
-# manymome 0.1.4.5
+# manymome 0.1.4.6
 
 - Updated README.md with code for installing from CRAN. (0.1.4.1).
 - Fixed a typo in README.md. (0.1.4.2)
@@ -14,6 +14,9 @@
   effects for a list of paths. (0.1.4.5)
 - Added `total_indirect_effect()` for computing the total
   indirect effect between two variables. (0.1.4.5)
+- Noted in the vignettes that some new functions are not
+  yet on the CRAN version and available in the GitHub
+  version. (0.1.4.6)
 
 # manymome 0.1.4.0
 
