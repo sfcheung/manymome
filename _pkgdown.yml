@@ -78,6 +78,7 @@ reference:
   - summary.lm_list
   - subsetting_wlevels
   - print.all_paths
+  - print.boot_out
 - title: Advanced helpers
   desc: Helper functions exported for advanced users.
 - contents:

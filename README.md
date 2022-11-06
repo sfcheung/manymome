@@ -8,7 +8,7 @@
 [![R-CMD-check](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-(Version 0.1.4.6, updated on 2022-10-10, [release history](https://sfcheung.github.io/manymome/news/index.html))
+(Version 0.1.5, updated on 2022-11-06, [release history](https://sfcheung.github.io/manymome/news/index.html))
 
 # manymome
 
@@ -18,7 +18,7 @@ moderation, mediation, and/or moderated mediation fitted
 by structural equation modelling (SEM) or estimated
 by multiple regression.
 
-# What It Can Do?
+# What Can It Do?
 
 - Compute an unstandardized or *standardized* *indirect* *effect* or
   *conditional* *indirect* *effect* in a path model.
@@ -39,7 +39,7 @@ nearly any moderators,
 and at any levels of the moderators.
 (See `vignette("manymome")` for details.)
 
-- **Supports Both SEM-Based Modelling and Regression-Based**
+- **Supports Both SEM-Based and Regression-Based Analysis**
 
 Supports structural equation models fitted by `lavaan::sem()` or by
 path models fitted by regression using `lm()`, although the
