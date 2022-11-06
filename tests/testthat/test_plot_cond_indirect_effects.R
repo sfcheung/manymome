@@ -116,10 +116,10 @@ out_mod_mod <- cond_indirect_effects(wlevels = list(c("gpgp2", "gpgp3")),
                                   x = "x", y = "m1",
                                   fit = fit_mod)
 
-plot(out_mod_mod)
+#plot(out_mod_mod)
 
 out_mod_mod <- cond_indirect_effects(wlevels = list(c("gpgp2", "gpgp3")),
                                   x = "x", y = "m1",
                                   fit = fit_mod,
                                   standardized_x = TRUE)
-plot(out_mod_mod)
+#plot(out_mod_mod)
