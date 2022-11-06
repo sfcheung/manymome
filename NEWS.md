@@ -1,24 +1,38 @@
-# manymome 0.1.4.8
+# manymome 0.1.5
 
-- Updated README.md with code for installing from CRAN. (0.1.4.1).
-- Fixed a typo in README.md. (0.1.4.2)
-- Fixed tests that should be done by `expect_equal` on numbers rather
-  than on characters. No change in the functions. (0.1.4.3)
+## New Features
+
+### Bootstrapping
+
 - Added `lm2boot_out_parallel()` to do bootstrapping with
   the output of `lm()` using parallel processing. This is
   the default when `do_boot()` is used on the outputs of
   `lm()`. (0.1.4.4)
+- Added a print method for the output of `do_boot()`. (0.1.4.7)
+
+### Mediation
+
 - Added `all_indirect_paths()` for identifying all indirect paths
   in a model. (0.1.4.5)
 - Added `many_indirect_effects()` for computing indirect
   effects for a list of paths. (0.1.4.5)
 - Added `total_indirect_effect()` for computing the total
   indirect effect between two variables. (0.1.4.5)
+
+## Bug Fixes
+
+- Updated README.md with code for installing from CRAN. (0.1.4.1).
+- Fixed a typo in README.md. (0.1.4.2)
+- Fixed tests that should be done by `expect_equal` on numbers rather
+  than on characters. No change in the functions. (0.1.4.3)
 - Noted in the vignettes that some new functions are not
   yet on the CRAN version and available in the GitHub
   version. (0.1.4.6)
-- Added a print method for the output of `do_boot()`. (0.1.4.7)
 - Fixed a bug in `merge_model_frame()`. (0.1.4.8)
+
+## Others
+
+- Finalize Version 0.1.5 for CRAN.
 
 # manymome 0.1.4.0
 
@@ -38,4 +52,4 @@
 
 # manymome 0.1.1.5
 
-* First public release.
+- First public release.
