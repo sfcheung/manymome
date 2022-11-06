@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +80,7 @@
       <img src="" class="logo" alt=""><h1>Mediation Analysis by Multiple Regression</h1>
                         <h4 data-toc-skip class="author">Shu Fai Cheung &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2022-10-10</h4>
+            <h4 data-toc-skip class="date">2022-11-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/HEAD/vignettes/med_lm.Rmd" class="external-link"><code>vignettes/med_lm.Rmd</code></a></small>
       <div class="d-none name"><code>med_lm.Rmd</code></div>
@@ -152,7 +152,6 @@
 <span>                       seed <span class="op">=</span> <span class="fl">54532</span>,</span>
 <span>                       ncores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p>Please see <code><a href="../articles/do_boot.html">vignette("do_boot")</a></code> or the help page of <code><a href="../reference/do_boot.html">do_boot()</a></code> on how to use this function. In real research, <code>R</code>, the number of bootstrap samples, should be set to 2000 or even 5000. The argument <code>ncores</code> can usually be omitted unless users want to manually control the number of CPU cores used in parallel processing.</p>
-<p>(Parallel processing multiple regression is not yet available in the CRAN version. Please <a href="https://sfcheung.github.io/manymome/#installation">install the GitHub version</a> to use <code>ncores</code> with <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> outputs.)</p>
 </div>
 <div class="section level2">
 <h2 id="indirect-effects">Indirect Effects<a class="anchor" aria-label="anchor" href="#indirect-effects"></a>
@@ -475,7 +474,6 @@
 <div class="section level2">
 <h2 id="identifying-all-indirect-paths">Identifying All Indirect paths<a class="anchor" aria-label="anchor" href="#identifying-all-indirect-paths"></a>
 </h2>
-<p>(This section is on functions not yet available in the CRAN version. Please <a href="https://sfcheung.github.io/manymome/#installation">install the GitHub version</a> to use these functions.)</p>
 <p>If there are several indirect paths in a model, the function <code><a href="../reference/all_indirect_paths.html">all_indirect_paths()</a></code> can be used to automatically identify all indirect paths (a path with at least one mediator) in a model:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">all_paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/all_indirect_paths.html">all_indirect_paths</a></span><span class="op">(</span>fit <span class="op">=</span> <span class="va">fit_lm</span><span class="op">)</span></span>
