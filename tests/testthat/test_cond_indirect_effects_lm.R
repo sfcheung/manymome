@@ -32,8 +32,10 @@ out_4 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", f
                                standardized_x = TRUE, standardized_y = TRUE)
 
 out_5 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
-                               boot_ci = TRUE, seed = 87415)
-fit_boot_out <- lm2boot_out(fit, R = 100, seed = 87415)
+                               boot_ci = TRUE, seed = 87415,
+                               parallel = FALSE, progress = FALSE,
+                               R = 40)
+fit_boot_out <- lm2boot_out(fit, R = 40, seed = 87415, progress = FALSE)
 out_6 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                standardized_x = TRUE,
                                boot_ci = TRUE, boot_out = fit_boot_out)
@@ -66,7 +68,9 @@ outmo_4 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = 
                                standardized_x = TRUE, standardized_y = TRUE)
 
 outmo_5 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
-                               boot_ci = TRUE, seed = 87415)
+                               boot_ci = TRUE, seed = 87415,
+                               parallel = FALSE, progress = FALSE,
+                               R = 40)
 # fit_boot_out <- lm2boot_out(fit, R = 100, seed = 87415)
 outmo_6 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
                                standardized_x = TRUE,
@@ -86,3 +90,4 @@ tmp <- capture.output(print(outmo_5))
 tmp <- capture.output(print(outmo_6))
 tmp <- capture.output(print(outmo_7))
 tmp <- capture.output(print(outmo_8))
+

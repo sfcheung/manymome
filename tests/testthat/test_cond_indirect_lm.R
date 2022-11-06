@@ -9,7 +9,7 @@ lm_m3 <- lm(m3 ~ m2 * w3, dat)
 lm_y <- lm(y ~ m3 * w4 + x * w4, dat)
 fit <- list(lm_m1, lm_m2, lm_m3, lm_y)
 lm2fit <- lm2ptable(fit)
-boot_out <- lm2boot_out(fit, R = 100, seed = 418751)
+boot_out <- lm2boot_out(fit, R = 100, seed = 418751, progress = FALSE)
 boot_est <- lapply(boot_out, function(x) x$est)
 boot_implied_stats <- lapply(boot_out, function(x) x$implied_stats)
 
@@ -48,6 +48,8 @@ out_boot2 <- cond_indirect(x = "x", y = "y",
                      wvalues = wv,
                      boot_ci = TRUE,
                      R = 100,
+                     parallel = FALSE,
+                     progress = FALSE,
                      seed = 418751)
 
 tmp <- capture.output(print(out))
@@ -63,7 +65,8 @@ lm_m3m <- lm(m3 ~ m2, dat)
 lm_ym <- lm(y ~ m3 + x, dat)
 fitm <- lm2list(lm_m1m, lm_m2m, lm_m3m, lm_ym)
 lm2mfit <- lm2ptable(fitm)
-boot_outm <- lm2boot_out(fitm, R = 100, seed = 418751)
+boot_outm <- lm2boot_out(fitm, R = 40, seed = 418751,
+                         progress = FALSE)
 boot_estm <- lapply(boot_outm, function(x) x$est)
 boot_implied_statsm <- lapply(boot_outm, function(x) x$implied_stats)
 
@@ -105,7 +108,7 @@ lm_m3mo <- lm(m3 ~ m2, dat)
 lm_ymo <- lm(y ~ m3 + x, dat)
 fitmo <- lm2list(lm_m1mo, lm_m2mo, lm_m3mo, lm_ymo)
 lm2mofit <- lm2ptable(fitmo)
-boot_outmo <- lm2boot_out(fitmo, R = 100, seed = 418751)
+boot_outmo <- lm2boot_out(fitmo, R = 40, seed = 418751, progress = FALSE)
 boot_estmo <- lapply(boot_outmo, function(x) x$est)
 boot_implied_statsmo <- lapply(boot_outmo, function(x) x$implied_stats)
 
@@ -180,7 +183,9 @@ outm_boot2 <- indirect_effect(x = "x", y = "y",
                      m = c("m1", "m2", "m3"),
                      fit = fitm,
                      boot_ci = TRUE,
-                     R = 100,
+                     R = 40,
+                     parallel = FALSE,
+                     progress = FALSE,
                      seed = 43175)
 outm_boot2_preboot <- indirect_effect(x = "x", y = "y",
                      m = c("m1", "m2", "m3"),

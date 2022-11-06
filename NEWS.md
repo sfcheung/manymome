@@ -1,4 +1,4 @@
-# manymome 0.1.5
+# manymome 0.1.6
 
 ## New Features
 
@@ -32,7 +32,7 @@
 
 ## Others
 
-- Finalize Version 0.1.5 for CRAN.
+- Finalize Version 0.1.6 for CRAN.
 
 # manymome 0.1.4.0
 

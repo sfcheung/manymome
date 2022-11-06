@@ -15,7 +15,8 @@ y ~ b2 * m2 + cp * x
 indmome := d1 * b1 * b2
 "
 fitmo1 <- sem(modmo1, dat, meanstructure = TRUE, fixed.x = FALSE)
-fitmo1_boot_out <- do_boot(fitmo1, R = 50, seed = 1234, parallel = FALSE)
+fitmo1_boot_out <- do_boot(fitmo1, R = 40, seed = 1234, parallel = FALSE,
+                           progress = FALSE)
 
 modmo2 <-
 "
@@ -25,7 +26,7 @@ y ~ b2 * m2 + cp * x
 indmome := d2 * b2 * a
 "
 fitmo2 <- sem(modmo2, dat, meanstructure = TRUE, fixed.x = FALSE)
-fitmo2_boot_out <- do_boot(fitmo2, R = 50, seed = 1234, parallel = FALSE)
+fitmo2_boot_out <- do_boot(fitmo2, R = 40, seed = 1234, parallel = FALSE, progress = FALSE)
 
 modmomo1 <-
 "
@@ -35,7 +36,7 @@ y ~ b2 * m2 + g4 * w4 + d4 * m2w4 + cp *x
 indmomo := d1 * d4 * b1
 "
 fitmomo1 <- sem(modmomo1, dat, meanstructure = TRUE, fixed.x = FALSE)
-fitmomo1_boot_out <- do_boot(fitmomo1, R = 50, seed = 1234, parallel = FALSE)
+fitmomo1_boot_out <- do_boot(fitmomo1, R = 40, seed = 1234, parallel = FALSE, progress = FALSE)
 
 
 modmomo2 <-
@@ -46,19 +47,19 @@ y ~ b2 * m2 + cp *x
 indmomo := d1 * d2 * b2
 "
 fitmomo2 <- sem(modmomo2, dat, meanstructure = TRUE, fixed.x = FALSE)
-fitmomo2_boot_out <- do_boot(fitmomo2, R = 50, seed = 1234, parallel = FALSE)
+fitmomo2_boot_out <- do_boot(fitmomo2, R = 40, seed = 1234, parallel = FALSE, progress = FALSE)
 
 set.seed(1234)
-fitmo1_boot <- sem(modmo1, dat, meanstructure = TRUE, fixed.x = FALSE, se = "boot", bootstrap = 50,
+fitmo1_boot <- sem(modmo1, dat, meanstructure = TRUE, fixed.x = FALSE, se = "boot", bootstrap = 40,
                 warn = FALSE)
 set.seed(1234)
-fitmo2_boot <- sem(modmo2, dat, meanstructure = TRUE, fixed.x = FALSE, se = "boot", bootstrap = 50,
+fitmo2_boot <- sem(modmo2, dat, meanstructure = TRUE, fixed.x = FALSE, se = "boot", bootstrap = 40,
                 warn = FALSE)
 set.seed(1234)
-fitmomo1_boot <- sem(modmomo1, dat, meanstructure = TRUE, fixed.x = FALSE, se = "boot", bootstrap = 50,
+fitmomo1_boot <- sem(modmomo1, dat, meanstructure = TRUE, fixed.x = FALSE, se = "boot", bootstrap = 40,
                 warn = FALSE)
 set.seed(1234)
-fitmomo2_boot <- sem(modmomo2, dat, meanstructure = TRUE, fixed.x = FALSE, se = "boot", bootstrap = 50,
+fitmomo2_boot <- sem(modmomo2, dat, meanstructure = TRUE, fixed.x = FALSE, se = "boot", bootstrap = 40,
                 warn = FALSE)
 
 ind_mome1 <- index_of_mome(x = "x", y = "y", m = c("m1", "m2"), w = "w1",
