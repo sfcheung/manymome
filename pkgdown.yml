@@ -1,5 +1,5 @@
-pandoc: 2.7.3
-pkgdown: 2.0.6
+pandoc: 2.19.2
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   do_boot: do_boot.html
@@ -8,7 +8,7 @@ articles:
   med_lm: med_lm.html
   mod_levels: mod_levels.html
   mome_lm: mome_lm.html
-last_built: 2022-11-06T12:01Z
+last_built: 2022-12-31T03:09Z
 urls:
   reference: https://sfcheung.github.io/manymome/reference
   article: https://sfcheung.github.io/manymome/articles
