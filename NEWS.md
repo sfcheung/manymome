@@ -1,3 +1,10 @@
+# manymome 0.1.7
+
+## Miscellaneous
+
+- Modified some tests to accommodate a change in `lavaan`
+  on handling random seed.
+
 # manymome 0.1.6
 
 ## New Features
