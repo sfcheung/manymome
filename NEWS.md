@@ -1,9 +1,10 @@
-# manymome 0.1.7
+# manymome 0.1.8
 
 ## Miscellaneous
 
 - Modified some tests to accommodate a change in `lavaan`
   on handling random seed.
+- Made some tests run faster to meet CRAN requirements.
 
 # manymome 0.1.6
 

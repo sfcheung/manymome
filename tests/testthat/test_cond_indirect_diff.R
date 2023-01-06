@@ -14,7 +14,7 @@ y ~ m3 + x + w4 + m3w4
 "
 fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
 set.seed(4456)
-fit_boot <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "boot", bootstrap = 100,
+fit_boot <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "boot", bootstrap = 40,
                 warn = FALSE)
 
 out_mm_1 <- mod_levels_list("w1", "w4", fit = fit)

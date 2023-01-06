@@ -1,3 +1,5 @@
+skip_on_cran()
+# This test is long and should be tested locally.
 library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
