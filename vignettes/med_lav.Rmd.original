@@ -1,7 +1,7 @@
 ---
 title: "Mediation Models with Latent Variables"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2023-01-06"
+date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -11,7 +11,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = ""
+)
+```
 
 # Introduction
 
@@ -25,18 +31,10 @@ intervals for these effects.
 This is the sample dataset used for
 illustration:
 
-
-```r
+```{r data}
 library(manymome)
 dat <- data_sem
 print(round(head(dat), 1))
-#>    x01  x02  x03  x04  x05  x06  x07  x08  x09  x10  x11  x12  x13  x14
-#> 1  0.2 -1.1 -0.2  2.7 -0.1  2.2  1.7  0.2 -1.9 -2.1 -0.9 -0.5 -0.6 -1.5
-#> 2  0.1  0.3  0.9 -0.5 -1.0  0.8 -0.3 -0.9  0.8 -1.5 -0.7  1.0 -0.8 -1.4
-#> 3 -0.1 -0.1  2.4 -0.2 -0.1 -1.6 -1.9 -2.4 -0.3 -0.2  0.5 -0.7  0.2 -0.7
-#> 4 -0.5  1.1 -0.7 -0.5  1.0 -0.6 -0.9 -1.5 -1.5 -0.5 -2.2 -1.6 -0.8 -0.2
-#> 5 -0.8 -0.3 -0.9 -0.2  0.3 -2.1 -0.5 -1.8 -0.1 -2.7 -0.4 -1.2  0.3 -2.6
-#> 6  0.9  0.3  0.3  1.0 -1.8 -0.4  0.8 -0.4 -1.1 -2.1  0.4  0.0 -0.3  2.2
 ```
 
 This dataset has 14 variables, which
@@ -45,12 +43,70 @@ are indicators of four latent factors:
 
 Suppose this is the model to be fitted:
 
-![plot of chunk mde_lav_draw_model](mde_lav_draw_model-1.png)
+```{r mde_lav_draw_model, echo = FALSE}
+# Adapted from vignette("set_sem_layout")
+# of the semptools package
+library(semPlot)
+suppressMessages(library(lavaan))
+mod <-
+"
+f1 =~ x01 + x02 + x03
+f2 =~ x04 + x05 + x06 + x07
+f3 =~ x08 + x09 + x10
+f4 =~ x11 + x12 + x13 + x14
+f3 ~  f1 + f2
+f4 ~  f1 + f3
+"
+fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
+p <- semPaths(fit0,
+              residuals = FALSE,
+              sizeMan = 5,
+              node.width = 1,
+              edge.label.cex = .75,
+              style = "ram",
+              mar = c(5, 5, 5, 5),
+              DoNotPlot = TRUE)
+if (requireNamespace("semptools", quietly = TRUE)) {
+    library(semptools)
+    indicator_order  <- c("x07", "x06", "x05", "x04",
+                          "x03", "x02", "x01",
+                          "x14", "x13", "x12", "x11",
+                          "x08", "x09", "x10")
+    indicator_factor <- c( "f2",  "f2",  "f2",  "f2",
+                          "f1",  "f1",  "f1",
+                          "f4",  "f4",  "f4",  "f4",
+                          "f3",  "f3",  "f3")
+    factor_layout <- matrix(c("f1",   NA,   NA,
+                              NA, "f3", "f4",
+                            "f2",   NA,   NA), byrow = TRUE, 3, 3)
+    factor_point_to <- matrix(c("left",     NA,      NA,
+                                    NA, "down", "right",
+                                "left",     NA,      NA), byrow = TRUE, 3, 3)
+    indicator_push <- c(f3 = 1.5,
+                        f4 = 1.5,
+                        f1 = 1.5,
+                        f2 = 1.5)
+    indicator_spread <- c(f1 = 1.5,
+                          f2 = 1.75,
+                          f3 = 1,
+                          f4 = 1.75)
+    p2 <- set_sem_layout(p,
+                        indicator_order = indicator_order,
+                        indicator_factor = indicator_factor,
+                        factor_layout = factor_layout,
+                        factor_point_to = factor_point_to,
+                        indicator_push = indicator_push,
+                        indicator_spread = indicator_spread)
+    p2 <- set_curve(p2, c("f2 ~~ f1" = -2.5))
+    plot(p2)
+  } else {
+    plot(p)
+  }
+```
 
 This model can be fitted by `lavaan::sem()`:
 
-
-```r
+```{r fit_mode}
 mod <-
 "
 f1 =~ x01 + x02 + x03
@@ -67,15 +123,9 @@ fit_med <- sem(model = mod,
 These are the estimates of
 the paths between the latent variables:
 
-
-```r
+```{r est}
 est <- parameterEstimates(fit_med)
 est[est$op == "~", ]
-#>    lhs op rhs   est    se     z pvalue ci.lower ci.upper
-#> 15  f3  ~  f1 0.243 0.120 2.018  0.044    0.007    0.479
-#> 16  f3  ~  f2 0.326 0.102 3.186  0.001    0.125    0.526
-#> 17  f4  ~  f1 0.447 0.125 3.592  0.000    0.203    0.692
-#> 18  f4  ~  f3 0.402 0.090 4.445  0.000    0.225    0.579
 ```
 
 Suppose that for the free parameters,
@@ -92,8 +142,7 @@ using `do_boot()` to generate the
 bootstrap estimates to be used by
 `indirect_effect()`:
 
-
-```r
+```{r do_boo}
 boot_out_med <- do_boot(fit_med,
                         R = 100,
                         seed = 98171,
@@ -123,8 +172,7 @@ resampling and estimation.
 Suppose we want to estimate the indirect
 effect from `f1` to `f4` through `f3`:
 
-
-```r
+```{r med_f1_f3_f4}
 out_f1f3f4 <- indirect_effect(x = "f1",
                               y = "f4",
                               m = "f3",
@@ -132,37 +180,17 @@ out_f1f3f4 <- indirect_effect(x = "f1",
                               boot_ci = TRUE,
                               boot_out = boot_out_med)
 out_f1f3f4
-#> 
-#> == Indirect Effect ==
-#>                                       
-#>  Path:               f1 -> f3 -> f4   
-#>  Indirect Effect     0.098            
-#>  95.0% Bootstrap CI: [-0.007 to 0.216]
-#> 
-#> Computation Formula:
-#>   (b.f3~f1)*(b.f4~f3)
-#> Computation:
-#>   (0.24307)*(0.40186)
-#> 
-#> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
-#> 
-#> Coefficients of Component Paths:
-#>   Path Coefficient
-#>  f3~f1       0.243
-#>  f4~f3       0.402
 ```
 
 The indirect effect is
-0.098,
+`r formatC(coef(out_f1f3f4), digits = 3, format = "f")`,
 with 95% confidence interval
-[-0.007, 0.216].
+`r paste0("[", paste(formatC(confint(out_f1f3f4), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 Similarly, we can estimate the indirect
 effect from `f2` to `f4` through `f3`:
 
-
-```r
+```{r med_f2_f3_f4}
 out_f2f3f4 <- indirect_effect(x = "f2",
                               y = "f4",
                               m = "f3",
@@ -170,31 +198,12 @@ out_f2f3f4 <- indirect_effect(x = "f2",
                               boot_ci = TRUE,
                               boot_out = boot_out_med)
 out_f2f3f4
-#> 
-#> == Indirect Effect ==
-#>                                      
-#>  Path:               f2 -> f3 -> f4  
-#>  Indirect Effect     0.131           
-#>  95.0% Bootstrap CI: [0.049 to 0.254]
-#> 
-#> Computation Formula:
-#>   (b.f3~f2)*(b.f4~f3)
-#> Computation:
-#>   (0.32561)*(0.40186)
-#> 
-#> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
-#> 
-#> Coefficients of Component Paths:
-#>   Path Coefficient
-#>  f3~f2       0.326
-#>  f4~f3       0.402
 ```
 
 The indirect effect is
-0.131,
+`r formatC(coef(out_f2f3f4), digits = 3, format = "f")`,
 with 95% confidence interval
-[0.049, 0.254].
+`r paste0("[", paste(formatC(confint(out_f2f3f4), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 # Standardized Indirect effects
 
@@ -203,8 +212,7 @@ effect from `f1` to `f4` through `f3`
 can be estimated by setting
 `standardized_x` and `standardized_y` to `TRUE:
 
-
-```r
+```{r med_f1_f3_f4_std}
 std_f1f3f4 <- indirect_effect(x = "f1",
                               y = "f4",
                               m = "f3",
@@ -214,39 +222,17 @@ std_f1f3f4 <- indirect_effect(x = "f1",
                               standardized_x = TRUE,
                               standardized_y = TRUE)
 std_f1f3f4
-#> 
-#> == Indirect Effect ==
-#>                                       
-#>  Path:               f1 -> f3 -> f4   
-#>  Indirect Effect     0.073            
-#>  95.0% Bootstrap CI: [-0.005 to 0.157]
-#> 
-#> Computation Formula:
-#>   (b.f3~f1)*(b.f4~f3)*sd_f1/sd_f4
-#> Computation:
-#>   (0.24307)*(0.40186)*(0.87470)/(1.17421)
-#> 
-#> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
-#> 
-#> Coefficients of Component Paths:
-#>   Path Coefficient
-#>  f3~f1       0.243
-#>  f4~f3       0.402
-#> 
-#> NOTE: The effects of the component paths are from the model, not standardized.
 ```
 
 The standardized indirect effect is
-0.073,
+`r formatC(coef(std_f1f3f4), digits = 3, format = "f")`,
 with 95% confidence interval
-[-0.005, 0.157].
+`r paste0("[", paste(formatC(confint(std_f1f3f4), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 Similarly, we can estimate the standardized indirect
 effect from `f2` to `f4` through `f3`:
 
-
-```r
+```{r std_f2_f3_f4}
 std_f2f3f4 <- indirect_effect(x = "f2",
                               y = "f4",
                               m = "f3",
@@ -256,33 +242,12 @@ std_f2f3f4 <- indirect_effect(x = "f2",
                               standardized_x = TRUE,
                               standardized_y = TRUE)
 std_f2f3f4
-#> 
-#> == Indirect Effect ==
-#>                                      
-#>  Path:               f2 -> f3 -> f4  
-#>  Indirect Effect     0.116           
-#>  95.0% Bootstrap CI: [0.044 to 0.204]
-#> 
-#> Computation Formula:
-#>   (b.f3~f2)*(b.f4~f3)*sd_f2/sd_f4
-#> Computation:
-#>   (0.32561)*(0.40186)*(1.03782)/(1.17421)
-#> 
-#> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
-#> 
-#> Coefficients of Component Paths:
-#>   Path Coefficient
-#>  f3~f2       0.326
-#>  f4~f3       0.402
-#> 
-#> NOTE: The effects of the component paths are from the model, not standardized.
 ```
 
 The standardized indirect effect is
-0.116,
+`r formatC(coef(std_f2f3f4), digits = 3, format = "f")`,
 with 95% confidence interval
-[0.044, 0.204].
+`r paste0("[", paste(formatC(confint(std_f2f3f4), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 Note that, unlike the confidence intervals in
 `lavaan::standardizedSolution()`, the confidence
@@ -305,57 +270,26 @@ so that it can be added to the indirect effect
 computed above with bootstrap confidence
 interval:
 
-
-```r
+```{r direct_f1f4}
 out_f1f4 <- indirect_effect(x = "f1",
                             y = "f4",
                             fit = fit_med,
                             boot_ci = TRUE,
                             boot_out = boot_out_med)
 out_f1f4
-#> 
-#> ==  Effect ==
-#>                                      
-#>  Path:               f1 -> f4        
-#>  Effect              0.447           
-#>  95.0% Bootstrap CI: [0.203 to 0.753]
-#> 
-#> Computation Formula:
-#>   (b.f4~f1)
-#> Computation:
-#>   (0.44749)
-#> 
-#> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
 ```
 
 We can now compute the total effect:
 
-
-```r
+```{r total_f1f4}
 out_f1_total <- out_f1f3f4 + out_f1f4
 out_f1_total
-#> 
-#> == Indirect Effect ==
-#>                                       
-#>  Path:                f1 -> f3 -> f4  
-#>  Path:                f1 -> f4        
-#>  Function of Effects: 0.545           
-#>  95.0% Bootstrap CI:  [0.318 to 0.858]
-#> 
-#> Computation of the Function of Effects:
-#>  (f1->f3->f4)
-#> +(f1->f4) 
-#> 
-#> 
-#> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
 ```
 
 The total effect of `f1` on `f4` is
-0.545,
+`r formatC(coef(out_f1_total), digits = 3, format = "f")`,
 with 95% confidence interval
-[0.318, 0.858].
+`r paste0("[", paste(formatC(confint(out_f1_total), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 # Differences in Effects
 
@@ -364,31 +298,15 @@ example, we can compute the difference between
 the indirect effect of `f1` on `f4` and the
 direct effect of `f1` on `f4`:
 
-
-```r
+```{r ind_diff}
 out_f1_diff <- out_f1f4 - out_f1f3f4
 out_f1_diff
-#> 
-#> == Indirect Effect ==
-#>                                        
-#>  Path:                f1 -> f4         
-#>  Path:                f1 -> f3 -> f4   
-#>  Function of Effects: 0.350            
-#>  95.0% Bootstrap CI:  [-0.027 to 0.700]
-#> 
-#> Computation of the Function of Effects:
-#>  (f1->f4)
-#> -(f1->f3->f4) 
-#> 
-#> 
-#> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
 ```
 
 The difference in effects is
-0.350,
+`r formatC(coef(out_f1_diff), digits = 3, format = "f")`,
 with 95% confidence interval
-[-0.027, 0.700].
+`r paste0("[", paste(formatC(confint(out_f1_diff), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 # Identifying All Indirect paths
 
@@ -399,23 +317,15 @@ be used to automatically identify all
 indirect paths (a path with at least
 one mediator) in a model:
 
-
-```r
+```{r all_paths}
 all_paths <- all_indirect_paths(fit = fit_med)
 all_paths
-#> Call: 
-#> all_indirect_paths(fit = fit_med)
-#> Path(s): 
-#>   path          
-#> 1 f1 -> f3 -> f4
-#> 2 f2 -> f3 -> f4
 ```
 
 The output is a `all_paths`-class object.
 It can be used in `many_indirect_effects()`
 
-
-```r
+```{r all_indirect_est}
 out_all <- many_indirect_effects(paths = all_paths,
                                  fit = fit_med,
                                  boot_ci = TRUE,
@@ -432,19 +342,8 @@ of `indirect_effects()`. If printed,
 a summary of the indirect effects will
 be printed:
 
-
-```r
+```{r}
 out_all
-#> 
-#> ==  Indirect Effect(s)   ==
-#>                  ind  CI.lo CI.hi Sig
-#> f1 -> f3 -> f4 0.098 -0.007 0.216    
-#> f2 -> f3 -> f4 0.131  0.049 0.254 Sig
-#> 
-#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
-#>    nonparametric bootstrapping with 100 samples.
-#>  - The 'ind' column shows the indirect effects.
-#> 
 ```
 
 The output of `many_indirect_effects()`
@@ -456,58 +355,18 @@ the indices or the path names
 
 An example using index:
 
-
-```r
+```{r}
 out1 <- out_all[[1]]
 out1
-#> 
-#> == Indirect Effect ==
-#>                                       
-#>  Path:               f1 -> f3 -> f4   
-#>  Indirect Effect     0.098            
-#>  95.0% Bootstrap CI: [-0.007 to 0.216]
-#> 
-#> Computation Formula:
-#>   (b.f3~f1)*(b.f4~f3)
-#> Computation:
-#>   (0.24307)*(0.40186)
-#> 
-#> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
-#> 
-#> Coefficients of Component Paths:
-#>   Path Coefficient
-#>  f3~f1       0.243
-#>  f4~f3       0.402
 ```
 
 An example using path name (though not
 recommended because the name is usually
 long):
 
-
-```r
+```{r}
 out2 <- out_all[["f2 -> f3 -> f4"]]
 out2
-#> 
-#> == Indirect Effect ==
-#>                                      
-#>  Path:               f2 -> f3 -> f4  
-#>  Indirect Effect     0.131           
-#>  95.0% Bootstrap CI: [0.049 to 0.254]
-#> 
-#> Computation Formula:
-#>   (b.f3~f2)*(b.f4~f3)
-#> Computation:
-#>   (0.32561)*(0.40186)
-#> 
-#> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
-#> 
-#> Coefficients of Component Paths:
-#>   Path Coefficient
-#>  f3~f2       0.326
-#>  f4~f3       0.402
 ```
 
 The extracted element can be used just

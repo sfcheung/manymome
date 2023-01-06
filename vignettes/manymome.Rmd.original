@@ -1,7 +1,7 @@
 ---
 title: "manymome"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2023-01-06"
+date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -11,7 +11,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = ""
+)
+```
 
 # Introduction
 
@@ -98,23 +104,45 @@ variables in advance in Stage 1, even for paths with moderators.
 
 This is the sample data set comes with the package:
 
-
-```r
+```{r dataset}
 library(manymome)
 dat <- data_med_mod_ab
 print(head(dat), digits = 3)
-#>       x   w1   w2    m    y    c1   c2
-#> 1  9.27 4.97 2.66 3.46 8.80  9.26 3.14
-#> 2 10.79 4.13 3.33 4.05 7.37 10.71 5.80
-#> 3 11.10 5.91 3.32 4.04 8.24 10.60 5.45
-#> 4  9.53 4.78 2.32 3.54 8.37  9.22 3.83
-#> 5 10.00 4.38 2.95 4.65 8.39  9.58 4.26
-#> 6 12.25 5.81 4.04 4.73 9.65  9.51 4.01
 ```
 
 Suppose this is the model being fitted:
 
-![plot of chunk manymome_draw_model](manymome_draw_model-1.png)
+```{r manymome_draw_model, echo = FALSE}
+library(semPlot)
+suppressMessages(library(lavaan))
+dat$xw1 <- dat$x * dat$w1
+dat$mw2 <- dat$m * dat$w2
+mod <-
+"
+xw1 ~ x + w1
+m ~ xw1
+mw2 ~ m + w2
+y ~ mw2
+y ~ x
+"
+fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c("w1", NA, NA, NA, "w2",
+                   NA, NA, "m", NA, NA,
+                   NA, "xw1", NA, "mw2", NA,
+                   "x", NA, NA, NA, "y"), 4, 5, byrow = TRUE)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 10,
+              asize = 10,
+              DoNotPlot = TRUE)
+p$graphAttributes$Nodes$width[c(1, 3)] <- .01
+p$graphAttributes$Nodes$height[c(1, 3)] <- .01
+p$graphAttributes$Edges$asize[c(1, 4)] <- 0
+plot(p)
+```
 
 The models are intended to be simple enough for
 illustration but complicated enough to
@@ -151,8 +179,7 @@ on the functions in `manymome`).
 To illustrate a more realistic scenario,
 two control variables, `c1` and `c2`, are also included.
 
-
-```r
+```{r fit_model}
 library(lavaan)
 # Form the product terms
 dat$w1x <- dat$w1 * dat$x
@@ -188,21 +215,8 @@ deviations are sample statistics.
 
 These are the parameter estimates of the paths:
 
-
-```r
+```{r estimates}
 parameterEstimates(fit)[parameterEstimates(fit)$op == "~", ]
-#>    lhs op rhs    est    se      z pvalue ci.lower ci.upper
-#> 1    m  ~   x -0.663 0.533 -1.244  0.213   -1.707    0.381
-#> 2    m  ~  w1 -2.290 1.010 -2.267  0.023   -4.269   -0.310
-#> 3    m  ~ w1x  0.204 0.101  2.023  0.043    0.006    0.401
-#> 4    m  ~  c1 -0.020 0.079 -0.251  0.801   -0.175    0.135
-#> 5    m  ~  c2 -0.130 0.090 -1.444  0.149   -0.306    0.046
-#> 6    y  ~   m -0.153 0.248 -0.616  0.538   -0.638    0.333
-#> 7    y  ~  w2 -0.921 0.401 -2.300  0.021   -1.706   -0.136
-#> 8    y  ~ w2m  0.204 0.079  2.579  0.010    0.049    0.359
-#> 9    y  ~   x  0.056 0.086  0.653  0.514   -0.113    0.225
-#> 10   y  ~  c1 -0.102 0.081 -1.261  0.207   -0.261    0.056
-#> 11   y  ~  c2 -0.108 0.087 -1.249  0.212   -0.279    0.062
 ```
 
 The moderation effects of both `w1` and  `w2`
@@ -227,8 +241,7 @@ The function `do_boot()` is used to generate and store bootstrap
 estimates as well as implied variances of variables, which are needed
 to estimate standardized effects.
 
-
-```r
+```{r do_boot}
 fit_boot <- do_boot(fit = fit,
                     R = 100,
                     seed = 53253,
@@ -264,8 +277,7 @@ all subsequent analyses on this model.
 To compute conditional indirect effects and form bootstrap confidence
 intervals, we can use `cond_indirect_effects()`.
 
-
-```r
+```{r cond_indirect}
 out_cond <- cond_indirect_effects(wlevels =c("w1", "w2"),
                                   x = "x",
                                   y = "y",
@@ -297,27 +309,8 @@ These are the major arguments:
 
 This is the output:
 
-
-```r
+```{r out_cond}
 out_cond
-#> 
-#> == Conditional indirect effects ==
-#> 
-#>  Path: x -> m -> y
-#>  Conditional on moderator(s): w1, w2
-#>  Moderator(s) represented by: w1, w2
-#> 
-#>      [w1]    [w2]  (w1)  (w2)   ind  CI.lo CI.hi Sig   m~x   y~m
-#> 1 M+1.0SD M+1.0SD 6.173 4.040 0.399  0.121 0.654 Sig 0.596 0.671
-#> 2 M+1.0SD M-1.0SD 6.173 2.055 0.158 -0.012 0.359     0.596 0.266
-#> 3 M-1.0SD M+1.0SD 4.038 4.040 0.107 -0.166 0.372     0.160 0.671
-#> 4 M-1.0SD M-1.0SD 4.038 2.055 0.043 -0.066 0.216     0.160 0.266
-#> 
-#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
-#>    nonparametric bootstrapping with 100 samples.
-#>  - The 'ind' column shows the indirect effects.
-#>  - 'm~x','y~m' is/are the path coefficient(s) along the path conditional
-#>    on the moderators.
 ```
 
 For two or more moderators, the default levels for numeric moderators
@@ -328,9 +321,9 @@ As shown
 above, among these four sets of levels, the indirect effect from `x` to `y` through
 `m` is significant only when both `w1` and `w2` are one SD
 above their means. The indirect effect at these levels of `w1` and `w2` are
-0.399, with
+`r formatC(coef(out_cond)[1], digits = 3, format = "f")`, with
 95% bootstrap confidence interval
-[0.121, 0.654].
+[`r paste0(formatC(unlist(confint(out_cond)[1, ]), digits = 3, format = "f"), collapse = ", ")`].
 
 #### Examine the Effect at a Particular Set of Levels of the Moderators
 
@@ -341,30 +334,8 @@ can be used, with the first argument the output of
 For example, this shows the details on the computation of the
 indirect effect when both `w1` and `w2` are one SD above their means (row 1):
 
-
-```r
+```{r get_one}
 get_one_cond_indirect_effect(out_cond, 1)
-#> 
-#> == Conditional Indirect Effect   ==
-#>                                                     
-#>  Path:                        x -> m -> y           
-#>  Moderators:                  w1, w2                
-#>  Conditional Indirect Effect: 0.399                 
-#>  95.0% Bootstrap CI:          [0.121 to 0.654]      
-#>  When:                        w1 = 6.173, w2 = 4.040
-#> 
-#> Computation Formula:
-#>   (b.m~x + (b.w1x)*(w1))*(b.y~m + (b.w2m)*(w2))
-#> Computation:
-#>   ((-0.66304) + (0.20389)*(6.17316))*((-0.15271) + (0.20376)*(4.04049))
-#> 
-#> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
-#> 
-#> Coefficients of Component Paths:
-#>  Path Conditional Effect Original Coefficient
-#>   m~x              0.596               -0.663
-#>   y~m              0.671               -0.153
 ```
 
 #### Changing the Levels of the Moderators
@@ -387,8 +358,7 @@ set both `standardized_x` and `standardized_y` to `TRUE`.
 
 This is the result when both `x` and `y` are standardized:
 
-
-```r
+```{r cond_stdxy}
 out_cond_stdxy <- cond_indirect_effects(wlevels =c("w1", "w2"),
                                         x = "x",
                                         y = "y",
@@ -405,39 +375,19 @@ do bootstrapping again.
 
 This is the output:
 
-
-```r
+```{r out_cond_stdxy}
 out_cond_stdxy
-#> 
-#> == Conditional indirect effects ==
-#> 
-#>  Path: x -> m -> y
-#>  Conditional on moderator(s): w1, w2
-#>  Moderator(s) represented by: w1, w2
-#> 
-#>      [w1]    [w2]  (w1)  (w2)   std  CI.lo CI.hi Sig   m~x   y~m   ind
-#> 1 M+1.0SD M+1.0SD 6.173 4.040 0.401  0.129 0.607 Sig 0.596 0.671 0.399
-#> 2 M+1.0SD M-1.0SD 6.173 2.055 0.159 -0.013 0.351     0.596 0.266 0.158
-#> 3 M-1.0SD M+1.0SD 4.038 4.040 0.108 -0.154 0.416     0.160 0.671 0.107
-#> 4 M-1.0SD M-1.0SD 4.038 2.055 0.043 -0.068 0.224     0.160 0.266 0.043
-#> 
-#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
-#>    nonparametric bootstrapping with 100 samples.
-#>  - std: The standardized indirect effects. 
-#>  - ind: The unstandardized indirect effects.
-#>  - 'm~x','y~m' is/are the path coefficient(s) along the path conditional
-#>    on the moderators.
 ```
 
 The standardized indirect effect when both `w1` and `w2` are
 one SD above mean is
-0.401, with
+`r formatC(coef(out_cond_stdxy)[1], digits = 3, format = "f")`, with
 95% bootstrap confidence interval
-[0.129, 0.607].
+[`r paste0(formatC(unlist(confint(out_cond_stdxy)[1, ]), digits = 3, format = "f"), collapse = ", ")`].
 
 That is, when both `w1` and `w2` are one SD above their
 means, if `x` increases by one SD, it leads to an increase
-of 0.401
+of `r formatC(coef(out_cond_stdxy)[1], digits = 3, format = "f")`
 SD of `y` through `m`.
 
 ## Index of Moderated Moderated Mediation
@@ -446,8 +396,7 @@ The index of moderated moderated mediation (Hayes, 2018) can
 be estimated, along with bootstrap confidence interval, using
 the function `index_of_momome()`:
 
-
-```r
+```{r momome}
 out_momome <- index_of_momome(x = "x",
                               y = "y",
                               m = "m",
@@ -478,37 +427,14 @@ These are the major arguments:
 
 This is the result:
 
-
-```r
+```{r out_momome}
 out_momome
-#> 
-#> == Conditional indirect effects ==
-#> 
-#>  Path: x -> m -> y
-#>  Conditional on moderator(s): w1, w2
-#>  Moderator(s) represented by: w1, w2
-#> 
-#>   [w1] [w2] (w1) (w2)    ind  CI.lo CI.hi Sig    m~x    y~m
-#> 1    1    1    1    1 -0.023 -0.244 0.353     -0.459  0.051
-#> 2    1    0    1    0  0.070 -0.238 0.705     -0.459 -0.153
-#> 3    0    1    0    1 -0.034 -0.335 0.496     -0.663  0.051
-#> 4    0    0    0    0  0.101 -0.272 0.936     -0.663 -0.153
-#> 
-#> == Index of Moderated Moderated Mediation ==
-#> 
-#> Levels compared:
-#> (Row 1 - Row 2) - (Row 3 - Row 4)
-#> 
-#>       x y Index  CI.lo CI.hi
-#> Index x y 0.042 -0.011 0.118
-#> 
-#>  - [CI.lo, CI.hi]: 95% percentile confidence interval.
 ```
 
 The index of moderated moderated mediation is
-0.042,
+`r formatC(coef(out_momome), digits = 3, format = "f")`,
 with 95% bootstrap confidence interval
-[-0.011, 0.118].
+[`r paste0(formatC(unlist(confint(out_momome)[1, ]), digits = 3, format = "f"), collapse = ", ")`].
 
 Note that this index is specifically for the change when
 `w1` or `w2` increases by one unit.
@@ -519,12 +445,40 @@ The `manymome` package also has a function to compute the *index of
 moderated mediation* (Hayes, 2015). Suppose we modify the model and remove
 one of the moderators:
 
-![plot of chunk manymome_plot_mome1](manymome_plot_mome1-1.png)
+```{r manymome_plot_mome1, echo = FALSE}
+library(semPlot)
+suppressMessages(library(lavaan))
+dat$xw1 <- dat$x * dat$w1
+dat$mw2 <- dat$m * dat$w2
+mod <-
+"
+xw1 ~ x + w1
+m ~ xw1
+# mw2 ~ m + w2
+y ~ m
+y ~ x
+"
+fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c("w1", NA, "m", NA, NA,
+                   NA, "xw1", NA, "mw2", NA,
+                   "x", NA, NA, NA, "y"), 3, 5, byrow = TRUE)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 10,
+              asize = 10,
+              DoNotPlot = TRUE)
+p$graphAttributes$Nodes$width[c(1)] <- .01
+p$graphAttributes$Nodes$height[c(1)] <- .01
+p$graphAttributes$Edges$asize[c(1)] <- 0
+plot(p)
+```
 
 This is the `lavaan` model:
 
-
-```r
+```{r fit_mome1}
 library(lavaan)
 dat$w1x <- dat$w1 * dat$x
 mod2 <-
@@ -540,26 +494,14 @@ fit2 <- sem(model = mod2,
 
 These are the parameter estimates of the paths:
 
-
-```r
+```{r est_mome1}
 parameterEstimates(fit2)[parameterEstimates(fit2)$op == "~", ]
-#>   lhs op rhs    est    se      z pvalue ci.lower ci.upper
-#> 1   m  ~   x -0.663 0.533 -1.244  0.213   -1.707    0.381
-#> 2   m  ~  w1 -2.290 1.010 -2.267  0.023   -4.269   -0.310
-#> 3   m  ~ w1x  0.204 0.101  2.023  0.043    0.006    0.401
-#> 4   m  ~  c1 -0.020 0.079 -0.251  0.801   -0.175    0.135
-#> 5   m  ~  c2 -0.130 0.090 -1.444  0.149   -0.306    0.046
-#> 6   y  ~   m  0.434 0.114  3.815  0.000    0.211    0.657
-#> 7   y  ~   x  0.053 0.093  0.570  0.569   -0.130    0.237
-#> 8   y  ~  c1 -0.108 0.080 -1.352  0.177   -0.265    0.049
-#> 9   y  ~  c2 -0.077 0.085 -0.904  0.366   -0.243    0.090
 ```
 
 We generate the bootstrap estimates first (`R` should be
 2000 or even 5000 in real research):
 
-
-```r
+```{r do_boot2}
 fit2_boot <- do_boot(fit = fit2,
                     R = 100,
                     seed = 53253,
@@ -570,8 +512,7 @@ The function `index_of_mome()` can be used to compute
 the index of moderated mediation of `w1` on the
 path `x -> m -> y`:
 
-
-```r
+```{r mome}
 out_mome <- index_of_mome(x = "x",
                           y = "y",
                           m = "m",
@@ -584,34 +525,14 @@ out_mome <- index_of_mome(x = "x",
 The arguments are nearly identical to those of `index_of_momome()`,
 except that only `w` needs to be specified. This is the output:
 
-
-```r
+```{r out_mome}
 out_mome
-#> 
-#> == Conditional indirect effects ==
-#> 
-#>  Path: x -> m -> y
-#>  Conditional on moderator(s): w1
-#>  Moderator(s) represented by: w1
-#> 
-#>   [w1] (w1)    ind  CI.lo CI.hi Sig    m~x   y~m
-#> 1    1    1 -0.199 -0.698 0.304     -0.459 0.434
-#> 2    0    0 -0.288 -0.938 0.340     -0.663 0.434
-#> 
-#> == Index of Moderated Mediation ==
-#> 
-#> Levels compared: Row 1 - Row 2
-#> 
-#>       x y Index  CI.lo CI.hi
-#> Index x y 0.088 -0.032 0.228
-#> 
-#>  - [CI.lo, CI.hi]: 95% percentile confidence interval.
 ```
 
 In this model, the index of moderated mediation is
-0.088,
+`r formatC(coef(out_mome), digits = 3, format = "f")`,
 with 95% bootstrap confidence interval
-[-0.032, 0.228].
+[`r paste0(formatC(unlist(confint(out_mome)[1, ]), digits = 3, format = "f"), collapse = ", ")`].
 The indirect effect of `x` on `y` through `m` does
 not significantly change when
 `w1` increases by one unit.
@@ -627,24 +548,38 @@ The package can also be used for a mediation model.
 
 This is the sample data set that comes with the package:
 
-
-```r
+```{r dataset_me}
 library(manymome)
 dat <- data_serial
 print(head(dat), digits = 3)
-#>       x   m1    m2     y        c1   c2
-#> 1 12.12 20.6  9.33  9.00  0.109262 6.01
-#> 2  9.81 18.2  9.47 11.56 -0.124014 6.42
-#> 3 10.11 20.3 10.05  9.35  4.278608 5.34
-#> 4 10.07 19.7 10.17 11.41  1.245356 5.59
-#> 5 11.91 20.5 10.05 14.26 -0.000932 5.34
-#> 6  9.13 16.5  8.93 10.01  1.802727 5.91
 ```
 
 Suppose this is the model being fitted, with `c1` and
 `c2` the control variables.
 
-![plot of chunk manymome_draw_med](manymome_draw_med-1.png)
+```{r manymome_draw_med, echo = FALSE}
+library(semPlot)
+suppressMessages(library(lavaan))
+mod <-
+"m1 ~ x + c1 + c2
+m2 ~ m1 + x + c1 + c2
+y ~ m2 + m1 + x + c1 + c2
+"
+fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c(NA, "m1", "m2", NA,
+                     "x", NA, NA, "y",
+                     "c1", NA, NA, NA,
+                     "c2", NA, NA, NA), 4, 4, byrow = TRUE)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 10,
+              asize = 5,
+              DoNotPlot = TRUE)
+plot(p)
+```
 
 ## Fitting the Model
 
@@ -652,8 +587,7 @@ Fitting this model in `lavaan::sem()` is very simple.
 With `manymome`, there is no need to label paths
 or define user parameters for the indirect effects.
 
-
-```r
+```{r}
 mod_med <- "
 m1 ~ x + c1 + c2
 m2 ~ m1 + x + c1 + c2
@@ -666,22 +600,8 @@ fit_med <- sem(model = mod_med,
 
 These are the estimates of the paths:
 
-
-```r
+```{r est_med}
 parameterEstimates(fit_med)[parameterEstimates(fit_med)$op == "~", ]
-#>    lhs op rhs    est    se      z pvalue ci.lower ci.upper
-#> 1   m1  ~   x  0.822 0.092  8.907  0.000    0.641    1.003
-#> 2   m1  ~  c1  0.171 0.089  1.930  0.054   -0.003    0.346
-#> 3   m1  ~  c2 -0.189 0.091 -2.078  0.038   -0.367   -0.011
-#> 4   m2  ~  m1  0.421 0.099  4.237  0.000    0.226    0.615
-#> 5   m2  ~   x -0.116 0.123 -0.946  0.344   -0.357    0.125
-#> 6   m2  ~  c1  0.278 0.090  3.088  0.002    0.101    0.454
-#> 7   m2  ~  c2 -0.162 0.092 -1.756  0.079   -0.343    0.019
-#> 8    y  ~  m2  0.521 0.221  2.361  0.018    0.088    0.953
-#> 9    y  ~  m1 -0.435 0.238 -1.830  0.067   -0.902    0.031
-#> 10   y  ~   x  0.493 0.272  1.811  0.070   -0.040    1.026
-#> 11   y  ~  c1  0.099 0.208  0.476  0.634   -0.308    0.506
-#> 12   y  ~  c2 -0.096 0.207 -0.465  0.642   -0.501    0.309
 ```
 
 ## Estimate Indirect Effects {#est_indirect}
@@ -699,8 +619,7 @@ to do both bootstrapping and estimate the indirect effect.
 For example, this is the call for the indirect effect
 from `x` to `y` through `m1` and `m2`:
 
-
-```r
+```{r do_indirect}
 out_med <- indirect_effect(x = "x",
                            y = "y",
                            m = c("m1", "m2"),
@@ -737,35 +656,14 @@ only if the number of processes (cores) is the same.
 
 This is the output:
 
-
-```r
+```{r out_med}
 out_med
-#> 
-#> == Indirect Effect ==
-#>                                        
-#>  Path:               x -> m1 -> m2 -> y
-#>  Indirect Effect     0.180             
-#>  95.0% Bootstrap CI: [0.043 to 0.332]  
-#> 
-#> Computation Formula:
-#>   (b.m1~x)*(b.m2~m1)*(b.y~m2)
-#> Computation:
-#>   (0.82244)*(0.42078)*(0.52077)
-#> 
-#> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
-#> 
-#> Coefficients of Component Paths:
-#>   Path Coefficient
-#>   m1~x       0.822
-#>  m2~m1       0.421
-#>   y~m2       0.521
 ```
 
 The indirect effect from `x` to `y` through `m1` and `m2`
-is 0.180,
+is `r formatC(coef(out_med), digits = 3, format = "f")`,
 with a 95% confidence interval of
-[0.043, 0.332],
+[`r paste0(formatC(confint(out_med), digits = 3, format = "f"), collapse = ", ")`],
 significantly different from zero (*p* < .05).
 
 Because bootstrap confidence interval is requested, the
@@ -785,8 +683,7 @@ indirect effect, set both `standardized_x` and
 This is the call to compute the (completely) standardized
 indirect effect:
 
-
-```r
+```{r do_indirect_stdxy}
 out_med_stdxy <- indirect_effect(x = "x",
                                  y = "y",
                                  m = c("m1", "m2"),
@@ -796,36 +693,14 @@ out_med_stdxy <- indirect_effect(x = "x",
                                  standardized_x = TRUE,
                                  standardized_y = TRUE)
 out_med_stdxy
-#> 
-#> == Indirect Effect ==
-#>                                        
-#>  Path:               x -> m1 -> m2 -> y
-#>  Indirect Effect     0.086             
-#>  95.0% Bootstrap CI: [0.022 to 0.157]  
-#> 
-#> Computation Formula:
-#>   (b.m1~x)*(b.m2~m1)*(b.y~m2)*sd_x/sd_y
-#> Computation:
-#>   (0.82244)*(0.42078)*(0.52077)*(0.95010)/(1.99960)
-#> 
-#> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
-#> 
-#> Coefficients of Component Paths:
-#>   Path Coefficient
-#>   m1~x       0.822
-#>  m2~m1       0.421
-#>   y~m2       0.521
-#> 
-#> NOTE: The effects of the component paths are from the model, not standardized.
 ```
 
 The indirect effect from `x` to `y` through `m1` and `m2`
-is 0.086,
+is `r formatC(coef(out_med_stdxy), digits = 3, format = "f")`,
 with a 95% confidence interval of
-[0.022, 0.157],
+[`r paste0(formatC(confint(out_med_stdxy), digits = 3, format = "f"), collapse = ", ")`],
 significantly different from zero (*p* < .05).
-One SD increase of `x` leads to 0.086
+One SD increase of `x` leads to `r formatC(coef(out_med_stdxy), digits = 3, format = "f")`
 increase in SD of `y` through `m1` and `m2`.
 
 ## Estimating Indirect Effects For *Any* Paths
@@ -837,8 +712,7 @@ For example, to estimate and test the
 indirect effect from `x` through `m2` to `y`, bypassing
 `m1`, simply set `x` to `"x"`, `y` to `"y"`, and `m` to `"m2"`:
 
-
-```r
+```{r}
 out_x_m2_y <- indirect_effect(x = "x",
                               y = "y",
                               m = "m2",
@@ -846,25 +720,6 @@ out_x_m2_y <- indirect_effect(x = "x",
                               boot_ci = TRUE,
                               boot_out = out_med)
 out_x_m2_y
-#> 
-#> == Indirect Effect ==
-#>                                       
-#>  Path:               x -> m2 -> y     
-#>  Indirect Effect     -0.060           
-#>  95.0% Bootstrap CI: [-0.233 to 0.066]
-#> 
-#> Computation Formula:
-#>   (b.m2~x)*(b.y~m2)
-#> Computation:
-#>   (-0.11610)*(0.52077)
-#> 
-#> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
-#> 
-#> Coefficients of Component Paths:
-#>  Path Coefficient
-#>  m2~x      -0.116
-#>  y~m2       0.521
 ```
 
 The indirect effect along this path is not significant.
@@ -892,8 +747,7 @@ Two of them have been computed above (`out_med`
 and `out_x_m2_y`). We compute the indirect
 effect in `x -> m1 -> y`
 
-
-```r
+```{r xm1y}
 out_x_m1_y <- indirect_effect(x = "x",
                               y = "y",
                               m = "m1",
@@ -901,129 +755,50 @@ out_x_m1_y <- indirect_effect(x = "x",
                               boot_ci = TRUE,
                               boot_out = out_med)
 out_x_m1_y
-#> 
-#> == Indirect Effect ==
-#>                                       
-#>  Path:               x -> m1 -> y     
-#>  Indirect Effect     -0.358           
-#>  95.0% Bootstrap CI: [-0.699 to 0.008]
-#> 
-#> Computation Formula:
-#>   (b.m1~x)*(b.y~m1)
-#> Computation:
-#>   (0.82244)*(-0.43534)
-#> 
-#> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
-#> 
-#> Coefficients of Component Paths:
-#>  Path Coefficient
-#>  m1~x       0.822
-#>  y~m1      -0.435
 ```
 
 We can then "add" the indirect effects to get the total
 indirect effect:
 
-
-```r
+```{r total_ind}
 total_ind <- out_med + out_x_m1_y + out_x_m2_y
 total_ind
-#> 
-#> == Indirect Effect ==
-#>                                         
-#>  Path:                x -> m1 -> m2 -> y
-#>  Path:                x -> m1 -> y      
-#>  Path:                x -> m2 -> y      
-#>  Function of Effects: -0.238            
-#>  95.0% Bootstrap CI:  [-0.645 to 0.098] 
-#> 
-#> Computation of the Function of Effects:
-#>  ((x->m1->m2->y)
-#> +(x->m1->y))
-#> +(x->m2->y) 
-#> 
-#> 
-#> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
 ```
 
 The total indirect effect is
--0.238,
+`r formatC(coef(total_ind), digits = 3, format = "f")`,
 not significant. This is an example
 of inconsistent mediation: some of the indirect Effects
 are positive and some are negative:
 
-
-```r
+```{r each_ind}
 coef(out_med)
-#>       y~x 
-#> 0.1802238
 coef(out_x_m1_y)
-#>        y~x 
-#> -0.3580391
 coef(out_x_m2_y)
-#>       y~x 
-#> -0.060461
 ```
 
 Similarly, the total effect of `x` on `y` can be computed by adding
 all the effects, direct or indirect. The direct effect can
 be computed with `m` not set:
 
-
-```r
+```{r xdirect}
 out_x_direct <- indirect_effect(x = "x",
                                 y = "y",
                                 fit = fit_med,
                                 boot_ci = TRUE,
                                 boot_out = out_med)
 out_x_direct
-#> 
-#> ==  Effect ==
-#>                                       
-#>  Path:               x -> y           
-#>  Effect              0.493            
-#>  95.0% Bootstrap CI: [-0.075 to 1.014]
-#> 
-#> Computation Formula:
-#>   (b.y~x)
-#> Computation:
-#>   (0.49285)
-#> 
-#> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
 ```
 
 This is the total effect:
 
-
-```r
+```{r total_effect}
 total_effect <- out_med + out_x_m1_y + out_x_m2_y + out_x_direct
 total_effect
-#> 
-#> == Indirect Effect ==
-#>                                         
-#>  Path:                x -> m1 -> m2 -> y
-#>  Path:                x -> m1 -> y      
-#>  Path:                x -> m2 -> y      
-#>  Path:                x -> y            
-#>  Function of Effects: 0.255             
-#>  95.0% Bootstrap CI:  [-0.239 to 0.661] 
-#> 
-#> Computation of the Function of Effects:
-#>  (((x->m1->m2->y)
-#> +(x->m1->y))
-#> +(x->m2->y))
-#> +(x->y) 
-#> 
-#> 
-#> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
 ```
 
 The total effect is
-0.255,
+`r formatC(coef(total_effect), digits = 3, format = "f")`,
 not significant. This illustrates that total effect can be misleading
 when the component paths are of different signs.
 

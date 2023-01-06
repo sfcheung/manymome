@@ -1,10 +1,11 @@
-# manymome 0.1.8
+# manymome 0.1.9
 
 ## Miscellaneous
 
 - Modified some tests to accommodate a change in `lavaan`
   on handling random seed.
 - Made some tests run faster to meet CRAN requirements.
+- Used precomputed results to speed up the building of vignettes.
 
 # manymome 0.1.6
 
