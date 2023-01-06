@@ -1,7 +1,7 @@
 ---
 title: "Generating Bootstrap Estimates"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2023-01-06"
+date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -11,7 +11,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = ""
+)
+```
 
 # Introduction
 
@@ -32,18 +38,10 @@ this purpose.
 
 This data set will be used for illustration:
 
-
-```r
+```{r data}
 library(manymome)
 dat <- data_med
 head(dat)
-#>           x        m        y       c1       c2
-#> 1  9.931992 17.89644 20.73893 1.426513 6.103290
-#> 2  8.331493 17.92150 22.91594 2.940388 3.832698
-#> 3 10.327471 17.83178 22.14201 3.012678 5.770532
-#> 4 11.196969 20.01750 25.05038 3.120056 4.654931
-#> 5 11.887811 22.08645 28.47312 4.440018 3.959033
-#> 6  8.198297 16.95198 20.73549 2.495083 3.763712
 ```
 
 It has one predictors (`x`), one mediator (`m`),
@@ -54,14 +52,38 @@ This simple mediation model with two
 control variables (`c1` and `c2`)
 will be fitted:
 
-![plot of chunk do_boot_draw_model](do_boot_draw_model-1.png)
+```{r do_boot_draw_model, echo = FALSE}
+library(semPlot)
+suppressMessages(library(lavaan))
+mod <-
+"
+m ~ x + c1 + c2
+y ~ m + x + c1 + c2
+"
+fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c(NA, "m", NA,
+                     "x", NA, "y",
+                     "c1", NA, NA,
+                     "c2", NA, NA), 4, 3, byrow = TRUE)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 10,
+              asize = 10,
+              DoNotPlot = TRUE)
+plot(p)
+text(label = "(Covariances excluded for readability)",
+     x = .25, y = -1,
+     adj = c(.5, .5))
+```
 
 # Models Fitted by `lavaan::sem()`
 
 We first fit the model by `lavaan::sem()`:
 
-
-```r
+```{r fit_by_lavaan}
 mod <-
 "
 m ~ x + c1 + c2
@@ -71,52 +93,6 @@ fit_lavaan <- sem(model = mod, data = dat,
            fixed.x = FALSE,
            estimator = "MLR")
 summary(fit_lavaan)
-#> lavaan 0.6-12 ended normally after 1 iterations
-#> 
-#>   Estimator                                         ML
-#>   Optimization method                           NLMINB
-#>   Number of model parameters                        15
-#> 
-#>   Number of observations                           100
-#> 
-#> Model Test User Model:
-#>                                               Standard      Robust
-#>   Test Statistic                                 0.000       0.000
-#>   Degrees of freedom                                 0           0
-#> 
-#> Parameter Estimates:
-#> 
-#>   Standard errors                             Sandwich
-#>   Information bread                           Observed
-#>   Observed information based on                Hessian
-#> 
-#> Regressions:
-#>                    Estimate  Std.Err  z-value  P(>|z|)
-#>   m ~                                                 
-#>     x                 0.935    0.075   12.437    0.000
-#>     c1                0.198    0.079    2.507    0.012
-#>     c2               -0.168    0.099   -1.703    0.089
-#>   y ~                                                 
-#>     m                 0.785    0.233    3.363    0.001
-#>     x                 0.508    0.323    1.573    0.116
-#>     c1                0.140    0.188    0.747    0.455
-#>     c2               -0.154    0.214   -0.720    0.471
-#> 
-#> Covariances:
-#>                    Estimate  Std.Err  z-value  P(>|z|)
-#>   x ~~                                                
-#>     c1                0.026    0.121    0.211    0.833
-#>     c2                0.100    0.084    1.186    0.235
-#>   c1 ~~                                               
-#>     c2               -0.092    0.109   -0.841    0.400
-#> 
-#> Variances:
-#>                    Estimate  Std.Err  z-value  P(>|z|)
-#>    .m                 0.681    0.085    7.976    0.000
-#>    .y                 4.030    0.580    6.944    0.000
-#>     x                 1.102    0.150    7.338    0.000
-#>     c1                1.218    0.161    7.540    0.000
-#>     c2                0.685    0.073    9.340    0.000
 ```
 
 Suppose we would like to use robust "sandwich"
@@ -136,8 +112,7 @@ of `m` and `y`, which are not free parameters
 but are needed to form the confidence
 interval of the *standardized* indirect effect.
 
-
-```r
+```{r do_boot_lavaan}
 boot_out_lavaan <- do_boot(fit = fit_lavaan,
                            R = 100,
                            ncores = 1)
@@ -175,8 +150,7 @@ If bootstrapping takes an appreciable time to
 run, it is recommended to save
 the output using `saveRDS()` or `save()`:
 
-
-```r
+```{r do_boot_lav_save, eval = FALSE}
 ### Use saveRDS() ###
 # Save the output
 saveRDS(boot_out_lavaan, file = "boot_out_lavaan.rds")
@@ -203,27 +177,8 @@ and `ok`.
 
 This is the content of `est` of the first list:
 
-
-```r
+```{r boot_out_est}
 boot_out_lavaan[[1]]$est
-#>    lhs op rhs    est
-#> 1    m  ~   x  0.825
-#> 2    m  ~  c1  0.212
-#> 3    m  ~  c2 -0.085
-#> 4    y  ~   m  1.046
-#> 5    y  ~   x  0.327
-#> 6    y  ~  c1 -0.094
-#> 7    y  ~  c2 -0.039
-#> 8    m ~~   m  0.711
-#> 9    y ~~   y  3.455
-#> 10   x ~~   x  1.027
-#> 11   x ~~  c1  0.083
-#> 12   x ~~  c2 -0.060
-#> 13  c1 ~~  c1  1.062
-#> 14  c1 ~~  c2 -0.112
-#> 15  c2 ~~  c2  0.477
-#> 16   m r2   m  0.526
-#> 17   y r2   y  0.400
 ```
 
 The content is just the first four columns of
@@ -232,22 +187,8 @@ the output of `lavaan::parameterEstimates()`.
 This is the content of `implied_stats` of the
 first list:
 
-
-```r
+```{r boot_out_implied_stats}
 boot_out_lavaan[[1]]$implied_stats
-#> $cov
-#>    m      y      x      c1     c2    
-#> m   1.502                            
-#> y   1.832  5.759                     
-#> x   0.869  1.240  1.027              
-#> c1  0.303  0.249  0.083  1.062       
-#> c2 -0.114 -0.146 -0.060 -0.112  0.477
-#> 
-#> $mean
-#> numeric(0)
-#> 
-#> $mean_lv
-#> numeric(0)
 ```
 
 It has three elements. `cov` is the implied
@@ -278,8 +219,7 @@ retrieve he stored bootstrap estimates
 to form the bootstrap confidence
 intervals, if requested.
 
-
-```r
+```{r indirect_lav}
 out_lavaan <- indirect_effect(x = "x",
                               y = "y",
                               m = "m",
@@ -287,25 +227,6 @@ out_lavaan <- indirect_effect(x = "x",
                               boot_ci = TRUE,
                               boot_out = boot_out_lavaan)
 out_lavaan
-#> 
-#> == Indirect Effect ==
-#>                                      
-#>  Path:               x -> m -> y     
-#>  Indirect Effect     0.733           
-#>  95.0% Bootstrap CI: [0.338 to 1.250]
-#> 
-#> Computation Formula:
-#>   (b.m~x)*(b.y~m)
-#> Computation:
-#>   (0.93469)*(0.78469)
-#> 
-#> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
-#> 
-#> Coefficients of Component Paths:
-#>  Path Coefficient
-#>   m~x       0.935
-#>   y~m       0.785
 ```
 
 Reusing the bootstrap estimates can ensure that
@@ -319,59 +240,17 @@ multiple regression. We need to fit two
 regression models, one predicts `m` and
 the other predicts `y`:
 
-
-```r
+```{r fit_by_lm}
 # Fit Models
 lm_m <- lm(m ~ x + c1 + c2, dat)
 lm_y <- lm(y ~ m + x + c1 + c2, dat)
 #
 # ###### Regression: Predict m ######
 summary(lm_m)
-#> 
-#> Call:
-#> lm(formula = m ~ x + c1 + c2, data = dat)
-#> 
-#> Residuals:
-#>      Min       1Q   Median       3Q      Max 
-#> -1.82810 -0.56016 -0.08481  0.52524  2.09155 
-#> 
-#> Coefficients:
-#>             Estimate Std. Error t value Pr(>|t|)    
-#> (Intercept)  9.68941    0.91979  10.534   <2e-16 ***
-#> x            0.93469    0.08083  11.563   <2e-16 ***
-#> c1           0.19778    0.07678   2.576   0.0115 *  
-#> c2          -0.16841    0.10305  -1.634   0.1055    
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-#> 
-#> Residual standard error: 0.8425 on 96 degrees of freedom
-#> Multiple R-squared:  0.5981,	Adjusted R-squared:  0.5855 
-#> F-statistic: 47.62 on 3 and 96 DF,  p-value: < 2.2e-16
 #
 # ###### Regression: Predict y ######
 #
 summary(lm_y)
-#> 
-#> Call:
-#> lm(formula = y ~ m + x + c1 + c2, data = dat)
-#> 
-#> Residuals:
-#>     Min      1Q  Median      3Q     Max 
-#> -4.1336 -1.3365 -0.1014  1.4597  6.5470 
-#> 
-#> Coefficients:
-#>             Estimate Std. Error t value Pr(>|t|)   
-#> (Intercept)   4.4152     3.3016   1.337  0.18432   
-#> m             0.7847     0.2495   3.145  0.00222 **
-#> x             0.5077     0.3057   1.661  0.10004   
-#> c1            0.1405     0.1941   0.724  0.47093   
-#> c2           -0.1544     0.2554  -0.604  0.54695   
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-#> 
-#> Residual standard error: 2.06 on 95 degrees of freedom
-#> Multiple R-squared:  0.3576,	Adjusted R-squared:  0.3305 
-#> F-statistic: 13.22 on 4 and 95 DF,  p-value: 1.336e-08
 ```
 
 To use `do_boot()`, we first combine the
@@ -379,22 +258,16 @@ regression outputs to one object using
 `lm2list()`. The output is an
 `lm_list`-class object.
 
-
-```r
+```{r lm2list}
 fit_lm <- lm2list(lm_m, lm_y)
 fit_lm
-#> 
-#> The models:
-#> m ~ x + c1 + c2
-#> y ~ m + x + c1 + c2
 ```
 
 We can now use `do_boot()` as described
 above, using the output of `lm2list()`
 instead of the output of `lavaan::sem()`:
 
-
-```r
+```{r do_boot_lm}
 boot_out_lm <- do_boot(fit = fit_lm,
                        R = 100,
                        seed = 98715,
@@ -425,19 +298,8 @@ two elements: `est` and `implied_stats`.
 
 This is the content of `est` of the first list:
 
-
-```r
+```{r boot_out_est_lm}
 boot_out_lm[[1]]$est
-#>   lhs op rhs        est
-#> 1   m  ~   x  0.9583396
-#> 2   m  ~  c1  0.2808811
-#> 3   m  ~  c2 -0.3040130
-#> 4   m ~1      9.9351030
-#> 5   y  ~   m  0.3986059
-#> 6   y  ~   x  0.5626298
-#> 7   y  ~  c1  0.5010449
-#> 8   y  ~  c2 -0.3614863
-#> 9   y ~1     11.7212742
 ```
 
 The content is similar in structure
@@ -448,20 +310,8 @@ based on `lm()`.
 This is the content of `implied_stats` of the
 first list:
 
-
-```r
+```{r boot_out_implied_stats_lm}
 boot_out_lm[[1]]$implied_stats
-#> $cov
-#>             m          x         c1          c2          y
-#> m   1.7489520 0.99463099 0.32168750 -0.15480736  1.4738922
-#> x   0.9946310 1.03034065 0.04418569  0.01709202  0.9921266
-#> c1  0.3216875 0.04418569 1.13244802  0.12743087  0.6744295
-#> c2 -0.1548074 0.01709202 0.12743087  0.68082701 -0.2343517
-#> y   1.4738922 0.99212663 0.67442949 -0.23435172  5.4383227
-#> 
-#> $mean
-#>         m         x        c1        c2         y 
-#> 18.487194  9.848009  2.329366  5.065314 23.967238
 ```
 
 It has two elements. `cov` is the
@@ -481,8 +331,7 @@ When calling `indirect_effect()` or
 argument `boot_out` to the output of
 `do_bout()`:
 
-
-```r
+```{r indirect_lm}
 out_lm <- indirect_effect(x = "x",
                           y = "y",
                           m = "m",
@@ -490,25 +339,6 @@ out_lm <- indirect_effect(x = "x",
                           boot_ci = TRUE,
                           boot_out = boot_out_lm)
 out_lm
-#> 
-#> == Indirect Effect ==
-#>                                      
-#>  Path:               x -> m -> y     
-#>  Indirect Effect     0.733           
-#>  95.0% Bootstrap CI: [0.277 to 1.206]
-#> 
-#> Computation Formula:
-#>   (b.m~x)*(b.y~m)
-#> Computation:
-#>   (0.93469)*(0.78469)
-#> 
-#> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
-#> 
-#> Coefficients of Component Paths:
-#>  Path Coefficient
-#>   m~x       0.935
-#>   y~m       0.785
 ```
 
 # Further Information
