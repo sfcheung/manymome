@@ -4,12 +4,12 @@ citEntry(entry = "Manual",
   title        = "manymome: An R package for computing the indirect effects, conditional effects, and conditional indirect effects",
   author       = c(as.person("S. F. Cheung"),
                    as.person("S.-H. Cheung")),
-  year         = "2022",
-  note         = "R package version 0.1.7",
+  year         = "2023",
+  note         = "R package version 0.1.8",
   url          = "https://github.com/sfcheung/manymome/",
   textVersion  =
-  paste("Cheung, S. F., & Cheung, S.-H. (2022).",
+  paste("Cheung, S. F., & Cheung, S.-H. (2023).",
         "manymome: An R package for computing the indirect effects, conditional effects, and conditional indirect effects.",
-        "R package version 0.1.7",
+        "R package version 0.1.8",
         "https://github.com/sfcheung/manymome/")
 )
