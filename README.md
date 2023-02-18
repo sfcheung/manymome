@@ -3,12 +3,13 @@
 [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![CRAN status](https://www.r-pkg.org/badges/version/manymome?color=blue)](https://CRAN.R-project.org/package=manymome)
 [![CRAN: Release Date](https://www.r-pkg.org/badges/last-release/manymome?color=blue)](https://cran.r-project.org/package=manymome)
+[![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/grand-total/manymome?color=blue)](https://r-pkg.org/pkg/manymome)
 [![Code size](https://img.shields.io/github/languages/code-size/sfcheung/manymome.svg)](https://github.com/sfcheung/manymome)
 [![Last Commit at Main](https://img.shields.io/github/last-commit/sfcheung/manymome.svg)](https://github.com/sfcheung/manymome/commits/main)
 [![R-CMD-check](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-(Version 0.1.9, updated on 2023-01-06, [release history](https://sfcheung.github.io/manymome/news/index.html))
+(Version 0.1.9.1, updated on 2023-02-08, [release history](https://sfcheung.github.io/manymome/news/index.html))
 
 # manymome
 
