@@ -1,3 +1,7 @@
+# manymome 0.1.9.1
+
+- Update badges in README.md. (0.1.9.1)
+
 # manymome 0.1.9
 
 ## Miscellaneous
