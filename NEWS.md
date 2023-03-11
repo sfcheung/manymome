@@ -1,6 +1,7 @@
-# manymome 0.1.9.1
+# manymome 0.1.9.2
 
-- Update badges in README.md. (0.1.9.1)
+- Updated badges in README.md. (0.1.9.1)
+- Updated pkgdown site. (0.1.9.2)
 
 # manymome 0.1.9
 

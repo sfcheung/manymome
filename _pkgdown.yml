@@ -1,8 +1,22 @@
 destination: docs
 
 url: https://sfcheung.github.io/manymome/
+
 template:
   bootstrap: 5
+  bootswatch: journal
+  theme: a11y-light
+  bslib:
+    pkgdown-nav-height: 80px
+    bg: "#EFEFEF"
+    fg: "#000000"
+    primary: "#C76A00"
+    base_font: {google: "Hind"}
+    heading_font: {google: "Hind"}
+    code_font: {google: "Oxygen Mono"}
+
+navbar:
+  bg: primary
 
 articles:
 - title: Articles
