@@ -62,11 +62,23 @@ print.cond_indirect_effects <- function(x, digits = 3,
   my_call <- attr(x, "call")
   cc_call <- x_i$cond_indirect_call
   boot_ci <- !is.null(x_i$boot_ci)
+  has_ci <- FALSE
+  ci_type <- NULL
+  if (!is.null(x_i$boot_ci)) {
+      has_ci <- TRUE
+      ci_type <- "boot"
+      ind_name <- "boot_indirect"
+    }
+  if (!is.null(x_i$mc_ci)) {
+      has_ci <- TRUE
+      ci_type <- "mc"
+      ind_name <- "mc_indirect"
+    }
   standardized_x <- x_i$standardized_x
   standardized_y <- x_i$standardized_y
   level <- x_i$level
   has_m <- isTRUE(!is.null(x_i$m))
-  R <- ifelse(boot_ci, length(x_i$boot_indirect),
+  R <- ifelse(has_ci, length(x_i[[ind_name]]),
                        NA)
   x0 <- attr(x, "x")
   y0 <- attr(x, "y")
@@ -79,7 +91,7 @@ print.cond_indirect_effects <- function(x, digits = 3,
       path <- paste(x0, "->", y0)
     }
   out <- lapply(x, format_numeric, digits = digits)
-  if (boot_ci) {
+  if (has_ci) {
       Sig <- ifelse((x$CI.lo > 0) | (x$CI.hi < 0), "Sig", "")
       i <- which(names(out) == "CI.hi")
       j <- length(out)
@@ -109,15 +121,19 @@ print.cond_indirect_effects <- function(x, digits = 3,
   cat("\n\n")
   NextMethod()
   if (annotation) {
-      if (boot_ci) {
+      if (has_ci) {
           level_str <- paste0(formatC(level * 100, 1, format = "f"), "%")
           cat("\n ")
+          tmp1 <- switch(ci_type,
+                    boot = "percentile confidence intervals by nonparametric bootstrapping",
+                    mc = "Monte Carlo confidence intervals")
+          tmp2 <- switch(ci_type,
+                    boot = paste("with", R, "samples."),
+                    mc = paste("with", R, "replications."))
           cat(strwrap(paste("- [CI.lo to CI.hi] are",
                             level_str,
-                            "percentile confidence intervals",
-                            "by nonparametric bootstrapping with",
-                            R,
-                            "samples."), exdent = 3), sep = "\n")
+                            tmp1,
+                            tmp2), exdent = 3), sep = "\n")
         } else {
           cat("\n")
         }
