@@ -1,4 +1,4 @@
-#' @title (WIP) Monte Carlo Estimates for a
+#' @title Monte Carlo Estimates for a
 #' `lavaan` Output
 #'
 #' @description Generate Monte Carlo
@@ -41,7 +41,7 @@
 #'
 #' The object is a list with the number
 #' of elements equal to the number of
-#' Monte Carlo replication. Each element
+#' Monte Carlo replications. Each element
 #' is a
 #' list of the parameter estimates and
 #' sample variances and covariances of
@@ -58,8 +58,6 @@
 #'
 #' @examples
 #'
-#' # TO PROCESS
-#'
 #' library(lavaan)
 #' data(data_med_mod_ab1)
 #' dat <- data_med_mod_ab1
@@ -71,20 +69,18 @@
 #' y ~ m + w + m:w + x + c1 + c2
 #' "
 #'
-#' # Bootstrapping not requested in calling lavaan::sem()
 #' fit <- sem(model = mod, data = dat, fixed.x = FALSE,
-#'            se = "none", baseline = FALSE)
-#' fit_boot_out <- fit2boot_out_do_boot(fit = fit,
-#'                                      R = 40,
-#'                                      seed = 1234,
-#'                                      progress = FALSE)
+#'            baseline = FALSE)
+#' # In real research, R should be 5000 or even 10000.
+#' fit <- gen_mc_est(fit, R = 100, seed = 453253)
+#' fit_mc_out <- fit2mc_out(fit)
 #' out <- cond_indirect_effects(wlevels = "w",
 #'                              x = "x",
 #'                              y = "y",
 #'                              m = "m",
 #'                              fit = fit,
-#'                              boot_ci = TRUE,
-#'                              boot_out = fit_boot_out)
+#'                              mc_ci = TRUE,
+#'                              mc_out = fit_mc_out)
 #' out
 #'
 #' @export

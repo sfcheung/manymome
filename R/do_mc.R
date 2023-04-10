@@ -75,30 +75,34 @@
 #'
 #' @examples
 #'
-#' # TO PROCESS
-#'
+#' library(lavaan)
 #' data(data_med_mod_ab1)
 #' dat <- data_med_mod_ab1
-#' lm_m <- lm(m ~ x*w + c1 + c2, dat)
-#' lm_y <- lm(y ~ m*w + x + c1 + c2, dat)
-#' lm_out <- lm2list(lm_m, lm_y)
-#' # In real research, R should be 2000 or even 5000
-#' # In real research, no need to set parallel and progress to FALSE
-#' # Parallel processing is enabled by default and
-#' # progress is displayed by default.
-#' lm_boot_out <- do_boot(lm_out, R = 50, seed = 1234,
-#'                        parallel = FALSE,
-#'                        progress = FALSE)
-#' wlevels <- mod_levels(w = "w", fit = lm_out)
+#' mod <-
+#' "
+#' m ~ x + w + x:w + c1 + c2
+#' y ~ m + w + m:w + x + c1 + c2
+#' "
+#' fit <- sem(mod, dat)
+#' # In real research, R should be 5000 or even 10000
+#' mc_out <- do_mc(fit, R = 100, seed = 1234)
+#' wlevels <- mod_levels(w = "w", fit = fit)
 #' wlevels
 #' out <- cond_indirect_effects(wlevels = wlevels,
 #'                              x = "x",
 #'                              y = "y",
 #'                              m = "m",
-#'                              fit = lm_out,
-#'                              boot_ci = TRUE,
-#'                              boot_out = lm_boot_out)
+#'                              fit = fit,
+#'                              mc_ci = TRUE,
+#'                              mc_out = mc_out)
 #' out
+#'
+#' @describeIn do_mc A generate purpose function for
+#' creating Monte Carlo estimates to be reused
+#' by other functions. It returns a
+#' `mc-out`-class object.
+#'
+#' @order 1
 #'
 #' @export
 #'
@@ -124,7 +128,14 @@ do_mc <- function(fit,
     return(out)
   }
 
-#' @noRd
+#' @describeIn do_mc Generate Monte Carlo
+#' estimates and store them in the `external`
+#' slot: `external$manymome$mc`. For advanced
+#' users.
+#'
+#' @order 2
+#'
+#' @export
 
 gen_mc_est <- function(fit,
                        R = 100,
