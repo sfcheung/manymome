@@ -30,7 +30,15 @@ cond_indirect(
   save_boot_full = FALSE,
   prods = NULL,
   get_prods_only = FALSE,
-  save_boot_out = TRUE
+  save_boot_out = TRUE,
+  mc_ci = FALSE,
+  mc_out = NULL,
+  save_mc_full = FALSE,
+  save_mc_out = TRUE,
+  ci_out = NULL,
+  save_ci_full = FALSE,
+  save_ci_out = TRUE,
+  ci_type = c("boot", "mc")
 )
 
 cond_indirect_effects(
@@ -217,6 +225,22 @@ internal use.}
 \item{save_boot_out}{If \code{boot_out} is
 supplied, whether it will be saved in
 the output. Default is \code{TRUE}.}
+
+\item{mc_ci}{TO DO.}
+
+\item{mc_out}{TO DO.}
+
+\item{save_mc_full}{TO DO.}
+
+\item{save_mc_out}{TO DO.}
+
+\item{ci_out}{TO DO.}
+
+\item{save_ci_full}{TO DO.}
+
+\item{save_ci_out}{TO DO.}
+
+\item{ci_type}{TO DO.}
 
 \item{wlevels}{The output of
 \code{\link[=merge_mod_levels]{merge_mod_levels()}}, or the

@@ -283,6 +283,22 @@
 #' supplied, whether it will be saved in
 #' the output. Default is `TRUE`.
 #'
+#' @param mc_ci TO DO.
+#'
+#' @param mc_out TO DO.
+#'
+#' @param save_mc_full TO DO.
+#'
+#' @param save_mc_out TO DO.
+#'
+#' @param save_ci_full TO DO.
+#'
+#' @param save_ci_out TO DO.
+#'
+#' @param ci_out TO DO.
+#'
+#' @param ci_type TO DO.
+#'
 #'
 #' @seealso [mod_levels()] and
 #' [merge_mod_levels()] for generating
@@ -349,7 +365,15 @@ cond_indirect <- function(x,
                      save_boot_full = FALSE,
                      prods = NULL,
                      get_prods_only = FALSE,
-                     save_boot_out = TRUE) {
+                     save_boot_out = TRUE,
+                     mc_ci = FALSE,
+                     mc_out = NULL,
+                     save_mc_full = FALSE,
+                     save_mc_out = TRUE,
+                     ci_out = NULL,
+                     save_ci_full = FALSE,
+                     save_ci_out = TRUE,
+                     ci_type = c("boot", "mc")) {
     fit_type <- cond_indirect_check_fit(fit)
     chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
     if (!chkpath) {
@@ -360,6 +384,63 @@ cond_indirect <- function(x,
                       ". ",
                       "Please check the arguments x, y, and m.")
         stop(msg)
+      }
+
+    # Fix arguments
+    call_args <- names(match.call())
+    ci_type <- match.arg(ci_type)
+    if (ci_type == "boot") {
+        boot_ci <- TRUE
+        mc_ci <- FALSE
+        if (is.null(mc_out) && !is.null(ci_out)) {
+            mc_out <- ci_out
+            ci_out <- NULL
+          }
+        if (is.na(match("save_mc_full", call_args))) {
+            save_mc_full <- save_ci_full
+          }
+        if (is.na(match("save_mc_out", call_args))) {
+            save_mc_out <- save_ci_out
+          }
+      }
+    if (ci_type == "mc") {
+        mc_ci <- TRUE
+        boot_ci <- FALSE
+        if (is.null(boot_out) && !is.null(boot_out)) {
+            boot_out <- boot_out
+            ci_out <- NULL
+          }
+        if (is.na(match("save_boot_full", call_args))) {
+            save_boot_full <- save_ci_full
+          }
+        if (is.na(match("save_boot_out", call_args))) {
+            save_boot_out <- save_ci_out
+          }
+      }
+    if (all(boot_ci, mc_ci)) stop("Can only request one type of confidence intervals.")
+
+    if (mc_ci) {
+        if (!is.null(mc_out)) {
+            if (inherits(mc_out, "cond_indirect_effects")) {
+                mc_out <- attr(mc_out, "mc_out")
+                if (is.null(mc_out)) {
+                    stop("mc_out not found in the supplied object for 'mc_out'")
+                  }
+              }
+            if (inherits(mc_out, "indirect")) {
+                mc_out <- mc_out$mc_out
+                if (is.null(mc_out)) {
+                    stop("mc_out not found in the supplied object for 'mc_out'")
+                  }
+              }
+            if (!inherits(mc_out, "mc_out")) {
+                stop("The object at 'mc_out' must be of the class 'mc_out'.")
+              }
+          } else {
+            mc_out <- do_mc(fit = fit,
+                                R = R,
+                                seed = seed)
+          }
       }
     if (boot_ci) {
         if (!is.null(boot_out)) {
@@ -426,6 +507,41 @@ cond_indirect <- function(x,
                      standardized_x = standardized_x,
                      standardized_y = standardized_y,
                      prods = prods)
+    if (mc_ci) {
+        out_mc <- mapply(indirect_i,
+                           est = lapply(mc_out, function(x) x$est),
+                           implied_stats = lapply(mc_out, function(x) x$implied_stats),
+                           MoreArgs = list(x = x,
+                                           y = y,
+                                           m = m,
+                                           fit = fit0,
+                                           wvalues = wvalues,
+                                           standardized_x = standardized_x,
+                                           standardized_y = standardized_y,
+                                           warn = FALSE,
+                                           prods = prods),
+                           SIMPLIFY = FALSE)
+        if (save_mc_full) {
+            out0$mc_full <- out_mc
+          }
+        nboot <- length(out_mc)
+        out0$boot_indirect <- sapply(out_mc, function(x) x$indirect)
+        tmp <- list(t = matrix(out0$boot_indirect, nrow = nboot, ncol = 1),
+                    t0 = out0$indirect,
+                    R = nboot)
+        boot_ci <- boot::boot.ci(tmp, conf = level, type = "perc")
+        boot_ci1 <- boot_ci$percent[4:5]
+        names(boot_ci1) <- paste0(formatC(c(100 * (1 - level) / 2,
+                                     100 * (1 - (1 - level) / 2)), 2,
+                                     format = "f"), "%")
+        out0$mc_ci <- boot_ci1
+        out0$level <- level
+        if (save_mc_out) {
+            out0$mc_out <- mc_out
+          } else {
+            out0$mc_out <- NULL
+          }
+      }
     if (boot_ci) {
         out_boot <- mapply(indirect_i,
                            est = lapply(boot_out, function(x) x$est),

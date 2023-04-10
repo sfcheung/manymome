@@ -32,11 +32,13 @@ out_mm_1 <- mod_levels_list("w4", c("gpgp2", "gpgp3"), fit = fit, merge = TRUE)
 suppressWarnings(out_5 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                boot_ci = TRUE, seed = 87415,
                                R = 10, parallel = FALSE, progress = FALSE))
-fit_boot_out <- do_boot(fit, R = 10, seed = 87415, parallel = FALSE, progress = FALSE)
+
+fit_mc_out <- do_mc(fit, R = 10, seed = 87415)
+class(fit_mc_out) <- c("boot_out", class(fit_mc_out))
 suppressWarnings(out_5b <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
-                               boot_ci = TRUE, boot_out = fit_boot_out))
-suppressWarnings(out_5c <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
-                               boot_ci = TRUE, seed = 87415, R = 10, parallel = FALSE, progress = FALSE))
+                               boot_ci = TRUE, boot_out = fit_mc_out))
+# suppressWarnings(out_5c <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
+#                                boot_ci = TRUE, seed = 87415, R = 10, parallel = FALSE, progress = FALSE))
 
 test_that("cond_indirect_effects: do_boot", {
   expect_equal(out_5[-c(1:5)], out_5b[-c(1:5)])
