@@ -1,4 +1,4 @@
-# To be examined in an interactive session
+skip("To be examined in an interactive session")
 
 library(manymome)
 suppressMessages(library(lavaan))

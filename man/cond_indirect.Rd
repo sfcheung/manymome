@@ -63,6 +63,10 @@ cond_indirect_effects(
   boot_out = NULL,
   output_type = "data.frame",
   mod_levels_list_args = list(),
+  mc_ci = FALSE,
+  mc_out = NULL,
+  ci_out = NULL,
+  ci_type = NULL,
   ...
 )
 

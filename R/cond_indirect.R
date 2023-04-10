@@ -778,6 +778,10 @@ cond_indirect_effects <- function(wlevels,
                                   boot_out = NULL,
                                   output_type = "data.frame",
                                   mod_levels_list_args = list(),
+                                  mc_ci = FALSE,
+                                  mc_out = NULL,
+                                  ci_out = NULL,
+                                  ci_type = NULL,
                                   ...) {
     if (!missing(wlevels)) {
         wlevels_check <- check_wlevels(wlevels)
@@ -811,6 +815,52 @@ cond_indirect_effects <- function(wlevels,
     if ((fit_type == "lm") && !inherits(fit, "lm_list") &&
         is.list(fit)) {
         fit <- lm2list(fit)
+      }
+
+    # Fix arguments
+    call_args <- names(match.call())
+    if (!is.null(ci_type)) {
+        if (ci_type == "mc") {
+            mc_ci <- TRUE
+            boot_ci <- FALSE
+            if (is.null(mc_out) && !is.null(ci_out)) {
+                mc_out <- ci_out
+                ci_out <- NULL
+              }
+          }
+        if (ci_type == "boot") {
+            boot_ci <- TRUE
+            mc_ci <- FALSE
+            if (is.null(boot_out) && !is.null(ci_out)) {
+                boot_out <- ci_out
+                ci_out <- NULL
+              }
+          }
+      }
+
+    if (all(boot_ci, mc_ci)) stop("Can only request one type of confidence intervals.")
+    if (mc_ci) {
+        if (!is.null(mc_out)) {
+            if (inherits(mc_out, "cond_indirect_effects")) {
+                mc_out <- attr(mc_out, "mc_out")
+                if (is.null(mc_out)) {
+                    stop("mc_out not found in the supplied object for 'mc_out'")
+                  }
+              }
+            if (inherits(mc_out, "indirect")) {
+                mc_out <- mc_out$mc_out
+                if (is.null(mc_out)) {
+                    stop("mc_out not found in the supplied object for 'mc_out'")
+                  }
+              }
+            if (!inherits(mc_out, "mc_out")) {
+                stop("The object at 'mc_out' must be of the class 'mc_out'.")
+              }
+          } else {
+            mc_out <- do_mc(fit = fit,
+                            R = R,
+                            seed = seed)
+          }
       }
     if (boot_ci) {
         if (!is.null(boot_out)) {
