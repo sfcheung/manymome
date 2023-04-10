@@ -912,6 +912,12 @@ cond_indirect_effects <- function(wlevels,
                            seed,
                            prods,
                            save_boot_out,
+                           mc_ci,
+                           mc_out,
+                           save_mc_out,
+                           ci_type,
+                           ci_out,
+                           save_ci_out,
                            ...) {
                               cond_indirect(wvalues = wv,
                                             x = x,
@@ -926,6 +932,12 @@ cond_indirect_effects <- function(wlevels,
                                             seed = seed,
                                             prods = prods,
                                             save_boot_out = FALSE,
+                                            mc_ci = mc_ci,
+                                            mc_out = mc_out,
+                                            save_mc_out = FALSE,
+                                            ci_type = ci_type,
+                                            ci_out = ci_out,
+                                            save_ci_out = FALSE,
                                             ...)
                            },
                   x = x,
@@ -940,6 +952,12 @@ cond_indirect_effects <- function(wlevels,
                   seed = seed,
                   prods = prods,
                   save_boot_out = FALSE,
+                  mc_ci = mc_ci,
+                  mc_out = mc_out,
+                  save_mc_out = FALSE,
+                  ci_type = ci_type,
+                  ci_out = ci_out,
+                  save_ci_out = FALSE,
                   ...)
     if (output_type == "data.frame") {
         out1 <- cond_indirect_effects_to_df(out, wlevels = wlevels)
@@ -950,7 +968,8 @@ cond_indirect_effects <- function(wlevels,
         attr(out1, "fit") <- fit
         attr(out1, "est") <- est
         attr(out1, "implied_stats") <- implied_stats
-        attr(out1, "boot_out") <- boot_out
+        if (boot_ci) attr(out1, "boot_out") <- boot_out
+        if (mc_ci) attr(out1, "ci_out") <- ci_out
         attr(out1, "prods") <- prods
         attr(out1, "x") <- x
         attr(out1, "y") <- y
