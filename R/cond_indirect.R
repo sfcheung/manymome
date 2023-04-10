@@ -1088,10 +1088,20 @@ cond_indirect_effects_to_df <- function(x, wlevels) {
       }
     cc <- do.call(rbind, sapply(x, function(x) {x$components_conditional},
                                 simplify = FALSE))
+    has_ci <- FALSE
     if (!is.null(x[[1]]$boot_ci)) {
-        boot_ci <- TRUE
+        has_ci <- TRUE
+        ci_type <- "boot"
+        ci_cname <- "boot_ci"
+      }
+    if (!is.null(x[[1]]$mc_ci)) {
+        has_ci <- TRUE
+        ci_type <- "mc"
+        ci_cname <- "mc_ci"
+      }
+    if (has_ci) {
         bc <- do.call(rbind,
-                      sapply(x, function(x) {x$boot_ci}, simplify = FALSE))
+                      sapply(x, function(x) {x[[ci_cname]]}, simplify = FALSE))
         if (standardized_any) {
             colnames(bc) <- paste0(c("CILo:", "CIHi:"), colnames(bc))
             colnames(bc) <- c("CI.lo", "CI.hi")
@@ -1099,17 +1109,15 @@ cond_indirect_effects_to_df <- function(x, wlevels) {
             colnames(bc) <- paste0(c("CIStdLo:", "CIStdHi:"), colnames(bc))
             colnames(bc) <- c("CI.lo", "CI.hi")
           }
-      } else {
-        boot_ci <- FALSE
       }
     if (is.null(indirect_std)) {
-        if (boot_ci) {
+        if (has_ci) {
             out <- data.frame(ind = indirect, bc, cc, check.names = FALSE)
           } else {
             out <- data.frame(ind = indirect, cc, check.names = FALSE)
           }
       } else {
-        if (boot_ci) {
+        if (has_ci) {
             out <- data.frame(std = indirect_std, bc, cc, ustd = indirect, check.names = FALSE)
           } else {
             out <- data.frame(std = indirect_std, cc, ustd = indirect, check.names = FALSE)
