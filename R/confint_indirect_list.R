@@ -66,14 +66,23 @@
 
 confint.indirect_list <- function(object, parm = NULL, level = .95, ...) {
     p <- length(object)
+    has_ci <- FALSE
     if (isTRUE(!is.null(object[[1]]$boot_ci))) {
+        has_ci <- TRUE
+        ci_type <- "boot"
+      }
+    if (isTRUE(!is.null(object[[1]]$mc_ci))) {
+        has_ci <- TRUE
+        ci_type <- "mc"
+      }
+    if (has_ci) {
         confint0 <- lapply(object, stats::confint,
                            parm = parm,
                            level = level, ...)
         confint0 <- do.call(rbind, confint0)
         rownames(confint0) <- names(object)
       } else {
-        warning("Bootstrapping interval not in the object.")
+        warning("Confidence intervals not in the object.")
         confint0 <- array(data = rep(NA, p * 2),
                           dim = c(p, 2),
                           dimnames = list(names(object), c("CI.lo", "CI.hi")))
