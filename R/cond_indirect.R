@@ -283,21 +283,61 @@
 #' supplied, whether it will be saved in
 #' the output. Default is `TRUE`.
 #'
-#' @param mc_ci TO DO.
+#' @param mc_ci Logical. Whether
+#' Monte Carlo confidence interval will be
+#' formed. Default is `FALSE`.
 #'
-#' @param mc_out TO DO.
+#' @param mc_out If `mc_ci` is
+#' `TRUE`, users can supply pregenerated
+#' Monte Carlo estimates. This can be the
+#' output of [do_mc()]. For
+#' [indirect_effect()] and
+#' [cond_indirect_effects()], this can
+#' be the output of a previous call to
+#' [cond_indirect_effects()],
+#' [indirect_effect()], or
+#' [cond_indirect()] with Monte Carlo
+#' confidence intervals requested. These
+#' stored estimates will be reused such
+#' that there is no need to do
+#' Monte Carlo simulation again. If not
+#' supplied,
+#' the function will try to generate
+#' them from `fit`.
 #'
-#' @param save_mc_full TO DO.
+#' @param save_mc_full If `TRUE`, full
+#' Monte Carlo results will be stored.
+#' Default is `FALSE.`
 #'
-#' @param save_mc_out TO DO.
+#' @param save_mc_out If `mc_out` is
+#' supplied, whether it will be saved in
+#' the output. Default is `TRUE`.
 #'
-#' @param save_ci_full TO DO.
+#' @param save_ci_full If `TRUE`, full
+#' bootstrapping or Monte Carlo results
+#' will be stored.
+#' Default is `FALSE.`
 #'
-#' @param save_ci_out TO DO.
+#' @param save_ci_out If either `mc_out`
+#' or `boot_out` is
+#' supplied, whether it will be saved in
+#' the output. Default is `TRUE`.
 #'
-#' @param ci_out TO DO.
+#' @param ci_out If `ci_type` is supplied,
+#' this is the corresponding argument.
+#' If `ci_type` is `"boot"`, this
+#' argument will be used as `boot_out`.
+#' If `ci_type` is `"mc"`, this
+#' argument will be used as `mc_out`.
 #'
-#' @param ci_type TO DO.
+#' @param ci_type The type of
+#' confidence intervals to be formed.
+#' Can be either `"boot"` (bootstrapping)
+#' or `"mc"` (Monte Carlo). If not
+#' supplied, will check other arguments
+#' (e.g, `boot_ci` and `mc_ci`). If
+#' supplied, will override `boot_ci`
+#' and `mc_ci`.
 #'
 #'
 #' @seealso [mod_levels()] and
@@ -373,7 +413,7 @@ cond_indirect <- function(x,
                      ci_out = NULL,
                      save_ci_full = FALSE,
                      save_ci_out = TRUE,
-                     ci_type = c("boot", "mc")) {
+                     ci_type) {
     fit_type <- cond_indirect_check_fit(fit)
     chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
     if (!chkpath) {
@@ -388,37 +428,37 @@ cond_indirect <- function(x,
 
     # Fix arguments
     call_args <- names(match.call())
-    ci_type <- match.arg(ci_type)
-    if (ci_type == "boot") {
-        boot_ci <- TRUE
-        mc_ci <- FALSE
-        if (is.null(mc_out) && !is.null(ci_out)) {
-            mc_out <- ci_out
-            ci_out <- NULL
+    if (!missing(ci_type)) {
+        if (ci_type == "boot") {
+            boot_ci <- TRUE
+            mc_ci <- FALSE
+            if (is.null(mc_out) && !is.null(ci_out)) {
+                mc_out <- ci_out
+                ci_out <- NULL
+              }
+            if (is.na(match("save_mc_full", call_args))) {
+                save_mc_full <- save_ci_full
+              }
+            if (is.na(match("save_mc_out", call_args))) {
+                save_mc_out <- save_ci_out
+              }
           }
-        if (is.na(match("save_mc_full", call_args))) {
-            save_mc_full <- save_ci_full
-          }
-        if (is.na(match("save_mc_out", call_args))) {
-            save_mc_out <- save_ci_out
-          }
-      }
-    if (ci_type == "mc") {
-        mc_ci <- TRUE
-        boot_ci <- FALSE
-        if (is.null(boot_out) && !is.null(boot_out)) {
-            boot_out <- boot_out
-            ci_out <- NULL
-          }
-        if (is.na(match("save_boot_full", call_args))) {
-            save_boot_full <- save_ci_full
-          }
-        if (is.na(match("save_boot_out", call_args))) {
-            save_boot_out <- save_ci_out
+        if (ci_type == "mc") {
+            mc_ci <- TRUE
+            boot_ci <- FALSE
+            if (is.null(boot_out) && !is.null(boot_out)) {
+                boot_out <- boot_out
+                ci_out <- NULL
+              }
+            if (is.na(match("save_boot_full", call_args))) {
+                save_boot_full <- save_ci_full
+              }
+            if (is.na(match("save_boot_out", call_args))) {
+                save_boot_out <- save_ci_out
+              }
           }
       }
     if (all(boot_ci, mc_ci)) stop("Can only request one type of confidence intervals.")
-
     if (mc_ci) {
         if (!is.null(mc_out)) {
             if (inherits(mc_out, "cond_indirect_effects")) {
@@ -525,12 +565,12 @@ cond_indirect <- function(x,
             out0$mc_full <- out_mc
           }
         nboot <- length(out_mc)
-        out0$boot_indirect <- sapply(out_mc, function(x) x$indirect)
-        tmp <- list(t = matrix(out0$boot_indirect, nrow = nboot, ncol = 1),
+        out0$mc_indirect <- sapply(out_mc, function(x) x$indirect)
+        tmp <- list(t = matrix(out0$mc_indirect, nrow = nboot, ncol = 1),
                     t0 = out0$indirect,
                     R = nboot)
-        boot_ci <- boot::boot.ci(tmp, conf = level, type = "perc")
-        boot_ci1 <- boot_ci$percent[4:5]
+        boot_ci0 <- boot::boot.ci(tmp, conf = level, type = "perc")
+        boot_ci1 <- boot_ci0$percent[4:5]
         names(boot_ci1) <- paste0(formatC(c(100 * (1 - level) / 2,
                                      100 * (1 - (1 - level) / 2)), 2,
                                      format = "f"), "%")
@@ -564,8 +604,8 @@ cond_indirect <- function(x,
         tmp <- list(t = matrix(out0$boot_indirect, nrow = nboot, ncol = 1),
                     t0 = out0$indirect,
                     R = nboot)
-        boot_ci <- boot::boot.ci(tmp, conf = level, type = "perc")
-        boot_ci1 <- boot_ci$percent[4:5]
+        boot_ci0 <- boot::boot.ci(tmp, conf = level, type = "perc")
+        boot_ci1 <- boot_ci0$percent[4:5]
         names(boot_ci1) <- paste0(formatC(c(100 * (1 - level) / 2,
                                      100 * (1 - (1 - level) / 2)), 2,
                                      format = "f"), "%")

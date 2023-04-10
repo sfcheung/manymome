@@ -140,3 +140,81 @@ test_that("cond_indirect: lavaan, moderation only", {
     # expect_identical(outmo_boot$boot_indirect,
     #                  sapply(outmo_boot_chk, function(x) x$indirect))
   })
+
+# Monte Carlo
+
+## Moderated mediation
+
+fitml <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "standard", baseline = FALSE)
+out_mc <- cond_indirect(x = "x", y = "y",
+                     m = c("m1"),
+                     fit = fitml,
+                     wvalues = wv,
+                     mc_ci = TRUE,
+                     R = 50,
+                     seed = 532423)
+# Emulate se = boot
+fit_boot_mc <- gen_mc_est(fitml, R = 50, seed = 532423)
+fit_boot_mc@boot <- fit_boot@boot
+fit_boot_mc@boot$coef[] <- fit_boot_mc@external$manymome$mc
+fit_boot_mc@Options$se <- "bootstrap"
+fit_boot_mc_boot_out <- fit2boot_out(fit_boot_mc)
+out_boot_mc <- cond_indirect(x = "x", y = "y",
+                     m = c("m1"),
+                     fit = fit_boot_mc,
+                     wvalues = wv,
+                     boot_ci = TRUE)
+
+test_that("cond_indirect: lavaan: mc", {
+    expect_equal(out_mc$indirect, out_chk$indirect)
+    expect_equal(out_mc$mc_ci, out_boot_mc$boot_ci)
+  })
+
+## Mediation Only
+
+fitmml <- sem(modm, dat, meanstructure = TRUE, fixed.x = FALSE, se = "standard", baseline = FALSE)
+outm_mc <- cond_indirect(x = "m1", y = "m3",
+                     m = c("m2"),
+                     fit = fitmml,
+                     mc_ci = TRUE,
+                     R = 50,
+                     seed = 89576)
+# Emulate se = boot
+fitm_boot_mc <- gen_mc_est(fitmml, R = 50, seed = 89576)
+fitm_boot_mc@boot <- fitm_boot@boot
+fitm_boot_mc@boot$coef[] <- fitm_boot_mc@external$manymome$mc
+fitm_boot_mc@Options$se <- "bootstrap"
+fitm_boot_mc_boot_out <- fit2boot_out(fitm_boot_mc)
+outm_boot_mc <- cond_indirect(x = "m1", y = "m3",
+                     m = c("m2"),
+                     fit = fitm_boot_mc,
+                     boot_ci = TRUE)
+
+test_that("cond_indirect: lavaan, mediation only: mc", {
+    expect_equal(outm_mc$indirect, outm_chk$indirect)
+    expect_equal(outm_mc$mc_ci, outm_boot_mc$boot_ci)
+  })
+
+
+## Moderation Only
+
+fitmoml <- sem(modmo, dat, meanstructure = TRUE, fixed.x = FALSE, se = "standard", baseline = FALSE)
+outmo_mc <- cond_indirect(x = "m2", y = "m3", wvalues = c(m1 = -5),
+                     fit = fitmoml,
+                     mc_ci = TRUE,
+                     R = 50,
+                     seed = 8536)
+# Emulate se = boot
+fitmo_boot_mc <- gen_mc_est(fitmoml, R = 50, seed = 8536)
+fitmo_boot_mc@boot <- fitmo_boot@boot
+fitmo_boot_mc@boot$coef[] <- fitmo_boot_mc@external$manymome$mc
+fitmo_boot_mc@Options$se <- "bootstrap"
+fitmo_boot_mc_boot_out <- fit2boot_out(fitmo_boot_mc)
+outmo_boot_mc <- cond_indirect(x = "m2", y = "m3", wvalues = c(m1 = -5),
+                     fit = fitmo_boot_mc,
+                     boot_ci = TRUE)
+
+test_that("cond_indirect: lavaan, moderation only: mc", {
+    expect_equal(outmo_mc$indirect, outmo_chk$indirect)
+    expect_equal(outmo_mc$mc_ci, outmo_boot_mc$boot_ci)
+  })
