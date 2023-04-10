@@ -66,15 +66,26 @@
 
 
 confint.indirect <- function(object, parm, level = .95, ...) {
+    has_ci <- FALSE
     if (isTRUE(!is.null(object$boot_ci))) {
+        has_ci <- TRUE
+        ci_type <- "boot"
+        ind_i <- object$boot_indirect
+      }
+    if (isTRUE(!is.null(object$mc_ci))) {
+        has_ci <- TRUE
+        ci_type <- "mc"
+        ind_i <- object$mc_indirect
+      }
+    if (has_ci) {
         boot_out <- list(t0 = object$indirect,
-                         t = matrix(object$boot_indirect, ncol = 1),
-                         R = length(object$boot_indirect))
+                         t = matrix(ind_i, ncol = 1),
+                         R = length(ind_i))
         out0 <- boot::boot.ci(boot_out,
                             type = "perc",
                             conf = level)$percent[4:5]
       } else {
-        warning("Bootstrapping interval not in the object.")
+        warning("Confidence interval not in the object.")
         out0 <- c(NA, NA)
       }
     # Borrowed from stats::confint()
