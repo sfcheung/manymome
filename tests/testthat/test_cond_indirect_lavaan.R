@@ -190,9 +190,16 @@ outm_boot_mc <- cond_indirect(x = "m1", y = "m3",
                      fit = fitm_boot_mc,
                      boot_ci = TRUE)
 
+# outi <- indirect_effect(x = "m1", y = "m3", m = c("m2"), fit = fitm)
+# outi_boot <- cond_indirect(x = "m1", y = "m3", m = c("m2"), fit = fitm_boot,
+#                      boot_ci = TRUE)
+outi_mc <- cond_indirect(x = "m1", y = "m3", m = c("m2"), fit = fitmml,
+                     mc_ci = TRUE, R = 50, seed = 89576)
+
 test_that("cond_indirect: lavaan, mediation only: mc", {
     expect_equal(outm_mc$indirect, outm_chk$indirect)
     expect_equal(outm_mc$mc_ci, outm_boot_mc$boot_ci)
+    expect_equal(outm_mc$mc_ci, outi_mc$mc_ci)
   })
 
 

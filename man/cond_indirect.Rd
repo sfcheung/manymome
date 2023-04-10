@@ -38,7 +38,7 @@ cond_indirect(
   ci_out = NULL,
   save_ci_full = FALSE,
   save_ci_out = TRUE,
-  ci_type
+  ci_type = NULL
 )
 
 cond_indirect_effects(
@@ -84,7 +84,15 @@ indirect_effect(
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   make_cluster_args = list(),
   progress = TRUE,
-  save_boot_full = FALSE
+  save_boot_full = FALSE,
+  mc_ci = FALSE,
+  mc_out = NULL,
+  save_mc_full = FALSE,
+  save_mc_out = TRUE,
+  ci_out = NULL,
+  save_ci_full = FALSE,
+  save_ci_out = TRUE,
+  ci_type = NULL
 )
 
 many_indirect_effects(paths, ...)
@@ -277,7 +285,8 @@ the output. Default is \code{TRUE}.}
 confidence intervals to be formed.
 Can be either \code{"boot"} (bootstrapping)
 or \code{"mc"} (Monte Carlo). If not
-supplied, will check other arguments
+supplied or is \code{NULL}, will check
+other arguments
 (e.g, \code{boot_ci} and \code{mc_ci}). If
 supplied, will override \code{boot_ci}
 and \code{mc_ci}.}

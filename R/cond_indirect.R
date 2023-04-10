@@ -334,7 +334,8 @@
 #' confidence intervals to be formed.
 #' Can be either `"boot"` (bootstrapping)
 #' or `"mc"` (Monte Carlo). If not
-#' supplied, will check other arguments
+#' supplied or is `NULL`, will check
+#' other arguments
 #' (e.g, `boot_ci` and `mc_ci`). If
 #' supplied, will override `boot_ci`
 #' and `mc_ci`.
@@ -413,7 +414,7 @@ cond_indirect <- function(x,
                      ci_out = NULL,
                      save_ci_full = FALSE,
                      save_ci_out = TRUE,
-                     ci_type) {
+                     ci_type = NULL) {
     fit_type <- cond_indirect_check_fit(fit)
     chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
     if (!chkpath) {
@@ -428,7 +429,7 @@ cond_indirect <- function(x,
 
     # Fix arguments
     call_args <- names(match.call())
-    if (!missing(ci_type)) {
+    if (!is.null(ci_type)) {
         if (ci_type == "mc") {
             mc_ci <- TRUE
             boot_ci <- FALSE
@@ -647,7 +648,15 @@ indirect_effect <- function(x,
                      ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                      make_cluster_args = list(),
                      progress = TRUE,
-                     save_boot_full = FALSE) {
+                     save_boot_full = FALSE,
+                     mc_ci = FALSE,
+                     mc_out = NULL,
+                     save_mc_full = FALSE,
+                     save_mc_out = TRUE,
+                     ci_out = NULL,
+                     save_ci_full = FALSE,
+                     save_ci_out = TRUE,
+                     ci_type = NULL) {
     cond_indirect(x = x,
                   y = y,
                   m = m,
@@ -665,7 +674,15 @@ indirect_effect <- function(x,
                   ncores = ncores,
                   make_cluster_args = make_cluster_args,
                   progress = progress,
-                  save_boot_full = save_boot_full)
+                  save_boot_full = save_boot_full,
+                  mc_ci = mc_ci,
+                  mc_out = mc_out,
+                  save_mc_full = save_mc_full,
+                  save_mc_out = save_mc_out,
+                  ci_out = ci_out,
+                  save_ci_full = save_ci_full,
+                  save_ci_out = save_ci_out,
+                  ci_type = ci_type)
   }
 
 #' @param w_type Character. Whether the
