@@ -74,3 +74,41 @@ suppressWarnings(outmo_7 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x",
 suppressWarnings(outmo_8 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
                                standardized_x = TRUE, standardized_y = TRUE,
                                boot_ci = TRUE, boot_out = fit_boot_out))
+
+# Monte Carlo
+
+## Mediation
+
+fit_ml <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "standard", warn = FALSE)
+fit_mc_out <- do_mc(fit_ml, R = 100, seed = 5155)
+
+# Suppress warnings due to small number of bootstrap samples.
+suppressWarnings(out_5_mc <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_ml,
+                               mc_ci = TRUE, mc_out = fit_mc_out))
+suppressWarnings(out_6_mc <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_ml,
+                               standardized_x = TRUE,
+                               mc_ci = TRUE, mc_out = fit_mc_out))
+suppressWarnings(out_7_mc <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_ml,
+                               standardized_y = TRUE,
+                               mc_ci = TRUE, mc_out = fit_mc_out))
+suppressWarnings(out_8_mc <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_ml,
+                               standardized_x = TRUE, standardized_y = TRUE,
+                               mc_ci = TRUE, mc_out = fit_mc_out, output_type = "list"))
+
+## Moderation only
+
+outmo_mm_1 <- mod_levels(c("gpgp2", "gpgp3"), fit = fit)
+
+# Suppress warnings due to small number of bootstrap samples.
+
+suppressWarnings(outmo_5_mc <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit_ml,
+                               mc_ci = TRUE, mc_out = fit_mc_out))
+suppressWarnings(outmo_6_mc <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit_ml,
+                               standardized_x = TRUE,
+                               mc_ci = TRUE, mc_out = fit_mc_out))
+suppressWarnings(outmo_7_mc <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit_ml,
+                               standardized_y = TRUE,
+                               mc_ci = TRUE, mc_out = fit_mc_out))
+suppressWarnings(outmo_8_mc <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit_ml,
+                               standardized_x = TRUE, standardized_y = TRUE,
+                               mc_ci = TRUE, mc_out = fit_mc_out))
