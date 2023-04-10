@@ -166,3 +166,5 @@ test_that("cond_indirect_effects: moderation, ci_type", {
     expect_equal(outmo_8_mc$mc_ci, outmo_8_mc2$mc_ci)
   })
 
+
+

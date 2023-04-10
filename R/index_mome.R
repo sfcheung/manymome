@@ -114,6 +114,46 @@
 #' bootstrapping progress or not.
 #' Default is `TRUE`.
 #'
+#' @param mc_ci Logical. Whether
+#' Monte Carlo confidence interval will be
+#' formed. Default is `FALSE`.
+#'
+#' @param mc_out If `mc_ci` is
+#' `TRUE`, users can supply pregenerated
+#' Monte Carlo estimates. This can be the
+#' output of [do_mc()]. For
+#' [indirect_effect()] and
+#' [cond_indirect_effects()], this can
+#' be the output of a previous call to
+#' [cond_indirect_effects()],
+#' [indirect_effect()], or
+#' [cond_indirect()] with Monte Carlo
+#' confidence intervals requested. These
+#' stored estimates will be reused such
+#' that there is no need to do
+#' Monte Carlo simulation again. If not
+#' supplied,
+#' the function will try to generate
+#' them from `fit`.
+#'
+#' @param ci_out If `ci_type` is supplied,
+#' this is the corresponding argument.
+#' If `ci_type` is `"boot"`, this
+#' argument will be used as `boot_out`.
+#' If `ci_type` is `"mc"`, this
+#' argument will be used as `mc_out`.
+#'
+#' @param ci_type The type of
+#' confidence intervals to be formed.
+#' Can be either `"boot"` (bootstrapping)
+#' or `"mc"` (Monte Carlo). If not
+#' supplied or is `NULL`, will check
+#' other arguments
+#' (e.g, `boot_ci` and `mc_ci`). If
+#' supplied, will override `boot_ci`
+#' and `mc_ci`.
+#'
+#'
 #' @param ... Arguments to be passed to
 #' [cond_indirect_effects()]
 #'
@@ -181,6 +221,10 @@ index_of_mome <- function(x,
                           R = 100,
                           seed = NULL,
                           progress = TRUE,
+                          mc_ci = FALSE,
+                          mc_out = NULL,
+                          ci_type = NULL,
+                          ci_out = NULL,
                           ...) {
     if (is.null(w) || length(w) != 1) {
         stop("The path must have exactly one moderator.")
@@ -202,6 +246,10 @@ index_of_mome <- function(x,
                                  seed = seed,
                                  progress = progress,
                                  boot_out = boot_out,
+                                 mc_ci = mc_ci,
+                                 mc_out = mc_out,
+                                 ci_type = ci_type,
+                                 ci_out = ci_out,
                                  ...)
     out <- cond_indirect_diff(out, from = 2, to = 1, level = level)
     out$type <- "index_of_mome"
@@ -254,6 +302,10 @@ index_of_momome <- function(x,
                             R = 100,
                             seed = NULL,
                             progress = TRUE,
+                            mc_ci = FALSE,
+                            mc_out = NULL,
+                            ci_type = NULL,
+                            ci_out = NULL,
                             ...) {
     if (is.null(w) || is.null(z) ||
         length(w) != 1 || length(z) != 1) {
@@ -278,29 +330,56 @@ index_of_momome <- function(x,
                                  seed = seed,
                                  progress = progress,
                                  boot_out = boot_out,
+                                 mc_ci = mc_ci,
+                                 mc_out = mc_out,
+                                 ci_type = ci_type,
+                                 ci_out = ci_out,
                                  ...)
     i0 <- cond_indirect_diff(out, from = 4, to = 3, level = level)
     i1 <- cond_indirect_diff(out, from = 2, to = 1, level = level)
     ind <- stats::coef(i1) - stats::coef(i0)
+    if (identical(i1$mc_diff, NA) || identical(i0$mc_diff, NA)) {
+        has_mc <- FALSE
+      } else {
+        has_mc <- TRUE
+      }
     if (identical(i1$boot_diff, NA) || identical(i0$boot_diff, NA)) {
         has_boot <- FALSE
       } else {
         has_boot <- TRUE
+      }
+    if (all(has_mc, has_boot)) stop("Cannot for both Monte Carlo and bootstrap confidence intervals.")
+    if (has_mc) {
+        ind_mc <- i1$mc_diff - i0$mc_diff
+        tmp <- list(t = matrix(ind_mc, nrow = length(ind_mc), ncol = 1),
+                    t0 = ind,
+                    R = length(ind_mc))
+        mc_ci0 <- boot::boot.ci(tmp, conf = level, type = "perc")
+        ind_mc_ci <- mc_ci0$percent[4:5]
+        names(ind_mc_ci) <- paste0(formatC(c(100 * (1 - level) / 2,
+                                      100 * (1 - (1 - level) / 2)), 2,
+                                      format = "f"), "%")
+      } else {
+        ind_mc <- NA
+        ind_mc_ci <- NA
       }
     if (has_boot) {
         ind_boot <- i1$boot_diff - i0$boot_diff
         tmp <- list(t = matrix(ind_boot, nrow = length(ind_boot), ncol = 1),
                     t0 = ind,
                     R = length(ind_boot))
-        boot_ci <- boot::boot.ci(tmp, conf = level, type = "perc")
-        ind_ci <- boot_ci$percent[4:5]
-        names(ind_ci) <- paste0(formatC(c(100 * (1 - level) / 2,
+        boot_ci0 <- boot::boot.ci(tmp, conf = level, type = "perc")
+        ind_boot_ci <- boot_ci0$percent[4:5]
+        names(ind_boot_ci) <- paste0(formatC(c(100 * (1 - level) / 2,
                                       100 * (1 - (1 - level) / 2)), 2,
                                       format = "f"), "%")
       } else {
         ind_boot <- NA
-        ind_ci <- NA
+        ind_boot_ci <- NA
       }
+    ind_ci <- NA
+    if (has_mc) ind_ci <- ind_mc_ci
+    if (has_boot) ind_ci <- ind_boot_ci
     out <- list(index = ind,
                 ci = ind_ci,
                 level = level,
@@ -310,6 +389,7 @@ index_of_momome <- function(x,
                 to1 = i1$to,
                 output = out,
                 boot_diff = ind_boot,
+                mc_diff = ind_mc,
                 type = "index_of_momome")
     class(out) <- c("cond_indirect_diff", class(out))
     out

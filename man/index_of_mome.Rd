@@ -19,6 +19,10 @@ index_of_mome(
   R = 100,
   seed = NULL,
   progress = TRUE,
+  mc_ci = FALSE,
+  mc_out = NULL,
+  ci_type = NULL,
+  ci_out = NULL,
   ...
 )
 
@@ -35,6 +39,10 @@ index_of_momome(
   R = 100,
   seed = NULL,
   progress = TRUE,
+  mc_ci = FALSE,
+  mc_out = NULL,
+  ci_type = NULL,
+  ci_out = NULL,
   ...
 )
 }
@@ -103,6 +111,45 @@ seed is not set.}
 \item{progress}{Logical. Display
 bootstrapping progress or not.
 Default is \code{TRUE}.}
+
+\item{mc_ci}{Logical. Whether
+Monte Carlo confidence interval will be
+formed. Default is \code{FALSE}.}
+
+\item{mc_out}{If \code{mc_ci} is
+\code{TRUE}, users can supply pregenerated
+Monte Carlo estimates. This can be the
+output of \code{\link[=do_mc]{do_mc()}}. For
+\code{\link[=indirect_effect]{indirect_effect()}} and
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, this can
+be the output of a previous call to
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+\code{\link[=indirect_effect]{indirect_effect()}}, or
+\code{\link[=cond_indirect]{cond_indirect()}} with Monte Carlo
+confidence intervals requested. These
+stored estimates will be reused such
+that there is no need to do
+Monte Carlo simulation again. If not
+supplied,
+the function will try to generate
+them from \code{fit}.}
+
+\item{ci_type}{The type of
+confidence intervals to be formed.
+Can be either \code{"boot"} (bootstrapping)
+or \code{"mc"} (Monte Carlo). If not
+supplied or is \code{NULL}, will check
+other arguments
+(e.g, \code{boot_ci} and \code{mc_ci}). If
+supplied, will override \code{boot_ci}
+and \code{mc_ci}.}
+
+\item{ci_out}{If \code{ci_type} is supplied,
+this is the corresponding argument.
+If \code{ci_type} is \code{"boot"}, this
+argument will be used as \code{boot_out}.
+If \code{ci_type} is \code{"mc"}, this
+argument will be used as \code{mc_out}.}
 
 \item{...}{Arguments to be passed to
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}}
