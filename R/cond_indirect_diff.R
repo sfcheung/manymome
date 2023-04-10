@@ -170,8 +170,8 @@ cond_indirect_diff <- function(output,
     output_full <- attr(output, "full_output")
     output_full_from <- output_full[[from]]
     output_full_to <- output_full[[to]]
-    boot_i_from <- output_full_from$boot_i
-    boot_i_to <- output_full_to$boot_i
+    boot_i_from <- output_full_from$boot_indirect
+    boot_i_to <- output_full_to$boot_indirect
     effect_diff <- stats::coef(output_full_to) - stats::coef(output_full_from)
     if (is.null(boot_i_from) || is.null(boot_i_to)) {
         has_boot <- FALSE
