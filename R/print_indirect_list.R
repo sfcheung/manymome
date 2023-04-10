@@ -221,8 +221,17 @@ indirect_effects_from_list <- function(object, add_sig = TRUE) {
         out <- data.frame(ind = coef0)
       }
     rownames(out) <- path_names
-    has_boot_ci <- isTRUE(!is.null(object[[1]]$boot_ci))
-    if (has_boot_ci) {
+    has_ci <- FALSE
+    ci_type <- NULL
+    if (isTRUE(!is.null(object[[1]]$boot_ci))) {
+        has_ci <- TRUE
+        ci_type <- "boot"
+      }
+    if (isTRUE(!is.null(object[[1]]$mc_ci))) {
+        has_ci <- TRUE
+        ci_type <- "mc"
+      }
+    if (has_ci) {
         ci0 <- t(sapply(object, stats::confint))
         out$CI.lo <- ci0[, 1]
         out$CI.hi <- ci0[, 2]
