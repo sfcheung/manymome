@@ -429,9 +429,9 @@ cond_indirect <- function(x,
     # Fix arguments
     call_args <- names(match.call())
     if (!missing(ci_type)) {
-        if (ci_type == "boot") {
-            boot_ci <- TRUE
-            mc_ci <- FALSE
+        if (ci_type == "mc") {
+            mc_ci <- TRUE
+            boot_ci <- FALSE
             if (is.null(mc_out) && !is.null(ci_out)) {
                 mc_out <- ci_out
                 ci_out <- NULL
@@ -443,11 +443,11 @@ cond_indirect <- function(x,
                 save_mc_out <- save_ci_out
               }
           }
-        if (ci_type == "mc") {
-            mc_ci <- TRUE
-            boot_ci <- FALSE
-            if (is.null(boot_out) && !is.null(boot_out)) {
-                boot_out <- boot_out
+        if (ci_type == "boot") {
+            boot_ci <- TRUE
+            mc_ci <- FALSE
+            if (is.null(boot_out) && !is.null(ci_out)) {
+                boot_out <- ci_out
                 ci_out <- NULL
               }
             if (is.na(match("save_boot_full", call_args))) {

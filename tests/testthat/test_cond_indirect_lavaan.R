@@ -218,3 +218,67 @@ test_that("cond_indirect: lavaan, moderation only: mc", {
     expect_equal(outmo_mc$indirect, outmo_chk$indirect)
     expect_equal(outmo_mc$mc_ci, outmo_boot_mc$boot_ci)
   })
+
+# Test ci_out
+
+## Moderated mediation
+
+fitml <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "standard", baseline = FALSE)
+fit_mc_out <- do_mc(fitml, R = 50, seed = 532423)
+out_mc2 <- cond_indirect(x = "x", y = "y",
+                     m = c("m1"),
+                     fit = fitml,
+                     wvalues = wv,
+                     ci_type = "mc",
+                     ci_out = fit_mc_out)
+out_boot2 <- cond_indirect(x = "x", y = "y",
+                     m = c("m1"),
+                     fit = fit,
+                     wvalues = wv,
+                     ci_type = "boot",
+                     ci_out = boot_out)
+
+test_that("cond_indirect: lavaan: ci_type", {
+    expect_equal(out_mc$mc_ci, out_mc2$mc_ci)
+    expect_equal(out_boot$boot_ci, out_boot2$boot_ci)
+  })
+
+
+## Mediation only
+
+fitmml <- sem(modm, dat, meanstructure = TRUE, fixed.x = FALSE, se = "standard", baseline = FALSE)
+fitm_mc_out <- do_mc(fitmml, R = 50, seed = 89576)
+outm_mc2 <- cond_indirect(x = "m1", y = "m3",
+                     m = c("m2"),
+                     fit = fitmml,
+                     ci_type = "mc",
+                     ci_out = fitm_mc_out)
+outm_boot2 <- cond_indirect(x = "m1", y = "m3",
+                     m = c("m2"),
+                     fit = fitm,
+                     ci_type = "boot",
+                     ci_out = bootm_out)
+
+test_that("cond_indirect: lavaan, mediation only: ci_type", {
+    expect_equal(outm_mc$mc_ci, outm_mc2$mc_ci)
+    expect_equal(outm_boot$boot_ci, outm_boot2$boot_ci)
+  })
+
+
+## Moderation only
+
+fitmoml <- sem(modmo, dat, meanstructure = TRUE, fixed.x = FALSE, se = "standard", baseline = FALSE)
+fitmo_mc_out <- do_mc(fitmoml, R = 50, seed = 8536)
+outmo_mc2 <- cond_indirect(x = "m2", y = "m3", wvalues = c(m1 = -5),
+                     fit = fitmoml,
+                     ci_type = "mc",
+                     ci_out = fitmo_mc_out)
+outmo_boot2 <- cond_indirect(x = "m2", y = "m3", wvalues = c(m1 = -5),
+                     fit = fitmo,
+                     ci_type = "boot",
+                     ci_out = bootmo_out)
+
+test_that("cond_indirect: lavaan, moderation only: ci_type", {
+    expect_equal(outmo_mc$mc_ci, outmo_mc2$mc_ci)
+    expect_equal(outmo_boot$boot_ci, outmo_boot2$boot_ci)
+  })
