@@ -60,10 +60,21 @@ print.indirect_list <- function(x, digits = 3,
     standardized_x <- x[[1]]$standardized_x
     standardized_y <- x[[1]]$standardized_y
     standardized <- (standardized_x && standardized_y)
-    has_boot_ci <- isTRUE(!is.null(x[[1]]$boot_ci))
+    has_ci <- FALSE
+    ci_type <- NULL
+    if (isTRUE(!is.null(x[[1]]$boot_ci))) {
+        has_ci <- TRUE
+        ci_type <- "boot"
+        ind_name <- "boot_indirect"
+      }
+    if (isTRUE(!is.null(x[[1]]$mc_ci))) {
+        has_ci <- TRUE
+        ci_type <- "mc"
+        ind_name <- "mc_indirect"
+      }
     level <- x[[1]]$level
-    R <- ifelse(has_boot_ci,
-                length(x[[1]]$boot_indirect),
+    R <- ifelse(has_ci,
+                length(x[[1]][[ind_name]]),
                 NA)
     # Does not support conditional indirect effects for now
     # has_w <- isTRUE(!is.null(wvalues))
@@ -109,7 +120,7 @@ print.indirect_list <- function(x, digits = 3,
     rownames(coef1) <- rownames(coef0)
     print(coef1)
     if (annotation) {
-        if (has_boot_ci) {
+        if (has_ci && ci_type == "boot") {
             level_str <- paste0(formatC(level * 100, 1, format = "f"), "%")
             cat("\n ")
             cat(strwrap(paste("- [CI.lo to CI.hi] are",
@@ -118,6 +129,15 @@ print.indirect_list <- function(x, digits = 3,
                               "by nonparametric bootstrapping with",
                               R,
                               "samples."), exdent = 3), sep = "\n")
+          } else if (has_ci && ci_type == "mc") {
+            level_str <- paste0(formatC(level * 100, 1, format = "f"), "%")
+            cat("\n ")
+            cat(strwrap(paste("- [CI.lo to CI.hi] are",
+                              level_str,
+                              "Monte Carlo confidence intervals",
+                              "with",
+                              R,
+                              "replications."), exdent = 3), sep = "\n")
           } else {
             cat("\n")
           }
