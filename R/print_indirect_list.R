@@ -120,15 +120,20 @@ print.indirect_list <- function(x, digits = 3,
     rownames(coef1) <- rownames(coef0)
     print(coef1)
     if (annotation) {
-        if (has_ci && ci_type == "boot") {
+        if (has_ci) {
             level_str <- paste0(formatC(level * 100, 1, format = "f"), "%")
             cat("\n ")
+            tmp1 <- switch(ci_type,
+                      boot = paste("percentile confidence intervals",
+                                   "by nonparametric bootstrapping with"),
+                      mc = "Monte Carlo confidence intervals with")
+            tmp2 <- switch(ci_type,
+                      boot = paste(R, "samples."),
+                      mc = paste(R, "replications."))
             cat(strwrap(paste("- [CI.lo to CI.hi] are",
                               level_str,
-                              "percentile confidence intervals",
-                              "by nonparametric bootstrapping with",
-                              R,
-                              "samples."), exdent = 3), sep = "\n")
+                              tmp1,
+                              tmp2), exdent = 3), sep = "\n")
           } else if (has_ci && ci_type == "mc") {
             level_str <- paste0(formatC(level * 100, 1, format = "f"), "%")
             cat("\n ")
