@@ -184,11 +184,15 @@ requested if \code{fit} is a
 \linkS4class{lavaan} object, this function
 will do bootstrapping on \code{fit}. \code{R}
 is the number of bootstrap samples.
-Default is 100.}
+Default is 100. For Monte Carlo
+simulation, this is the number
+of replications.}
 
-\item{seed}{If bootstrapping is
+\item{seed}{If bootstrapping
+or Monte Carlo simulation is
 conducted, this is the seed for the
-bootstrapping. Default is \code{NULL} and
+bootstrapping or simulation.
+Default is \code{NULL} and
 seed is not set.}
 
 \item{parallel}{Logical. If
@@ -446,38 +450,55 @@ conditional direct effects from one
 variable to another are computed.
 
 All three functions support using
-nonparametric bootstrapping to form
-percentile confidence intervals.
-Bootstrapping only needs to be done
+nonparametric bootstrapping (for
+\code{lavaan} or \code{lm} outputs) or
+Monte Carlo simulation (for
+\code{lavaan} outputs only) to form
+confidence intervals.
+Bootstrapping or Monte Carlo
+simulation only needs to be done
 once. These are the possible ways to
 form bootstrapping:
 \enumerate{
-\item Do bootstrapping in the first call
+\item Do bootstrapping or Monte Carlo
+simulation in the first call
 to one of these functions, by setting
-\code{boot_ci} to \code{TRUE} and \code{R} to the
-number of bootstrap samples, \code{level}
+\code{boot_ci} or \code{mc_ci} to \code{TRUE} and
+\code{R} to the
+number of bootstrap samples or
+replications, \code{level}
 to the level of confidence (default
 .95 or 95\%), and \code{seed} to reproduce
 the results (\code{parallel} and \code{ncores}
-are optional). This will take some
-time to run. The output will have all
-bootstrap estimates stored. This
+are optional for bootstrapping).
+This will take some
+time to run for bootstrapping. The
+output will have all
+bootstrap or Monte Carlo estimates
+stored. This
 output, whether it is from
 \code{\link[=indirect_effect]{indirect_effect()}},
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, or
 \code{\link[=cond_indirect]{cond_indirect()}}, can be reused by
 any of these three functions by
-setting \code{boot_out} to this output.
+setting \code{boot_out} (for bootstrapping)
+or \code{mc_out} (for Monte Carlo
+simulation) to this output.
 They will form the confidence
 intervals using the stored bootstrap
+or Monte Carlo
 estimates.
 \item Do bootstrapping using
-\code{\link[=do_boot]{do_boot()}}. The output can be used
-in the \code{boot_out} argument of
+\code{\link[=do_boot]{do_boot()}} or Monte Carlo simulation
+us8ing \code{\link[=do_mc]{do_mc()}}. The output can be used
+in the \code{boot_out} (for bootstrapping)
+or \code{mc_out} (for Monte Carlo simulation)
+argument of
 \code{\link[=indirect_effect]{indirect_effect()}},
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} and
 \code{\link[=cond_indirect]{cond_indirect()}}.
-\item If \code{\link[lavaan:sem]{lavaan::sem()}} is used to fit
+\item For bootstrapping,
+If \code{\link[lavaan:sem]{lavaan::sem()}} is used to fit
 a model and \code{se = "boot"} is used,
 \code{\link[=do_boot]{do_boot()}} can extract them to
 generate a \code{boot_out}-class object
@@ -485,7 +506,8 @@ that again can be used in the
 \code{boot_out} argument.
 }
 
-If \code{boot_out} is set, arguments such
+If \code{boot_out} or \code{mc_out}
+is set, arguments such
 as \code{R}, \code{seed}, and \code{parallel} will
 be ignored.
 }

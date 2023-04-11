@@ -101,11 +101,15 @@ requested if \code{fit} is a
 \linkS4class{lavaan} object, this function
 will do bootstrapping on \code{fit}. \code{R}
 is the number of bootstrap samples.
-Default is 100.}
+Default is 100. For Monte Carlo
+simulation, this is the number
+of replications.}
 
-\item{seed}{If bootstrapping is
+\item{seed}{If bootstrapping
+or Monte Carlo simulation is
 conducted, this is the seed for the
-bootstrapping. Default is \code{NULL} and
+bootstrapping or simulation.
+Default is \code{NULL} and
 seed is not set.}
 
 \item{progress}{Logical. Display
@@ -167,7 +171,7 @@ This class has a \code{print} method
 \code{coef} method for extracting the
 index (\code{\link[=coef.cond_indirect_diff]{coef.cond_indirect_diff()}}),
 and a \code{confint} method for extracting
-the bootstrap confidence interval if
+the confidence interval if
 available
 (\code{\link[=confint.cond_indirect_diff]{confint.cond_indirect_diff()}}).
 }
