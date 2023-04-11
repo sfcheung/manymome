@@ -17,10 +17,10 @@
 #' merely retrieves the confidence
 #' intervals stored, if any,
 #' which could be formed by
-#' nonparametric bootstrappong,
+#' nonparametric bootstrapping,
 #' Monte Carlo simulation, or other
-#' methods to be supported in the 
-#" future.
+#' methods to be supported in the
+#' future.
 #'
 #' @param object The output of
 #' [cond_indirect_effects()].
