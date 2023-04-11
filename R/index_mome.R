@@ -39,7 +39,7 @@
 #' `coef` method for extracting the
 #' index ([coef.cond_indirect_diff()]),
 #' and a `confint` method for extracting
-#' the bootstrap confidence interval if
+#' the confidence interval if
 #' available
 #' ([confint.cond_indirect_diff()]).
 #'
@@ -103,11 +103,15 @@
 #' [lavaan-class] object, this function
 #' will do bootstrapping on `fit`. `R`
 #' is the number of bootstrap samples.
-#' Default is 100.
+#' Default is 100. For Monte Carlo
+#' simulation, this is the number
+#' of replications.
 #'
-#' @param seed If bootstrapping is
+#' @param seed If bootstrapping
+#' or Monte Carlo simulation is
 #' conducted, this is the seed for the
-#' bootstrapping. Default is `NULL` and
+#' bootstrapping or simulation.
+#' Default is `NULL` and
 #' seed is not set.
 #'
 #' @param progress Logical. Display
