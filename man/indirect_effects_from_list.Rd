@@ -22,7 +22,7 @@ indirect effect estimates and
 confidence intervals (if available).
 It also has A string column, \code{"Sig"},
 for #' significant test results
-if \code{add_sig} is \code{TRUE} and bootstrap
+if \code{add_sig} is \code{TRUE} and
 confidence intervals are available.
 }
 \description{
