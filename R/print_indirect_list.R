@@ -182,7 +182,7 @@ print.indirect_list <- function(x, digits = 3,
 #' confidence intervals (if available).
 #' It also has A string column, `"Sig"`,
 #' for #' significant test results
-#' if `add_sig` is `TRUE` and bootstrap
+#' if `add_sig` is `TRUE` and
 #' confidence intervals are available.
 #'
 #' @param object The output of
