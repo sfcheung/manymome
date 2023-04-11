@@ -57,14 +57,17 @@
 #' information from the output of
 #' [cond_indirect_effects()].
 #'
-#' If bootstrap estimates are available
-#' in the input or bootstrap confidence
+#' If bootstrap or Monte Carlo
+#' estimates are available
+#' in the input or bootstrap
+#' or Monte Carlo confidence
 #' intervals are requested in calling
 #' [cond_indirect_effects()],
 #' [cond_indirect_diff()] will also form
-#' the percentile bootstrap confidence
+#' the percentile confidence
 #' interval for the difference in
-#' conditional indirect effects.
+#' conditional indirect effects
+#' using the stored estimates.
 #'
 #' @return A `cond_indirect_diff`-class
 #' object. This class has a `print`
@@ -90,7 +93,7 @@
 #' `from` to Row `to`.
 #'
 #' @param level The level of confidence
-#' for the bootstrap confidence
+#' for the confidence
 #' interval. Default is .95.
 #'
 #'
