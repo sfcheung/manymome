@@ -1,8 +1,8 @@
-# manymome 0.1.9.3
+# manymome 0.1.9.4
 
 - Updated badges in README.md. (0.1.9.1)
 - Updated pkgdown site. (0.1.9.2)
-- Added support for Monte Carlo confidence intervals. (0.1.9.3)
+- Added support for Monte Carlo confidence intervals. (0.1.9.3 to 0.1.9.4)
 
 # manymome 0.1.9
 
