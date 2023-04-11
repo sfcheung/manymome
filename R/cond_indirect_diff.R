@@ -389,6 +389,12 @@ coef.cond_indirect_diff <- function(object, ...) {
 #' @details The `confint` method of the
 #' `cond_indirect_diff`-class object.
 #'
+#' The type of confidence intervals
+#' depends on the call used to
+#' create the object. This function
+#' merely extracts the stored
+#' confidence intervals.
+#'
 #' @return A one-row-two-column data
 #' frame of the confidence limits. If
 #' confidence interval is not available,
@@ -400,7 +406,7 @@ coef.cond_indirect_diff <- function(object, ...) {
 #' @param parm Ignored.
 #'
 #' @param level The level of confidence
-#' for the bootstrap confidence
+#' for the confidence
 #' interval. Default is .95. Must match
 #' the level of the stored confidence
 #' interval.
