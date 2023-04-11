@@ -42,47 +42,65 @@
 #' variable to another are computed.
 #'
 #' All three functions support using
-#' nonparametric bootstrapping to form
-#' percentile confidence intervals.
-#' Bootstrapping only needs to be done
+#' nonparametric bootstrapping (for
+#' `lavaan` or `lm` outputs) or
+#' Monte Carlo simulation (for
+#' `lavaan` outputs only) to form
+#' confidence intervals.
+#' Bootstrapping or Monte Carlo
+#' simulation only needs to be done
 #' once. These are the possible ways to
 #' form bootstrapping:
 #'
-#' 1. Do bootstrapping in the first call
+#' 1. Do bootstrapping or Monte Carlo
+#' simulation in the first call
 #' to one of these functions, by setting
-#' `boot_ci` to `TRUE` and `R` to the
-#' number of bootstrap samples, `level`
+#' `boot_ci` or `mc_ci` to `TRUE` and
+#' `R` to the
+#' number of bootstrap samples or
+#' replications, `level`
 #' to the level of confidence (default
 #' .95 or 95%), and `seed` to reproduce
 #' the results (`parallel` and `ncores`
-#' are optional). This will take some
-#' time to run. The output will have all
-#' bootstrap estimates stored. This
+#' are optional for bootstrapping).
+#' This will take some
+#' time to run for bootstrapping. The
+#' output will have all
+#' bootstrap or Monte Carlo estimates
+#' stored. This
 #' output, whether it is from
 #' [indirect_effect()],
 #' [cond_indirect_effects()], or
 #' [cond_indirect()], can be reused by
 #' any of these three functions by
-#' setting `boot_out` to this output.
+#' setting `boot_out` (for bootstrapping)
+#' or `mc_out` (for Monte Carlo
+#' simulation) to this output.
 #' They will form the confidence
 #' intervals using the stored bootstrap
+#' or Monte Carlo
 #' estimates.
 #'
 #' 2. Do bootstrapping using
-#' [do_boot()]. The output can be used
-#' in the `boot_out` argument of
+#' [do_boot()] or Monte Carlo simulation
+#' us8ing [do_mc()]. The output can be used
+#' in the `boot_out` (for bootstrapping)
+#' or `mc_out` (for Monte Carlo simulation)
+#' argument of
 #' [indirect_effect()],
 #' [cond_indirect_effects()] and
 #' [cond_indirect()].
 #'
-#' 3. If [lavaan::sem()] is used to fit
+#' 3. For bootstrapping,
+#' If [lavaan::sem()] is used to fit
 #' a model and `se = "boot"` is used,
 #' [do_boot()] can extract them to
 #' generate a `boot_out`-class object
 #' that again can be used in the
 #' `boot_out` argument.
 #'
-#' If `boot_out` is set, arguments such
+#' If `boot_out` or `mc_out`
+#' is set, arguments such
 #' as `R`, `seed`, and `parallel` will
 #' be ignored.
 #'
@@ -192,11 +210,15 @@
 #' [lavaan-class] object, this function
 #' will do bootstrapping on `fit`. `R`
 #' is the number of bootstrap samples.
-#' Default is 100.
+#' Default is 100. For Monte Carlo
+#' simulation, this is the number
+#' of replications.
 #'
-#' @param seed If bootstrapping is
+#' @param seed If bootstrapping
+#' or Monte Carlo simulation is
 #' conducted, this is the seed for the
-#' bootstrapping. Default is `NULL` and
+#' bootstrapping or simulation.
+#' Default is `NULL` and
 #' seed is not set.
 #'
 #' @param parallel Logical. If
