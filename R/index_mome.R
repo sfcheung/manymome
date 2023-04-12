@@ -377,15 +377,18 @@ index_of_momome <- function(x,
         names(ind_boot_ci) <- paste0(formatC(c(100 * (1 - level) / 2,
                                       100 * (1 - (1 - level) / 2)), 2,
                                       format = "f"), "%")
+        ind_boot_p <- est2p(ind_boot)
       } else {
         ind_boot <- NA
         ind_boot_ci <- NA
+        ind_boot_p <- NA
       }
     ind_ci <- NA
     if (has_mc) ind_ci <- ind_mc_ci
     if (has_boot) ind_ci <- ind_boot_ci
     out <- list(index = ind,
                 ci = ind_ci,
+                pvalue = ind_boot_p,
                 level = level,
                 from = i0$from,
                 to = i0$to,

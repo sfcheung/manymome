@@ -15,6 +15,15 @@
 #' @param digits Number of digits to
 #' display. Default is 3.
 #'
+#' @param pvalue Logical. If `TRUE`,
+#' asymmetric *p*-value based on
+#' bootstrapping will be printed if
+#' available.
+#'
+#' @param pvalue_digits Number of decimal
+#' places to display for the *p*-value.
+#' Default is 3.
+#'
 #' @param ... Other arguments. Not used.
 #'
 #'
@@ -68,7 +77,11 @@
 #'
 #' @export
 
-print.indirect <- function(x, digits = 3, ...) {
+print.indirect <- function(x,
+                           digits = 3,
+                           pvalue = FALSE,
+                           pvalue_digits = 3,
+                           ...) {
     xold <- x
     my_call <- x$call
     wvalues <- x$wvalues
@@ -182,6 +195,15 @@ print.indirect <- function(x, digits = 3, ...) {
                           paste0("Not Sig. (Level of Significance ",
                                 formatC(1 - x$level, digits, format = "f"), ")"))
         b_row <- c(b_str1, b_str2)
+        if (isTRUE(ci_type == "boot") && pvalue) {
+            tmpp <- ifelse(!is.null(x$boot_p) && is.numeric(x$boot_p),
+                           formatC(x$boot_p, digits = pvalue_digits, format = "f"),
+                           "Not available"
+                           )
+            b_row2 <- c("Bootstrap p-value:", tmpp)
+          } else {
+            b_row2 <- NULL
+          }
       }
     if (has_w) {
         if (is.null(x$op)) {
@@ -197,7 +219,7 @@ print.indirect <- function(x, digits = 3, ...) {
         tmp <- paste(paste(wnames, "=", formatC(w0,
                                                 digits = digits,
                                                 format = "f")), collapse = ", ")
-        if (has_ci) {ptable <- rbind(ptable, b_row)}
+        if (has_ci) {ptable <- rbind(ptable, b_row, b_row2)}
         ptable <- rbind(ptable,
                         c("When:", tmp))
       } else {

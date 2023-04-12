@@ -162,8 +162,10 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
                                       100 * (1 - (1 - level0) / 2)), 2,
                                       format = "f"), "%")
         bci0 <- boot_ci1
+        bp0 <- est2p(est0)
       } else {
         bci0 <- NULL
+        bp0 <- NULL
       }
     op1 <- e1$op
     op2 <- e2$op
@@ -189,12 +191,14 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
                   "\n", op, "(", op2, ")")
     bind0_boot <- NULL
     bci0_boot <- NULL
+    bp0_boot <- NULL
     bind0_mc <- NULL
     bci0_mc <- NULL
     if (has_ci) {
         if (ci_type == "boot") {
             bind0_boot <- bind0
             bci0_boot <- bci0
+            bp0_boot <- bp0
           }
         if (ci_type == "mc") {
             bind0_mc <- bind0
@@ -219,6 +223,7 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
                 op = op0,
                 boot_indirect = bind0_boot,
                 boot_ci = bci0_boot,
+                boot_p = bp0_boot,
                 mc_indirect = bind0_mc,
                 mc_ci = bci0_mc,
                 level = level0,

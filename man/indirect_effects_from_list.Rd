@@ -5,7 +5,7 @@
 \title{Coefficient Table of an 'indirect_list' Class
 Object}
 \usage{
-indirect_effects_from_list(object, add_sig = TRUE)
+indirect_effects_from_list(object, add_sig = TRUE, pvalue = FALSE)
 }
 \arguments{
 \item{object}{The output of
@@ -15,6 +15,11 @@ indirect_effects_from_list(object, add_sig = TRUE)
 \item{add_sig}{Whether a column
 of significance test results
 will be added. Default is \code{TRUE}.}
+
+\item{pvalue}{Logical. If \code{TRUE},
+asymmetric \emph{p}-values based on
+bootstrapping will be added
+available. Default is \code{FALSE}.}
 }
 \value{
 A data frame with the

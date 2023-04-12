@@ -5,7 +5,7 @@
 \title{Print the Output of
 'cond_indirect_diff'}
 \usage{
-\method{print}{cond_indirect_diff}(x, digits = 3, ...)
+\method{print}{cond_indirect_diff}(x, digits = 3, pvalue = FALSE, pvalue_digits = 3, ...)
 }
 \arguments{
 \item{x}{The output of
@@ -13,6 +13,15 @@
 
 \item{digits}{The number of decimal
 places in the printout.}
+
+\item{pvalue}{Logical. If \code{TRUE},
+asymmetric \emph{p}-value based on
+bootstrapping will be printed if
+available. Default is \code{FALSE.}}
+
+\item{pvalue_digits}{Number of decimal
+places to display for the \emph{p}-value.
+Default is 3.}
 
 \item{...}{Optional arguments.
 Ignored.}

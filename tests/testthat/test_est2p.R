@@ -23,5 +23,5 @@ test_that("est2p", {
     expect_equal(est2p(-x5), 0.9796)
     expect_equal(est2p(xNA), NA)
     expect_equal(suppressWarnings(est2p(x11)), NA)
-    expect_warning(est2p(x11))
+    expect_warning(est2p(x11, warn = TRUE))
   })

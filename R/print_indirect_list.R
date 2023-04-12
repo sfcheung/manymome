@@ -18,6 +18,15 @@
 #' effects is to be printed. Default is
 #' `TRUE.`
 #'
+#' @param pvalue Logical. If `TRUE`,
+#' asymmetric *p*-values based on
+#' bootstrapping will be printed if
+#' available.
+#'
+#' @param pvalue_digits Number of decimal
+#' places to display for the *p*-values.
+#' Default is 3.
+#'
 #' @param ... Other arguments. Not used.
 #'
 #'
@@ -51,7 +60,10 @@
 #' @export
 
 print.indirect_list <- function(x, digits = 3,
-                                annotation = TRUE, ...) {
+                                annotation = TRUE,
+                                pvalue = FALSE,
+                                pvalue_digits = 3,
+                                ...) {
     xold <- x
     my_call <- attr(x, "call")
     x_paths <- attr(x, "paths")
@@ -88,7 +100,14 @@ print.indirect_list <- function(x, digits = 3,
       }
     # Should always have mediators
     has_m <- TRUE
-    coef0 <- indirect_effects_from_list(xold, add_sig = TRUE)
+    coef0 <- indirect_effects_from_list(xold,
+                                        add_sig = TRUE,
+                                        pvalue = pvalue)
+    if (has_ci && (ci_type == "boot") && pvalue) {
+        coef0$pvalue <- formatC(coef0$pvalue,
+                                digits = pvalue_digits,
+                                format = "f")
+      }
     std_str <- ""
     if (standardized) {
         std_str <- paste0("(Both ", "x-variable(s)",
@@ -134,6 +153,10 @@ print.indirect_list <- function(x, digits = 3,
                               level_str,
                               tmp1,
                               tmp2), exdent = 3), sep = "\n")
+            if (pvalue && (ci_type == "boot")) {
+                tmp1 <- " - [pvalue] are asymmetric bootstrap p-values."
+                cat(tmp1, sep = "\n")
+              }
           } else if (has_ci && ci_type == "mc") {
             level_str <- paste0(formatC(level * 100, 1, format = "f"), "%")
             cat("\n ")
@@ -193,6 +216,11 @@ print.indirect_list <- function(x, digits = 3,
 #' of significance test results
 #' will be added. Default is `TRUE`.
 #'
+#' @param pvalue Logical. If `TRUE`,
+#' asymmetric *p*-values based on
+#' bootstrapping will be added
+#' available. Default is `FALSE`.
+#'
 #' @seealso [many_indirect_effects()]
 #'
 #' @examples
@@ -228,7 +256,9 @@ print.indirect_list <- function(x, digits = 3,
 #'
 #' @export
 
-indirect_effects_from_list <- function(object, add_sig = TRUE) {
+indirect_effects_from_list <- function(object,
+                                       add_sig = TRUE,
+                                       pvalue = FALSE) {
     if (!inherits(object, "indirect_list")) {
         stop("object is not an indirect_list class object.")
       }
@@ -263,6 +293,11 @@ indirect_effects_from_list <- function(object, add_sig = TRUE) {
         if (add_sig) {
             Sig <- ifelse((out$CI.lo > 0) | (out$CI.hi < 0), "Sig", "")
             out$Sig <- Sig
+          }
+        if (pvalue && (ci_type == "boot")) {
+            boot_p <- sapply(object, function(x) x$boot_p)
+            boot_p <- unname(boot_p)
+            out$pvalue <- boot_p
           }
       }
     out

@@ -18,6 +18,15 @@
 #' effects is to be printed. Default is
 #' `TRUE.`
 #'
+#' @param pvalue Logical. If `TRUE`,
+#' asymmetric *p*-values based on
+#' bootstrapping will be printed if
+#' available. Default is `FALSE.`
+#'
+#' @param pvalue_digits Number of decimal
+#' places to display for the *p*-values.
+#' Default is 3.
+#'
 #' @param ...  Other arguments. Not
 #' used.
 #'
@@ -56,7 +65,10 @@
 #' @export
 
 print.cond_indirect_effects <- function(x, digits = 3,
-                                        annotation = TRUE, ...) {
+                                        annotation = TRUE,
+                                        pvalue = FALSE,
+                                        pvalue_digits = 3,
+                                        ...) {
   full_output <- attr(x, "full_output")
   x_i <- full_output[[1]]
   my_call <- attr(x, "call")
@@ -96,6 +108,20 @@ print.cond_indirect_effects <- function(x, digits = 3,
       i <- which(names(out) == "CI.hi")
       j <- length(out)
       out <- c(out[1:i], list(Sig = Sig), out[(i + 1):j])
+      if ((ci_type == "boot") && pvalue) {
+          boot_p <- sapply(attr(x, "full_output"), function(x) x$boot_p)
+          boot_p <- unname(boot_p)
+          boot_p1 <- sapply(boot_p, function(xx) {
+              if (!is.na(xx)) {
+                  return(formatC(xx, digits = pvalue_digits, format = "f"))
+                } else {
+                  return("NA")
+                }
+            })
+          i <- which(names(out) == "Sig")
+          j <- length(out)
+          out <- c(out[1:i], list(pvalue = boot_p1), out[(i + 1):j])
+        }
     }
   out1 <- data.frame(out, check.names = FALSE)
   wlevels <- attr(x, "wlevels")
@@ -134,6 +160,10 @@ print.cond_indirect_effects <- function(x, digits = 3,
                             level_str,
                             tmp1,
                             tmp2), exdent = 3), sep = "\n")
+          if (pvalue && (ci_type == "boot")) {
+              tmp1 <- " - [pvalue] are asymmetric bootstrap p-values."
+              cat(tmp1, sep = "\n")
+            }
         } else {
           cat("\n")
         }

@@ -5,7 +5,7 @@
 \title{Print an 'indirect' Class
 Object}
 \usage{
-\method{print}{indirect}(x, digits = 3, ...)
+\method{print}{indirect}(x, digits = 3, pvalue = FALSE, pvalue_digits = 3, ...)
 }
 \arguments{
 \item{x}{The output of
@@ -14,6 +14,15 @@ Object}
 
 \item{digits}{Number of digits to
 display. Default is 3.}
+
+\item{pvalue}{Logical. If \code{TRUE},
+asymmetric \emph{p}-value based on
+bootstrapping will be printed if
+available.}
+
+\item{pvalue_digits}{Number of decimal
+places to display for the \emph{p}-value.
+Default is 3.}
 
 \item{...}{Other arguments. Not used.}
 }

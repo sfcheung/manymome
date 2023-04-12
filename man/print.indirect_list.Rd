@@ -5,7 +5,7 @@
 \title{Print an 'indirect_list' Class
 Object}
 \usage{
-\method{print}{indirect_list}(x, digits = 3, annotation = TRUE, ...)
+\method{print}{indirect_list}(x, digits = 3, annotation = TRUE, pvalue = FALSE, pvalue_digits = 3, ...)
 }
 \arguments{
 \item{x}{The output of
@@ -18,6 +18,15 @@ display. Default is 3.}
 the annotation after the table of
 effects is to be printed. Default is
 \code{TRUE.}}
+
+\item{pvalue}{Logical. If \code{TRUE},
+asymmetric \emph{p}-values based on
+bootstrapping will be printed if
+available.}
+
+\item{pvalue_digits}{Number of decimal
+places to display for the \emph{p}-values.
+Default is 3.}
 
 \item{...}{Other arguments. Not used.}
 }
