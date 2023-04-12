@@ -97,7 +97,7 @@
 #'                              mc_out = mc_out)
 #' out
 #'
-#' @describeIn do_mc A generate purpose function for
+#' @describeIn do_mc A general purpose function for
 #' creating Monte Carlo estimates to be reused
 #' by other functions. It returns a
 #' `mc-out`-class object.
