@@ -56,7 +56,10 @@ both objects,
 are not set to the same values in
 both objects, and
 \item bootstrap estimates stored in
-\code{boot_out} are not identical.
+\code{boot_out}, if any, are not identical.
+\item Monte Carlo simulated
+estimates stored in
+\code{mc_out}, if any, are not identical.
 }
 }
 \examples{

@@ -36,7 +36,11 @@
 #' both objects, and
 #'
 #' 4. bootstrap estimates stored in
-#' `boot_out` are not identical.
+#' `boot_out`, if any, are not identical.
+#'
+#' 5. Monte Carlo simulated
+#' estimates stored in
+#' `mc_out`, if any, are not identical.
 #'
 #' @return An 'indirect'-class object
 #' with a list of effects stored. See
@@ -125,12 +129,24 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
                    "+" = e1$indirect + e2$indirect,
                    "-" = e1$indirect - e2$indirect)
     level0 <- e1$level
+    has_ci <- FALSE
+    ci_type <- NULL
     if (!is.null(e1$boot_indirect) && !is.null(e2$boot_indirect)) {
+        has_ci <- TRUE
+        ci_type <- "boot"
+        ind_name <- "boot_indirect"
+      }
+    if (!is.null(e1$mc_indirect) && !is.null(e2$mc_indirect)) {
+        has_ci <- TRUE
+        ci_type <- "mc"
+        ind_name <- "mc_indirect"
+      }
+    if (has_ci) {
         if (op == "+") {
-            bind0 <- e1$boot_indirect + e2$boot_indirect
+            bind0 <- e1[[ind_name]] + e2[[ind_name]]
           }
         if (op == "-") {
-            bind0 <- e1$boot_indirect - e2$boot_indirect
+            bind0 <- e1[[ind_name]] - e2[[ind_name]]
           }
       } else {
         bind0 <- NULL
@@ -140,8 +156,8 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
         tmp <- list(t = matrix(bind0, nrow = nboot, ncol = 1),
                     t0 = est0,
                     R = nboot)
-        boot_ci <- boot::boot.ci(tmp, conf = level0, type = "perc")
-        boot_ci1 <- boot_ci$percent[4:5]
+        boot_ci0 <- boot::boot.ci(tmp, conf = level0, type = "perc")
+        boot_ci1 <- boot_ci0$percent[4:5]
         names(boot_ci1) <- paste0(formatC(c(100 * (1 - level0) / 2,
                                       100 * (1 - (1 - level0) / 2)), 2,
                                       format = "f"), "%")
@@ -171,6 +187,20 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
       }
     op0 <- paste0("(", op1, ")",
                   "\n", op, "(", op2, ")")
+    bind0_boot <- NULL
+    bci0_boot <- NULL
+    bind0_mc <- NULL
+    bci0_mc <- NULL
+    if (has_ci) {
+        if (ci_type == "boot") {
+            bind0_boot <- bind0
+            bci0_boot <- bci0
+          }
+        if (ci_type == "mc") {
+            bind0_mc <- bind0
+            bci0_mc <- bci0
+          }
+      }
     out <- list(indirect = est0,
                 indirect_raw = e1$indirect_raw + e2$indirect_raw,
                 components = cp0,
@@ -187,10 +217,13 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
                 computation_symbols = cs0,
                 call = ca0,
                 op = op0,
-                boot_indirect = bind0,
-                boot_ci = bci0,
+                boot_indirect = bind0_boot,
+                boot_ci = bci0_boot,
+                mc_indirect = bind0_mc,
+                mc_ci = bci0_mc,
                 level = level0,
-                boot_out = e1$boot_out
+                boot_out = e1$boot_out,
+                mc_out = e1$mc_out
                 )
     class(out) <- c("indirect", class(out))
     out
@@ -261,6 +294,9 @@ check_xy <- function(e1, e2) {
       }
     if (!identical(e1$boot_out, e2$boot_out)) {
         stop("The two objects do not have the same object in boot_out.")
+      }
+    if (!identical(e1$mc_out, e2$mc_out)) {
+        stop("The two objects do not have the same object in mc_out.")
       }
     return(TRUE)
   }

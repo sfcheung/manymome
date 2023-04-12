@@ -1,4 +1,4 @@
-# To be examined in an interactive session
+skip("To be examined in an interactive session")
 
 library(manymome)
 suppressMessages(library(lavaan))
@@ -74,3 +74,97 @@ suppressWarnings(outmo_7 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x",
 suppressWarnings(outmo_8 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
                                standardized_x = TRUE, standardized_y = TRUE,
                                boot_ci = TRUE, boot_out = fit_boot_out))
+
+# Monte Carlo
+
+## Mediation
+
+fit_ml <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "standard", warn = FALSE)
+fit_mc_out <- do_mc(fit_ml, R = 100, seed = 5155)
+
+# Suppress warnings due to small number of bootstrap samples.
+suppressWarnings(out_5_mc <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_ml,
+                               mc_ci = TRUE, mc_out = fit_mc_out))
+suppressWarnings(out_6_mc <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_ml,
+                               standardized_x = TRUE,
+                               mc_ci = TRUE, mc_out = fit_mc_out))
+suppressWarnings(out_7_mc <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_ml,
+                               standardized_y = TRUE,
+                               mc_ci = TRUE, mc_out = fit_mc_out))
+suppressWarnings(out_8_mc <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_ml,
+                               standardized_x = TRUE, standardized_y = TRUE,
+                               mc_ci = TRUE, mc_out = fit_mc_out, output_type = "list"))
+
+## Moderation only
+
+outmo_mm_1 <- mod_levels(c("gpgp2", "gpgp3"), fit = fit)
+
+# Suppress warnings due to small number of bootstrap samples.
+
+suppressWarnings(outmo_5_mc <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit_ml,
+                               mc_ci = TRUE, mc_out = fit_mc_out))
+suppressWarnings(outmo_6_mc <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit_ml,
+                               standardized_x = TRUE,
+                               mc_ci = TRUE, mc_out = fit_mc_out))
+suppressWarnings(outmo_7_mc <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit_ml,
+                               standardized_y = TRUE,
+                               mc_ci = TRUE, mc_out = fit_mc_out))
+suppressWarnings(outmo_8_mc <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit_ml,
+                               standardized_x = TRUE, standardized_y = TRUE,
+                               mc_ci = TRUE, mc_out = fit_mc_out))
+
+
+# ci_type
+
+## Mediation
+
+fit_ml <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "standard", warn = FALSE)
+fit_mc_out <- do_mc(fit_ml, R = 100, seed = 5155)
+
+# Suppress warnings due to small number of bootstrap samples.
+suppressWarnings(out_5_mc2 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_ml,
+                               ci_type = "mc", mc_out = fit_mc_out))
+suppressWarnings(out_6_boot2 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_boot,
+                               standardized_x = TRUE,
+                               ci_type = "boot"))
+suppressWarnings(out_7_mc2 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_ml,
+                               standardized_y = TRUE,
+                               ci_type = "mc", ci_out = fit_mc_out))
+suppressWarnings(out_8_boot2 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_boot,
+                               standardized_x = TRUE, standardized_y = TRUE,
+                               ci_type = "boot"))
+
+test_that("cond_indirect_effects: ci_type", {
+    expect_equal(out_5_mc$mc_ci, out_5_mc2$mc_ci)
+    expect_equal(out_6$boot_ci, out_6_boot2$boot_ci)
+    expect_equal(out_7_mc$mc_ci, out_7_mc2$mc_ci)
+    expect_equal(out_8$boot_ci, out_8_boot2$boot_ci)
+  })
+
+## Moderation only
+
+outmo_mm_1 <- mod_levels(c("gpgp2", "gpgp3"), fit = fit)
+
+# Suppress warnings due to small number of bootstrap samples.
+
+suppressWarnings(outmo_5_boot2 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit_boot,
+                               ci_type = "boot"))
+suppressWarnings(outmo_6_mc2 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit_ml,
+                               standardized_x = TRUE,
+                               ci_type = "mc", ci_out = fit_mc_out))
+suppressWarnings(outmo_7_boot2 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit_boot,
+                               standardized_y = TRUE,
+                               ci_type = "boot"))
+suppressWarnings(outmo_8_mc2 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit_ml,
+                               standardized_x = TRUE, standardized_y = TRUE,
+                               ci_type = "mc", mc_out = fit_mc_out))
+
+test_that("cond_indirect_effects: moderation, ci_type", {
+    expect_equal(outmo_5$boot_ci, outmo_5_boot2$boot_ci)
+    expect_equal(outmo_6_mc$mc_ci, outmo_6_mc2$mc_ci)
+    expect_equal(outmo_7$boot_ci, outmo_7_boot2$boot_ci)
+    expect_equal(outmo_8_mc$mc_ci, outmo_8_mc2$mc_ci)
+  })
+
+
+

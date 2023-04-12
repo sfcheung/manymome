@@ -1,0 +1,224 @@
+---
+title: "Generating Monte Carlo Estimates"
+author: "Shu Fai Cheung & Sing-Hang Cheung"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    number_sections: true
+vignette: >
+  %\VignetteIndexEntry{Generating Monte Carlo Estimates}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = ""
+)
+```
+
+# Introduction
+
+This article is a brief illustration of how
+to use `do_mc()` to generate Monte Carlo estimates for use
+by `indirect_effect()` and `cond_indirect_effects()` to
+form Monte Carlo confidence intervals.
+
+Although `indirect_effect()` and `cond_indirect_effects()`
+can also be used to generate Monte Carlo estimates
+when they are called (see `vignette("manymome")`), there
+may be situations in which users prefer generating
+the Monte Carlo estimates first before calling `indirect_effect()`
+and `cond_indirect_effects()`. `do_mc()` is for
+this purpose.
+
+Monte Carlo confidence intervals only support models
+fitted by `lavaan::sem()`.
+
+# How It Works
+
+It retrieves the variance-covariance matrix of the parameter
+estimates and then generate a number of sets of simulated
+sample estimates using a multivariate normal distribution.
+Other parameters and implied variances, covariances, and
+means of variables are then generated from these simulated
+estimates.
+
+When a $(1 - \alpha)$% Monte Carlo confidence interval is requested, the
+$100(\alpha/2)$^th^ percentile and the $100(1 - \alpha/2)$^th^
+percentile are used to form the confidence interval. For
+a 95% Monte Carlo confidence interval, the 2.5^th^ percentile
+and 97.5^th^ percentile will be used.
+
+# Data Set and Model
+
+This data set will be used for illustration:
+
+```{r data}
+library(manymome)
+dat <- data_med
+head(dat)
+```
+
+It has one predictors (`x`), one mediator (`m`),
+one outcome variable (`y`), and two control
+variables (`c1` and `c2`).
+
+This simple mediation model with two
+control variables (`c1` and `c2`)
+will be fitted:
+
+```{r do_mc_draw_model, echo = FALSE}
+library(semPlot)
+suppressMessages(library(lavaan))
+mod <-
+"
+m ~ x + c1 + c2
+y ~ m + x + c1 + c2
+"
+fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c(NA, "m", NA,
+                     "x", NA, "y",
+                     "c1", NA, NA,
+                     "c2", NA, NA), 4, 3, byrow = TRUE)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 10,
+              asize = 10,
+              DoNotPlot = TRUE)
+plot(p)
+text(label = "(Covariances excluded for readability)",
+     x = .25, y = -1,
+     adj = c(.5, .5))
+```
+
+# Models Fitted by `lavaan::sem()`
+
+We first fit the model by `lavaan::sem()`:
+
+```{r fit_by_lavaan}
+mod <-
+"
+m ~ x + c1 + c2
+y ~ m + x + c1 + c2
+"
+fit_lavaan <- sem(model = mod, data = dat,
+           fixed.x = FALSE,
+           estimator = "MLR")
+summary(fit_lavaan)
+```
+
+Suppose we would like to use robust "sandwich"
+standard errors and confidence intervals
+provided by MLR for the free parameters,
+but want to use Monte Carlo
+confidence interval for the indirect effect.
+In the call above, we used `estimator = "MLR"`
+and did not set `se = "boot"`.
+
+We can then call `do_mc()` on the output of
+`lavaan::sem()` to generate the Monte Carlo
+estimates of all free parameters *and*
+the implied statistics, such as the variances
+of `m` and `y`, which are not free parameters
+but are needed to form the confidence
+interval of the *standardized* indirect effect.
+
+```{r do_mc_lavaan}
+mc_out_lavaan <- do_mc(fit = fit_lavaan,
+                       R = 10000,
+                       seed = 4234)
+```
+
+Usually, just three arguments are needed:
+
+- `fit`: The output of `lavaan::sem()`.
+
+- `R`: The number of Monte Carlo replications. Should
+  be at least 10000 in real research.
+
+- `seed`: The seed for the random number
+  generator. To be used by `set.seed()`.
+  It is recommended to set this argument
+  such that the results are reproducible.
+
+Parallel processing is not used. However,
+the time taken is rarely long because there
+is no need to refit the model many times.
+
+## The Structure of the Output
+
+The output of `do_mc()` in this case
+is an object of the class `mc_out`,
+which is a list of `R` lists, each with
+two elements: `est` and `implied_stats`.
+
+This is the content of `est` of the first list:
+
+```{r mc_out_est}
+mc_out_lavaan[[1]]$est
+```
+
+The content is just the first four columns of
+the output of `lavaan::parameterEstimates()`.
+
+This is the content of `implied_stats` of the
+first list:
+
+```{r mc_out_implied_stats}
+mc_out_lavaan[[1]]$implied_stats
+```
+
+It has three elements. `cov` is the implied
+variances and covariances of all variables.
+If a model has latent variables, they will
+be included too. The other elements,
+`mean` and `mean_lv`, are the implied
+means of the observed variables and
+the latent variables (if any), respectively.
+They are of zero length if mean structure is
+not in the fitted model.
+
+## Using the Output of `do_mc()`
+
+When calling `indirect_effect()` or
+`cond_indirect_effects()`, the
+argument `mc_out` can be assigned the
+output of `do_mc()`. They will then
+retrieve the stored simulated estimates
+to form the Monte Carlo confidence
+intervals, if requested.
+
+```{r indirect_lav}
+out_lavaan <- indirect_effect(x = "x",
+                              y = "y",
+                              m = "m",
+                              fit = fit_lavaan,
+                              mc_ci = TRUE,
+                              mc_out = mc_out_lavaan)
+out_lavaan
+```
+
+Reusing the simulated estimates can ensure that
+all analysis with Monte Carlo confidence intervals
+are based on the same set of simulated estimates.
+
+# Limitation
+
+Monte Carlo confidence intervals require
+the variance-covariance matrix of all free parameters.
+Therefore, only models fitted by `lavaan::sem()`
+are supported. Models fitted by `stats::lm()`
+do not have a variance-covariance matrix for the
+regression coefficients from two or more
+regression models.
+
+# Further Information
+
+For further information on `do_mc()`,
+please refer to its help page.

@@ -13,7 +13,7 @@ Indirect Effects}
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
 
 \item{parm}{Ignored. Always returns
-the bootstrap confidence interval of
+the confidence intervals of
 the effects for all levels stored.}
 
 \item{level}{The level of confidence,
@@ -42,6 +42,17 @@ output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 It extracts and returns the
 columns for confidence intervals, if
 available.
+
+The type of confidence intervals
+depends on the call used to
+compute the effects. This function
+merely retrieves the confidence
+intervals stored, if any,
+which could be formed by
+nonparametric bootstrapping,
+Monte Carlo simulation, or other
+methods to be supported in the
+future.
 }
 \examples{
 

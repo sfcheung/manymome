@@ -1,7 +1,7 @@
 ---
 title: "manymome"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2023-01-06"
+date: "2023-04-12"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -62,6 +62,19 @@ to be conducted once. Alternatively, `do_boot()` can be use
 reused by
 most main functions of `manymome` for any path and any level
 of the moderators.
+
+**Monte Carlo confidence intervals**: Initial support for
+Monte Carlo confidence interval has been added to all main
+functions for the effects in a model fitted by
+`lavaan::sem()`. The recommended workflow
+is to use `do_mc()` to generate
+the simulated sampling estimates. The simulated estimates
+can be reused by
+most main functions of `manymome` for any path and any level
+of the moderators. To keep the length of this vignette short,
+it only covers bootstrapping confidence intervals.
+Please see `vignette("do_mc")` for an illustration on how
+to form Monte Carlo confidence intervals.
 
 **Standardized effects**: All main functions in Stage 2 support
 standardized effects and form their bootstrap confidence
@@ -1089,6 +1102,18 @@ by multiple regression. Please
 refer to the help page and examples of the functions, or
 other [articles](https://sfcheung.github.io/manymome/articles/).
 More articles will be added in the future for other scenarios.
+
+## Monte Carlo Confidence Intervals
+
+Monte Carlo confidence intervals can also
+be formed using the functions illustrated
+above. First use `do_mc()` instead of
+`do_boot()` to generate simulated sample
+estimates. When calling other main
+functions, use `mc_ci = TRUE` and set
+`mc_out` to the output of `do_mc()`.
+Please refer to `vignette("do_mc")`
+for an illustration.
 
 # References
 

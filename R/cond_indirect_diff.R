@@ -57,14 +57,17 @@
 #' information from the output of
 #' [cond_indirect_effects()].
 #'
-#' If bootstrap estimates are available
-#' in the input or bootstrap confidence
+#' If bootstrap or Monte Carlo
+#' estimates are available
+#' in the input or bootstrap
+#' or Monte Carlo confidence
 #' intervals are requested in calling
 #' [cond_indirect_effects()],
 #' [cond_indirect_diff()] will also form
-#' the percentile bootstrap confidence
+#' the percentile confidence
 #' interval for the difference in
-#' conditional indirect effects.
+#' conditional indirect effects
+#' using the stored estimates.
 #'
 #' @return A `cond_indirect_diff`-class
 #' object. This class has a `print`
@@ -90,7 +93,7 @@
 #' `from` to Row `to`.
 #'
 #' @param level The level of confidence
-#' for the bootstrap confidence
+#' for the confidence
 #' interval. Default is .95.
 #'
 #'
@@ -170,13 +173,38 @@ cond_indirect_diff <- function(output,
     output_full <- attr(output, "full_output")
     output_full_from <- output_full[[from]]
     output_full_to <- output_full[[to]]
-    boot_i_from <- output_full_from$boot_i
-    boot_i_to <- output_full_to$boot_i
+    boot_i_from <- output_full_from$boot_indirect
+    boot_i_to <- output_full_to$boot_indirect
+    mc_i_from <- output_full_from$mc_indirect
+    mc_i_to <- output_full_to$mc_indirect
     effect_diff <- stats::coef(output_full_to) - stats::coef(output_full_from)
     if (is.null(boot_i_from) || is.null(boot_i_to)) {
         has_boot <- FALSE
       } else {
         has_boot <- TRUE
+      }
+    if (is.null(mc_i_from) || is.null(mc_i_to)) {
+        has_mc <- FALSE
+      } else {
+        has_mc <- TRUE
+      }
+    if (all(has_mc, has_boot)) stop("Cannot form both Monte Carlo and bootstrapping confidence intervals.")
+    if (has_mc) {
+        mc_diff <- mc_i_to - mc_i_from
+        # levels0 <- c((1 - level) / 2, 1 - (1 - level) / 2)
+        # boot_diff_ci <- stats::quantile(boot_diff, probs = levels0)
+        boot_tmp <- list(t0 = effect_diff,
+                         t = matrix(mc_diff, ncol = 1),
+                         R = length(mc_diff))
+        mc_diff_ci <- boot::boot.ci(boot_tmp,
+                            type = "perc",
+                            conf = level)$percent[4:5]
+        names(mc_diff_ci) <- paste0(formatC(c(100 * (1 - level) / 2,
+                                      100 * (1 - (1 - level) / 2)), 2,
+                                      format = "f"), "%")
+      } else {
+        mc_diff <- NA
+        mc_diff_ci <- c(NA, NA)
       }
     if (has_boot) {
         boot_diff <- boot_i_to - boot_i_from
@@ -198,13 +226,17 @@ cond_indirect_diff <- function(output,
     wlevels <- attr(output, "wlevels")
     wlevels_from <- wlevels[from, , drop = FALSE]
     wlevels_to <- wlevels[to, , drop = FALSE]
+    out_diff_ci <- c(NA, NA)
+    if (has_mc) out_diff_ci <- mc_diff_ci
+    if (has_boot) out_diff_ci <- boot_diff_ci
     out <- list(index = effect_diff,
-                ci = boot_diff_ci,
+                ci = out_diff_ci,
                 level = level,
                 from = wlevels_from,
                 to = wlevels_to,
                 output = output[c(to, from), ],
-                boot_diff = boot_diff)
+                boot_diff = boot_diff,
+                mc_diff = mc_diff)
     class(out) <- c("cond_indirect_diff", class(out))
     out
   }
@@ -360,6 +392,12 @@ coef.cond_indirect_diff <- function(object, ...) {
 #' @details The `confint` method of the
 #' `cond_indirect_diff`-class object.
 #'
+#' The type of confidence intervals
+#' depends on the call used to
+#' create the object. This function
+#' merely extracts the stored
+#' confidence intervals.
+#'
 #' @return A one-row-two-column data
 #' frame of the confidence limits. If
 #' confidence interval is not available,
@@ -371,7 +409,7 @@ coef.cond_indirect_diff <- function(object, ...) {
 #' @param parm Ignored.
 #'
 #' @param level The level of confidence
-#' for the bootstrap confidence
+#' for the confidence
 #' interval. Default is .95. Must match
 #' the level of the stored confidence
 #' interval.
