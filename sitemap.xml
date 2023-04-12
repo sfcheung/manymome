@@ -10,6 +10,9 @@
     <loc>https://sfcheung.github.io/manymome/articles/do_boot.html</loc>
   </url>
   <url>
+    <loc>https://sfcheung.github.io/manymome/articles/do_mc.html</loc>
+  </url>
+  <url>
     <loc>https://sfcheung.github.io/manymome/articles/index.html</loc>
   </url>
   <url>
@@ -148,10 +151,16 @@
     <loc>https://sfcheung.github.io/manymome/reference/do_boot.html</loc>
   </url>
   <url>
+    <loc>https://sfcheung.github.io/manymome/reference/do_mc.html</loc>
+  </url>
+  <url>
     <loc>https://sfcheung.github.io/manymome/reference/factor2var.html</loc>
   </url>
   <url>
     <loc>https://sfcheung.github.io/manymome/reference/fit2boot_out.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/manymome/reference/fit2mc_out.html</loc>
   </url>
   <url>
     <loc>https://sfcheung.github.io/manymome/reference/get_one_cond_indirect_effect.html</loc>

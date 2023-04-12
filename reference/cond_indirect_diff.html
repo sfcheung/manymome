@@ -18,7 +18,7 @@ moderators."><meta property="og:image" content="https://sfcheung.github.io/manym
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,6 +40,7 @@ moderators."><meta property="og:image" content="https://sfcheung.github.io/manym
     <a class="dropdown-item" href="../articles/do_boot.html">Generating Bootstrap Estimates</a>
     <a class="dropdown-item" href="../articles/med_lm.html">Mediation Analysis by Multiple Regression</a>
     <a class="dropdown-item" href="../articles/mome_lm.html">Moderated Mediation Analysis by Multiple Regression</a>
+    <a class="dropdown-item" href="../articles/do_mc.html">Generating Monte Carlo Estimates</a>
   </div>
 </li>
 <li class="nav-item">
@@ -102,7 +103,7 @@ level(s) of the moderator(s) from Row
 
 <dt>level</dt>
 <dd><p>The level of confidence
-for the bootstrap confidence
+for the confidence
 interval. Default is .95.</p></dd>
 
 </dl></div>
@@ -166,14 +167,17 @@ calling <code><a href="cond_indirect.html">cond_indirect_effects()</a></code>.
 This function extracts required
 information from the output of
 <code><a href="cond_indirect.html">cond_indirect_effects()</a></code>.</p>
-<p>If bootstrap estimates are available
-in the input or bootstrap confidence
+<p>If bootstrap or Monte Carlo
+estimates are available
+in the input or bootstrap
+or Monte Carlo confidence
 intervals are requested in calling
 <code><a href="cond_indirect.html">cond_indirect_effects()</a></code>,
 <code>cond_indirect_diff()</code> will also form
-the percentile bootstrap confidence
+the percentile confidence
 interval for the difference in
-conditional indirect effects.</p>
+conditional indirect effects
+using the stored estimates.</p>
     </div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
@@ -282,7 +286,7 @@ the levels to be compared.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.02060775 </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">out_ind</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             2.50%    97.50%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> y~m1~x -0.2547857 0.1662855</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> y~m1~x -0.2547857 0.1662859</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>

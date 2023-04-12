@@ -16,7 +16,7 @@ cond_indirect_diff()."><meta property="og:image" content="https://sfcheung.githu
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,7 @@ cond_indirect_diff()."><meta property="og:image" content="https://sfcheung.githu
     <a class="dropdown-item" href="../articles/do_boot.html">Generating Bootstrap Estimates</a>
     <a class="dropdown-item" href="../articles/med_lm.html">Mediation Analysis by Multiple Regression</a>
     <a class="dropdown-item" href="../articles/mome_lm.html">Moderated Mediation Analysis by Multiple Regression</a>
+    <a class="dropdown-item" href="../articles/do_mc.html">Generating Monte Carlo Estimates</a>
   </div>
 </li>
 <li class="nav-item">
@@ -90,7 +91,7 @@ interval the output of
 
 <dt>level</dt>
 <dd><p>The level of confidence
-for the bootstrap confidence
+for the confidence
 interval. Default is .95. Must match
 the level of the stored confidence
 interval.</p></dd>
@@ -114,6 +115,11 @@ the limits are <code>NA</code>s.</p>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The <code>confint</code> method of the
 <code>cond_indirect_diff</code>-class object.</p>
+<p>The type of confidence intervals
+depends on the call used to
+create the object. This function
+merely extracts the stored
+confidence intervals.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

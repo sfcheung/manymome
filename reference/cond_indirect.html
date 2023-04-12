@@ -20,7 +20,7 @@ lavaan::sem()."><meta property="og:image" content="https://sfcheung.github.io/ma
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,6 +42,7 @@ lavaan::sem()."><meta property="og:image" content="https://sfcheung.github.io/ma
     <a class="dropdown-item" href="../articles/do_boot.html">Generating Bootstrap Estimates</a>
     <a class="dropdown-item" href="../articles/med_lm.html">Mediation Analysis by Multiple Regression</a>
     <a class="dropdown-item" href="../articles/mome_lm.html">Moderated Mediation Analysis by Multiple Regression</a>
+    <a class="dropdown-item" href="../articles/do_mc.html">Generating Monte Carlo Estimates</a>
   </div>
 </li>
 <li class="nav-item">
@@ -101,7 +102,15 @@ structural model fitted by <code><a href="https://rdrr.io/r/stats/lm.html" class
 <span>  save_boot_full <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  prods <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  get_prods_only <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  save_boot_out <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  save_boot_out <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  mc_ci <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  mc_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  save_mc_full <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  save_mc_out <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  ci_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  save_ci_full <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  save_ci_out <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  ci_type <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">cond_indirect_effects</span><span class="op">(</span></span>
@@ -126,6 +135,10 @@ structural model fitted by <code><a href="https://rdrr.io/r/stats/lm.html" class
 <span>  boot_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  output_type <span class="op">=</span> <span class="st">"data.frame"</span>,</span>
 <span>  mod_levels_list_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  mc_ci <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  mc_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ci_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ci_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -147,7 +160,15 @@ structural model fitted by <code><a href="https://rdrr.io/r/stats/lm.html" class
 <span>  ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  make_cluster_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  save_boot_full <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  save_boot_full <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  mc_ci <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  mc_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  save_mc_full <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  save_mc_out <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  ci_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  save_ci_full <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  save_ci_out <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  ci_type <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">many_indirect_effects</span><span class="op">(</span><span class="va">paths</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
@@ -262,13 +283,17 @@ requested if <code>fit</code> is a
 <a href="https://rdrr.io/pkg/lavaan/man/lavaan-class.html" class="external-link">lavaan</a> object, this function
 will do bootstrapping on <code>fit</code>. <code>R</code>
 is the number of bootstrap samples.
-Default is 100.</p></dd>
+Default is 100. For Monte Carlo
+simulation, this is the number
+of replications.</p></dd>
 
 
 <dt>seed</dt>
-<dd><p>If bootstrapping is
+<dd><p>If bootstrapping
+or Monte Carlo simulation is
 conducted, this is the seed for the
-bootstrapping. Default is <code>NULL</code> and
+bootstrapping or simulation.
+Default is <code>NULL</code> and
 seed is not set.</p></dd>
 
 
@@ -333,6 +358,79 @@ internal use.</p></dd>
 <dd><p>If <code>boot_out</code> is
 supplied, whether it will be saved in
 the output. Default is <code>TRUE</code>.</p></dd>
+
+
+<dt>mc_ci</dt>
+<dd><p>Logical. Whether
+Monte Carlo confidence interval will be
+formed. Default is <code>FALSE</code>.</p></dd>
+
+
+<dt>mc_out</dt>
+<dd><p>If <code>mc_ci</code> is
+<code>TRUE</code>, users can supply pregenerated
+Monte Carlo estimates. This can be the
+output of <code><a href="do_mc.html">do_mc()</a></code>. For
+<code>indirect_effect()</code> and
+<code>cond_indirect_effects()</code>, this can
+be the output of a previous call to
+<code>cond_indirect_effects()</code>,
+<code>indirect_effect()</code>, or
+<code>cond_indirect()</code> with Monte Carlo
+confidence intervals requested. These
+stored estimates will be reused such
+that there is no need to do
+Monte Carlo simulation again. If not
+supplied,
+the function will try to generate
+them from <code>fit</code>.</p></dd>
+
+
+<dt>save_mc_full</dt>
+<dd><p>If <code>TRUE</code>, full
+Monte Carlo results will be stored.
+Default is <code>FALSE.</code></p></dd>
+
+
+<dt>save_mc_out</dt>
+<dd><p>If <code>mc_out</code> is
+supplied, whether it will be saved in
+the output. Default is <code>TRUE</code>.</p></dd>
+
+
+<dt>ci_out</dt>
+<dd><p>If <code>ci_type</code> is supplied,
+this is the corresponding argument.
+If <code>ci_type</code> is <code>"boot"</code>, this
+argument will be used as <code>boot_out</code>.
+If <code>ci_type</code> is <code>"mc"</code>, this
+argument will be used as <code>mc_out</code>.</p></dd>
+
+
+<dt>save_ci_full</dt>
+<dd><p>If <code>TRUE</code>, full
+bootstrapping or Monte Carlo results
+will be stored.
+Default is <code>FALSE.</code></p></dd>
+
+
+<dt>save_ci_out</dt>
+<dd><p>If either <code>mc_out</code>
+or <code>boot_out</code> is
+supplied, whether it will be saved in
+the output. Default is <code>TRUE</code>.</p></dd>
+
+
+<dt>ci_type</dt>
+<dd><p>The type of
+confidence intervals to be formed.
+Can be either <code>"boot"</code> (bootstrapping)
+or <code>"mc"</code> (Monte Carlo). If not
+supplied or is <code>NULL</code>, will check
+other arguments
+(e.g, <code>boot_ci</code> and <code>mc_ci</code>). If
+supplied, will override <code>boot_ci</code>
+and <code>mc_ci</code>.</p></dd>
 
 
 <dt>wlevels</dt>
@@ -501,42 +599,60 @@ specified when calling
 conditional direct effects from one
 variable to another are computed.</p>
 <p>All three functions support using
-nonparametric bootstrapping to form
-percentile confidence intervals.
-Bootstrapping only needs to be done
+nonparametric bootstrapping (for
+<code>lavaan</code> or <code>lm</code> outputs) or
+Monte Carlo simulation (for
+<code>lavaan</code> outputs only) to form
+confidence intervals.
+Bootstrapping or Monte Carlo
+simulation only needs to be done
 once. These are the possible ways to
-form bootstrapping:</p><ol><li><p>Do bootstrapping in the first call
+form bootstrapping:</p><ol><li><p>Do bootstrapping or Monte Carlo
+simulation in the first call
 to one of these functions, by setting
-<code>boot_ci</code> to <code>TRUE</code> and <code>R</code> to the
-number of bootstrap samples, <code>level</code>
+<code>boot_ci</code> or <code>mc_ci</code> to <code>TRUE</code> and
+<code>R</code> to the
+number of bootstrap samples or
+replications, <code>level</code>
 to the level of confidence (default
 .95 or 95%), and <code>seed</code> to reproduce
 the results (<code>parallel</code> and <code>ncores</code>
-are optional). This will take some
-time to run. The output will have all
-bootstrap estimates stored. This
+are optional for bootstrapping).
+This will take some
+time to run for bootstrapping. The
+output will have all
+bootstrap or Monte Carlo estimates
+stored. This
 output, whether it is from
 <code>indirect_effect()</code>,
 <code>cond_indirect_effects()</code>, or
 <code>cond_indirect()</code>, can be reused by
 any of these three functions by
-setting <code>boot_out</code> to this output.
+setting <code>boot_out</code> (for bootstrapping)
+or <code>mc_out</code> (for Monte Carlo
+simulation) to this output.
 They will form the confidence
 intervals using the stored bootstrap
+or Monte Carlo
 estimates.</p></li>
 <li><p>Do bootstrapping using
-<code><a href="do_boot.html">do_boot()</a></code>. The output can be used
-in the <code>boot_out</code> argument of
+<code><a href="do_boot.html">do_boot()</a></code> or Monte Carlo simulation
+us8ing <code><a href="do_mc.html">do_mc()</a></code>. The output can be used
+in the <code>boot_out</code> (for bootstrapping)
+or <code>mc_out</code> (for Monte Carlo simulation)
+argument of
 <code>indirect_effect()</code>,
 <code>cond_indirect_effects()</code> and
 <code>cond_indirect()</code>.</p></li>
-<li><p>If <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> is used to fit
+<li><p>For bootstrapping,
+If <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> is used to fit
 a model and <code>se = "boot"</code> is used,
 <code><a href="do_boot.html">do_boot()</a></code> can extract them to
 generate a <code>boot_out</code>-class object
 that again can be used in the
 <code>boot_out</code> argument.</p></li>
-</ol><p>If <code>boot_out</code> is set, arguments such
+</ol><p>If <code>boot_out</code> or <code>mc_out</code>
+is set, arguments such
 as <code>R</code>, <code>seed</code>, and <code>parallel</code> will
 be ignored.</p>
     </div>

@@ -20,7 +20,7 @@ output of cond_indirect_effects()."><meta property="og:image" content="https://s
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,6 +42,7 @@ output of cond_indirect_effects()."><meta property="og:image" content="https://s
     <a class="dropdown-item" href="../articles/do_boot.html">Generating Bootstrap Estimates</a>
     <a class="dropdown-item" href="../articles/med_lm.html">Mediation Analysis by Multiple Regression</a>
     <a class="dropdown-item" href="../articles/mome_lm.html">Moderated Mediation Analysis by Multiple Regression</a>
+    <a class="dropdown-item" href="../articles/do_mc.html">Generating Monte Carlo Estimates</a>
   </div>
 </li>
 <li class="nav-item">
@@ -92,7 +93,7 @@ output of <code><a href="cond_indirect.html">cond_indirect_effects()</a></code>.
 
 <dt>parm</dt>
 <dd><p>Ignored. Always returns
-the bootstrap confidence interval of
+the confidence intervals of
 the effects for all levels stored.</p></dd>
 
 
@@ -124,6 +125,16 @@ number of rows of <code>object</code>.</p>
     <p>It extracts and returns the
 columns for confidence intervals, if
 available.</p>
+<p>The type of confidence intervals
+depends on the call used to
+compute the effects. This function
+merely retrieves the confidence
+intervals stored, if any,
+which could be formed by
+nonparametric bootstrapping,
+Monte Carlo simulation, or other
+methods to be supported in the
+future.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -170,7 +181,7 @@ available.</p>
 <span class="r-in"><span>                      progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">out1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             2.5 %    97.5 %</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> M+1.0SD 0.5471000 0.9277343</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M+1.0SD 0.5471000 0.9277342</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Mean    0.4277304 0.5787751</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> M-1.0SD 0.1590856 0.4261901</span>
 <span class="r-in"><span></span></span>

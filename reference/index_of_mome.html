@@ -20,7 +20,7 @@ proposed by Hayes (2015, 2018)."><meta property="og:image" content="https://sfch
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,6 +42,7 @@ proposed by Hayes (2015, 2018)."><meta property="og:image" content="https://sfch
     <a class="dropdown-item" href="../articles/do_boot.html">Generating Bootstrap Estimates</a>
     <a class="dropdown-item" href="../articles/med_lm.html">Mediation Analysis by Multiple Regression</a>
     <a class="dropdown-item" href="../articles/mome_lm.html">Moderated Mediation Analysis by Multiple Regression</a>
+    <a class="dropdown-item" href="../articles/do_mc.html">Generating Monte Carlo Estimates</a>
   </div>
 </li>
 <li class="nav-item">
@@ -91,6 +92,10 @@ proposed by Hayes (2015, 2018).</p>
 <span>  R <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  mc_ci <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  mc_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ci_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ci_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -107,6 +112,10 @@ proposed by Hayes (2015, 2018).</p>
 <span>  R <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  mc_ci <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  mc_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ci_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ci_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -184,13 +193,17 @@ requested if <code>fit</code> is a
 <a href="https://rdrr.io/pkg/lavaan/man/lavaan-class.html" class="external-link">lavaan</a> object, this function
 will do bootstrapping on <code>fit</code>. <code>R</code>
 is the number of bootstrap samples.
-Default is 100.</p></dd>
+Default is 100. For Monte Carlo
+simulation, this is the number
+of replications.</p></dd>
 
 
 <dt>seed</dt>
-<dd><p>If bootstrapping is
+<dd><p>If bootstrapping
+or Monte Carlo simulation is
 conducted, this is the seed for the
-bootstrapping. Default is <code>NULL</code> and
+bootstrapping or simulation.
+Default is <code>NULL</code> and
 seed is not set.</p></dd>
 
 
@@ -198,6 +211,53 @@ seed is not set.</p></dd>
 <dd><p>Logical. Display
 bootstrapping progress or not.
 Default is <code>TRUE</code>.</p></dd>
+
+
+<dt>mc_ci</dt>
+<dd><p>Logical. Whether
+Monte Carlo confidence interval will be
+formed. Default is <code>FALSE</code>.</p></dd>
+
+
+<dt>mc_out</dt>
+<dd><p>If <code>mc_ci</code> is
+<code>TRUE</code>, users can supply pregenerated
+Monte Carlo estimates. This can be the
+output of <code><a href="do_mc.html">do_mc()</a></code>. For
+<code><a href="cond_indirect.html">indirect_effect()</a></code> and
+<code><a href="cond_indirect.html">cond_indirect_effects()</a></code>, this can
+be the output of a previous call to
+<code><a href="cond_indirect.html">cond_indirect_effects()</a></code>,
+<code><a href="cond_indirect.html">indirect_effect()</a></code>, or
+<code><a href="cond_indirect.html">cond_indirect()</a></code> with Monte Carlo
+confidence intervals requested. These
+stored estimates will be reused such
+that there is no need to do
+Monte Carlo simulation again. If not
+supplied,
+the function will try to generate
+them from <code>fit</code>.</p></dd>
+
+
+<dt>ci_type</dt>
+<dd><p>The type of
+confidence intervals to be formed.
+Can be either <code>"boot"</code> (bootstrapping)
+or <code>"mc"</code> (Monte Carlo). If not
+supplied or is <code>NULL</code>, will check
+other arguments
+(e.g, <code>boot_ci</code> and <code>mc_ci</code>). If
+supplied, will override <code>boot_ci</code>
+and <code>mc_ci</code>.</p></dd>
+
+
+<dt>ci_out</dt>
+<dd><p>If <code>ci_type</code> is supplied,
+this is the corresponding argument.
+If <code>ci_type</code> is <code>"boot"</code>, this
+argument will be used as <code>boot_out</code>.
+If <code>ci_type</code> is <code>"mc"</code>, this
+argument will be used as <code>mc_out</code>.</p></dd>
 
 
 <dt>...</dt>
@@ -223,7 +283,7 @@ This class has a <code>print</code> method
 <code>coef</code> method for extracting the
 index (<code><a href="coef.cond_indirect_diff.html">coef.cond_indirect_diff()</a></code>),
 and a <code>confint</code> method for extracting
-the bootstrap confidence interval if
+the confidence interval if
 available
 (<code><a href="confint.cond_indirect_diff.html">confint.cond_indirect_diff()</a></code>).</p>
     </div>
@@ -334,7 +394,7 @@ mediation: Quantification, inference, and interpretation.
 <span class="r-out co"><span class="r-pr">#&gt;</span> 19 ind_mome := d*b ind_mome 0.02126577</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">out_mome</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             2.50%    97.50%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> y~m1~x -0.2540199 0.1710186</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> y~m1~x -0.2540199 0.1710189</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
@@ -383,10 +443,10 @@ mediation: Quantification, inference, and interpretation.
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">out_momome</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      y~m1~x </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -0.01659799 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.01659801 </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">est</span><span class="op">[</span><span class="fl">32</span>, <span class="op">]</span>, nd <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           lhs op   rhs      label         est</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32 ind_momome := d1*d4 ind_momome -0.01659799</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32 ind_momome := d1*d4 ind_momome -0.01659801</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

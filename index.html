@@ -55,7 +55,7 @@
     
     <a class="navbar-brand me-2" href="index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,6 +78,7 @@
     <a class="dropdown-item" href="articles/do_boot.html">Generating Bootstrap Estimates</a>
     <a class="dropdown-item" href="articles/med_lm.html">Mediation Analysis by Multiple Regression</a>
     <a class="dropdown-item" href="articles/mome_lm.html">Moderated Mediation Analysis by Multiple Regression</a>
+    <a class="dropdown-item" href="articles/do_mc.html">Generating Monte Carlo Estimates</a>
   </div>
 </li>
 <li class="nav-item">
@@ -103,7 +104,7 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9">
-<p>(Version 0.1.9.2, updated on 2023-03-11, <a href="https://sfcheung.github.io/manymome/news/index.html">release history</a>)</p>
+<p>(Version 0.1.9.6, updated on 2023-04-12, <a href="https://sfcheung.github.io/manymome/news/index.html">release history</a>)</p>
 <div class="section level1">
 <div class="page-header">
 <img src="logo.png" class="logo" alt=""><h1 id="manymome-">manymome <a class="anchor" aria-label="anchor" href="#manymome-"></a>
@@ -116,7 +117,7 @@
 </h1>
 <ul>
 <li><p>Compute an unstandardized or <em>standardized</em> <em>indirect</em> <em>effect</em> or <em>conditional</em> <em>indirect</em> <em>effect</em> in a path model.</p></li>
-<li><p>Form the <em>bootstrap</em> <em>confidence</em> <em>interval</em> for this effect.</p></li>
+<li><p>Form the <em>confidence</em> <em>interval</em> for this effect. Nonparametric bootstrapping is fully supported, while Monte Carlo is supported for models fitted by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>.</p></li>
 </ul>
 </div>
 <div class="section level1">
@@ -137,7 +138,7 @@
 <ul>
 <li><strong>Supports Standardized Effects</strong></li>
 </ul>
-<p>Can estimate standardized indirect effects and standardized conditional indirect effects without the need to standardize the variables. The bootstrap confidence intervals for standardized effects correctly take into account the sampling variation of the standardizers (the standard deviations of the predictor and the outcome variable).</p>
+<p>Can estimate standardized indirect effects and standardized conditional indirect effects without the need to standardize the variables. The bootstrap and Monte Carlo confidence intervals for standardized effects correctly take into account the sampling variation of the standardizers (the standard deviations of the predictor and the outcome variable) by recomputing them in each bootstrap sample or replication.</p>
 <ul>
 <li><strong>Supports Missing Data</strong></li>
 </ul>
@@ -163,7 +164,7 @@
 <li><p>Does not (officially) support categorical predictors.</p></li>
 <li><p>Does not support multisample models (although <code>lavaan</code> does).</p></li>
 <li><p>Does not support multilevel models (although <code>lavaan</code> does).</p></li>
-<li><p>Only supports nonparametric bootstrapping and percentile confidence interval. Does not support other methods such as Monte Carlo confidence interval or parametric bootstrapping.</p></li>
+<li><p>For bootstrapping, only supports nonparametric bootstrapping and percentile confidence interval. Does not support other bootstrapping methods such parametric bootstrapping.</p></li>
 <li><p>Only supports OLS estimation when <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> is used.</p></li>
 </ul>
 <p>We would add more to this list (suggestions are welcomed by adding <a href="#issues">GitHub issues</a>) so that users (and we) know when other tools should be used instead of <code>manymome</code>, or whether we can address these limitations in <code>manymome</code> in the future.</p>
@@ -184,9 +185,11 @@
 <h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h1>
 <p>The stable version at CRAN can be installed by <code><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages()</a></code>:</p>
-<pre class="{r}"><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"manymome"</span><span class="op">)</span></span></code></pre>
-<p>The latest developmental version at GitHub can be installed by <code>remotes::install_github()</code>:</p>
-<pre class="{r}"><code><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"sfcheung/manymome"</span><span class="op">)</span></span></code></pre>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"manymome"</span><span class="op">)</span></span></code></pre></div>
+<p>The latest developmental-but-stable version at GitHub can be installed by <code>remotes::install_github()</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"sfcheung/manymome"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level1">
 <h1 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>

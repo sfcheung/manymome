@@ -35,7 +35,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,6 +58,7 @@
     <a class="dropdown-item" href="../articles/do_boot.html">Generating Bootstrap Estimates</a>
     <a class="dropdown-item" href="../articles/med_lm.html">Mediation Analysis by Multiple Regression</a>
     <a class="dropdown-item" href="../articles/mome_lm.html">Moderated Mediation Analysis by Multiple Regression</a>
+    <a class="dropdown-item" href="../articles/do_mc.html">Generating Monte Carlo Estimates</a>
   </div>
 </li>
 <li class="nav-item">
@@ -91,7 +92,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2023-01-06</h4>
+            <h4 data-toc-skip class="date">2023-04-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/HEAD/vignettes/manymome.Rmd" class="external-link"><code>vignettes/manymome.Rmd</code></a></small>
       <div class="d-none name"><code>manymome.Rmd</code></div>
@@ -149,6 +150,16 @@ main functions, and only needs to be conducted once. Alternatively,
 <code><a href="../articles/do_boot.html">vignette("do_boot")</a></code>). The bootstrap estimates can be reused
 by most main functions of <code>manymome</code> for any path and any
 level of the moderators.</p>
+<p><strong>Monte Carlo confidence intervals</strong>: Initial support
+for Monte Carlo confidence interval has been added to all main functions
+for the effects in a model fitted by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>. The
+recommended workflow is to use <code><a href="../reference/do_mc.html">do_mc()</a></code> to generate the
+simulated sampling estimates. The simulated estimates can be reused by
+most main functions of <code>manymome</code> for any path and any level
+of the moderators. To keep the length of this vignette short, it only
+covers bootstrapping confidence intervals. Please see
+<code><a href="../articles/do_mc.html">vignette("do_mc")</a></code> for an illustration on how to form Monte
+Carlo confidence intervals.</p>
 <p><strong>Standardized effects</strong>: All main functions in Stage 2
 support standardized effects and form their bootstrap confidence
 interval correctly (Cheung, 2009; Friedrich, 1982). No need to
@@ -1074,6 +1085,16 @@ example, it can be used for categorical moderators and models fitted by
 multiple regression. Please refer to the help page and examples of the
 functions, or other <a href="https://sfcheung.github.io/manymome/articles/">articles</a>. More
 articles will be added in the future for other scenarios.</p>
+</div>
+<div class="section level3">
+<h3 id="monte-carlo-confidence-intervals">Monte Carlo Confidence Intervals<a class="anchor" aria-label="anchor" href="#monte-carlo-confidence-intervals"></a>
+</h3>
+<p>Monte Carlo confidence intervals can also be formed using the
+functions illustrated above. First use <code><a href="../reference/do_mc.html">do_mc()</a></code> instead of
+<code><a href="../reference/do_boot.html">do_boot()</a></code> to generate simulated sample estimates. When
+calling other main functions, use <code>mc_ci = TRUE</code> and set
+<code>mc_out</code> to the output of <code><a href="../reference/do_mc.html">do_mc()</a></code>. Please refer
+to <code><a href="../articles/do_mc.html">vignette("do_mc")</a></code> for an illustration.</p>
 </div>
 </div>
 <div class="section level2">
