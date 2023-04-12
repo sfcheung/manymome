@@ -1,9 +1,12 @@
-# manymome 0.1.9.5
+# manymome 0.1.9.6
 
 - Updated badges in README.md. (0.1.9.1)
 - Updated pkgdown site. (0.1.9.2)
 - Added support for Monte Carlo confidence intervals. (0.1.9.3 to 0.1.9.4)
 - Updated some vignettes for Monte Carlo confidence intervals. (0.1.9.5)
+- Used a more reliable test for Monte Carlo CIs. (0.1.9.6)
+- Fixed an error in pkgdown site. (0.1.9.6)
+- Updated the logo for readability. (0.1.9.6)
 
 # manymome 0.1.9
 

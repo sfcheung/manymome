@@ -84,6 +84,16 @@ ind_momome_mc <- index_of_momome(x = "x", y = "y", m = "m1", w = "w1", z = "w4",
 # confint(ind_momome)
 # print(parameterEstimates(fitmomo_boot)[32, c("est", "ci.lower", "ci.upper")], nd = 8)
 
+user_perc <- function(x, level = .95) {
+    boot_out <- list(t0 = mean(x, na.rm = TRUE),
+                     t = matrix(x, ncol = 1),
+                     R = length(x))
+    out0 <- boot::boot.ci(boot_out,
+                          type = "perc",
+                          conf = level)$percent[4:5]
+    out0
+  }
+
 test_that("index_of_mome and index_of_momome", {
     expect_equal(
         coef(ind_mome1),
@@ -138,20 +148,20 @@ test_that("index_of_mome and index_of_momome, Monte Carlo", {
       )
     expect_equal(
         unlist(confint(ind_mome1_mc)),
-        quantile(ind_mome1_mc$mc_diff, probs = c(.025, .975)),
-        tolerance = 1e-2,
+        user_perc(ind_mome1_mc$mc_diff),
+        tolerance = 1e-4,
         ignore_attr = TRUE
       )
     expect_equal(
         unlist(confint(ind_mome2_mc)),
-        quantile(ind_mome2_mc$mc_diff, probs = c(.025, .975)),
-        tolerance = 1e-1,
+        user_perc(ind_mome2_mc$mc_diff),
+        tolerance = 1e-4,
         ignore_attr = TRUE
       )
     expect_equal(
         unlist(confint(ind_momome_mc)),
-        quantile(ind_momome_mc$mc_diff, probs = c(.025, .975)),
-        tolerance = 1e-1,
+        user_perc(ind_momome_mc$mc_diff),
+        tolerance = 1e-4,
         ignore_attr = TRUE
       )
   })
