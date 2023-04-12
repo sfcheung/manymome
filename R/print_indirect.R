@@ -75,7 +75,20 @@ print.indirect <- function(x, digits = 3, ...) {
     standardized_x <- x$standardized_x
     standardized_y <- x$standardized_y
     standardized <- (standardized_x && standardized_y)
-    has_boot_ci <- isTRUE(!is.null(x$boot_ci))
+    has_ci <- FALSE
+    ci_type <- NULL
+    if (isTRUE(!is.null(x$boot_ci))) {
+        has_ci <- TRUE
+        ci_type <- "boot"
+        ci_name <- "boot_ci"
+        R <- length(x$boot_indirect)
+      }
+    if (isTRUE(!is.null(x$mc_ci))) {
+        has_ci <- TRUE
+        ci_type <- "mc"
+        ci_name <- "mc_ci"
+        R <- length(x$mc_indirect)
+      }
     has_w <- isTRUE(!is.null(wvalues))
     if (has_w) {
         w0 <- wvalues
@@ -152,15 +165,18 @@ print.indirect <- function(x, digits = 3, ...) {
       ptable <- rbind(ptable,
                       c("Moderators:", paste0(wnames, collapse = ", ")))
     }
-    if (has_boot_ci) {
+    if (has_ci) {
+        tmp1 <- switch(ci_type,
+                    boot = " Bootstrap CI:",
+                    mc = " Monte Carlo CI:")
         b_str1 <- paste0(formatC(x$level * 100, 1, format = "f"), "%",
-                         " Bootstrap CI:")
+                         tmp1)
         b_str2 <- paste0("[",
-                         paste0(formatC(x$boot_ci, digits, format = "f"),
+                         paste0(formatC(x[[ci_name]], digits, format = "f"),
                                 collapse = " to "),
                          "]")
         b_str1b <- "Null Hypothesis Significant Test:"
-        b_str2b <- ifelse((x$boot_ci[1] > 0) || (x$boo_ci[2] < 0),
+        b_str2b <- ifelse((x[[ci_name]][1] > 0) || (x[[ci_name]][2] < 0),
                           paste0("Sig. (Level of Significance ",
                                 formatC(1 - x$level, digits, format = "f"), ")"),
                           paste0("Not Sig. (Level of Significance ",
@@ -181,7 +197,7 @@ print.indirect <- function(x, digits = 3, ...) {
         tmp <- paste(paste(wnames, "=", formatC(w0,
                                                 digits = digits,
                                                 format = "f")), collapse = ", ")
-        if (has_boot_ci) {ptable <- rbind(ptable, b_row)}
+        if (has_ci) {ptable <- rbind(ptable, b_row)}
         ptable <- rbind(ptable,
                         c("When:", tmp))
       } else {
@@ -194,7 +210,7 @@ print.indirect <- function(x, digits = 3, ...) {
                             c("Function of Effects:",
                               formatC(x$indirect, digits = digits, format = "f")))
           }
-        if (has_boot_ci) {ptable <- rbind(ptable, b_row)}
+        if (has_ci) {ptable <- rbind(ptable, b_row)}
       }
     ptable <- data.frame(lapply(ptable, format))
     colnames(ptable) <- c("", "")
@@ -221,12 +237,18 @@ print.indirect <- function(x, digits = 3, ...) {
             cat("\n ", x$computation_values)
           }
       }
-    if (has_boot_ci) {
+    if (has_ci) {
         cat("\n\n")
-        cat(strwrap(paste("Percentile confidence interval formed by nonparametric bootstrapping",
+        tmp1 <- switch(ci_type,
+                  boot = paste("Percentile confidence interval formed by nonparametric bootstrapping",
                           "with ",
-                          length(x$boot_indirect),
-                          " bootstrap samples.")), sep = "\n")
+                          R,
+                          " bootstrap samples."),
+                  mc = paste("Monte Carlo confidence interval",
+                          "with ",
+                          R,
+                          " replications."))
+        cat(strwrap(tmp1), sep = "\n")
       }
     if (has_m & !is.list(mpathnames)) {
         if (has_w) {

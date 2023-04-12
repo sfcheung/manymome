@@ -11,11 +11,22 @@
 #' columns for confidence intervals, if
 #' available.
 #'
+#' The type of confidence intervals
+#' depends on the call used to
+#' compute the effects. This function
+#' merely retrieves the confidence
+#' intervals stored, if any,
+#' which could be formed by
+#' nonparametric bootstrapping,
+#' Monte Carlo simulation, or other
+#' methods to be supported in the
+#' future.
+#'
 #' @param object The output of
 #' [cond_indirect_effects()].
 #'
 #' @param parm Ignored. Always returns
-#' the bootstrap confidence interval of
+#' the confidence intervals of
 #' the effects for all levels stored.
 #'
 #' @param level The level of confidence,
@@ -84,8 +95,17 @@ confint.cond_indirect_effects <- function(object, parm, level = .95, ...) {
     #   }
     out0 <- as.data.frame(object)
     full_output <- attr(object, "full_output")
+    has_ci <- FALSE
     if (is.null(full_output[[1]]$boot_ci)) {
-          warning("Bootstrapping intervals not in the object.")
+        has_ci <- TRUE
+        ci_type <- "boot"
+      }
+    if (is.null(full_output[[1]]$mc_ci)) {
+        has_ci <- TRUE
+        ci_type <- "mc"
+      }
+    if (!has_ci) {
+          warning("Confidence intervals not in the object.")
           out0 <- data.frame(x1 = rep(NA, nrow(object)),
                              x2 = rep(NA, nrow(object)))
       } else {

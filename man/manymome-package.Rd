@@ -6,6 +6,8 @@
 \alias{manymome-package}
 \title{manymome: Mediation, Moderation and Moderated-Mediation After Model Fitting}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Computes indirect effects, conditional effects, and conditional indirect effects in a structural equation model or path model after model fitting, with no need to define any user parameters or label any paths in the model syntax. Can also form bootstrap confidence intervals by doing bootstrapping only once and reusing the bootstrap estimates in all subsequent computations. Supports bootstrap confidence intervals for standardized (partially or completely) indirect effects, conditional effects, and conditional indirect effects as described in Cheung (2009) \doi{10.3758/BRM.41.2.425} and Cheung, Cheung, Lau, Hui, and Vong (2022) \doi{10.1037/hea0001188}. Model fitting can be done by structural equation modeling using lavaan() or regression using lm().
 }
 \seealso{

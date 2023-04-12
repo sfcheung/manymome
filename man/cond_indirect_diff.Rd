@@ -22,7 +22,7 @@ level(s) of the moderator(s) from Row
 \code{from} to Row \code{to}.}
 
 \item{level}{The level of confidence
-for the bootstrap confidence
+for the confidence
 interval. Default is .95.}
 }
 \value{
@@ -91,14 +91,17 @@ This function extracts required
 information from the output of
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 
-If bootstrap estimates are available
-in the input or bootstrap confidence
+If bootstrap or Monte Carlo
+estimates are available
+in the input or bootstrap
+or Monte Carlo confidence
 intervals are requested in calling
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
 \code{\link[=cond_indirect_diff]{cond_indirect_diff()}} will also form
-the percentile bootstrap confidence
+the percentile confidence
 interval for the difference in
-conditional indirect effects.
+conditional indirect effects
+using the stored estimates.
 }
 \section{Functions}{
 \itemize{

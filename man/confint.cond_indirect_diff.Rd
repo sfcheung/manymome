@@ -14,7 +14,7 @@ Output of 'cond_indirect_diff()'}
 \item{parm}{Ignored.}
 
 \item{level}{The level of confidence
-for the bootstrap confidence
+for the confidence
 interval. Default is .95. Must match
 the level of the stored confidence
 interval.}
@@ -36,4 +36,10 @@ interval the output of
 \details{
 The \code{confint} method of the
 \code{cond_indirect_diff}-class object.
+
+The type of confidence intervals
+depends on the call used to
+create the object. This function
+merely extracts the stored
+confidence intervals.
 }

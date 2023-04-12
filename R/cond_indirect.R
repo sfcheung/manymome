@@ -42,47 +42,65 @@
 #' variable to another are computed.
 #'
 #' All three functions support using
-#' nonparametric bootstrapping to form
-#' percentile confidence intervals.
-#' Bootstrapping only needs to be done
+#' nonparametric bootstrapping (for
+#' `lavaan` or `lm` outputs) or
+#' Monte Carlo simulation (for
+#' `lavaan` outputs only) to form
+#' confidence intervals.
+#' Bootstrapping or Monte Carlo
+#' simulation only needs to be done
 #' once. These are the possible ways to
 #' form bootstrapping:
 #'
-#' 1. Do bootstrapping in the first call
+#' 1. Do bootstrapping or Monte Carlo
+#' simulation in the first call
 #' to one of these functions, by setting
-#' `boot_ci` to `TRUE` and `R` to the
-#' number of bootstrap samples, `level`
+#' `boot_ci` or `mc_ci` to `TRUE` and
+#' `R` to the
+#' number of bootstrap samples or
+#' replications, `level`
 #' to the level of confidence (default
 #' .95 or 95%), and `seed` to reproduce
 #' the results (`parallel` and `ncores`
-#' are optional). This will take some
-#' time to run. The output will have all
-#' bootstrap estimates stored. This
+#' are optional for bootstrapping).
+#' This will take some
+#' time to run for bootstrapping. The
+#' output will have all
+#' bootstrap or Monte Carlo estimates
+#' stored. This
 #' output, whether it is from
 #' [indirect_effect()],
 #' [cond_indirect_effects()], or
 #' [cond_indirect()], can be reused by
 #' any of these three functions by
-#' setting `boot_out` to this output.
+#' setting `boot_out` (for bootstrapping)
+#' or `mc_out` (for Monte Carlo
+#' simulation) to this output.
 #' They will form the confidence
 #' intervals using the stored bootstrap
+#' or Monte Carlo
 #' estimates.
 #'
 #' 2. Do bootstrapping using
-#' [do_boot()]. The output can be used
-#' in the `boot_out` argument of
+#' [do_boot()] or Monte Carlo simulation
+#' us8ing [do_mc()]. The output can be used
+#' in the `boot_out` (for bootstrapping)
+#' or `mc_out` (for Monte Carlo simulation)
+#' argument of
 #' [indirect_effect()],
 #' [cond_indirect_effects()] and
 #' [cond_indirect()].
 #'
-#' 3. If [lavaan::sem()] is used to fit
+#' 3. For bootstrapping,
+#' If [lavaan::sem()] is used to fit
 #' a model and `se = "boot"` is used,
 #' [do_boot()] can extract them to
 #' generate a `boot_out`-class object
 #' that again can be used in the
 #' `boot_out` argument.
 #'
-#' If `boot_out` is set, arguments such
+#' If `boot_out` or `mc_out`
+#' is set, arguments such
 #' as `R`, `seed`, and `parallel` will
 #' be ignored.
 #'
@@ -192,11 +210,15 @@
 #' [lavaan-class] object, this function
 #' will do bootstrapping on `fit`. `R`
 #' is the number of bootstrap samples.
-#' Default is 100.
+#' Default is 100. For Monte Carlo
+#' simulation, this is the number
+#' of replications.
 #'
-#' @param seed If bootstrapping is
+#' @param seed If bootstrapping
+#' or Monte Carlo simulation is
 #' conducted, this is the seed for the
-#' bootstrapping. Default is `NULL` and
+#' bootstrapping or simulation.
+#' Default is `NULL` and
 #' seed is not set.
 #'
 #' @param parallel Logical. If
@@ -283,6 +305,63 @@
 #' supplied, whether it will be saved in
 #' the output. Default is `TRUE`.
 #'
+#' @param mc_ci Logical. Whether
+#' Monte Carlo confidence interval will be
+#' formed. Default is `FALSE`.
+#'
+#' @param mc_out If `mc_ci` is
+#' `TRUE`, users can supply pregenerated
+#' Monte Carlo estimates. This can be the
+#' output of [do_mc()]. For
+#' [indirect_effect()] and
+#' [cond_indirect_effects()], this can
+#' be the output of a previous call to
+#' [cond_indirect_effects()],
+#' [indirect_effect()], or
+#' [cond_indirect()] with Monte Carlo
+#' confidence intervals requested. These
+#' stored estimates will be reused such
+#' that there is no need to do
+#' Monte Carlo simulation again. If not
+#' supplied,
+#' the function will try to generate
+#' them from `fit`.
+#'
+#' @param save_mc_full If `TRUE`, full
+#' Monte Carlo results will be stored.
+#' Default is `FALSE.`
+#'
+#' @param save_mc_out If `mc_out` is
+#' supplied, whether it will be saved in
+#' the output. Default is `TRUE`.
+#'
+#' @param save_ci_full If `TRUE`, full
+#' bootstrapping or Monte Carlo results
+#' will be stored.
+#' Default is `FALSE.`
+#'
+#' @param save_ci_out If either `mc_out`
+#' or `boot_out` is
+#' supplied, whether it will be saved in
+#' the output. Default is `TRUE`.
+#'
+#' @param ci_out If `ci_type` is supplied,
+#' this is the corresponding argument.
+#' If `ci_type` is `"boot"`, this
+#' argument will be used as `boot_out`.
+#' If `ci_type` is `"mc"`, this
+#' argument will be used as `mc_out`.
+#'
+#' @param ci_type The type of
+#' confidence intervals to be formed.
+#' Can be either `"boot"` (bootstrapping)
+#' or `"mc"` (Monte Carlo). If not
+#' supplied or is `NULL`, will check
+#' other arguments
+#' (e.g, `boot_ci` and `mc_ci`). If
+#' supplied, will override `boot_ci`
+#' and `mc_ci`.
+#'
 #'
 #' @seealso [mod_levels()] and
 #' [merge_mod_levels()] for generating
@@ -349,7 +428,15 @@ cond_indirect <- function(x,
                      save_boot_full = FALSE,
                      prods = NULL,
                      get_prods_only = FALSE,
-                     save_boot_out = TRUE) {
+                     save_boot_out = TRUE,
+                     mc_ci = FALSE,
+                     mc_out = NULL,
+                     save_mc_full = FALSE,
+                     save_mc_out = TRUE,
+                     ci_out = NULL,
+                     save_ci_full = FALSE,
+                     save_ci_out = TRUE,
+                     ci_type = NULL) {
     fit_type <- cond_indirect_check_fit(fit)
     chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
     if (!chkpath) {
@@ -360,6 +447,63 @@ cond_indirect <- function(x,
                       ". ",
                       "Please check the arguments x, y, and m.")
         stop(msg)
+      }
+
+    # Fix arguments
+    call_args <- names(match.call())
+    if (!is.null(ci_type)) {
+        if (ci_type == "mc") {
+            mc_ci <- TRUE
+            boot_ci <- FALSE
+            if (is.null(mc_out) && !is.null(ci_out)) {
+                mc_out <- ci_out
+                ci_out <- NULL
+              }
+            if (is.na(match("save_mc_full", call_args))) {
+                save_mc_full <- save_ci_full
+              }
+            if (is.na(match("save_mc_out", call_args))) {
+                save_mc_out <- save_ci_out
+              }
+          }
+        if (ci_type == "boot") {
+            boot_ci <- TRUE
+            mc_ci <- FALSE
+            if (is.null(boot_out) && !is.null(ci_out)) {
+                boot_out <- ci_out
+                ci_out <- NULL
+              }
+            if (is.na(match("save_boot_full", call_args))) {
+                save_boot_full <- save_ci_full
+              }
+            if (is.na(match("save_boot_out", call_args))) {
+                save_boot_out <- save_ci_out
+              }
+          }
+      }
+    if (all(boot_ci, mc_ci)) stop("Can only request one type of confidence intervals.")
+    if (mc_ci) {
+        if (!is.null(mc_out)) {
+            if (inherits(mc_out, "cond_indirect_effects")) {
+                mc_out <- attr(mc_out, "mc_out")
+                if (is.null(mc_out)) {
+                    stop("mc_out not found in the supplied object for 'mc_out'")
+                  }
+              }
+            if (inherits(mc_out, "indirect")) {
+                mc_out <- mc_out$mc_out
+                if (is.null(mc_out)) {
+                    stop("mc_out not found in the supplied object for 'mc_out'")
+                  }
+              }
+            if (!inherits(mc_out, "mc_out")) {
+                stop("The object at 'mc_out' must be of the class 'mc_out'.")
+              }
+          } else {
+            mc_out <- do_mc(fit = fit,
+                                R = R,
+                                seed = seed)
+          }
       }
     if (boot_ci) {
         if (!is.null(boot_out)) {
@@ -426,6 +570,41 @@ cond_indirect <- function(x,
                      standardized_x = standardized_x,
                      standardized_y = standardized_y,
                      prods = prods)
+    if (mc_ci) {
+        out_mc <- mapply(indirect_i,
+                           est = lapply(mc_out, function(x) x$est),
+                           implied_stats = lapply(mc_out, function(x) x$implied_stats),
+                           MoreArgs = list(x = x,
+                                           y = y,
+                                           m = m,
+                                           fit = fit0,
+                                           wvalues = wvalues,
+                                           standardized_x = standardized_x,
+                                           standardized_y = standardized_y,
+                                           warn = FALSE,
+                                           prods = prods),
+                           SIMPLIFY = FALSE)
+        if (save_mc_full) {
+            out0$mc_full <- out_mc
+          }
+        nboot <- length(out_mc)
+        out0$mc_indirect <- sapply(out_mc, function(x) x$indirect)
+        tmp <- list(t = matrix(out0$mc_indirect, nrow = nboot, ncol = 1),
+                    t0 = out0$indirect,
+                    R = nboot)
+        boot_ci0 <- boot::boot.ci(tmp, conf = level, type = "perc")
+        boot_ci1 <- boot_ci0$percent[4:5]
+        names(boot_ci1) <- paste0(formatC(c(100 * (1 - level) / 2,
+                                     100 * (1 - (1 - level) / 2)), 2,
+                                     format = "f"), "%")
+        out0$mc_ci <- boot_ci1
+        out0$level <- level
+        if (save_mc_out) {
+            out0$mc_out <- mc_out
+          } else {
+            out0$mc_out <- NULL
+          }
+      }
     if (boot_ci) {
         out_boot <- mapply(indirect_i,
                            est = lapply(boot_out, function(x) x$est),
@@ -448,8 +627,8 @@ cond_indirect <- function(x,
         tmp <- list(t = matrix(out0$boot_indirect, nrow = nboot, ncol = 1),
                     t0 = out0$indirect,
                     R = nboot)
-        boot_ci <- boot::boot.ci(tmp, conf = level, type = "perc")
-        boot_ci1 <- boot_ci$percent[4:5]
+        boot_ci0 <- boot::boot.ci(tmp, conf = level, type = "perc")
+        boot_ci1 <- boot_ci0$percent[4:5]
         names(boot_ci1) <- paste0(formatC(c(100 * (1 - level) / 2,
                                      100 * (1 - (1 - level) / 2)), 2,
                                      format = "f"), "%")
@@ -491,7 +670,15 @@ indirect_effect <- function(x,
                      ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                      make_cluster_args = list(),
                      progress = TRUE,
-                     save_boot_full = FALSE) {
+                     save_boot_full = FALSE,
+                     mc_ci = FALSE,
+                     mc_out = NULL,
+                     save_mc_full = FALSE,
+                     save_mc_out = TRUE,
+                     ci_out = NULL,
+                     save_ci_full = FALSE,
+                     save_ci_out = TRUE,
+                     ci_type = NULL) {
     cond_indirect(x = x,
                   y = y,
                   m = m,
@@ -509,7 +696,15 @@ indirect_effect <- function(x,
                   ncores = ncores,
                   make_cluster_args = make_cluster_args,
                   progress = progress,
-                  save_boot_full = save_boot_full)
+                  save_boot_full = save_boot_full,
+                  mc_ci = mc_ci,
+                  mc_out = mc_out,
+                  save_mc_full = save_mc_full,
+                  save_mc_out = save_mc_out,
+                  ci_out = ci_out,
+                  save_ci_full = save_ci_full,
+                  save_ci_out = save_ci_out,
+                  ci_type = ci_type)
   }
 
 #' @param w_type Character. Whether the
@@ -605,6 +800,10 @@ cond_indirect_effects <- function(wlevels,
                                   boot_out = NULL,
                                   output_type = "data.frame",
                                   mod_levels_list_args = list(),
+                                  mc_ci = FALSE,
+                                  mc_out = NULL,
+                                  ci_out = NULL,
+                                  ci_type = NULL,
                                   ...) {
     if (!missing(wlevels)) {
         wlevels_check <- check_wlevels(wlevels)
@@ -638,6 +837,52 @@ cond_indirect_effects <- function(wlevels,
     if ((fit_type == "lm") && !inherits(fit, "lm_list") &&
         is.list(fit)) {
         fit <- lm2list(fit)
+      }
+
+    # Fix arguments
+    call_args <- names(match.call())
+    if (!is.null(ci_type)) {
+        if (ci_type == "mc") {
+            mc_ci <- TRUE
+            boot_ci <- FALSE
+            if (is.null(mc_out) && !is.null(ci_out)) {
+                mc_out <- ci_out
+                ci_out <- NULL
+              }
+          }
+        if (ci_type == "boot") {
+            boot_ci <- TRUE
+            mc_ci <- FALSE
+            if (is.null(boot_out) && !is.null(ci_out)) {
+                boot_out <- ci_out
+                ci_out <- NULL
+              }
+          }
+      }
+
+    if (all(boot_ci, mc_ci)) stop("Can only request one type of confidence intervals.")
+    if (mc_ci) {
+        if (!is.null(mc_out)) {
+            if (inherits(mc_out, "cond_indirect_effects")) {
+                mc_out <- attr(mc_out, "mc_out")
+                if (is.null(mc_out)) {
+                    stop("mc_out not found in the supplied object for 'mc_out'")
+                  }
+              }
+            if (inherits(mc_out, "indirect")) {
+                mc_out <- mc_out$mc_out
+                if (is.null(mc_out)) {
+                    stop("mc_out not found in the supplied object for 'mc_out'")
+                  }
+              }
+            if (!inherits(mc_out, "mc_out")) {
+                stop("The object at 'mc_out' must be of the class 'mc_out'.")
+              }
+          } else {
+            mc_out <- do_mc(fit = fit,
+                            R = R,
+                            seed = seed)
+          }
       }
     if (boot_ci) {
         if (!is.null(boot_out)) {
@@ -689,6 +934,12 @@ cond_indirect_effects <- function(wlevels,
                            seed,
                            prods,
                            save_boot_out,
+                           mc_ci,
+                           mc_out,
+                           save_mc_out,
+                           ci_type,
+                           ci_out,
+                           save_ci_out,
                            ...) {
                               cond_indirect(wvalues = wv,
                                             x = x,
@@ -703,6 +954,12 @@ cond_indirect_effects <- function(wlevels,
                                             seed = seed,
                                             prods = prods,
                                             save_boot_out = FALSE,
+                                            mc_ci = mc_ci,
+                                            mc_out = mc_out,
+                                            save_mc_out = FALSE,
+                                            ci_type = ci_type,
+                                            ci_out = ci_out,
+                                            save_ci_out = FALSE,
                                             ...)
                            },
                   x = x,
@@ -717,6 +974,12 @@ cond_indirect_effects <- function(wlevels,
                   seed = seed,
                   prods = prods,
                   save_boot_out = FALSE,
+                  mc_ci = mc_ci,
+                  mc_out = mc_out,
+                  save_mc_out = FALSE,
+                  ci_type = ci_type,
+                  ci_out = ci_out,
+                  save_ci_out = FALSE,
                   ...)
     if (output_type == "data.frame") {
         out1 <- cond_indirect_effects_to_df(out, wlevels = wlevels)
@@ -727,7 +990,8 @@ cond_indirect_effects <- function(wlevels,
         attr(out1, "fit") <- fit
         attr(out1, "est") <- est
         attr(out1, "implied_stats") <- implied_stats
-        attr(out1, "boot_out") <- boot_out
+        if (boot_ci) attr(out1, "boot_out") <- boot_out
+        if (mc_ci) attr(out1, "ci_out") <- ci_out
         attr(out1, "prods") <- prods
         attr(out1, "x") <- x
         attr(out1, "y") <- y
@@ -846,10 +1110,20 @@ cond_indirect_effects_to_df <- function(x, wlevels) {
       }
     cc <- do.call(rbind, sapply(x, function(x) {x$components_conditional},
                                 simplify = FALSE))
+    has_ci <- FALSE
     if (!is.null(x[[1]]$boot_ci)) {
-        boot_ci <- TRUE
+        has_ci <- TRUE
+        ci_type <- "boot"
+        ci_cname <- "boot_ci"
+      }
+    if (!is.null(x[[1]]$mc_ci)) {
+        has_ci <- TRUE
+        ci_type <- "mc"
+        ci_cname <- "mc_ci"
+      }
+    if (has_ci) {
         bc <- do.call(rbind,
-                      sapply(x, function(x) {x$boot_ci}, simplify = FALSE))
+                      sapply(x, function(x) {x[[ci_cname]]}, simplify = FALSE))
         if (standardized_any) {
             colnames(bc) <- paste0(c("CILo:", "CIHi:"), colnames(bc))
             colnames(bc) <- c("CI.lo", "CI.hi")
@@ -857,17 +1131,15 @@ cond_indirect_effects_to_df <- function(x, wlevels) {
             colnames(bc) <- paste0(c("CIStdLo:", "CIStdHi:"), colnames(bc))
             colnames(bc) <- c("CI.lo", "CI.hi")
           }
-      } else {
-        boot_ci <- FALSE
       }
     if (is.null(indirect_std)) {
-        if (boot_ci) {
+        if (has_ci) {
             out <- data.frame(ind = indirect, bc, cc, check.names = FALSE)
           } else {
             out <- data.frame(ind = indirect, cc, check.names = FALSE)
           }
       } else {
-        if (boot_ci) {
+        if (has_ci) {
             out <- data.frame(std = indirect_std, bc, cc, ustd = indirect, check.names = FALSE)
           } else {
             out <- data.frame(std = indirect_std, cc, ustd = indirect, check.names = FALSE)

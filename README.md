@@ -9,7 +9,7 @@
 [![R-CMD-check](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-(Version 0.1.9.2, updated on 2023-03-11, [release history](https://sfcheung.github.io/manymome/news/index.html))
+(Version 0.1.9.5, updated on 2023-04-12, [release history](https://sfcheung.github.io/manymome/news/index.html))
 
 # manymome  <img src="man/figures/logo.png" align="right" height="150" />
 
@@ -24,7 +24,10 @@ by multiple regression.
 - Compute an unstandardized or *standardized* *indirect* *effect* or
   *conditional* *indirect* *effect* in a path model.
 
-- Form the *bootstrap* *confidence* *interval* for this effect.
+- Form the *confidence* *interval* for this effect.
+  Nonparametric bootstrapping is fully supported,
+  while Monte Carlo is supported for models
+  fitted by `lavaan::sem()`.
 
 # Advantages
 
@@ -57,10 +60,12 @@ outcome variables, other than those by `lavaan::sem()` and `lm()`.
 
 Can estimate standardized indirect effects and standardized
 conditional indirect effects without the need to standardize
-the variables. The  bootstrap confidence intervals for standardized
+the variables. The bootstrap and Monte Carlo
+confidence intervals for standardized
 effects correctly take into account the sampling variation
 of the standardizers (the standard deviations of the predictor
-and the outcome variable).
+and the outcome variable) by recomputing them in each bootstrap
+sample or replication.
 
 - **Supports Missing Data**
 
@@ -99,9 +104,8 @@ Despite the aforementioned advantages, the current version of
 
 - Does not support multilevel models (although `lavaan` does).
 
-- Only supports nonparametric bootstrapping and percentile
-confidence interval. Does not support other methods such as
-Monte Carlo confidence interval or parametric bootstrapping.
+- For bootstrapping, only supports nonparametric bootstrapping and percentile
+confidence interval. Does not support other bootstrapping methods such parametric bootstrapping.
 
 - Only supports OLS estimation when `lm()` is used.
 
@@ -128,13 +132,13 @@ https://sfcheung.github.io/manymome/
 
 The stable version at CRAN can be installed by `install.packages()`:
 
-```{r}
+```r
 install.packages("manymome")
 ```
 
-The latest developmental version at GitHub can be installed by `remotes::install_github()`:
+The latest developmental-but-stable version at GitHub can be installed by `remotes::install_github()`:
 
-```{r}
+```r
 remotes::install_github("sfcheung/manymome")
 ```
 
