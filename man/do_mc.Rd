@@ -92,10 +92,10 @@ analysis.
 }
 \section{Functions}{
 \itemize{
-\item \code{do_mc()}: A generate purpose function for
+\item \code{do_mc()}: A general purpose function for
 creating Monte Carlo estimates to be reused
 by other functions. It returns a
-\code{mc-out}-class object.
+\code{mc_out}-class object.
 
 \item \code{gen_mc_est()}: Generate Monte Carlo
 estimates and store them in the \code{external}

@@ -1,7 +1,7 @@
 ---
 title: "Mediation Models with Latent Variables"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2023-01-06"
+date: "2023-04-12"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -540,3 +540,13 @@ and `indirect_effect()`,
 please refer to their help pages,
 or `vignette("manymome")` and
 `vignette("do_boot")`.
+
+Monte Carlo confidence intervals can also
+be formed using the functions illustrated
+above. First use `do_mc()` instead of
+`do_boot()` to generate simulated sample
+estimates. When calling other main
+functions, use `mc_ci = TRUE` and set
+`mc_out` to the output of `do_mc()`.
+Please refer to `vignette("do_mc")`
+for an illustration.

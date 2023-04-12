@@ -28,6 +28,7 @@ articles:
   - do_boot
   - med_lm
   - mome_lm
+  - do_mc
 
 reference:
 - title: Main Functions

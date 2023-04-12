@@ -100,7 +100,7 @@
 #' @describeIn do_mc A general purpose function for
 #' creating Monte Carlo estimates to be reused
 #' by other functions. It returns a
-#' `mc-out`-class object.
+#' `mc_out`-class object.
 #'
 #' @order 1
 #'
