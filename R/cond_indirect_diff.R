@@ -253,6 +253,27 @@ cond_indirect_diff <- function(output,
 #' @details The `print` method of the
 #' `cond_indirect_diff`-class object.
 #'
+#' If bootstrapping confidence interval
+#' was requested, this method has the
+#' option to print a
+#' *p*-value computed by the
+#' method presented in Asparouhov and Muthén (2021).
+#' Note that this *p*-value is asymmetric
+#' bootstrap *p*-value based on the
+#' distribution of the bootstrap estimates.
+#' It is not computed based on the
+#' distribution under the null hypothesis.
+#'
+#' For a *p*-value of *a*, it means that
+#' a 100(1 - *a*)% bootstrapping confidence
+#' interval
+#' will have one of its limits equal to
+#' 0. A confidence interval
+#' with a higher confidence level will
+#' include zero, while a confidence
+#' interval with a lower confidence level
+#' will exclude zero.
+#'
 #' @return It returns `x` invisibly.
 #' Called for its side effect.
 #'
@@ -273,6 +294,11 @@ cond_indirect_diff <- function(output,
 #'
 #' @param ... Optional arguments.
 #' Ignored.
+#'
+#'
+#' @references
+#' Asparouhov, A., & Muthén, B. (2021). Bootstrap p-value computation.
+#' Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap%20-%20Pvalue.pdf
 #'
 #' @seealso [cond_indirect_diff()]
 #'

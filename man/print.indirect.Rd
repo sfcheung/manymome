@@ -35,6 +35,37 @@ Print the content of the
 output of \code{\link[=indirect_effect]{indirect_effect()}} or
 \code{\link[=cond_indirect]{cond_indirect()}}.
 }
+\details{
+The \code{print} method of the
+\code{indirect}-class object.
+
+If bootstrapping confidence interval
+was requested, this method has the
+option to print a
+\emph{p}-value computed by the
+method presented in Asparouhov and Muthén (2021).
+Note that this \emph{p}-value is asymmetric
+bootstrap \emph{p}-value based on the
+distribution of the bootstrap estimates.
+It is not computed based on the
+distribution under the null hypothesis.
+
+For a \emph{p}-value of \emph{a}, it means that
+a 100(1 - \emph{a})\% bootstrapping confidence
+interval
+will have one of its limits equal to
+0. A confidence interval
+with a higher confidence level will
+include zero, while a confidence
+interval with a lower confidence level
+will exclude zero.
+
+We recommend using confidence interval
+directly. Therefore, \emph{p}-value is not
+printed by default. Nevertheless,
+users who need it can request it
+by setting \code{pvalue} to \code{TRUE}.
+}
 \examples{
 
 library(lavaan)
@@ -79,6 +110,10 @@ indirect_2
 print(indirect_2, digits = 5)
 
 
+}
+\references{
+Asparouhov, A., & Muthén, B. (2021). Bootstrap p-value computation.
+Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap\%20-\%20Pvalue.pdf
 }
 \seealso{
 \code{\link[=indirect_effect]{indirect_effect()}} and

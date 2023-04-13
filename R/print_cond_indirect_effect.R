@@ -4,6 +4,30 @@
 #' @description Print the content of the
 #' output of [cond_indirect_effects()]
 #'
+#' @details The `print` method of the
+#' `cond_indirect_effects`-class object.
+#'
+#' If bootstrapping confidence intervals
+#' were requested, this method has the
+#' option to print
+#' *p*-values computed by the
+#' method presented in Asparouhov and Muthén (2021).
+#' Note that these *p*-values are asymmetric
+#' bootstrap *p*-values based on the
+#' distribution of the bootstrap estimates.
+#' They not computed based on the
+#' distribution under the null hypothesis.
+#'
+#' For a *p*-value of *a*, it means that
+#' a 100(1 - *a*)% bootstrapping confidence
+#' interval
+#' will have one of its limits equal to
+#' 0. A confidence interval
+#' with a higher confidence level will
+#' include zero, while a confidence
+#' interval with a lower confidence level
+#' will exclude zero.
+#'
 #' @return `x` is returned invisibly.
 #'  Called for its side effect.
 #'
@@ -30,6 +54,10 @@
 #' @param ...  Other arguments. Not
 #' used.
 #'
+#'
+#' @references
+#' Asparouhov, A., & Muthén, B. (2021). Bootstrap p-value computation.
+#' Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap%20-%20Pvalue.pdf
 #'
 #'
 #' @seealso [cond_indirect_effects()]
