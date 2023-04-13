@@ -10,6 +10,6 @@ bibentry(
   textVersion =
   paste("Cheung, S. F., & Cheung, S.-H. (2023).",
         "manymome: An R package for computing the indirect effects, conditional effects, and conditional indirect effects.",
-        "R package version 0.1.9.6",
+        "R package version 0.1.9.7",
         "https://github.com/sfcheung/manymome/")
 )

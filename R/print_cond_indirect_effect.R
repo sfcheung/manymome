@@ -4,6 +4,30 @@
 #' @description Print the content of the
 #' output of [cond_indirect_effects()]
 #'
+#' @details The `print` method of the
+#' `cond_indirect_effects`-class object.
+#'
+#' If bootstrapping confidence intervals
+#' were requested, this method has the
+#' option to print
+#' *p*-values computed by the
+#' method presented in Asparouhov and Muthén (2021).
+#' Note that these *p*-values are asymmetric
+#' bootstrap *p*-values based on the
+#' distribution of the bootstrap estimates.
+#' They not computed based on the
+#' distribution under the null hypothesis.
+#'
+#' For a *p*-value of *a*, it means that
+#' a 100(1 - *a*)% bootstrapping confidence
+#' interval
+#' will have one of its limits equal to
+#' 0. A confidence interval
+#' with a higher confidence level will
+#' include zero, while a confidence
+#' interval with a lower confidence level
+#' will exclude zero.
+#'
 #' @return `x` is returned invisibly.
 #'  Called for its side effect.
 #'
@@ -18,9 +42,22 @@
 #' effects is to be printed. Default is
 #' `TRUE.`
 #'
+#' @param pvalue Logical. If `TRUE`,
+#' asymmetric *p*-values based on
+#' bootstrapping will be printed if
+#' available. Default is `FALSE.`
+#'
+#' @param pvalue_digits Number of decimal
+#' places to display for the *p*-values.
+#' Default is 3.
+#'
 #' @param ...  Other arguments. Not
 #' used.
 #'
+#'
+#' @references
+#' Asparouhov, A., & Muthén, B. (2021). Bootstrap p-value computation.
+#' Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap%20-%20Pvalue.pdf
 #'
 #'
 #' @seealso [cond_indirect_effects()]
@@ -56,7 +93,10 @@
 #' @export
 
 print.cond_indirect_effects <- function(x, digits = 3,
-                                        annotation = TRUE, ...) {
+                                        annotation = TRUE,
+                                        pvalue = FALSE,
+                                        pvalue_digits = 3,
+                                        ...) {
   full_output <- attr(x, "full_output")
   x_i <- full_output[[1]]
   my_call <- attr(x, "call")
@@ -96,6 +136,20 @@ print.cond_indirect_effects <- function(x, digits = 3,
       i <- which(names(out) == "CI.hi")
       j <- length(out)
       out <- c(out[1:i], list(Sig = Sig), out[(i + 1):j])
+      if ((ci_type == "boot") && pvalue) {
+          boot_p <- sapply(attr(x, "full_output"), function(x) x$boot_p)
+          boot_p <- unname(boot_p)
+          boot_p1 <- sapply(boot_p, function(xx) {
+              if (!is.na(xx)) {
+                  return(formatC(xx, digits = pvalue_digits, format = "f"))
+                } else {
+                  return("NA")
+                }
+            })
+          i <- which(names(out) == "Sig")
+          j <- length(out)
+          out <- c(out[1:i], list(pvalue = boot_p1), out[(i + 1):j])
+        }
     }
   out1 <- data.frame(out, check.names = FALSE)
   wlevels <- attr(x, "wlevels")
@@ -134,6 +188,10 @@ print.cond_indirect_effects <- function(x, digits = 3,
                             level_str,
                             tmp1,
                             tmp2), exdent = 3), sep = "\n")
+          if (pvalue && (ci_type == "boot")) {
+              tmp1 <- " - [pvalue] are asymmetric bootstrap p-values."
+              cat(tmp1, sep = "\n")
+            }
         } else {
           cat("\n")
         }

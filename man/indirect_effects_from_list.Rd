@@ -5,7 +5,7 @@
 \title{Coefficient Table of an 'indirect_list' Class
 Object}
 \usage{
-indirect_effects_from_list(object, add_sig = TRUE)
+indirect_effects_from_list(object, add_sig = TRUE, pvalue = FALSE)
 }
 \arguments{
 \item{object}{The output of
@@ -15,6 +15,11 @@ indirect_effects_from_list(object, add_sig = TRUE)
 \item{add_sig}{Whether a column
 of significance test results
 will be added. Default is \code{TRUE}.}
+
+\item{pvalue}{Logical. If \code{TRUE},
+asymmetric \emph{p}-values based on
+bootstrapping will be added
+available. Default is \code{FALSE}.}
 }
 \value{
 A data frame with the
@@ -31,6 +36,28 @@ for the point estimates and
 confidence intervals (if available)
 in the
 output of \code{\link[=many_indirect_effects]{many_indirect_effects()}}.
+}
+\details{
+If bootstrapping confidence interval
+was requested, this method has the
+option to add
+\emph{p}-values computed by the
+method presented in Asparouhov and Muthén (2021).
+Note that these \emph{p}-values is asymmetric
+bootstrap \emph{p}-values based on the
+distribution of the bootstrap estimates.
+They are not computed based on the
+distribution under the null hypothesis.
+
+For a \emph{p}-value of \emph{a}, it means that
+a 100(1 - \emph{a})\% bootstrapping confidence
+interval
+will have one of its limits equal to
+0. A confidence interval
+with a higher confidence level will
+include zero, while a confidence
+interval with a lower confidence level
+will exclude zero.
 }
 \examples{
 
@@ -63,6 +90,10 @@ out_df <- indirect_effects_from_list(out)
 out_df
 
 
+}
+\references{
+Asparouhov, A., & Muthén, B. (2021). Bootstrap p-value computation.
+Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap\%20-\%20Pvalue.pdf
 }
 \seealso{
 \code{\link[=many_indirect_effects]{many_indirect_effects()}}

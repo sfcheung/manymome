@@ -5,7 +5,7 @@
 \title{Print an 'indirect_list' Class
 Object}
 \usage{
-\method{print}{indirect_list}(x, digits = 3, annotation = TRUE, ...)
+\method{print}{indirect_list}(x, digits = 3, annotation = TRUE, pvalue = FALSE, pvalue_digits = 3, ...)
 }
 \arguments{
 \item{x}{The output of
@@ -19,6 +19,15 @@ the annotation after the table of
 effects is to be printed. Default is
 \code{TRUE.}}
 
+\item{pvalue}{Logical. If \code{TRUE},
+asymmetric \emph{p}-values based on
+bootstrapping will be printed if
+available.}
+
+\item{pvalue_digits}{Number of decimal
+places to display for the \emph{p}-values.
+Default is 3.}
+
 \item{...}{Other arguments. Not used.}
 }
 \value{
@@ -28,6 +37,31 @@ Called for its side effect.
 \description{
 Print the content of the
 output of \code{\link[=many_indirect_effects]{many_indirect_effects()}}.
+}
+\details{
+The \code{print} method of the
+\code{indirect_list}-class object.
+
+If bootstrapping confidence interval
+was requested, this method has the
+option to print a
+\emph{p}-value computed by the
+method presented in Asparouhov and Muthén (2021).
+Note that this \emph{p}-value is asymmetric
+bootstrap \emph{p}-value based on the
+distribution of the bootstrap estimates.
+It is not computed based on the
+distribution under the null hypothesis.
+
+For a \emph{p}-value of \emph{a}, it means that
+a 100(1 - \emph{a})\% bootstrapping confidence
+interval
+will have one of its limits equal to
+0. A confidence interval
+with a higher confidence level will
+include zero, while a confidence
+interval with a lower confidence level
+will exclude zero.
 }
 \examples{
 
@@ -53,6 +87,10 @@ out <- many_indirect_effects(paths,
 out
 
 
+}
+\references{
+Asparouhov, A., & Muthén, B. (2021). Bootstrap p-value computation.
+Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap\%20-\%20Pvalue.pdf
 }
 \seealso{
 \code{\link[=many_indirect_effects]{many_indirect_effects()}}

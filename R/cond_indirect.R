@@ -634,6 +634,7 @@ cond_indirect <- function(x,
                                      format = "f"), "%")
         out0$boot_ci <- boot_ci1
         out0$level <- level
+        out0$boot_p <- est2p(out0$boot_indirect)
         if (save_boot_out) {
             out0$boot_out <- boot_out
           } else {

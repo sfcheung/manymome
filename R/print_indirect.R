@@ -5,6 +5,36 @@
 #' output of [indirect_effect()] or
 #' [cond_indirect()].
 #'
+#' @details The `print` method of the
+#' `indirect`-class object.
+#'
+#' If bootstrapping confidence interval
+#' was requested, this method has the
+#' option to print a
+#' *p*-value computed by the
+#' method presented in Asparouhov and Muthén (2021).
+#' Note that this *p*-value is asymmetric
+#' bootstrap *p*-value based on the
+#' distribution of the bootstrap estimates.
+#' It is not computed based on the
+#' distribution under the null hypothesis.
+#'
+#' For a *p*-value of *a*, it means that
+#' a 100(1 - *a*)% bootstrapping confidence
+#' interval
+#' will have one of its limits equal to
+#' 0. A confidence interval
+#' with a higher confidence level will
+#' include zero, while a confidence
+#' interval with a lower confidence level
+#' will exclude zero.
+#'
+#' We recommend using confidence interval
+#' directly. Therefore, *p*-value is not
+#' printed by default. Nevertheless,
+#' users who need it can request it
+#' by setting `pvalue` to `TRUE`.
+#'
 #' @return `x` is returned invisibly.
 #' Called for its side effect.
 #'
@@ -15,9 +45,22 @@
 #' @param digits Number of digits to
 #' display. Default is 3.
 #'
+#' @param pvalue Logical. If `TRUE`,
+#' asymmetric *p*-value based on
+#' bootstrapping will be printed if
+#' available.
+#'
+#' @param pvalue_digits Number of decimal
+#' places to display for the *p*-value.
+#' Default is 3.
+#'
 #' @param ... Other arguments. Not used.
 #'
 #'
+#'
+#' @references
+#' Asparouhov, A., & Muthén, B. (2021). Bootstrap p-value computation.
+#' Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap%20-%20Pvalue.pdf
 #'
 #' @seealso [indirect_effect()] and
 #' [cond_indirect()]
@@ -68,7 +111,11 @@
 #'
 #' @export
 
-print.indirect <- function(x, digits = 3, ...) {
+print.indirect <- function(x,
+                           digits = 3,
+                           pvalue = FALSE,
+                           pvalue_digits = 3,
+                           ...) {
     xold <- x
     my_call <- x$call
     wvalues <- x$wvalues
@@ -182,6 +229,15 @@ print.indirect <- function(x, digits = 3, ...) {
                           paste0("Not Sig. (Level of Significance ",
                                 formatC(1 - x$level, digits, format = "f"), ")"))
         b_row <- c(b_str1, b_str2)
+        if (isTRUE(ci_type == "boot") && pvalue) {
+            tmpp <- ifelse(!is.null(x$boot_p) && is.numeric(x$boot_p),
+                           formatC(x$boot_p, digits = pvalue_digits, format = "f"),
+                           "Not available"
+                           )
+            b_row2 <- c("Bootstrap p-value:", tmpp)
+          } else {
+            b_row2 <- NULL
+          }
       }
     if (has_w) {
         if (is.null(x$op)) {
@@ -197,7 +253,7 @@ print.indirect <- function(x, digits = 3, ...) {
         tmp <- paste(paste(wnames, "=", formatC(w0,
                                                 digits = digits,
                                                 format = "f")), collapse = ", ")
-        if (has_ci) {ptable <- rbind(ptable, b_row)}
+        if (has_ci) {ptable <- rbind(ptable, b_row, b_row2)}
         ptable <- rbind(ptable,
                         c("When:", tmp))
       } else {
