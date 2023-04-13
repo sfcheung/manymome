@@ -20,7 +20,7 @@ output of many_indirect_effects()."><meta property="og:image" content="https://s
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.7</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +80,7 @@ output of <code><a href="cond_indirect.html">many_indirect_effects()</a></code>.
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">indirect_effects_from_list</span><span class="op">(</span><span class="va">object</span>, add_sig <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">indirect_effects_from_list</span><span class="op">(</span><span class="va">object</span>, add_sig <span class="op">=</span> <span class="cn">TRUE</span>, pvalue <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -96,6 +96,13 @@ output of <code><a href="cond_indirect.html">many_indirect_effects()</a></code>.
 of significance test results
 will be added. Default is <code>TRUE</code>.</p></dd>
 
+
+<dt>pvalue</dt>
+<dd><p>Logical. If <code>TRUE</code>,
+asymmetric <em>p</em>-values based on
+bootstrapping will be added
+available. Default is <code>FALSE</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -108,6 +115,33 @@ It also has A string column, <code>"Sig"</code>,
 for #' significant test results
 if <code>add_sig</code> is <code>TRUE</code> and
 confidence intervals are available.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>If bootstrapping confidence interval
+was requested, this method has the
+option to add
+<em>p</em>-values computed by the
+method presented in Asparouhov and Muthén (2021).
+Note that these <em>p</em>-values is asymmetric
+bootstrap <em>p</em>-values based on the
+distribution of the bootstrap estimates.
+They are not computed based on the
+distribution under the null hypothesis.</p>
+<p>For a <em>p</em>-value of <em>a</em>, it means that
+a 100(1 - <em>a</em>)% bootstrapping confidence
+interval
+will have one of its limits equal to
+0. A confidence interval
+with a higher confidence level will
+include zero, while a confidence
+interval with a lower confidence level
+will exclude zero.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    <p>Asparouhov, A., &amp; Muthén, B. (2021). Bootstrap p-value computation.
+Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap%20-%20Pvalue.pdf</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
