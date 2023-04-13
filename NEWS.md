@@ -1,4 +1,4 @@
-# manymome 0.1.9.6
+# manymome 0.1.9.7
 
 - Updated badges in README.md. (0.1.9.1)
 - Updated pkgdown site. (0.1.9.2)
@@ -7,6 +7,12 @@
 - Used a more reliable test for Monte Carlo CIs. (0.1.9.6)
 - Fixed an error in pkgdown site. (0.1.9.6)
 - Updated the logo for readability. (0.1.9.6)
+- Some print methods support printing
+  asymmetric bootstrap
+  *p*-values using the method presented
+  in Asparouhov and Muthén (2021) if bootstrapping
+  confidence interval is requested. By
+  default, *p*-values are not printed. (0.1.9.7)
 
 # manymome 0.1.9
 
