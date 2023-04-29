@@ -49,6 +49,12 @@ test_that("get_implied_i with ov", {
     expect_identical(tmp1, tmp2)
   })
 
+test_that("lav_implied_all with ov", {
+    tmpa2 <- lav_implied_all(fit_mi)
+    tmpa2_chk <- get_implied_i(coef(fit_mi), fit_mi)
+    expect_identical(tmpa2, tmpa2_chk)
+  })
+
 dat_lv <- simple_mediation_latent
 n <- nrow(dat_lv)
 p <- ncol(dat_lv)
@@ -93,3 +99,10 @@ test_that("get_implied_i with lv", {
     tmplv2 <- get_implied_i(coef(fit_lv_lav), fit_lv_mi)
     expect_identical(tmplv1, tmplv2)
   })
+
+test_that("lav_implied_all with lv", {
+    tmpa2 <- lav_implied_all(fit_lv_mi)
+    tmpa2_chk <- get_implied_i(coef(fit_lv_mi), fit_lv_mi)
+    expect_identical(tmpa2, tmpa2_chk)
+  })
+
