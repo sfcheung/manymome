@@ -1,4 +1,5 @@
-skip("Require Amelia")
+skip_on_cran()
+# Require Amelia
 library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
