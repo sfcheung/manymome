@@ -140,8 +140,10 @@ do_mc <- function(fit,
 gen_mc_est <- function(fit,
                        R = 100,
                        seed = NULL) {
-    fit_vcov <- tryCatch(lavaan::lavInspect(fit, "vcov"),
-                            error = function(e) e)
+    # fit_vcov <- tryCatch(lavaan::lavInspect(fit, "vcov"),
+    #                         error = function(e) e)
+    fit_vcov <- tryCatch(get_vcov(fit),
+                         error = function(e) e)
       if (inherits(fit_vcov, "error")) {
           stop("Monte Carlo method cannot be used. VCOV of estimates not available.")
         }
