@@ -320,6 +320,30 @@ boot2implied <- function(fit) {
 #' @noRd
 
 set_est_i <- function(est0, fit, p_free) {
+    type <- NA
+    if (inherits(fit, "lavaan")) {
+        type <- "lavaan"
+      }
+    if (inherits(fit, "lavaan.mi")) {
+        type <- "lavaan.mi"
+      }
+    if (isTRUE(is.na(type))) {
+        stop("Object is not of a supported type.")
+      }
+    out <- switch(type,
+                  lavaan = set_est_i_lavaan(est0 = est0,
+                                            fit = fit,
+                                            p_free = p_free),
+                  lavaan.mi = set_est_i_lavaan_mi(est0 = est0,
+                                                  fit = fit,
+                                                  p_free = p_free))
+    out
+  }
+
+
+#' @noRd
+
+set_est_i_lavaan <- function(est0, fit, p_free) {
     fit@ParTable$est[p_free] <- unname(est0)
     est0 <- lavaan::parameterEstimates(fit,
                                        se = FALSE,
@@ -332,6 +356,16 @@ set_est_i <- function(est0, fit, p_free) {
                                        remove.def = FALSE,
                                        remove.nonfree = FALSE,
                                        remove.step1 = FALSE)
+    est0
+  }
+
+#' @noRd
+
+set_est_i_lavaan_mi <- function(est0, fit, p_free) {
+    fit@ParTable$est[p_free] <- unname(est0)
+    est0 <- lav_est(fit,
+                    se = FALSE,
+                    ci = FALSE)
     est0
   }
 

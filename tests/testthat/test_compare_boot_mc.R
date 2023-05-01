@@ -261,4 +261,56 @@ total_effect_mc <- out_med_mc + out_x_m1_y_mc + out_x_m2_y_mc + out_x_direct_mc
 total_effect_boot
 total_effect_mc
 
+# MI
+
+dat_miss <- data_med_mod_ab
+n <- nrow(dat_miss)
+p <- ncol(dat_miss)
+pstar <- n * p
+q <- 30
+set.seed(51453)
+tmp <- sample(pstar, q)
+tmp2 <- list(i = row(matrix(NA, n, p))[tmp],
+             j = col(matrix(NA, n, p))[tmp])
+for (ii in seq_len(q)) {
+    dat_miss[tmp2$i[ii], tmp2$j[ii]] <- NA
+  }
+
+# Form the product terms
+dat_miss$w1x <- dat_miss$w1 * dat_miss$x
+dat_miss$w2m <- dat_miss$w2 * dat_miss$m
+mod <-
+"
+m ~ x + w1 + w1x + c1 + c2
+y ~ m + w2 + w2m + x + c1 + c2
+# Covariances of the error term of m with w2m and w2
+m ~~ w2m + w2
+# Covariance between other variables
+# They need to be added due to the covariances added above
+# See Kwan and Chan (2018) and Miles et al. (2015)
+w2m ~~ w2 + x + w1 + w1x + c1 + c2
+w2  ~~ x + w1 + w1x + c1 + c2
+x   ~~ w1 + w1x + c1 + c2
+w1  ~~ w1x + c1 + c2
+w1x ~~ c1 + c2
+c1  ~~ c2
+"
+fit <- sem(model = mod,
+           data = dat_miss,
+           fixed.x = FALSE,
+           missing = "fiml.x")
+
+set.seed(235413)
+dat_mi <- amelia(dat_miss, m = 5)$imputations
+
+fit_mi <- sem.mi(mod, dat_mi,
+                 meanstructure = TRUE,
+                 fixed.x = FALSE,
+                 baseline = FALSE,
+                 h1 = FALSE,
+                 warn = FALSE)
+
+fit_mc <- do_mc(fit = fit_mi,
+                R = 10000,
+                seed = 53253)
 

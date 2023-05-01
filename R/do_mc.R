@@ -116,7 +116,7 @@ do_mc <- function(fit,
                     make_cluster_args = list(),
                     progress = TRUE) {
     fit_type <- cond_indirect_check_fit(fit)
-    if (fit_type == "lavaan") {
+    if (fit_type == "lavaan" || fit_type == "lavaan.mi") {
         fit0 <- gen_mc_est(fit = fit,
                           seed = seed,
                           R = R)
