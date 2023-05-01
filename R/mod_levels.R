@@ -416,6 +416,7 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
                  lm = merge_model_matrix(fit))
     mf <- switch(fit_type,
                  lavaan = NA,
+                 lavaan.mi = NA,
                  lm = merge_model_frame(fit))
     if (!(all(w %in% colnames(mm))) && (fit_type == "lm")) {
         w_source <- w
@@ -433,7 +434,7 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
     gpnames <- paste0("Category ", seq_len(k))
     rownames(w_gp) <- gpnames
     if (extract_gp_names) {
-        if (fit_type == "lavaan") {
+        if ((fit_type == "lavaan") || (fit_type == "lavaan.mi")) {
             w_gp <- set_gp_names(w_gp, prefix = prefix)
           }
         if (fit_type == "lm") {
@@ -449,6 +450,7 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
     if (is.null(prefix)) {
         prefix <- switch(fit_type,
                     lavaan = find_prefix(w),
+                    lavaan.mi = find_prefix(w),
                     lm = w_source)
       }
     if (!is.null(values)) {

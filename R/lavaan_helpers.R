@@ -105,11 +105,19 @@ lav_est_lavaan <- function(fit, ...) {
 #' @noRd
 
 lav_est_lavaan_mi <- function(fit, ...) {
-    methods::getMethod("summary",
-        signature = "lavaan.mi",
-        where = asNamespace("semTools"))(fit,
-                                         output = "data.frame",
-                                         ...)
+    out0 <- methods::getMethod("summary",
+            signature = "lavaan.mi",
+            where = asNamespace("semTools"))(fit,
+                                            output = "data.frame",
+                                            ...)
+    ptable <- as.data.frame(fit@ParTable)
+    if (!is.null(ptable$est)) {
+        out0$est <- NULL
+        out <- merge(out0, ptable[, c("lhs", "op", "rhs", "est")])
+      } else {
+        out <- out0
+      }
+    out
   }
 
 #' @noRd
@@ -152,3 +160,27 @@ lav_ptable_lavaan_mi <- function(fit, ...) {
     out$se[id_free] <- se_mi
     out
   }
+
+#' @noRd
+
+set_missing <- function(x,
+                        nmiss = .10,
+                        seed = NULL) {
+    if (!is.null(seed)) set.seed(seed)
+    n <- nrow(x)
+    p <- ncol(x)
+    pstar <- n * p
+    if (nmiss < 1) {
+        q <- ceiling(nmiss * pstar)
+      } else {
+        q <- ceiling(nmiss)
+      }
+    tmp <- sample(pstar, q)
+    tmp2 <- list(i = row(matrix(NA, n, p))[tmp],
+                 j = col(matrix(NA, n, p))[tmp])
+    for (ii in seq_len(q)) {
+        x[tmp2$i[ii], tmp2$j[ii]] <- NA
+      }
+    x
+  }
+
