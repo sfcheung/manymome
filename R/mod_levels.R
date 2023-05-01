@@ -568,7 +568,7 @@ find_w_type <- function(w, fit) {
         return("categorical")
       }
     fit_type <- cond_indirect_check_fit(fit)
-    if (fit_type == "lavaan") {
+    if (fit_type == "lavaan" || fit_type == "lavaan.mi") {
         mm <- as.data.frame(lav_data_used(fit))
         w_dat <- as.vector(mm[, w])
         if (length(unique(w_dat)) > 2) {
