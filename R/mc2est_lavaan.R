@@ -109,7 +109,7 @@ mc2est <- function(fit) {
         stop("Monte Carlo estimates not found. Please run do_mc() first.")
       }
     mc_est0 <- fit@external$manymome$mc
-    ptable <- lavaan::parameterTable(fit)
+    ptable <- lav_ptable(fit)
     p_free <- ptable$free > 0
     mc_est <- split(mc_est0, row(mc_est0))
     # set_est_i() supports both mc and boot

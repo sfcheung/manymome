@@ -112,3 +112,43 @@ lav_est_lavaan_mi <- function(fit, ...) {
                                          ...)
   }
 
+#' @noRd
+
+lav_ptable <- function(fit) {
+    type <- NA
+    if (inherits(fit, "lavaan")) {
+        type <- "lavaan"
+      }
+    if (inherits(fit, "lavaan.mi")) {
+        type <- "lavaan.mi"
+      }
+    if (isTRUE(is.na(type))) {
+        stop("Object is not of a supported type.")
+      }
+    out <- switch(type,
+                  lavaan = lav_ptable_lavaan(fit),
+                  lavaan.mi = lav_ptable_lavaan_mi(fit))
+    out
+  }
+
+#' @noRd
+
+lav_ptable_lavaan <- function(fit) {
+    lavaan::parameterTable(fit)
+  }
+
+#' @noRd
+
+lav_ptable_lavaan_mi <- function(fit, ...) {
+    out <- lavaan::parameterTable(fit)
+    coef_mi <- methods::getMethod("coef",
+          signature = "lavaan.mi",
+          where = asNamespace("semTools"))(fit)
+    se_mi <- sqrt(diag(get_vcov(fit)))
+    id_free <- out$free > 0
+    out$est <- NA
+    out$se <- NA
+    out$est[id_free] <- coef_mi
+    out$se[id_free] <- se_mi
+    out
+  }
