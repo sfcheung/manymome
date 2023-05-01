@@ -141,7 +141,8 @@
 #' dat$gp <- sample(c("gp1", "gp2", "gp3"), n, replace = TRUE)
 #' dat <- cbind(dat, factor2var(dat$gp, prefix = "gp", add_rownames = FALSE))
 #'
-#' # lavaan
+#' # Categorical moderator
+#'
 #' mod <-
 #' "
 #' m3 ~ m1 + x + gpgp2 + gpgp3 + x:gpgp2 + x:gpgp3
@@ -154,6 +155,25 @@
 #' out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "m3", fit = fit)
 #' plot(out_1)
 #' plot(out_1, graph_type = "tumble")
+#'
+#' # Numeric moderator
+#'
+#' dat <- modmed_x1m3w4y1
+#' mod2 <-
+#' "
+#' m3 ~ m1 + x + w1 + x:w1
+#' y ~ m3 + x
+#' "
+#' fit2 <- sem(mod2, dat, meanstructure = TRUE, fixed.x = FALSE)
+#' out_mm_2 <- mod_levels("w1",
+#'                        w_method = "percentile",
+#'                        percentiles = c(.16, .84),
+#'                        fit = fit2)
+#' out_mm_2
+#' out_2 <- cond_indirect_effects(wlevels = out_mm_2, x = "x", y = "m3", fit = fit2)
+#' plot(out_2)
+#' plot(out_2, graph_type = "tumble")
+#'
 #'
 #' @export
 
