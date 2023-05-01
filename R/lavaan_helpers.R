@@ -76,3 +76,39 @@ get_vcov_lavaan_mi <- function(object) {
                                         scale.W = TRUE,
                                         omit.imps = c("no.conv", "no.se"))
   }
+
+#' @noRd
+
+lav_est <- function(fit, ...) {
+    type <- NA
+    if (inherits(fit, "lavaan")) {
+        type <- "lavaan"
+      }
+    if (inherits(fit, "lavaan.mi")) {
+        type <- "lavaan.mi"
+      }
+    if (isTRUE(is.na(type))) {
+        stop("Object is not of a supported type.")
+      }
+    out <- switch(type,
+                  lavaan = lav_est_lavaan(fit, ...),
+                  lavaan.mi = lav_est_lavaan_mi(fit, ...))
+    out
+  }
+
+#' @noRd
+
+lav_est_lavaan <- function(fit, ...) {
+    lavaan::parameterEstimates(fit, ...)
+  }
+
+#' @noRd
+
+lav_est_lavaan_mi <- function(fit, ...) {
+    methods::getMethod("summary",
+        signature = "lavaan.mi",
+        where = asNamespace("semTools"))(fit,
+                                         output = "data.frame",
+                                         ...)
+  }
+
