@@ -195,15 +195,18 @@ plot.cond_indirect_effects <- function(
     w_names <- colnames(wlevels)
     mf0 <- switch(fit_type,
                   lavaan = lavaan::lavInspect(fit, "data"),
+                  lavaan.mi = lav_data_used(fit, drop_colon = FALSE),
                   lm = merge_model_frame(fit))
     fit_list <- switch(fit_type,
                        lavaan = lm_from_lavaan_list(fit),
+                       lavaan.mi = lm_from_lavaan_list(fit),
                        lm = fit)
     if ((fit_type == "lm") && !inherits(fit_list, "lm_list")) {
         fit_list <- lm2list(fit_list)
       }
     dat0 <- switch(fit_type,
                   lavaan = lavaan::lavInspect(fit, "data"),
+                  lavaan.mi = lav_data_used(fit, drop_colon = FALSE),
                   lm = merge_model_frame(fit))
     x_numeric <- TRUE
     if (!x_numeric) {
@@ -258,6 +261,7 @@ plot.cond_indirect_effects <- function(
     if (x_standardized || y_standardized) {
         implied_stats <- switch(fit_type,
                           lavaan = lavaan::lavInspect(fit, "implied"),
+                          lavaan.mi = lav_implied_all(fit),
                           lm = lm2ptable(fit)$implied_stats)
       }
     if (x_standardized) {
