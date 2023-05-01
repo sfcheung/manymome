@@ -245,7 +245,7 @@ mod_levels <- function(w,
                                                reference_group_label = reference_group_label)
           }
       }
-    if (fit_type == "lavaan") {
+    if (fit_type == "lavaan" || fit_type == "lavaan.mi" ) {
         if (w_type == "numeric") {
             out <- mod_levels_i_lavaan_numerical(fit = fit,
                                                  w = w,
@@ -353,6 +353,7 @@ mod_levels_i_lavaan_numerical <- mod_levels_i_lm_numerical <- function(fit,
     fit_type <- cond_indirect_check_fit(fit)
     mm <- switch(fit_type,
                  lavaan = as.data.frame(lav_data_used(fit)),
+                 lavaan.mi = as.data.frame(lav_data_used(fit)),
                  lm = merge_model_matrix(fit))
     w_method <- match.arg(w_method)
     if (!is.null(values)) {
@@ -411,6 +412,7 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
     fit_type <- cond_indirect_check_fit(fit)
     mm <- switch(fit_type,
                  lavaan = as.data.frame(lav_data_used(fit)),
+                 lavaan.mi = as.data.frame(lav_data_used(fit)),
                  lm = merge_model_matrix(fit))
     mf <- switch(fit_type,
                  lavaan = NA,
