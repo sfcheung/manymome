@@ -104,6 +104,9 @@ all_indirect_paths <- function(fit = NULL,
     if (identical(fit_type, "lavaan")) {
         beta <- lavaan::lavInspect(fit)$beta
       }
+    if (identical(fit_type, "lavaan.mi")) {
+        beta <- lavaan::lavInspect(fit)$beta
+      }
     if (identical(fit_type, "lm")) {
         beta <- beta_from_lm(fit)
       }
