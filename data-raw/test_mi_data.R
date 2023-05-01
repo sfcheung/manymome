@@ -144,12 +144,26 @@ fit_lv_mi <- sem.mi(mod_lv, dat_lv_mi,
 # fit_lv_lav
 # fit_lv_mi
 
-save("fit_cat_lav",
-     "fit_cat_mi",
-     "fit_lv_lav",
-     "fit_lv_mi",
-     "fit1_lav",
-     "fit1_mi",
+coef_cat_lav <- coef(fit_cat_lav)
+coef_cat_mi <- coef(fit_cat_mi)
+coef_lv_lav <- coef(fit_lv_lav)
+coef_lv_mi <- coef(fit_lv_mi)
+coef_1_lav <- coef(fit1_lav)
+coef_1_mi <- coef(fit1_mi)
+
+vcov_cat_lav <- vcov(fit_cat_lav)
+vcov_cat_mi <- vcov(fit_cat_mi)
+vcov_lv_lav <- vcov(fit_lv_lav)
+vcov_lv_mi <- vcov(fit_lv_mi)
+vcov_1_lav <- vcov(fit1_lav)
+vcov_1_mi <- vcov(fit1_mi)
+
+save("fit_cat_lav", "coef_cat_lav", "vcov_cat_lav",
+     "fit_cat_mi", "coef_cat_mi", "vcov_cat_mi",
+     "fit_lv_lav", "coef_lv_lav", "vcov_lv_lav",
+     "fit_lv_mi", "coef_lv_mi", "vcov_lv_mi",
+     "fit1_lav", "coef_1_lav", "vcov_1_lav",
+     "fit1_mi", "coef_1_mi", "vcov_1_mi",
 #     "fit2_lav",
 #     "fit2_mi",
      file = "./inst/extdata/mi_test_data.RData",
