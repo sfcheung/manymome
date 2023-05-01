@@ -1079,6 +1079,9 @@ cond_indirect_check_fit <- function(fit) {
             stop("'fit' is a list but not all the elements are lm outputs.")
           }
       }
+    if (inherits(fit, "lavaan.mi")) {
+        fit_type <- "lavaan.mi"
+      }
     if (is.na(fit_type)) {
         stop("'fit' is neither a lavaan object or a list of lm outputs.")
       }
