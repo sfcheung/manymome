@@ -538,6 +538,12 @@ cond_indirect <- function(x,
         if (is.null(implied_stats)) implied_stats <- lav_implied_all(fit)
         fit_data <- lavaan::lavInspect(fit, "data")
       }
+    if (fit_type == "lavaan.mi") {
+        fit0 <- fit
+        if (is.null(est)) est <- lav_est(fit)
+        if (is.null(implied_stats)) implied_stats <- lav_implied_all(fit)
+        fit_data <- lav_data_used(fit, drop_colon = FALSE)
+      }
     if (fit_type == "lm") {
         fit0 <- NULL
         lm_est <- lm2ptable(fit)
