@@ -9,5 +9,6 @@ knitr::knit("manymome.Rmd.originaL", output = "manymome.Rmd")
 knitr::knit("med_lav.Rmd.originaL", output = "med_lav.Rmd")
 knitr::knit("med_lm.Rmd.originaL", output = "med_lm.Rmd")
 knitr::knit("mome_lm.Rmd.original", output = "mome_lm.Rmd")
+knitr::knit("do_mc_lavaan_mi.Rmd.originaL", output = "do_mc_lavaan_mi.Rmd")
 
 setwd(base_dir)
