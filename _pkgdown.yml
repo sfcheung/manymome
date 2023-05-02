@@ -66,6 +66,7 @@ reference:
   - fit2boot_out_do_boot
   - do_mc
   - fit2mc_out
+  - do_mc_lavaan_mi
 - title: For 'lavaan'
 - contents:
   - factor2var
