@@ -61,17 +61,24 @@ lav_data_used_lavaan <- function(fit,
 
 lav_data_used_lavaan_mi <- function(fit,
                                     drop_colon = TRUE) {
+
     dat_list <- fit@DataList
     ovnames <- lavaan::lavNames(fit, "ov")
-    fit_org <- lavaan_from_lavaam_mi(fit)
+    fit_org <- lavaan_from_lavaam_mi(fit, data = FALSE)
     dat_common <- keep_identical_cells(dat_list)
     # dat_common <- dat_common[, colnames(dat_common) %in% ovnames]
-    fit_common <- lavaan::lavaan(model = fit_org,
-                                 data = dat_common,
-                                 missing = "fiml.x",
-                                 do.fit = FALSE)
-    dat <- lavaan::lavInspect(fit_common, "data")
-    i_excluded <- lavaan::lavInspect(fit_common, "empty.idx")
+    fit_tmp <- lavaan::lavaan(model = fit_org,
+                              data = dat_list[[1]],
+                              do.fit = FALSE)
+    dat_tmp <- lavaan::lavInspect(fit_tmp, "data")
+    all_prods <- find_all_products(dat_tmp, expand = TRUE)
+    dat_tmp <- clear_prods(dat_tmp)
+    vused <- intersect(colnames(dat_tmp), colnames(dat_common))
+    for (i in vused) {
+        dat_tmp[, i] <- dat_common[, i]
+      }
+    dat <- form_prods(dat_tmp, prods = all_prods)
+    i_excluded <- which(apply(dat, 1, function(x) all(is.na(x))))
     vnames <- colnames(dat)
     if (drop_colon) {
         vraw <- vnames[!grepl(":", colnames(dat))]
@@ -110,13 +117,41 @@ keep_identical_cells <- function(x) {
 #' Create a lavaan object based on a lavaan.mi object
 #' @noRd
 
-lavaan_from_lavaam_mi <- function(fit_mi) {
+lavaan_from_lavaam_mi <- function(fit_mi, data = TRUE) {
     fit_tmp <- methods::new("lavaan",
                   version = as.character(utils::packageVersion("lavaan")))
     fit_tmp@Model <- fit_mi@Model
-    fit_tmp@Data <- fit_mi@Data
+    if (data) {
+        fit_tmp@Data <- fit_mi@Data
+      }
     fit_tmp@ParTable <- fit_mi@ParTableList[[1]]
     fit_tmp@pta <- fit_mi@pta
     fit_tmp@Options <- fit_mi@Options
     fit_tmp
+  }
+
+#' @noRd
+
+clear_prods <- function(x) {
+    all_prods <- find_all_products(x, expand = TRUE)
+    if (isTRUE(all(is.na(all_prods)))) {
+        return(x)
+      } else {
+        x[, names(all_prods)] <- NA
+        return(x)
+      }
+ }
+
+#' @noRd
+
+form_prods <- function(x, prods = NA) {
+    if (isFALSE(all(is.na(prods)))) {
+        pnames <- names(prods)
+        for (i in seq_len(length(prods))) {
+            x[, pnames[i]] <- apply(x[, prods[[i]]], 1, prod)
+          }
+        return(x)
+      } else {
+        return(x)
+      }
   }
