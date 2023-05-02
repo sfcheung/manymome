@@ -126,9 +126,7 @@ m ~ x + c1 + c2
 y ~ m + x + c1 + c2
 "
 fit_lavaan <- sem.mi(model = mod,
-                     data = dat_mi,
-                     fixed.x = FALSE,
-                     meanstructure = TRUE)
+                     data = dat_mi)
 summary(fit_lavaan)
 #> lavaan.mi object based on 5 imputed data sets. 
 #> See class?lavaan.mi help page for available methods. 
@@ -147,38 +145,19 @@ summary(fit_lavaan)
 #> Regressions:
 #>                    Estimate  Std.Err  t-value       df  P(>|t|)
 #>   m ~                                                          
-#>     x                 0.891    0.080   11.182      Inf    0.000
-#>     c1                0.162    0.076    2.131 5182.949    0.033
-#>     c2               -0.114    0.102   -1.124 6281.324    0.261
+#>     x                 0.891    0.080   11.117      Inf    0.000
+#>     c1                0.162    0.077    2.118 5182.950    0.034
+#>     c2               -0.114    0.102   -1.117 6281.324    0.264
 #>   y ~                                                          
-#>     m                 0.736    0.249    2.952 3642.614    0.003
-#>     x                 0.616    0.297    2.077  383.680    0.038
-#>     c1                0.181    0.192    0.944      Inf    0.345
-#>     c2               -0.156    0.252   -0.620 3050.069    0.535
-#> 
-#> Covariances:
-#>                    Estimate  Std.Err  t-value       df  P(>|t|)
-#>   x ~~                                                         
-#>     c1                0.029    0.117    0.250      Inf    0.802
-#>     c2                0.090    0.089    1.014      Inf    0.311
-#>   c1 ~~                                                        
-#>     c2               -0.100    0.093   -1.071      Inf    0.284
-#> 
-#> Intercepts:
-#>                    Estimate  Std.Err  t-value       df  P(>|t|)
-#>    .m                 9.913    0.912   10.870 7316.289    0.000
-#>    .y                 4.195    3.341    1.256      Inf    0.209
-#>     x                 9.909    0.106   93.165      Inf    0.000
-#>     c1                2.154    0.111   19.324      Inf    0.000
-#>     c2                4.908    0.084   58.515 6102.050    0.000
+#>     m                 0.736    0.251    2.935 3642.608    0.003
+#>     x                 0.616    0.298    2.065  383.680    0.040
+#>     c1                0.181    0.193    0.939      Inf    0.348
+#>     c2               -0.156    0.254   -0.616 3050.071    0.538
 #> 
 #> Variances:
 #>                    Estimate  Std.Err  t-value       df  P(>|t|)
-#>    .m                 0.682    0.097    7.000      Inf    0.000
-#>    .y                 4.151    0.593    6.999 8812.144    0.000
-#>     x                 1.109    0.158    7.000      Inf    0.000
-#>     c1                1.218    0.174    7.000      Inf    0.000
-#>     c2                0.689    0.098    7.000      Inf    0.000
+#>    .m                 0.682    0.098    6.959      Inf    0.000
+#>    .y                 4.151    0.597    6.958 8812.141    0.000
 ```
 
 The other steps are identical to those illustrated
@@ -245,7 +224,7 @@ out_lavaan
 #>                                        
 #>  Path:                 x -> m -> y     
 #>  Indirect Effect       0.656           
-#>  95.0% Monte Carlo CI: [0.219 to 1.125]
+#>  95.0% Monte Carlo CI: [0.219 to 1.130]
 #> 
 #> Computation Formula:
 #>   (b.m~x)*(b.y~m)

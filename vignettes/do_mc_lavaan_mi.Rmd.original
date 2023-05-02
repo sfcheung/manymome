@@ -133,9 +133,7 @@ m ~ x + c1 + c2
 y ~ m + x + c1 + c2
 "
 fit_lavaan <- sem.mi(model = mod,
-                     data = dat_mi,
-                     fixed.x = FALSE,
-                     meanstructure = TRUE)
+                     data = dat_mi)
 summary(fit_lavaan)
 ```
 
