@@ -263,18 +263,13 @@ total_effect_mc
 
 # MI
 
+suppressMessages(library(semTools))
+suppressMessages(library(Amelia))
+
 dat_miss <- data_med_mod_ab
-n <- nrow(dat_miss)
-p <- ncol(dat_miss)
-pstar <- n * p
-q <- 30
-set.seed(51453)
-tmp <- sample(pstar, q)
-tmp2 <- list(i = row(matrix(NA, n, p))[tmp],
-             j = col(matrix(NA, n, p))[tmp])
-for (ii in seq_len(q)) {
-    dat_miss[tmp2$i[ii], tmp2$j[ii]] <- NA
-  }
+dat_miss <- add_na(dat_miss,
+                   prop = .01,
+                   seed = 51453)
 
 # Form the product terms
 dat_miss$w1x <- dat_miss$w1 * dat_miss$x
@@ -295,7 +290,8 @@ w1  ~~ w1x + c1 + c2
 w1x ~~ c1 + c2
 c1  ~~ c2
 "
-fit <- sem(model = mod,
+
+fit_ml <- sem(model = mod,
            data = dat_miss,
            fixed.x = FALSE,
            missing = "fiml.x")
@@ -310,7 +306,28 @@ fit_mi <- sem.mi(mod, dat_mi,
                  h1 = FALSE,
                  warn = FALSE)
 
-fit_mc <- do_mc(fit = fit_mi,
+fit_mi_mc <- do_mc(fit = fit_mi,
                 R = 10000,
                 seed = 53253)
 
+fit_ml_mc <- do_mc(fit = fit_ml,
+                   R = 10000,
+                   seed = 53253)
+
+out_cond_ml_mc <- cond_indirect_effects(wlevels =c("w1", "w2"),
+                                          x = "x",
+                                          y = "y",
+                                          m = "m",
+                                          fit = fit_ml,
+                                          mc_ci = TRUE,
+                                          mc_out = fit_ml_mc)
+out_cond_mi_mc <- cond_indirect_effects(wlevels =c("w1", "w2"),
+                                        x = "x",
+                                        y = "y",
+                                        m = "m",
+                                        fit = fit_mi,
+                                        mc_ci = TRUE,
+                                        mc_out = fit_mc)
+
+out_cond_ml_mc
+out_cond_mi_mc

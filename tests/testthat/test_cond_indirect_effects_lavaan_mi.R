@@ -12,9 +12,9 @@ dat_cat <- modmed_x1m3w4y1
 dat_cat$gp[dat_cat$gp == "earth"] <- "gp1"
 dat_cat$gp[dat_cat$gp == "mars"] <- "gp2"
 dat_cat$gp[dat_cat$gp == "venus"] <- "gp3"
-dat_cat_miss <- set_missing(dat_cat,
-                            nmiss = .01,
-                            seed = 54154)
+dat_cat_miss <- add_na(dat_cat,
+                       prop = .01,
+                       seed = 54154)
 dat_cat_miss <- cbind(dat_cat_miss, factor2var(dat_cat_miss$gp, prefix = "gp", add_rownames = FALSE))
 dat_cat_miss <- cbind(dat_cat_miss, factor2var(dat_cat_miss$city, prefix = "city", add_rownames = FALSE))
 head(dat_cat_miss)
@@ -53,9 +53,9 @@ fit_cat_mi <- sem.mi(mod_cat,
 # Continuous IVs in lavaan
 
 dat <- modmed_x1m3w4y1
-dat_miss <- set_missing(dat,
-                        nmiss = .01,
-                        seed = 54154)
+dat_miss <- add_na(dat,
+                   prop = .01,
+                   seed = 54154)
 
 mod <-
 "
@@ -106,8 +106,8 @@ fit2_mi <- sem.mi(mod2, dat_mi,
                   warn = FALSE)
 
 dat_lv <- simple_mediation_latent
-dat_lv_miss <- set_missing(dat_lv,
-                      nmiss = .01,
+dat_lv_miss <- add_na(dat_lv,
+                      prop = .01,
                       seed = 89741)
 
 mod_lv <-
@@ -253,5 +253,4 @@ out_1_8_lav <- cond_indirect_effects(wlevels = out_mm_2_lav, x = "x", y = "y", m
 out_1_8_mi <- cond_indirect_effects(wlevels = out_mm_2_mi, x = "x", y = "y", m = c("m1", "m2", "m3"), fit = fit1_mi,
                 standardized_x = TRUE, standardized_y = TRUE,
                 mc_ci = TRUE, R = 1000, seed = 895732)
-
 
