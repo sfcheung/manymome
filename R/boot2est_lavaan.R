@@ -423,7 +423,11 @@ get_implied_i_lavaan <- function(est0, fit) {
     out1 <- out
     for (x in out_names) {
         if (x %in% implied_names) {
-          out1[[x]][] <- implied[[x]][[1]]
+          if (!is.null(implied[[x]][[1]])) {
+              out1[[x]][] <- implied[[x]][[1]]
+            } else {
+              out1[[x]][] <- NA
+            }
         } else {
           out1[[x]][] <- NA
         }
@@ -487,7 +491,11 @@ get_implied_i_lavaan_mi <- function(est0, fit) {
     out1 <- out
     for (x in out_names) {
         if (x %in% implied_names) {
-          out1[[x]][] <- implied[[x]][[1]]
+          if (!is.null(implied[[x]][[1]])) {
+              out1[[x]][] <- implied[[x]][[1]]
+            } else {
+              out1[[x]][] <- NA
+            }
         } else {
           out1[[x]][] <- NA
         }

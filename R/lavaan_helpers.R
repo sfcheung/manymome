@@ -20,9 +20,23 @@ lav_implied_all <- function(fit) {
 #' @noRd
 
 lav_implied_all_lavaan <- function(fit) {
-    out <- list(cov = lavaan::lavInspect(fit, "cov.all"),
-                mean = c(lavaan::lavInspect(fit, "mean.ov"),
-                          lavaan::lavInspect(fit, "mean.lv")))
+    ovnames <- lavaan::lavNames(fit, "ov")
+    lvnames <- lavaan::lavNames(fit, "lv")
+    allnames <- c(ovnames, lvnames)
+    if (lavaan::lavInspect(fit, "meanstructure")) {
+        if (length(lvnames) > 0) {
+            out <- list(cov = lavaan::lavInspect(fit, "cov.all"),
+                        mean = c(lavaan::lavInspect(fit, "mean.ov"),
+                                  lavaan::lavInspect(fit, "mean.lv")))
+          } else {
+            out <- list(cov = lavaan::lavInspect(fit, "cov.all"),
+                        mean = c(lavaan::lavInspect(fit, "mean.ov")))
+          }
+      } else {
+        out <- list(cov = lavaan::lavInspect(fit, "cov.all"),
+                    mean = stats::setNames(rep(NA, length(allnames)),
+                                           allnames))
+      }
     out
   }
 
