@@ -1,4 +1,4 @@
-# manymome 0.1.9.7
+# manymome 0.1.9.8
 
 - Updated badges in README.md. (0.1.9.1)
 - Updated pkgdown site. (0.1.9.2)
@@ -13,6 +13,8 @@
   in Asparouhov and Muthén (2021) if bootstrapping
   confidence interval is requested. By
   default, *p*-values are not printed. (0.1.9.7)
+- Add initial support for models fitted by `runMI()` or `sem.mi()`
+  from the `semTools` package using multiple imputation. (0.1.9.8)
 
 # manymome 0.1.9
 
