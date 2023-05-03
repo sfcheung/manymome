@@ -319,7 +319,7 @@ boot2implied <- function(fit) {
 # Convert set the estimates in a parameter estimates tables.
 #' @noRd
 
-set_est_i <- function(est0, fit, p_free) {
+set_est_i <- function(est0, fit, p_free, est_df = NULL) {
     type <- NA
     if (inherits(fit, "lavaan")) {
         type <- "lavaan"
@@ -333,39 +333,50 @@ set_est_i <- function(est0, fit, p_free) {
     out <- switch(type,
                   lavaan = set_est_i_lavaan(est0 = est0,
                                             fit = fit,
-                                            p_free = p_free),
+                                            p_free = p_free,
+                                            est_df = est_df),
                   lavaan.mi = set_est_i_lavaan_mi(est0 = est0,
                                                   fit = fit,
-                                                  p_free = p_free))
+                                                  p_free = p_free,
+                                                  est_df = est_df))
     out
   }
 
 
 #' @noRd
 
-set_est_i_lavaan <- function(est0, fit, p_free) {
+set_est_i_lavaan <- function(est0, fit, p_free, est_df = NULL) {
     fit@ParTable$est[p_free] <- unname(est0)
-    est0 <- lavaan::parameterEstimates(fit,
-                                       se = FALSE,
-                                       zstat = FALSE,
-                                       pvalue = FALSE,
-                                       ci = FALSE,
-                                       rsquare = TRUE,
-                                       remove.eq = FALSE,
-                                       remove.ineq = FALSE,
-                                       remove.def = FALSE,
-                                       remove.nonfree = FALSE,
-                                       remove.step1 = FALSE)
-    est0
+    ptable <- as.data.frame(fit@ParTable)
+    if (!is.null(est_df)) {
+        est_df$est <- NULL
+        est0 <- merge(est_df, ptable[, c("lhs", "op", "rhs", "est")],
+                      sort = FALSE)
+        return(est0)
+      } else {
+        est0 <- lavaan::parameterEstimates(fit,
+                                          se = FALSE,
+                                          zstat = FALSE,
+                                          pvalue = FALSE,
+                                          ci = FALSE,
+                                          rsquare = FALSE,
+                                          remove.eq = FALSE,
+                                          remove.ineq = FALSE,
+                                          remove.def = FALSE,
+                                          remove.nonfree = FALSE,
+                                          remove.step1 = FALSE)
+        return(est0)
+      }
   }
 
 #' @noRd
 
-set_est_i_lavaan_mi <- function(est0, fit, p_free) {
+set_est_i_lavaan_mi <- function(est0, fit, p_free, est_df = NULL) {
     fit@ParTable$est[p_free] <- unname(est0)
     est0 <- lav_est(fit,
                     se = FALSE,
-                    ci = FALSE)
+                    ci = FALSE,
+                    est_df = est_df)
     est0
   }
 
@@ -373,7 +384,7 @@ set_est_i_lavaan_mi <- function(est0, fit, p_free) {
 #' @noRd
 
 
-get_implied_i <- function(est0, fit) {
+get_implied_i <- function(est0, fit, fit_tmp = NULL) {
     type <- NA
     if (inherits(fit, "lavaan")) {
         type <- "lavaan"
@@ -385,14 +396,18 @@ get_implied_i <- function(est0, fit) {
         stop("Fit is not of a supported type.")
       }
     out <- switch(type,
-                  lavaan = get_implied_i_lavaan(est0, fit),
-                  lavaan.mi = get_implied_i_lavaan_mi(est0, fit))
+                  lavaan = get_implied_i_lavaan(est0 = est0,
+                                                fit = fit,
+                                                fit_tmp = fit_tmp),
+                  lavaan.mi = get_implied_i_lavaan_mi(est0 = est0,
+                                                      fit = fit,
+                                                      fit_tmp = fit_tmp))
     out
   }
 
 #' @noRd
 
-get_implied_i_lavaan <- function(est0, fit) {
+get_implied_i_lavaan <- function(est0, fit, fit_tmp = NULL) {
     has_lv <- length(lavaan::lavNames(fit, "lv")) != 0
     if (has_lv) {
         p_free <- fit@ParTable$free > 0
@@ -440,14 +455,16 @@ get_implied_i_lavaan <- function(est0, fit) {
 
 #' @noRd
 
-get_implied_i_lavaan_mi <- function(est0, fit) {
-    fit_tmp <- methods::new("lavaan",
-                   version = as.character(utils::packageVersion("lavaan")))
-    fit_tmp@Model <- fit@Model
-    fit_tmp@Data <- fit@Data
-    fit_tmp@ParTable <- fit@ParTableList[[1]]
-    fit_tmp@pta <- fit@pta
-    fit_tmp@Options <- fit@Options
+get_implied_i_lavaan_mi <- function(est0, fit, fit_tmp = NULL) {
+    if (is.null(fit_tmp)) {
+        fit_tmp <- methods::new("lavaan",
+                      version = as.character(utils::packageVersion("lavaan")))
+        fit_tmp@Model <- fit@Model
+        fit_tmp@Data <- fit@Data
+        fit_tmp@ParTable <- fit@ParTableList[[1]]
+        fit_tmp@pta <- fit@pta
+        fit_tmp@Options <- fit@Options
+      }
     has_lv <- length(lavaan::lavNames(fit, "lv")) != 0
     if (has_lv) {
         p_free <- fit_tmp@ParTable$free > 0

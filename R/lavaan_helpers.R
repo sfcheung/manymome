@@ -93,7 +93,9 @@ get_vcov_lavaan_mi <- function(object) {
 
 #' @noRd
 
-lav_est <- function(fit, ...) {
+lav_est <- function(fit,
+                    ...,
+                    est_df = NULL) {
     type <- NA
     if (inherits(fit, "lavaan")) {
         type <- "lavaan"
@@ -105,33 +107,48 @@ lav_est <- function(fit, ...) {
         stop("Object is not of a supported type.")
       }
     out <- switch(type,
-                  lavaan = lav_est_lavaan(fit, ...),
-                  lavaan.mi = lav_est_lavaan_mi(fit, ...))
+                  lavaan = lav_est_lavaan(fit,
+                                          ...,
+                                          est_df = est_df),
+                  lavaan.mi = lav_est_lavaan_mi(fit,
+                                                ...,
+                                                est_df = est_df))
     out
   }
 
 #' @noRd
 
-lav_est_lavaan <- function(fit, ...) {
-    lavaan::parameterEstimates(fit, ...)
+lav_est_lavaan <- function(fit,
+                           ...,
+                           est_df = NULL) {
+    if (is.null(est_df)) {
+        return(lavaan::parameterEstimates(fit, ...))
+      } else {
+        return(est_df)
+      }
   }
 
 #' @noRd
 
-lav_est_lavaan_mi <- function(fit, ...) {
-    out0 <- methods::getMethod("summary",
-            signature = "lavaan.mi",
-            where = asNamespace("semTools"))(fit,
-                                            output = "data.frame",
-                                            ...)
+lav_est_lavaan_mi <- function(fit,
+                              ...,
+                              est_df = NULL) {
+    if (is.null(est_df)) {
+        est_df <- methods::getMethod("summary",
+                signature = "lavaan.mi",
+                where = asNamespace("semTools"))(fit,
+                                                output = "data.frame",
+                                                ...)
+      }
     ptable <- as.data.frame(fit@ParTable)
     if (!is.null(ptable$est)) {
-        out0$est <- NULL
-        out <- merge(out0, ptable[, c("lhs", "op", "rhs", "est")])
+        est_df$est <- NULL
+        out <- merge(est_df, ptable[, c("lhs", "op", "rhs", "est")],
+                     sort = FALSE)
+        return(out)
       } else {
-        out <- out0
+        return(est_df)
       }
-    out
   }
 
 #' @noRd
