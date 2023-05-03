@@ -376,7 +376,7 @@ set_est_i_lavaan_mi <- function(est0, fit, p_free, est_df = NULL) {
 #' @noRd
 
 
-get_implied_i <- function(est0, fit) {
+get_implied_i <- function(est0, fit, fit_tmp = NULL) {
     type <- NA
     if (inherits(fit, "lavaan")) {
         type <- "lavaan"
@@ -388,14 +388,18 @@ get_implied_i <- function(est0, fit) {
         stop("Fit is not of a supported type.")
       }
     out <- switch(type,
-                  lavaan = get_implied_i_lavaan(est0, fit),
-                  lavaan.mi = get_implied_i_lavaan_mi(est0, fit))
+                  lavaan = get_implied_i_lavaan(est0 = est0,
+                                                fit = fit,
+                                                fit_tmp = fit_tmp),
+                  lavaan.mi = get_implied_i_lavaan_mi(est0 = est0,
+                                                      fit = fit,
+                                                      fit_tmp = fit_tmp))
     out
   }
 
 #' @noRd
 
-get_implied_i_lavaan <- function(est0, fit) {
+get_implied_i_lavaan <- function(est0, fit, fit_tmp = NULL) {
     has_lv <- length(lavaan::lavNames(fit, "lv")) != 0
     if (has_lv) {
         p_free <- fit@ParTable$free > 0
@@ -443,14 +447,16 @@ get_implied_i_lavaan <- function(est0, fit) {
 
 #' @noRd
 
-get_implied_i_lavaan_mi <- function(est0, fit) {
-    fit_tmp <- methods::new("lavaan",
-                   version = as.character(utils::packageVersion("lavaan")))
-    fit_tmp@Model <- fit@Model
-    fit_tmp@Data <- fit@Data
-    fit_tmp@ParTable <- fit@ParTableList[[1]]
-    fit_tmp@pta <- fit@pta
-    fit_tmp@Options <- fit@Options
+get_implied_i_lavaan_mi <- function(est0, fit, fit_tmp = NULL) {
+    if (is.null(fit_tmp)) {
+        fit_tmp <- methods::new("lavaan",
+                      version = as.character(utils::packageVersion("lavaan")))
+        fit_tmp@Model <- fit@Model
+        fit_tmp@Data <- fit@Data
+        fit_tmp@ParTable <- fit@ParTableList[[1]]
+        fit_tmp@pta <- fit@pta
+        fit_tmp@Options <- fit@Options
+      }
     has_lv <- length(lavaan::lavNames(fit, "lv")) != 0
     if (has_lv) {
         p_free <- fit_tmp@ParTable$free > 0

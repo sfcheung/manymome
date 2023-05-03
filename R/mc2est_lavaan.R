@@ -141,8 +141,20 @@ mc2implied <- function(fit) {
     # NOTE: Support fixed.x = TRUE
     mc_est0 <- fit@external$manymome$mc
     mc_est <- split(mc_est0, row(mc_est0))
+    if (inherits(fit, "lavaan.mi")) {
+        fit_tmp <- methods::new("lavaan",
+                      version = as.character(utils::packageVersion("lavaan")))
+        fit_tmp@Model <- fit@Model
+        fit_tmp@Data <- fit@Data
+        fit_tmp@ParTable <- fit@ParTableList[[1]]
+        fit_tmp@pta <- fit@pta
+        fit_tmp@Options <- fit@Options
+      } else {
+        fit_tmp <- NULL
+      }
     # get_implied_i() supports both mc and boot
     out_all <- lapply(mc_est, get_implied_i,
-                        fit = fit)
+                        fit = fit,
+                        fit_tmp = fit_tmp)
     out_all
   }
