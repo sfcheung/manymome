@@ -175,7 +175,7 @@ indirect_i <- function(x,
                      expand = TRUE,
                      warn = TRUE) {
     if (is.null(est)) {
-      est <- lavaan::parameterEstimates(fit)
+      est <- lav_est(fit)
     }
     chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
     if (!chkpath) {
@@ -217,7 +217,8 @@ indirect_i <- function(x,
                 if (!is.null(fit)) {
                     fit_type <- cond_indirect_check_fit(fit)
                     data <- switch(fit_type,
-                                  lavaan = lavaan::lavInspect(fit, "data"),
+                                  lavaan = lav_data_used(fit, drop_colon = FALSE),
+                                  lavaan.mi = lav_data_used(fit, drop_colon = FALSE),
                                   lm = lm2ptable(fit)$data)
                   }
               }

@@ -93,7 +93,8 @@ check_path <- function(x,
       fit_type <- cond_indirect_check_fit(fit)
       est <- switch(fit_type,
               lm = lm2ptable(fit)$est,
-              lavaan = lavaan::parameterEstimates(fit))
+              lavaan = lav_est(fit, se = FALSE, ci = FALSE),
+              lavaan.mi = lav_est(fit, se = FALSE, ci = FALSE))
     }
     if (is.null(m)) {
         return(any(((est$lhs == y) & (est$op == "~") & (est$rhs == x))))

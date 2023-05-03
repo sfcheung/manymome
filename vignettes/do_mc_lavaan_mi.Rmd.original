@@ -1,12 +1,12 @@
 ---
-title: "Generate Monte Carlo Estimates"
+title: "Monte Carlo Confidence Intervals with Multiple Imputation"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     number_sections: true
 vignette: >
-  %\VignetteIndexEntry{Generate Monte Carlo Estimates}
+  %\VignetteIndexEntry{Monte Carlo Confidence Intervals with Multiple Imputation}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -23,28 +23,28 @@ knitr::opts_chunk$set(
 
 This article is a brief illustration of how
 to use `do_mc()` from the package
-[manymome](https://sfcheung.github.io/manymome/index.html)
-to generate Monte Carlo estimates for
-`indirect_effect()` and `cond_indirect_effects()` to
-form Monte Carlo confidence intervals.
+[manymome](https://sfcheung.github.io/manymome/)
+for a model fitted to multiple
+imputation datasets to generate Monte Carlo estimates,
+which can be used by `indirect_effect()` and
+`cond_indirect_effects()` to
+form Monte Carlo confidence intervals in the presence
+of missing data.
 
-Although `indirect_effect()` and `cond_indirect_effects()`
-can also be used to generate Monte Carlo estimates
-when they are called (see `vignette("manymome")`), there
-may be situations in which users prefer generating
-the Monte Carlo estimates first before calling `indirect_effect()`
-and `cond_indirect_effects()`. `do_mc()` is for
-this purpose.
+For the details of using `do_mc()`, please refer
+to `vignette("do_mc")`. This article assumes that readers
+know how to use `do_mc()` and will focus on using it
+with a model estimated by multiple imputation.
 
-Monte Carlo confidence intervals only support models
-fitted by `lavaan::sem()` and (since version 0.1.9.8)
-`semTools::sem.mi()` or `semTools::runMI()`.
+It only supports a model fitted by `semTools::sem.mi()`
+or `semTools::runMI()`.
 
 # How It Works
 
-The function `do_mc()` retrieves the variance-covariance
-matrix of the parameter
-estimates and then generates a number of sets of simulated
+When used with multiple imputation, `do_mc()` retrieves the
+pooled point estimates and variance-covariance matrix of
+free model parameters and then generates a number of sets
+of simulated
 sample estimates using a multivariate normal distribution.
 Other parameters and implied variances, covariances, and
 means of variables are then generated from these simulated
@@ -60,23 +60,31 @@ and 97.5^th^ percentile will be used.
 
 The following workflow will be demonstrated;
 
-1. Fit the model as usual.
+1. Generate datasets using multiple imputation,
+  not covered here (please refer to guides on
+  `mice` or `Amelia`, the two packages supported by
+  `semTools::sem.mi()` and `semTools::runMI()`).
 
-2. Use `do_mc()` to generate the Monte Carlo estimates.
+2. Fit the model using `semTools::sem.mi()` or
+  `semTools::runMI()`.
 
-3. Call other functions (e.g, `indirect_effect()`
+3. Use `do_mc()` to generate the Monte Carlo estimates.
+
+4. Call other functions (e.g, `indirect_effect()`
    and `cond_indirect_effects()`) to compute the desired
    effects and form Monte Carlo confidence intervals.
 
 # Demonstration
 
-## Fit a Model by `lavaan::sem()`
+## Multiple Imputation
 
-The data set for illustration:
+This data set, with missing data introduced,
+will be used for illustration.
 
 ```{r data}
 library(manymome)
 dat <- data_med
+dat[1, 1] <- dat[2, 3] <- dat[3, 5] <- dat[4, 3] <- dat[5, 2] <- NA
 head(dat)
 ```
 
@@ -88,7 +96,7 @@ The following simple mediation model with two
 control variables (`c1` and `c2`)
 will be fitted:
 
-```{r do_mc_draw_model, echo = FALSE}
+```{r do_mc_lavaan_mi_draw_model, echo = FALSE}
 library(semPlot)
 suppressMessages(library(lavaan))
 mod <-
@@ -115,32 +123,50 @@ text(label = "(Covariances excluded for readability)",
      adj = c(.5, .5))
 ```
 
-Fit the model by `lavaan::sem()`:
+In practice, the imputation model needs
+to be decided and checked (van Buuren, 2018).
+For the sake of illustration, we just
+use the default of `mice::mice()` to
+do the imputation:
 
-```{r fit_by_lavaan}
+```{r}
+library(mice)
+set.seed(26245)
+out_mice <- mice(dat, m = 5, printFlag = FALSE)
+dat_mi <- complete(out_mice, action = "all")
+# The first imputed dataset
+head(dat_mi[[1]])
+# The last imputed dataset
+head(dat_mi[[5]])
+```
+
+## Fit a Model by `semTools::sem.mi()`
+
+We then fit the model by `semTools::sem.mi()`:
+
+```{r fit_by_sem_mi}
+library(semTools)
 mod <-
 "
 m ~ x + c1 + c2
 y ~ m + x + c1 + c2
 "
-fit_lavaan <- sem(model = mod, data = dat,
-                  fixed.x = FALSE,
-                  estimator = "MLR")
+fit_lavaan <- sem.mi(model = mod,
+                     data = dat_mi)
 summary(fit_lavaan)
 ```
 
-Suppose we would like to use robust "sandwich"
-standard errors and confidence intervals
-provided by MLR for the free parameters,
-but want to use Monte Carlo
-confidence interval for the indirect effect.
-In the call above, we used `estimator = "MLR"`
-and did not set `se = "boot"`.
-
 ## Generate Monte Carlo Estimates
 
-We can then call `do_mc()` on the output of
-`lavaan::sem()` to generate the Monte Carlo
+The other steps are identical to those illustrated
+in `vignette("do_mc")`. It and related functions will
+use the pooled point estimates and variance-covariance
+matrix when they detect that the model is fitted
+by `semTools::sem.mi()` or `semTools::runMI()`
+(i.e., the fit object is of the class `lavaan.mi`).
+
+We call `do_mc()` on the output of
+`semTools::sem.mi()` to generate the Monte Carlo
 estimates of all free parameters *and*
 the implied statistics, such as the variances
 of `m` and `y`, which are not free parameters
@@ -169,6 +195,9 @@ Parallel processing is not used. However,
 the time taken is rarely long because there
 is no need to refit the model many times.
 
+For the structure of the output, please
+refer to `vignette("do_mc")`.
+
 ## Using the Output of `do_mc()` in Other Functions of `manymome`
 
 When calling `indirect_effect()` or
@@ -190,59 +219,10 @@ out_lavaan
 ```
 
 Reusing the simulated estimates can ensure that
-all analyses with Monte Carlo confidence intervals
-are based on the same set of simulated estimates,
-without the need to generate these estimates again.
+all analysis with Monte Carlo confidence intervals
+are based on the same set of simulated estimates.
 
-# Missing Data
-
-Monte Carlo confidence intervals can be formed
-when the variance-covariance matrix of the
-parameter estimates can be retrieved. Therefore,
-`do_mc()` can be used when missing data is
-handled by full information maximum likelihood
-in `lavaan` using `missing = "fiml"`. It also
-supports multiple imputation if `semTools::sem.mi()`
-or `semTools::runMI()` (since version 0.1.9.8).
-See `vignette("do_mc_lavaan_mi")` for an
-illustration.
-
-# The Structure of the Output
-
-The output of `do_mc()` in this case
-is an object of the class `mc_out`,
-which is a list of `R` lists, each with
-two elements: `est` and `implied_stats`.
-
-This is the content of `est` of the first list:
-
-```{r mc_out_est}
-mc_out_lavaan[[1]]$est
-```
-
-The content is just the first four columns of
-the output of `lavaan::parameterEstimates()`.
-Note that only fixed and free parameters are used
-so other rows, if any, are not used even if present.
-
-This is the content of `implied_stats` of the
-first list:
-
-```{r mc_out_implied_stats}
-mc_out_lavaan[[1]]$implied_stats
-```
-
-It has three elements. `cov` is the implied
-variances and covariances of all variables.
-If a model has latent variables, they will
-be included too. The other elements,
-`mean` and `mean_lv`, are the implied
-means of the observed variables and
-the latent variables (if any), respectively.
-The elements are `NA` if mean structure is
-not in the fitted model.
-
-# Limitations
+# Limitation
 
 Monte Carlo confidence intervals require
 the variance-covariance matrix of all free parameters.
@@ -259,3 +239,11 @@ by `do_mc()`.
 
 For further information on `do_mc()`,
 please refer to its help page.
+
+# Reference
+
+van Buuren, S. (2018).
+*Flexible imputation of missing data* (2^nd^ Ed.).
+CRC Press, Taylor and Francis Group.
+
+

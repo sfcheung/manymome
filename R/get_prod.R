@@ -44,11 +44,11 @@ get_prod <- function(x,
                      data = NULL,
                      expand = FALSE) {
     if (is.null(est)) {
-      est <- lavaan::parameterEstimates(fit)
+      est <- lav_est(fit, se = FALSE, ci = FALSE)
     }
     all_prods <- NA
-    if (inherits(fit, "lavaan")) {
-        all_prods <- find_all_products(lavaan::lavInspect(fit, "data"),
+    if (inherits(fit, "lavaan") || inherits(fit, "lavaan.mi")) {
+        all_prods <- find_all_products(lav_data_used(fit, drop_colon = FALSE),
                                        expand = expand)
         all_prods_names <- names(all_prods)
       }

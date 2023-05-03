@@ -261,4 +261,73 @@ total_effect_mc <- out_med_mc + out_x_m1_y_mc + out_x_m2_y_mc + out_x_direct_mc
 total_effect_boot
 total_effect_mc
 
+# MI
 
+suppressMessages(library(semTools))
+suppressMessages(library(Amelia))
+
+dat_miss <- data_med_mod_ab
+dat_miss <- add_na(dat_miss,
+                   prop = .01,
+                   seed = 51453)
+
+# Form the product terms
+dat_miss$w1x <- dat_miss$w1 * dat_miss$x
+dat_miss$w2m <- dat_miss$w2 * dat_miss$m
+mod <-
+"
+m ~ x + w1 + w1x + c1 + c2
+y ~ m + w2 + w2m + x + c1 + c2
+# Covariances of the error term of m with w2m and w2
+m ~~ w2m + w2
+# Covariance between other variables
+# They need to be added due to the covariances added above
+# See Kwan and Chan (2018) and Miles et al. (2015)
+w2m ~~ w2 + x + w1 + w1x + c1 + c2
+w2  ~~ x + w1 + w1x + c1 + c2
+x   ~~ w1 + w1x + c1 + c2
+w1  ~~ w1x + c1 + c2
+w1x ~~ c1 + c2
+c1  ~~ c2
+"
+
+fit_ml <- sem(model = mod,
+           data = dat_miss,
+           fixed.x = FALSE,
+           missing = "fiml.x")
+
+set.seed(235413)
+dat_mi <- amelia(dat_miss, m = 5)$imputations
+
+fit_mi <- sem.mi(mod, dat_mi,
+                 meanstructure = TRUE,
+                 fixed.x = FALSE,
+                 baseline = FALSE,
+                 h1 = FALSE,
+                 warn = FALSE)
+
+fit_mi_mc <- do_mc(fit = fit_mi,
+                R = 10000,
+                seed = 53253)
+
+fit_ml_mc <- do_mc(fit = fit_ml,
+                   R = 10000,
+                   seed = 53253)
+
+out_cond_ml_mc <- cond_indirect_effects(wlevels =c("w1", "w2"),
+                                          x = "x",
+                                          y = "y",
+                                          m = "m",
+                                          fit = fit_ml,
+                                          mc_ci = TRUE,
+                                          mc_out = fit_ml_mc)
+out_cond_mi_mc <- cond_indirect_effects(wlevels =c("w1", "w2"),
+                                        x = "x",
+                                        y = "y",
+                                        m = "m",
+                                        fit = fit_mi,
+                                        mc_ci = TRUE,
+                                        mc_out = fit_mc)
+
+out_cond_ml_mc
+out_cond_mi_mc

@@ -29,6 +29,7 @@ articles:
   - med_lm
   - mome_lm
   - do_mc
+  - do_mc_lavaan_mi
 
 reference:
 - title: Main Functions
