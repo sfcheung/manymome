@@ -352,6 +352,7 @@ set_est_i_lavaan <- function(est0, fit, p_free, est_df = NULL) {
         est_df$est <- NULL
         est0 <- merge(est_df, ptable[, c("lhs", "op", "rhs", "est")],
                       sort = FALSE)
+        class(est0) <- class(est_df)
         return(est0)
       } else {
         est0 <- lavaan::parameterEstimates(fit,
