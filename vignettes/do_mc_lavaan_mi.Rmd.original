@@ -22,11 +22,12 @@ knitr::opts_chunk$set(
 # Introduction
 
 This article is a brief illustration of how
-to use `do_mc()` in the package
+to use `do_mc()` from the package
 [manymome](https://sfcheung.github.io/manymome/)
-for a model fitted using multiple
-imputation to generate Monte Carlo estimates for use
-by `indirect_effect()` and `cond_indirect_effects()` to
+for a model fitted to multiple
+imputation datasets to generate Monte Carlo estimates,
+which can be used by `indirect_effect()` and
+`cond_indirect_effects()` to
 form Monte Carlo confidence intervals in the presence
 of missing data.
 
@@ -40,9 +41,10 @@ or `semTools::runMI()`.
 
 # How It Works
 
-When used with multiple imputation, it retrieves the
+When used with multiple imputation, `do_mc()` retrieves the
 pooled point estimates and variance-covariance matrix of
-model parameter and then generate a number of sets of simulated
+free model parameters and then generates a number of sets
+of simulated
 sample estimates using a multivariate normal distribution.
 Other parameters and implied variances, covariances, and
 means of variables are then generated from these simulated
@@ -54,10 +56,30 @@ percentile are used to form the confidence interval. For
 a 95% Monte Carlo confidence interval, the 2.5^th^ percentile
 and 97.5^th^ percentile will be used.
 
-# Data Set and Model
+# The Workflow
 
-This data set will be used for illustration. For illustration,
-some cells are set to missing (`NA`):
+The following workflow will be demonstrated;
+
+1. Generate datasets using multiple imputation,
+  not covered here (please refer to guides on
+  `mice` or `Amelia`, the two packages supported by
+  `semTools::sem.mi()` and `semTools::runMI()`).
+
+2. Fit the model using `semTools::sem.mi()` or
+  `semTools::runMI()`.
+
+3. Use `do_mc()` to generate the Monte Carlo estimates.
+
+4. Call other functions (e.g, `indirect_effect()`
+   and `cond_indirect_effects()`) to compute the desired
+   effects and form Monte Carlo confidence intervals.
+
+# Demonstration
+
+## Multiple Imputation
+
+This data set, with missing data introduced,
+will be used for illustration.
 
 ```{r data}
 library(manymome)
@@ -66,11 +88,11 @@ dat[1, 1] <- dat[2, 3] <- dat[3, 5] <- dat[4, 3] <- dat[5, 2] <- NA
 head(dat)
 ```
 
-It has one predictors (`x`), one mediator (`m`),
+It has one predictor (`x`), one mediator (`m`),
 one outcome variable (`y`), and two control
 variables (`c1` and `c2`).
 
-This simple mediation model with two
+The following simple mediation model with two
 control variables (`c1` and `c2`)
 will be fitted:
 
@@ -101,11 +123,8 @@ text(label = "(Covariances excluded for readability)",
      adj = c(.5, .5))
 ```
 
-# Multiple Imputation
-
 In practice, the imputation model needs
-to decided and the plausibility of the
-imputed datasets need to be examined.
+to be decided and checked (van Buuren, 2018).
 For the sake of illustration, we just
 use the default of `mice::mice()` to
 do the imputation:
@@ -121,7 +140,7 @@ head(dat_mi[[1]])
 head(dat_mi[[5]])
 ```
 
-# Models Fitted by `semTools::sem.mi()`
+## Fit a Model by `semTools::sem.mi()`
 
 We then fit the model by `semTools::sem.mi()`:
 
@@ -137,13 +156,16 @@ fit_lavaan <- sem.mi(model = mod,
 summary(fit_lavaan)
 ```
 
-The other steps are identical to those illustrated
-in `vignette("do_mc")`. It and other functions will
-used the pooled point estimates and variance-covariance
-matrix when they detects that the model is fitted
-by `semTools::sem.mi()` or `semTools::runMI()`.
+## Generate Monte Carlo Estimates
 
-We can then call `do_mc()` on the output of
+The other steps are identical to those illustrated
+in `vignette("do_mc")`. It and related functions will
+use the pooled point estimates and variance-covariance
+matrix when they detect that the model is fitted
+by `semTools::sem.mi()` or `semTools::runMI()`
+(i.e., the fit object is of the class `lavaan.mi`).
+
+We call `do_mc()` on the output of
 `semTools::sem.mi()` to generate the Monte Carlo
 estimates of all free parameters *and*
 the implied statistics, such as the variances
@@ -176,7 +198,7 @@ is no need to refit the model many times.
 For the structure of the output, please
 refer to `vignette("do_mc")`.
 
-## Using the Output of `do_mc()`
+## Using the Output of `do_mc()` in Other Functions of `manymome`
 
 When calling `indirect_effect()` or
 `cond_indirect_effects()`, the
@@ -204,15 +226,24 @@ are based on the same set of simulated estimates.
 
 Monte Carlo confidence intervals require
 the variance-covariance matrix of all free parameters.
-Therefore, with multiple imputation, only
-models fitted by `semTools::sem.mi()`
-or `semTools::runMI()` are supported.
-Models fitted by `stats::lm()`
+Therefore, only models fitted by `lavaan::sem()`
+and (since 0.1.9.8) `semTools::sem.mi()` or
+`semTools::runMI()`
+are supported. Models fitted by `stats::lm()`
 do not have a variance-covariance matrix for the
 regression coefficients from two or more
-regression models.
+regression models and so are not supported
+by `do_mc()`.
 
 # Further Information
 
 For further information on `do_mc()`,
 please refer to its help page.
+
+# Reference
+
+van Buuren, S. (2018).
+*Flexible imputation of missing data* (2^nd^ Ed.).
+CRC Press, Taylor and Francis Group.
+
+
