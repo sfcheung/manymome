@@ -40,8 +40,8 @@ for compatibility with \code{\link[=do_boot]{do_boot()}}.}
 \item{make_cluster_args}{Not used. Kept
 for compatibility with \code{\link[=do_boot]{do_boot()}}.}
 
-\item{progress}{Not used. Kept
-for compatibility with \code{\link[=do_boot]{do_boot()}}.}
+\item{progress}{Logical. Display
+progress or not. Default is \code{TRUE}.}
 }
 \value{
 A \code{mc_out}-class object

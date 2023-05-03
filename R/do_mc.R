@@ -67,8 +67,8 @@
 #' @param make_cluster_args Not used. Kept
 #' for compatibility with [do_boot()].
 #'
-#' @param progress Not used. Kept
-#' for compatibility with [do_boot()].
+#' @param progress Logical. Display
+#' progress or not. Default is `TRUE`.
 #'
 #' @seealso [fit2mc_out()], which
 #' implements the Monte Carlo simulation.
@@ -120,7 +120,7 @@ do_mc <- function(fit,
         fit0 <- gen_mc_est(fit = fit,
                           seed = seed,
                           R = R)
-        out <- fit2mc_out(fit0)
+        out <- fit2mc_out(fit0, progress = progress)
       }
     if (fit_type == "lm") {
         stop("Monte Carlo method does not support lm outputs.")

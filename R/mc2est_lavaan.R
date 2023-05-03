@@ -52,6 +52,9 @@
 #' function only supports a
 #' [lavaan::lavaan-class] object.
 #'
+#' @param progress Logical. Display
+#' progress or not. Default is `TRUE`.
+#'
 #' @seealso [do_mc()], the general
 #' purpose function that users should
 #' try first before using this function.
@@ -85,9 +88,18 @@
 #'
 #' @export
 
-fit2mc_out <- function(fit) {
-    mc_est <- mc2est(fit)
-    mc_implied <- mc2implied(fit)
+fit2mc_out <- function(fit,
+                       progress = TRUE) {
+    if (progress) {
+        cat("Stage 1: Simulate estimates\n")
+      }
+    mc_est <- mc2est(fit,
+                     progress = progress)
+    if (progress) {
+        cat("Stage 2: Compute implied statistics\n")
+      }
+    mc_implied <- mc2implied(fit,
+                             progress = progress)
     out <- mapply(function(x, y) list(est = x,
                                       implied_stats = y),
                   x = mc_est,
@@ -104,7 +116,8 @@ fit2mc_out <- function(fit) {
 # usually see.
 #' @noRd
 
-mc2est <- function(fit) {
+mc2est <- function(fit,
+                   progress = TRUE) {
     if (is.null(fit@external$manymome$mc)) {
         stop("Monte Carlo estimates not found. Please run do_mc() first.")
       }
@@ -124,17 +137,29 @@ mc2est <- function(fit) {
                            se = FALSE,
                            ci = FALSE)
       }
-    out_all <- lapply(mc_est, set_est_i,
-                        fit = fit,
-                        p_free = p_free,
-                        est_df = est_df0)
+    # out_all <- lapply(mc_est, set_est_i,
+    #                     fit = fit,
+    #                     p_free = p_free,
+    #                     est_df = est_df0)
+    if (progress) {
+        out_all <- suppressWarnings(pbapply::pblapply(mc_est, set_est_i,
+                                                     fit = fit,
+                                                     p_free = p_free,
+                                                     est_df = est_df0))
+      } else {
+        out_all <- suppressWarnings(lapply(mc_est, set_est_i,
+                                           fit = fit,
+                                           p_free = p_free,
+                                           est_df = est_df0))
+      }
     out_all
   }
 
 # Get the implied statistics from stored parameter estimates
 #' @noRd
 
-mc2implied <- function(fit) {
+mc2implied <- function(fit,
+                       progress = TRUE) {
     if (is.null(fit@external$manymome$mc)) {
         stop("Monte Carlo estimates not found. Please run do_mc() first.")
       }
@@ -153,8 +178,19 @@ mc2implied <- function(fit) {
         fit_tmp <- NULL
       }
     # get_implied_i() supports both mc and boot
-    out_all <- lapply(mc_est, get_implied_i,
-                        fit = fit,
-                        fit_tmp = fit_tmp)
+    # out_all <- lapply(mc_est, get_implied_i,
+    #                     fit = fit,
+    #                     fit_tmp = fit_tmp)
+    if (progress) {
+        out_all <- suppressWarnings(pbapply::pblapply(mc_est,
+                                                      get_implied_i,
+                                                      fit = fit,
+                                                      fit_tmp = fit_tmp))
+      } else {
+        out_all <- suppressWarnings(lapply(mc_est,
+                                           get_implied_i,
+                                           fit = fit,
+                                           fit_tmp = fit_tmp))
+      }
     out_all
   }
