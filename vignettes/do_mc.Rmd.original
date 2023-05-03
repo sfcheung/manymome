@@ -181,7 +181,7 @@ be included too. The other elements,
 `mean` and `mean_lv`, are the implied
 means of the observed variables and
 the latent variables (if any), respectively.
-They are of zero length if mean structure is
+The elements are `NA` if mean structure is
 not in the fitted model.
 
 ## Using the Output of `do_mc()`
