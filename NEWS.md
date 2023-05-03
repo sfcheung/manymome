@@ -1,4 +1,4 @@
-# manymome 0.1.9.9
+# manymome 0.1.9.10
 
 - Updated badges in README.md. (0.1.9.1)
 - Updated pkgdown site. (0.1.9.2)
@@ -14,7 +14,7 @@
   confidence interval is requested. By
   default, *p*-values are not printed. (0.1.9.7)
 - Add initial support for models fitted by `runMI()` or `sem.mi()`
-  from the `semTools` package using multiple imputation. (0.1.9.8-0.1.9.9)
+  from the `semTools` package using multiple imputation. (0.1.9.8-0.1.9.10)
 
 # manymome 0.1.9
 
