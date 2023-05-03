@@ -113,9 +113,21 @@ mc2est <- function(fit) {
     p_free <- ptable$free > 0
     mc_est <- split(mc_est0, row(mc_est0))
     # set_est_i() supports both mc and boot
+    if (inherits(fit, "lavaan")) {
+        est_df0 <- lav_est(fit,
+                           se = FALSE,
+                           ci = FALSE,
+                           rsquare = TRUE)
+      }
+    if (inherits(fit, "lavaan.mi")) {
+        est_df0 <- lav_est(fit,
+                           se = FALSE,
+                           ci = FALSE)
+      }
     out_all <- lapply(mc_est, set_est_i,
                         fit = fit,
-                        p_free = p_free)
+                        p_free = p_free,
+                        est_df = est_df0)
     out_all
   }
 
