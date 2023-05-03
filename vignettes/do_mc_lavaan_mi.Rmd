@@ -214,6 +214,8 @@ interval of the *standardized* indirect effect.
 mc_out_lavaan <- do_mc(fit = fit_lavaan,
                        R = 10000,
                        seed = 4234)
+#> Stage 1: Simulate estimates
+#> Stage 2: Compute implied statistics
 ```
 
 Usually, just three arguments are needed:
