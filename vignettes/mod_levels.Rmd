@@ -1,12 +1,12 @@
 ---
-title: "Setting Moderator Levels"
+title: "Set Moderator Levels"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     number_sections: true
 vignette: >
-  %\VignetteIndexEntry{Setting Moderator Levels}
+  %\VignetteIndexEntry{Set Moderator Levels}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
