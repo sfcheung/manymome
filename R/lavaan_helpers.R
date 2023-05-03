@@ -143,7 +143,8 @@ lav_est_lavaan_mi <- function(fit,
     ptable <- as.data.frame(fit@ParTable)
     if (!is.null(ptable$est)) {
         est_df$est <- NULL
-        out <- merge(est_df, ptable[, c("lhs", "op", "rhs", "est")])
+        out <- merge(est_df, ptable[, c("lhs", "op", "rhs", "est")],
+                     sort = FALSE)
         return(out)
       } else {
         return(est_df)
