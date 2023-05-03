@@ -347,18 +347,26 @@ set_est_i <- function(est0, fit, p_free, est_df = NULL) {
 
 set_est_i_lavaan <- function(est0, fit, p_free, est_df = NULL) {
     fit@ParTable$est[p_free] <- unname(est0)
-    est0 <- lavaan::parameterEstimates(fit,
-                                       se = FALSE,
-                                       zstat = FALSE,
-                                       pvalue = FALSE,
-                                       ci = FALSE,
-                                       rsquare = TRUE,
-                                       remove.eq = FALSE,
-                                       remove.ineq = FALSE,
-                                       remove.def = FALSE,
-                                       remove.nonfree = FALSE,
-                                       remove.step1 = FALSE)
-    est0
+    ptable <- as.data.frame(fit@ParTable)
+    if (!is.null(est_df)) {
+        est_df$est <- NULL
+        est0 <- merge(est_df, ptable[, c("lhs", "op", "rhs", "est")],
+                      sort = FALSE)
+        return(est0)
+      } else {
+        est0 <- lavaan::parameterEstimates(fit,
+                                          se = FALSE,
+                                          zstat = FALSE,
+                                          pvalue = FALSE,
+                                          ci = FALSE,
+                                          rsquare = FALSE,
+                                          remove.eq = FALSE,
+                                          remove.ineq = FALSE,
+                                          remove.def = FALSE,
+                                          remove.nonfree = FALSE,
+                                          remove.step1 = FALSE)
+        return(est0)
+      }
   }
 
 #' @noRd

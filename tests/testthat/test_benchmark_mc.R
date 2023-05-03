@@ -28,8 +28,8 @@ fit_mi <- sem.mi(model = mod,
 summary(fit_mi)
 
 system.time(mc_out_lav <- do_mc(fit = fit_lav,
-                                   R = 1000,
+                                   R = 5000,
                                    seed = 4234))
 system.time(mc_out_mi <- do_mc(fit = fit_mi,
-                                   R = 1000,
+                                   R = 5000,
                                    seed = 4234))
