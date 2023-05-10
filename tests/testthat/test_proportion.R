@@ -19,7 +19,13 @@ y2 ~ m11 + m12 + m2 + x1 + x2 + c1 + c2
 fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
 est <- parameterEstimates(fit)
 
-# all_ind_x1_y1 <- all_indirect_paths(fit, x = "x1", y = "y1")
+all_ind_x1_y1 <- all_indirect_paths(fit, x = "x1", y = "y1")
+boot_out <- do_boot(fit, R = 100, seed = 5145)
+out <- many_indirect_effects(all_ind_x1_y1, fit = fit, boot_ci = TRUE, boot_out = boot_out)
+dir_out <- indirect_effect(x = "x1", y = "y1", fit = fit, boot_ci = TRUE, boot_out = boot_out)
+out_sum <- Reduce(`+`, out) + dir_out
+out[[1]]$boot_indirect / out_sum$boot_indirect
+
 # all_ind_x2_y1 <- all_indirect_paths(fit, x = "x2", y = "y1")
 # all_ind_x1_y2 <- all_indirect_paths(fit, x = "x1", y = "y2")
 # all_ind_x2_y2 <- all_indirect_paths(fit, x = "x2", y = "y2")
