@@ -48,6 +48,7 @@ reference:
   - index_of_mome
   - cond_indirect_diff
   - plot.cond_indirect_effects
+  - indirect_proportion
 - title: Moderator Levels
   desc:  >
     Set the levels of moderators to be used in `cond_indirect_effects()`
@@ -97,6 +98,8 @@ reference:
   - subsetting_wlevels
   - print.all_paths
   - print.boot_out
+  - print.indirect_proportion
+  - coef.indirect_proportion
 - title: Advanced helpers
   desc: Helper functions exported for advanced users.
 - contents:
