@@ -1,4 +1,5 @@
-skip("WIP")
+skip_on_cran()
+# The tests are long because it needs to enumerate all paths.
 library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
@@ -55,26 +56,18 @@ test_that("indirect_proportion", {
     expect_error(indirect_proportion(x = "x1", y = "y1", m = c("m11", "m12"), fit = fit))
     expect_error(indirect_proportion(x = "x1", y = "y2", m = c("m11", "m12"), fit = fit))
     expect_error(indirect_proportion(x = "x2", y = "y1", m = c("m11", "m12"), fit = fit))
-    expect_equal(out1$proportion,
+    expect_equal(coef(out1),
                  .009894992,
                  tolerance = 1e-4,
                  ignore_attr = TRUE)
-    expect_equal(out2$proportion,
+    expect_equal(coef(out2),
                  .4540117,
                  tolerance = 1e-4,
                  ignore_attr = TRUE)
-    expect_equal(out3$proportion,
+    expect_equal(coef(out3),
                  .7176185,
                  tolerance = 1e-4,
                  ignore_attr = TRUE)
   })
 
-out1
-out2
-out3
-
-print(out2, digits = 5, annotation = FALSE)
-
-coef(out1)
-coef(out2)
-coef(out3)
+# print(out2, digits = 5, annotation = FALSE)
