@@ -20,13 +20,14 @@ This technical appendix describes how product terms
 in a model or dataset is identified in the package
 [manymome](https://cran.r-project.org/package=manymome).
 
-The main function, `get_prod()`, is an internal
-function not exported. Nevertheless, advanced users may be
+The function, `get_prod()`, is called internally
+by other main functions. Users do not need to call
+it directly. Nevertheless, advanced users may be
 interested in learning how it works.
 
 # `get_prod()`
 
-This internal function is used to find all product term(s), if any,
+This function is used to find all product term(s), if any,
 from `x` to `y`, `x` having a direct path to `y`.
 
 ## Main arguments
@@ -148,25 +149,25 @@ It then returns product terms that involve `x` in predicting `y`, if any.
 Case: A path with a moderator
 
 ```{r}
-manymome:::get_prod(x = "x", y = "m1", fit = fit)
+get_prod(x = "x", y = "m1", fit = fit)
 ```
 
 Case: A path with more than one moderator
 
 ```{r}
-manymome:::get_prod(x = "x", y = "y", fit = fit)
+get_prod(x = "x", y = "y", fit = fit)
 ```
 
 Case: A path without a moderator
 
 ```{r}
-manymome:::get_prod(x = "m2", y = "m3", fit = fit)
+get_prod(x = "m2", y = "m3", fit = fit)
 ```
 
 Case: `x` does not have a direct path to `y`
 
 ```{r}
-manymome:::get_prod(x = "m1", y = "m3", fit = fit)
+get_prod(x = "m1", y = "m3", fit = fit)
 ```
 
 ### `est` and `data`
@@ -180,25 +181,25 @@ It then returns product term(s) that involve `x` in predicting `y`, if any.
 Case: A path with a moderator
 
 ```{r}
-manymome:::get_prod(x = "x", y = "m1", est = lm_est$est, data = lm_est$data)
+get_prod(x = "x", y = "m1", est = lm_est$est, data = lm_est$data)
 ```
 
 Case: A path with more than one moderator
 
 ```{r}
-manymome:::get_prod(x = "x", y = "y", est = lm_est$est, data = lm_est$data)
+get_prod(x = "x", y = "y", est = lm_est$est, data = lm_est$data)
 ```
 
 Case: A path without a moderator
 
 ```{r}
-manymome:::get_prod(x = "m2", y = "m3", est = lm_est$est, data = lm_est$data)
+get_prod(x = "m2", y = "m3", est = lm_est$est, data = lm_est$data)
 ```
 
 Case: `x` does not have a direct path to `y`
 
 ```{r}
-manymome:::get_prod(x = "m1", y = "m3", est = lm_est$est, data = lm_est$data)
+get_prod(x = "m1", y = "m3", est = lm_est$est, data = lm_est$data)
 ```
 
 ### `est` only
@@ -217,25 +218,25 @@ when raw data is not available.
 Case: A path with a moderator
 
 ```{r}
-manymome:::get_prod(x = "x", y = "m1", est = lm_est$est, operator = ":")
+get_prod(x = "x", y = "m1", est = lm_est$est, operator = ":")
 ```
 
 Case: A path with more than one moderator
 
 ```{r}
-manymome:::get_prod(x = "x", y = "y", est = lm_est$est, operator = ":")
+get_prod(x = "x", y = "y", est = lm_est$est, operator = ":")
 ```
 
 Case: A path without a moderator
 
 ```{r}
-manymome:::get_prod(x = "m2", y = "m3", est = lm_est$est, operator = ":")
+get_prod(x = "m2", y = "m3", est = lm_est$est, operator = ":")
 ```
 
 Case: `x` does not have a direct path to `y`
 
 ```{r}
-manymome:::get_prod(x = "m1", y = "m3", est = lm_est$est, operator = ":")
+get_prod(x = "m1", y = "m3", est = lm_est$est, operator = ":")
 ```
 
 ## Workflow
