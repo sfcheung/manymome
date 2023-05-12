@@ -313,7 +313,7 @@ flowchart TD
   getb --> results:::startend
   results([\"Pack the results and return a list\"])
 
-", height = 1800, width = 800)
+", height = 2000, width = 800)
 ```
 
 # `find_all_products()` and `find_product()`
