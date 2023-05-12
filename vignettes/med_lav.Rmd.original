@@ -22,6 +22,8 @@ knitr::opts_chunk$set(
 # Introduction
 
 This article is a brief illustration of how `indirect_effect()`
+from the package
+[manymome](https://sfcheung.github.io/manymome/)
 can be used to estimate the indirect effects among
 latent variables and form bootstrap confidence
 intervals for these effects.

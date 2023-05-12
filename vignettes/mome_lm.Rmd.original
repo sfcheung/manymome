@@ -24,6 +24,8 @@ knitr::opts_chunk$set(
 This article is a brief illustration of how
 to use
 `cond_indirect_effects()`
+from the package
+[manymome](https://sfcheung.github.io/manymome/)
 to estimate the conditional
 indirect effects
 when the model parameters are estimate by

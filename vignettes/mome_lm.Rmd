@@ -1,7 +1,7 @@
 ---
 title: "Moderated Mediation Analysis by Multiple Regression"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2023-01-07"
+date: "2023-05-12"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -18,6 +18,8 @@ vignette: >
 This article is a brief illustration of how
 to use
 `cond_indirect_effects()`
+from the package
+[manymome](https://sfcheung.github.io/manymome/)
 to estimate the conditional
 indirect effects
 when the model parameters are estimate by

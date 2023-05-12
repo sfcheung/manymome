@@ -1,7 +1,7 @@
 ---
 title: "Mediation Models with Latent Variables"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2023-04-12"
+date: "2023-05-12"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -16,6 +16,8 @@ vignette: >
 # Introduction
 
 This article is a brief illustration of how `indirect_effect()`
+from the package
+[manymome](https://sfcheung.github.io/manymome/)
 can be used to estimate the indirect effects among
 latent variables and form bootstrap confidence
 intervals for these effects.

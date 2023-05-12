@@ -23,6 +23,8 @@ knitr::opts_chunk$set(
 
 This article is a brief illustration of how
 to use `indirect_effect()`
+from the package
+[manymome](https://sfcheung.github.io/manymome/)
 to estimate the indirect effects
 when the model parameters are estimated by
 ordinary least squares (OLS) multiple regression
