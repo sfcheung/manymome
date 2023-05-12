@@ -59,8 +59,6 @@
 #' [lavaan::lavaan-class] object or a
 #' list of [lm()] outputs.
 #'
-#' @param ... Additional arguments.
-#' Not used.
 #'
 #' @references
 #' Alwin, D. F., & Hauser, R. M. (1975).
@@ -75,6 +73,8 @@
 #' the `coef` method.
 #'
 #' @examples
+#'
+#' library(lavaan)
 #' dat <- data_med
 #' head(dat)
 #' mod <-
@@ -147,8 +147,8 @@ indirect_proportion <- function(x,
                                       ci_type = ci_type,
                                       boot_out = boot_out,
                                       mc_out = mc_out)
-    all_inds_bs <- coef(all_inds)
-    dir_b <- coef(direct)
+    all_inds_bs <- stats::coef(all_inds)
+    dir_b <- stats::coef(direct)
     all_bs <- c(all_inds_bs, dir_b)
     if (!(all(all_bs > 0) ||
           all(all_bs < 0))) {
@@ -235,7 +235,7 @@ indirect_proportion <- function(x,
 #'
 #' @examples
 #'
-#'
+#' library(lavaan)
 #' dat <- data_med
 #' head(dat)
 #' mod <-
@@ -306,6 +306,7 @@ print.indirect_proportion <- function(x,
 #'
 #' @examples
 #'
+#' library(lavaan)
 #' dat <- data_med
 #' head(dat)
 #' mod <-
