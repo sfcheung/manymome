@@ -25,8 +25,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><link href="deps/Hind-0.4.5/font.css" rel="stylesheet">
-<link href="deps/Oxygen_Mono-0.4.5/font.css" rel="stylesheet">
+<script src="deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><link href="deps/Hind-0.4.6/font.css" rel="stylesheet">
+<link href="deps/Oxygen_Mono-0.4.6/font.css" rel="stylesheet">
 <!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Mediation, Moderation and Moderated-Mediation After Model Fitting">
@@ -55,7 +55,7 @@
     
     <a class="navbar-brand me-2" href="index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.15</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,19 +67,31 @@
 <li class="nav-item">
   <a class="nav-link" href="articles/manymome.html">Get started</a>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="reference/index.html">Reference</a>
-</li>
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="articles/med_lav.html">Mediation Models with Latent Variables</a>
-    <a class="dropdown-item" href="articles/mod_levels.html">Setting Moderator Levels</a>
-    <a class="dropdown-item" href="articles/do_boot.html">Generating Bootstrap Estimates</a>
-    <a class="dropdown-item" href="articles/med_lm.html">Mediation Analysis by Multiple Regression</a>
-    <a class="dropdown-item" href="articles/mome_lm.html">Moderated Mediation Analysis by Multiple Regression</a>
-    <a class="dropdown-item" href="articles/do_mc.html">Generating Monte Carlo Estimates</a>
+    <h6 class="dropdown-header" data-toc-skip>&lt;Structural Equation Models&gt;</h6>
+    <a class="dropdown-item" href="articles/manymome.html">Moderation, Mediation, Moderated Mediation in Path Models</a>
+    <a class="dropdown-item" href="articles/med_lav.html">Mediation among Latent Variables</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>&lt;Multiple Regression&gt;</h6>
+    <a class="dropdown-item" href="articles/med_lm.html">Mediation</a>
+    <a class="dropdown-item" href="articles/mome_lm.html">Moderated Mediation</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>&lt;Multiple Imputation&gt;</h6>
+    <a class="dropdown-item" href="articles/do_mc_lavaan_mi.html">Monte Carlo Confidence Intervals with Multiple Imputation</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>&lt;Helpers&gt;</h6>
+    <a class="dropdown-item" href="articles/do_boot.html">Generate Bootstrap Estimates</a>
+    <a class="dropdown-item" href="articles/do_mc.html">Generate Monte Carlo Estimates</a>
+    <a class="dropdown-item" href="articles/mod_levels.html">Set Moderator Levels</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>&lt;Technical Appendices&gt;</h6>
+    <a class="dropdown-item" href="articles/get_prod.html">Workflow of `get_prod()` and Friends</a>
   </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="reference/index.html">Reference</a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="news/index.html">Changelog</a>
@@ -104,7 +116,7 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9">
-<p>(Version 0.1.9.7, updated on 2023-04-13, <a href="https://sfcheung.github.io/manymome/news/index.html">release history</a>)</p>
+<p>(Version 0.1.9.15, updated on 2023-05-12, <a href="https://sfcheung.github.io/manymome/news/index.html">release history</a>)</p>
 <div class="section level1">
 <div class="page-header">
 <img src="logo.png" class="logo" alt=""><h1 id="manymome-">manymome <a class="anchor" aria-label="anchor" href="#manymome-"></a>
@@ -124,37 +136,40 @@
 <h1 id="advantages">Advantages<a class="anchor" aria-label="anchor" href="#advantages"></a>
 </h1>
 <ul>
-<li><strong>A Simpler Workflow</strong></li>
-</ul>
+<li>
+<p><strong>A Simpler Workflow</strong></p>
 <p>No need to define any parameters or similar code when fitting a model in <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>. Just focus on fitting the model first. After a model has been selected, users can compute the effect for nearly any path, from nearly any variable, to nearly any other variables, conditional on nearly any moderators, and at any levels of the moderators. (See <code><a href="articles/manymome.html">vignette("manymome")</a></code> for details.)</p>
-<ul>
-<li><strong>Supports Both SEM-Based and Regression-Based Analysis</strong></li>
-</ul>
+</li>
+<li>
+<p><strong>Supports Both SEM-Based and Regression-Based Analysis</strong></p>
 <p>Supports structural equation models fitted by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> or by path models fitted by regression using <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>, although the focus of this package is on structural equation models. The interface of the main functions are nearly the same for both approaches.</p>
-<ul>
-<li><strong>Flexible in the Form of Models</strong></li>
-</ul>
+</li>
+<li>
+<p><strong>Flexible in the Form of Models</strong></p>
 <p>No limit on the number of predictors, mediators, and outcome variables, other than those by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> and <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.</p>
-<ul>
-<li><strong>Supports Standardized Effects</strong></li>
-</ul>
+</li>
+<li>
+<p><strong>Supports Standardized Effects</strong></p>
 <p>Can estimate standardized indirect effects and standardized conditional indirect effects without the need to standardize the variables. The bootstrap and Monte Carlo confidence intervals for standardized effects correctly take into account the sampling variation of the standardizers (the standard deviations of the predictor and the outcome variable) by recomputing them in each bootstrap sample or replication.</p>
-<ul>
-<li><strong>Supports Missing Data</strong></li>
-</ul>
-<p>Supports dataset with missing data through <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> with full information maximum likelihood (<code>fiml</code>).</p>
-<ul>
-<li><strong>Supports Numeric and Categorical Moderators</strong></li>
-</ul>
+</li>
+<li>
+<p><strong>Supports Missing Data</strong></p>
+<p>Supports datasets with missing data through <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> with full information maximum likelihood (<code>fiml</code>).</p>
+<p>Since version 0.1.9.8, it also supports missing data handled by multiple imputation if the models are fitted by <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::sem.mi()</a></code> or <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::runMI()</a></code> (see <code><a href="articles/do_mc_lavaan_mi.html">vignette("do_mc_lavaan_mi")</a></code>).</p>
+</li>
+<li>
+<p><strong>Supports Numeric and Categorical Moderators</strong></p>
 <p>Supports numeric and categorical moderators. It has a function (<code><a href="reference/factor2var.html">factor2var()</a></code>) for the easy creation of dummy variables in <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>, and can also capitalize on the native support of categorical moderators in <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.</p>
-<ul>
-<li><strong>Less Time for Bootstrapping</strong></li>
-</ul>
+</li>
+<li>
+<p><strong>Less Time for Bootstrapping</strong></p>
 <p>Bootstrapping, which can be time consuming, can be conducted just once. The main functions for computing indirect effects and conditional indirect effects can be called as many times as needed without redoing bootstrapping because they can reuse pregenerated bootstrap estimates (see <code><a href="articles/manymome.html">vignette("manymome")</a></code> and <code><a href="articles/do_boot.html">vignette("do_boot")</a></code>).</p>
-<ul>
-<li><strong>Supports Latent Variables Mediation</strong></li>
-</ul>
+</li>
+<li>
+<p><strong>Supports Latent Variables Mediation</strong></p>
 <p>Supports indirect effects among latent variables for models fitted by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> (see <code><a href="articles/med_lav.html">vignette("med_lav")</a></code>).</p>
+</li>
+</ul>
 </div>
 <div class="section level1">
 <h1 id="limitations">Limitations<a class="anchor" aria-label="anchor" href="#limitations"></a>
