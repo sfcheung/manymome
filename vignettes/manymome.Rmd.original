@@ -21,7 +21,10 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This article is a brief illustration of how `manymome` functions are
+This article is a brief illustration of how main functions
+from the package
+[manymome](https://sfcheung.github.io/manymome/index.html)
+can be
 used in some typical cases. It assumes that readers have
 basic understanding of mediation, moderation, moderated
 mediation, structural equation modeling (SEM), and bootstrapping.
@@ -836,6 +839,15 @@ and subtraction for the output of `indirect_effect()`.
   confidence intervals, just like defining them in
   `lavaan`, in the presence of missing data.
 
+- Missing data handled by multiple imputation
+  is also supported since version 0.1.9.8. Models fitted
+  by `semTools::sem.mi()`
+  or `semTools::runMI()` to multiple imputation datasets
+  can be used just like the output of `lavaan::sem()`.
+  Monte Carlo confidence intervals cna be formed for
+  effects computed for these models
+  (see `vignette("do_mc_lavaan_mi")`).
+
 - Bootstrapping only needs to be done once. The bootstrap
   estimates can be reused in computing indirect effects
   and conditional indirect effects. This is particularly
@@ -888,7 +900,9 @@ estimates. When calling other main
 functions, use `mc_ci = TRUE` and set
 `mc_out` to the output of `do_mc()`.
 Please refer to `vignette("do_mc")`
-for an illustration.
+for an illustration, and `vignette("do_mc_lavaan_mi")`
+on how to form Monte Carlo confidence intervals
+for models fitted to multiple imputation datasets.
 
 # References
 

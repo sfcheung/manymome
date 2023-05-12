@@ -129,6 +129,9 @@ do_boot <- function(fit,
                     make_cluster_args = list(),
                     progress = TRUE) {
     fit_type <- cond_indirect_check_fit(fit)
+    if (fit_type == "lavaan.mi") {
+        stop("Bootstrapping does not support multiple imputation.")
+      }
     if (fit_type == "lavaan") {
         fit_boot <- tryCatch(lavaan::lavInspect(fit, "boot"),
                              error = function(e) e)

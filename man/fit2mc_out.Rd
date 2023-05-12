@@ -5,12 +5,15 @@
 \title{Monte Carlo Estimates for a
 \code{lavaan} Output}
 \usage{
-fit2mc_out(fit)
+fit2mc_out(fit, progress = TRUE)
 }
 \arguments{
 \item{fit}{The fit object. This
 function only supports a
 \link[lavaan:lavaan-class]{lavaan::lavaan} object.}
+
+\item{progress}{Logical. Display
+progress or not. Default is \code{TRUE}.}
 }
 \value{
 A \code{mc_out}-class object

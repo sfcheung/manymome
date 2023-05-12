@@ -1,5 +1,34 @@
-#' @title Get the Product Terms (if Any)
+#' @title Product Terms (if Any)
 #' Along a Path
+#'
+#' @description Identify the product
+#' term(s), if any, along a path in
+#' a model and return the term(s),
+#' with the variables involved and
+#' the coefficient(s) of the term(s).
+#'
+#' @details
+#' This function is used
+#' by several functions in `manymome`
+#' to identify product terms along
+#' a path. If possible, this is done
+#' by numerically checking whether a
+#' column in a dataset is the product
+#' of two other columns. If not possible
+#' (e.g., the "product term" is the
+#' "product" of two latent variables,
+#' formed by the products of indicators),
+#' then it requires the user to specify
+#' an operator.
+#'
+#' The detailed workflow of this function
+#' can be found in the
+#' article [https://sfcheung.github.io/manymome/articles/get_prod.html](https://sfcheung.github.io/manymome/articles/get_prod.html)
+#'
+#' This function is not intended to be used
+#' by users. It is exported such that
+#' advanced users or developers can use
+#' it.
 #'
 #' @param x Character. Variable name.
 #'
@@ -29,12 +58,52 @@
 #' more than two terms will be searched.
 #' `FALSE` by default.
 #'
+#' @return
+#' If at least one product term is found,
+#' it returns a list with these elements:
+#'
+#' - `prod`: The names of the product terms
+#'    found.
+#'
+#' - `b`: The coefficients of these
+#'    product terms.
+#'
+#' - `w`: The variable, other than
+#'  `x`, in each product term.
+#'
+#' - `x`: The `x`-variable, that is,
+#'  where the path starts.
+#'
+#' - `y`: The `y`-variable, that is,
+#'  where the path ends.
+#'
+#' It returns `NA` if no product term
+#' is found along the path.
+#'
 #' @examples
-#' \donttest{
-#' }
-#' @noRd
 #'
+#' dat <- modmed_x1m3w4y1
+#' library(lavaan)
+#' mod <-
+#' "
+#' m1 ~ x   + w1 + x:w1
+#' m2 ~ m1  + w2 + m1:w2
+#' m3 ~ m2
+#' y  ~ m3  + w4 + m3:w4 + x + w3 + x:w3 + x:w4
+#' "
+#' fit <- sem(model = mod,
+#'            data = dat,
+#'            meanstructure = TRUE,
+#'            fixed.x = FALSE)
 #'
+#' # One product term
+#' get_prod(x = "x", y = "m1", fit = fit)
+#' # Two product terms
+#' get_prod(x = "x", y = "y", fit = fit)
+#' # No product term
+#' get_prod(x = "m2", y = "m3", fit = fit)
+#'
+#' @export
 
 get_prod <- function(x,
                      y,
@@ -44,11 +113,11 @@ get_prod <- function(x,
                      data = NULL,
                      expand = FALSE) {
     if (is.null(est)) {
-      est <- lavaan::parameterEstimates(fit)
+      est <- lav_est(fit, se = FALSE, ci = FALSE)
     }
     all_prods <- NA
-    if (inherits(fit, "lavaan")) {
-        all_prods <- find_all_products(lavaan::lavInspect(fit, "data"),
+    if (inherits(fit, "lavaan") || inherits(fit, "lavaan.mi")) {
+        all_prods <- find_all_products(lav_data_used(fit, drop_colon = FALSE),
                                        expand = expand)
         all_prods_names <- names(all_prods)
       }

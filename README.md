@@ -9,7 +9,7 @@
 [![R-CMD-check](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-(Version 0.1.9.7, updated on 2023-04-13, [release history](https://sfcheung.github.io/manymome/news/index.html))
+(Version 0.1.9.15, updated on 2023-05-12, [release history](https://sfcheung.github.io/manymome/news/index.html))
 
 # manymome  <img src="man/figures/logo.png" align="right" height="150" />
 
@@ -33,65 +33,69 @@ by multiple regression.
 
 - **A Simpler Workflow**
 
-No need to define any parameters or similar
-code when
-fitting a model in `lavaan::sem()`. Just focus on fitting
-the model first. After a model has
-been selected, users can compute the effect for nearly any path, from
-nearly any variable, to nearly any other variables, conditional on
-nearly any moderators,
-and at any levels of the moderators.
-(See `vignette("manymome")` for details.)
+  No need to define any parameters or similar
+  code when
+  fitting a model in `lavaan::sem()`. Just focus on fitting
+  the model first. After a model has
+  been selected, users can compute the effect for nearly any path, from
+  nearly any variable, to nearly any other variables, conditional on
+  nearly any moderators,
+  and at any levels of the moderators.
+  (See `vignette("manymome")` for details.)
 
 - **Supports Both SEM-Based and Regression-Based Analysis**
 
-Supports structural equation models fitted by `lavaan::sem()` or by
-path models fitted by regression using `lm()`, although the
-focus of this package is on structural equation models.
-The interface of the main functions are nearly the same for
-both approaches.
+  Supports structural equation models fitted by `lavaan::sem()` or by
+  path models fitted by regression using `lm()`, although the
+  focus of this package is on structural equation models.
+  The interface of the main functions are nearly the same for
+  both approaches.
 
 - **Flexible in the Form of Models**
 
-No limit on the number of predictors, mediators, and
-outcome variables, other than those by `lavaan::sem()` and `lm()`.
+  No limit on the number of predictors, mediators, and
+  outcome variables, other than those by `lavaan::sem()` and `lm()`.
 
 - **Supports Standardized Effects**
 
-Can estimate standardized indirect effects and standardized
-conditional indirect effects without the need to standardize
-the variables. The bootstrap and Monte Carlo
-confidence intervals for standardized
-effects correctly take into account the sampling variation
-of the standardizers (the standard deviations of the predictor
-and the outcome variable) by recomputing them in each bootstrap
-sample or replication.
+  Can estimate standardized indirect effects and standardized
+  conditional indirect effects without the need to standardize
+  the variables. The bootstrap and Monte Carlo
+  confidence intervals for standardized
+  effects correctly take into account the sampling variation
+  of the standardizers (the standard deviations of the predictor
+  and the outcome variable) by recomputing them in each bootstrap
+  sample or replication.
 
 - **Supports Missing Data**
 
-Supports dataset with missing data
-through `lavaan::sem()` with full information maximum likelihood (`fiml`).
+  Supports datasets with missing data
+  through `lavaan::sem()` with full information maximum likelihood (`fiml`).
+
+  Since version 0.1.9.8, it also supports missing data handled
+  by multiple imputation if the models are fitted by `semTools::sem.mi()`
+  or `semTools::runMI()` (see `vignette("do_mc_lavaan_mi")`).
 
 - **Supports Numeric and Categorical Moderators**
 
-Supports numeric and
-categorical moderators. It has a function (`factor2var()`) for the easy
-creation of dummy variables in `lavaan::sem()`, and can also capitalize on
-the native support of categorical moderators in `lm()`.
+  Supports numeric and
+  categorical moderators. It has a function (`factor2var()`) for the easy
+  creation of dummy variables in `lavaan::sem()`, and can also capitalize on
+  the native support of categorical moderators in `lm()`.
 
 - **Less Time for Bootstrapping**
 
-Bootstrapping, which can be time consuming, can
-be conducted just once. The main functions for computing indirect effects
-and conditional indirect effects can be called as many times as needed without redoing
-bootstrapping because they can reuse pregenerated bootstrap
-estimates (see `vignette("manymome")` and `vignette("do_boot")`).
+  Bootstrapping, which can be time consuming, can
+  be conducted just once. The main functions for computing indirect effects
+  and conditional indirect effects can be called as many times as needed without redoing
+  bootstrapping because they can reuse pregenerated bootstrap
+  estimates (see `vignette("manymome")` and `vignette("do_boot")`).
 
 - **Supports Latent Variables Mediation**
 
-Supports indirect effects among
-latent variables for models fitted by `lavaan::sem()` (see
-`vignette("med_lav")`).
+  Supports indirect effects among
+  latent variables for models fitted by `lavaan::sem()` (see
+  `vignette("med_lav")`).
 
 # Limitations
 

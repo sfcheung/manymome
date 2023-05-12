@@ -27,7 +27,7 @@ get_intercept <- function(x,
                           fit,
                           est = NULL) {
     if (is.null(est)) {
-      est <- lavaan::parameterEstimates(fit)
+      est <- lav_est(fit, se = FALSE, ci = FALSE)
     }
     i <- (est$lhs == x) &
          (est$op == "~1")

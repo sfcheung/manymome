@@ -538,6 +538,12 @@ cond_indirect <- function(x,
         if (is.null(implied_stats)) implied_stats <- lav_implied_all(fit)
         fit_data <- lavaan::lavInspect(fit, "data")
       }
+    if (fit_type == "lavaan.mi") {
+        fit0 <- fit
+        if (is.null(est)) est <- lav_est(fit)
+        if (is.null(implied_stats)) implied_stats <- lav_implied_all(fit)
+        fit_data <- lav_data_used(fit, drop_colon = FALSE)
+      }
     if (fit_type == "lm") {
         fit0 <- NULL
         lm_est <- lm2ptable(fit)
@@ -1078,6 +1084,9 @@ cond_indirect_check_fit <- function(fit) {
           } else {
             stop("'fit' is a list but not all the elements are lm outputs.")
           }
+      }
+    if (inherits(fit, "lavaan.mi")) {
+        fit_type <- "lavaan.mi"
       }
     if (is.na(fit_type)) {
         stop("'fit' is neither a lavaan object or a list of lm outputs.")

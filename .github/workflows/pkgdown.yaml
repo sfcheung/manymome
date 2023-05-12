@@ -28,8 +28,26 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::pkgdown, any::XML, local::.
+          extra-packages: any::pkgdown, any::XML, any::DiagrammeR, local::.
           needs: website
+
+      - name: Update mermaid
+        run: |
+          # Adapted from https://github.com/rich-iannone/DiagrammeR/issues/457#issuecomment-1109995343
+          mm_loc <- list.files(
+            find.package("DiagrammeR"),
+            recursive = TRUE,
+            pattern = "mermaid.*js",
+            full.names = TRUE
+          )
+          mm_dir <- dirname(mm_loc)
+          mm_loc_old <- file.path(mm_dir, "mm.old")
+          mm_loc_new <- file.path(mm_dir, "mm.new")
+          file.copy(mm_loc, mm_loc_old, overwrite = TRUE)
+          mm_url <- "https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.0.1/mermaid.min.js"
+          utils::download.file(mm_url, mm_loc_new)
+          file.copy(mm_loc_new, mm_loc, overwrite = TRUE)
+        shell: Rscript {0}
 
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)

@@ -319,26 +319,96 @@ boot2implied <- function(fit) {
 # Convert set the estimates in a parameter estimates tables.
 #' @noRd
 
-set_est_i <- function(est0, fit, p_free) {
+set_est_i <- function(est0, fit, p_free, est_df = NULL) {
+    type <- NA
+    if (inherits(fit, "lavaan")) {
+        type <- "lavaan"
+      }
+    if (inherits(fit, "lavaan.mi")) {
+        type <- "lavaan.mi"
+      }
+    if (isTRUE(is.na(type))) {
+        stop("Object is not of a supported type.")
+      }
+    out <- switch(type,
+                  lavaan = set_est_i_lavaan(est0 = est0,
+                                            fit = fit,
+                                            p_free = p_free,
+                                            est_df = est_df),
+                  lavaan.mi = set_est_i_lavaan_mi(est0 = est0,
+                                                  fit = fit,
+                                                  p_free = p_free,
+                                                  est_df = est_df))
+    out
+  }
+
+
+#' @noRd
+
+set_est_i_lavaan <- function(est0, fit, p_free, est_df = NULL) {
     fit@ParTable$est[p_free] <- unname(est0)
-    est0 <- lavaan::parameterEstimates(fit,
-                                       se = FALSE,
-                                       zstat = FALSE,
-                                       pvalue = FALSE,
-                                       ci = FALSE,
-                                       rsquare = TRUE,
-                                       remove.eq = FALSE,
-                                       remove.ineq = FALSE,
-                                       remove.def = FALSE,
-                                       remove.nonfree = FALSE,
-                                       remove.step1 = FALSE)
+    ptable <- as.data.frame(fit@ParTable)
+    if (!is.null(est_df)) {
+        est_df$est <- NULL
+        est0 <- merge(est_df, ptable[, c("lhs", "op", "rhs", "est")],
+                      sort = FALSE)
+        class(est0) <- class(est_df)
+        return(est0)
+      } else {
+        est0 <- lavaan::parameterEstimates(fit,
+                                          se = FALSE,
+                                          zstat = FALSE,
+                                          pvalue = FALSE,
+                                          ci = FALSE,
+                                          rsquare = FALSE,
+                                          remove.eq = FALSE,
+                                          remove.ineq = FALSE,
+                                          remove.def = FALSE,
+                                          remove.nonfree = FALSE,
+                                          remove.step1 = FALSE)
+        return(est0)
+      }
+  }
+
+#' @noRd
+
+set_est_i_lavaan_mi <- function(est0, fit, p_free, est_df = NULL) {
+    fit@ParTable$est[p_free] <- unname(est0)
+    est0 <- lav_est(fit,
+                    se = FALSE,
+                    ci = FALSE,
+                    est_df = est_df)
     est0
   }
 
 # Get the implied statistics from a set of estimates
 #' @noRd
 
-get_implied_i <- function(est0, fit) {
+
+get_implied_i <- function(est0, fit, fit_tmp = NULL) {
+    type <- NA
+    if (inherits(fit, "lavaan")) {
+        type <- "lavaan"
+      }
+    if (inherits(fit, "lavaan.mi")) {
+        type <- "lavaan.mi"
+      }
+    if (isTRUE(is.na(type))) {
+        stop("Fit is not of a supported type.")
+      }
+    out <- switch(type,
+                  lavaan = get_implied_i_lavaan(est0 = est0,
+                                                fit = fit,
+                                                fit_tmp = fit_tmp),
+                  lavaan.mi = get_implied_i_lavaan_mi(est0 = est0,
+                                                      fit = fit,
+                                                      fit_tmp = fit_tmp))
+    out
+  }
+
+#' @noRd
+
+get_implied_i_lavaan <- function(est0, fit, fit_tmp = NULL) {
     has_lv <- length(lavaan::lavNames(fit, "lv")) != 0
     if (has_lv) {
         p_free <- fit@ParTable$free > 0
@@ -369,13 +439,84 @@ get_implied_i <- function(est0, fit) {
     out1 <- out
     for (x in out_names) {
         if (x %in% implied_names) {
-          out1[[x]][] <- implied[[x]][[1]]
+          if (!is.null(implied[[x]][[1]])) {
+              out1[[x]][] <- implied[[x]][[1]]
+            } else {
+              out1[[x]][] <- NA
+            }
         } else {
           out1[[x]][] <- NA
         }
       }
     if (has_lv) {
         out1$mean_lv <- implied$mean_lv[[1]]
+      }
+    out1
+  }
+
+#' @noRd
+
+get_implied_i_lavaan_mi <- function(est0, fit, fit_tmp = NULL) {
+    if (is.null(fit_tmp)) {
+        fit_tmp <- methods::new("lavaan",
+                      version = as.character(utils::packageVersion("lavaan")))
+        fit_tmp@Model <- fit@Model
+        fit_tmp@Data <- fit@Data
+        fit_tmp@ParTable <- fit@ParTableList[[1]]
+        fit_tmp@pta <- fit@pta
+        fit_tmp@Options <- fit@Options
+      }
+    has_lv <- length(lavaan::lavNames(fit, "lv")) != 0
+    if (has_lv) {
+        p_free <- fit_tmp@ParTable$free > 0
+        fit_tmp@ParTable$est[p_free] <- unname(est0)
+        fit_tmp@Model@GLIST <- lavaan::lav_model_set_parameters(fit_tmp@Model,
+                                                                est0)@GLIST
+        implied_cov_all <- lavaan::lavInspect(fit_tmp, "cov.all")
+        mod0 <- lavaan::lav_model_set_parameters(fit_tmp@Model, est0)
+        # implied_mean_ov <- lavaan::lavInspect(fit_tmp, "mean.ov")
+        implied_mean_ov <- lavaan::lav_model_implied(mod0,
+                                             GLIST = NULL,
+                                             delta = TRUE)$mean[[1]][, 1]
+        names(implied_mean_ov) <- lavaan::lavNames(fit_tmp, "ov")
+        class(implied_mean_ov) <- c("lavaan.vector", class(implied_mean_ov))
+        implied_mean_lv <- lavaan::lavInspect(fit_tmp, "mean.lv")
+        implied_mean_lv[] <- NA
+        implied <- list(cov = list(implied_cov_all),
+                        mean = list(c(implied_mean_ov,
+                                      implied_mean_lv)),
+                        mean_lv = list(implied_mean_lv))
+      } else {
+        mod0 <- lavaan::lav_model_set_parameters(fit_tmp@Model, est0)
+        implied <- lavaan::lav_model_implied(mod0,
+                                             GLIST = NULL,
+                                             delta = TRUE)
+      }
+    tmpnames1 <- c(lavaan::lavNames(fit_tmp, "ov"),
+                   lavaan::lavNames(fit_tmp, "lv"))
+    tmpnames2 <- lavaan::lavNames(fit_tmp, "lv")
+    out <- list(cov = lav_implied_all(fit_tmp)$cov,
+                mean = stats::setNames(rep(as.numeric(NA), length(tmpnames1)),
+                                tmpnames1))
+    if (has_lv) {
+        tmp <- stats::setNames(rep(as.numeric(NA), length(tmpnames2)),
+                        tmpnames2)
+        class(tmp) <- c("lavaan.vector", class(tmp))
+        out$mean_lv <- tmp
+      }
+    out_names <- names(out)
+    implied_names <- names(implied)
+    out1 <- out
+    for (x in out_names) {
+        if (x %in% implied_names) {
+          if (!is.null(implied[[x]][[1]])) {
+              out1[[x]][] <- implied[[x]][[1]]
+            } else {
+              out1[[x]][] <- NA
+            }
+        } else {
+          out1[[x]][] <- NA
+        }
       }
     out1
   }

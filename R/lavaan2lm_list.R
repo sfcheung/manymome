@@ -48,7 +48,7 @@
 
 
 lm_from_lavaan_list <- function(fit) {
-    ptable <- lavaan::parameterTable(fit)
+    ptable <- lav_ptable(fit)
     # Get all dvs (ov.nox, lv.ox)
     dvs <- lavaan_get_dvs(ptable)
     dat <- lav_data_used(fit)

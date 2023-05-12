@@ -67,8 +67,8 @@
 #' @param make_cluster_args Not used. Kept
 #' for compatibility with [do_boot()].
 #'
-#' @param progress Not used. Kept
-#' for compatibility with [do_boot()].
+#' @param progress Logical. Display
+#' progress or not. Default is `TRUE`.
 #'
 #' @seealso [fit2mc_out()], which
 #' implements the Monte Carlo simulation.
@@ -116,11 +116,11 @@ do_mc <- function(fit,
                     make_cluster_args = list(),
                     progress = TRUE) {
     fit_type <- cond_indirect_check_fit(fit)
-    if (fit_type == "lavaan") {
+    if (fit_type == "lavaan" || fit_type == "lavaan.mi") {
         fit0 <- gen_mc_est(fit = fit,
                           seed = seed,
                           R = R)
-        out <- fit2mc_out(fit0)
+        out <- fit2mc_out(fit0, progress = progress)
       }
     if (fit_type == "lm") {
         stop("Monte Carlo method does not support lm outputs.")
@@ -140,8 +140,10 @@ do_mc <- function(fit,
 gen_mc_est <- function(fit,
                        R = 100,
                        seed = NULL) {
-    fit_vcov <- tryCatch(lavaan::lavInspect(fit, "vcov"),
-                            error = function(e) e)
+    # fit_vcov <- tryCatch(lavaan::lavInspect(fit, "vcov"),
+    #                         error = function(e) e)
+    fit_vcov <- tryCatch(get_vcov(fit),
+                         error = function(e) e)
       if (inherits(fit_vcov, "error")) {
           stop("Monte Carlo method cannot be used. VCOV of estimates not available.")
         }

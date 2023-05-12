@@ -52,6 +52,9 @@
 #' function only supports a
 #' [lavaan::lavaan-class] object.
 #'
+#' @param progress Logical. Display
+#' progress or not. Default is `TRUE`.
+#'
 #' @seealso [do_mc()], the general
 #' purpose function that users should
 #' try first before using this function.
@@ -85,9 +88,18 @@
 #'
 #' @export
 
-fit2mc_out <- function(fit) {
-    mc_est <- mc2est(fit)
-    mc_implied <- mc2implied(fit)
+fit2mc_out <- function(fit,
+                       progress = TRUE) {
+    if (progress) {
+        cat("Stage 1: Simulate estimates\n")
+      }
+    mc_est <- mc2est(fit,
+                     progress = progress)
+    if (progress) {
+        cat("Stage 2: Compute implied statistics\n")
+      }
+    mc_implied <- mc2implied(fit,
+                             progress = progress)
     out <- mapply(function(x, y) list(est = x,
                                       implied_stats = y),
                   x = mc_est,
@@ -104,33 +116,81 @@ fit2mc_out <- function(fit) {
 # usually see.
 #' @noRd
 
-mc2est <- function(fit) {
+mc2est <- function(fit,
+                   progress = TRUE) {
     if (is.null(fit@external$manymome$mc)) {
         stop("Monte Carlo estimates not found. Please run do_mc() first.")
       }
     mc_est0 <- fit@external$manymome$mc
-    ptable <- lavaan::parameterTable(fit)
+    ptable <- lav_ptable(fit)
     p_free <- ptable$free > 0
     mc_est <- split(mc_est0, row(mc_est0))
     # set_est_i() supports both mc and boot
-    out_all <- lapply(mc_est, set_est_i,
-                        fit = fit,
-                        p_free = p_free)
+    if (inherits(fit, "lavaan")) {
+        est_df0 <- lav_est(fit,
+                           se = FALSE,
+                           ci = FALSE,
+                           rsquare = FALSE)
+      }
+    if (inherits(fit, "lavaan.mi")) {
+        est_df0 <- lav_est(fit,
+                           se = FALSE,
+                           ci = FALSE)
+      }
+    # out_all <- lapply(mc_est, set_est_i,
+    #                     fit = fit,
+    #                     p_free = p_free,
+    #                     est_df = est_df0)
+    if (progress) {
+        out_all <- suppressWarnings(pbapply::pblapply(mc_est, set_est_i,
+                                                     fit = fit,
+                                                     p_free = p_free,
+                                                     est_df = est_df0))
+      } else {
+        out_all <- suppressWarnings(lapply(mc_est, set_est_i,
+                                           fit = fit,
+                                           p_free = p_free,
+                                           est_df = est_df0))
+      }
     out_all
   }
 
 # Get the implied statistics from stored parameter estimates
 #' @noRd
 
-mc2implied <- function(fit) {
+mc2implied <- function(fit,
+                       progress = TRUE) {
     if (is.null(fit@external$manymome$mc)) {
         stop("Monte Carlo estimates not found. Please run do_mc() first.")
       }
     # NOTE: Support fixed.x = TRUE
     mc_est0 <- fit@external$manymome$mc
     mc_est <- split(mc_est0, row(mc_est0))
+    if (inherits(fit, "lavaan.mi")) {
+        fit_tmp <- methods::new("lavaan",
+                      version = as.character(utils::packageVersion("lavaan")))
+        fit_tmp@Model <- fit@Model
+        fit_tmp@Data <- fit@Data
+        fit_tmp@ParTable <- fit@ParTableList[[1]]
+        fit_tmp@pta <- fit@pta
+        fit_tmp@Options <- fit@Options
+      } else {
+        fit_tmp <- NULL
+      }
     # get_implied_i() supports both mc and boot
-    out_all <- lapply(mc_est, get_implied_i,
-                        fit = fit)
+    # out_all <- lapply(mc_est, get_implied_i,
+    #                     fit = fit,
+    #                     fit_tmp = fit_tmp)
+    if (progress) {
+        out_all <- suppressWarnings(pbapply::pblapply(mc_est,
+                                                      get_implied_i,
+                                                      fit = fit,
+                                                      fit_tmp = fit_tmp))
+      } else {
+        out_all <- suppressWarnings(lapply(mc_est,
+                                           get_implied_i,
+                                           fit = fit,
+                                           fit_tmp = fit_tmp))
+      }
     out_all
   }

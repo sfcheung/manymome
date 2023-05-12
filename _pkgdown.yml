@@ -17,18 +17,58 @@ template:
 
 navbar:
   bg: primary
+  structure:
+    left:  [intro, articles, reference, tutorials, news]
+    right: [search, github]
+  components:
+    articles:
+      text: Articles
+      menu:
+      - text: "<Structural Equation Models>"
+      - text: Moderation, Mediation, Moderated Mediation in Path Models
+        href: articles/manymome.html
+      - text: Mediation among Latent Variables
+        href: articles/med_lav.html
+      - text: -------
+      - text: "<Multiple Regression>"
+      - text: Mediation
+        href: articles/med_lm.html
+      - text: Moderated Mediation
+        href: articles/mome_lm.html
+      - text: -------
+      - text: "<Multiple Imputation>"
+      - text: Monte Carlo Confidence Intervals with Multiple Imputation
+        href: articles/do_mc_lavaan_mi.html
+      - text: -------
+      - text: "<Helpers>"
+      - text: Generate Bootstrap Estimates
+        href: articles/do_boot.html
+      - text: Generate Monte Carlo Estimates
+        href: articles/do_mc.html
+      - text: Set Moderator Levels
+        href: articles/mod_levels.html
+      - text: -------
+      - text: "<Technical Appendices>"
+      - text: Workflow of `get_prod()` and Friends
+        href: articles/get_prod.html
 
-articles:
-- title: Articles
-  navbar: ~
-  contents:
-  - manymome
-  - med_lav
-  - mod_levels
-  - do_boot
-  - med_lm
-  - mome_lm
-  - do_mc
+# articles:
+# - title: Articles
+#   navbar: ~
+#   contents:
+#   - manymome
+#   - med_lav
+#   - mod_levels
+#   - do_boot
+#   - med_lm
+#   - mome_lm
+#   - do_mc
+#   - do_mc_lavaan_mi
+# - title: Technical Appendices
+#   navbar: ~
+#   desc: For advanced users and developers
+#   contents:
+#   - articles/get_prod
 
 reference:
 - title: Main Functions
@@ -47,6 +87,7 @@ reference:
   - index_of_mome
   - cond_indirect_diff
   - plot.cond_indirect_effects
+  - indirect_proportion
 - title: Moderator Levels
   desc:  >
     Set the levels of moderators to be used in `cond_indirect_effects()`
@@ -96,6 +137,9 @@ reference:
   - subsetting_wlevels
   - print.all_paths
   - print.boot_out
+  - print.mc_out
+  - print.indirect_proportion
+  - coef.indirect_proportion
 - title: Advanced helpers
   desc: Helper functions exported for advanced users.
 - contents:
@@ -107,6 +151,7 @@ reference:
   - predict.lm_from_lavaan
   - predict.lm_from_lavaan_list
   - predict.lm_list
+  - get_prod
 - title: Datasets
   desc: Datasets used in examples.
 - contents:
