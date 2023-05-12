@@ -1,4 +1,4 @@
-# manymome 0.1.9.13
+# manymome 0.1.9.14
 
 - Updated badges in README.md. (0.1.9.1)
 - Updated pkgdown site. (0.1.9.2)
@@ -18,6 +18,7 @@
 - Add progress bars to `do_mc()`. (0.1.9.11)
 - Add `indirect_proportion()` and two methods for its output. (0.1.9.12)
 - Export `get_prod()` and add an article on its workflow. (0.1.9.13)
+- Add `print.mc_out()`, the print-method for `mc_out`-class objects. (0.1.9.14)
 
 # manymome 0.1.9
 
