@@ -137,6 +137,7 @@ reference:
   - subsetting_wlevels
   - print.all_paths
   - print.boot_out
+  - print.mc_out
   - print.indirect_proportion
   - coef.indirect_proportion
 - title: Advanced helpers
