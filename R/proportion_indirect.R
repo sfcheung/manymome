@@ -7,7 +7,8 @@
 #' mediated along a path from `x` to
 #' `y` is the indirect effect along
 #' this path divided by the total
-#' effect from `x` to `y`. This total
+#' effect from `x` to `y`
+#' (Alwin & Hauser, 1975). This total
 #' effect is equal to the sum of all
 #' indirect effects from `x` to `y`
 #' and the direct effect from `x` to
@@ -17,12 +18,13 @@
 #' indeed be interpreted as a proportion,
 #' this function computes the the
 #' proportion only if the signs of
-#' all the effects from `x` to `y`
+#' all the indirect and direct effects
+#' from `x` to `y`
 #' are same (i.e., all effects
 #' positive or all effects negative).
 #'
 #' @return
-#' A `indirect_proportion` class object.
+#' An `indirect_proportion` class object.
 #' It is a list-like object with these
 #' major elements:
 #'
@@ -59,6 +61,18 @@
 #'
 #' @param ... Additional arguments.
 #' Not used.
+#'
+#' @references
+#' Alwin, D. F., & Hauser, R. M. (1975).
+#' The decomposition of effects in path
+#' analysis.
+#' *American Sociological Review, 40*(1),
+#' 37. \doi{10.2307/2094445}
+#'
+#' @seealso [print.indirect_proportion()]
+#' for the `print` method, and
+#' [coef.indirect_proportion()] for
+#' the `coef` method.
 #'
 #' @examples
 #' dat <- data_med
@@ -138,7 +152,8 @@ indirect_proportion <- function(x,
     all_bs <- c(all_inds_bs, dir_b)
     if (!(all(all_bs > 0) ||
           all(all_bs < 0))) {
-        stop("Not all paths are of the same sign (positive/negative).")
+        stop("Not all effects, indirect and direct",
+             "are of the same sign (positive/negative).")
       }
     all_bs_abs <- abs(all_bs)
     total_effect <- sum(all_bs_abs)
@@ -147,13 +162,6 @@ indirect_proportion <- function(x,
     ind_effect <- abs(all_inds_bs[ind_i])
     ind_prop <- ind_effect / total_effect
     if (!is.null(ci_type)) {
-        # rep_inds <- sapply(all_inds, function(x) x[[rep_name]])
-        # rep_total <- cbind(direct[[rep_name]], rep_inds)
-        # i_all_pos <- apply(rep_total, 1, function(x) all(x > 0))
-        # i_all_neg <- apply(rep_total, 1, function(x) all(x < 0))
-        # i_all_same <- i_all_pos | i_all_neg
-        # rep_prop <- rep_total[i_all_same, which(ind_i)] /
-        #               rowSums(rep_total[i_all_same, ])
         effects_sum <- Reduce(`+`, all_inds) + direct
         rep_prop <- all_inds[[which(ind_i)]][[rep_name]] /
                       effects_sum[[rep_name]]
@@ -184,7 +192,6 @@ indirect_proportion <- function(x,
     out
   }
 
-
 #' @title Print an 'indirect_proportion'-Class
 #' Object
 #'
@@ -204,7 +211,7 @@ indirect_proportion <- function(x,
 #' x-variable to the y-variable.
 #'
 #' To get the proportion as a scalar,
-#' use the `coef`-method of
+#' use the `coef` method of
 #' `indirect_proportion` objects.
 #'
 #' @return
@@ -287,7 +294,8 @@ print.indirect_proportion <- function(x,
 #' object.
 #'
 #' @return
-#'  A scalar: The estimate of xxx.
+#'  A scalar: The proportion of effect
+#' mediated.
 #'
 #' @param object The output of
 #' [indirect_proportion()]

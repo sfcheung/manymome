@@ -27,7 +27,7 @@ list of \code{\link[=lm]{lm()}} outputs.}
 Not used.}
 }
 \value{
-A \code{indirect_proportion} class object.
+An \code{indirect_proportion} class object.
 It is a list-like object with these
 major elements:
 \itemize{
@@ -53,7 +53,8 @@ The proportion of effect
 mediated along a path from \code{x} to
 \code{y} is the indirect effect along
 this path divided by the total
-effect from \code{x} to \code{y}. This total
+effect from \code{x} to \code{y}
+(Alwin & Hauser, 1975). This total
 effect is equal to the sum of all
 indirect effects from \code{x} to \code{y}
 and the direct effect from \code{x} to
@@ -63,7 +64,8 @@ To ensure that the proportion can
 indeed be interpreted as a proportion,
 this function computes the the
 proportion only if the signs of
-all the effects from \code{x} to \code{y}
+all the indirect and direct effects
+from \code{x} to \code{y}
 are same (i.e., all effects
 positive or all effects negative).
 }
@@ -82,4 +84,17 @@ out <- indirect_proportion(x = "x",
                            fit = fit)
 out
 
+}
+\references{
+Alwin, D. F., & Hauser, R. M. (1975).
+The decomposition of effects in path
+analysis.
+\emph{American Sociological Review, 40}(1),
+37. \doi{10.2307/2094445}
+}
+\seealso{
+\code{\link[=print.indirect_proportion]{print.indirect_proportion()}}
+for the \code{print} method, and
+\code{\link[=coef.indirect_proportion]{coef.indirect_proportion()}} for
+the \code{coef} method.
 }

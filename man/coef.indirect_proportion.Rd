@@ -14,7 +14,8 @@ Effect Mediated}
 \item{...}{Not used.}
 }
 \value{
-A scalar: The estimate of xxx.
+A scalar: The proportion of effect
+mediated.
 }
 \description{
 Return the proportion

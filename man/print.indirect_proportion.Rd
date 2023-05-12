@@ -43,7 +43,7 @@ and all indirect path(s) from the
 x-variable to the y-variable.
 
 To get the proportion as a scalar,
-use the \code{coef}-method of
+use the \code{coef} method of
 \code{indirect_proportion} objects.
 }
 \examples{
