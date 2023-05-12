@@ -1,0 +1,368 @@
+---
+title: "Technical Appendix: Workflow of `get_prod()` and Friends"
+author: "Shu Fai Cheung & Sing-Hang Cheung"
+output:
+  html_document:
+    fig.align: "center"
+    toc: true
+    number_sections: false
+bibliography: references.bib
+csl: apa.csl
+---
+
+```{r echo = FALSE}
+library(DiagrammeR)
+```
+
+# Goal
+
+This technical appendix describes how product terms
+in a model or dataset is identified in the package
+[manymome](https://cran.r-project.org/package=manymome).
+
+The main function, `get_prod()`, is an internal
+function not exported. Nevertheless, advanced users may be
+interested in learning how it works.
+
+# `get_prod()`
+
+This internal function is used to find all product term(s), if any,
+from `x` to `y`, `x` having a direct path to `y`.
+
+## Main arguments
+
+- `x`: The name of the predictor.
+
+- `y`: The name of the outcome.
+
+- `fit`: A fit object. Currently only supports a
+ `lavaan`-class object.
+
+- `est`: The output of `lavaan::parameterEstimates()`. If
+ `NULL`, the default, it will be generated from `fit`.
+ If supplied, `fit` will ge ignored.
+
+- `data`: A data frame. If supplied, it will be used
+  to identify the product terms.
+
+- `operator`: The string used to indicate
+  a product term. Default is `":"`, used in both `lm()`
+  and `lavaan::sem()` for observed variables. If raw
+  data is not available, this is needed for identifying
+  product terms.
+
+## Output
+
+This is a sample output:
+
+```r
+$prod
+[1] "x_o_w1"
+
+$b
+   x_o_w1
+0.2337979
+
+$w
+[1] "w1"
+
+$x
+[1] "x"
+
+$y
+[1] "m1"
+```
+
+It returns a list with these elements:
+
+  - `prod`: The name(s) of the product term(s) in the model or data.
+    It can have more than one element if the effect of `x` on `y`
+    is moderated by more than one moderator.
+
+  - `b`: The coefficient(s) of the product term(s).
+
+  - `w`: The name(s) of the moderator(s).
+
+  - `x`: The predictor, `x`.
+
+  - `y`: The outcome variable, `y`.
+
+## Sample Data and Model
+
+The sample dataset `modmed_x1m3w4y1`
+from the package `manymome` will be used for
+illustration:
+
+```{r}
+library(manymome)
+dat <- modmed_x1m3w4y1
+print(head(dat), digits = 3)
+```
+
+For illustration, some product terms will be formed manually,
+and some product terms will be formed using the `:` operator
+in `lavaan`:
+
+```{r}
+dat$x_o_w1 <- dat$x * dat$w1
+library(lavaan)
+mod <-
+"
+m1 ~ x   + w1 + x_o_w1
+m2 ~ m1  + w2 + m1:w2
+m3 ~ m2
+y  ~ m3  + w4 + m3:w4 + x + w3 + x:w3 + x:w4
+"
+fit <- sem(model = mod,
+           data = dat,
+           meanstructure = TRUE,
+           fixed.x = FALSE)
+```
+
+Fit the model by `lm()`:
+
+```{r}
+lm_m1 <- lm(m1 ~ x*w1, dat)
+lm_m2 <- lm(m2 ~ m1*w2, dat)
+lm_m3 <- lm(m3 ~ m2, dat)
+lm_y <- lm(y ~ m3*w4 + x*w3 + x*w4, dat)
+lm_list <- lm2list(lm_m1, lm_m2, lm_m3, lm_y)
+lm_est <- manymome:::lm2ptable(lm_list)
+```
+
+## Modes
+
+It works in several modes.
+
+### `fit` only, with raw data
+
+A `fit` object (`lavaan`-class object) only is supplied,
+which has raw data stored.
+
+The parameter estimate table, `est`, is extracted from `fit`.
+
+Raw data is extracted from `fit` to identify product terms.
+
+It then returns product terms that involve `x` in predicting `y`, if any.
+
+Case: A path with a moderator
+
+```{r}
+manymome:::get_prod(x = "x", y = "m1", fit = fit)
+```
+
+Case: A path with more than one moderator
+
+```{r}
+manymome:::get_prod(x = "x", y = "y", fit = fit)
+```
+
+Case: A path without a moderator
+
+```{r}
+manymome:::get_prod(x = "m2", y = "m3", fit = fit)
+```
+
+Case: `x` does not have a direct path to `y`
+
+```{r}
+manymome:::get_prod(x = "m1", y = "m3", fit = fit)
+```
+
+### `est` and `data`
+
+In this mode, raw data supplied directly is used to identify product terms.
+
+The parameter estimate table `est` is used to determine the form of the model.
+
+It then returns product term(s) that involve `x` in predicting `y`, if any.
+
+Case: A path with a moderator
+
+```{r}
+manymome:::get_prod(x = "x", y = "m1", est = lm_est$est, data = lm_est$data)
+```
+
+Case: A path with more than one moderator
+
+```{r}
+manymome:::get_prod(x = "x", y = "y", est = lm_est$est, data = lm_est$data)
+```
+
+Case: A path without a moderator
+
+```{r}
+manymome:::get_prod(x = "m2", y = "m3", est = lm_est$est, data = lm_est$data)
+```
+
+Case: `x` does not have a direct path to `y`
+
+```{r}
+manymome:::get_prod(x = "m1", y = "m3", est = lm_est$est, data = lm_est$data)
+```
+
+### `est` only
+
+In this mode, `operator` needs to be set to identify product terms from
+the parameter estimate table `est`.
+
+The table from `est` is then used to determine the form of the model.
+
+It then returns product term(s) that involve `x` in predicting `y`, if any.
+
+This mode is useful when a product term is not formed from the raw data. For
+example, when the product term is a product of two latent variables, or
+when raw data is not available.
+
+Case: A path with a moderator
+
+```{r}
+manymome:::get_prod(x = "x", y = "m1", est = lm_est$est, operator = ":")
+```
+
+Case: A path with more than one moderator
+
+```{r}
+manymome:::get_prod(x = "x", y = "y", est = lm_est$est, operator = ":")
+```
+
+Case: A path without a moderator
+
+```{r}
+manymome:::get_prod(x = "m2", y = "m3", est = lm_est$est, operator = ":")
+```
+
+Case: `x` does not have a direct path to `y`
+
+```{r}
+manymome:::get_prod(x = "m1", y = "m3", est = lm_est$est, operator = ":")
+```
+
+## Workflow
+
+```{r fig-get_prod, fig.cap = "Workflow of `manymome::get_prod()`", echo = FALSE}
+mermaid("
+flowchart TD
+  classDef default fill:#EEEEFF;
+  classDef errornode fill:#FFDDDD;
+  classDef startend fill:#DDFFDD;
+  classDef mcnode fill:#FFFFDD;
+  classDef bootnode fill:#DDFFFF;
+  classDef lavnode fill:#FFDDFF;
+  classDef lmnode fill:#FFDDDD;
+
+  ZZ([\"Start\"])
+  ZZ:::startend -->
+
+  ZA{{\"est NULL?\"}}
+  estNULL[\"Set est by</br>lavaan::parameterEstimates(fit)\"]
+  ZA -- Yes --> estNULL
+  estNULL --> fittype
+  ZA -- No --> fittype
+
+  fittype{{\"fit a lavaan-object?\"}}
+  fittype -- lavaan --> findalllavaan
+  fittype -- No --> data
+  findalllavaan[\"Call find_all_products()</br>to find all columns that are</br>the products of other columns,</br>using data from fit\"]
+  data{{\"data supplied?\"}}
+  findalllavaan --> data
+  findalldata[\"Call find_all_products()</br>to find all columns that are</br>the products of other columns,</br>using data from argument\"]
+  data -- Yes --> findalldata
+  findalldata --> yadv
+  data -- No --> yadv
+
+  yadv{{\"Is y the DV of any path?\"}}
+  ynotdv([\"y not a DV. Return NA\"])
+  yadv -- No --> ynotdv:::startend
+  yadv -- Yes --> allprodsAllNA
+
+  allprodsAllNA{{\"all_prods NA?\"}}
+  allprodsAllNA -- No --> iprod
+  allprodsAllNA -- Yes --> prodbyop
+  iprod[\"Set i_prod_rhs (logical) to</br>path(s) with product term(s)\"]
+  prodbyop[\"Find product term(s)</br>by operator</br>and set i_prod_rhs (logical)\"]
+  iprod --> iprodAny
+  prodbyop --> iprodAny
+
+  iprodAny{{\"Any i_prod_rhs TRUE?\"}}
+  iprodAny -- All FALSE --> iprodFALSE:::startend
+  iprodFALSE([\"No product term along the path.</br>Return NA\"])
+  iprodAny -- At least one TRUE --> allprodsNA
+
+  allprodsNA{{\"all_prods NA?\"}}
+  allprodsNA -- No --> xinprodschk
+
+  xinprodschk{{\"x in any product term(s)?\"}}
+  xinprodsTRUE[\"Set prod_x to</br>the product term(s) and</br>w to the moderator(s)</br>using all_prods\"]
+  xinprodsFALSE[\"Set prod_x and w </br>to NULL\"]
+  xinprodschk -- Yes --> xinprodsTRUE
+  xinprodschk -- No --> xinprodsFALSE
+
+  allprodsNA -- Yes --> xinprodsop
+  xinprodsop[\"Find x in product terms</br>using operator\"]
+  xinprodsop --> xinprodsopchk
+  xinprodsopchk{{\"x in any product term(s)?\"}}
+  xinprodsopTRUE[\"Set prod_x to</br>the product term(s) and</br>w to the moderator(s)</br>using opeator\"]
+  xinprodsopFALSE[\"Set prod_x and w </br>toNULL\"]
+  xinprodsopchk -- Yes --> xinprodsopTRUE
+  xinprodsopchk -- No --> xinprodsopFALSE
+
+  xinprodsTRUE & xinprodsopTRUE & xinprodsFALSE & xinprodsopFALSE --> getb
+  getb[\"Use sapply on get_b()</br>to get the coefficient(s) of</br>the product term(s)\"]
+
+  getb --> results:::startend
+  results([\"Pack the results and return a list\"])
+
+", height = 1800, width = 800)
+```
+
+# `find_all_products()` and `find_product()`
+
+## How it works
+
+The function `find_all_products()` is an internal function
+for identifying all product terms in a dataset. It requires
+the raw data to work. It is called by `get_prod()` when raw
+data is available.
+
+For each column in a dataset, it calls `find_product()` to check
+whether this column is the product of two other columns. If yes,
+`find_product()` returns the component column names. It then
+returns a named list of the output of `find_product()` for
+columns of product term.
+
+The search by `find_product()` is done numerically, checking
+whether a column can be formed from the product of
+any two other columns (missing data allowed).
+
+This approach is exact and simple. There is no need to rely on
+any special naming convention in the model to denote a product term.
+
+`find_all_products()` returns a named list of product term components.
+
+If `expand` = TRUE, it will try to find all lowest order components.
+Therefore, a product term of three or more columns can also be identified.
+
+## Example
+
+We first create a dataset with some product terms.
+
+```{r}
+library(manymome)
+set.seed(63224)
+dat <- round(as.data.frame(MASS::mvrnorm(100, rep(0, 5), diag(5))), 3)
+head(dat)
+dat$V2V1 <- dat$V2 * dat$V1
+dat$V3V5 <- dat$V3 * dat$V5
+dat$V1V2V3 <- dat$V1 * dat$V2 * dat$V3
+print(head(dat), digits = 3)
+```
+
+```{r}
+manymome:::find_all_products(dat)
+```
+
+The output is a named list of character vectors. The names are the
+column names that are product terms. Each character vector stores the
+column names of its components.
+

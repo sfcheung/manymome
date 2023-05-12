@@ -30,6 +30,11 @@ articles:
   - mome_lm
   - do_mc
   - do_mc_lavaan_mi
+- title: Technical Appendices
+  navbar: ~
+  desc: For advanced users and developers
+  contents:
+  - articles/get_prod
 
 reference:
 - title: Main Functions
