@@ -1,4 +1,4 @@
-# manymome 0.1.9.14
+# manymome 0.1.9.15
 
 - Updated badges in README.md. (0.1.9.1)
 - Updated pkgdown site. (0.1.9.2)
@@ -13,12 +13,15 @@
   in Asparouhov and Muthén (2021) if bootstrapping
   confidence interval is requested. By
   default, *p*-values are not printed. (0.1.9.7)
-- Add initial support for models fitted by `runMI()` or `sem.mi()`
+- Added initial support for models fitted by `runMI()` or `sem.mi()`
   from the `semTools` package using multiple imputation. (0.1.9.8-0.1.9.10)
-- Add progress bars to `do_mc()`. (0.1.9.11)
-- Add `indirect_proportion()` and two methods for its output. (0.1.9.12)
-- Export `get_prod()` and add an article on its workflow. (0.1.9.13)
-- Add `print.mc_out()`, the print-method for `mc_out`-class objects. (0.1.9.14)
+- Added progress bars to `do_mc()`. (0.1.9.11)
+- Added `indirect_proportion()` and two methods for its output. (0.1.9.12)
+- Exported `get_prod()` and added an article on its workflow. (0.1.9.13)
+- Added `print.mc_out()`, the print-method for `mc_out`-class objects. (0.1.9.14)
+- Updated vignettes with package name. (0.1.9.15)
+- Fixed typos in NEWS.md. (0.1.9.15)
+- Updated pkgdown GitHub action for using newer version of mermaid. (0.1.9.15)
 
 # manymome 0.1.9
 
