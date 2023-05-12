@@ -150,6 +150,7 @@ reference:
   - predict.lm_from_lavaan
   - predict.lm_from_lavaan_list
   - predict.lm_list
+  - get_prod
 - title: Datasets
   desc: Datasets used in examples.
 - contents:
