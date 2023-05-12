@@ -1,4 +1,4 @@
-# manymome 0.1.9.12
+# manymome 0.1.9.13
 
 - Updated badges in README.md. (0.1.9.1)
 - Updated pkgdown site. (0.1.9.2)
@@ -17,6 +17,7 @@
   from the `semTools` package using multiple imputation. (0.1.9.8-0.1.9.10)
 - Add progress bars to `do_mc()`. (0.1.9.11)
 - Add `indirect_proportion()` and two methods for its output. (0.1.9.12)
+- Export `get_prod()` and add an article on its workflow. (0.1.9.13)
 
 # manymome 0.1.9
 
