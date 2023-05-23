@@ -1,4 +1,4 @@
-# manymome 0.1.9.15
+# manymome 0.1.9.16
 
 - Updated badges in README.md. (0.1.9.1)
 - Updated pkgdown site. (0.1.9.2)
@@ -22,6 +22,7 @@
 - Updated vignettes with package name. (0.1.9.15)
 - Fixed typos in NEWS.md. (0.1.9.15)
 - Updated pkgdown GitHub action for using newer version of mermaid. (0.1.9.15)
+- Updated pkgdown website to use the new logo and color scheme. (0.1.9.16)
 
 # manymome 0.1.9
 
