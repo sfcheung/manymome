@@ -10,7 +10,7 @@ template:
     pkgdown-nav-height: 80px
     bg: "#EFEFEF"
     fg: "#000000"
-    primary: "#C76A00"
+    primary: "#01B0F1"
     base_font: {google: "Hind"}
     heading_font: {google: "Hind"}
     code_font: {google: "Oxygen Mono"}
