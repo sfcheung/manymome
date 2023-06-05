@@ -70,9 +70,10 @@ test_that("boot2est with implied stat", {
     expect_error(
         boot2implied(fit_noboot)
       )
-    expect_error(
-        boot2implied(fit_fixedx)
-      )
+    # # It supports fixed.x now.
+    # expect_error(
+    #     boot2implied(fit_fixedx)
+    #   )
     expect_equal(
         out2[[5]]$est,
         out2_est_chk[[5]]

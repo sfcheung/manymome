@@ -15,7 +15,8 @@ fit2boot_out_do_boot(
   parallel = FALSE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   make_cluster_args = list(),
-  progress = TRUE
+  progress = TRUE,
+  internal = list()
 )
 }
 \arguments{
@@ -53,6 +54,10 @@ details. Default is \code{list()}.}
 
 \item{progress}{Logical. Display
 progress or not. Default is \code{TRUE}.}
+
+\item{internal}{A list of arguments
+to be used internally for debugging.
+Default is \code{list()}.}
 }
 \value{
 A \code{boot_out}-class object
