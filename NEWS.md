@@ -1,4 +1,4 @@
-# manymome 0.1.9.16
+# manymome 0.1.9.17
 
 - Updated badges in README.md. (0.1.9.1)
 - Updated pkgdown site. (0.1.9.2)
@@ -23,6 +23,7 @@
 - Fixed typos in NEWS.md. (0.1.9.15)
 - Updated pkgdown GitHub action for using newer version of mermaid. (0.1.9.15)
 - Updated pkgdown website to use the new logo and color scheme. (0.1.9.16)
+- Bootstrapping can handle the `fixed.x` argument as `lavaan` does. (0.1.9.17)
 
 # manymome 0.1.9
 
