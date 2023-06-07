@@ -10,13 +10,24 @@ mod <-
 m1 ~ a1 * x   + b1 * w1 + d1 * x:w1
 y  ~ a4 * m1  + b4 * w4 + d4 * m1:w4
 "
-set.seed(8715)
-fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE,
-           se = "boot",
-           bootstrap = 10,
-           baseline = FALSE,
-           h1 = FALSE,
-           warn = FALSE)
+# Adapt to a change in lavaan 0.6-13
+if (packageVersion("lavaan") > "0.6.12") {
+    fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE,
+              se = "boot",
+              bootstrap = 10,
+              baseline = FALSE,
+              h1 = FALSE,
+              warn = FALSE,
+              iseed = 8715)
+  } else {
+    set.seed(8715)
+    fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE,
+              se = "boot",
+              bootstrap = 10,
+              baseline = FALSE,
+              h1 = FALSE,
+              warn = FALSE)
+  }
 
 out <- suppressMessages(fit2boot_out_do_boot(fit, R = 15, seed = 8715, ncores = 3))
 out_chk_est <- boot2est(fit)
