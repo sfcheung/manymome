@@ -1,33 +1,64 @@
-# manymome 0.1.9.19
+# manymome 0.1.10
 
-- Updated badges in README.md. (0.1.9.1)
-- Updated pkgdown site. (0.1.9.2)
+## New Features
+
+### Monte Carlo Confidence Intervals
+
 - Added support for Monte Carlo confidence intervals. (0.1.9.3 to 0.1.9.4)
 - Updated some vignettes for Monte Carlo confidence intervals. (0.1.9.5)
-- Used a more reliable test for Monte Carlo CIs. (0.1.9.6)
-- Fixed an error in pkgdown site. (0.1.9.6)
-- Updated the logo for readability. (0.1.9.6)
+- Please refer to [this article](https://sfcheung.github.io/manymome/articles/do_mc.html)
+  for an illustration on forming Monte Carlo confidence interval.
+
+### Multiple Imputation
+
+- Added support for models fitted by `runMI()` or `sem.mi()`
+  from the `semTools` package using multiple imputation. (0.1.9.8-0.1.9.10)
+- Please refer to [this article](https://sfcheung.github.io/manymome/articles/do_mc_lavaan_mi.html)
+  for an illustration on forming Monte Carlo confidence interval.
+
+### Can report *p*-value (if requested)
+
 - Some print methods support printing
   asymmetric bootstrap
   *p*-values using the method presented
   in Asparouhov and Muthén (2021) if bootstrapping
   confidence interval is requested. By
   default, *p*-values are not printed. (0.1.9.7)
-- Added initial support for models fitted by `runMI()` or `sem.mi()`
-  from the `semTools` package using multiple imputation. (0.1.9.8-0.1.9.10)
-- Added progress bars to `do_mc()`. (0.1.9.11)
+
+### Report proportion of effect mediated
+
 - Added `indirect_proportion()` and two methods for its output. (0.1.9.12)
-- Exported `get_prod()` and added an article on its workflow. (0.1.9.13)
+
+### Others
+
+- Exported `get_prod()` and added [an article](https://sfcheung.github.io/manymome/articles/get_prod.html)
+  on its workflow. (0.1.9.13).
+- Bootstrapping can handle the `fixed.x` argument as `lavaan` does. (0.1.9.17)
+
+## Bug Fixes
+
+- Fixed `factor2var()` to work (again) for a categorical variable with only two
+  levels. (0.1.9.21)
+
+## Miscellaneous
+
+- Updated badges in README.md. (0.1.9.1)
+- Updated `pkgdown` site. (0.1.9.2)
+- Used a more reliable test for Monte Carlo CIs. (0.1.9.6)
+- Updated the logo for readability. (0.1.9.6)
+- Fixed an error in `pkgdown` site. (0.1.9.6)
+- Added progress bars to `do_mc()`. (0.1.9.11)
 - Added `print.mc_out()`, the print-method for `mc_out`-class objects. (0.1.9.14)
 - Updated vignettes with package name. (0.1.9.15)
 - Fixed typos in NEWS.md. (0.1.9.15)
-- Updated pkgdown GitHub action for using newer version of mermaid. (0.1.9.15)
-- Updated pkgdown website to use the new logo and color scheme. (0.1.9.16)
-- Bootstrapping can handle the `fixed.x` argument as `lavaan` does. (0.1.9.17)
+- Updated `pkgdown` GitHub action for using newer version of mermaid. (0.1.9.15)
+- Updated `pkgdown` website to use the new logo and color scheme. (0.1.9.16)
 - Modified more tests to accommodate a change in `lavaan`
   on handling random seed. (0.1.9.18)
 - No change to the main code. Added a few technical appendices as `pkgdown`
   articles, accessible through the `pkgdown` website of the package. (0.1.9.19)
+- Updated the documentation of functions to state that they support
+  `lavaan.mi`-class objects. (0.1.9.20)
 
 # manymome 0.1.9
 

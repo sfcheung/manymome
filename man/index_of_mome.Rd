@@ -67,7 +67,12 @@ moderator.}
 \item{fit}{The fit object. Can be a
 \link[lavaan:lavaan-class]{lavaan::lavaan} object, a list
 of \code{\link[=lm]{lm()}} outputs, or an object
-created by \code{\link[=lm2list]{lm2list()}}.}
+created by \code{\link[=lm2list]{lm2list()}}.
+It can also be
+a \code{lavaan.mi} object
+returned by
+\code{\link[semTools:runMI]{semTools::runMI()}} or
+its wrapper, such as \code{\link[semTools:runMI]{semTools::sem.mi()}}.}
 
 \item{boot_ci}{Logical. Whether
 bootstrap confidence interval will be

@@ -51,6 +51,11 @@
 #' @param fit The fit object. Can be a
 #' [lavaan::lavaan-class] object or a
 #' list of [lm()] outputs.
+#' It can also be
+#' a `lavaan.mi` object
+#' returned by
+#' [semTools::runMI()] or
+#' its wrapper, such as [semTools::sem.mi()].
 #'
 #' @param w_type Character. Whether the
 #' moderator is a `"numeric"` variable

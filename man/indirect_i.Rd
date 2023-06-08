@@ -43,7 +43,12 @@ only supports \link[lavaan:lavaan-class]{lavaan::lavaan}
 objects. Support for lists of \code{\link[=lm]{lm()}}
 output is implemented by high level
 functions such as \code{\link[=indirect_effect]{indirect_effect()}}
-and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
+and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+It can also be
+a \code{lavaan.mi} object
+returned by
+\code{\link[semTools:runMI]{semTools::runMI()}} or
+its wrapper, such as \code{\link[semTools:runMI]{semTools::sem.mi()}}.}
 
 \item{est}{The output of
 \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}. If

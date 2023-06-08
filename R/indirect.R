@@ -46,6 +46,11 @@
 #' output is implemented by high level
 #' functions such as [indirect_effect()]
 #' and [cond_indirect_effects()].
+#' It can also be
+#' a `lavaan.mi` object
+#' returned by
+#' [semTools::runMI()] or
+#' its wrapper, such as [semTools::sem.mi()].
 #'
 #' @param est The output of
 #' [lavaan::parameterEstimates()]. If

@@ -105,12 +105,19 @@ reference:
 - title: Bootstrapping
   desc: >
     Generate bootstrap estimates to be used
-    by the main functions.
+    by the main functions to form
+    bootstrap confidence intervals
 - contents:
   - do_boot
   - lm2boot_out
   - fit2boot_out
   - fit2boot_out_do_boot
+- title: Monte Carlo
+  desc: >
+    Generate simulated estimates to be used
+    by the main functions to form
+    Monte Carlo confidence intervals
+- contents:
   - do_mc
   - fit2mc_out
 - title: For 'lavaan'

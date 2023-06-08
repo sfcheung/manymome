@@ -20,6 +20,14 @@
 #' [cond_indirect()] to form
 #' Monte Carlo confidence intervals.
 #'
+#' It also supports a model estimated
+#' by multiple imputation using
+#' [semTools::runMI()] or its wrapper,
+#' such as [semTools::sem.mi()].
+#' The pooled estimates and their
+#' variance-covariance matrix will be used
+#' to generate the Monte Carlo estimates.
+#'
 #' This approach removes the need to
 #' repeat Monte Carlo simulation in
 #' each call to
@@ -48,7 +56,13 @@
 #' replication.
 #'
 #' @param fit The output of
-#' [lavaan::sem()]. The output of
+#' [lavaan::sem()].
+#' It can also be
+#' a `lavaan.mi` object
+#' returned by
+#' [semTools::runMI()] or
+#' its wrapper, such as [semTools::sem.mi()].
+#' The output of
 #' [stats::lm()] is not supported.
 #'
 #' @param R The number of replications.

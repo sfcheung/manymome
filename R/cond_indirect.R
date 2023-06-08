@@ -4,8 +4,8 @@
 #' @description Compute the conditional
 #' effects, indirect effects, or
 #' conditional indirect effects in a
-#' structural model fitted by [lm()] or
-#' [lavaan::sem()].
+#' structural model fitted by [lm()],
+#' [lavaan::sem()], or [semTools::sem.mi()].
 #'
 #' @details
 #'
@@ -92,7 +92,7 @@
 #' [cond_indirect()].
 #'
 #' 3. For bootstrapping,
-#' If [lavaan::sem()] is used to fit
+#' if [lavaan::sem()] is used to fit
 #' a model and `se = "boot"` is used,
 #' [do_boot()] can extract them to
 #' generate a `boot_out`-class object
@@ -145,6 +145,11 @@
 #' @param fit The fit object. Can be a
 #' [lavaan::lavaan-class] object or a
 #' list of [lm()] outputs.
+#' It can also be
+#' a `lavaan.mi` object
+#' returned by
+#' [semTools::runMI()] or
+#' its wrapper, such as [semTools::sem.mi()].
 #'
 #' @param est The output of
 #' [lavaan::parameterEstimates()]. If

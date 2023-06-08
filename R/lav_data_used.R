@@ -4,6 +4,11 @@
 #' @param fit The fit object. Currently
 #' only supports a
 #' [lavaan::lavaan-class] object.
+#' It can also be
+#' a `lavaan.mi` object
+#' returned by
+#' [semTools::runMI()] or
+#' its wrapper, such as [semTools::sem.mi()].
 #'
 #' @param drop_colon Logical. Whether
 #' product terms (of the form "x:y")
