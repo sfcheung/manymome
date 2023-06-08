@@ -1,0 +1,338 @@
+---
+title: "Technical Appendix: Workflow of `cond_indirect()`"
+author: "Shu Fai Cheung & Sing-Hang Cheung"
+output:
+  html_document:
+    fig.align: "center"
+    toc: true
+    number_sections: false
+bibliography: references.bib
+csl: apa.csl
+---
+
+```{r echo = FALSE}
+library(DiagrammeR)
+```
+
+# Goal
+
+This technical appendix describes how `cond_indirect()`
+from the package
+[manymome](https://cran.r-project.org/package=manymome)
+works internally to extract the parameters and compute
+a conditional indirect effect.
+
+# `cond_indirect()`
+
+```{r fig-cond_indirect, fig.cap = "Workflow of `manymome::cond_indirect()`", echo = FALSE}
+mermaid("
+flowchart TD
+  classDef default fill:#EEEEFF;
+  classDef errornode fill:#FFDDDD;
+  classDef startend fill:#DDFFDD;
+  classDef mcnode fill:#FFFFDD;
+  classDef bootnode fill:#DDFFFF;
+  classDef lavnode fill:#FFDDFF;
+  classDef lmnode fill:#FFDDDD;
+
+  ZZ([\"Start\"])
+  A{{\"Call check_path() to check the path\"}}
+  ZZ:::startend --> A
+  A -- OK --> B
+  B{{\"Confidence interval (CI) requested?\"}}
+  B -- Monte Carlo CI --> MCCIA
+  B -- Bootstrap CI --> BootA
+  B -- CI not requested --> D
+
+  subgraph idmcdo [ ]
+  MCCIA{{\"mc_out supplied?\"}}
+  MCCIdo[\"Call do_mc() and</br>store results in mc_out\"]
+  MCCIA:::mcnode -- No --> MCCIdo:::mcnode
+  end
+  MCCIA -- Yes --> D
+  MCCIdo --> D
+
+  subgraph idbootdo [ ]
+  BootA{{\"boot_out supplied?\"}}
+  Bootdo[\"Call do_boot() and</br>store results in boot_out\"]
+  BootA:::bootnode -- No --> Bootdo:::bootnode
+  end
+  BootA -- Yes --> D
+  Bootdo --> D
+
+  D{{\"fit_type?\"}}
+
+  D -- lavaan --> Elavaanest
+  subgraph idlav [ ]
+  Elavaanest{{\"est supplied?\"}}
+  Elavaangetest[\"Call lavaan::parameterEstimates()</br>to set est\"]
+  Elavaanimplied{{\"implied_stats supplied?\"}}
+  Elavaangetimplied[\"Call lav_implied_all()</br>to set implied_stats\"]
+  Elavaangetdata[\"Call lavaan::lavInspect()</br>to set fit_data\"]
+  Elavaanest:::lavnode -- Yes --> Elavaanimplied:::lavnode
+  Elavaanest:::lavnode -- No --> Elavaangetest:::lavnode
+  Elavaangetest:::lavnode --> Elavaanimplied:::lavnode
+  Elavaanimplied:::lavnode -- Yes --> Elavaangetdata:::lavnode
+  Elavaanimplied:::lavnode -- No --> Elavaangetimplied:::lavnode
+  end
+  Elavaangetimplied:::lavnode --> Elavaangetdata:::lavnode
+
+  D -- lm --> Elm
+  subgraph idlm [ ]
+  Elm[\"Call m2ptable() to convert</br>fit to lm_est, a lavaan-like object\"]
+  Elmest{{\"est supplied?\"}}
+  Elmgetest[\"Extract est from lm_est\"]
+  Elmimplied{{\"implied_stats supplied?\"}}
+  Elmgetimplied[\"Extract implied_stats from lm_est\"]
+  Elmgetdata[\"Extract data from lm_est</br>to set fit_data\"]
+  Elm:::lmnode --> Elmest:::lmnode
+  Elmest:::lmnode -- Yes --> Elmimplied:::lmnode
+  Elmest:::lmnode -- No --> Elmgetest:::lmnode
+  Elmgetest:::lmnode --> Elmimplied:::lmnode
+  Elmimplied:::lmnode -- Yes --> Elmgetdata:::lmnode
+  Elmimplied:::lmnode -- No --> Elmgetimplied:::lmnode
+  end
+
+  Elmgetimplied:::lmnode --> Elmgetdata:::lmnode
+
+  Elmgetdata --> Fprods
+  Elavaangetdata --> Fprods
+  Fprods{{\"prods supplied?\"}}
+  Ggetprods[\"Call indirect_i() with</br>get_prods_only = TRUE</br> to set prods\"]
+  Fprods -- No --> Ggetprods
+  Fprods -- Yes --> prodsonly
+  indirect[\"Call indirect_i() to estimate </br>the (conditional) indirect effect</br>using fit, wvalues, est, and implied_stats\"]
+
+  indirect --> G
+  G{{\"Confidence interval (CI) requested?\"}}
+  G -- Monte Carlo CI --> HMCCIA
+  G -- Bootstrap CI --> HBootA
+  G -- CI not requested --> H
+
+  HMCCIA[\"Use mapply on indirect_i</br>to generate Monte Carlo estimates\"]
+  HMMCCIB[\"Form CI and store in mc_ci\"]
+  subgraph idmcci [ ]
+  HMCCIA:::mcnode --> HMMCCIB:::mcnode
+  end
+  HMMCCIB --> H
+
+  HBootA[\"Use mapply on indirect_i</br>to generate bootstrap estimates\"]
+  HBootB[\"Form CI and store in boot_ci\"]
+  subgraph idbootci [ ]
+  HBootA:::bootnode --> HBootB:::bootnode
+  end
+  HBootB --> H:::startend
+
+  H([\"Return the results\"])
+
+  AFailed([\"Error: No path from x to y\"])
+  A -- Failed --> AFailed:::errornode
+  prodsonly{{\"get_prods_only TRUE?\"}}
+  prodsonlyYes([\"Quit and return prods\"])
+  Ggetprods --> prodsonly
+  prodsonly -- Yes --> prodsonlyYes:::startend
+  prodsonly -- No --> indirect
+", height = 2000, width = 800)
+```
+
+# `cond_indirect_effects()`
+
+```{r fig-cond_indirect_effect, fig.cap = "Workflow of `manymome::cond_indirect_effects()`", echo = FALSE}
+mermaid("
+flowchart TD
+  classDef default fill:#EEEEFF;
+  classDef errornode fill:#FFDDDD;
+  classDef startend fill:#DDFFDD;
+  classDef mcnode fill:#FFFFDD;
+  classDef bootnode fill:#DDFFFF;
+
+  ZZ([\"Start\"])
+  wlevels{{\"wlevels supplied?\"}}
+
+  ZZ:::startend --> wlevels
+
+  wlevels -- Yes --> B
+
+  B{{\"Confidence interval (CI) requested?\"}}
+  B -- Monte Carlo CI --> MCCIA:::mcnode
+  B -- Bootstrap CI --> BootA:::bootnode
+  B -- CI not requested --> getprods
+
+  MCCIA{{\"mc_out supplied?\"}}
+  MCCIdo[\"Call do_mc() and</br>store results in mc_out\"]
+  subgraph idmcdo [ ]
+  MCCIA:::mcnode -- No --> MCCIdo:::mcnode
+  end
+  MCCIA -- Yes --> getprods
+  MCCIdo --> getprods
+
+  BootA{{\"boot_out supplied?\"}}
+  Bootdo[\"Call do_boot() and</br>store results in boot_out\"]
+  subgraph idbootdo [ ]
+  BootA:::bootnode -- No --> Bootdo:::bootnode
+  end
+  BootA -- Yes --> getprods
+  Bootdo --> getprods
+
+  getprods[\"Call cond_indirect() to get prods,</br>product term(s) along the path, if any\"]
+
+  getprods --> condi
+  condi[\"Call cond_indirect() for each row of wlevels</br>to compute the conditional indirect effects\"]
+
+  condi --> df
+  df{{\"output_type == \'data.frame\'?\"}}
+  df -- Yes --> dfYes:::startend
+  df -- No --> dfNo:::startend
+  dfYes([\"Pack the results in a data frame and</br>retrun a cond_indirect_effects-class object\"])
+  dfNo([\"Return a list of the outputs of cond_indirect()\"])
+
+  wlevelsNo([\"Error: wlevels is required.\"])
+  wlevels -- No --> wlevelsNo
+
+  class wlevelsNo errornode;
+
+", height = 1000, width = 800)
+```
+
+# `indirect_i()`
+
+## Main workflow
+
+```{r fig-indirect_i, fig.cap = "Workflow of `manymome::indirect_i()`", echo = FALSE}
+mermaid("
+flowchart TD
+  classDef default fill:#EEEEFF;
+  classDef errornode fill:#FFDDDD;
+  classDef startend fill:#DDFFDD;
+  classDef subnode fill:#FFFFDD;
+
+  ZZ([\"Start\"])
+  ZZ:::startend --> ZA
+
+  ZA[\"If est is NULL,</br> get est from fit\"]
+  A{{\"Call check_path() to check the path\"}}
+  ZA --> A
+  B{{\"Call get_b() to get </br>coefficient(s) from x to y (bs)\"}}
+
+  AFailed([\"Error: No path from x to y\"])
+  A -- OK --> B
+  A -->|Failed| AFailed:::errornode
+
+  BFailed([\"Error: Path between</br>a latent variable and</br>an observed variable.\"])
+  C{{\"prods supplied?\"}}
+  B -- Failed --> BFailed:::errornode
+  B -- OK --> C
+
+  C -- Yes --> CYes
+  C -- No --> CNo:::subnode
+
+  subgraph idgetprod [ ]
+  CNo[[\"Call get_prod() to</br>get all product terms</br>along the path(s), if any.\"]]
+  CYes[\"Update prods by est\"]
+  end
+
+  D{{\"get_prods_only TRUE?\"}}
+  CYes --> D
+  CNo --> D
+  DYes([\"Quit and return prods\"])
+  D -- Yes --> DYes:::startend
+
+  E{{\"wvalues NULL?\"}}
+  D -- No --> E
+  subgraph idcond [ ]
+  ENOTNULL[\"Compute the change(s) in effect(s) (b_cond)</br>due to wvalues along the path\"]
+  ENOTNULL2[\"Update bs\"]
+  F[\"Set b_cond to NAs\"]
+  E -- Not NULL --> ENOTNULL
+  ENOTNULL --> ENOTNULL2
+  E -- NULL --> F
+  G[\"Create the string representation (b_cond_str)</br>of the computation of effect\"]
+  F --> G
+  ENOTNULL2 --> G
+  H[\"Compute the (raw) indirect effect (b_all)\"]
+  G --> H
+  end
+
+  I{{\"standardized_x or standardized_y TRUE?\"}}
+  J([\"Pack and return the results as</br>an indirect-class object\"])
+  H --> I
+
+  ITRUE[\"Call lav_implied_all(fit() to</br> compute the implied statistics\"]
+  IA[\"Compute the scaling factor(s) for x and/or y\"]
+  IB[\"Scale the indirect effect\"]
+  I -- Either or both TRUE --> ITRUE
+
+  subgraph idstd [ ]
+  ITRUE --> IA
+  IA --> IB
+  end
+
+  I -- Both FALSE --> J
+  IB --> J:::startend
+", height = 1900, width = 800)
+```
+
+For `Call get_prod()`, see the workflow of `Creating prods`.
+
+## `prods` not supplied
+
+Creating `prods`
+
+```{r fig-indirect_i_get_prods, fig.cap = "Workflow of `manymome::indirect_i()`: Creating `prods`", echo = FALSE}
+mermaid("
+flowchart TD
+  classDef default fill:#EEEEFF;
+  classDef errornode fill:#FFDDDD;
+  classDef startend fill:#DDFFDD;
+  classDef subnode fill:#FFFFDD;
+
+  ZZ([\"Start\"])
+  ZZ:::startend --> ZA
+
+  ZA[\"From \'Call get_prod()\' in the main workflow\"]
+  ZA --> A
+  A{{\"chk_lv all TRUE?</br>(All variables in the path are latent)\"}}
+  B{{\"Is data supplied?\"}}
+  A -- No --> B
+  C{{\"Is fit supplied?\"}}
+  B -- No --> C
+  CYes[\"Extract data from fit\"]
+  C -- Yes --> CYes
+  C -- No --> Dfit
+  CYes --> Dfit
+  B -- Yes --> Dfit
+  Dfit{{\"Is fit supplied?\"}}
+  DfitYes[\"Use mapply() on get_prod</br> to find</br>the product term(s), if any,</br>using fit and data\"]
+  Dfit -- Yes --> DfitYes
+  DfitNo[\"Use mapply() on get_prod</br> to find</br>the product term(s), if any,</br>using est and data\"]
+  Dfit -- No --> DfitNo
+  DfitYes --> AEnd
+  DfitNo --> AEnd
+
+  AYes[\"Use mapply() on all paths</br>to find</br>the product term(s), if any,</br>using operator\"]
+  AEnd([\"Set prods and</br>return to \'Call get_prod()\' in the main workflow\"])
+  A -- Yes --> AYes
+  AYes --> AEnd:::startend
+", height = 950, width = 800)
+```
+
+# Notes
+
+## Latent variables
+
+If all variables along a path are latent variables,
+product term(s) must be identified by their names
+because raw scores are not available.
+
+Default uses `"_x_"`. For example, `f1_x_f2`
+is the product term between `f1` and `f2`.
+
+## Extracting Point Estimates and Variance-Covariance Matrix
+
+When the point estimates or variance-covariance matrix
+of the point estimates are needed, they will be
+extracted internally using functions developed for
+the fit object, which can be a `lavaan`-class object,
+a list of the outputs from `stats::lm()`, or a
+`lavaan.mi`-class object generated by fitting a model
+to several datasets using multiple imputation.

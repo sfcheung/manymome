@@ -1,0 +1,200 @@
+---
+title: "Technical Appendix: Workflow of `do_boot()`"
+author: "Shu Fai Cheung & Sing-Hang Cheung"
+output:
+  html_document:
+    fig.align: "center"
+    toc: true
+    number_sections: false
+bibliography: references.bib
+csl: apa.csl
+---
+
+```{r echo = FALSE}
+library(DiagrammeR)
+```
+
+# Goal
+
+This technical appendix describes how `do_boot()`
+from the package
+[manymome](https://cran.r-project.org/package=manymome)
+works to generate bootstrap estimates to be used
+by other functions to form confidence intervals.
+
+# `do_boot()`
+
+```{r fig-doboot, fig.cap = "Workflow of `manymome::do_boot()`", echo = FALSE}
+mermaid("
+flowchart TD
+  classDef default fill:#EEEEFF;
+  classDef errornode fill:#FFDDDD;
+  classDef startend fill:#DDFFDD;
+  classDef mcnode fill:#FFFFDD;
+  classDef bootnode fill:#DDFFFF;
+  classDef lavnode fill:#FFDDFF;
+  classDef lmnode fill:#FFDDDD;
+  classDef subnode fill:#FFFFDD;
+
+  ZZ([\"Start\"])
+  Z{{\"How was the model fitted?\"}}
+  ZZ:::startend --> Z
+%%  Zla[\"Fitted by lavaan()\"]
+%%  Zlm[\"Fitted by lm()\"]
+%%  Z -- lm --> Zlm
+%%  Z -- lavaan --> Zla
+  Z -- lavaan --> A
+  Z -- lm --> B
+
+  subgraph lavaan [ ]
+  A{{\"Are bootstrap estimates stored?\"}}
+  AYes[[\"Call fit2boot_out()\"]]
+  ANo[[\"Call fit2boot_out_do_boot()\"]]
+  end
+
+%%  Zla --> A
+  A -- Yes --> AYes:::subnode
+  A -- No --> ANo:::subnode
+
+  subgraph lm [ ]
+  B{{\"Parallel processing?\"}}
+  BYes[[\"Call lm2boot_out_parallel()\"]]
+  BNo[[\"Call lm2boot_out()\"]]
+  end
+
+%%  Zlm --> B
+  B -- Yes --> BYes:::subnode
+  B -- No --> BNo:::subnode
+
+  C([\"Return a boot_out-class object\"])
+  AYes --> C:::startend
+  ANo --> C
+  BYes --> C
+  BNo --> C
+", height = 400, width = 800)
+```
+
+# `lavaan`
+
+## `fit2boot_out()`
+
+It retrieves stored bootstrap estimates.
+
+```{r fig-fit2boot_out, fig.cap = "Workflow of `manymome::fit2boot_out()`", echo = FALSE}
+mermaid("
+flowchart TD
+  classDef default fill:#EEEEFF;
+  classDef errornode fill:#FFDDDD;
+  classDef startend fill:#DDFFDD;
+  classDef mcnode fill:#FFFFDD;
+  classDef bootnode fill:#DDFFFF;
+  classDef lavnode fill:#FFDDFF;
+  classDef lmnode fill:#FFDDDD;
+  classDef subnode fill:#FFFFDD;
+
+  ZZ([\"Start\"])
+  ZZ:::startend --> A
+
+  A[\"boot_est <- boot2est()\"]
+  B[\"boot_implied <- boot2implied()\"]
+  B2[\"Combine boot_est and boot_implied\"]
+  C([\"Return a boot_out-class object\"])
+  A --> B
+  B --> B2
+  B2 --> C:::startend
+", height = 400)
+```
+
+## `fit2boot_out_do_boot()`
+
+```{r fig-fit2boot_out_do_boot, fig.cap = "Workflow of `manymome::fit2boot_out_do_boot()`", echo = FALSE}
+mermaid("
+flowchart TD
+  classDef default fill:#EEEEFF;
+  classDef errornode fill:#FFDDDD;
+  classDef startend fill:#DDFFDD;
+  classDef mcnode fill:#FFFFDD;
+  classDef bootnode fill:#DDFFFF;
+  classDef lavnode fill:#FFDDFF;
+  classDef lmnode fill:#FFDDDD;
+  classDef subnode fill:#FFFFDD;
+
+  ZZ([\"Start\"])
+  ZZ:::startend --> A
+
+  A[\"Call gen_boot_i() to create<br>a function, boot_i(), for doing one bootstrap replication\"]
+  B[\"Generate indices (ids) locally\"]
+  A --> B
+  C[\"Call boot_i() R times\"]
+  D[\"Keep only replications with valid values\"]
+  E([\"Return a boot_out-class object\"])
+  B --> C
+  C --> D
+  D --> E:::startend
+", height = 500)
+```
+
+# `lm`
+
+## `lm2boot_out_parallel()`
+
+```{r fig-lm2boot_out_parallel, fig.cap = "Workflow of `manymome::lm2boot_out_parallel()`", echo = FALSE}
+mermaid("
+flowchart TD
+  classDef default fill:#EEEEFF;
+  classDef errornode fill:#FFDDDD;
+  classDef startend fill:#DDFFDD;
+  classDef mcnode fill:#FFFFDD;
+  classDef bootnode fill:#DDFFFF;
+  classDef lavnode fill:#FFDDFF;
+  classDef lmnode fill:#FFDDDD;
+  classDef subnode fill:#FFFFDD;
+
+  ZZ([\"Start\"])
+  ZZ:::startend --> A
+
+  A[\"Call merge_model_frame() to reconstruct the data\"]
+  B[\"Generate indices (ids) locally\"]
+  A --> B
+  C[\"Call lm_boot2est_i() R times\"]
+  E([\"Return a boot_out-class object\"])
+  B --> C
+  C --> E:::startend
+", height = 450)
+```
+
+## `lm2boot_out()`
+
+```{r fig-lm2boot_out, fig.cap = "Workflow of `manymome::lm2boot_out()`", echo = FALSE}
+mermaid("
+flowchart TD
+  classDef default fill:#EEEEFF;
+  classDef errornode fill:#FFDDDD;
+  classDef startend fill:#DDFFDD;
+  classDef mcnode fill:#FFFFDD;
+  classDef bootnode fill:#DDFFFF;
+  classDef lavnode fill:#FFDDFF;
+  classDef lmnode fill:#FFDDDD;
+  classDef subnode fill:#FFFFDD;
+
+  ZZ([\"Start\"])
+  ZZ:::startend --> A
+
+  A[\"Call merge_model_frame() to reconstruct the data\"]
+  C[\"Call lm_boot2est_i() R times\"]
+  E([\"Return a boot_out-class object\"])
+  A --> C
+  C --> E:::startend
+", height = 380)
+```
+
+# Notes
+
+## Extracting Point Estimates
+
+When the point estimates are needed, they will be
+extracted internally using functions developed for
+the fit object, which can be a `lavaan`-class object,
+a list of the outputs from `stats::lm()`, or a
+`lavaan.mi`-class object generated by fitting a model
+to several datasets using multiple imputation.
