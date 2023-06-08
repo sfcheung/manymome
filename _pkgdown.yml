@@ -51,6 +51,12 @@ navbar:
       - text: "<Technical Appendices>"
       - text: Workflow of `get_prod()` and Friends
         href: articles/get_prod.html
+      - text: Workflow of `cond_indirect()`
+        href: articles/manymome_cond_indirect_and_friends_workflow.html
+      - text: Workflow of `do_boot()`
+        href: articles/manymome_do_boot_workflow.html
+      - text: Workflow of `do_mc()`
+        href: articles/manymome_do_mc_workflow.html
 
 # articles:
 # - title: Articles
