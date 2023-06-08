@@ -1,4 +1,4 @@
-# manymome 0.1.9.20
+# manymome 0.1.9.21
 
 - Updated badges in README.md. (0.1.9.1)
 - Updated pkgdown site. (0.1.9.2)
@@ -30,6 +30,8 @@
   articles, accessible through the `pkgdown` website of the package. (0.1.9.19)
 - Updated the documentation of functions to state that they support
   `lavaan.mi`-class objects. (0.1.9.20)
+- Fixed `factor2var()` to work (again) for a categorical variable with only two
+  levels. (0.1.9.21)
 
 # manymome 0.1.9
 
