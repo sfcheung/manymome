@@ -28,7 +28,12 @@ variables.}
 
 \item{fit}{The fit object. Currently
 only supports a
-\link[lavaan:lavaan-class]{lavaan::lavaan} object.}
+\link[lavaan:lavaan-class]{lavaan::lavaan} object.
+It can also be
+a \code{lavaan.mi} object
+returned by
+\code{\link[semTools:runMI]{semTools::runMI()}} or
+its wrapper, such as \code{\link[semTools:runMI]{semTools::sem.mi()}}.}
 
 \item{est}{The output of
 \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}. If

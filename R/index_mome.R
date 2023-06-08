@@ -70,6 +70,11 @@
 #' [lavaan::lavaan-class] object, a list
 #' of [lm()] outputs, or an object
 #' created by [lm2list()].
+#' It can also be
+#' a `lavaan.mi` object
+#' returned by
+#' [semTools::runMI()] or
+#' its wrapper, such as [semTools::sem.mi()].
 #'
 #' @param boot_ci Logical. Whether
 #' bootstrap confidence interval will be

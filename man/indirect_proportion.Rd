@@ -21,7 +21,12 @@ Cannot be \code{NULL} for this function.}
 
 \item{fit}{The fit object. Can be a
 \link[lavaan:lavaan-class]{lavaan::lavaan} object or a
-list of \code{\link[=lm]{lm()}} outputs.}
+list of \code{\link[=lm]{lm()}} outputs.
+It can also be
+a \code{lavaan.mi} object
+returned by
+\code{\link[semTools:runMI]{semTools::runMI()}} or
+its wrapper, such as \code{\link[semTools:runMI]{semTools::sem.mi()}}.}
 }
 \value{
 An \code{indirect_proportion} class object.

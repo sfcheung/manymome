@@ -21,7 +21,13 @@ gen_mc_est(fit, R = 100, seed = NULL)
 }
 \arguments{
 \item{fit}{The output of
-\code{\link[lavaan:sem]{lavaan::sem()}}. The output of
+\code{\link[lavaan:sem]{lavaan::sem()}}.
+It can also be
+a \code{lavaan.mi} object
+returned by
+\code{\link[semTools:runMI]{semTools::runMI()}} or
+its wrapper, such as \code{\link[semTools:runMI]{semTools::sem.mi()}}.
+The output of
 \code{\link[stats:lm]{stats::lm()}} is not supported.}
 
 \item{R}{The number of replications.
@@ -79,6 +85,14 @@ can then be used by
 \code{\link[=indirect_effect]{indirect_effect()}}, and
 \code{\link[=cond_indirect]{cond_indirect()}} to form
 Monte Carlo confidence intervals.
+
+It also supports a model estimated
+by multiple imputation using
+\code{\link[semTools:runMI]{semTools::runMI()}} or its wrapper,
+such as \code{\link[semTools:runMI]{semTools::sem.mi()}}.
+The pooled estimates and their
+variance-covariance matrix will be used
+to generate the Monte Carlo estimates.
 
 This approach removes the need to
 repeat Monte Carlo simulation in

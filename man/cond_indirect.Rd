@@ -118,7 +118,12 @@ from \code{x} to \code{y}.}
 
 \item{fit}{The fit object. Can be a
 \link[lavaan:lavaan-class]{lavaan::lavaan} object or a
-list of \code{\link[=lm]{lm()}} outputs.}
+list of \code{\link[=lm]{lm()}} outputs.
+It can also be
+a \code{lavaan.mi} object
+returned by
+\code{\link[semTools:runMI]{semTools::runMI()}} or
+its wrapper, such as \code{\link[semTools:runMI]{semTools::sem.mi()}}.}
 
 \item{est}{The output of
 \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}. If
@@ -413,8 +418,8 @@ effects (see \link{math_indirect})
 Compute the conditional
 effects, indirect effects, or
 conditional indirect effects in a
-structural model fitted by \code{\link[=lm]{lm()}} or
-\code{\link[lavaan:sem]{lavaan::sem()}}.
+structural model fitted by \code{\link[=lm]{lm()}},
+\code{\link[lavaan:sem]{lavaan::sem()}}, or \code{\link[semTools:runMI]{semTools::sem.mi()}}.
 }
 \details{
 For a model with a mediation path
@@ -498,7 +503,7 @@ argument of
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} and
 \code{\link[=cond_indirect]{cond_indirect()}}.
 \item For bootstrapping,
-If \code{\link[lavaan:sem]{lavaan::sem()}} is used to fit
+if \code{\link[lavaan:sem]{lavaan::sem()}} is used to fit
 a model and \code{se = "boot"} is used,
 \code{\link[=do_boot]{do_boot()}} can extract them to
 generate a \code{boot_out}-class object

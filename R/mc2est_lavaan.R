@@ -51,6 +51,11 @@
 #' @param fit The fit object. This
 #' function only supports a
 #' [lavaan::lavaan-class] object.
+#' It can also be
+#' a `lavaan.mi` object
+#' returned by
+#' [semTools::runMI()] or
+#' its wrapper, such as [semTools::sem.mi()].
 #'
 #' @param progress Logical. Display
 #' progress or not. Default is `TRUE`.

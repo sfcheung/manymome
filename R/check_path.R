@@ -11,6 +11,11 @@
 #' in a model. It can check models in a
 #' [lavaan::lavaan-class] object or a
 #' list of outputs of [lm()].
+#' It also support
+#' `lavaan.mi` objects
+#' returned by
+#' [semTools::runMI()] or
+#' its wrapper, such as [semTools::sem.mi()].
 #'
 #' For example, in the ql
 #' in [lavaan] syntax
@@ -36,6 +41,11 @@
 #' only supports a
 #' [lavaan::lavaan-class] object or a
 #' list of outputs of [lm()].
+#' It can also be
+#' a `lavaan.mi` object
+#' returned by
+#' [semTools::runMI()] or
+#' its wrapper, such as [semTools::sem.mi()].
 #'
 #' @param x Character. The name of
 #' predictor at the start of the path.

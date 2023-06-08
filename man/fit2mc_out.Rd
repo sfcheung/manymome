@@ -10,7 +10,12 @@ fit2mc_out(fit, progress = TRUE)
 \arguments{
 \item{fit}{The fit object. This
 function only supports a
-\link[lavaan:lavaan-class]{lavaan::lavaan} object.}
+\link[lavaan:lavaan-class]{lavaan::lavaan} object.
+It can also be
+a \code{lavaan.mi} object
+returned by
+\code{\link[semTools:runMI]{semTools::runMI()}} or
+its wrapper, such as \code{\link[semTools:runMI]{semTools::sem.mi()}}.}
 
 \item{progress}{Logical. Display
 progress or not. Default is \code{TRUE}.}
