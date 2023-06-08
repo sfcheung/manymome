@@ -20,7 +20,7 @@ the coefficient(s) of the term(s)."><meta property="og:image" content="https://s
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.19</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.10</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -127,7 +127,12 @@ variables.</p></dd>
 <dt>fit</dt>
 <dd><p>The fit object. Currently
 only supports a
-<a href="https://rdrr.io/pkg/lavaan/man/lavaan-class.html" class="external-link">lavaan::lavaan</a> object.</p></dd>
+<a href="https://rdrr.io/pkg/lavaan/man/lavaan-class.html" class="external-link">lavaan::lavaan</a> object.
+It can also be
+a <code>lavaan.mi</code> object
+returned by
+<code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::runMI()</a></code> or
+its wrapper, such as <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::sem.mi()</a></code>.</p></dd>
 
 
 <dt>est</dt>

@@ -14,7 +14,7 @@ exists in a model."><meta property="og:image" content="https://sfcheung.github.i
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.19</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.10</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -115,7 +115,12 @@ default, the path goes from <code>x</code> to
 <dd><p>The fit object. Currently
 only supports a
 <a href="https://rdrr.io/pkg/lavaan/man/lavaan-class.html" class="external-link">lavaan::lavaan</a> object or a
-list of outputs of <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.</p></dd>
+list of outputs of <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.
+It can also be
+a <code>lavaan.mi</code> object
+returned by
+<code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::runMI()</a></code> or
+its wrapper, such as <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::sem.mi()</a></code>.</p></dd>
 
 
 <dt>est</dt>
@@ -142,7 +147,12 @@ outcome (<code>y</code>), and optionally a
 sequence of mediators (<code>m</code>), exists
 in a model. It can check models in a
 <a href="https://rdrr.io/pkg/lavaan/man/lavaan-class.html" class="external-link">lavaan::lavaan</a> object or a
-list of outputs of <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.</p>
+list of outputs of <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.
+It also support
+<code>lavaan.mi</code> objects
+returned by
+<code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::runMI()</a></code> or
+its wrapper, such as <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::sem.mi()</a></code>.</p>
 <p>For example, in the ql
 in <a href="https://rdrr.io/pkg/lavaan/man/lavaan.html" class="external-link">lavaan</a> syntax</p>
 <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="sc">~</span> x</span>

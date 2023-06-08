@@ -22,7 +22,7 @@ cond_indirect(),"><meta property="og:image" content="https://sfcheung.github.io/
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.19</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.10</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -115,7 +115,13 @@ estimates to be used by
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>fit</dt>
 <dd><p>The output of
-<code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>. The output of
+<code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>.
+It can also be
+a <code>lavaan.mi</code> object
+returned by
+<code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::runMI()</a></code> or
+its wrapper, such as <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::sem.mi()</a></code>.
+The output of
 <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">stats::lm()</a></code> is not supported.</p></dd>
 
 
@@ -185,6 +191,13 @@ can then be used by
 <code><a href="cond_indirect.html">indirect_effect()</a></code>, and
 <code><a href="cond_indirect.html">cond_indirect()</a></code> to form
 Monte Carlo confidence intervals.</p>
+<p>It also supports a model estimated
+by multiple imputation using
+<code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::runMI()</a></code> or its wrapper,
+such as <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::sem.mi()</a></code>.
+The pooled estimates and their
+variance-covariance matrix will be used
+to generate the Monte Carlo estimates.</p>
 <p>This approach removes the need to
 repeat Monte Carlo simulation in
 each call to

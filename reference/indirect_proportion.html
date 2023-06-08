@@ -12,7 +12,7 @@ of effect mediated along a pathway."><meta property="og:image" content="https://
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.19</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.10</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -109,7 +109,12 @@ Cannot be <code>NULL</code> for this function.</p></dd>
 <dt>fit</dt>
 <dd><p>The fit object. Can be a
 <a href="https://rdrr.io/pkg/lavaan/man/lavaan-class.html" class="external-link">lavaan::lavaan</a> object or a
-list of <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> outputs.</p></dd>
+list of <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> outputs.
+It can also be
+a <code>lavaan.mi</code> object
+returned by
+<code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::runMI()</a></code> or
+its wrapper, such as <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::sem.mi()</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

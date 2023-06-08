@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.19</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.10</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,28 +74,56 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.9.19" id="manymome-01919">manymome 0.1.9.19<a class="anchor" aria-label="anchor" href="#manymome-01919"></a></h2>
-<ul><li>Updated badges in README.md. (0.1.9.1)</li>
-<li>Updated pkgdown site. (0.1.9.2)</li>
-<li>Added support for Monte Carlo confidence intervals. (0.1.9.3 to 0.1.9.4)</li>
+<h2 class="pkg-version" data-toc-text="0.1.10" id="manymome-0110">manymome 0.1.10<a class="anchor" aria-label="anchor" href="#manymome-0110"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-1-10">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-10"></a></h3>
+<div class="section level4">
+<h4 id="monte-carlo-confidence-intervals-0-1-10">Monte Carlo Confidence Intervals<a class="anchor" aria-label="anchor" href="#monte-carlo-confidence-intervals-0-1-10"></a></h4>
+<ul><li>Added support for Monte Carlo confidence intervals. (0.1.9.3 to 0.1.9.4)</li>
 <li>Updated some vignettes for Monte Carlo confidence intervals. (0.1.9.5)</li>
+<li>Please refer to <a href="https://sfcheung.github.io/manymome/articles/do_mc.html">this article</a> for an illustration on forming Monte Carlo confidence interval.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="multiple-imputation-0-1-10">Multiple Imputation<a class="anchor" aria-label="anchor" href="#multiple-imputation-0-1-10"></a></h4>
+<ul><li>Added support for models fitted by <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">runMI()</a></code> or <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">sem.mi()</a></code> from the <code>semTools</code> package using multiple imputation. (0.1.9.8-0.1.9.10)</li>
+<li>Please refer to <a href="https://sfcheung.github.io/manymome/articles/do_mc_lavaan_mi.html">this article</a> for an illustration on forming Monte Carlo confidence interval.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="can-report-p-value-if-requested-0-1-10">Can report <em>p</em>-value (if requested)<a class="anchor" aria-label="anchor" href="#can-report-p-value-if-requested-0-1-10"></a></h4>
+<ul><li>Some print methods support printing asymmetric bootstrap <em>p</em>-values using the method presented in Asparouhov and Muthén (2021) if bootstrapping confidence interval is requested. By default, <em>p</em>-values are not printed. (0.1.9.7)</li>
+</ul></div>
+<div class="section level4">
+<h4 id="report-proportion-of-effect-mediated-0-1-10">Report proportion of effect mediated<a class="anchor" aria-label="anchor" href="#report-proportion-of-effect-mediated-0-1-10"></a></h4>
+<ul><li>Added <code><a href="../reference/indirect_proportion.html">indirect_proportion()</a></code> and two methods for its output. (0.1.9.12)</li>
+</ul></div>
+<div class="section level4">
+<h4 id="others-0-1-10">Others<a class="anchor" aria-label="anchor" href="#others-0-1-10"></a></h4>
+<ul><li>Exported <code><a href="../reference/get_prod.html">get_prod()</a></code> and added <a href="https://sfcheung.github.io/manymome/articles/get_prod.html">an article</a> on its workflow. (0.1.9.13).</li>
+<li>Bootstrapping can handle the <code>fixed.x</code> argument as <code>lavaan</code> does. (0.1.9.17)</li>
+</ul></div>
+</div>
+<div class="section level3">
+<h3 id="bug-fixes-0-1-10">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-10"></a></h3>
+<ul><li>Fixed <code><a href="../reference/factor2var.html">factor2var()</a></code> to work (again) for a categorical variable with only two levels. (0.1.9.21)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="miscellaneous-0-1-10">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-1-10"></a></h3>
+<ul><li>Updated badges in README.md. (0.1.9.1)</li>
+<li>Updated <code>pkgdown</code> site. (0.1.9.2)</li>
 <li>Used a more reliable test for Monte Carlo CIs. (0.1.9.6)</li>
-<li>Fixed an error in pkgdown site. (0.1.9.6)</li>
 <li>Updated the logo for readability. (0.1.9.6)</li>
-<li>Some print methods support printing asymmetric bootstrap <em>p</em>-values using the method presented in Asparouhov and Muthén (2021) if bootstrapping confidence interval is requested. By default, <em>p</em>-values are not printed. (0.1.9.7)</li>
-<li>Added initial support for models fitted by <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">runMI()</a></code> or <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">sem.mi()</a></code> from the <code>semTools</code> package using multiple imputation. (0.1.9.8-0.1.9.10)</li>
+<li>Fixed an error in <code>pkgdown</code> site. (0.1.9.6)</li>
 <li>Added progress bars to <code><a href="../reference/do_mc.html">do_mc()</a></code>. (0.1.9.11)</li>
-<li>Added <code><a href="../reference/indirect_proportion.html">indirect_proportion()</a></code> and two methods for its output. (0.1.9.12)</li>
-<li>Exported <code><a href="../reference/get_prod.html">get_prod()</a></code> and added an article on its workflow. (0.1.9.13)</li>
 <li>Added <code><a href="../reference/print.mc_out.html">print.mc_out()</a></code>, the print-method for <code>mc_out</code>-class objects. (0.1.9.14)</li>
 <li>Updated vignettes with package name. (0.1.9.15)</li>
 <li>Fixed typos in NEWS.md. (0.1.9.15)</li>
-<li>Updated pkgdown GitHub action for using newer version of mermaid. (0.1.9.15)</li>
-<li>Updated pkgdown website to use the new logo and color scheme. (0.1.9.16)</li>
-<li>Bootstrapping can handle the <code>fixed.x</code> argument as <code>lavaan</code> does. (0.1.9.17)</li>
+<li>Updated <code>pkgdown</code> GitHub action for using newer version of mermaid. (0.1.9.15)</li>
+<li>Updated <code>pkgdown</code> website to use the new logo and color scheme. (0.1.9.16)</li>
 <li>Modified more tests to accommodate a change in <code>lavaan</code> on handling random seed. (0.1.9.18)</li>
 <li>No change to the main code. Added a few technical appendices as <code>pkgdown</code> articles, accessible through the <code>pkgdown</code> website of the package. (0.1.9.19)</li>
+<li>Updated the documentation of functions to state that they support <code>lavaan.mi</code>-class objects. (0.1.9.20)</li>
 </ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.9" id="manymome-019">manymome 0.1.9<a class="anchor" aria-label="anchor" href="#manymome-019"></a></h2><p class="text-muted">CRAN release: 2023-01-06</p>
 <div class="section level3">
