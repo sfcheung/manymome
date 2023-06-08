@@ -1,4 +1,4 @@
-# manymome 0.1.9.19
+# manymome 0.1.9.20
 
 - Updated badges in README.md. (0.1.9.1)
 - Updated pkgdown site. (0.1.9.2)
@@ -28,6 +28,8 @@
   on handling random seed. (0.1.9.18)
 - No change to the main code. Added a few technical appendices as `pkgdown`
   articles, accessible through the `pkgdown` website of the package. (0.1.9.19)
+- Updated the documentation of functions to state that they support
+  `lavaan.mi`-class objects. (0.1.9.20)
 
 # manymome 0.1.9
 
