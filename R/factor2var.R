@@ -58,12 +58,15 @@ factor2var <- function(x_value,
                                 if (is.na(x)) {
                                     xx <- mna
                                   } else {
-                                    xx <- m[x, ]
+                                    xx <- m[x, , drop = FALSE]
                                   }
                                 xx
                               }))
     if (!is.matrix(out)) {
         out <- matrix(out, ncol = 1)
+      }
+    if ((mj == 1) && (nrow(out) == 1)) {
+        out <- t(out)
       }
     colnames(out) <- colnames(m)
     colnames(out) <- paste0(prefix, colnames(out))
