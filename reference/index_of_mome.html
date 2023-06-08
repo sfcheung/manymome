@@ -20,7 +20,7 @@ proposed by Hayes (2015, 2018)."><meta property="og:image" content="https://sfch
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.18</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9.19</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,6 +52,9 @@ proposed by Hayes (2015, 2018)."><meta property="og:image" content="https://sfch
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>&lt;Technical Appendices&gt;</h6>
     <a class="dropdown-item" href="../articles/get_prod.html">Workflow of `get_prod()` and Friends</a>
+    <a class="dropdown-item" href="../articles/manymome_cond_indirect_and_friends_workflow.html">Workflow of `cond_indirect()`</a>
+    <a class="dropdown-item" href="../articles/manymome_do_boot_workflow.html">Workflow of `do_boot()`</a>
+    <a class="dropdown-item" href="../articles/manymome_do_mc_workflow.html">Workflow of `do_mc()`</a>
   </div>
 </li>
 <li class="active nav-item">
@@ -455,10 +458,10 @@ mediation: Quantification, inference, and interpretation.
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">out_momome</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      y~m1~x </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -0.01659799 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.01659801 </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">est</span><span class="op">[</span><span class="fl">32</span>, <span class="op">]</span>, nd <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           lhs op   rhs      label         est</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32 ind_momome := d1*d4 ind_momome -0.01659799</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32 ind_momome := d1*d4 ind_momome -0.01659801</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
