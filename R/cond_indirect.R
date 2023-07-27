@@ -610,6 +610,7 @@ cond_indirect <- function(x,
                                      format = "f"), "%")
         out0$mc_ci <- boot_ci1
         out0$level <- level
+        out0$mc_se <- stats::sd(out0$mc_indirect, na.rm = TRUE)
         if (save_mc_out) {
             out0$mc_out <- mc_out
           } else {
@@ -646,6 +647,7 @@ cond_indirect <- function(x,
         out0$boot_ci <- boot_ci1
         out0$level <- level
         out0$boot_p <- est2p(out0$boot_indirect)
+        out0$boot_se <- stats::sd(out0$boot_indirect)
         if (save_boot_out) {
             out0$boot_out <- boot_out
           } else {

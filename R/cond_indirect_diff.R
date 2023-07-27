@@ -202,9 +202,11 @@ cond_indirect_diff <- function(output,
         names(mc_diff_ci) <- paste0(formatC(c(100 * (1 - level) / 2,
                                       100 * (1 - (1 - level) / 2)), 2,
                                       format = "f"), "%")
+        mc_diff_se <- stats::sd(mc_diff, na.rm = TRUE)
       } else {
         mc_diff <- NA
         mc_diff_ci <- c(NA, NA)
+        mc_diff_se <- NA
       }
     if (has_boot) {
         boot_diff <- boot_i_to - boot_i_from
@@ -220,20 +222,26 @@ cond_indirect_diff <- function(output,
                                       100 * (1 - (1 - level) / 2)), 2,
                                       format = "f"), "%")
         boot_diff_p <- est2p(boot_diff)
+        boot_diff_se <- stats::sd(boot_diff, na.rm = TRUE)
       } else {
         boot_diff <- NA
         boot_diff_ci <- c(NA, NA)
         boot_diff_p <- NA
+        boot_diff_se <- NA
       }
     wlevels <- attr(output, "wlevels")
     wlevels_from <- wlevels[from, , drop = FALSE]
     wlevels_to <- wlevels[to, , drop = FALSE]
     out_diff_ci <- c(NA, NA)
+    out_diff_se <- NA
     if (has_mc) out_diff_ci <- mc_diff_ci
     if (has_boot) out_diff_ci <- boot_diff_ci
+    if (has_mc) out_diff_se <- mc_diff_se
+    if (has_boot) out_diff_se <- boot_diff_se
     out <- list(index = effect_diff,
                 ci = out_diff_ci,
                 pvalue = boot_diff_p,
+                se = out_diff_se,
                 level = level,
                 from = wlevels_from,
                 to = wlevels_to,
