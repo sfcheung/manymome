@@ -113,6 +113,14 @@ cond_indirect_effects_se <- function(cond_indirect_effects_out) {
     return(cond_indirect_effects_out)
   }
 
+extract_se_cond_indirect_effects <- function(cond_indirect_effects_out) {
+    tmp <- attr(cond_indirect_effects_out, "full_output")
+    if (!is.null(tmp[[1]]$boot_ci)) se_name <- "boot_se"
+    if (!is.null(tmp[[1]]$mc_ci)) se_name <- "mc_se"
+    se <- sapply(tmp, function(x) x[[se_name]])
+    se
+  }
+
 # From vignette "manymome"
 
 dat <- data_med_mod_ab
@@ -206,10 +214,23 @@ out_momome_mc <- index_of_momome(x = "x",
                               mc_ci = TRUE,
                               mc_out = fit_mc)
 
-print_cond_indirect_effects_se(out_cond_boot)
+tmp <- print_cond_indirect_effects_se(out_cond_boot)
+
 print_cond_indirect_effects_se(out_cond_mc)
 print_cond_indirect_effects_se(out_cond_stdxy_boot)
 print_cond_indirect_effects_se(out_cond_stdxy_mc)
+
+test_that("From vignette", {
+    expect_equal(unname(extract_se_cond_indirect_effects(out_cond_boot)),
+                 print_cond_indirect_effects_se(out_cond_boot)$SE)
+    expect_equal(unname(extract_se_cond_indirect_effects(out_cond_mc)),
+                 print_cond_indirect_effects_se(out_cond_mc)$SE)
+    expect_equal(unname(extract_se_cond_indirect_effects(out_cond_stdxy_boot)),
+                 print_cond_indirect_effects_se(out_cond_stdxy_boot)$SE)
+    expect_equal(unname(extract_se_cond_indirect_effects(out_cond_stdxy_mc)),
+                 print_cond_indirect_effects_se(out_cond_stdxy_mc)$SE)
+    # TODO: index_momome
+  })
 
 # Moderation Mediation
 
@@ -251,6 +272,10 @@ out_mome_mc <- index_of_mome(x = "x",
                           fit = fit2,
                           mc_ci = TRUE,
                           mc_out = fit2_mc)
+
+test_that("index_of_mome", {
+    # TODO: index_mome
+  })
 
 # Mediation Only
 
@@ -351,3 +376,18 @@ print_indirect_se(out_med_stdxy_boot)
 print_indirect_se(out_med_stdxy_mc)
 print_indirect_se(total_effect_boot)
 print_indirect_se(total_effect_mc)
+
+test_that("mediation only", {
+    expect_equal(out_med_boot$boot_se,
+                 indirect_se(out_med_boot)$boot_se)
+    expect_equal(out_med_mc$mc_se,
+                 indirect_se(out_med_mc)$mc_se)
+    expect_equal(out_med_stdxy_boot$boot_se,
+                 indirect_se(out_med_stdxy_boot)$boot_se)
+    expect_equal(out_med_stdxy_mc$mc_se,
+                 indirect_se(out_med_stdxy_mc)$mc_se)
+    expect_equal(total_effect_boot$boot_se,
+                 indirect_se(total_effect_boot)$boot_se)
+    expect_equal(total_effect_mc$mc_se,
+                 indirect_se(total_effect_mc)$mc_se)
+  })
