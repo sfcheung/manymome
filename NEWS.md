@@ -1,3 +1,9 @@
+# manymome 0.1.11.1
+
+## Miscellaneous
+
+- Customized `linters`. (0.1.11.1)
+
 # manymome 0.1.10
 
 ## New Features
