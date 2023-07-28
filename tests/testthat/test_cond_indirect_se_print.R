@@ -342,6 +342,8 @@ print(out_med_stdxy_mc, se = TRUE)
 print(out_x_m1_y_boot, se = TRUE, pvalue = TRUE)
 print(out_x_m2_y_boot, se = TRUE, pvalue = TRUE)
 print(out_x_direct_boot, se = TRUE, pvalue = TRUE)
+print(total_effect_boot, se = TRUE)
+print(total_effect_boot, se = TRUE, pvalue = TRUE)
 print(total_effect_mc, se = TRUE)
 
 # List of indirect effects
