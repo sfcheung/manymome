@@ -221,6 +221,12 @@ tmp <- print_cond_indirect_effects_se(out_cond_boot)
 print_cond_indirect_effects_se(out_cond_mc)
 print_cond_indirect_effects_se(out_cond_stdxy_boot)
 print_cond_indirect_effects_se(out_cond_stdxy_mc)
+print(out_cond_mc, se = TRUE)
+print(out_cond_stdxy_boot, se = TRUE)
+print(out_cond_stdxy_mc, se = TRUE)
+print(out_cond_mc, se = TRUE, pvalue = TRUE)
+print(out_cond_stdxy_boot, se = TRUE, pvalue = TRUE)
+print(out_cond_stdxy_mc, se = TRUE, pvalue = TRUE)
 
 test_that("From vignette", {
     expect_equal(unname(extract_se_cond_indirect_effects(out_cond_boot)),
