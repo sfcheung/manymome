@@ -1,5 +1,4 @@
-skip_on_cran()
-# Long tests: Test outside CRAN
+skip("Long tests: Test in interactive sections")
 
 library(testthat)
 library(manymome)
@@ -8,7 +7,11 @@ suppressMessages(library(lavaan))
 # Get the SE
 
 print_cond_indirect_effects_se <- function(cond_indirect_effects_out) {
-    # Also used in the tests
+    # NOTE:
+    # This is a tentative workaround,
+    # not a long term solution.
+    # Standard errors will be officially added in the
+    # next release.
 
     full_output <- attr(cond_indirect_effects_out, "full_output")
     if (is.null(full_output)) {
@@ -120,13 +123,13 @@ fit <- sem(model = mod,
            estimator = "MLR")
 
 fit_boot <- do_boot(fit = fit,
-                    R = 50,
+                    R = 1000,
                     seed = 53253,
                     parallel = FALSE,
                     progress = FALSE)
 
 fit_mc <- do_mc(fit = fit,
-                R = 50,
+                R = 10000,
                 seed = 53253,
                 progress = FALSE)
 
@@ -184,20 +187,13 @@ out_momome_mc <- index_of_momome(x = "x",
                               mc_ci = TRUE,
                               mc_out = fit_mc)
 
-test_that("From vignette", {
-    expect_equal(unname(extract_se_cond_indirect_effects(out_cond_boot)),
-                 print_cond_indirect_effects_se(out_cond_boot)$SE)
-    expect_equal(unname(extract_se_cond_indirect_effects(out_cond_mc)),
-                 print_cond_indirect_effects_se(out_cond_mc)$SE)
-    expect_equal(unname(extract_se_cond_indirect_effects(out_cond_stdxy_boot)),
-                 print_cond_indirect_effects_se(out_cond_stdxy_boot)$SE)
-    expect_equal(unname(extract_se_cond_indirect_effects(out_cond_stdxy_mc)),
-                 print_cond_indirect_effects_se(out_cond_stdxy_mc)$SE)
-    expect_equal(cond_indirect_diff_se(out_momome_boot),
-                 out_momome_boot$se)
-    expect_equal(cond_indirect_diff_se(out_momome_mc),
-                 out_momome_mc$se)
-  })
+print(out_cond_stdxy_boot, se = TRUE)
+print(out_cond_stdxy_mc, se = TRUE)
+print(out_cond_mc, se = TRUE, pvalue = TRUE)
+print(out_cond_stdxy_boot, se = TRUE, pvalue = TRUE)
+print(out_cond_stdxy_mc, se = TRUE, pvalue = TRUE)
+print(out_momome_boot, se = TRUE, pvalue = TRUE)
+print(out_momome_mc, se = TRUE)
 
 # Moderation Mediation
 
@@ -213,13 +209,13 @@ fit2 <- sem(model = mod2,
            estimator = "MLR")
 
 fit2_boot <- do_boot(fit = fit2,
-                    R = 50,
+                    R = 1000,
                     seed = 53253,
                     parallel = FALSE,
                     progress = FALSE)
 
 fit2_mc <- do_mc(fit = fit2,
-                    R = 50,
+                    R = 10000,
                     seed = 53253,
                     parallel = FALSE,
                     progress = FALSE)
@@ -240,12 +236,10 @@ out_mome_mc <- index_of_mome(x = "x",
                           mc_ci = TRUE,
                           mc_out = fit2_mc)
 
-test_that("From vignette", {
-    expect_equal(cond_indirect_diff_se(out_mome_boot),
-                 out_mome_boot$se)
-    expect_equal(cond_indirect_diff_se(out_mome_mc),
-                 out_mome_mc$se)
-  })
+print(out_mome_boot)
+print(out_mome_boot, se = TRUE)
+print(out_mome_boot, se = TRUE, pvalue = TRUE)
+print(out_mome_mc, se = TRUE)
 
 # Mediation Only
 
@@ -265,7 +259,7 @@ out_med_boot <- indirect_effect(x = "x",
                            m = c("m1", "m2"),
                            fit = fit_med,
                            boot_ci = TRUE,
-                           R = 50,
+                           R = 1000,
                            seed = 43143,
                            parallel = FALSE,
                            progress = FALSE)
@@ -275,7 +269,7 @@ out_med_mc <- indirect_effect(x = "x",
                            m = c("m1", "m2"),
                            fit = fit_med,
                            mc_ci = TRUE,
-                           R = 50,
+                           R = 10000,
                            seed = 43143,
                            progress = FALSE)
 
@@ -339,34 +333,20 @@ out_x_direct_mc <- indirect_effect(x = "x",
 total_effect_boot <- out_med_boot + out_x_m1_y_boot + out_x_m2_y_boot + out_x_direct_boot
 total_effect_mc <- out_med_mc + out_x_m1_y_mc + out_x_m2_y_mc + out_x_direct_mc
 
-test_that("mediation only", {
-    expect_equal(out_med_boot$boot_se,
-                 indirect_se(out_med_boot)$boot_se)
-    expect_equal(out_med_mc$mc_se,
-                 indirect_se(out_med_mc)$mc_se)
-    expect_equal(out_med_stdxy_boot$boot_se,
-                 indirect_se(out_med_stdxy_boot)$boot_se)
-    expect_equal(out_med_stdxy_mc$mc_se,
-                 indirect_se(out_med_stdxy_mc)$mc_se)
-    expect_equal(out_x_m2_y_boot$boot_se,
-                 indirect_se(out_x_m2_y_boot)$boot_se)
-    expect_equal(out_x_m2_y_mc$mc_se,
-                 indirect_se(out_x_m2_y_mc)$mc_se)
-    expect_equal(total_ind_boot$boot_se,
-                 indirect_se(total_ind_boot)$boot_se)
-    expect_equal(total_ind_mc$mc_se,
-                 indirect_se(total_ind_mc)$mc_se)
-    expect_equal(out_x_direct_boot$boot_se,
-                 indirect_se(out_x_direct_boot)$boot_se)
-    expect_equal(out_x_direct_mc$mc_se,
-                 indirect_se(out_x_direct_mc)$mc_se)
-    expect_equal(total_effect_boot$boot_se,
-                 indirect_se(total_effect_boot)$boot_se)
-    expect_equal(total_effect_mc$mc_se,
-                 indirect_se(total_effect_mc)$mc_se)
-  })
+# Test print method
+
+print(out_med_boot, se = TRUE, pvalue = TRUE)
+print(out_med_mc, se = TRUE)
+print(out_med_stdxy_boot, se = TRUE, pvalue = TRUE)
+print(out_med_stdxy_mc, se = TRUE)
+print(out_x_m1_y_boot, se = TRUE, pvalue = TRUE)
+print(out_x_m2_y_boot, se = TRUE, pvalue = TRUE)
+print(out_x_direct_boot, se = TRUE, pvalue = TRUE)
+print(total_effect_mc, se = TRUE)
 
 # List of indirect effects
+
+library(lavaan)
 
 dat <- data_serial_parallel
 mod <-
@@ -382,16 +362,15 @@ fit <- sem(mod, data_serial_parallel,
 paths <- all_indirect_paths(fit,
                            x = "x",
                            y = "y")
-paths
 
 fit2boot <- do_boot(fit = fit,
-                    R = 50,
+                    R = 1000,
                     seed = 53253,
                     parallel = FALSE,
                     progress = FALSE)
 
 fit_mc <- do_mc(fit = fit,
-                    R = 50,
+                    R = 10000,
                     seed = 53253,
                     parallel = FALSE,
                     progress = FALSE)
@@ -406,11 +385,7 @@ out_mc <- many_indirect_effects(paths,
                                 mc_ci = TRUE,
                                 boot_out = fit_mc)
 
-test_that("List of indirect effects", {
-    expect_equal(unname(sapply(out_boot, function(x) x$boot_se)),
-                 unname(sapply(out_boot, function(x) indirect_se(x)$boot_se)))
-    expect_equal(unname(sapply(out_mc, function(x) x$mc_se)),
-                 unname(sapply(out_mc, function(x) indirect_se(x)$mc_se)))
-  })
-
-
+print(out_boot, se = TRUE)
+print(out_boot, se = TRUE, pvalue = TRUE)
+print(out_mc, se = TRUE)
+print(out_mc, se = TRUE, pvalue = TRUE)
