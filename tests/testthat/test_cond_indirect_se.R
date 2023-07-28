@@ -152,7 +152,7 @@ fit <- sem(model = mod,
            estimator = "MLR")
 
 fit_boot <- do_boot(fit = fit,
-                    R = 50,
+                    R = 1000,
                     seed = 53253,
                     parallel = FALSE,
                     progress = FALSE)
@@ -227,6 +227,8 @@ print(out_cond_stdxy_mc, se = TRUE)
 print(out_cond_mc, se = TRUE, pvalue = TRUE)
 print(out_cond_stdxy_boot, se = TRUE, pvalue = TRUE)
 print(out_cond_stdxy_mc, se = TRUE, pvalue = TRUE)
+print(out_momome_boot, se = TRUE, pvalue = TRUE)
+print(out_momome_mc, se = TRUE)
 
 test_that("From vignette", {
     expect_equal(unname(extract_se_cond_indirect_effects(out_cond_boot)),
@@ -237,7 +239,6 @@ test_that("From vignette", {
                  print_cond_indirect_effects_se(out_cond_stdxy_boot)$SE)
     expect_equal(unname(extract_se_cond_indirect_effects(out_cond_stdxy_mc)),
                  print_cond_indirect_effects_se(out_cond_stdxy_mc)$SE)
-    # TODO: index_momome
   })
 
 # Moderation Mediation
@@ -254,7 +255,7 @@ fit2 <- sem(model = mod2,
            estimator = "MLR")
 
 fit2_boot <- do_boot(fit = fit2,
-                    R = 50,
+                    R = 1000,
                     seed = 53253,
                     parallel = FALSE,
                     progress = FALSE)
@@ -281,9 +282,10 @@ out_mome_mc <- index_of_mome(x = "x",
                           mc_ci = TRUE,
                           mc_out = fit2_mc)
 
-test_that("index_of_mome", {
-    # TODO: index_mome
-  })
+print(out_mome_boot)
+print(out_mome_boot, se = TRUE)
+print(out_mome_boot, se = TRUE, pvalue = TRUE)
+print(out_mome_mc, se = TRUE)
 
 # Mediation Only
 

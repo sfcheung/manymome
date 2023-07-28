@@ -300,6 +300,15 @@ cond_indirect_diff <- function(output,
 #' places to display for the *p*-value.
 #' Default is 3.
 #'
+#' @param se Logical. If `TRUE` and
+#' confidence intervals are available,
+#' the standard errors of the estimates
+#' are also printed. They are simply the
+#' standard deviations of the bootstrap
+#' estimates or Monte Carlo simulated
+#' values, depending on the method used
+#' to form the confidence intervals.
+#'
 #' @param ... Optional arguments.
 #' Ignored.
 #'
@@ -316,6 +325,7 @@ print.cond_indirect_diff <- function(x,
                                      digits = 3,
                                      pvalue = FALSE,
                                      pvalue_digits = 3,
+                                     se = FALSE,
                                      ...) {
     full_output_attr <- attr(x$output, "full_output")[[1]]
     print(x$output, digits = digits, annotation = FALSE, ...)
@@ -372,6 +382,13 @@ print.cond_indirect_diff <- function(x,
                                        digits = pvalue_digits,
                                        format = "f")
           }
+        if ((!identical(NA, x$boot_diff) || !identical(NA, x$mc_diff)) &&
+            !is.na(x$se) &&
+            se) {
+            index_df$SE <- formatC(x$se,
+                                   digits = digits,
+                                   format = "f")
+          }
       }
     if (!is.null(x_type)) {
         rownames(index_df) <- "Index"
@@ -395,6 +412,11 @@ print.cond_indirect_diff <- function(x,
         if (!identical(NA, x$boot_diff) && !is.na(x$pvalue) &&
             pvalue) {
             cat(" - P-value is asymmetric bootstrap p-value.\n", sep = "")
+          }
+        if ((!identical(NA, x$boot_diff) || !identical(NA, x$mc_diff)) &&
+            !is.na(x$se) &&
+            se) {
+            cat(" - [SE]: Standard error.\n", sep = "")
           }
       }
     if (full_output_attr$standardized_x) {
