@@ -410,3 +410,52 @@ print(out_med_stdxy_boot, se = TRUE)
 print(out_med_stdxy_mc, se = TRUE)
 print(total_effect_boot, se = TRUE)
 print(total_effect_mc, se = TRUE)
+
+# List of indirect effects
+
+library(lavaan)
+
+dat <- data_serial_parallel
+mod <-
+"
+m11 ~ x + c1 + c2
+m12 ~ m11 + x + c1 + c2
+m2 ~ x + c1 + c2
+y ~ m12 + m2 + m11 + x + c1 + c2
+"
+fit <- sem(mod, data_serial_parallel,
+           fixed.x = FALSE)
+# All indirect paths from x to y
+paths <- all_indirect_paths(fit,
+                           x = "x",
+                           y = "y")
+paths
+
+fit2boot <- do_boot(fit = fit,
+                    R = 1000,
+                    seed = 53253,
+                    parallel = FALSE,
+                    progress = FALSE)
+
+fit_mc <- do_mc(fit = fit,
+                    R = 100,
+                    seed = 53253,
+                    parallel = FALSE,
+                    progress = FALSE)
+
+# Indirect effect estimates
+out_boot <- many_indirect_effects(paths,
+                                  fit = fit,
+                                  boot_ci = TRUE,
+                                  boot_out = fit2boot)
+out_mc <- many_indirect_effects(paths,
+                                fit = fit,
+                                mc_ci = TRUE,
+                                boot_out = fit_mc)
+
+out_boot
+out_mc
+print(out_boot, se = TRUE)
+print(out_boot, se = TRUE, pvalue = TRUE)
+print(out_mc, se = TRUE)
+print(out_mc, se = TRUE, pvalue = TRUE)
