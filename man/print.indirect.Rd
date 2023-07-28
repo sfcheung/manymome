@@ -5,7 +5,7 @@
 \title{Print an 'indirect' Class
 Object}
 \usage{
-\method{print}{indirect}(x, digits = 3, pvalue = FALSE, pvalue_digits = 3, ...)
+\method{print}{indirect}(x, digits = 3, pvalue = FALSE, pvalue_digits = 3, se = FALSE, ...)
 }
 \arguments{
 \item{x}{The output of
@@ -23,6 +23,15 @@ available.}
 \item{pvalue_digits}{Number of decimal
 places to display for the \emph{p}-value.
 Default is 3.}
+
+\item{se}{Logical. If \code{TRUE} and
+confidence interval is available, the
+standard error of the estimate is
+also printed. This is simply the
+standard deviation of the bootstrap
+estimates or Monte Carlo simulated
+values, depending on the method used
+to form the confidence interval.}
 
 \item{...}{Other arguments. Not used.}
 }

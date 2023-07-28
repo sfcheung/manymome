@@ -162,10 +162,12 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
                                       100 * (1 - (1 - level0) / 2)), 2,
                                       format = "f"), "%")
         bci0 <- boot_ci1
-        bp0 <- est2p(est0)
+        bp0 <- est2p(bind0)
+        bse0 <- stats::sd(bind0, na.rm = TRUE)
       } else {
         bci0 <- NULL
         bp0 <- NULL
+        bse0 <- NULL
       }
     op1 <- e1$op
     op2 <- e2$op
@@ -194,15 +196,19 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
     bp0_boot <- NULL
     bind0_mc <- NULL
     bci0_mc <- NULL
+    bse0_boot <- NULL
+    bse0_mc <- NULL
     if (has_ci) {
         if (ci_type == "boot") {
             bind0_boot <- bind0
             bci0_boot <- bci0
             bp0_boot <- bp0
+            bse0_boot <- bse0
           }
         if (ci_type == "mc") {
             bind0_mc <- bind0
             bci0_mc <- bci0
+            bse0_mc <- bse0
           }
       }
     out <- list(indirect = est0,
@@ -224,8 +230,10 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
                 boot_indirect = bind0_boot,
                 boot_ci = bci0_boot,
                 boot_p = bp0_boot,
+                boot_se = bse0_boot,
                 mc_indirect = bind0_mc,
                 mc_ci = bci0_mc,
+                mc_se = bse0_mc,
                 level = level0,
                 boot_out = e1$boot_out,
                 mc_out = e1$mc_out

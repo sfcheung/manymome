@@ -51,6 +51,15 @@
 #' places to display for the *p*-values.
 #' Default is 3.
 #'
+#' @param se Logical. If `TRUE` and
+#' confidence intervals are available,
+#' the standard errors of the estimates
+#' are also printed. They are simply the
+#' standard deviations of the bootstrap
+#' estimates or Monte Carlo simulated
+#' values, depending on the method used
+#' to form the confidence intervals.
+#'
 #' @param ...  Other arguments. Not
 #' used.
 #'
@@ -96,6 +105,7 @@ print.cond_indirect_effects <- function(x, digits = 3,
                                         annotation = TRUE,
                                         pvalue = FALSE,
                                         pvalue_digits = 3,
+                                        se = FALSE,
                                         ...) {
   full_output <- attr(x, "full_output")
   x_i <- full_output[[1]]
@@ -108,11 +118,13 @@ print.cond_indirect_effects <- function(x, digits = 3,
       has_ci <- TRUE
       ci_type <- "boot"
       ind_name <- "boot_indirect"
+      se_name <- "boot_se"
     }
   if (!is.null(x_i$mc_ci)) {
       has_ci <- TRUE
       ci_type <- "mc"
       ind_name <- "mc_indirect"
+      se_name <- "mc_se"
     }
   standardized_x <- x_i$standardized_x
   standardized_y <- x_i$standardized_y
@@ -149,6 +161,20 @@ print.cond_indirect_effects <- function(x, digits = 3,
           i <- which(names(out) == "Sig")
           j <- length(out)
           out <- c(out[1:i], list(pvalue = boot_p1), out[(i + 1):j])
+        }
+      if (se) {
+          ind_se <- sapply(attr(x, "full_output"), function(x) x[[se_name]])
+          ind_se <- unname(ind_se)
+          ind_se <- sapply(ind_se, function(xx) {
+              if (!is.na(xx)) {
+                  return(formatC(xx, digits = digits, format = "f"))
+                } else {
+                  return("NA")
+                }
+            })
+          i <- which(names(out) == "Sig")
+          j <- length(out)
+          out <- c(out[1:i], list(SE = ind_se), out[(i + 1):j])
         }
     }
   out1 <- data.frame(out, check.names = FALSE)
@@ -190,6 +216,10 @@ print.cond_indirect_effects <- function(x, digits = 3,
                             tmp2), exdent = 3), sep = "\n")
           if (pvalue && (ci_type == "boot")) {
               tmp1 <- " - [pvalue] are asymmetric bootstrap p-values."
+              cat(tmp1, sep = "\n")
+            }
+          if (se) {
+              tmp1 <- " - [SE] are standard errors."
               cat(tmp1, sep = "\n")
             }
         } else {

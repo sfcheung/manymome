@@ -51,6 +51,15 @@
 #' places to display for the *p*-values.
 #' Default is 3.
 #'
+#' @param se Logical. If `TRUE` and
+#' confidence intervals are available,
+#' the standard errors of the estimates
+#' are also printed. They are simply the
+#' standard deviations of the bootstrap
+#' estimates or Monte Carlo simulated
+#' values, depending on the method used
+#' to form the confidence intervals.
+#'
 #' @param ... Other arguments. Not used.
 #'
 #'
@@ -91,6 +100,7 @@ print.indirect_list <- function(x, digits = 3,
                                 annotation = TRUE,
                                 pvalue = FALSE,
                                 pvalue_digits = 3,
+                                se = FALSE,
                                 ...) {
     xold <- x
     my_call <- attr(x, "call")
@@ -130,11 +140,17 @@ print.indirect_list <- function(x, digits = 3,
     has_m <- TRUE
     coef0 <- indirect_effects_from_list(xold,
                                         add_sig = TRUE,
-                                        pvalue = pvalue)
+                                        pvalue = pvalue,
+                                        se = se)
     if (has_ci && (ci_type == "boot") && pvalue) {
         coef0$pvalue <- formatC(coef0$pvalue,
                                 digits = pvalue_digits,
                                 format = "f")
+      }
+    if (has_ci && se) {
+        coef0$SE <- formatC(coef0$SE,
+                            digits = digits,
+                            format = "f")
       }
     std_str <- ""
     if (standardized) {
@@ -183,6 +199,10 @@ print.indirect_list <- function(x, digits = 3,
                               tmp2), exdent = 3), sep = "\n")
             if (pvalue && (ci_type == "boot")) {
                 tmp1 <- " - [pvalue] are asymmetric bootstrap p-values."
+                cat(tmp1, sep = "\n")
+              }
+            if (se) {
+                tmp1 <- " - [SE] are standard errors."
                 cat(tmp1, sep = "\n")
               }
           } else if (has_ci && ci_type == "mc") {
@@ -272,6 +292,15 @@ print.indirect_list <- function(x, digits = 3,
 #' bootstrapping will be added
 #' available. Default is `FALSE`.
 #'
+#' @param se Logical. If `TRUE` and
+#' confidence intervals are available,
+#' the standard errors of the estimates
+#' are also added. They are simply the
+#' standard deviations of the bootstrap
+#' estimates or Monte Carlo simulated
+#' values, depending on the method used
+#' to form the confidence intervals.
+#'
 #' @seealso [many_indirect_effects()]
 #'
 #'
@@ -314,7 +343,8 @@ print.indirect_list <- function(x, digits = 3,
 
 indirect_effects_from_list <- function(object,
                                        add_sig = TRUE,
-                                       pvalue = FALSE) {
+                                       pvalue = FALSE,
+                                       se = FALSE) {
     if (!inherits(object, "indirect_list")) {
         stop("object is not an indirect_list class object.")
       }
@@ -337,10 +367,12 @@ indirect_effects_from_list <- function(object,
     if (isTRUE(!is.null(object[[1]]$boot_ci))) {
         has_ci <- TRUE
         ci_type <- "boot"
+        se_name <- "boot_se"
       }
     if (isTRUE(!is.null(object[[1]]$mc_ci))) {
         has_ci <- TRUE
         ci_type <- "mc"
+        se_name <- "mc_se"
       }
     if (has_ci) {
         ci0 <- t(sapply(object, stats::confint))
@@ -354,6 +386,11 @@ indirect_effects_from_list <- function(object,
             boot_p <- sapply(object, function(x) x$boot_p)
             boot_p <- unname(boot_p)
             out$pvalue <- boot_p
+          }
+        if (se) {
+            est_se <- sapply(object, function(x) x[[se_name]])
+            est_se <- unname(est_se)
+            out$SE <- est_se
           }
       }
     out

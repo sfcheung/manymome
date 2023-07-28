@@ -368,9 +368,11 @@ index_of_momome <- function(x,
         names(ind_mc_ci) <- paste0(formatC(c(100 * (1 - level) / 2,
                                       100 * (1 - (1 - level) / 2)), 2,
                                       format = "f"), "%")
+        ind_mc_se <- stats::sd(ind_mc, na.rm = TRUE)
       } else {
         ind_mc <- NA
         ind_mc_ci <- NA
+        ind_mc_se <- NA
       }
     if (has_boot) {
         ind_boot <- i1$boot_diff - i0$boot_diff
@@ -383,17 +385,23 @@ index_of_momome <- function(x,
                                       100 * (1 - (1 - level) / 2)), 2,
                                       format = "f"), "%")
         ind_boot_p <- est2p(ind_boot)
+        ind_boot_se <- stats::sd(ind_boot, na.rm = TRUE)
       } else {
         ind_boot <- NA
         ind_boot_ci <- NA
         ind_boot_p <- NA
+        ind_boot_se <- NA
       }
     ind_ci <- NA
+    ind_se <- NA
     if (has_mc) ind_ci <- ind_mc_ci
     if (has_boot) ind_ci <- ind_boot_ci
+    if (has_mc) ind_se <- ind_mc_se
+    if (has_boot) ind_se <- ind_boot_se
     out <- list(index = ind,
                 ci = ind_ci,
                 pvalue = ind_boot_p,
+                se = ind_se,
                 level = level,
                 from = i0$from,
                 to = i0$to,
