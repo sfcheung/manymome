@@ -162,7 +162,7 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
                                       100 * (1 - (1 - level0) / 2)), 2,
                                       format = "f"), "%")
         bci0 <- boot_ci1
-        bp0 <- est2p(est0)
+        bp0 <- est2p(bind0)
         bse0 <- stats::sd(bind0, na.rm = TRUE)
       } else {
         bci0 <- NULL
