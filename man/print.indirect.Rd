@@ -26,10 +26,10 @@ Default is 3.}
 
 \item{se}{Logical. If \code{TRUE} and
 confidence interval is available, the
-standard error of the an estimate is
+standard error of the estimate is
 also printed. This is simply the
 standard deviation of the bootstrap
-estimates Monte Carlo simulated
+estimates or Monte Carlo simulated
 values, depending on the method used
 to form the confidence interval.}
 
