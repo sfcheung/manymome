@@ -1,4 +1,6 @@
-skip("WIP")
+skip_on_cran()
+# To be tested in an interactive session
+
 library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
@@ -391,3 +393,12 @@ test_that("mediation only", {
     expect_equal(total_effect_mc$mc_se,
                  indirect_se(total_effect_mc)$mc_se)
   })
+
+# Test print method
+
+print(out_med_boot, se = TRUE)
+print(out_med_mc, se = TRUE)
+print(out_med_stdxy_boot, se = TRUE)
+print(out_med_stdxy_mc, se = TRUE)
+print(total_effect_boot, se = TRUE)
+print(total_effect_mc, se = TRUE)

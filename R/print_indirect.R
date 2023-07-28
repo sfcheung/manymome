@@ -54,6 +54,15 @@
 #' places to display for the *p*-value.
 #' Default is 3.
 #'
+#' @param se Logical. If `TRUE` and
+#' confidence interval is available, the
+#' standard error of the an estimate is
+#' also printed. This is simply the
+#' standard deviation of the bootstrap
+#' estimates Monte Carlo simulated
+#' values, depending on the method used
+#' to form the confidence interval.
+#'
 #' @param ... Other arguments. Not used.
 #'
 #'
@@ -115,6 +124,7 @@ print.indirect <- function(x,
                            digits = 3,
                            pvalue = FALSE,
                            pvalue_digits = 3,
+                           se = FALSE,
                            ...) {
     xold <- x
     my_call <- x$call
@@ -128,12 +138,14 @@ print.indirect <- function(x,
         has_ci <- TRUE
         ci_type <- "boot"
         ci_name <- "boot_ci"
+        se_name <- "boot_se"
         R <- length(x$boot_indirect)
       }
     if (isTRUE(!is.null(x$mc_ci))) {
         has_ci <- TRUE
         ci_type <- "mc"
         ci_name <- "mc_ci"
+        se_name <- "mc_se"
         R <- length(x$mc_indirect)
       }
     has_w <- isTRUE(!is.null(wvalues))
@@ -238,6 +250,18 @@ print.indirect <- function(x,
           } else {
             b_row2 <- NULL
           }
+        if (se) {
+            tmpp <- ifelse(!is.null(x[[se_name]]) && is.numeric(x[[se_name]]),
+                           formatC(x[[se_name]], digits = digits, format = "f"),
+                           "Not available"
+                           )
+            tmp1 <- switch(ci_type,
+                           boot = "Bootstrap SE:",
+                           mc = "Monte Carlo SE:")
+            b_row3 <- c(tmp1, tmpp)
+          } else {
+            b_row3 <- NULL
+          }
       }
     if (has_w) {
         if (is.null(x$op)) {
@@ -253,7 +277,7 @@ print.indirect <- function(x,
         tmp <- paste(paste(wnames, "=", formatC(w0,
                                                 digits = digits,
                                                 format = "f")), collapse = ", ")
-        if (has_ci) {ptable <- rbind(ptable, b_row, b_row2)}
+        if (has_ci) {ptable <- rbind(ptable, b_row, b_row2, b_row3)}
         ptable <- rbind(ptable,
                         c("When:", tmp))
       } else {
@@ -266,7 +290,7 @@ print.indirect <- function(x,
                             c("Function of Effects:",
                               formatC(x$indirect, digits = digits, format = "f")))
           }
-        if (has_ci) {ptable <- rbind(ptable, b_row)}
+        if (has_ci) {ptable <- rbind(ptable, b_row, b_row2, b_row3)}
       }
     ptable <- data.frame(lapply(ptable, format))
     colnames(ptable) <- c("", "")
@@ -305,6 +329,18 @@ print.indirect <- function(x,
                           R,
                           " replications."))
         cat(strwrap(tmp1), sep = "\n")
+        if (se) {
+            tmp1 <- switch(ci_type,
+                      boot = paste("Standard error (SE) based on nonparametric bootstrapping",
+                              "with ",
+                              R,
+                              " bootstrap samples."),
+                      mc = paste("Standard error (SE) based on Monte Carlo simulation",
+                              "with ",
+                              R,
+                              " replications."))
+            cat(strwrap(tmp1), sep = "\n")
+          }
       }
     if (has_m & !is.list(mpathnames)) {
         if (has_w) {
