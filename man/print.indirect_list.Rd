@@ -5,7 +5,15 @@
 \title{Print an 'indirect_list' Class
 Object}
 \usage{
-\method{print}{indirect_list}(x, digits = 3, annotation = TRUE, pvalue = FALSE, pvalue_digits = 3, ...)
+\method{print}{indirect_list}(
+  x,
+  digits = 3,
+  annotation = TRUE,
+  pvalue = FALSE,
+  pvalue_digits = 3,
+  se = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{The output of
@@ -27,6 +35,15 @@ available.}
 \item{pvalue_digits}{Number of decimal
 places to display for the \emph{p}-values.
 Default is 3.}
+
+\item{se}{Logical. If \code{TRUE} and
+confidence intervals are available,
+the standard errors of the estimates
+are also printed. They are simply the
+standard deviations of the bootstrap
+estimates or Monte Carlo simulated
+values, depending on the method used
+to form the confidence intervals.}
 
 \item{...}{Other arguments. Not used.}
 }

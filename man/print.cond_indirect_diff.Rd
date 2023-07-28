@@ -5,7 +5,7 @@
 \title{Print the Output of
 'cond_indirect_diff'}
 \usage{
-\method{print}{cond_indirect_diff}(x, digits = 3, pvalue = FALSE, pvalue_digits = 3, ...)
+\method{print}{cond_indirect_diff}(x, digits = 3, pvalue = FALSE, pvalue_digits = 3, se = FALSE, ...)
 }
 \arguments{
 \item{x}{The output of
@@ -22,6 +22,15 @@ available. Default is \code{FALSE.}}
 \item{pvalue_digits}{Number of decimal
 places to display for the \emph{p}-value.
 Default is 3.}
+
+\item{se}{Logical. If \code{TRUE} and
+confidence intervals are available,
+the standard errors of the estimates
+are also printed. They are simply the
+standard deviations of the bootstrap
+estimates or Monte Carlo simulated
+values, depending on the method used
+to form the confidence intervals.}
 
 \item{...}{Optional arguments.
 Ignored.}
