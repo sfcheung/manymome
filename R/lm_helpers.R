@@ -89,7 +89,7 @@ merge_model_matrix <- function(outputs) {
         xnames <- colnames(x)
         ynames <- colnames(y)
         ykeep <- c(idname, ynames[!(ynames %in% xnames)])
-        y1 <- y[, ykeep]
+        y1 <- y[, ykeep, drop = FALSE]
         merge(x, y1,
               by = idname)
       }

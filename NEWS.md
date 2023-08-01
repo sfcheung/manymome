@@ -1,4 +1,4 @@
-# manymome 0.1.11.2
+# manymome 0.1.11.3
 
 ## New Features
 
@@ -27,6 +27,11 @@
   on effects using `+` and `-` before
   version 0.1.11.2. This
   has been fixed. (0.1.11.2)
+
+- `merge_model_matrix()` failed if all
+  variables in an `lm()` output is already
+  present in merged outputs. Fixed
+  in 0.1.11.3. (0.1.11.3)
 
 # manymome 0.1.10
 
