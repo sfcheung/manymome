@@ -210,7 +210,8 @@ outmo_mc <- cond_indirect(x = "m2", y = "m3", wvalues = c(m1 = -5),
                      fit = fitmoml,
                      mc_ci = TRUE,
                      R = 50,
-                     seed = 8536)
+                     seed = 8536,
+                     save_mc_out = TRUE)
 # Emulate se = boot
 fitmo_boot_mc <- gen_mc_est(fitmoml, R = 50, seed = 8536)
 fitmo_boot_mc@boot <- fitmo_boot@boot
@@ -221,10 +222,16 @@ outmo_boot_mc <- cond_indirect(x = "m2", y = "m3", wvalues = c(m1 = -5),
                      fit = fitmo_boot_mc,
                      boot_ci = TRUE)
 
-test_that("cond_indirect: lavaan, moderation only: mc", {
-    expect_equal(outmo_mc$indirect, outmo_chk$indirect)
-    expect_equal(outmo_mc$mc_ci, outmo_boot_mc$boot_ci)
-  })
+# For MKL
+# Proceed only if RNG results identical
+tmp1 <- sapply(outmo_mc$mc_out, function(x) x$est[1:4, "est"])
+tmp2 <- t(fitmo_boot_mc@external$manymome$mc[, 1:4])
+if (isTRUE(all.equal(tmp1, tmp2, check.attributes = FALSE))) {
+    test_that("cond_indirect: lavaan, moderation only: mc", {
+        expect_equal(outmo_mc$indirect, outmo_chk$indirect)
+        expect_equal(outmo_mc$mc_ci, outmo_boot_mc$boot_ci)
+    })
+  }
 
 # Test ci_out
 
@@ -284,8 +291,13 @@ outmo_boot2 <- cond_indirect(x = "m2", y = "m3", wvalues = c(m1 = -5),
                      fit = fitmo,
                      ci_type = "boot",
                      ci_out = bootmo_out)
-
-test_that("cond_indirect: lavaan, moderation only: ci_type", {
-    expect_equal(outmo_mc$mc_ci, outmo_mc2$mc_ci)
-    expect_equal(outmo_boot$boot_ci, outmo_boot2$boot_ci)
-  })
+# For MKL
+# Proceed only if RNG results identical
+tmp1 <- sapply(outmo_mc$mc_out, function(x) x$est[1:4, "est"])
+tmp2 <- sapply(fitmo_mc_out, function(x) x$est[1:4, "est"])
+if (isTRUE(all.equal(tmp1, tmp2, check.attributes = FALSE))) {
+    test_that("cond_indirect: lavaan, moderation only: ci_type", {
+        expect_equal(outmo_mc$mc_ci, outmo_mc2$mc_ci)
+        expect_equal(outmo_boot$boot_ci, outmo_boot2$boot_ci)
+    })
+  }
