@@ -1,4 +1,4 @@
-# manymome 0.1.11.3
+# manymome 0.1.11.4
 
 ## New Features
 
@@ -19,6 +19,11 @@
 ## Miscellaneous
 
 - Customized `linters`. (0.1.11.1)
+
+- Revised a test to accommodate a
+  behavior of MKL when `MASS::mvrnorm()`
+  is used to generate pseudo random
+  numbers. (0.1.11.4)
 
 ## Bug Fixes
 
