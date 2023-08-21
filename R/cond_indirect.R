@@ -506,8 +506,9 @@ cond_indirect <- function(x,
               }
           } else {
             mc_out <- do_mc(fit = fit,
-                                R = R,
-                                seed = seed)
+                            R = R,
+                            seed = seed,
+                            progress = progress)
           }
       }
     if (boot_ci) {

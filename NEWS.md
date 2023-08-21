@@ -1,4 +1,4 @@
-# manymome 0.1.11.4
+# manymome 0.1.11.5
 
 ## New Features
 
@@ -37,6 +37,13 @@
   variables in an `lm()` output is already
   present in merged outputs. Fixed
   in 0.1.11.3. (0.1.11.3)
+
+- `cond_indirect()` did not hide the
+  progress when Monte Carlo CIs were
+  requested and `do_mc()` was called
+  internally. Fixed. It now hides the
+  progress if `progress = TRUE`.
+  (0.1.11.5)
 
 # manymome 0.1.10
 
