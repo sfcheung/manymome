@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.11.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.12</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,22 +74,25 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.11.3" id="manymome-01113">manymome 0.1.11.3<a class="anchor" aria-label="anchor" href="#manymome-01113"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.1.12" id="manymome-0112">manymome 0.1.12<a class="anchor" aria-label="anchor" href="#manymome-0112"></a></h2>
 <div class="section level3">
-<h3 id="new-features-0-1-11-3">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-11-3"></a></h3>
+<h3 id="new-features-0-1-12">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-12"></a></h3>
 <div class="section level4">
-<h4 id="can-report-standard-errors-if-requested-0-1-11-3">Can report standard errors (if requested)<a class="anchor" aria-label="anchor" href="#can-report-standard-errors-if-requested-0-1-11-3"></a></h4>
+<h4 id="can-report-standard-errors-if-requested-0-1-12">Can report standard errors (if requested)<a class="anchor" aria-label="anchor" href="#can-report-standard-errors-if-requested-0-1-12"></a></h4>
 <ul><li>All major print methods of effects support printing standard errors (setting <code>se = TRUE</code>). They are simply the standard deviations of the bootstrap estimates (if bootstrap confidence intervals are requested) or simulated estimates (if Monte Carlo confidence intervals are requested). They should be interpreted with cautions because the sampling distribution of the effect estimates may not be symmetric. (0.1.11.2)</li>
 </ul></div>
 </div>
 <div class="section level3">
-<h3 id="miscellaneous-0-1-11-3">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-1-11-3"></a></h3>
-<ul><li>Customized <code>linters</code>. (0.1.11.1)</li>
+<h3 id="miscellaneous-0-1-12">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-1-12"></a></h3>
+<ul><li><p>Customized <code>linters</code>. (0.1.11.1)</p></li>
+<li><p>Revised a test to accommodate a behavior of MKL when <code><a href="https://rdrr.io/pkg/MASS/man/mvrnorm.html" class="external-link">MASS::mvrnorm()</a></code> is used to generate pseudo random numbers. (0.1.11.4)</p></li>
+<li><p>Finalized to 0.1.12. (0.1.12)</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-0-1-11-3">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-11-3"></a></h3>
+<h3 id="bug-fixes-0-1-12">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-12"></a></h3>
 <ul><li><p><em>P</em>-value were not computed when mathematical operations are conducted on effects using <code>+</code> and <code>-</code> before version 0.1.11.2. This has been fixed. (0.1.11.2)</p></li>
 <li><p><code>merge_model_matrix()</code> failed if all variables in an <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> output is already present in merged outputs. Fixed in 0.1.11.3. (0.1.11.3)</p></li>
+<li><p><code><a href="../reference/cond_indirect.html">cond_indirect()</a></code> did not hide the progress when Monte Carlo CIs were requested and <code><a href="../reference/do_mc.html">do_mc()</a></code> was called internally. Fixed. It now hides the progress if <code>progress = TRUE</code>. (0.1.11.5)</p></li>
 </ul></div>
 </div>
     <div class="section level2">
