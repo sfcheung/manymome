@@ -1,4 +1,4 @@
-# manymome 0.1.11.5
+# manymome 0.1.12
 
 ## New Features
 
@@ -24,6 +24,8 @@
   behavior of MKL when `MASS::mvrnorm()`
   is used to generate pseudo random
   numbers. (0.1.11.4)
+
+- Finalized to 0.1.12. (0.1.12)
 
 ## Bug Fixes
 
