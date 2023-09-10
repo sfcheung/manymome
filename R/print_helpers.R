@@ -9,8 +9,8 @@ add_whitespace <- function(x,
                                            x_max - nchar(xx)),
                                            collapse = "")
                       xx <- switch(mode,
-                                   right = paste0(to_add, xx),
-                                   left = paste0(xx, to_add))
+                                   left = paste0(to_add, xx),
+                                   right = paste0(xx, to_add))
                       xx
                     }, USE.NAMES = FALSE)
     out
