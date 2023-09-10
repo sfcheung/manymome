@@ -6,9 +6,9 @@
 \usage{
 delta_med(
   fit,
-  x = "x",
-  m = "m",
-  y = "y",
+  x,
+  m,
+  y,
   paths_to_remove = NULL,
   boot_out = NULL,
   level = 0.95,
