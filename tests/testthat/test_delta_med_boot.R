@@ -27,9 +27,14 @@ dm_i <- delta_med(fit = fit,
                   y = "y",
                   m = "m")
 dm_i
+print(dm_i, full = TRUE)
+print(dm_i, full = TRUE, digits = 5)
 dm_boot <- delta_med(fit = fit,
                      x = "x",
                      y = "y",
                      m = "m",
                      boot_out = boot_out)
 dm_boot
+print(dm_boot, full = TRUE)
+print(dm_boot, full = TRUE, digits = 4)
+print(dm_boot, level = .80, full = TRUE, digits = 4)
