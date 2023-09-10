@@ -37,7 +37,7 @@ dm_liu <- delta_med1(fit)
 dm_my <- delta_med(fit, x = "x", m = "m", y = "y")
 
 test_that("Simple mediation", {
-    expect_equal(dm_my$delta_med,
+    expect_equal(coef(dm_my),
                  dm_liu)
   })
 
@@ -82,7 +82,7 @@ dm_liu <- rsq_y - rsq0_y1
 dm_my <- delta_med(fit, x = "x", m = c("m1", "m2"), y = "y")
 
 test_that("Parallel Mediation", {
-    expect_equal(dm_my$delta_med,
+    expect_equal(coef(dm_my),
                  dm_liu)
   })
 
@@ -114,7 +114,7 @@ dm_liu <- rsq_y - rsq0_y1
 dm_my <- delta_med(fit, x = "x", m = c("m1"), y = "y")
 
 test_that("Parallel Mediation: m1", {
-    expect_equal(dm_my$delta_med,
+    expect_equal(coef(dm_my),
                  dm_liu)
   })
 
@@ -146,7 +146,7 @@ dm_liu <- rsq_y - rsq0_y1
 dm_my <- delta_med(fit, x = "x", m = c("m2"), y = "y")
 
 test_that("Parallel Mediation: m1", {
-    expect_equal(dm_my$delta_med,
+    expect_equal(coef(dm_my),
                  dm_liu)
   })
 
@@ -188,7 +188,7 @@ dm_liu <- rsq_y - rsq0_y1
 dm_my <- delta_med(fit, x = "x", m = c("m1", "m2"), y = "y")
 
 test_that("Serial Mediation", {
-    expect_equal(dm_my$delta_med,
+    expect_equal(coef(dm_my),
                  dm_liu)
   })
 
@@ -223,7 +223,7 @@ dm_liu <- rsq_y - rsq0_y1
 dm_my <- delta_med(fit, x = "x", m = c("m1"), y = "y")
 
 test_that("Serial Mediation: m1", {
-    expect_equal(dm_my$delta_med,
+    expect_equal(coef(dm_my),
                  dm_liu)
   })
 
@@ -257,7 +257,7 @@ dm_liu <- rsq_y - rsq0_y1
 dm_my <- delta_med(fit, x = "x", m = c("m2"), y = "y")
 
 test_that("Serial Mediation: m2", {
-    expect_equal(dm_my$delta_med,
+    expect_equal(coef(dm_my),
                  dm_liu)
   })
 
