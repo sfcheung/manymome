@@ -187,13 +187,16 @@
 #' @export
 
 delta_med <- function(fit,
-                      x = "x",
-                      m = "m",
-                      y = "y",
+                      x,
+                      m,
+                      y,
                       paths_to_remove = NULL,
                       boot_out = NULL,
                       level = .95,
                       progress = TRUE) {
+    if (missing(x) || missing(m) || missing(y)) {
+        stop("x, m, and y must all be specified.")
+      }
     out <- delta_med_i(fit = fit,
                        x = x,
                        m = m,
