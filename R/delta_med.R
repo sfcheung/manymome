@@ -224,9 +224,9 @@ delta_med <- function(fit,
           }
         R <- length(boot_out)
         dm_boot <- sapply(out_boot, `[[`, "delta_med")
-        dm_boot_out <- boot_ci(est = dm,
-                               boot_est = dm_boot,
-                               level = level)
+        dm_boot_out <- form_boot_ci(est = dm,
+                                    boot_est = dm_boot,
+                                    level = level)
         dm_boot_ci <- dm_boot_out$boot_ci
         dm_boot_p <- dm_boot_out$boot_p
         dm_boot_se <- dm_boot_out$boot_se
@@ -371,9 +371,9 @@ est_2_coef <- function(est,
 # Can be used by other functions.
 #' @noRd
 
-boot_ci <- function(est,
-                    boot_est,
-                    level = .95) {
+form_boot_ci <- function(est,
+                         boot_est,
+                         level = .95) {
     out <- list()
     out$est <- est
     out$boot_est <- boot_est
