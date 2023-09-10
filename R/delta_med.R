@@ -257,6 +257,7 @@ delta_med <- function(fit,
     out$boot_var_y <- boot_var_y
     out$boot_var_predicted_full <- boot_var_predicted_full
     out$boot_var_predicted_no_mediators <- boot_var_predicted_no_mediators
+    out$level <- level
     out$call <- match.call()
     class(out) <- "delta_med"
     out
