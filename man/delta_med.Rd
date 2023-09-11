@@ -5,10 +5,10 @@
 \title{Delta_Med by Liu, Yuan, and Li (2023)}
 \usage{
 delta_med(
-  fit,
   x,
-  m,
   y,
+  m,
+  fit,
   paths_to_remove = NULL,
   boot_out = NULL,
   level = 0.95,
@@ -16,10 +16,10 @@ delta_med(
 )
 }
 \arguments{
-\item{fit}{The fit object. Must be a
-\link[lavaan:lavaan-class]{lavaan::lavaan} object.}
-
 \item{x}{The name of the \code{x} variable.
+Must be supplied as a quoted string.}
+
+\item{y}{The name of the \code{y} variable.
 Must be supplied as a quoted string.}
 
 \item{m}{A vector of the variable
@@ -28,8 +28,8 @@ goes from the first mediator
 successively to the last mediator.
 Cannot be \code{NULL} for this function.}
 
-\item{y}{The name of the \code{y} variable.
-Must be supplied as a quoted string.}
+\item{fit}{The fit object. Must be a
+\link[lavaan:lavaan-class]{lavaan::lavaan} object.}
 
 \item{paths_to_remove}{A character
 vector of paths users want to
@@ -137,7 +137,8 @@ Liu et al. (2023):
 \itemize{
 \item Having one predictor (the
 \code{x}-variable).
-\item Having one or more mediators, with
+\item Having one or more mediators, the
+\code{m}-variables, with
 arbitrary way to mediate the effect
 of \code{x} on the outcome variable
 (\code{y}-variable).
@@ -148,10 +149,19 @@ of the Delta_Med is not affected
 by the presence of other outcome
 variables.
 \item Have no control variables.
-\item The mediator(s) and the outcome
-variable are continuous.
-\item The predictor can be continuous
-or categorical.
+\item The mediator(s), \code{m}, and the
+\code{y}-variable are continuous.
+\item \code{x} can be continuous
+or categorical. If categorical, it
+needs to be handle appropriately
+when fitting the model.
+\item \code{x} has a direct
+path to \code{y}.
+\item All the mediators listed in the
+argument \code{m} is present in at least
+one path from \code{x} to \code{y.}
+\item None of the paths from \code{x} to \code{y}
+are moderated.
 }
 
 It may be applicable to other kinds
@@ -163,6 +173,11 @@ Liu et al. (2023), using it in those
 cases should be considered as
 experimental, or for simulation
 studies.
+
+For research purpose, most of the
+requirements above can be removed
+by users using the relevant
+arguments.
 }
 
 \examples{

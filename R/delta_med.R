@@ -65,7 +65,8 @@
 #' - Having one predictor (the
 #'  `x`-variable).
 #'
-#' - Having one or more mediators, with
+#' - Having one or more mediators, the
+#'  `m`-variables, with
 #'  arbitrary way to mediate the effect
 #'  of `x` on the outcome variable
 #'  (`y`-variable).
@@ -79,11 +80,23 @@
 #'
 #' - Have no control variables.
 #'
-#' - The mediator(s) and the outcome
-#'  variable are continuous.
+#' - The mediator(s), `m`, and the
+#'  `y`-variable are continuous.
 #'
-#' - The predictor can be continuous
-#'  or categorical.
+#' - `x` can be continuous
+#'  or categorical. If categorical, it
+#'  needs to be handle appropriately
+#'  when fitting the model.
+#'
+#' - `x` has a direct
+#'  path to `y`.
+#'
+#' - All the mediators listed in the
+#'  argument `m` is present in at least
+#'  one path from `x` to `y.`
+#'
+#' - None of the paths from `x` to `y`
+#'  are moderated.
 #'
 #' It may be applicable to other kinds
 #' of models but more studies are needed
@@ -94,6 +107,11 @@
 #' cases should be considered as
 #' experimental, or for simulation
 #' studies.
+#'
+#' For research purpose, most of the
+#' requirements above can be removed
+#' by users using the relevant
+#' arguments.
 #'
 #' @return
 #' A `delta_med` class object.
@@ -115,9 +133,6 @@
 #' a `coef` method, and a `confint`
 #' method. (TODO: To write)
 #'
-#' @param fit The fit object. Must be a
-#' [lavaan::lavaan-class] object.
-#'
 #' @param x The name of the `x` variable.
 #' Must be supplied as a quoted string.
 #'
@@ -129,6 +144,9 @@
 #' goes from the first mediator
 #' successively to the last mediator.
 #' Cannot be `NULL` for this function.
+#'
+#' @param fit The fit object. Must be a
+#' [lavaan::lavaan-class] object.
 #'
 #' @param paths_to_remove A character
 #' vector of paths users want to
@@ -186,10 +204,10 @@
 #'
 #' @export
 
-delta_med <- function(fit,
-                      x,
-                      m,
+delta_med <- function(x,
                       y,
+                      m,
+                      fit,
                       paths_to_remove = NULL,
                       boot_out = NULL,
                       level = .95,
@@ -394,4 +412,16 @@ form_boot_ci <- function(est,
     out$boot_p <- est2p(out$boot_est)
     out$boot_se <- stats::sd(out$boot_est, na.rm = TRUE)
     out
+  }
+
+#' @noRd
+
+delta_med_check_fit <- function(x,
+                                y,
+                                m,
+                                fit,
+                                skip_check_single_x = FALSE,
+                                skip_check_m_between_x_y = FALSE
+                                ) {
+    # TODO
   }
