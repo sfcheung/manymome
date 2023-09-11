@@ -78,7 +78,7 @@
 #'  by the presence of other outcome
 #'  variables.
 #'
-#' - Have no control variables.
+#' - Having no control variables.
 #'
 #' - The mediator(s), `m`, and the
 #'  `y`-variable are continuous.
