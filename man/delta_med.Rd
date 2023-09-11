@@ -39,7 +39,11 @@ Cannot be \code{NULL} for this function.}
 \item{paths_to_remove}{A character
 vector of paths users want to
 manually remove, specified in
-\verb{lavaan`` syntax. For example, }c("m2~x", "m3~m2")\verb{removes the path from}x\code{to}m2\verb{and the path from}m2\code{to}m3\verb{. The default is }NULL`, and the paths to remove will
+\code{lavaan} model syntax. For example,
+\code{c("m2~x", "m3~m2")} removes the
+path from \code{x} to \code{m2} and the path
+from \code{m2} to \code{m3}. The default is
+\code{NULL}, and the paths to remove will
 be determined using the method
 by Liu et al. (2023). If supplied,
 then only paths specified explicitly
@@ -92,42 +96,48 @@ last element.
 
 This class has a \code{print} method,
 a \code{coef} method, and a \code{confint}
-method. (TODO: To write)
+method. See \code{\link[=print.delta_med]{print.delta_med()}},
+\code{\link[=coef.delta_med]{coef.delta_med()}}, and
+\code{\link[=confint.delta_med]{confint.delta_med()}}.
 }
 \description{
 It computes the
 Delta_Med proposed by Liu, Yuan,
-and Li (2023), an $R^2$-like measure of
+and Li (2023), an \eqn{R^2}-like measure of
 indirect effect.
 }
 \details{
-It computes Delta_Med an
-$R^2$-like effect
+It computes Delta_Med, an
+\eqn{R^2}-like effect
 size measure for the indirect effect
 from one variable (the \code{y}-variable)
 to another variable (the \code{x}-variable)
 through one or more mediators
 (\code{m}, or \code{m1}, \code{m2}, etc. when
-there are more than one mediators).
+there are more than one mediator).
 
 The Delta_Med of one or more
 mediators was computed as the
 difference between
-two $R^2$s:
+two \eqn{R^2}s:
 \itemize{
-\item The $R^2$ when \code{y}
+\item \eqn{R^2_1}, the \eqn{R^2} when \code{y}
 is predicted by \code{x} and all
 mediators.
-\item The $R^2$ when the mediator(s) of
+\item \eqn{R^2_2}, the \eqn{R^2} when the
+mediator(s) of
 interest is/are removed from the
 models, while the error term(s)
 of the mediator(s) is/are kept.
 }
 
+Delta_Med is given by
+\eqn{R^2_1 - R^2_2}.
+
 Please refer to Liu et al. (2023)
 for the technical details.
 
-It can also be used for for
+The function can also form a
 nonparametric percentile bootstrap
 confidence of Delta_Med.
 }
@@ -137,22 +147,24 @@ path(s) pointing to the mediator(s)
 of concern and fixes the path(s) to
 zero, effectively removing the
 mediator(s). However, the model is
-not refitted, hence keeping all
-estimates of all parameters unchanged.
+not refitted, hence keeping the
+estimates of all other parameters
+unchanged.
 It then uses \code{\link[lavaan:lav_model]{lavaan::lav_model_set_parameters()}}
 to update the parameters,
 \code{\link[lavaan:lav_model]{lavaan::lav_model_implied()}} to
 update the implied statistics, and
-then call \code{\link[lavaan:lavInspect]{lavaan::lavInspect()}} to
+then calls \code{\link[lavaan:lavInspect]{lavaan::lavInspect()}} to
 retrieve the implied variance of the
 predicted values of \code{y} for computing
-the second $R^2$. Subtracting this
-$R^2$ from the original $R^2$ of
-\code{y} can then yield the $Delta^{Med}.
+the \eqn{R^2_2}. Subtracting this
+\eqn{R^2_2} from \eqn{R^2_1} of
+\code{y} can then yield Delta_Med.
 }
 
 \section{Limitations}{
-For now, it only supports the types
+For now, it only computes Delta_Med
+for the types
 of models discussed in
 Liu et al. (2023):
 \itemize{
@@ -195,7 +207,7 @@ cases should be considered as
 experimental, or for simulation
 studies.
 
-For research purpose, most of the
+For research purposes, most of the
 requirements above can be removed
 by users using the relevant
 \verb{skip_check_*} arguments. An error
@@ -205,21 +217,38 @@ users.
 }
 
 \examples{
-# TO PREPARE
-# library(lavaan)
-# dat <- data_med
-# head(dat)
-# mod <-
-# "
-# m ~ x + c1 + c2
-# y ~ m + x + c1 + c2
-# "
-# fit <- sem(mod, dat, fixed.x = FALSE)
-# out <- indirect_proportion(x = "x",
-#                            y = "y",
-#                            m = "m",
-#                            fit = fit)
-# out
+
+library(lavaan)
+dat <- data_med
+mod <-
+"
+m ~ x
+y ~ m + x
+"
+fit <- sem(mod, dat)
+dm <- delta_med(x = "x",
+                y = "y",
+                m = "m",
+                fit = fit)
+dm
+print(dm, full = TRUE)
+
+# Call do_boot() to generate
+# bootstrap estimates
+# Use 2000 or even 5000 for R in real studies
+# Set parallel to TRUE in real studies for faster bootstrapping
+boot_out <- do_boot(fit,
+                    R = 100,
+                    seed = 879,
+                    parallel = FALSE)
+dm_boot <- delta_med(x = "x",
+                     y = "y",
+                     m = "m",
+                     fit = fit,
+                     boot_out = boot_out)
+dm_boot
+confint(dm_boot)
+
 
 }
 \references{
@@ -229,4 +258,9 @@ R-squared measures in mediation
 analysis. \emph{Psychological Methods}.
 Advance online publication.
 https://doi.org/10.1037/met0000571
+}
+\seealso{
+\code{\link[=print.delta_med]{print.delta_med()}},
+\code{\link[=coef.delta_med]{coef.delta_med()}}, and
+\code{\link[=confint.delta_med]{confint.delta_med()}}.
 }

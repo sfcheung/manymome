@@ -38,9 +38,38 @@
 #'
 #' @examples
 #'
-#' # TODO: To prepare
-#' x <- 123
-#' print(x)
+#' library(lavaan)
+#' dat <- data_med
+#' mod <-
+#' "
+#' m ~ x
+#' y ~ m + x
+#' "
+#' fit <- sem(mod, dat)
+#' dm <- delta_med(x = "x",
+#'                 y = "y",
+#'                 m = "m",
+#'                 fit = fit)
+#' dm
+#' print(dm, full = TRUE)
+#'
+#' # Call do_boot() to generate
+#' # bootstrap estimates
+#' # Use 2000 or even 5000 for R in real studies
+#' # Set parallel to TRUE in real studies for faster bootstrapping
+#' boot_out <- do_boot(fit,
+#'                     R = 100,
+#'                     seed = 879,
+#'                     parallel = FALSE)
+#' dm_boot <- delta_med(x = "x",
+#'                      y = "y",
+#'                      m = "m",
+#'                      fit = fit,
+#'                      boot_out = boot_out)
+#' dm_boot
+#' confint(dm_boot)
+#' confint(dm_boot,
+#'         level = .90)
 #'
 #' @export
 print.delta_med <- function(x,

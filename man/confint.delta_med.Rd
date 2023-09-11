@@ -50,12 +50,30 @@ call \code{\link[=delta_med]{delta_med()}}.
 }
 \examples{
 
-# TODO: TO PREPARE
+library(lavaan)
+dat <- data_med
+mod <-
+"
+m ~ x
+y ~ m + x
+"
+fit <- sem(mod, dat)
 
-x <- rnorm(10)
-y <- rnorm(10)
-out <- lm(y ~ x)
-confint(out)
+# Call do_boot() to generate
+# bootstrap estimates
+# Use 2000 or even 5000 for R in real studies
+# Set parallel to TRUE in real studies for faster bootstrapping
+boot_out <- do_boot(fit,
+                    R = 100,
+                    seed = 879,
+                    parallel = FALSE)
+dm_boot <- delta_med(x = "x",
+                     y = "y",
+                     m = "m",
+                     fit = fit,
+                     boot_out = boot_out)
+dm_boot
+confint(dm_boot)
 
 }
 \seealso{

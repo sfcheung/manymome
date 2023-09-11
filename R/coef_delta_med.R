@@ -10,7 +10,7 @@
 #' in the output of `delta_med()`,
 #' the estimate of the Delta_Med
 #' proposed by Liu, Yuan, and Li (2023),
-#' an $R^2$-like measure of indirect
+#' an \eqn{R^2}-like measure of indirect
 #' effect.
 #'
 #' @return
@@ -36,11 +36,21 @@
 #'
 #' @examples
 #'
-#' # TODO: TO PREPARE
-#' x <- rnorm(10)
-#' y <- rnorm(10)
-#' out <- lm(y ~ x)
-#' coef(out)
+#' library(lavaan)
+#' dat <- data_med
+#' mod <-
+#' "
+#' m ~ x
+#' y ~ m + x
+#' "
+#' fit <- sem(mod, dat)
+#' dm <- delta_med(x = "x",
+#'                 y = "y",
+#'                 m = "m",
+#'                 fit = fit)
+#' dm
+#' print(dm, full = TRUE)
+#' coef(dm)
 #'
 #' @export
 #'

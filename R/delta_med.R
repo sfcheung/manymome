@@ -2,37 +2,41 @@
 #'
 #' @description It computes the
 #' Delta_Med proposed by Liu, Yuan,
-#' and Li (2023), an $R^2$-like measure of
+#' and Li (2023), an \eqn{R^2}-like measure of
 #' indirect effect.
 #'
 #' @details
-#' It computes Delta_Med an
-#' $R^2$-like effect
+#' It computes Delta_Med, an
+#' \eqn{R^2}-like effect
 #' size measure for the indirect effect
 #' from one variable (the `y`-variable)
 #' to another variable (the `x`-variable)
 #' through one or more mediators
 #' (`m`, or `m1`, `m2`, etc. when
-#' there are more than one mediators).
+#' there are more than one mediator).
 #'
 #' The Delta_Med of one or more
 #' mediators was computed as the
 #' difference between
-#' two $R^2$s:
+#' two \eqn{R^2}s:
 #'
-#'  - The $R^2$ when `y`
+#'  - \eqn{R^2_1}, the \eqn{R^2} when `y`
 #'    is predicted by `x` and all
 #'    mediators.
 #'
-#'  - The $R^2$ when the mediator(s) of
+#'  - \eqn{R^2_2}, the \eqn{R^2} when the
+#'    mediator(s) of
 #'    interest is/are removed from the
 #'    models, while the error term(s)
 #'    of the mediator(s) is/are kept.
 #'
+#' Delta_Med is given by
+#' \eqn{R^2_1 - R^2_2}.
+#'
 #' Please refer to Liu et al. (2023)
 #' for the technical details.
 #'
-#' It can also be used for for
+#' The function can also form a
 #' nonparametric percentile bootstrap
 #' confidence of Delta_Med.
 #'
@@ -43,22 +47,24 @@
 #' of concern and fixes the path(s) to
 #' zero, effectively removing the
 #' mediator(s). However, the model is
-#' not refitted, hence keeping all
-#' estimates of all parameters unchanged.
+#' not refitted, hence keeping the
+#' estimates of all other parameters
+#' unchanged.
 #' It then uses [lavaan::lav_model_set_parameters()]
 #' to update the parameters,
 #' [lavaan::lav_model_implied()] to
 #' update the implied statistics, and
-#' then call [lavaan::lavInspect()] to
+#' then calls [lavaan::lavInspect()] to
 #' retrieve the implied variance of the
 #' predicted values of `y` for computing
-#' the second $R^2$. Subtracting this
-#' $R^2$ from the original $R^2$ of
-#' `y` can then yield the $Delta^{Med}.
+#' the \eqn{R^2_2}. Subtracting this
+#' \eqn{R^2_2} from \eqn{R^2_1} of
+#' `y` can then yield Delta_Med.
 #'
 #' # Limitations
 #'
-#' For now, it only supports the types
+#' For now, it only computes Delta_Med
+#' for the types
 #' of models discussed in
 #' Liu et al. (2023):
 #'
@@ -108,7 +114,7 @@
 #' experimental, or for simulation
 #' studies.
 #'
-#' For research purpose, most of the
+#' For research purposes, most of the
 #' requirements above can be removed
 #' by users using the relevant
 #' `skip_check_*` arguments. An error
@@ -134,7 +140,9 @@
 #'
 #' This class has a `print` method,
 #' a `coef` method, and a `confint`
-#' method. (TODO: To write)
+#' method. See [print.delta_med()],
+#' [coef.delta_med()], and
+#' [confint.delta_med()].
 #'
 #' @param x The name of the `x` variable.
 #' Must be supplied as a quoted string.
@@ -155,7 +163,7 @@
 #' @param paths_to_remove A character
 #' vector of paths users want to
 #' manually remove, specified in
-#' `lavaan`` syntax. For example,
+#' `lavaan` model syntax. For example,
 #' `c("m2~x", "m3~m2")` removes the
 #' path from `x` to `m2` and the path
 #' from `m2` to `m3`. The default is
@@ -206,23 +214,43 @@
 #' Advance online publication.
 #' https://doi.org/10.1037/met0000571
 #'
+#' @seealso [print.delta_med()],
+#' [coef.delta_med()], and
+#' [confint.delta_med()].
 #'
 #' @examples
-#' # TO PREPARE
-#' # library(lavaan)
-#' # dat <- data_med
-#' # head(dat)
-#' # mod <-
-#' # "
-#' # m ~ x + c1 + c2
-#' # y ~ m + x + c1 + c2
-#' # "
-#' # fit <- sem(mod, dat, fixed.x = FALSE)
-#' # out <- indirect_proportion(x = "x",
-#' #                            y = "y",
-#' #                            m = "m",
-#' #                            fit = fit)
-#' # out
+#'
+#' library(lavaan)
+#' dat <- data_med
+#' mod <-
+#' "
+#' m ~ x
+#' y ~ m + x
+#' "
+#' fit <- sem(mod, dat)
+#' dm <- delta_med(x = "x",
+#'                 y = "y",
+#'                 m = "m",
+#'                 fit = fit)
+#' dm
+#' print(dm, full = TRUE)
+#'
+#' # Call do_boot() to generate
+#' # bootstrap estimates
+#' # Use 2000 or even 5000 for R in real studies
+#' # Set parallel to TRUE in real studies for faster bootstrapping
+#' boot_out <- do_boot(fit,
+#'                     R = 100,
+#'                     seed = 879,
+#'                     parallel = FALSE)
+#' dm_boot <- delta_med(x = "x",
+#'                      y = "y",
+#'                      m = "m",
+#'                      fit = fit,
+#'                      boot_out = boot_out)
+#' dm_boot
+#' confint(dm_boot)
+#'
 #'
 #' @export
 
