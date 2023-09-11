@@ -12,7 +12,11 @@ delta_med(
   paths_to_remove = NULL,
   boot_out = NULL,
   level = 0.95,
-  progress = TRUE
+  progress = TRUE,
+  skip_check_single_x = FALSE,
+  skip_check_m_between_x_y = FALSE,
+  skip_check_x_to_y = FALSE,
+  skip_check_latent_variables = FALSE
 )
 }
 \arguments{
@@ -23,9 +27,10 @@ Must be supplied as a quoted string.}
 Must be supplied as a quoted string.}
 
 \item{m}{A vector of the variable
-names of the mediator(s). The path
-goes from the first mediator
-successively to the last mediator.
+names of the mediator(s). If more
+than one mediators, they do not have
+to be on the same path from \code{x}
+to \code{y}.
 Cannot be \code{NULL} for this function.}
 
 \item{fit}{The fit object. Must be a
@@ -54,6 +59,22 @@ Default is .95.}
 \item{progress}{Logical. Display
 bootstrapping progress or not.
 Default is \code{TRUE}.}
+
+\item{skip_check_single_x}{Logical
+Check whether the model has one and
+only one x-variable. Default is \code{TRUE}.}
+
+\item{skip_check_m_between_x_y}{Logical. Check whether all \code{m}
+variables are along a path from \code{x}
+to \code{y}. Default is \code{TRUE}.}
+
+\item{skip_check_x_to_y}{Logical.
+Check whether there is a direct path
+from \code{x} to \code{y}. Default is \code{TRUE}.}
+
+\item{skip_check_latent_variables}{Logical. Check whether the model
+has any latent variables. Default
+is \code{TRUE}.}
 }
 \value{
 A \code{delta_med} class object.
@@ -148,7 +169,7 @@ outcome variables, the computation
 of the Delta_Med is not affected
 by the presence of other outcome
 variables.
-\item Have no control variables.
+\item Having no control variables.
 \item The mediator(s), \code{m}, and the
 \code{y}-variable are continuous.
 \item \code{x} can be continuous
@@ -177,7 +198,10 @@ studies.
 For research purpose, most of the
 requirements above can be removed
 by users using the relevant
-arguments.
+\verb{skip_check_*} arguments. An error
+will be raised if the models failed
+any of the checks not skipped by
+users.
 }
 
 \examples{

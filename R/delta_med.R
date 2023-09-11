@@ -111,7 +111,10 @@
 #' For research purpose, most of the
 #' requirements above can be removed
 #' by users using the relevant
-#' arguments.
+#' `skip_check_*` arguments. An error
+#' will be raised if the models failed
+#' any of the checks not skipped by
+#' users.
 #'
 #' @return
 #' A `delta_med` class object.
@@ -177,6 +180,24 @@
 #' bootstrapping progress or not.
 #' Default is `TRUE`.
 #'
+#' @param skip_check_single_x Logical
+#' Check whether the model has one and
+#' only one x-variable. Default is `TRUE`.
+#'
+#' @param skip_check_m_between_x_y
+#' Logical. Check whether all `m`
+#' variables are along a path from `x`
+#' to `y`. Default is `TRUE`.
+#'
+#' @param skip_check_x_to_y Logical.
+#' Check whether there is a direct path
+#' from `x` to `y`. Default is `TRUE`.
+#'
+#' @param skip_check_latent_variables
+#' Logical. Check whether the model
+#' has any latent variables. Default
+#' is `TRUE`.
+#'
 #' @references
 #' Liu, H., Yuan, K.-H., & Li, H. (2023).
 #' A systematic framework for defining
@@ -212,9 +233,21 @@ delta_med <- function(x,
                       paths_to_remove = NULL,
                       boot_out = NULL,
                       level = .95,
-                      progress = TRUE) {
+                      progress = TRUE,
+                      skip_check_single_x = FALSE,
+                      skip_check_m_between_x_y = FALSE,
+                      skip_check_x_to_y = FALSE,
+                      skip_check_latent_variables = FALSE
+                      ) {
     if (missing(x) || missing(m) || missing(y)) {
         stop("x, m, and y must all be specified.")
+      }
+    if (!delta_med_check_fit(x = x,
+                             y = y,
+                             m = m,
+                             fit = fit)) {
+        stop("Something's wrong with the model and/or",
+             "the x, y, and m variables selected. Please check.")
       }
     out <- delta_med_i(fit = fit,
                        x = x,
@@ -422,7 +455,36 @@ delta_med_check_fit <- function(x,
                                 m,
                                 fit,
                                 skip_check_single_x = FALSE,
-                                skip_check_m_between_x_y = FALSE
+                                skip_check_m_between_x_y = FALSE,
+                                skip_check_x_to_y = FALSE,
+                                skip_check_latent_variables = FALSE
                                 ) {
-    # TODO
+    if (!skip_check_single_x) {
+        if (length(lavaan::lavNames(fit, "ov.x")) != 1) {
+            stop("The model does not have exactly one x-variable.")
+          }
+      }
+    if (!skip_check_m_between_x_y) {
+        tmp <- sapply(m,
+                      check_path,
+                      x = x,
+                      y = y,
+                      fit = fit)
+        if (!all(tmp)) {
+            stop("At least one m-variable not between x and y.")
+          }
+      }
+    if (!skip_check_x_to_y) {
+        if (!check_path(x = x,
+                       y = y,
+                       fit = fit)) {
+            stop("x does not have a direct path to y.")
+          }
+      }
+    if (!skip_check_latent_variables) {
+        if (length(lavaan::lavNames(fit, "lv")) != 0) {
+            stop("Does not support a model with latent variable(s).")
+          }
+      }
+    TRUE
   }

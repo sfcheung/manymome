@@ -7,8 +7,8 @@ suppressMessages(library(lavaan))
 dat <- data_med
 mod <-
 "
-m ~ a * x + c1
-y ~ b * m + cp * x + c2
+m ~ a * x
+y ~ b * m + cp * x
 ab := a * b
 "
 fit <- sem(mod, dat, fixed.x = FALSE)
@@ -32,7 +32,7 @@ chk_dm_i_ci <- structure(c(NA, NA), dim = 1:2, dimnames = list("Delta_Med",
 
 test_that("delta_med: CI", {
     expect_output(print(dm_i, full = TRUE),
-                  "0.117")
+                  "0.230")
     expect_equal(confint(dm_i),
                  chk_dm_i_ci)
   })
@@ -48,12 +48,12 @@ dm_boot
 print(dm_boot, full = TRUE)
 print(dm_boot, full = TRUE, digits = 4)
 print(dm_boot, level = .80, full = TRUE, digits = 4)
-chk_dm_boot_ci_90 <- structure(c(0.133572756453769, 0.308885825686353), dim = 1:2, dimnames = list(
+chk_dm_boot_ci_90 <- structure(c(0.126950157227903, 0.308364634253817), dim = 1:2, dimnames = list(
     "Delta_Med", c("5 %", "95 %")))
 
 test_that("delta_med: CI", {
     expect_output(print(dm_boot, full = TRUE),
-                  "0.117")
+                  "0.230")
     expect_output(print(dm_boot, full = TRUE),
                   "95.0% Bootstrap confidence interval")
     expect_equal(confint(dm_boot),
