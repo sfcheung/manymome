@@ -140,9 +140,10 @@
 #' Must be supplied as a quoted string.
 #'
 #' @param m A vector of the variable
-#' names of the mediator(s). The path
-#' goes from the first mediator
-#' successively to the last mediator.
+#' names of the mediator(s). If more
+#' than one mediators, they do not have
+#' to be on the same path from `x`
+#' to `y`.
 #' Cannot be `NULL` for this function.
 #'
 #' @param fit The fit object. Must be a
