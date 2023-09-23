@@ -218,6 +218,13 @@ indirect_i <- function(x,
             stop("Does not support paths with both latent and observed variables")
           }
       }
+    lv_obs <- "lv_obs"
+    if (isTRUE(all(chk_lv))) {
+        lv_obs <- "all_lv"
+      }
+    if (isTRUE(all(!chk_lv))) {
+        lv_obs <- "all_obs"
+      }
     if (is.null(prods)) {
         if (isTRUE(any(chk_lv))) {
             prods_lv <- mapply(get_prod,
@@ -256,9 +263,22 @@ indirect_i <- function(x,
                                     SIMPLIFY = FALSE)
               }
           }
-        tmp <- unique(c(names(prods_lv), names(prods_obs)))
-        prods <- c(prods_lv, prods_obs)[tmp]
+        if (lv_obs == "lv_obs") {
+            # Combine prods
+            tmp1 <- length(prods_lv)
+            prods <- prods_lv
+            for (tmp2 in seq_len(tmp1)) {
+                if (!identical(prods_obs[[tmp2]], NA)) {
+                    prods[tmp2] <- prods_obs[tmp2]
+                  }
+              }
+          } else {
+            prods <- switch(lv_obs,
+                            all_lv = prods_lv,
+                            all_obs = prods_obs)
+          }
         # # Old version
+        # # Delete if the version above works
         # if (isTRUE(all(chk_lv))) {
         #     prods <- mapply(get_prod,
         #                     x = xs,
