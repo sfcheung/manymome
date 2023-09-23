@@ -119,6 +119,13 @@
 #' them only when the moderators are
 #' omitted intentionally.
 #'
+#' @param allow_mixing_lav_and_obs If
+#' `TRUE`, it accepts a path with both
+#' latent variables and observed
+#' variables. Default is `FALSE`.
+#' Used for testing and users
+#' should not be set it to `TRUE`,
+#' for now.
 #'
 #' @seealso [indirect_effect()],
 #' [cond_indirect_effects()], and
@@ -178,7 +185,8 @@ indirect_i <- function(x,
                      get_prods_only = FALSE,
                      data = NULL,
                      expand = TRUE,
-                     warn = TRUE) {
+                     warn = TRUE,
+                     allow_mixing_lav_and_obs = FALSE) {
     if (is.null(est)) {
       est <- lav_est(fit)
     }
@@ -205,8 +213,10 @@ indirect_i <- function(x,
     bs_org <- bs
     names(bs_org) <- bs_names
     chk_lv <- unique(c(xs, ys)) %in% check_lv_in_est(est)
-    if (isTRUE(any(chk_lv)) && !isTRUE(all(chk_lv))) {
-        stop("Does not support paths with both latent and observed variables")
+    if (!allow_mixing_lav_and_obs) {
+        if (isTRUE(any(chk_lv)) && !isTRUE(all(chk_lv))) {
+            stop("Does not support paths with both latent and observed variables")
+          }
       }
     if (is.null(prods)) {
         if (isTRUE(all(chk_lv))) {

@@ -20,7 +20,8 @@ indirect_i(
   get_prods_only = FALSE,
   data = NULL,
   expand = TRUE,
-  warn = TRUE
+  warn = TRUE,
+  allow_mixing_lav_and_obs = FALSE
 )
 }
 \arguments{
@@ -116,6 +117,14 @@ path. Set this to \code{FALSE} will
 suppress these warnings. Suppress
 them only when the moderators are
 omitted intentionally.}
+
+\item{allow_mixing_lav_and_obs}{If
+\code{TRUE}, it accepts a path with both
+latent variables and observed
+variables. Default is \code{FALSE}.
+Used for testing and users
+should not be set it to \code{TRUE},
+for now.}
 }
 \value{
 It returns an
