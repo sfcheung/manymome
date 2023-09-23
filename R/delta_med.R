@@ -61,9 +61,10 @@
 #' \eqn{R^2_2} from \eqn{R^2_1} of
 #' `y` can then yield Delta_Med.
 #'
-#' # Limitations
+#' # Model Requirements
 #'
-#' For now, it only computes Delta_Med
+#' For now, by defaul, it only
+#' computes Delta_Med
 #' for the types
 #' of models discussed in
 #' Liu et al. (2023):
@@ -104,19 +105,14 @@
 #' - None of the paths from `x` to `y`
 #'  are moderated.
 #'
-#' It may be applicable to other kinds
-#' of models but more studies are needed
-#' to investigate these situations.
-#' Although the function can be used
-#' in cases not discussed in
-#' Liu et al. (2023), using it in those
-#' cases should be considered as
-#' experimental, or for simulation
-#' studies.
-#'
-#' For research purposes, most of the
-#' requirements above can be removed
-#' by users using the relevant
+#' It can be used for other kinds
+#' of models but support for them is
+#' disabled by default. To use
+#' this function for
+#' cases not discussed in
+#' Liu et al. (2023), please disable
+#' relevant requirements stated above
+#' using the relevant
 #' `skip_check_*` arguments. An error
 #' will be raised if the models failed
 #' any of the checks not skipped by
