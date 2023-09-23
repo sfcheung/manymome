@@ -16,7 +16,7 @@ value(s) of moderator(s) if present."><meta property="og:image" content="https:/
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.12.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,7 +104,8 @@ value(s) of moderator(s) if present.</p>
 <span>  get_prods_only <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  expand <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  warn <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  warn <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  allow_mixing_lav_and_obs <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -231,6 +232,13 @@ path. Set this to <code>FALSE</code> will
 suppress these warnings. Suppress
 them only when the moderators are
 omitted intentionally.</p></dd>
+
+
+<dt>allow_mixing_lav_and_obs</dt>
+<dd><p>If
+<code>TRUE</code>, it accepts a path with both
+latent variables and observed
+variables. Default is <code>TRUE</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

@@ -67,6 +67,9 @@
     <loc>https://sfcheung.github.io/manymome/reference/coef.cond_indirect_effects.html</loc>
   </url>
   <url>
+    <loc>https://sfcheung.github.io/manymome/reference/coef.delta_med.html</loc>
+  </url>
+  <url>
     <loc>https://sfcheung.github.io/manymome/reference/coef.indirect.html</loc>
   </url>
   <url>
@@ -89,6 +92,9 @@
   </url>
   <url>
     <loc>https://sfcheung.github.io/manymome/reference/confint.cond_indirect_effects.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/manymome/reference/confint.delta_med.html</loc>
   </url>
   <url>
     <loc>https://sfcheung.github.io/manymome/reference/confint.indirect.html</loc>
@@ -164,6 +170,9 @@
   </url>
   <url>
     <loc>https://sfcheung.github.io/manymome/reference/data_serial_parallel_latent.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/manymome/reference/delta_med.html</loc>
   </url>
   <url>
     <loc>https://sfcheung.github.io/manymome/reference/do_boot.html</loc>
@@ -248,6 +257,9 @@
   </url>
   <url>
     <loc>https://sfcheung.github.io/manymome/reference/print.cond_indirect_effects.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/manymome/reference/print.delta_med.html</loc>
   </url>
   <url>
     <loc>https://sfcheung.github.io/manymome/reference/print.indirect.html</loc>
