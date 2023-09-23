@@ -122,10 +122,7 @@
 #' @param allow_mixing_lav_and_obs If
 #' `TRUE`, it accepts a path with both
 #' latent variables and observed
-#' variables. Default is `FALSE`.
-#' Used for testing and users
-#' should not be set it to `TRUE`,
-#' for now.
+#' variables. Default is `TRUE`.
 #'
 #' @seealso [indirect_effect()],
 #' [cond_indirect_effects()], and
@@ -186,7 +183,7 @@ indirect_i <- function(x,
                      data = NULL,
                      expand = TRUE,
                      warn = TRUE,
-                     allow_mixing_lav_and_obs = FALSE) {
+                     allow_mixing_lav_and_obs = TRUE) {
     if (is.null(est)) {
       est <- lav_est(fit)
     }

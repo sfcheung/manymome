@@ -1,5 +1,3 @@
-skip_on_cran("Testing lav_obs")
-
 library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
