@@ -1,4 +1,4 @@
-# manymome 0.1.12.1
+# manymome 0.1.12.2
 
 ## New Features
 
@@ -8,6 +8,8 @@
   effect proposed by Liu, Yuan and Li (2023).
   Can form nonparametric bootstrap
   confidence interval for $\Delta_{Med}$. (0.1.12.1)
+- Added support for paths with both
+  latent and observed variables. (0.1.12.2)
 
 # manymome 0.1.12
 
