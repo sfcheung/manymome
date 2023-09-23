@@ -119,6 +119,10 @@
 #' them only when the moderators are
 #' omitted intentionally.
 #'
+#' @param allow_mixing_lav_and_obs If
+#' `TRUE`, it accepts a path with both
+#' latent variables and observed
+#' variables. Default is `TRUE`.
 #'
 #' @seealso [indirect_effect()],
 #' [cond_indirect_effects()], and
@@ -178,7 +182,8 @@ indirect_i <- function(x,
                      get_prods_only = FALSE,
                      data = NULL,
                      expand = TRUE,
-                     warn = TRUE) {
+                     warn = TRUE,
+                     allow_mixing_lav_and_obs = TRUE) {
     if (is.null(est)) {
       est <- lav_est(fit)
     }
@@ -205,18 +210,28 @@ indirect_i <- function(x,
     bs_org <- bs
     names(bs_org) <- bs_names
     chk_lv <- unique(c(xs, ys)) %in% check_lv_in_est(est)
-    if (isTRUE(any(chk_lv)) && !isTRUE(all(chk_lv))) {
-        stop("Does not support paths with both latent and observed variables")
+    if (!allow_mixing_lav_and_obs) {
+        if (isTRUE(any(chk_lv)) && !isTRUE(all(chk_lv))) {
+            stop("Does not support paths with both latent and observed variables")
+          }
+      }
+    lv_obs <- "lv_obs"
+    if (isTRUE(all(chk_lv))) {
+        lv_obs <- "all_lv"
+      }
+    if (isTRUE(all(!chk_lv))) {
+        lv_obs <- "all_obs"
       }
     if (is.null(prods)) {
-        if (isTRUE(all(chk_lv))) {
-            prods <- mapply(get_prod,
-                            x = xs,
-                            y = ys,
-                            operator = "_x_",
-                            MoreArgs = list(est = est),
-                            SIMPLIFY = FALSE)
-          } else {
+        if (isTRUE(any(chk_lv))) {
+            prods_lv <- mapply(get_prod,
+                               x = xs,
+                               y = ys,
+                               operator = "_x_",
+                               MoreArgs = list(est = est),
+                               SIMPLIFY = FALSE)
+          }
+        if (isFALSE(all(chk_lv))) {
             if (is.null(data)) {
                 # Try to get the data from fit
                 if (!is.null(fit)) {
@@ -228,23 +243,75 @@ indirect_i <- function(x,
                   }
               }
             if (!is.null(fit)) {
-                prods <- mapply(get_prod,
-                                x = xs,
-                                y = ys,
-                                MoreArgs = list(fit = fit,
-                                                data = data,
-                                                expand = expand),
-                                SIMPLIFY = FALSE)
+                prods_obs <- mapply(get_prod,
+                                    x = xs,
+                                    y = ys,
+                                    MoreArgs = list(fit = fit,
+                                                    data = data,
+                                                    expand = expand),
+                                    SIMPLIFY = FALSE)
               } else {
-                prods <- mapply(get_prod,
-                                x = xs,
-                                y = ys,
-                                MoreArgs = list(est = est,
-                                                data = data,
-                                                expand = expand),
-                                SIMPLIFY = FALSE)
+                prods_obs <- mapply(get_prod,
+                                    x = xs,
+                                    y = ys,
+                                    MoreArgs = list(est = est,
+                                                    data = data,
+                                                    expand = expand),
+                                    SIMPLIFY = FALSE)
               }
           }
+        if (lv_obs == "lv_obs") {
+            # Combine prods
+            tmp1 <- length(prods_lv)
+            prods <- prods_lv
+            for (tmp2 in seq_len(tmp1)) {
+                if (!identical(prods_obs[[tmp2]], NA)) {
+                    prods[tmp2] <- prods_obs[tmp2]
+                  }
+              }
+          } else {
+            prods <- switch(lv_obs,
+                            all_lv = prods_lv,
+                            all_obs = prods_obs)
+          }
+        # # Old version
+        # # Delete if the version above works
+        # if (isTRUE(all(chk_lv))) {
+        #     prods <- mapply(get_prod,
+        #                     x = xs,
+        #                     y = ys,
+        #                     operator = "_x_",
+        #                     MoreArgs = list(est = est),
+        #                     SIMPLIFY = FALSE)
+        #   } else {
+        #     if (is.null(data)) {
+        #         # Try to get the data from fit
+        #         if (!is.null(fit)) {
+        #             fit_type <- cond_indirect_check_fit(fit)
+        #             data <- switch(fit_type,
+        #                           lavaan = lav_data_used(fit, drop_colon = FALSE),
+        #                           lavaan.mi = lav_data_used(fit, drop_colon = FALSE),
+        #                           lm = lm2ptable(fit)$data)
+        #           }
+        #       }
+        #     if (!is.null(fit)) {
+        #         prods <- mapply(get_prod,
+        #                         x = xs,
+        #                         y = ys,
+        #                         MoreArgs = list(fit = fit,
+        #                                         data = data,
+        #                                         expand = expand),
+        #                         SIMPLIFY = FALSE)
+        #       } else {
+        #         prods <- mapply(get_prod,
+        #                         x = xs,
+        #                         y = ys,
+        #                         MoreArgs = list(est = est,
+        #                                         data = data,
+        #                                         expand = expand),
+        #                         SIMPLIFY = FALSE)
+        #       }
+        #   }
       } else {
         # prods is supplied.
         # Need to update the estimates

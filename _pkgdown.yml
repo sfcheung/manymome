@@ -96,6 +96,7 @@ reference:
   - cond_indirect_diff
   - plot.cond_indirect_effects
   - indirect_proportion
+  - delta_med
 - title: Moderator Levels
   desc:  >
     Set the levels of moderators to be used in `cond_indirect_effects()`
@@ -155,6 +156,9 @@ reference:
   - print.mc_out
   - print.indirect_proportion
   - coef.indirect_proportion
+  - print.delta_med
+  - coef.delta_med
+  - confint.delta_med
 - title: Advanced helpers
   desc: Helper functions exported for advanced users.
 - contents:

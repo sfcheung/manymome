@@ -1,3 +1,16 @@
+# manymome 0.1.12.4
+
+## New Features
+
+- Added `delta_med()` for computing
+  $\Delta_{Med}$ (Delta_Med), an
+  $R^2$-like measure of indirect
+  effect proposed by Liu, Yuan and Li (2023).
+  Can form nonparametric bootstrap
+  confidence interval for $\Delta_{Med}$. (0.1.12.1, 0.1.12.3)
+- Added support for paths with both
+  latent and observed variables. (0.1.12.2, 0.1.12.4)
+
 # manymome 0.1.12
 
 ## New Features
