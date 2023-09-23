@@ -219,14 +219,15 @@ indirect_i <- function(x,
           }
       }
     if (is.null(prods)) {
-        if (isTRUE(all(chk_lv))) {
-            prods <- mapply(get_prod,
-                            x = xs,
-                            y = ys,
-                            operator = "_x_",
-                            MoreArgs = list(est = est),
-                            SIMPLIFY = FALSE)
-          } else {
+        if (isTRUE(any(chk_lv))) {
+            prods_lv <- mapply(get_prod,
+                               x = xs,
+                               y = ys,
+                               operator = "_x_",
+                               MoreArgs = list(est = est),
+                               SIMPLIFY = FALSE)
+          }
+        if (isFALSE(all(chk_lv))) {
             if (is.null(data)) {
                 # Try to get the data from fit
                 if (!is.null(fit)) {
@@ -238,23 +239,62 @@ indirect_i <- function(x,
                   }
               }
             if (!is.null(fit)) {
-                prods <- mapply(get_prod,
-                                x = xs,
-                                y = ys,
-                                MoreArgs = list(fit = fit,
-                                                data = data,
-                                                expand = expand),
-                                SIMPLIFY = FALSE)
+                prods_obs <- mapply(get_prod,
+                                    x = xs,
+                                    y = ys,
+                                    MoreArgs = list(fit = fit,
+                                                    data = data,
+                                                    expand = expand),
+                                    SIMPLIFY = FALSE)
               } else {
-                prods <- mapply(get_prod,
-                                x = xs,
-                                y = ys,
-                                MoreArgs = list(est = est,
-                                                data = data,
-                                                expand = expand),
-                                SIMPLIFY = FALSE)
+                prods_obs <- mapply(get_prod,
+                                    x = xs,
+                                    y = ys,
+                                    MoreArgs = list(est = est,
+                                                    data = data,
+                                                    expand = expand),
+                                    SIMPLIFY = FALSE)
               }
           }
+        tmp <- unique(c(names(prods_lv), names(prods_obs)))
+        prods <- c(prods_lv, prods_obs)[tmp]
+        # # Old version
+        # if (isTRUE(all(chk_lv))) {
+        #     prods <- mapply(get_prod,
+        #                     x = xs,
+        #                     y = ys,
+        #                     operator = "_x_",
+        #                     MoreArgs = list(est = est),
+        #                     SIMPLIFY = FALSE)
+        #   } else {
+        #     if (is.null(data)) {
+        #         # Try to get the data from fit
+        #         if (!is.null(fit)) {
+        #             fit_type <- cond_indirect_check_fit(fit)
+        #             data <- switch(fit_type,
+        #                           lavaan = lav_data_used(fit, drop_colon = FALSE),
+        #                           lavaan.mi = lav_data_used(fit, drop_colon = FALSE),
+        #                           lm = lm2ptable(fit)$data)
+        #           }
+        #       }
+        #     if (!is.null(fit)) {
+        #         prods <- mapply(get_prod,
+        #                         x = xs,
+        #                         y = ys,
+        #                         MoreArgs = list(fit = fit,
+        #                                         data = data,
+        #                                         expand = expand),
+        #                         SIMPLIFY = FALSE)
+        #       } else {
+        #         prods <- mapply(get_prod,
+        #                         x = xs,
+        #                         y = ys,
+        #                         MoreArgs = list(est = est,
+        #                                         data = data,
+        #                                         expand = expand),
+        #                         SIMPLIFY = FALSE)
+        #       }
+        #   }
       } else {
         # prods is supplied.
         # Need to update the estimates
