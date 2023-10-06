@@ -63,7 +63,8 @@
 #' # R should be 2000 or even 5000 in real research
 #' # parallel should be used in real research.
 #' fit_boot <- do_boot(fit, R = 45, seed = 8974,
-#'                     parallel = FALSE)
+#'                     parallel = FALSE,
+#'                     progress = FALSE)
 #' out <- many_indirect_effects(paths,
 #'                              fit = fit,
 #'                              boot_ci = TRUE,
