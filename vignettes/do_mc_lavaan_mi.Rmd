@@ -1,7 +1,7 @@
 ---
 title: "Monte Carlo Confidence Intervals with Multiple Imputation"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2023-05-03"
+date: "2023-10-06"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -18,6 +18,7 @@ vignette: >
 This article is a brief illustration of how
 to use `do_mc()` from the package
 [manymome](https://sfcheung.github.io/manymome/)
+([Cheung & Cheung, 2023](https://doi.org/10.3758/s13428-023-02224-z))
 for a model fitted to multiple
 imputation datasets to generate Monte Carlo estimates,
 which can be used by `indirect_effect()` and
@@ -149,7 +150,7 @@ We then fit the model by `semTools::sem.mi()`:
 library(semTools)
 #> 
 #> ###############################################################################
-#> This is semTools 0.5-6
+#> This is semTools 0.5-6.920
 #> All users of R (or SEM) are invited to submit functions or ideas for functions.
 #> ###############################################################################
 mod <-
@@ -261,7 +262,7 @@ out_lavaan
 #>                                        
 #>  Path:                 x -> m -> y     
 #>  Indirect Effect       0.656           
-#>  95.0% Monte Carlo CI: [0.219 to 1.130]
+#>  95.0% Monte Carlo CI: [0.213 to 1.124]
 #> 
 #> Computation Formula:
 #>   (b.m~x)*(b.y~m)
@@ -300,8 +301,14 @@ please refer to its help page.
 
 # Reference
 
+Cheung, S. F., & Cheung, S.-H. (2023). *manymome*: An R
+package for computing the indirect effects, conditional
+effects, and conditional indirect effects, standardized or
+unstandardized, and their bootstrap confidence intervals,
+in many (though not all) models. *Behavior Research Methods*.
+https://doi.org/10.3758/s13428-023-02224-z
+
 van Buuren, S. (2018).
 *Flexible imputation of missing data* (2^nd^ Ed.).
 CRC Press, Taylor and Francis Group.
-
 

@@ -9,7 +9,7 @@
 [![R-CMD-check](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-(Version 0.1.12.4, updated on 2023-09-23, [release history](https://sfcheung.github.io/manymome/news/index.html))
+(Version 0.1.13, updated on 2023-10-06, [release history](https://sfcheung.github.io/manymome/news/index.html))
 
 # manymome  <img src="man/figures/logo.png" align="right" height="150" />
 
@@ -17,7 +17,13 @@ Functions for estimating indirect effects, conditional indirect
 effects, and conditional effects in a model with
 moderation, mediation, and/or moderated mediation fitted
 by structural equation modelling (SEM) or estimated
-by multiple regression.
+by multiple regression. The package was introduced in:
+
+- Cheung, S. F., & Cheung, S.-H. (2023). *manymome*: An R package for computing
+  the indirect effects, conditional effects, and conditional indirect effects,
+  standardized or unstandardized, and their bootstrap confidence intervals,
+  in many (though not all) models. *Behavior Research Methods*.
+  https://doi.org/10.3758/s13428-023-02224-z
 
 # What Can It Do?
 

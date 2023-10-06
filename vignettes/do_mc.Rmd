@@ -1,7 +1,7 @@
 ---
 title: "Generate Monte Carlo Estimates"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2023-05-03"
+date: "2023-10-06"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -18,6 +18,7 @@ vignette: >
 This article is a brief illustration of how
 to use `do_mc()` from the package
 [manymome](https://sfcheung.github.io/manymome/index.html)
+([Cheung & Cheung, 2023](https://doi.org/10.3758/s13428-023-02224-z))
 to generate Monte Carlo estimates for
 `indirect_effect()` and `cond_indirect_effects()` to
 form Monte Carlo confidence intervals.
@@ -105,7 +106,7 @@ fit_lavaan <- sem(model = mod, data = dat,
                   fixed.x = FALSE,
                   estimator = "MLR")
 summary(fit_lavaan)
-#> lavaan 0.6.15 ended normally after 1 iteration
+#> lavaan 0.6.16 ended normally after 1 iteration
 #> 
 #>   Estimator                                         ML
 #>   Optimization method                           NLMINB
@@ -220,7 +221,7 @@ out_lavaan
 #>                                        
 #>  Path:                 x -> m -> y     
 #>  Indirect Effect       0.733           
-#>  95.0% Monte Carlo CI: [0.306 to 1.174]
+#>  95.0% Monte Carlo CI: [0.301 to 1.180]
 #> 
 #> Computation Formula:
 #>   (b.m~x)*(b.y~m)
@@ -266,21 +267,21 @@ This is the content of `est` of the first list:
 ```r
 mc_out_lavaan[[1]]$est
 #>    lhs op rhs    est
-#> 1    m  ~   x  0.860
-#> 2    m  ~  c1  0.160
-#> 3    m  ~  c2 -0.086
-#> 4    y  ~   m  0.567
-#> 5    y  ~   x  0.881
-#> 6    y  ~  c1  0.008
-#> 7    y  ~  c2  0.117
-#> 8    m ~~   m  0.619
-#> 9    y ~~   y  3.431
-#> 10   x ~~   x  1.061
-#> 11   x ~~  c1 -0.113
-#> 12   x ~~  c2  0.099
-#> 13  c1 ~~  c1  1.190
-#> 14  c1 ~~  c2 -0.243
-#> 15  c2 ~~  c2  0.724
+#> 1    m  ~   x  0.909
+#> 2    m  ~  c1  0.198
+#> 3    m  ~  c2 -0.163
+#> 4    y  ~   m  0.641
+#> 5    y  ~   x  0.921
+#> 6    y  ~  c1  0.010
+#> 7    y  ~  c2  0.141
+#> 8    m ~~   m  0.641
+#> 9    y ~~   y  3.432
+#> 10   x ~~   x  1.023
+#> 11   x ~~  c1  0.074
+#> 12   x ~~  c2  0.028
+#> 13  c1 ~~  c1  1.180
+#> 14  c1 ~~  c2 -0.261
+#> 15  c2 ~~  c2  0.718
 ```
 
 The content is just the first four columns of
@@ -296,11 +297,11 @@ first list:
 mc_out_lavaan[[1]]$implied_stats
 #> $cov
 #>         m      y      x     c1     c2
-#> m   1.401                            
-#> y   1.575  5.619                     
-#> x   0.886  1.448  1.061              
-#> c1  0.114 -0.053 -0.113  1.190       
-#> c2 -0.016  0.161  0.099 -0.243  0.724
+#> m   1.586                            
+#> y   1.864  6.059                     
+#> x   0.939  1.548  1.023              
+#> c1  0.344  0.263  0.074  1.180       
+#> c2 -0.143  0.033  0.028 -0.261  0.718
 #> 
 #> $mean
 #>  m  y  x c1 c2 
@@ -334,3 +335,12 @@ by `do_mc()`.
 
 For further information on `do_mc()`,
 please refer to its help page.
+
+# Reference
+
+Cheung, S. F., & Cheung, S.-H. (2023). *manymome*: An R
+package for computing the indirect effects, conditional
+effects, and conditional indirect effects, standardized or
+unstandardized, and their bootstrap confidence intervals,
+in many (though not all) models. *Behavior Research Methods*.
+https://doi.org/10.3758/s13428-023-02224-z

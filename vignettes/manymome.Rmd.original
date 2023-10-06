@@ -24,6 +24,7 @@ knitr::opts_chunk$set(
 This article is a brief illustration of how main functions
 from the package
 [manymome](https://sfcheung.github.io/manymome/index.html)
+([Cheung & Cheung, 2023](https://doi.org/10.3758/s13428-023-02224-z))
 can be
 used in some typical cases. It assumes that readers have
 basic understanding of mediation, moderation, moderated
@@ -911,6 +912,13 @@ confidence intervals of standardized indirect effects.
 *Behavior Research Methods, 41*(2), 425-438.
 https://doi.org/10.3758/BRM.41.2.425
 
+Cheung, S. F., & Cheung, S.-H. (2023). *manymome*: An R
+package for computing the indirect effects, conditional
+effects, and conditional indirect effects, standardized or
+unstandardized, and their bootstrap confidence intervals,
+in many (though not all) models. *Behavior Research Methods*.
+https://doi.org/10.3758/s13428-023-02224-z
+
 Friedrich, R. J. (1982). In defense of multiplicative terms
 in multiple regression equations.
 *American Journal of Political Science, 26*(4), 797-833.
@@ -933,7 +941,7 @@ An alternative approach for the analysis of mediated moderation.
 https://doi.org/10.1037/met0000160
 
 Miles, J. N. V., Kulesza, M., Ewing, B., Shih, R. A.,
-Tucker, J. S., & D’Amico, E. J. (2015). Moderated
+Tucker, J. S., & D'Amico, E. J. (2015). Moderated
 mediation analysis: An illustration using the association
 of gender with delinquency and mental health.
 *Journal of Criminal Psychology, 5*(2), 99-123.

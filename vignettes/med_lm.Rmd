@@ -1,7 +1,7 @@
 ---
 title: "Mediation Analysis by Multiple Regression"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2023-05-12"
+date: "2023-10-06"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -19,6 +19,7 @@ This article is a brief illustration of how
 to use `indirect_effect()`
 from the package
 [manymome](https://sfcheung.github.io/manymome/)
+([Cheung & Cheung, 2023](https://doi.org/10.3758/s13428-023-02224-z))
 to estimate the indirect effects
 when the model parameters are estimated by
 ordinary least squares (OLS) multiple regression
@@ -813,3 +814,12 @@ ends the paths.
 For further information on `do_boot()`
 and `indirect_effect()`,
 please refer to their help pages.
+
+# Reference
+
+Cheung, S. F., & Cheung, S.-H. (2023). *manymome*: An R
+package for computing the indirect effects, conditional
+effects, and conditional indirect effects, standardized or
+unstandardized, and their bootstrap confidence intervals,
+in many (though not all) models. *Behavior Research Methods*.
+https://doi.org/10.3758/s13428-023-02224-z
