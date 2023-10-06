@@ -236,14 +236,17 @@
 #' # Use 2000 or even 5000 for R in real studies
 #' # Set parallel to TRUE in real studies for faster bootstrapping
 #' boot_out <- do_boot(fit,
-#'                     R = 100,
+#'                     R = 45,
 #'                     seed = 879,
-#'                     parallel = FALSE)
+#'                     parallel = FALSE,
+#'                     progress = FALSE)
+#' # Remove 'progress = FALSE' in practice
 #' dm_boot <- delta_med(x = "x",
 #'                      y = "y",
 #'                      m = "m",
 #'                      fit = fit,
-#'                      boot_out = boot_out)
+#'                      boot_out = boot_out,
+#'                      progress = FALSE)
 #' dm_boot
 #' confint(dm_boot)
 #'
