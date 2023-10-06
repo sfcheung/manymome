@@ -35,7 +35,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.12.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.13</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -107,7 +107,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2023-05-03</h4>
+            <h4 data-toc-skip class="date">2023-10-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/HEAD/vignettes/do_mc.Rmd" class="external-link"><code>vignettes/do_mc.Rmd</code></a></small>
       <div class="d-none name"><code>do_mc.Rmd</code></div>
@@ -119,10 +119,10 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>This article is a brief illustration of how to use
-<code><a href="../reference/do_mc.html">do_mc()</a></code> from the package <a href="https://sfcheung.github.io/manymome/index.html">manymome</a> to
-generate Monte Carlo estimates for <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> and
-<code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> to form Monte Carlo confidence
-intervals.</p>
+<code><a href="../reference/do_mc.html">do_mc()</a></code> from the package <a href="https://sfcheung.github.io/manymome/index.html">manymome</a> (<a href="https://doi.org/10.3758/s13428-023-02224-z" class="external-link">Cheung &amp; Cheung,
+2023</a>) to generate Monte Carlo estimates for
+<code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> and <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>
+to form Monte Carlo confidence intervals.</p>
 <p>Although <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> and
 <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> can also be used to generate Monte
 Carlo estimates when they are called (see
@@ -199,7 +199,7 @@ one outcome variable (<code>y</code>), and two control variables
 <span>                  fixed.x <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                  estimator <span class="op">=</span> <span class="st">"MLR"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_lavaan</span><span class="op">)</span></span>
-<span><span class="co">#&gt; lavaan 0.6.15 ended normally after 1 iteration</span></span>
+<span><span class="co">#&gt; lavaan 0.6.16 ended normally after 1 iteration</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Estimator                                         ML</span></span>
 <span><span class="co">#&gt;   Optimization method                           NLMINB</span></span>
@@ -301,7 +301,7 @@ confidence intervals, if requested.</p>
 <span><span class="co">#&gt;                                        </span></span>
 <span><span class="co">#&gt;  Path:                 x -&gt; m -&gt; y     </span></span>
 <span><span class="co">#&gt;  Indirect Effect       0.733           </span></span>
-<span><span class="co">#&gt;  95.0% Monte Carlo CI: [0.306 to 1.174]</span></span>
+<span><span class="co">#&gt;  95.0% Monte Carlo CI: [0.301 to 1.180]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m~x)*(b.y~m)</span></span>
@@ -341,21 +341,21 @@ with two elements: <code>est</code> and <code>implied_stats</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mc_out_lavaan</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">est</span></span>
 <span><span class="co">#&gt;    lhs op rhs    est</span></span>
-<span><span class="co">#&gt; 1    m  ~   x  0.860</span></span>
-<span><span class="co">#&gt; 2    m  ~  c1  0.160</span></span>
-<span><span class="co">#&gt; 3    m  ~  c2 -0.086</span></span>
-<span><span class="co">#&gt; 4    y  ~   m  0.567</span></span>
-<span><span class="co">#&gt; 5    y  ~   x  0.881</span></span>
-<span><span class="co">#&gt; 6    y  ~  c1  0.008</span></span>
-<span><span class="co">#&gt; 7    y  ~  c2  0.117</span></span>
-<span><span class="co">#&gt; 8    m ~~   m  0.619</span></span>
-<span><span class="co">#&gt; 9    y ~~   y  3.431</span></span>
-<span><span class="co">#&gt; 10   x ~~   x  1.061</span></span>
-<span><span class="co">#&gt; 11   x ~~  c1 -0.113</span></span>
-<span><span class="co">#&gt; 12   x ~~  c2  0.099</span></span>
-<span><span class="co">#&gt; 13  c1 ~~  c1  1.190</span></span>
-<span><span class="co">#&gt; 14  c1 ~~  c2 -0.243</span></span>
-<span><span class="co">#&gt; 15  c2 ~~  c2  0.724</span></span></code></pre></div>
+<span><span class="co">#&gt; 1    m  ~   x  0.909</span></span>
+<span><span class="co">#&gt; 2    m  ~  c1  0.198</span></span>
+<span><span class="co">#&gt; 3    m  ~  c2 -0.163</span></span>
+<span><span class="co">#&gt; 4    y  ~   m  0.641</span></span>
+<span><span class="co">#&gt; 5    y  ~   x  0.921</span></span>
+<span><span class="co">#&gt; 6    y  ~  c1  0.010</span></span>
+<span><span class="co">#&gt; 7    y  ~  c2  0.141</span></span>
+<span><span class="co">#&gt; 8    m ~~   m  0.641</span></span>
+<span><span class="co">#&gt; 9    y ~~   y  3.432</span></span>
+<span><span class="co">#&gt; 10   x ~~   x  1.023</span></span>
+<span><span class="co">#&gt; 11   x ~~  c1  0.074</span></span>
+<span><span class="co">#&gt; 12   x ~~  c2  0.028</span></span>
+<span><span class="co">#&gt; 13  c1 ~~  c1  1.180</span></span>
+<span><span class="co">#&gt; 14  c1 ~~  c2 -0.261</span></span>
+<span><span class="co">#&gt; 15  c2 ~~  c2  0.718</span></span></code></pre></div>
 <p>The content is just the first four columns of the output of
 <code><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">lavaan::parameterEstimates()</a></code>. Note that only fixed and free
 parameters are used so other rows, if any, are not used even if
@@ -366,11 +366,11 @@ list:</p>
 <code class="sourceCode R"><span><span class="va">mc_out_lavaan</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">implied_stats</span></span>
 <span><span class="co">#&gt; $cov</span></span>
 <span><span class="co">#&gt;         m      y      x     c1     c2</span></span>
-<span><span class="co">#&gt; m   1.401                            </span></span>
-<span><span class="co">#&gt; y   1.575  5.619                     </span></span>
-<span><span class="co">#&gt; x   0.886  1.448  1.061              </span></span>
-<span><span class="co">#&gt; c1  0.114 -0.053 -0.113  1.190       </span></span>
-<span><span class="co">#&gt; c2 -0.016  0.161  0.099 -0.243  0.724</span></span>
+<span><span class="co">#&gt; m   1.586                            </span></span>
+<span><span class="co">#&gt; y   1.864  6.059                     </span></span>
+<span><span class="co">#&gt; x   0.939  1.548  1.023              </span></span>
+<span><span class="co">#&gt; c1  0.344  0.263  0.074  1.180       </span></span>
+<span><span class="co">#&gt; c2 -0.143  0.033  0.028 -0.261  0.718</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $mean</span></span>
 <span><span class="co">#&gt;  m  y  x c1 c2 </span></span>
@@ -399,6 +399,15 @@ more regression models and so are not supported by
 </h2>
 <p>For further information on <code><a href="../reference/do_mc.html">do_mc()</a></code>, please refer to its
 help page.</p>
+</div>
+<div class="section level2">
+<h2 id="reference">Reference<a class="anchor" aria-label="anchor" href="#reference"></a>
+</h2>
+<p>Cheung, S. F., &amp; Cheung, S.-H. (2023). <em>manymome</em>: An R
+package for computing the indirect effects, conditional effects, and
+conditional indirect effects, standardized or unstandardized, and their
+bootstrap confidence intervals, in many (though not all) models.
+<em>Behavior Research Methods</em>. <a href="https://doi.org/10.3758/s13428-023-02224-z" class="external-link uri">https://doi.org/10.3758/s13428-023-02224-z</a></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

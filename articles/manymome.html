@@ -35,7 +35,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.12.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.13</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -107,7 +107,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2023-05-03</h4>
+            <h4 data-toc-skip class="date">2023-10-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/HEAD/vignettes/manymome.Rmd" class="external-link"><code>vignettes/manymome.Rmd</code></a></small>
       <div class="d-none name"><code>manymome.Rmd</code></div>
@@ -119,10 +119,10 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>This article is a brief illustration of how main functions from the
-package <a href="https://sfcheung.github.io/manymome/index.html">manymome</a> can
-be used in some typical cases. It assumes that readers have basic
-understanding of mediation, moderation, moderated mediation, structural
-equation modeling (SEM), and bootstrapping.</p>
+package <a href="https://sfcheung.github.io/manymome/index.html">manymome</a> (<a href="https://doi.org/10.3758/s13428-023-02224-z" class="external-link">Cheung &amp; Cheung,
+2023</a>) can be used in some typical cases. It assumes that readers
+have basic understanding of mediation, moderation, moderated mediation,
+structural equation modeling (SEM), and bootstrapping.</p>
 <div class="section level3">
 <h3 id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a>
 </h3>
@@ -849,7 +849,7 @@ effect:</p>
 <span><span class="co">#&gt;                                        </span></span>
 <span><span class="co">#&gt;  Path:               x -&gt; m1 -&gt; m2 -&gt; y</span></span>
 <span><span class="co">#&gt;  Indirect Effect     0.086             </span></span>
-<span><span class="co">#&gt;  95.0% Bootstrap CI: [0.022 to 0.157]  </span></span>
+<span><span class="co">#&gt;  95.0% Bootstrap CI: [0.021 to 0.156]  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m1~x)*(b.m2~m1)*(b.y~m2)*sd_x/sd_y</span></span>
@@ -868,7 +868,7 @@ effect:</p>
 <span><span class="co">#&gt; NOTE: The effects of the component paths are from the model, not standardized.</span></span></code></pre></div>
 <p>The indirect effect from <code>x</code> to <code>y</code> through
 <code>m1</code> and <code>m2</code> is 0.086, with a 95% confidence
-interval of [0.022, 0.157], significantly different from zero
+interval of [0.021, 0.156], significantly different from zero
 (<em>p</em> &lt; .05). One SD increase of <code>x</code> leads to 0.086
 increase in SD of <code>y</code> through <code>m1</code> and
 <code>m2</code>.</p>
@@ -1128,6 +1128,11 @@ datasets.</p>
 <p>Cheung, M. W.-L. (2009). Comparison of methods for constructing
 confidence intervals of standardized indirect effects. <em>Behavior
 Research Methods, 41</em>(2), 425-438. <a href="https://doi.org/10.3758/BRM.41.2.425" class="external-link uri">https://doi.org/10.3758/BRM.41.2.425</a></p>
+<p>Cheung, S. F., &amp; Cheung, S.-H. (2023). <em>manymome</em>: An R
+package for computing the indirect effects, conditional effects, and
+conditional indirect effects, standardized or unstandardized, and their
+bootstrap confidence intervals, in many (though not all) models.
+<em>Behavior Research Methods</em>. <a href="https://doi.org/10.3758/s13428-023-02224-z" class="external-link uri">https://doi.org/10.3758/s13428-023-02224-z</a></p>
 <p>Friedrich, R. J. (1982). In defense of multiplicative terms in
 multiple regression equations. <em>American Journal of Political
 Science, 26</em>(4), 797-833. <a href="https://doi.org/10.2307/2110973" class="external-link uri">https://doi.org/10.2307/2110973</a></p>
