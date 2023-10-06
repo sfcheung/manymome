@@ -376,31 +376,35 @@ https://doi.org/10.1037/met0000571</p>
 <span class="r-in"><span><span class="co"># Use 2000 or even 5000 for R in real studies</span></span></span>
 <span class="r-in"><span><span class="co"># Set parallel to TRUE in real studies for faster bootstrapping</span></span></span>
 <span class="r-in"><span><span class="va">boot_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="do_boot.html">do_boot</a></span><span class="op">(</span><span class="va">fit</span>,</span></span>
-<span class="r-in"><span>                    R <span class="op">=</span> <span class="fl">100</span>,</span></span>
+<span class="r-in"><span>                    R <span class="op">=</span> <span class="fl">45</span>,</span></span>
 <span class="r-in"><span>                    seed <span class="op">=</span> <span class="fl">879</span>,</span></span>
-<span class="r-in"><span>                    parallel <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                    parallel <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>                    progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Remove 'progress = FALSE' in practice</span></span></span>
 <span class="r-in"><span><span class="va">dm_boot</span> <span class="op">&lt;-</span> <span class="fu">delta_med</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
 <span class="r-in"><span>                     y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
 <span class="r-in"><span>                     m <span class="op">=</span> <span class="st">"m"</span>,</span></span>
 <span class="r-in"><span>                     fit <span class="op">=</span> <span class="va">fit</span>,</span></span>
-<span class="r-in"><span>                     boot_out <span class="op">=</span> <span class="va">boot_out</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                     boot_out <span class="op">=</span> <span class="va">boot_out</span>,</span></span>
+<span class="r-in"><span>                     progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dm_boot</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> delta_med(x = "x", y = "y", m = "m", fit = fit, boot_out = boot_out)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> delta_med(x = "x", y = "y", m = "m", fit = fit, boot_out = boot_out, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     progress = FALSE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Predictor (x)       : x </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Mediator(s) (m)     : m </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Outcome variable (y): y </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Delta_med                          :          0.230</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 95.0% Bootstrap confidence interval: [0.101, 0.317]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Number of bootstrap samples        :            100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95.0% Bootstrap confidence interval: [0.097, 0.318]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of bootstrap samples        :             45</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Paths removed:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  m~x</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">dm_boot</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               2.5 %    97.5 %</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Delta_Med 0.1006949 0.3168771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                2.5 %    97.5 %</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Delta_Med 0.09725932 0.3175632</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
