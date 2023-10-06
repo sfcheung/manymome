@@ -24,6 +24,7 @@ knitr::opts_chunk$set(
 This article is a brief illustration of how
 to use `do_mc()` from the package
 [manymome](https://sfcheung.github.io/manymome/)
+([Cheung & Cheung, 2023](https://doi.org/10.3758/s13428-023-02224-z))
 for a model fitted to multiple
 imputation datasets to generate Monte Carlo estimates,
 which can be used by `indirect_effect()` and
@@ -242,8 +243,14 @@ please refer to its help page.
 
 # Reference
 
+Cheung, S. F., & Cheung, S.-H. (2023). *manymome*: An R
+package for computing the indirect effects, conditional
+effects, and conditional indirect effects, standardized or
+unstandardized, and their bootstrap confidence intervals,
+in many (though not all) models. *Behavior Research Methods*.
+https://doi.org/10.3758/s13428-023-02224-z
+
 van Buuren, S. (2018).
 *Flexible imputation of missing data* (2^nd^ Ed.).
 CRC Press, Taylor and Francis Group.
-
 

@@ -24,6 +24,7 @@ knitr::opts_chunk$set(
 This article is a brief illustration of how
 to use `do_mc()` from the package
 [manymome](https://sfcheung.github.io/manymome/index.html)
+([Cheung & Cheung, 2023](https://doi.org/10.3758/s13428-023-02224-z))
 to generate Monte Carlo estimates for
 `indirect_effect()` and `cond_indirect_effects()` to
 form Monte Carlo confidence intervals.
@@ -259,3 +260,12 @@ by `do_mc()`.
 
 For further information on `do_mc()`,
 please refer to its help page.
+
+# Reference
+
+Cheung, S. F., & Cheung, S.-H. (2023). *manymome*: An R
+package for computing the indirect effects, conditional
+effects, and conditional indirect effects, standardized or
+unstandardized, and their bootstrap confidence intervals,
+in many (though not all) models. *Behavior Research Methods*.
+https://doi.org/10.3758/s13428-023-02224-z

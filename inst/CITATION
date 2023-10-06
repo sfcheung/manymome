@@ -1,15 +1,14 @@
 citHeader("To cite the 'manymome' package in publications use:")
 
 bibentry(
-  bibtype = "Manual",
-	title = "manymome: An R package for computing the indirect effects, conditional effects, and conditional indirect effects",
-	url = "https://github.com/sfcheung/manymome",
+  bibtype = "Article",
+	title = "manymome: An R package for computing the indirect effects, conditional effects, and conditional indirect effects, standardized or unstandardized, and their bootstrap confidence intervals, in many (though not all) models",
+	url = "https://doi.org/10.3758/s13428-023-02224-z",
+	doi = "10.3758/s13428-023-02224-z",
+	language = "en",
+	urldate = "2023-10-05",
+	journal = "Behavior Research Methods",
 	author = c(as.person("S. F. Cheung"),
              as.person("S.-H. Cheung")),
 	year = "2023",
-  textVersion =
-  paste("Cheung, S. F., & Cheung, S.-H. (2023).",
-        "manymome: An R package for computing the indirect effects, conditional effects, and conditional indirect effects.",
-        "R package version 0.1.12.4",
-        "https://github.com/sfcheung/manymome/")
 )

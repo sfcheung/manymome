@@ -11,6 +11,7 @@ template:
     bg: "#EFEFEF"
     fg: "#000000"
     primary: "#01B0F1"
+    link-color: "#0000A0"
     base_font: {google: "Hind"}
     heading_font: {google: "Hind"}
     code_font: {google: "Oxygen Mono"}
