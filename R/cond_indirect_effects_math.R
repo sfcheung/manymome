@@ -128,6 +128,9 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
     est0 <- switch(op,
                    "+" = e1$indirect + e2$indirect,
                    "-" = e1$indirect - e2$indirect)
+    est0_raw <- switch(op,
+                   "+" = e1$indirect_raw + e2$indirect_raw,
+                   "-" = e1$indirect_raw - e2$indirect_raw)
     level0 <- e1$level
     has_ci <- FALSE
     ci_type <- NULL
@@ -212,7 +215,7 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
           }
       }
     out <- list(indirect = est0,
-                indirect_raw = e1$indirect_raw + e2$indirect_raw,
+                indirect_raw = est0_raw,
                 components = cp0,
                 components_conditional = cpc0,
                 scale_x = e1$scale_x,
