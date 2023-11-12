@@ -601,6 +601,8 @@ cond_indirect <- function(x,
           }
         nboot <- length(out_mc)
         out0$mc_indirect <- sapply(out_mc, function(x) x$indirect)
+        out0$mc_scale_x <- unname(sapply(out_mc, function(x) x$scale_x))
+        out0$mc_scale_y <- unname(sapply(out_mc, function(x) x$scale_y))
         tmp <- list(t = matrix(out0$mc_indirect, nrow = nboot, ncol = 1),
                     t0 = out0$indirect,
                     R = nboot)
@@ -637,6 +639,8 @@ cond_indirect <- function(x,
           }
         nboot <- length(out_boot)
         out0$boot_indirect <- sapply(out_boot, function(x) x$indirect)
+        out0$boot_scale_x <- unname(sapply(out_boot, function(x) x$scale_x))
+        out0$boot_scale_y <- unname(sapply(out_boot, function(x) x$scale_y))
         tmp <- list(t = matrix(out0$boot_indirect, nrow = nboot, ncol = 1),
                     t0 = out0$indirect,
                     R = nboot)
