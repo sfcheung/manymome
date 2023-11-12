@@ -1,4 +1,4 @@
-# manymome 0.1.13.2
+# manymome 0.1.13.3
 
 - Fixed a nonessential bug with the math
   operator: `indirect_raw`, though not
@@ -11,6 +11,8 @@
   the unstandardized effect can be
   computed even if standardization is
   requested. (0.1.13.2)
+- Fixed a minor typo in documentation.
+  (0.1.13.3)
 
 # manymome 0.1.13
 

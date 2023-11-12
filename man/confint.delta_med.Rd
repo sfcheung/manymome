@@ -3,7 +3,7 @@
 \name{confint.delta_med}
 \alias{confint.delta_med}
 \title{Confidence Interval for
-Delta_Med in a 'xxx'-Class Object}
+Delta_Med in a 'delta_med'-Class Object}
 \usage{
 \method{confint}{delta_med}(object, parm, level = NULL, ...)
 }
