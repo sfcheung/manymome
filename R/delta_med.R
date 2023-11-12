@@ -281,6 +281,10 @@ delta_med <- function(x,
                        m = m,
                        y = y,
                        paths_to_remove = paths_to_remove)
+    out$x <- x
+    out$m <- m
+    out$y <- y
+    out$paths_removed <- out$paths_removed
     dm <- out$delta_med
     if (!is.null(boot_out)) {
         est <- lapply(boot_out, `[[`, "est")

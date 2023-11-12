@@ -128,6 +128,9 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
     est0 <- switch(op,
                    "+" = e1$indirect + e2$indirect,
                    "-" = e1$indirect - e2$indirect)
+    est0_raw <- switch(op,
+                   "+" = e1$indirect_raw + e2$indirect_raw,
+                   "-" = e1$indirect_raw - e2$indirect_raw)
     level0 <- e1$level
     has_ci <- FALSE
     ci_type <- NULL
@@ -212,7 +215,7 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
           }
       }
     out <- list(indirect = est0,
-                indirect_raw = e1$indirect_raw + e2$indirect_raw,
+                indirect_raw = est0_raw,
                 components = cp0,
                 components_conditional = cpc0,
                 scale_x = e1$scale_x,
@@ -231,9 +234,13 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
                 boot_ci = bci0_boot,
                 boot_p = bp0_boot,
                 boot_se = bse0_boot,
+                boot_scale_x = e1$boot_scale_x,
+                boot_scale_y = e1$boot_scale_y,
                 mc_indirect = bind0_mc,
                 mc_ci = bci0_mc,
                 mc_se = bse0_mc,
+                mc_scale_x = e1$mc_scale_x,
+                mc_scale_y = e1$mc_scale_y,
                 level = level0,
                 boot_out = e1$boot_out,
                 mc_out = e1$mc_out

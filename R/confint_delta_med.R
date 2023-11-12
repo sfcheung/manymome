@@ -1,5 +1,5 @@
 #' @title Confidence Interval for
-#' Delta_Med in a 'xxx'-Class Object
+#' Delta_Med in a 'delta_med'-Class Object
 #'
 #' @description Return the confidence
 #' interval of the Delta_Med in the
