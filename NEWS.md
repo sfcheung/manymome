@@ -1,9 +1,16 @@
-# manymome 0.1.13.1
+# manymome 0.1.13.2
 
 - Fixed a nonessential bug with the math
   operator: `indirect_raw`, though not
   used for now, is now computed correctly
   when using `+` and `-`. (0.1.13.1)
+- The standardizers (`scale_x` and
+  `scale_y`) for each bootstrap or
+  simulated sample are now stored, such
+  that the confidence interval of
+  the unstandardized effect can be
+  computed even if standardization is
+  requested. (0.1.13.2)
 
 # manymome 0.1.13
 
