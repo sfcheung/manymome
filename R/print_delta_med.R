@@ -81,9 +81,9 @@ print.delta_med <- function(x,
                             full = FALSE,
                             ...) {
     x_call <- x$call
-    call_x <- x_call$x
-    call_m <- x_call$m
-    call_y <- x_call$y
+    call_x <- x$x
+    call_m <- x$m
+    call_y <- x$y
     dm <- x$delta_med
     if (!is.null(x$boot_ci)) {
         has_boot_ci <- TRUE

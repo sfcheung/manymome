@@ -1,4 +1,4 @@
-# manymome 0.1.13.3
+# manymome 0.1.13.4
 
 - Fixed a nonessential bug with the math
   operator: `indirect_raw`, though not
@@ -13,6 +13,9 @@
   requested. (0.1.13.2)
 - Fixed a minor typo in documentation.
   (0.1.13.3)
+- Fixed a minor issue with the print
+  method of `delta_med`-class object.
+  (0.1.13.4)
 
 # manymome 0.1.13
 
