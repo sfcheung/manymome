@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.13.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.13.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,12 +74,13 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.13.5" id="manymome-01135">manymome 0.1.13.5<a class="anchor" aria-label="anchor" href="#manymome-01135"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.1.13.6" id="manymome-01136">manymome 0.1.13.6<a class="anchor" aria-label="anchor" href="#manymome-01136"></a></h2>
 <ul><li>Fixed a nonessential bug with the math operator: <code>indirect_raw</code>, though not used for now, is now computed correctly when using <code>+</code> and <code>-</code>. (0.1.13.1)</li>
 <li>The standardizers (<code>scale_x</code> and <code>scale_y</code>) for each bootstrap or simulated sample are now stored, such that the confidence interval of the unstandardized effect can be computed even if standardization is requested. (0.1.13.2)</li>
 <li>Fixed a minor typo in documentation. (0.1.13.3)</li>
 <li>Fixed a minor issue with the print method of <code>delta_med</code>-class object. (0.1.13.4)</li>
 <li>Fixed a bug with using <code><a href="../reference/do_mc.html">do_mc()</a></code> on a model which do not have a mean structure, has latent variables, and is estimated by multiple imputation. Error is no longer raised. (0.1.13.5)</li>
+<li>Fixed a few more tests that should not be run if suggested packages are not installed. (0.1.13.6)</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.13" id="manymome-0113">manymome 0.1.13<a class="anchor" aria-label="anchor" href="#manymome-0113"></a></h2><p class="text-muted">CRAN release: 2023-10-06</p>
