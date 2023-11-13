@@ -35,7 +35,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.13.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.13.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -128,8 +128,8 @@ functions to form confidence intervals.</p>
 <code>do_boot()</code><a class="anchor" aria-label="anchor" href="#do_boot"></a>
 </h2>
 <div class="figure">
-<div id="htmlwidget-5593222e1d962954a8a9" style="width:800px;height:400px;" class="DiagrammeR html-widget "></div>
-<script type="application/json" data-for="htmlwidget-5593222e1d962954a8a9">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  Z{{\"How was the model fitted?\"}}\n  ZZ:::startend --> Z\n%%  Zla[\"Fitted by lavaan()\"]\n%%  Zlm[\"Fitted by lm()\"]\n%%  Z -- lm --> Zlm\n%%  Z -- lavaan --> Zla\n  Z -- lavaan --> A\n  Z -- lm --> B\n\n  subgraph lavaan [ ]\n  A{{\"Are bootstrap estimates stored?\"}}\n  AYes[[\"Call fit2boot_out()\"]]\n  ANo[[\"Call fit2boot_out_do_boot()\"]]\n  end\n\n%%  Zla --> A\n  A -- Yes --> AYes:::subnode\n  A -- No --> ANo:::subnode\n\n  subgraph lm [ ]\n  B{{\"Parallel processing?\"}}\n  BYes[[\"Call lm2boot_out_parallel()\"]]\n  BNo[[\"Call lm2boot_out()\"]]\n  end\n\n%%  Zlm --> B\n  B -- Yes --> BYes:::subnode\n  B -- No --> BNo:::subnode\n\n  C([\"Return a boot_out-class object\"])\n  AYes --> C:::startend\n  ANo --> C\n  BYes --> C\n  BNo --> C\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
+<div id="htmlwidget-fa8516ec6de230082a14" style="width:800px;height:400px;" class="DiagrammeR html-widget "></div>
+<script type="application/json" data-for="htmlwidget-fa8516ec6de230082a14">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  Z{{\"How was the model fitted?\"}}\n  ZZ:::startend --> Z\n%%  Zla[\"Fitted by lavaan()\"]\n%%  Zlm[\"Fitted by lm()\"]\n%%  Z -- lm --> Zlm\n%%  Z -- lavaan --> Zla\n  Z -- lavaan --> A\n  Z -- lm --> B\n\n  subgraph lavaan [ ]\n  A{{\"Are bootstrap estimates stored?\"}}\n  AYes[[\"Call fit2boot_out()\"]]\n  ANo[[\"Call fit2boot_out_do_boot()\"]]\n  end\n\n%%  Zla --> A\n  A -- Yes --> AYes:::subnode\n  A -- No --> ANo:::subnode\n\n  subgraph lm [ ]\n  B{{\"Parallel processing?\"}}\n  BYes[[\"Call lm2boot_out_parallel()\"]]\n  BNo[[\"Call lm2boot_out()\"]]\n  end\n\n%%  Zlm --> B\n  B -- Yes --> BYes:::subnode\n  B -- No --> BNo:::subnode\n\n  C([\"Return a boot_out-class object\"])\n  AYes --> C:::startend\n  ANo --> C\n  BYes --> C\n  BNo --> C\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
 Workflow of <code><a href="../reference/do_boot.html">manymome::do_boot()</a></code>
 </p>
 </div>
@@ -144,8 +144,8 @@ Workflow of <code><a href="../reference/do_boot.html">manymome::do_boot()</a></c
 </h3>
 <p>It retrieves stored bootstrap estimates.</p>
 <div class="figure">
-<div id="htmlwidget-f3bbcb723fd0ad2a28ad" style="width:700px;height:400px;" class="DiagrammeR html-widget "></div>
-<script type="application/json" data-for="htmlwidget-f3bbcb723fd0ad2a28ad">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> A\n\n  A[\"boot_est <- boot2est()\"]\n  B[\"boot_implied <- boot2implied()\"]\n  B2[\"Combine boot_est and boot_implied\"]\n  C([\"Return a boot_out-class object\"])\n  A --> B\n  B --> B2\n  B2 --> C:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
+<div id="htmlwidget-2eaf371cbde6be0c3c64" style="width:700px;height:400px;" class="DiagrammeR html-widget "></div>
+<script type="application/json" data-for="htmlwidget-2eaf371cbde6be0c3c64">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> A\n\n  A[\"boot_est <- boot2est()\"]\n  B[\"boot_implied <- boot2implied()\"]\n  B2[\"Combine boot_est and boot_implied\"]\n  C([\"Return a boot_out-class object\"])\n  A --> B\n  B --> B2\n  B2 --> C:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
 Workflow of <code><a href="../reference/fit2boot_out.html">manymome::fit2boot_out()</a></code>
 </p>
 </div>
@@ -155,8 +155,8 @@ Workflow of <code><a href="../reference/fit2boot_out.html">manymome::fit2boot_ou
 <code>fit2boot_out_do_boot()</code><a class="anchor" aria-label="anchor" href="#fit2boot_out_do_boot"></a>
 </h3>
 <div class="figure">
-<div id="htmlwidget-1804249c56057c2bee19" style="width:700px;height:500px;" class="DiagrammeR html-widget "></div>
-<script type="application/json" data-for="htmlwidget-1804249c56057c2bee19">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> A\n\n  A[\"Call gen_boot_i() to create<br>a function, boot_i(), for doing one bootstrap replication\"]\n  B[\"Generate indices (ids) locally\"]\n  A --> B\n  C[\"Call boot_i() R times\"]\n  D[\"Keep only replications with valid values\"]\n  E([\"Return a boot_out-class object\"])\n  B --> C\n  C --> D\n  D --> E:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
+<div id="htmlwidget-a0ab9d74e613be74d683" style="width:700px;height:500px;" class="DiagrammeR html-widget "></div>
+<script type="application/json" data-for="htmlwidget-a0ab9d74e613be74d683">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> A\n\n  A[\"Call gen_boot_i() to create<br>a function, boot_i(), for doing one bootstrap replication\"]\n  B[\"Generate indices (ids) locally\"]\n  A --> B\n  C[\"Call boot_i() R times\"]\n  D[\"Keep only replications with valid values\"]\n  E([\"Return a boot_out-class object\"])\n  B --> C\n  C --> D\n  D --> E:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
 Workflow of <code><a href="../reference/fit2boot_out.html">manymome::fit2boot_out_do_boot()</a></code>
 </p>
 </div>
@@ -171,8 +171,8 @@ Workflow of <code><a href="../reference/fit2boot_out.html">manymome::fit2boot_ou
 <code>lm2boot_out_parallel()</code><a class="anchor" aria-label="anchor" href="#lm2boot_out_parallel"></a>
 </h3>
 <div class="figure">
-<div id="htmlwidget-5a3320d486ce72e3c61b" style="width:700px;height:450px;" class="DiagrammeR html-widget "></div>
-<script type="application/json" data-for="htmlwidget-5a3320d486ce72e3c61b">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> A\n\n  A[\"Call merge_model_frame() to reconstruct the data\"]\n  B[\"Generate indices (ids) locally\"]\n  A --> B\n  C[\"Call lm_boot2est_i() R times\"]\n  E([\"Return a boot_out-class object\"])\n  B --> C\n  C --> E:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
+<div id="htmlwidget-f4f1996ef707c6feeba2" style="width:700px;height:450px;" class="DiagrammeR html-widget "></div>
+<script type="application/json" data-for="htmlwidget-f4f1996ef707c6feeba2">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> A\n\n  A[\"Call merge_model_frame() to reconstruct the data\"]\n  B[\"Generate indices (ids) locally\"]\n  A --> B\n  C[\"Call lm_boot2est_i() R times\"]\n  E([\"Return a boot_out-class object\"])\n  B --> C\n  C --> E:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
 Workflow of <code><a href="../reference/lm2boot_out.html">manymome::lm2boot_out_parallel()</a></code>
 </p>
 </div>
@@ -182,8 +182,8 @@ Workflow of <code><a href="../reference/lm2boot_out.html">manymome::lm2boot_out_
 <code>lm2boot_out()</code><a class="anchor" aria-label="anchor" href="#lm2boot_out"></a>
 </h3>
 <div class="figure">
-<div id="htmlwidget-edbe164f30e81f31f288" style="width:700px;height:380px;" class="DiagrammeR html-widget "></div>
-<script type="application/json" data-for="htmlwidget-edbe164f30e81f31f288">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> A\n\n  A[\"Call merge_model_frame() to reconstruct the data\"]\n  C[\"Call lm_boot2est_i() R times\"]\n  E([\"Return a boot_out-class object\"])\n  A --> C\n  C --> E:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
+<div id="htmlwidget-80bfb3cd549ef636123a" style="width:700px;height:380px;" class="DiagrammeR html-widget "></div>
+<script type="application/json" data-for="htmlwidget-80bfb3cd549ef636123a">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> A\n\n  A[\"Call merge_model_frame() to reconstruct the data\"]\n  C[\"Call lm_boot2est_i() R times\"]\n  E([\"Return a boot_out-class object\"])\n  A --> C\n  C --> E:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
 Workflow of <code><a href="../reference/lm2boot_out.html">manymome::lm2boot_out()</a></code>
 </p>
 </div>
