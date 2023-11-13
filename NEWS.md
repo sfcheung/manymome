@@ -1,4 +1,4 @@
-# manymome 0.1.13.4
+# manymome 0.1.13.5
 
 - Fixed a nonessential bug with the math
   operator: `indirect_raw`, though not
@@ -16,6 +16,12 @@
 - Fixed a minor issue with the print
   method of `delta_med`-class object.
   (0.1.13.4)
+- Fixed a bug with using `do_mc()`
+  on a model which do not have a mean
+  structure, has latent variables,
+  and is estimated by multiple
+  imputation. Error is no longer raised.
+  (0.1.13.5)
 
 # manymome 0.1.13
 

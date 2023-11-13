@@ -489,9 +489,18 @@ get_implied_i_lavaan_mi <- function(est0, fit, fit_tmp = NULL) {
         implied_mean_ov <- lavaan::lav_model_implied(mod0,
                                              GLIST = NULL,
                                              delta = TRUE)$mean[[1]][, 1]
-        names(implied_mean_ov) <- lavaan::lavNames(fit_tmp, "ov")
-        class(implied_mean_ov) <- c("lavaan.vector", class(implied_mean_ov))
-        implied_mean_lv <- lavaan::lavInspect(fit_tmp, "mean.lv")
+        if (is.numeric(implied_mean_ov)) {
+            names(implied_mean_ov) <- lavaan::lavNames(fit_tmp, "ov")
+            class(implied_mean_ov) <- c("lavaan.vector", class(implied_mean_ov))
+          }
+        # SF: `lavaan` raises an error in some cases for unknown reasons
+        implied_mean_lv <- tryCatch(lavaan::lavInspect(fit_tmp, "mean.lv"),
+                                    error = function(e) e)
+        if (inherits(implied_mean_lv, "error")) {
+            tmp <- lavaan::lavNames(fit_tmp, "lv")
+            implied_mean_lv <- rep(NA, length(tmp))
+            names(implied_mean_lv) <- tmp
+          }
         implied_mean_lv[] <- NA
         implied <- list(cov = list(implied_cov_all),
                         mean = list(c(implied_mean_ov,
