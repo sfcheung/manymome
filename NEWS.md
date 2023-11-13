@@ -1,4 +1,4 @@
-# manymome 0.1.13.5
+# manymome 0.1.13.6
 
 - Fixed a nonessential bug with the math
   operator: `indirect_raw`, though not
@@ -22,6 +22,9 @@
   and is estimated by multiple
   imputation. Error is no longer raised.
   (0.1.13.5)
+- Fixed a few more tests that should
+  not be run if suggested packages are
+  not installed. (0.1.13.6)
 
 # manymome 0.1.13
 

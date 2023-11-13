@@ -1,4 +1,6 @@
 skip_on_cran()
+skip_if_not_installed("semTools")
+skip_if_not_installed("Amelia")
 # Require Amelia
 library(testthat)
 library(manymome)
