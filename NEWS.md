@@ -1,9 +1,7 @@
-# manymome 0.1.13.6
+# manymome 0.1.14
 
-- Fixed a nonessential bug with the math
-  operator: `indirect_raw`, though not
-  used for now, is now computed correctly
-  when using `+` and `-`. (0.1.13.1)
+## New Features
+
 - The standardizers (`scale_x` and
   `scale_y`) for each bootstrap or
   simulated sample are now stored, such
@@ -11,6 +9,13 @@
   the unstandardized effect can be
   computed even if standardization is
   requested. (0.1.13.2)
+
+## Bug Fixes
+
+- Fixed a nonessential bug with the math
+  operator: `indirect_raw`, though not
+  used for now, is now computed correctly
+  when using `+` and `-`. (0.1.13.1)
 - Fixed a minor typo in documentation.
   (0.1.13.3)
 - Fixed a minor issue with the print
@@ -25,6 +30,8 @@
 - Fixed a few more tests that should
   not be run if suggested packages are
   not installed. (0.1.13.6)
+- No longer raises an error for dichotomous
+  moderators. (0.1.13.7)
 
 # manymome 0.1.13
 
