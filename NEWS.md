@@ -1,4 +1,4 @@
-# manymome 0.1.13.6
+# manymome 0.1.13.7
 
 - Fixed a nonessential bug with the math
   operator: `indirect_raw`, though not
@@ -25,6 +25,8 @@
 - Fixed a few more tests that should
   not be run if suggested packages are
   not installed. (0.1.13.6)
+- No longer raises an error for dichotomous
+  moderators. (0.1.13.7)
 
 # manymome 0.1.13
 

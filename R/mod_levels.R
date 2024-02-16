@@ -430,12 +430,12 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
         w_source <- NA
       }
     w_dat <- mm[, w, drop = FALSE]
-    w_dat <- w_dat[stats::complete.cases(w_dat), ]
+    w_dat <- w_dat[stats::complete.cases(w_dat), , drop = FALSE]
     w_gp <- unique(w_dat)
     k <- nrow(w_gp)
     j <- rev(seq_len(ncol(w_gp)))
-    i <- do.call(order, w_gp[, j])
-    w_gp <- w_gp[i, ]
+    i <- do.call(order, w_gp[, j, drop = FALSE])
+    w_gp <- w_gp[i, , drop = FALSE]
     gpnames <- paste0("Category ", seq_len(k))
     rownames(w_gp) <- gpnames
     if (extract_gp_names) {
@@ -446,8 +446,8 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
             if (is.na(w_source)) {
                 w_source <- find_source_cat(fit, w)
               }
-            tmp <- cbind(w_source = mf[, w_source], mm[, w])
-            tmp <- tmp[!duplicated(tmp), ]
+            tmp <- cbind(w_source = mf[, w_source, drop = FALSE], mm[, w, drop = FALSE])
+            tmp <- tmp[!duplicated(tmp), , drop = FALSE]
             tmp2 <- merge(x = w_gp, y = tmp, sort = FALSE)
             rownames(w_gp) <- tmp2$w_source
           }
