@@ -181,8 +181,14 @@ fit2boot_out_do_boot <- function(fit,
         environment(gen_boot_i_lavaan) <- parent.frame()
         boot_i <- gen_boot_i_lavaan(fit)
       }
-    dat_org <- lav_data_used(fit)
-    n <- nrow(dat_org)
+    dat_org <- lav_data_used(fit,
+                             drop_list_single_group = TRUE)
+    ngp <- lavaan::lavTech(fit, "ngroups")
+    if (ngp == 1) {
+        n <- nrow(dat_org)
+      } else {
+        n <- sapply(dat_org, nrow)
+      }
     boot_test <- suppressWarnings(boot_i(dat_org))
     if (!isTRUE(all.equal(unclass(lavaan::coef(fit)),
                           lavaan::coef(boot_test)[names(lavaan::coef(fit))],
@@ -194,7 +200,12 @@ fit2boot_out_do_boot <- function(fit,
     ft <- lavaan::lavInspect(boot_test, "timing")$total
     requireNamespace("parallel", quietly = TRUE)
     if (!is.null(seed)) set.seed(seed)
-    ids <- replicate(R, sample.int(n, replace = TRUE), simplify = FALSE)
+    if (ngp == 1) {
+        ids <- replicate(R, sample.int(n, replace = TRUE), simplify = FALSE)
+      } else {
+        ids <- replicate(R, sapply(n, sample.int, replace = TRUE, simplify = TRUE),
+                         simplify = FALSE)
+      }
     if (parallel) {
         if (is.numeric(ncores)) {
             ncores0 <- parallel::detectCores()

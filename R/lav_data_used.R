@@ -23,7 +23,8 @@
 #'
 
 lav_data_used <- function(fit,
-                          drop_colon = TRUE) {
+                          drop_colon = TRUE,
+                          drop_list_single_group = TRUE) {
     type <- NA
     if (inherits(fit, "lavaan")) {
         type <- "lavaan"
@@ -36,7 +37,8 @@ lav_data_used <- function(fit,
       }
     out <- switch(type,
                   lavaan = lav_data_used_lavaan(fit = fit,
-                                                drop_colon = drop_colon),
+                                                drop_colon = drop_colon,
+                                                drop_list_single_group = drop_list_single_group),
                   lavaan.mi = lav_data_used_lavaan_mi(fit = fit,
                                                       drop_colon = drop_colon))
     out
@@ -45,21 +47,32 @@ lav_data_used <- function(fit,
 #' @noRd
 
 lav_data_used_lavaan <- function(fit,
-                                 drop_colon = TRUE) {
-    dat <- lavaan::lavInspect(fit, "data")
-    i_excluded <- lavaan::lavInspect(fit, "empty.idx")
-    vnames <- colnames(dat)
+                                 drop_colon = TRUE,
+                                 drop_list_single_group = TRUE) {
+    dat <- lavaan::lavInspect(fit, "data",
+                              drop.list.single.group = FALSE)
+    i_excluded <- lavaan::lavInspect(fit, "empty.idx",
+                                     drop.list.single.group = FALSE)
+    ngp <- lavaan::lavTech(fit, "ngroups")
     if (drop_colon) {
-        vraw <- vnames[!grepl(":", colnames(dat))]
-        vcolon <- apply(expand.grid(vraw, vraw), 1, paste0, collapse = ":")
-        vkeep <- vnames[!(vnames %in% vcolon)]
-        dat <- dat[, vkeep]
+        for (k in seq_len(ngp)) {
+            dat_i <- dat[[k]]
+            vnames <- colnames(dat_i)
+            vraw <- vnames[!grepl(":", colnames(dat_i))]
+            vcolon <- apply(expand.grid(vraw, vraw), 1, paste0, collapse = ":")
+            vkeep <- vnames[!(vnames %in% vcolon)]
+            dat[[k]] <- dat_i[, vkeep]
+          }
       }
-    if (length(i_excluded) > 0) {
-        return(dat[-i_excluded, ])
-      } else {
-        return(dat)
+    for (k in seq_len(ngp)) {
+        if (length(i_excluded[[k]]) > 0) {
+            dat[[k]] <- dat[[k]][-i_excluded, ]
+          }
       }
+    if (drop_list_single_group && ngp == 1) {
+        dat <- dat[[1]]
+      }
+    return(dat)
   }
 
 #' @noRd
