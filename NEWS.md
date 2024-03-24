@@ -1,3 +1,16 @@
+# manymome 0.1.14.1
+
+## Miscellaneous
+
+- If a dataset has a variable which
+  is a product of itself and another
+  variable (e.g., `x*y == x`),
+  `find_products()` will be trapped
+  in an infinite loop. This
+  "product term" will no longer be
+  treated as a "product term."
+  (0.1.14.1)
+
 # manymome 0.1.14
 
 ## New Features
