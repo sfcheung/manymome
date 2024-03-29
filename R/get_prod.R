@@ -131,10 +131,19 @@ get_prod <- function(x,
                                        expand = expand)
         all_prods_names <- names(all_prods)
       }
+    if (!is.null(est$group) ||
+        isTRUE(suppressWarnings(max(est$group) > 1))) {
+        ngroups <- max(est$group)
+      } else {
+        ngroups <- 1
+      }
+    if (ngroups > 1) {
+
+      }
     i_rhs <- (est$lhs == y) &
              (est$op == "~")
     if (isTRUE(any(i_rhs))) {
-        y_rhs <- est[i_rhs, "rhs"]
+        y_rhs <- unique(est[i_rhs, "rhs"])
       } else {
         return(NA)
       }
@@ -185,7 +194,15 @@ get_prod <- function(x,
       }
     b_prod <- sapply(prod_x, function(x) get_b(x = x,
                                           y = y,
-                                          est = est))
+                                          est = est),
+                     simplify = FALSE,
+                     USE.NAMES = TRUE)
+    # Handle multigroup models
+    if (ngroups == 1) {
+        b_prod <- unlist(b_prod)
+      } else {
+        b_prod <- b_prod
+      }
     out <- list(prod = prod_x,
                 b = b_prod,
                 w = w,
