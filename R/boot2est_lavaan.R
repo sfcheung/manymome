@@ -189,10 +189,12 @@ fit2boot_out_do_boot <- function(fit,
       } else {
         n <- sapply(dat_org, nrow)
       }
-    boot_test <- suppressWarnings(boot_i(dat_org))
+    boot_test <- suppressWarnings(boot_i(dat_org,
+                                         start = lavaan::parameterTable(fit)$start))
+    # Increase the tolerance for mutliple group model
     if (!isTRUE(all.equal(unclass(lavaan::coef(fit)),
                           lavaan::coef(boot_test)[names(lavaan::coef(fit))],
-                          tolerance = sqrt(.Machine$double.eps * 1e04)))) {
+                          tolerance = sqrt(.Machine$double.eps * 1e08)))) {
         stop(paste("Something is wrong.",
                     "This function cannot reproduce the results.",
                     "Please fit the model with se = 'boot'"))
@@ -604,19 +606,23 @@ gen_boot_i_lavaan <- function(fit) {
 
   X_old <- fit_data@X
 
-  function(d, i = NULL) {
+  function(d, i = NULL, start = NULL) {
       force(fit_data)
       force(fit_model)
       force(fit_sampstats)
       force(fit_opts)
       force(fit_pt)
       force(fit)
+      fit_pt1 <- fit_pt
+      if (!is.null(start)) {
+          fit_pt1$start <- start
+        }
       if (is.null(i)) {
           return(lavaan::lavaan(slotData = fit_data,
                                 slotModel = fit_model,
                                 slotSampleStats = fit_sampstats,
                                 slotOptions = fit_opts,
-                                slotParTable = fit_pt))
+                                slotParTable = fit_pt1))
         } else {
           # 2024-03-29: Added support for multigroup models
           if (!is.list(i)) {
@@ -659,7 +665,7 @@ gen_boot_i_lavaan <- function(fit) {
                                     slotModel = fit_model_i,
                                     slotSampleStats = fit_sampstats_new,
                                     slotOptions = fit_opts,
-                                    slotParTable = fit_pt),
+                                    slotParTable = fit_pt1),
                           error = function(e) e,
                           warning = function(e) e)
           if (inherits(out, "error") || inherits(out, "warning")) {

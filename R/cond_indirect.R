@@ -606,7 +606,8 @@ cond_indirect <- function(x,
                                            standardized_x = standardized_x,
                                            standardized_y = standardized_y,
                                            warn = FALSE,
-                                           prods = prods),
+                                           prods = prods,
+                                           group = group),
                            SIMPLIFY = FALSE)
         if (save_mc_full) {
             out0$mc_full <- out_mc
@@ -644,7 +645,8 @@ cond_indirect <- function(x,
                                            standardized_x = standardized_x,
                                            standardized_y = standardized_y,
                                            warn = FALSE,
-                                           prods = prods),
+                                           prods = prods,
+                                           group = group),
                            SIMPLIFY = FALSE)
         if (save_boot_full) {
             out0$boot_full <- out_boot
