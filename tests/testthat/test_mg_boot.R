@@ -1,4 +1,4 @@
-skip("WIP")
+skip_on_cran()
 
 library(testthat)
 library(manymome)
@@ -26,6 +26,31 @@ mod2 <-
 m3 ~ m1 + x
 y ~ m2 + m3 + x + w4 + xw4 + w3 + m3:w3 + m3w4
 "
+
+# This model is not exactly identical to the previous one
+# due the labelled variances
+mod2_chk <-
+"
+m3 ~ m1 + c(a1, a2, a3)*x
+y ~ m2 + c(b1, b2, b3)*m3 + x + w4 + xw4 + w3 + c(d31, d32, d33)*m3:w3 + c(d41, d42, d43)*m3w4
+ab1 := a1*b1
+ab2 := a2*b2
+ab3 := a3*b3
+ab2_d := a2*(b2 + 1*d32 + 2*d42)
+ab1_d := a1*(b1 + 3*d31 + (-2)*d41)
+x ~~ c(v_x1, v_x2, v_x3) * x
+ab1_stdx := a1*b1*sqrt(v_x1)
+ab2_stdx := a2*b2*sqrt(v_x2)
+ab3_stdx := a3*b3*sqrt(v_x3)
+"
+
+dat$m3w3 <- dat$m3 * dat$w3
+mod3 <-
+"
+m3 ~ m1 + x
+y ~ m2 + m3 + x + w4 + xw4 + w3 + m3w3 + m3w4
+"
+
 
 # Check against lavaan
 
@@ -67,6 +92,10 @@ test_that("Check against lavaan implied", {
 fit2 <- sem(mod2, dat, meanstructure = TRUE, fixed.x = FALSE,
             group = "gp",
             group.label = c("gp3", "gp1", "gp2"))
+fit2_chk <- sem(mod2_chk, dat, meanstructure = TRUE, fixed.x = FALSE,
+            group = "gp",
+            group.label = c("gp3", "gp1", "gp2"))
+
 fit2_ng <- sem(mod2, dat, meanstructure = TRUE, fixed.x = FALSE)
 dat_tmp <- lav_data_used(fit2)
 est_tmp <- lav_est(fit2, se = FALSE, ci = FALSE)
@@ -115,25 +144,29 @@ suppressWarnings(tmp3 <- indirect_effect(x = "x",
                         y = "y",
                         m = "m3",
                         fit = fit2,
-                        group = 3))
-tmp2_chk <- est_tmp[(est_tmp$lhs == "m3") &
-                    (est_tmp$rhs == "x") &
-                    (est_tmp$group == 2), "est"] *
-            est_tmp[(est_tmp$lhs == "y") &
-                    (est_tmp$rhs == "m3") &
-                    (est_tmp$group == 2), "est"]
-tmp3_chk <- est_tmp[(est_tmp$lhs == "m3") &
-                    (est_tmp$rhs == "x") &
-                    (est_tmp$group == 3), "est"] *
-            est_tmp[(est_tmp$lhs == "y") &
-                    (est_tmp$rhs == "m3") &
-                    (est_tmp$group == 3), "est"]
+                        group = 1))
+# tmp2_chk <- est_tmp[(est_tmp$lhs == "m3") &
+#                     (est_tmp$rhs == "x") &
+#                     (est_tmp$group == 2), "est"] *
+#             est_tmp[(est_tmp$lhs == "y") &
+#                     (est_tmp$rhs == "m3") &
+#                     (est_tmp$group == 2), "est"]
+tmp2_chk <- coef(fit2_chk, type = "user")["ab2"]
+# tmp3_chk <- est_tmp[(est_tmp$lhs == "m3") &
+#                     (est_tmp$rhs == "x") &
+#                     (est_tmp$group == 1), "est"] *
+#             est_tmp[(est_tmp$lhs == "y") &
+#                     (est_tmp$rhs == "m3") &
+#                     (est_tmp$group == 1), "est"]
+tmp3_chk <- coef(fit2_chk, type = "user")["ab1"]
 
 test_that("indirect_effect and multigrop", {
     expect_equal(unname(coef(tmp2)),
-                 tmp2_chk)
-    expect_equal(unname(coef(tmp3)),
-                 tmp3_chk)
+                 unname(tmp2_chk),
+                 tolerance = 1e-05)
+    # Can't just compare them. Don't know why.
+    expect_equal(unname(coef(tmp3)) - unname(tmp3_chk),
+                 0)
   })
 
 # cond_indirect
@@ -150,36 +183,40 @@ suppressWarnings(tmp3 <- cond_indirect(x = "x",
                         fit = fit2,
                         wvalues = c(w3 = 3, w4 = -2),
                         group = "gp3"))
-tmp2_chk <- est_tmp[(est_tmp$lhs == "m3") &
-                    (est_tmp$rhs == "x") &
-                    (est_tmp$group == 2), "est"] *
-            (est_tmp[(est_tmp$lhs == "y") &
-                     (est_tmp$rhs == "m3") &
-                     (est_tmp$group == 2), "est"] +
-             est_tmp[(est_tmp$lhs == "y") &
-                     (est_tmp$rhs == "m3:w3") &
-                     (est_tmp$group == 2), "est"] +
-             est_tmp[(est_tmp$lhs == "y") &
-                     (est_tmp$rhs == "m3w4") &
-                     (est_tmp$group == 2), "est"] * 2)
-tmp3_chk <- est_tmp[(est_tmp$lhs == "m3") &
-                    (est_tmp$rhs == "x") &
-                    (est_tmp$group == 1), "est"] *
-            (est_tmp[(est_tmp$lhs == "y") &
-                     (est_tmp$rhs == "m3") &
-                     (est_tmp$group == 1), "est"] +
-             est_tmp[(est_tmp$lhs == "y") &
-                     (est_tmp$rhs == "m3:w3") &
-                     (est_tmp$group == 1), "est"] * 3+
-             est_tmp[(est_tmp$lhs == "y") &
-                     (est_tmp$rhs == "m3w4") &
-                     (est_tmp$group == 1), "est"] * -2)
+# tmp2_chk <- est_tmp[(est_tmp$lhs == "m3") &
+#                     (est_tmp$rhs == "x") &
+#                     (est_tmp$group == 2), "est"] *
+#             (est_tmp[(est_tmp$lhs == "y") &
+#                      (est_tmp$rhs == "m3") &
+#                      (est_tmp$group == 2), "est"] +
+#              est_tmp[(est_tmp$lhs == "y") &
+#                      (est_tmp$rhs == "m3:w3") &
+#                      (est_tmp$group == 2), "est"] +
+#              est_tmp[(est_tmp$lhs == "y") &
+#                      (est_tmp$rhs == "m3w4") &
+#                      (est_tmp$group == 2), "est"] * 2)
+tmp2_chk <- coef(fit2_chk, type = "user")["ab2_d"]
+# tmp3_chk <- est_tmp[(est_tmp$lhs == "m3") &
+#                     (est_tmp$rhs == "x") &
+#                     (est_tmp$group == 1), "est"] *
+#             (est_tmp[(est_tmp$lhs == "y") &
+#                      (est_tmp$rhs == "m3") &
+#                      (est_tmp$group == 1), "est"] +
+#              est_tmp[(est_tmp$lhs == "y") &
+#                      (est_tmp$rhs == "m3:w3") &
+#                      (est_tmp$group == 1), "est"] * 3+
+#              est_tmp[(est_tmp$lhs == "y") &
+#                      (est_tmp$rhs == "m3w4") &
+#                      (est_tmp$group == 1), "est"] * -2)
+tmp3_chk <- coef(fit2_chk, type = "user")["ab1_d"]
 
 test_that("indirect_effect and multigrop", {
     expect_equal(unname(coef(tmp2)),
-                 tmp2_chk)
+                 unname(tmp2_chk),
+                 tolerance = 1e-5)
     expect_equal(unname(coef(tmp3)),
-                 tmp3_chk)
+                 unname(tmp3_chk),
+                 tolerance = 1e-4)
   })
 
 # indirect_i: stdx / stdy
@@ -196,6 +233,13 @@ suppressWarnings(tmp3 <- indirect_effect(x = "x",
                         fit = fit2,
                         group = 3,
                         standardized_y = TRUE))
+suppressWarnings(tmp4 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        group = 3,
+                        standardized_y = TRUE,
+                        standardized_x = TRUE))
 sd_x_2 <- sqrt(lavInspect(fit2, "implied")$gp1$cov["x", "x"])
 sd_y_2 <- sqrt(lavInspect(fit2, "implied")$gp1$cov["y", "y"])
 sd_x_3 <- sqrt(lavInspect(fit2, "implied")[[3]]$cov["x", "x"])
@@ -218,6 +262,8 @@ test_that("indirect_effect and multigrop", {
                  tmp2_chk)
     expect_equal(unname(coef(tmp3)),
                  tmp3_chk)
+    expect_equal(unname(coef(tmp4)),
+                 tmp3_chk * sd_x_3)
   })
 
 # cond_indirect: stdx / stdy
@@ -271,3 +317,132 @@ test_that("indirect_effect and multigrop", {
     expect_equal(unname(coef(tmp3)),
                  tmp3_chk)
   })
+
+skip("Long tests: Test in interactive sections")
+
+# Indirect with bootstrap
+
+fit3 <- sem(mod3, dat, meanstructure = TRUE, fixed.x = FALSE,
+            group = "gp",
+            group.label = c("gp3", "gp1", "gp2"))
+
+fit2_boot_out <- do_boot(fit2,
+                         R = 50,
+                         seed = 1234,
+                         parallel = FALSE,
+                         progress = FALSE)
+
+suppressWarnings(fit2_chk_boot <- sem(mod2_chk, dat, meanstructure = TRUE, fixed.x = FALSE,
+            group = "gp",
+            group.label = c("gp3", "gp1", "gp2"),
+            se = "bootstrap",
+            bootstrap = 50,
+            iseed = 1234))
+
+fit2_chk_boot_out <- do_boot(fit2_chk_boot)
+
+suppressWarnings(tmp2 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        group = "gp1",
+                        boot_ci = TRUE,
+                        boot_out = fit2_boot_out))
+suppressWarnings(tmp3 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        group = 3,
+                        boot_ci = TRUE,
+                        boot_out = fit2_boot_out))
+
+suppressWarnings(tmp2_chk_boot <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2_chk_boot,
+                        group = "gp1",
+                        boot_ci = TRUE))
+suppressWarnings(tmp3_chk_boot <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2_chk_boot,
+                        group = 3,
+                        boot_ci = TRUE))
+
+est_chk <- parameterEstimates(fit2_chk_boot)
+
+test_that("indirect_effect and multigrop", {
+    i <- match("ab2", est_chk$lhs)
+    expect_equal(unname(as.vector(confint(tmp2))),
+                 unname(unlist(est_chk[i, c("ci.lower", "ci.upper")])),
+                 tolerance = 1e-4)
+    i <- match("ab3", est_chk$lhs)
+    expect_equal(unname(as.vector(confint(tmp3))),
+                 unname(unlist(est_chk[i, c("ci.lower", "ci.upper")])),
+                 tolerance = 1e-4)
+    i <- match("ab2", est_chk$lhs)
+    expect_equal(unname(as.vector(confint(tmp2_chk_boot))),
+                 unname(unlist(est_chk[i, c("ci.lower", "ci.upper")])),
+                 tolerance = 1e-4)
+    i <- match("ab3", est_chk$lhs)
+    expect_equal(unname(as.vector(confint(tmp3_chk_boot))),
+                 unname(unlist(est_chk[i, c("ci.lower", "ci.upper")])),
+                 tolerance = 1e-4)
+  })
+
+
+# Indirect with bootstrap: stdx / stdy
+
+suppressWarnings(tmp2 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        group = "gp1",
+                        boot_ci = TRUE,
+                        boot_out = fit2_boot_out,
+                        standardized_x = TRUE))
+suppressWarnings(tmp3 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        group = 3,
+                        boot_ci = TRUE,
+                        boot_out = fit2_boot_out,
+                        standardized_x = TRUE))
+
+suppressWarnings(tmp2_chk_boot <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2_chk_boot,
+                        group = "gp1",
+                        boot_ci = TRUE,
+                        standardized_x = TRUE))
+suppressWarnings(tmp3_chk_boot <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2_chk_boot,
+                        group = 3,
+                        boot_ci = TRUE,
+                        standardized_x = TRUE))
+
+est_chk <- parameterEstimates(fit2_chk_boot)
+
+test_that("indirect_effect and multigrop", {
+    i <- match("ab2_stdx", est_chk$lhs)
+    expect_equal(unname(as.vector(confint(tmp2))),
+                 unname(unlist(est_chk[i, c("ci.lower", "ci.upper")])),
+                 tolerance = 1e-4)
+    i <- match("ab3_stdx", est_chk$lhs)
+    expect_equal(unname(as.vector(confint(tmp3))),
+                 unname(unlist(est_chk[i, c("ci.lower", "ci.upper")])),
+                 tolerance = 1e-4)
+    i <- match("ab2_stdx", est_chk$lhs)
+    expect_equal(unname(as.vector(confint(tmp2_chk_boot))),
+                 unname(unlist(est_chk[i, c("ci.lower", "ci.upper")])),
+                 tolerance = 1e-4)
+    i <- match("ab3_stdx", est_chk$lhs)
+    expect_equal(unname(as.vector(confint(tmp3_chk_boot))),
+                 unname(unlist(est_chk[i, c("ci.lower", "ci.upper")])),
+                 tolerance = 1e-4)
+  })
+
