@@ -134,6 +134,11 @@ print.indirect <- function(x,
     standardized <- (standardized_x && standardized_y)
     has_ci <- FALSE
     ci_type <- NULL
+    if (is.numeric(x$group_number)) {
+        has_group <- TRUE
+      } else {
+        has_group <- FALSE
+      }
     if (isTRUE(!is.null(x$boot_ci))) {
         has_ci <- TRUE
         ci_type <- "boot"
@@ -216,7 +221,8 @@ print.indirect <- function(x,
         cat("\n== Conditional", cond_str2, "Effect",
             std_str, " ==")
       } else {
-        cat("\n==", cond_str2, "Effect ==")
+        cat("\n==", cond_str2, "Effect",
+            std_str, "==")
       }
     cat("\n")
     ptable <- data.frame(Factor = "Path:", Value = path)
@@ -283,7 +289,7 @@ print.indirect <- function(x,
       } else {
         if (is.null(x$op)) {
             ptable <- rbind(ptable,
-                            c(ifelse(has_m, "Indirect Effect", "Effect"),
+                            c(ifelse(has_m, "Indirect Effect:", "Effect:"),
                               formatC(x$indirect, digits = digits, format = "f")))
           } else {
             ptable <- rbind(ptable,
@@ -291,6 +297,12 @@ print.indirect <- function(x,
                               formatC(x$indirect, digits = digits, format = "f")))
           }
         if (has_ci) {ptable <- rbind(ptable, b_row, b_row2, b_row3)}
+      }
+    if (has_group) {
+        ptable <- rbind(ptable,
+                        c("Group Label:", x$group_label))
+        ptable <- rbind(ptable,
+                        c("Group Number:", x$group_number))
       }
     ptable <- data.frame(lapply(ptable, format))
     colnames(ptable) <- c("", "")
@@ -355,10 +367,32 @@ print.indirect <- function(x,
         cat("\nCoefficients of Component Paths:")
         cat("\n")
         print(out, digits = digits, row.names = FALSE)
+        print_note <- FALSE
+        if (standardized_x ||
+            standardized_y ||
+            has_group) {
+            print_note <- TRUE
+          }
+        note_str <- character(0)
         if (standardized_x || standardized_y) {
-          cat("\nNOTE: The effects of the component paths are from the model, not standardized.")
+            note_str <- c(note_str,
+                  strwrap("- The effects of the component paths are from the model, not standardized.",
+                          exdent = 2))
+            if (has_group) {
+                note_str <- c(note_str,
+                  strwrap("- SD(s) in the selected group is/are used in standardiziation.",
+                          exdent = 2))
+              }
+          }
+        if (has_group) {
+          note_str <- c(note_str,
+              strwrap("- The group number is the number used internally in lavaan.",
+                      exdent = 2))
         }
+        if (length(note_str) > 0) {
+            cat("\nNOTE:\n")
+            cat(note_str, sep = "\n")
+          }
       }
-    cat("\n")
     invisible(x)
   }
