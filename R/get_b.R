@@ -38,7 +38,16 @@ get_b <- function(x,
          (est$op == "~") &
          (est$rhs == x)
     if (isTRUE(any(i))) {
-        return(est[i, "est"])
+        out <- est[i, "est"]
+        if (length(out) > 1) {
+            # Multigroup model
+            if (!is.null(est$group)) {
+                names(out) <- est$group[i]
+              } else {
+                names(out) <- seq_along(out)
+              }
+          }
+        return(out)
       } else {
         return(NA)
       }
