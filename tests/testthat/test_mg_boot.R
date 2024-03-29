@@ -552,6 +552,16 @@ test_that("indirect_effect and multigrop", {
 
 # All direct paths
 
+mod_tmp <-
+"
+m3 ~ c(NA, 0, NA)*m1
+y ~ m3
+"
+
+fit_tmp <- sem(mod_tmp, dat, meanstructure = TRUE, fixed.x = FALSE,
+               group = "gp",
+               group.label = c("gp3", "gp1", "gp2"))
+
 test_that("All direct path: Multiple group", {
     expect_equal(all_indirect_paths(fit),
                  all_indirect_paths(fit2),
@@ -559,6 +569,7 @@ test_that("All direct path: Multiple group", {
     expect_equal(all_indirect_paths(fit, group = 2),
                  all_indirect_paths(fit2, group = "gp1"),
                  ignore_attr = TRUE)
+    expect_true(length(all_indirect_paths(fit_tmp, group = 2)) == 0)
   })
 
 
