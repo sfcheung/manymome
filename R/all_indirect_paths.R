@@ -288,9 +288,15 @@ all_paths_to_df <- function(all_paths) {
     all_y <- sapply(all_paths, function(x) x$y)
     all_m <- sapply(all_paths, function(x) x$m,
                     simplify = FALSE)
+    all_group_label <- sapply(all_paths, function(x) x$group_label)
+    all_group_number <- sapply(all_paths, function(x) x$group_number)
     out <- data.frame(x = all_x,
                       y = all_y)
     out$m <- all_m
+    if (!any(sapply(all_group_label, is.null))) {
+        out$group_label <- all_group_label
+        out$group_number <- all_group_number
+      }
     out
   }
 

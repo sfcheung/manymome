@@ -572,6 +572,22 @@ test_that("All direct path: Multiple group", {
     expect_true(length(all_indirect_paths(fit_tmp, group = 2)) == 0)
   })
 
+# Many direct path
+
+mod_tmp <-
+"
+m3 ~ c(NA, 0, NA)*m1 + c(NA, NA, 0)*x
+m2 ~ c(0, 0, NA)*m1 + c(NA, NA, 0)*x
+w3 ~ c(NA, 0, 0)*m2
+y ~ c(NA, 0, NA)*m3 + w3
+"
+
+fit_tmp <- sem(mod_tmp, dat, meanstructure = TRUE, fixed.x = FALSE,
+               group = "gp",
+               group.label = c("gp3", "gp1", "gp2"))
+
+all_tmp <- all_indirect_paths(fit_tmp)
+all_paths_to_df(all_tmp)
 
 skip("Long tests: Test in interactive sections")
 
