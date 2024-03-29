@@ -282,9 +282,12 @@ check_xy <- function(e1, e2) {
         m2 <- list(m2)
       }
     m1m2_chk <- intersect(m1, m2)
-    if (length(m1m2_chk) != 0) {
-        stop("The objects have one or more paths in common.")
-      }
+    # Disable this test.
+    # - The two effects can be two conditional effects.
+    # - The two effects can be from two different groups.
+    # if (length(m1m2_chk) != 0) {
+    #     stop("The objects have one or more paths in common.")
+    #   }
     if (!identical(stdx1, stdx2)) {
         stop("x is standardized in one object but not in the other.")
       }
