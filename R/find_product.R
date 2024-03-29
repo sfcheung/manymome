@@ -46,7 +46,7 @@
 #'@noRd
 
 find_product <- function(data, target) {
-    if (is.list(data)) {
+    if (is.list(data) && !is.data.frame(data)) {
         ngroups <- length(data)
         # Aasume all groups have the same variables
         data <- do.call(rbind, data)
@@ -76,7 +76,7 @@ find_product <- function(data, target) {
 #'@noRd
 
 find_all_products <- function(data, expand = TRUE) {
-    if (is.list(data)) {
+    if (is.list(data) && !is.data.frame(data)) {
         ngroups <- length(data)
         data <- do.call(rbind, data)
       } else {
