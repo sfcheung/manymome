@@ -591,10 +591,16 @@ gen_boot_i_lavaan <- function(fit) {
                                 slotOptions = fit_opts,
                                 slotParTable = fit_pt))
         } else {
-          # Support for multigroup models will be added later.
-          b_i <- list(i)
+          # 2024-03-29: Added support for multigroup models
+          if (!is.list(i)) {
+              b_i <- list(i)
+            } else {
+              b_i <- i
+            }
           X_new <- X_old
-          X_new[[1]] <- X_new[[1]][i, , drop = FALSE]
+          for (j in seq_along(X_new)) {
+              X_new[[j]] <- X_new[[j]][b_i[[j]], , drop = FALSE]
+            }
           fit_data_new <- lavaan::lav_data_update(
                                     lavdata = fit_data,
                                     newX = X_new,
@@ -642,6 +648,8 @@ gen_boot_i_lavaan <- function(fit) {
                               implied_stats = NA,
                               ok = FALSE)
                 }
+              # If ngroups > 1,
+              #   cov, mean, and mean_lv are lists.
               implied <- list(cov = lavaan::lavInspect(out, "cov.all"),
                               mean = lavaan::lavInspect(out, "mean.ov"),
                               mean_lv = lavaan::lavInspect(out, "mean.lv"))
