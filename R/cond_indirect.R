@@ -367,10 +367,12 @@
 #' supplied, will override `boot_ci`
 #' and `mc_ci`.
 #'
-#' @param group_number The group number
+#' @param group Either the group number
 #' as appeared in the [summary()]
 #' or [lavaan::parameterEstimates()]
-#' output of an `lavaan`-class object.
+#' output of an `lavaan`-class object,
+#' or the group label as used in
+#' the `lavaan`-class object.
 #' Used only when the number of
 #' groups is greater than one. Default
 #' is NULL.
@@ -449,7 +451,7 @@ cond_indirect <- function(x,
                      save_ci_full = FALSE,
                      save_ci_out = TRUE,
                      ci_type = NULL,
-                     group_number = NULL) {
+                     group = NULL) {
     fit_type <- cond_indirect_check_fit(fit)
     chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
     if (!chkpath) {
@@ -578,7 +580,7 @@ cond_indirect <- function(x,
                         get_prods_only = TRUE,
                         data = fit_data,
                         expand = TRUE,
-                        group_number = group_number)
+                        group = group)
       }
     if (get_prods_only) return(prods)
     out0 <- indirect_i(x = x,
@@ -591,7 +593,7 @@ cond_indirect <- function(x,
                      standardized_x = standardized_x,
                      standardized_y = standardized_y,
                      prods = prods,
-                     group_number = group_number)
+                     group = group)
     if (mc_ci) {
         out_mc <- mapply(indirect_i,
                            est = lapply(mc_out, function(x) x$est),
@@ -708,7 +710,7 @@ indirect_effect <- function(x,
                      save_ci_full = FALSE,
                      save_ci_out = TRUE,
                      ci_type = NULL,
-                     group_number = NULL) {
+                     group = NULL) {
     cond_indirect(x = x,
                   y = y,
                   m = m,
@@ -735,7 +737,7 @@ indirect_effect <- function(x,
                   save_ci_full = save_ci_full,
                   save_ci_out = save_ci_out,
                   ci_type = ci_type,
-                  group_number = group_number)
+                  group = group)
   }
 
 #' @param w_type Character. Whether the
