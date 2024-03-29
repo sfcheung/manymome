@@ -113,6 +113,9 @@ all_indirect_paths <- function(fit = NULL,
     if (is.na(fit_type)) {
         stop("'fit' is not of a supported type.")
       }
+    ngroups <- 1
+    group_number <- NULL
+    group_label <- NULL
 
     # Create an adjancey matrix
     if (identical(fit_type, "lavaan")) {
@@ -128,31 +131,91 @@ all_indirect_paths <- function(fit = NULL,
                 group_number <- match(group, group_labels_all)
                 group_label <- group
               }
-          } else {
-            group_number <- NULL
-            group_label <- NULL
           }
         tmp <- lavaan::lavInspect(fit,
                   drop.list.single.group = FALSE)
         tmp <- lapply(tmp, function(x) x$beta)
-        if (is.null(group_number)) {
-            beta <- Reduce(`+`, tmp)
-          } else {
-            beta <- tmp[[group_number]]
-          }
+        beta <- tmp
       }
     if (identical(fit_type, "lavaan.mi")) {
         # TODO:
         # Add support for multiple group models.
-        beta <- lavaan::lavInspect(fit)$beta
+        beta <- list(lavaan::lavInspect(fit)$beta)
       }
     if (identical(fit_type, "lm")) {
-        beta <- beta_from_lm(fit)
+        beta <- list(beta_from_lm(fit))
       }
-    adj <- beta
+    if ((ngroups > 1) &&
+        (identical(fit_type, "lavaan"))) {
+        group_labels_all <- lavaan::lavTech(fit,
+                                            "group.label")
+        if (is.null(group)) {
+            groups <- group_labels_all
+            group_numbers <- seq_len(ngroups)
+          } else {
+            beta <- beta[group_number]
+            groups <- group
+            group_numbers <- group_number
+            group_labels_all <- group_labels_all[group_number]
+          }
+        tmpfct <- function(adj_i,
+                           group_i,
+                           group_label_i,
+                           group_number_i,
+                           exclude = exclude,
+                           x = x,
+                           y = y,
+                           fit = fit,
+                           fit_type = fit_type) {
+                      out <- all_indirect_paths_i(adj = adj_i,
+                                                  exclude = exclude,
+                                                  x = x,
+                                                  y = y,
+                                                  fit = fit,
+                                                  fit_type = fit_type)
+                      for (i in seq_along(out)) {
+                          out[[i]]$group_label <- group_label_i
+                          out[[i]]$group_number <- group_number_i
+                        }
+                      out
+                    }
+        out3 <- mapply(tmpfct,
+                       adj_i = beta,
+                       group_i = groups,
+                       group_label_i = group_labels_all,
+                       group_number_i = group_numbers,
+                       MoreArgs = list(exclude = exclude,
+                                       x = x,
+                                       y = y,
+                                       fit = fit,
+                                       fit_type = fit_type),
+                       SIMPLIFY = FALSE)
+        out3 <- unlist(out3,
+                       recursive = FALSE)
+      } else {
+        out3 <- all_indirect_paths_i(adj = beta[[1]],
+                                     exclude = exclude,
+                                     x = x,
+                                     y = y,
+                                     fit = fit,
+                                     fit_type = fit_type)
+      }
+
+    class(out3) <- c("all_paths", class(out3))
+    attr(out3, "call") <- match.call()
+    out3
+  }
+
+#' @noRd
+
+all_indirect_paths_i <- function(adj,
+                                 exclude = NULL,
+                                 x = NULL,
+                                 y = NULL,
+                                 fit = NULL,
+                                 fit_type = NULL) {
     adj[adj > 0] <- 1
     adj <- t(adj)
-
     # Remove excluded variables
     if (is.character(exclude)) {
         adj <- adj[!(rownames(adj) %in% exclude),
@@ -209,8 +272,6 @@ all_indirect_paths <- function(fit = NULL,
     # Format the output
     out3 <- lapply(out2, to_x_y_m)
     names(out3) <- sapply(out3, path_name)
-    class(out3) <- c("all_paths", class(out3))
-    attr(out3, "call") <- match.call()
     out3
   }
 

@@ -556,6 +556,9 @@ test_that("All direct path: Multiple group", {
     expect_equal(all_indirect_paths(fit),
                  all_indirect_paths(fit2),
                  ignore_attr = TRUE)
+    expect_equal(all_indirect_paths(fit, group = 2),
+                 all_indirect_paths(fit2, group = "gp1"),
+                 ignore_attr = TRUE)
   })
 
 
