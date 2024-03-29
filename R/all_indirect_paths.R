@@ -102,9 +102,14 @@ all_indirect_paths <- function(fit = NULL,
 
     # Create an adjancey matrix
     if (identical(fit_type, "lavaan")) {
-        beta <- lavaan::lavInspect(fit)$beta
+        tmp <- lavaan::lavInspect(fit,
+                  drop.list.single.group = FALSE)
+        tmp <- lapply(tmp, function(x) x$beta)
+        beta <- Reduce(`+`, tmp)
       }
     if (identical(fit_type, "lavaan.mi")) {
+        # TODO:
+        # Add support for multiple group models.
         beta <- lavaan::lavInspect(fit)$beta
       }
     if (identical(fit_type, "lm")) {

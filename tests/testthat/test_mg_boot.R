@@ -550,6 +550,15 @@ test_that("indirect_effect and multigrop", {
                  tmp4ab)
   })
 
+# All direct paths
+
+test_that("All direct path: Multiple group", {
+    expect_equal(all_indirect_paths(fit),
+                 all_indirect_paths(fit2),
+                 ignore_attr = TRUE)
+  })
+
+
 skip("Long tests: Test in interactive sections")
 
 # Indirect with bootstrap
