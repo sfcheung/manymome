@@ -106,12 +106,168 @@ tmp1_ng <- get_prod(x = "x",
 
 # indirect_i
 
-indirect_effect(x = "x",
-                y = "y",
-                m = "m3",
-                fit = fit2,
-                group_number = 2)
-indirect_effect(x = "x",
-                y = "y",
-                m = "m3",
-                fit = fit2_ng)
+suppressWarnings(tmp2 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        group = "gp1"))
+suppressWarnings(tmp3 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        group = 3))
+tmp2_chk <- est_tmp[(est_tmp$lhs == "m3") &
+                    (est_tmp$rhs == "x") &
+                    (est_tmp$group == 2), "est"] *
+            est_tmp[(est_tmp$lhs == "y") &
+                    (est_tmp$rhs == "m3") &
+                    (est_tmp$group == 2), "est"]
+tmp3_chk <- est_tmp[(est_tmp$lhs == "m3") &
+                    (est_tmp$rhs == "x") &
+                    (est_tmp$group == 3), "est"] *
+            est_tmp[(est_tmp$lhs == "y") &
+                    (est_tmp$rhs == "m3") &
+                    (est_tmp$group == 3), "est"]
+
+test_that("indirect_effect and multigrop", {
+    expect_equal(unname(coef(tmp2)),
+                 tmp2_chk)
+    expect_equal(unname(coef(tmp3)),
+                 tmp3_chk)
+  })
+
+# cond_indirect
+
+suppressWarnings(tmp2 <- cond_indirect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        wvalues = c(w3 = 1, w4 = 2),
+                        group = 2))
+suppressWarnings(tmp3 <- cond_indirect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        wvalues = c(w3 = 3, w4 = -2),
+                        group = "gp3"))
+tmp2_chk <- est_tmp[(est_tmp$lhs == "m3") &
+                    (est_tmp$rhs == "x") &
+                    (est_tmp$group == 2), "est"] *
+            (est_tmp[(est_tmp$lhs == "y") &
+                     (est_tmp$rhs == "m3") &
+                     (est_tmp$group == 2), "est"] +
+             est_tmp[(est_tmp$lhs == "y") &
+                     (est_tmp$rhs == "m3:w3") &
+                     (est_tmp$group == 2), "est"] +
+             est_tmp[(est_tmp$lhs == "y") &
+                     (est_tmp$rhs == "m3w4") &
+                     (est_tmp$group == 2), "est"] * 2)
+tmp3_chk <- est_tmp[(est_tmp$lhs == "m3") &
+                    (est_tmp$rhs == "x") &
+                    (est_tmp$group == 1), "est"] *
+            (est_tmp[(est_tmp$lhs == "y") &
+                     (est_tmp$rhs == "m3") &
+                     (est_tmp$group == 1), "est"] +
+             est_tmp[(est_tmp$lhs == "y") &
+                     (est_tmp$rhs == "m3:w3") &
+                     (est_tmp$group == 1), "est"] * 3+
+             est_tmp[(est_tmp$lhs == "y") &
+                     (est_tmp$rhs == "m3w4") &
+                     (est_tmp$group == 1), "est"] * -2)
+
+test_that("indirect_effect and multigrop", {
+    expect_equal(unname(coef(tmp2)),
+                 tmp2_chk)
+    expect_equal(unname(coef(tmp3)),
+                 tmp3_chk)
+  })
+
+# indirect_i: stdx / stdy
+
+suppressWarnings(tmp2 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        group = "gp1",
+                        standardized_x = TRUE))
+suppressWarnings(tmp3 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        group = 3,
+                        standardized_y = TRUE))
+sd_x_2 <- sqrt(lavInspect(fit2, "implied")$gp1$cov["x", "x"])
+sd_y_2 <- sqrt(lavInspect(fit2, "implied")$gp1$cov["y", "y"])
+sd_x_3 <- sqrt(lavInspect(fit2, "implied")[[3]]$cov["x", "x"])
+sd_y_3 <- sqrt(lavInspect(fit2, "implied")[[3]]$cov["y", "y"])
+tmp2_chk <- est_tmp[(est_tmp$lhs == "m3") &
+                    (est_tmp$rhs == "x") &
+                    (est_tmp$group == 2), "est"] *
+            est_tmp[(est_tmp$lhs == "y") &
+                    (est_tmp$rhs == "m3") &
+                    (est_tmp$group == 2), "est"] * sd_x_2 / 1
+tmp3_chk <- est_tmp[(est_tmp$lhs == "m3") &
+                    (est_tmp$rhs == "x") &
+                    (est_tmp$group == 3), "est"] *
+            est_tmp[(est_tmp$lhs == "y") &
+                    (est_tmp$rhs == "m3") &
+                    (est_tmp$group == 3), "est"] * 1 / sd_y_3
+
+test_that("indirect_effect and multigrop", {
+    expect_equal(unname(coef(tmp2)),
+                 tmp2_chk)
+    expect_equal(unname(coef(tmp3)),
+                 tmp3_chk)
+  })
+
+# cond_indirect: stdx / stdy
+
+suppressWarnings(tmp2 <- cond_indirect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        wvalues = c(w3 = 1, w4 = 2),
+                        group = 2,
+                        standardized_x = TRUE))
+suppressWarnings(tmp3 <- cond_indirect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        wvalues = c(w3 = 3, w4 = -2),
+                        group = "gp3",
+                        standardized_y = TRUE))
+sd_x_2 <- sqrt(lavInspect(fit2, "implied")$gp1$cov["x", "x"])
+sd_y_2 <- sqrt(lavInspect(fit2, "implied")$gp1$cov["y", "y"])
+sd_x_3 <- sqrt(lavInspect(fit2, "implied")[[1]]$cov["x", "x"])
+sd_y_3 <- sqrt(lavInspect(fit2, "implied")[[1]]$cov["y", "y"])
+tmp2_chk <- est_tmp[(est_tmp$lhs == "m3") &
+                    (est_tmp$rhs == "x") &
+                    (est_tmp$group == 2), "est"] *
+            (est_tmp[(est_tmp$lhs == "y") &
+                     (est_tmp$rhs == "m3") &
+                     (est_tmp$group == 2), "est"] +
+             est_tmp[(est_tmp$lhs == "y") &
+                     (est_tmp$rhs == "m3:w3") &
+                     (est_tmp$group == 2), "est"] +
+             est_tmp[(est_tmp$lhs == "y") &
+                     (est_tmp$rhs == "m3w4") &
+                     (est_tmp$group == 2), "est"] * 2) * sd_x_2
+tmp3_chk <- est_tmp[(est_tmp$lhs == "m3") &
+                    (est_tmp$rhs == "x") &
+                    (est_tmp$group == 1), "est"] *
+            (est_tmp[(est_tmp$lhs == "y") &
+                     (est_tmp$rhs == "m3") &
+                     (est_tmp$group == 1), "est"] +
+             est_tmp[(est_tmp$lhs == "y") &
+                     (est_tmp$rhs == "m3:w3") &
+                     (est_tmp$group == 1), "est"] * 3+
+             est_tmp[(est_tmp$lhs == "y") &
+                     (est_tmp$rhs == "m3w4") &
+                     (est_tmp$group == 1), "est"] * -2) * 1 / sd_y_3
+
+test_that("indirect_effect and multigrop", {
+    expect_equal(unname(coef(tmp2)),
+                 tmp2_chk)
+    expect_equal(unname(coef(tmp3)),
+                 tmp3_chk)
+  })

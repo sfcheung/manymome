@@ -407,6 +407,10 @@ indirect_i <- function(x,
         if (is.null(implied_stats)) {
             implied_stats <- lav_implied_all(fit)
           }
+        if (!is.null(group_number)) {
+            implied_stats <- implied_stats_group_i(implied_stats,
+                                                   group_number = group_number)
+          }
         if (standardized_x) {
             scale_x <- sqrt(diag(implied_stats$cov)[x])
             b_all_str0 <- paste0(b_all_str0, "*(",
