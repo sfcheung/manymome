@@ -374,8 +374,13 @@ set_est_i_lavaan <- function(est0, fit, p_free, est_df = NULL) {
     ptable <- as.data.frame(fit@ParTable)
     if (!is.null(est_df)) {
         est_df$est <- NULL
-        est0 <- merge(est_df, ptable[, c("lhs", "op", "rhs", "est")],
-                      sort = FALSE)
+        if ("group" %in% colnames(est_df)) {
+            est0 <- merge(est_df, ptable[, c("lhs", "op", "rhs", "block", "group", "est")],
+                          sort = FALSE)
+          } else {
+            est0 <- merge(est_df, ptable[, c("lhs", "op", "rhs", "est")],
+                          sort = FALSE)
+          }
         class(est0) <- class(est_df)
         return(est0)
       } else {
