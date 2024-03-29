@@ -46,6 +46,13 @@
 #'@noRd
 
 find_product <- function(data, target) {
+    if (is.list(data)) {
+        ngroups <- length(data)
+        # Aasume all groups have the same variables
+        data <- do.call(rbind, data)
+      } else {
+        ngroups <- 1
+      }
     a_col <- data[, target]
     out <- c(NA, NA)
     q <- 0
