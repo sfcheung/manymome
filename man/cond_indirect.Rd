@@ -38,7 +38,8 @@ cond_indirect(
   ci_out = NULL,
   save_ci_full = FALSE,
   save_ci_out = TRUE,
-  ci_type = NULL
+  ci_type = NULL,
+  group = NULL
 )
 
 cond_indirect_effects(
@@ -96,7 +97,8 @@ indirect_effect(
   ci_out = NULL,
   save_ci_full = FALSE,
   save_ci_out = TRUE,
-  ci_type = NULL
+  ci_type = NULL,
+  group = NULL
 )
 
 many_indirect_effects(paths, ...)
@@ -303,6 +305,16 @@ other arguments
 (e.g, \code{boot_ci} and \code{mc_ci}). If
 supplied, will override \code{boot_ci}
 and \code{mc_ci}.}
+
+\item{group}{Either the group number
+as appeared in the \code{\link[=summary]{summary()}}
+or \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}
+output of an \code{lavaan}-class object,
+or the group label as used in
+the \code{lavaan}-class object.
+Used only when the number of
+groups is greater than one. Default
+is NULL.}
 
 \item{wlevels}{The output of
 \code{\link[=merge_mod_levels]{merge_mod_levels()}}, or the
