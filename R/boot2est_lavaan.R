@@ -456,22 +456,49 @@ get_implied_i_lavaan <- function(est0, fit, fit_tmp = NULL) {
                                              delta = TRUE)
       }
     out <- lav_implied_all(fit)
+    ngroups <- lavaan::lavTech(fit, "ngroups")
     out_names <- names(out)
     implied_names <- names(implied)
     out1 <- out
+    # For multigroup models, use the format of lavaan::lav_model_implied()
+    # - Estimates than groups.
     for (x in out_names) {
         if (x %in% implied_names) {
           if (!is.null(implied[[x]][[1]])) {
-              out1[[x]][] <- implied[[x]][[1]]
+              if (ngroups > 1) {
+                  for (j in seq_len(ngroups)) {
+                      out1[[x]][[j]][] <- implied[[x]][[j]]
+                    }
+                } else {
+                  out1[[x]][] <- implied[[x]][[1]]
+                }
+            } else {
+              if (ngroups > 1) {
+                  for (j in seq_len(ngroups)) {
+                      out1[[x]][[j]][] <- NA
+                    }
+                } else {
+                  out1[[x]][] <- NA
+                }
+            }
+        } else {
+          if (ngroups > 1) {
+              for (j in seq_len(ngroups)) {
+                  out1[[x]][[j]][] <- NA
+                }
             } else {
               out1[[x]][] <- NA
             }
-        } else {
-          out1[[x]][] <- NA
         }
       }
     if (has_lv) {
-        out1$mean_lv <- implied$mean_lv[[1]]
+        if (ngroups > 1) {
+            for (j in seq_len(ngroups)) {
+                out1[["mean_lv"]][[j]][] <- NA
+              }
+          } else {
+            out1$mean_lv <- implied$mean_lv[[1]]
+          }
       }
     out1
   }
