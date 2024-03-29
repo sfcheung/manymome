@@ -30,10 +30,14 @@
 get_b <- function(x,
                   y,
                   fit,
-                  est = NULL) {
+                  est = NULL,
+                  group_number = NULL) {
     if (is.null(est)) {
       est <- lav_est(fit, se = FALSE, ci = FALSE)
     }
+    if (!is.null(group_number)) {
+        est <- est[est$group == group_number, ]
+      }
     i <- (est$lhs == y) &
          (est$op == "~") &
          (est$rhs == x)
