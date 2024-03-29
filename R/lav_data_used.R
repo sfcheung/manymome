@@ -25,6 +25,8 @@
 lav_data_used <- function(fit,
                           drop_colon = TRUE,
                           drop_list_single_group = TRUE) {
+    # Return a named list of N matrices if ngroups > 1
+    # TODOs: lav_data_used_lavaan_mi()
     type <- NA
     if (inherits(fit, "lavaan")) {
         type <- "lavaan"
@@ -49,6 +51,7 @@ lav_data_used <- function(fit,
 lav_data_used_lavaan <- function(fit,
                                  drop_colon = TRUE,
                                  drop_list_single_group = TRUE) {
+    # Return a named list of N matrices if ngroups > 1
     dat <- lavaan::lavInspect(fit, "data",
                               drop.list.single.group = FALSE)
     i_excluded <- lavaan::lavInspect(fit, "empty.idx",
@@ -66,10 +69,10 @@ lav_data_used_lavaan <- function(fit,
       }
     for (k in seq_len(ngp)) {
         if (length(i_excluded[[k]]) > 0) {
-            dat[[k]] <- dat[[k]][-i_excluded, ]
+            dat[[k]] <- dat[[k]][-i_excluded[[k]], ]
           }
       }
-    if (drop_list_single_group && ngp == 1) {
+    if (drop_list_single_group && (ngp == 1)) {
         dat <- dat[[1]]
       }
     return(dat)
@@ -79,7 +82,7 @@ lav_data_used_lavaan <- function(fit,
 
 lav_data_used_lavaan_mi <- function(fit,
                                     drop_colon = TRUE) {
-
+    # TODOs: Return a named list of N matrices if ngroups > 1
     dat_list <- fit@DataList
     ovnames <- lavaan::lavNames(fit, "ov")
     fit_org <- lavaan_from_lavaam_mi(fit, data = FALSE)
