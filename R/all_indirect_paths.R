@@ -49,6 +49,19 @@
 #' @param all_paths An `all_paths`-class object. For example,
 #' the output of [all_indirect_paths()].
 #'
+#' @param group Either the group number
+#' as appeared in the [summary()]
+#' or [lavaan::parameterEstimates()]
+#' output of an `lavaan`-class object,
+#' or the group label as used in
+#' the `lavaan`-class object.
+#' Used only when the number of
+#' groups is greater than one. Default
+#' is NULL. If not specified by the model
+#' has more than one group, than paths
+#' that appears in at least one group
+#' will be included in the output.
+#'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [indirect_effect()], [lm2list()].
@@ -94,7 +107,8 @@
 all_indirect_paths <- function(fit = NULL,
                                exclude = NULL,
                                x = NULL,
-                               y = NULL) {
+                               y = NULL,
+                               group = NULL) {
     fit_type <- cond_indirect_check_fit(fit)
     if (is.na(fit_type)) {
         stop("'fit' is not of a supported type.")
@@ -102,10 +116,30 @@ all_indirect_paths <- function(fit = NULL,
 
     # Create an adjancey matrix
     if (identical(fit_type, "lavaan")) {
+
+        ngroups <- lavaan::lavTech(fit, "ngroups")
+        if ((ngroups > 1) && !is.null(group)) {
+            group_labels_all <- lavaan::lavTech(fit,
+                                                "group.label")
+            if (is.numeric(group)) {
+                group_label <- group_labels_all[group]
+                group_number <- group
+              } else {
+                group_number <- match(group, group_labels_all)
+                group_label <- group
+              }
+          } else {
+            group_number <- NULL
+            group_label <- NULL
+          }
         tmp <- lavaan::lavInspect(fit,
                   drop.list.single.group = FALSE)
         tmp <- lapply(tmp, function(x) x$beta)
-        beta <- Reduce(`+`, tmp)
+        if (is.null(group_number)) {
+            beta <- Reduce(`+`, tmp)
+          } else {
+            beta <- tmp[[group_number]]
+          }
       }
     if (identical(fit_type, "lavaan.mi")) {
         # TODO:
