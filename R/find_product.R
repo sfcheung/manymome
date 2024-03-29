@@ -78,6 +78,15 @@ find_all_products <- function(data, expand = TRUE) {
     if (length(out) > 0) {
         out <- out[sapply(out, function(x) x[1] != x[2])]
       }
+    # Remove a * b == a
+    if (length(out) > 0) {
+        tmpfct <- function(xy, x) {
+              !isTRUE(x %in% xy)
+            }
+        out <- out[mapply(FUN = tmpfct,
+                          xy = out,
+                          x = names(out))]
+      }
     if (expand) {
         out <- expand2lower(out)
       }
