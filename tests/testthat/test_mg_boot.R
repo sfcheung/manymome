@@ -266,6 +266,33 @@ test_that("indirect_effect and multigrop", {
                  tmp3_chk * sd_x_3)
   })
 
+## Math
+
+suppressWarnings(tmp3b <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        group = 2,
+                        standardized_y = TRUE))
+suppressWarnings(tmp3c <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        group = 1,
+                        standardized_y = TRUE))
+
+tmpmath3a <- tmp3b - tmp3
+tmpmath3b <- tmp3b + tmp3
+tmpmath3c <- tmpmath3b - tmp3c
+test_that("indirect_effect and multigrop: Math", {
+    expect_equal(coef(tmpmath3a),
+                 coef(tmp3b) - coef(tmp3))
+    expect_equal(coef(tmpmath3b),
+                 coef(tmp3b) + coef(tmp3))
+    expect_equal(coef(tmpmath3c),
+                 coef(tmp3b) + coef(tmp3) - coef(tmp3c))
+  })
+
 # cond_indirect: stdx / stdy
 
 suppressWarnings(tmp2 <- cond_indirect(x = "x",
@@ -444,6 +471,28 @@ test_that("indirect_effect and multigrop", {
                  tmp4ab)
   })
 
+## Math
+
+suppressWarnings(tmp3b <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        group = 3,
+                        mc_ci = TRUE,
+                        mc_out = fit_mc_out,
+                        standardized_x = TRUE))
+
+tmpmath3a <- tmp3b - tmp3
+tmpmath3b <- tmp3b + tmp3
+tmpmath3c <- tmpmath3b + tmpmath3a
+test_that("indirect_effect and multigrop, MC: Math", {
+    expect_equal(coef(tmpmath3a),
+                 coef(tmp3b) - coef(tmp3))
+    expect_equal(coef(tmpmath3b),
+                 coef(tmp3b) + coef(tmp3))
+  })
+
+
 # cond_indirect, stdx / stdy: mc
 
 suppressWarnings(tmp2 <- cond_indirect(x = "x",
@@ -573,6 +622,29 @@ test_that("indirect_effect and multigrop", {
                  tolerance = 1e-4)
   })
 
+## Math
+
+suppressWarnings(tmp3b <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        group = 2,
+                        boot_ci = TRUE,
+                        boot_out = fit2_boot_out))
+
+tmpmath3a <- tmp3b - tmp3
+tmpmath3b <- tmp3b + tmp3
+test_that("indirect_effect and multigrop, boot: Math", {
+    expect_equal(coef(tmpmath3a),
+                 coef(tmp3b) - coef(tmp3))
+    expect_equal(coef(tmpmath3b),
+                 coef(tmp3b) + coef(tmp3))
+    expect_equal(tmpmath3a$boot_indirect,
+                 tmp3b$boot_indirect - tmp3$boot_indirect)
+    expect_equal(tmpmath3b$boot_indirect,
+                 tmp3b$boot_indirect + tmp3$boot_indirect)
+  })
+
 
 # Indirect with bootstrap: stdx / stdy
 
@@ -627,4 +699,28 @@ test_that("indirect_effect and multigrop", {
     expect_equal(unname(as.vector(confint(tmp3_chk_boot))),
                  unname(unlist(est_chk[i, c("ci.lower", "ci.upper")])),
                  tolerance = 1e-4)
+  })
+
+## Math
+
+suppressWarnings(tmp3b <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        group = 1,
+                        boot_ci = TRUE,
+                        boot_out = fit2_boot_out,
+                        standardized_x = TRUE))
+
+tmpmath3a <- tmp3b - tmp3
+tmpmath3b <- tmp3b + tmp3
+test_that("indirect_effect and multigrop, boot: Math", {
+    expect_equal(coef(tmpmath3a),
+                 coef(tmp3b) - coef(tmp3))
+    expect_equal(coef(tmpmath3b),
+                 coef(tmp3b) + coef(tmp3))
+    expect_equal(tmpmath3a$boot_indirect,
+                 tmp3b$boot_indirect - tmp3$boot_indirect)
+    expect_equal(tmpmath3b$boot_indirect,
+                 tmp3b$boot_indirect + tmp3$boot_indirect)
   })
