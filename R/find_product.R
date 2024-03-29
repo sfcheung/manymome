@@ -76,6 +76,12 @@ find_product <- function(data, target) {
 #'@noRd
 
 find_all_products <- function(data, expand = TRUE) {
+    if (is.list(data)) {
+        ngroups <- length(data)
+        data <- do.call(rbind, data)
+      } else {
+        ngroups <- 1
+      }
     out <- sapply(colnames(data),
                   find_product, data = data,
                   USE.NAMES = TRUE,
