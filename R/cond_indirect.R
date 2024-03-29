@@ -1083,12 +1083,22 @@ cond_indirect_effects <- function(wlevels,
 many_indirect_effects <- function(paths, ...) {
     path_names <- names(paths)
     xym <- all_paths_to_df(paths)
-    out <- mapply(indirect_effect,
-                  x = xym$x,
-                  y = xym$y,
-                  m = xym$m,
-                  MoreArgs = list(...),
-                  SIMPLIFY = FALSE)
+    if ("group_label" %in% colnames(xym)) {
+        out <- mapply(indirect_effect,
+                      x = xym$x,
+                      y = xym$y,
+                      m = xym$m,
+                      group = xym$group_number,
+                      MoreArgs = list(...),
+                      SIMPLIFY = FALSE)
+      } else {
+        out <- mapply(indirect_effect,
+                      x = xym$x,
+                      y = xym$y,
+                      m = xym$m,
+                      MoreArgs = list(...),
+                      SIMPLIFY = FALSE)
+      }
     names(out) <- path_names
     class(out) <- c("indirect_list", class(out))
     attr(out, "paths") <- paths

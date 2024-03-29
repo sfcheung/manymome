@@ -587,7 +587,18 @@ fit_tmp <- sem(mod_tmp, dat, meanstructure = TRUE, fixed.x = FALSE,
                group.label = c("gp3", "gp1", "gp2"))
 
 all_tmp <- all_indirect_paths(fit_tmp)
-all_paths_to_df(all_tmp)
+all_paths <- all_paths_to_df(all_tmp)
+all_ind <- many_indirect_effects(all_tmp, fit = fit_tmp)
+ind_chk <- indirect_effect(x = "x",
+                           y = "w3",
+                           m = "m2",
+                           fit = fit_tmp,
+                           group = "gp3")
+
+test_that("many_indirect: multiple group", {
+    expect_equal(coef(all_ind[[3]]),
+                 coef(ind_chk))
+  })
 
 skip("Long tests: Test in interactive sections")
 
