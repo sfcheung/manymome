@@ -124,6 +124,14 @@
 #' latent variables and observed
 #' variables. Default is `TRUE`.
 #'
+#' @param group_number The group number
+#' as appeared in the [summary()]
+#' or [lavaan::parameterEstimates()]
+#' output of an `lavaan`-class object.
+#' Used only when the number of
+#' groups is greater than one. Default
+#' is NULL.
+#'
 #' @seealso [indirect_effect()],
 #' [cond_indirect_effects()], and
 #' [cond_indirect()], the high level
@@ -183,10 +191,20 @@ indirect_i <- function(x,
                      data = NULL,
                      expand = TRUE,
                      warn = TRUE,
-                     allow_mixing_lav_and_obs = TRUE) {
+                     allow_mixing_lav_and_obs = TRUE,
+                     group_number = NULL) {
     if (is.null(est)) {
       est <- lav_est(fit)
     }
+    ngroups <- 1
+    if (!is.null(est$group)) {
+        if (max(est$group) > 1) {
+            ngroups <- max(est$group)
+          }
+      }
+    if ((ngroups > 1) && !is.numeric(group_number)) {
+        stop("The model has more than one group but group_number not set.")
+      }
     chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
     if (!chkpath) {
         msg <- paste0("No path from ", sQuote(x), " to ", sQuote(y),
@@ -206,7 +224,8 @@ indirect_i <- function(x,
     bs <- mapply(get_b,
                  x = xs,
                  y = ys,
-                 MoreArgs = list(est = est))
+                 MoreArgs = list(est = est,
+                                 group_number = group_number))
     bs_org <- bs
     names(bs_org) <- bs_names
     chk_lv <- unique(c(xs, ys)) %in% check_lv_in_est(est)
@@ -471,15 +490,16 @@ gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL,
     out1 <- paste0(y0, " + ",
                     paste0("(", b_i0, ")*(", w_i2, ")",
                           collapse = " + "))
-
-    out2 <- paste0("(", formatC(yi, digits = digits, format = "f"),
+browser()
+    out2 <- tryCatch(paste0("(", formatC(yi, digits = digits, format = "f"),
                     ") + ",
                     paste0("(",
                           formatC(b_i, digits = digits, format = "f"),
                           ")*(",
                           wvalues_i0,
                           ")",
-                          collapse = " + "))
+                          collapse = " + ")), error = function(e) e)
+    if (inherits(out2, "error")) browser()
     names(out2) <- out1
     out2
   }
@@ -499,11 +519,20 @@ update_prods <- function(prods, est) {
         if (all(is.na(prods_i))) {
             return(pout_i)
           } else {
-            est_i <- est[(est$lhs == prods_i$y) &
-                        (est$op == "~") &
-                        (est$rhs %in% prods_i$prod), "est"]
-            pout_i$b <- est_i
-            names(pout_i$b) <- prods_i$prod
+            if (is.list(pout_i$b)) {
+                for (pp in pout_i$prod) {
+                    est_i <- est[(est$lhs == prods_i$y) &
+                                 (est$op == "~") &
+                                 (est$rhs %in% pp), "est"]
+                    pout_i$b[[pp]][] <- est_i
+                  }
+              } else {
+                est_i <- est[(est$lhs == prods_i$y) &
+                            (est$op == "~") &
+                            (est$rhs %in% prods_i$prod), "est"]
+                pout_i$b <- est_i
+                names(pout_i$b) <- prods_i$prod
+              }
             return(pout_i)
           }
       }

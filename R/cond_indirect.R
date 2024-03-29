@@ -367,6 +367,13 @@
 #' supplied, will override `boot_ci`
 #' and `mc_ci`.
 #'
+#' @param group_number The group number
+#' as appeared in the [summary()]
+#' or [lavaan::parameterEstimates()]
+#' output of an `lavaan`-class object.
+#' Used only when the number of
+#' groups is greater than one. Default
+#' is NULL.
 #'
 #' @seealso [mod_levels()] and
 #' [merge_mod_levels()] for generating
@@ -441,7 +448,8 @@ cond_indirect <- function(x,
                      ci_out = NULL,
                      save_ci_full = FALSE,
                      save_ci_out = TRUE,
-                     ci_type = NULL) {
+                     ci_type = NULL,
+                     group_number = NULL) {
     fit_type <- cond_indirect_check_fit(fit)
     chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
     if (!chkpath) {
@@ -569,7 +577,8 @@ cond_indirect <- function(x,
                         standardized_y = standardized_y,
                         get_prods_only = TRUE,
                         data = fit_data,
-                        expand = TRUE)
+                        expand = TRUE,
+                        group_number = group_number)
       }
     if (get_prods_only) return(prods)
     out0 <- indirect_i(x = x,
@@ -581,7 +590,8 @@ cond_indirect <- function(x,
                      wvalues = wvalues,
                      standardized_x = standardized_x,
                      standardized_y = standardized_y,
-                     prods = prods)
+                     prods = prods,
+                     group_number = group_number)
     if (mc_ci) {
         out_mc <- mapply(indirect_i,
                            est = lapply(mc_out, function(x) x$est),
@@ -697,7 +707,8 @@ indirect_effect <- function(x,
                      ci_out = NULL,
                      save_ci_full = FALSE,
                      save_ci_out = TRUE,
-                     ci_type = NULL) {
+                     ci_type = NULL,
+                     group_number = NULL) {
     cond_indirect(x = x,
                   y = y,
                   m = m,
@@ -723,7 +734,8 @@ indirect_effect <- function(x,
                   ci_out = ci_out,
                   save_ci_full = save_ci_full,
                   save_ci_out = save_ci_out,
-                  ci_type = ci_type)
+                  ci_type = ci_type,
+                  group_number = group_number)
   }
 
 #' @param w_type Character. Whether the
