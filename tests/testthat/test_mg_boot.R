@@ -318,6 +318,189 @@ test_that("indirect_effect and multigrop", {
                  tmp3_chk)
   })
 
+# Check do_mc
+
+fit_eq <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE,
+              group = "gp",
+              group.label = c("gp3", "gp1", "gp2"),
+              group.equal = "regressions")
+
+fit_mc_out <- do_mc(fit, R = 4,
+                   seed = 2345,
+                   progress = FALSE,
+                   parallel = FALSE)
+
+fit_eq_mc_out <- do_mc(fit_eq, R = 4,
+                       seed = 2345,
+                       progress = FALSE,
+                       parallel = FALSE)
+
+fit_mc_out <- do_mc(fit2, R = 50,
+                   seed = 2345,
+                   progress = FALSE,
+                   parallel = FALSE)
+
+get_mc_est <- function(object, lhs, op = "~", rhs, group = NA) {
+    out <- sapply(object, function(x) {
+        esti <- x$est
+        out1 <- esti[(esti$lhs == lhs) & (esti$op == op) & (esti$rhs == rhs), ]
+        if (!is.na(group)) {
+            out1 <- out1[out1$group == group, ]
+          }
+        out1[, "est"]
+      })
+    out
+  }
+
+get_mc_implied <- function(object, var, group = NA) {
+    out <- sapply(object, function(x) {
+        imp <- x$implied_stats$cov
+        if (!is.na(group)) {
+            out <- imp[[group]][var, var]
+          } else {
+            out <- imp[var, var]
+          }
+        out
+      })
+    out
+  }
+
+# indirect_i: mc
+
+suppressWarnings(tmp2 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        group = "gp1",
+                        mc_ci = TRUE,
+                        mc_out = fit_mc_out))
+suppressWarnings(tmp3 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        group = 1,
+                        mc_ci = TRUE,
+                        mc_out = fit_mc_out))
+
+tmp2a <- get_mc_est(fit_mc_out, lhs = "m3", rhs = "x", group = 2)
+tmp2b <- get_mc_est(fit_mc_out, lhs = "y", rhs = "m3", group = 2)
+tmp2ab <- tmp2a * tmp2b
+tmp3a <- get_mc_est(fit_mc_out, lhs = "m3", rhs = "x", group = 1)
+tmp3b <- get_mc_est(fit_mc_out, lhs = "y", rhs = "m3", group = 1)
+tmp3ab <- tmp3a * tmp3b
+
+test_that("indirect_effect and multigrop", {
+    expect_equal(tmp2$mc_indirect,
+                 tmp2ab)
+    expect_equal(tmp3$mc_indirect,
+                 tmp3ab)
+  })
+
+# indirect_i: mc, stdx / stdy
+
+suppressWarnings(tmp2 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        group = "gp1",
+                        mc_ci = TRUE,
+                        mc_out = fit_mc_out,
+                        standardized_y = TRUE))
+suppressWarnings(tmp3 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        group = 1,
+                        mc_ci = TRUE,
+                        mc_out = fit_mc_out,
+                        standardized_x = TRUE))
+suppressWarnings(tmp4 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        group = 1,
+                        mc_ci = TRUE,
+                        mc_out = fit_mc_out,
+                        standardized_y = TRUE,
+                        standardized_x = TRUE))
+
+tmp2a <- get_mc_est(fit_mc_out, lhs = "m3", rhs = "x", group = 2)
+tmp2b <- get_mc_est(fit_mc_out, lhs = "y", rhs = "m3", group = 2)
+tmp2ysd <- sqrt(get_mc_implied(fit_mc_out, var = "y", group = 2))
+tmp2ab <- tmp2a * tmp2b / tmp2ysd
+tmp3a <- get_mc_est(fit_mc_out, lhs = "m3", rhs = "x", group = 1)
+tmp3b <- get_mc_est(fit_mc_out, lhs = "y", rhs = "m3", group = 1)
+tmp3xsd <- sqrt(get_mc_implied(fit_mc_out, var = "x", group = 1))
+tmp3ysd <- sqrt(get_mc_implied(fit_mc_out, var = "y", group = 1))
+tmp3ab <- tmp3a * tmp3b * tmp3xsd
+tmp4ab <- tmp3a * tmp3b * tmp3xsd / tmp3ysd
+
+test_that("indirect_effect and multigrop", {
+    expect_equal(tmp2$mc_indirect,
+                 tmp2ab)
+    expect_equal(tmp3$mc_indirect,
+                 tmp3ab)
+    expect_equal(tmp4$mc_indirect,
+                 tmp4ab)
+  })
+
+# cond_indirect, stdx / stdy: mc
+
+suppressWarnings(tmp2 <- cond_indirect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        wvalues = c(w3 = 1, w4 = 2),
+                        group = 2,
+                        mc_ci = TRUE,
+                        mc_out = fit_mc_out,
+                        standardized_y = TRUE))
+suppressWarnings(tmp3 <- cond_indirect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        wvalues = c(w3 = 3, w4 = -2),
+                        group = "gp3",
+                        mc_ci = TRUE,
+                        mc_out = fit_mc_out,
+                        standardized_x = TRUE))
+suppressWarnings(tmp4 <- cond_indirect(x = "x",
+                        y = "y",
+                        m = "m3",
+                        fit = fit2,
+                        wvalues = c(w3 = 3, w4 = -2),
+                        group = "gp3",
+                        mc_ci = TRUE,
+                        mc_out = fit_mc_out,
+                        standardized_y = TRUE,
+                        standardized_x = TRUE))
+
+tmp2a <- get_mc_est(fit_mc_out, lhs = "m3", rhs = "x", group = 2)
+tmp2b <- get_mc_est(fit_mc_out, lhs = "y", rhs = "m3", group = 2)
+tmp2d1 <- get_mc_est(fit_mc_out, lhs = "y", rhs = "m3:w3", group = 2)
+tmp2d2 <- get_mc_est(fit_mc_out, lhs = "y", rhs = "m3w4", group = 2)
+tmp2ysd <- sqrt(get_mc_implied(fit_mc_out, var = "y", group = 2))
+tmp2ab <- tmp2a * (tmp2b + 1 * tmp2d1 + 2 * tmp2d2) / tmp2ysd
+
+tmp3a <- get_mc_est(fit_mc_out, lhs = "m3", rhs = "x", group = 1)
+tmp3b <- get_mc_est(fit_mc_out, lhs = "y", rhs = "m3", group = 1)
+tmp3d1 <- get_mc_est(fit_mc_out, lhs = "y", rhs = "m3:w3", group = 1)
+tmp3d2 <- get_mc_est(fit_mc_out, lhs = "y", rhs = "m3w4", group = 1)
+tmp3xsd <- sqrt(get_mc_implied(fit_mc_out, var = "x", group = 1))
+tmp3ysd <- sqrt(get_mc_implied(fit_mc_out, var = "y", group = 1))
+tmp3ab <- tmp3a * (tmp3b + 3 * tmp3d1 + (-2) * tmp3d2) * tmp3xsd
+
+tmp4ab <- tmp3a * (tmp3b + 3 * tmp3d1 + (-2) * tmp3d2) * tmp3xsd / tmp3ysd
+
+test_that("indirect_effect and multigrop", {
+    expect_equal(tmp2$mc_indirect,
+                 tmp2ab)
+    expect_equal(tmp3$mc_indirect,
+                 tmp3ab)
+    expect_equal(tmp4$mc_indirect,
+                 tmp4ab)
+  })
+
 skip("Long tests: Test in interactive sections")
 
 # Indirect with bootstrap
@@ -445,4 +628,3 @@ test_that("indirect_effect and multigrop", {
                  unname(unlist(est_chk[i, c("ci.lower", "ci.upper")])),
                  tolerance = 1e-4)
   })
-
