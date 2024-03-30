@@ -5,7 +5,13 @@
 \alias{all_paths_to_df}
 \title{Enumerate All Indirect Effects in a Model}
 \usage{
-all_indirect_paths(fit = NULL, exclude = NULL, x = NULL, y = NULL)
+all_indirect_paths(
+  fit = NULL,
+  exclude = NULL,
+  x = NULL,
+  y = NULL,
+  group = NULL
+)
 
 all_paths_to_df(all_paths)
 }
@@ -35,6 +41,19 @@ If \code{NULL}, the default, then all variables that are
 the outcome variables in at least one regression
 equation will be
 included in the search.}
+
+\item{group}{Either the group number
+as appeared in the \code{\link[=summary]{summary()}}
+or \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}
+output of an \code{lavaan}-class object,
+or the group label as used in
+the \code{lavaan}-class object.
+Used only when the number of
+groups is greater than one. Default
+is NULL. If not specified by the model
+has more than one group, than paths
+that appears in at least one group
+will be included in the output.}
 
 \item{all_paths}{An \code{all_paths}-class object. For example,
 the output of \code{\link[=all_indirect_paths]{all_indirect_paths()}}.}

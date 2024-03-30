@@ -38,7 +38,8 @@ cond_indirect(
   ci_out = NULL,
   save_ci_full = FALSE,
   save_ci_out = TRUE,
-  ci_type = NULL
+  ci_type = NULL,
+  group = NULL
 )
 
 cond_indirect_effects(
@@ -67,6 +68,7 @@ cond_indirect_effects(
   mc_out = NULL,
   ci_out = NULL,
   ci_type = NULL,
+  groups = NULL,
   ...
 )
 
@@ -89,6 +91,7 @@ indirect_effect(
   make_cluster_args = list(),
   progress = TRUE,
   save_boot_full = FALSE,
+  save_boot_out = TRUE,
   mc_ci = FALSE,
   mc_out = NULL,
   save_mc_full = FALSE,
@@ -96,7 +99,8 @@ indirect_effect(
   ci_out = NULL,
   save_ci_full = FALSE,
   save_ci_out = TRUE,
-  ci_type = NULL
+  ci_type = NULL,
+  group = NULL
 )
 
 many_indirect_effects(paths, ...)
@@ -304,6 +308,16 @@ other arguments
 supplied, will override \code{boot_ci}
 and \code{mc_ci}.}
 
+\item{group}{Either the group number
+as appeared in the \code{\link[=summary]{summary()}}
+or \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}
+output of an \code{lavaan}-class object,
+or the group label as used in
+the \code{lavaan}-class object.
+Used only when the number of
+groups is greater than one. Default
+is NULL.}
+
 \item{wlevels}{The output of
 \code{\link[=merge_mod_levels]{merge_mod_levels()}}, or the
 moderator(s) to be passed to
@@ -382,6 +396,17 @@ output is a list of the outputs from
 \code{\link[=mod_levels_list]{mod_levels_list()}} if it is called
 for creating the levels of
 moderators. Default is \code{list()}.}
+
+\item{groups}{Either a vector of
+group numbers
+as appeared in the \code{\link[=summary]{summary()}}
+or \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}
+output of an \code{lavaan}-class object,
+or a vector of group labels as used in
+the \code{lavaan}-class object.
+Used only when the number of
+groups is greater than one. Default
+is NULL.}
 
 \item{...}{For \code{\link[=many_indirect_effects]{many_indirect_effects()}},
 these are arguments to be passed to

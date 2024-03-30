@@ -21,7 +21,8 @@ indirect_i(
   data = NULL,
   expand = TRUE,
   warn = TRUE,
-  allow_mixing_lav_and_obs = TRUE
+  allow_mixing_lav_and_obs = TRUE,
+  group = NULL
 )
 }
 \arguments{
@@ -122,6 +123,16 @@ omitted intentionally.}
 \code{TRUE}, it accepts a path with both
 latent variables and observed
 variables. Default is \code{TRUE}.}
+
+\item{group}{Either the group number
+as appeared in the \code{\link[=summary]{summary()}}
+or \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}
+output of an \code{lavaan}-class object,
+or the group label as used in
+the \code{lavaan}-class object.
+Used only when the number of
+groups is greater than one. Default
+is NULL.}
 }
 \value{
 It returns an

@@ -9,7 +9,7 @@
 [![R-CMD-check](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-(Version 0.1.14.1, updated on 2024-03-24, [release history](https://sfcheung.github.io/manymome/news/index.html))
+(Version 0.1.14.2, updated on 2024-03-30, [release history](https://sfcheung.github.io/manymome/news/index.html))
 
 # manymome  <img src="man/figures/logo.png" align="right" height="150" />
 
@@ -109,8 +109,6 @@ Despite the aforementioned advantages, the current version of
 `manymome` has the following limitations:
 
 - Does not (officially) support categorical predictors.
-
-- Does not support multisample models (although `lavaan` does).
 
 - Does not support multilevel models (although `lavaan` does).
 

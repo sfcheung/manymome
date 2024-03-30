@@ -26,7 +26,8 @@ out_mi_6 <- get_prod(x = "w2", y = "m2", fit = fit1_mi)
 out_mi_7 <- get_prod(x = "m2", y = "m3", fit = fit1_mi)
 
 # No need to compare b values
-out_mi_3$b[] <- out_3$b
+out_mi_3$b <- NULL
+out_3$b <- NULL
 out_mi_6$b[] <- out_6$b
 
 test_that("get_prod for lavaan.mi", {

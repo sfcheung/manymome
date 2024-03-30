@@ -107,24 +107,43 @@ NULL
 plusminus <- function(e1, e2, op = c("+", "-")) {
     op <- match.arg(op, c("+", "-"))
     check_xy(e1, e2)
+    # group_number and group_label can be vectors
+    group_number_1 <- e1$group_number
+    group_number_2 <- e2$group_number
+    group_label_1 <- e1$group_label
+    group_label_2 <- e2$group_label
+    if (is.numeric(group_number_1) && is.numeric(group_number_2)) {
+        has_group <- TRUE
+        group_labels <- c(group_label_1, group_label_2)
+      } else {
+        has_group <- FALSE
+      }
     cp1 <- if (is.list(e1$components)) e1$components else list(e1$components)
     cp2 <- if (is.list(e2$components)) e2$components else list(e2$components)
     cp0 <- c(cp1, cp2)
+    if (has_group) names(cp0) <- group_labels
     cpc1 <- if (is.list(e1$components_conditional)) e1$components_conditional else list(e1$components_conditional)
     cpc2 <- if (is.list(e2$components_conditional)) e2$components_conditional else list(e2$components_conditional)
     cpc0 <- c(cpc1, cpc2)
+    if (has_group) names(cpc0) <- group_labels
     m1 <- if (is.list(e1$m)) e1$m else list(e1$m)
     m2 <- if (is.list(e2$m)) e2$m else list(e2$m)
     m0 <- c(m1, m2)
+    if (has_group) names(m0) <- group_labels
     cv1 <- if (is.list(e1$computation_values)) e1$computation_values else list(e1$computation_values)
     cv2 <- if (is.list(e2$computation_values)) e2$computation_values else list(e2$computation_values)
     cv0 <- c(cv1, cv2)
+    if (has_group) names(cv0) <- group_labels
     cs1 <- if (is.list(e1$computation_symbols)) e1$computation_symbols else list(e1$computation_symbols)
     cs2 <- if (is.list(e2$computation_symbols)) e2$computation_symbols else list(e2$computation_symbols)
     cs0 <- c(cs1, cs2)
+    if (has_group) names(cs0) <- group_labels
     ca1 <- if (is.list(e1$call)) e1$call else list(e1$call)
     ca2 <- if (is.list(e2$call)) e2$call else list(e2$call)
     ca0 <- c(ca1, ca2)
+    if (has_group) names(ca0) <- group_labels
+    gnumber0 <- c(group_number_1, group_number_2)
+    glabel0 <- c(group_label_1, group_label_2)
     est0 <- switch(op,
                    "+" = e1$indirect + e2$indirect,
                    "-" = e1$indirect - e2$indirect)
@@ -182,6 +201,10 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
                             paste(eval(e1$m), collapse = "->"),
                             "->", e1$y)
           }
+        if (has_group && (length(group_label_1) == 1)) {
+            op1 <- paste0(group_label_1, "[",
+                          group_number_1, "]: ", op1)
+          }
       }
     if (is.null(op2)) {
         if (is.null(e2$m)) {
@@ -190,6 +213,10 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
             op2 <- paste0(e2$x, "->",
                             paste(eval(e2$m), collapse = "->"),
                             "->", e2$y)
+          }
+        if (has_group && (length(group_label_2) == 1)) {
+            op2 <- paste0(group_label_2, "[",
+                          group_number_2, "]: ", op2)
           }
       }
     op0 <- paste0("(", op1, ")",
@@ -243,7 +270,9 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
                 mc_scale_y = e1$mc_scale_y,
                 level = level0,
                 boot_out = e1$boot_out,
-                mc_out = e1$mc_out
+                mc_out = e1$mc_out,
+                group_number = gnumber0,
+                group_label = glabel0
                 )
     class(out) <- c("indirect", class(out))
     out
@@ -269,6 +298,17 @@ check_xy <- function(e1, e2) {
     scy1 <- e1$scale_y
     scx2 <- e2$scale_x
     scy2 <- e2$scale_y
+    group1 <- e1$group_number
+    group2 <- e2$group_number
+    if (is.numeric(group1) && is.numeric(group2)) {
+        has_group <- TRUE
+      } else {
+        has_group <- FALSE
+      }
+    if ((is.null(group1) && is.numeric(group2)) ||
+        (is.null(group2) && is.numeric(group1))) {
+        stop("The objects do not agree in the number of groups.")
+      }
     if (!identical(x1, x2)) {
         stop("The objects to be added do not have the same 'x'.")
       }
@@ -282,9 +322,12 @@ check_xy <- function(e1, e2) {
         m2 <- list(m2)
       }
     m1m2_chk <- intersect(m1, m2)
-    if (length(m1m2_chk) != 0) {
-        stop("The objects have one or more paths in common.")
-      }
+    # Disable this test.
+    # - The two effects can be two conditional effects.
+    # - The two effects can be from two different groups.
+    # if (length(m1m2_chk) != 0) {
+    #     stop("The objects have one or more paths in common.")
+    #   }
     if (!identical(stdx1, stdx2)) {
         stop("x is standardized in one object but not in the other.")
       }
@@ -303,11 +346,13 @@ check_xy <- function(e1, e2) {
               }
           }
       }
-    if (!identical(scx1, scx2)) {
-        stop("x is not scaled by the same factor (SD) in the two objects.")
-      }
-    if (!identical(scy1, scy2)) {
-        stop("y is not scaled by the same factor (SD) in the two objects.")
+    if (!has_group) {
+        if (!identical(scx1, scx2)) {
+            stop("x is not scaled by the same factor (SD) in the two objects.")
+          }
+        if (!identical(scy1, scy2)) {
+            stop("y is not scaled by the same factor (SD) in the two objects.")
+          }
       }
     if (!identical(e1$level, e2$level)) {
         stop("The two objects do not have the same level for confidence interval.")
