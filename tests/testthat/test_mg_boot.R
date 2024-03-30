@@ -176,6 +176,16 @@ test_that("indirect_effect and multigrop", {
                  0)
   })
 
+# mod_levels
+# mod_levels_list
+
+test_that("mod_levels: multigroup", {
+    expect_error(mod_levels(fit2, w = "w3", w_method = "percentile"))
+    expect_error(mod_levels_list("w3", "w4", fit = fit2))
+  })
+
+
+
 # cond_indirect
 
 suppressWarnings(tmp2 <- cond_indirect(x = "x",
@@ -588,10 +598,28 @@ m2 ~ c(0, 0, NA)*m1 + c(NA, NA, 0)*x
 w3 ~ c(NA, 0, 0)*m2
 y ~ c(NA, 0, NA)*m3 + w3
 "
+mod_tmp_2 <-
+"
+m3 ~ c(NA, 0, NA)*m1 + c(NA, NA, 0)*x
+m2 ~ c(NA, NA, NA)*m1 + c(NA, NA, NA)*x
+w3 ~ c(NA, NA, NA)*m2
+y ~ c(0, NA, NA)*m3 + c(NA, NA, 0)*w3
+"
+mod_tmp_ng <-
+"
+m3 ~ m1 + x
+m2 ~ m1 + x
+w3 ~ m2
+y ~ m3 + w3
+"
 
 fit_tmp <- sem(mod_tmp, dat, meanstructure = TRUE, fixed.x = FALSE,
                group = "gp",
                group.label = c("gp3", "gp1", "gp2"))
+fit_tmp_2 <- sem(mod_tmp_2, dat, meanstructure = TRUE, fixed.x = FALSE,
+               group = "gp",
+               group.label = c("gp3", "gp1", "gp2"))
+fit_tmp_ng <- sem(mod_tmp_ng, dat, meanstructure = TRUE, fixed.x = FALSE)
 
 all_tmp <- all_indirect_paths(fit_tmp)
 all_paths <- all_paths_to_df(all_tmp)
@@ -601,10 +629,26 @@ ind_chk <- indirect_effect(x = "x",
                            m = "m2",
                            fit = fit_tmp,
                            group = "gp3")
+all_ind_2 <- many_indirect_effects(all_indirect_paths(fit_tmp_2), fit = fit_tmp_2)
+all_ind_ng <- many_indirect_effects(all_indirect_paths(fit_tmp_ng), fit = fit_tmp_ng)
 
 test_that("many_indirect: multiple group", {
     expect_equal(coef(all_ind[[3]]),
                  coef(ind_chk))
+  })
+
+# indirect_effects_from_list
+
+test_that("indirect_effects_from_list: multiple group", {
+    expect_equal(unname(indirect_effects_from_list(all_ind)$ind),
+                 unname(coef(all_ind)))
+  })
+
+# total_indirect_effect
+
+test_that("total_indirect_effect: multiple group", {
+    expect_equal(length(total_indirect_effect(all_ind_2, x = "x", y = "y")), 2)
+    expect_error(total_indirect_effect(all_ind_2, x = "m3", y = "w3"))
   })
 
 # Mediation only
@@ -662,7 +706,6 @@ test_that("cond_indirect_effects for multiple group", {
                               fit = fit_med,
                               groups = c(10, 20)))
   })
-
 
 
 # Group labels helpers
@@ -995,3 +1038,17 @@ test_that("confint.cond_indirect_effects with multiple groups", {
                  unname(as.vector(confint(tmp1_2))))
   })
 
+# indirect_effects_from_list
+
+all_tmp <- all_indirect_paths(fit_med)
+all_ind <- many_indirect_effects(all_tmp,
+                                 fit = fit_med,
+                                 boot_ci = TRUE,
+                                 boot_out = fit_med_boot_out)
+
+test_that("indirect_effects_from_list: multiple group", {
+    expect_equal(unname(indirect_effects_from_list(all_ind)$ind),
+                 unname(coef(all_ind)))
+    expect_equal(unname(indirect_effects_from_list(all_ind)$`CI.lo`),
+                 unname(confint(all_ind)[, 1]))
+  })

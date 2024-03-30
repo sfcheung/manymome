@@ -227,6 +227,11 @@ mod_levels <- function(w,
                        reference_group_label = NULL,
                        descending = TRUE) {
     fit_type <- cond_indirect_check_fit(fit)
+    if (fit_type == "lavaan") {
+        if (lavaan::lavTech(fit, "ngroups") > 1) {
+            stop("Multigroup models not yet supported.")
+          }
+      }
     w_type <- match.arg(w_type)
     if (w_type == "auto") {
         w_type <- find_w_type(w, fit)
