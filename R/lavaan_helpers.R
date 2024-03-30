@@ -281,3 +281,44 @@ cond_indirect_effects_has_groups <- function(object) {
         return(FALSE)
       }
   }
+
+#' @noRd
+# Check if a cond_indirect_effects-class object has groups.
+
+indirect_list_has_groups <- function(object) {
+    if (!is.list(object)) {
+        stop("Object must be a list or an indirect_list.")
+      }
+    tmp <- sapply(object, indirect_has_groups)
+    if (!(!all(tmp) || all(tmp))) {
+        stop("Some effects are group-specific but some are not.")
+      }
+    if (all(tmp)) {
+        return(TRUE)
+      } else {
+        return(FALSE)
+      }
+  }
+
+#' @noRd
+# Check if an indirect-class object has groups.
+
+indirect_has_groups <- function(object) {
+    if (isTRUE(is.numeric(object$group_number))) {
+        return(TRUE)
+      } else {
+        return(FALSE)
+      }
+  }
+
+#' @noRd
+
+group_labels_and_numbers_list <- function(object) {
+    if (!is.list(object)) {
+        stop("Object must be a list or an indirect_list.")
+      }
+    group_labels <- unique(sapply(object, function(xx) xx$group_label))
+    group_numbers <- unique(sapply(object, function(xx) xx$group_number))
+    list(label = group_labels,
+         number = group_numbers)
+  }
