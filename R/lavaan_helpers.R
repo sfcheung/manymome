@@ -249,7 +249,7 @@ group_labels_and_numbers <- function(groups = NULL,
 #' @noRd
 # Check if a cond_indirect_effects-class object has wlevels.
 
-has_wlevels <- function(object) {
+cond_indirect_effects_has_wlevels <- function(object) {
     if (!is.null(attr(object, "wlevels"))) {
         return(TRUE)
       } else {
@@ -260,7 +260,7 @@ has_wlevels <- function(object) {
 #' @noRd
 # Check if a cond_indirect_effects-class object has groups.
 
-has_groups <- function(object) {
+cond_indirect_effects_has_groups <- function(object) {
     if (isTRUE("group" %in% tolower(colnames(object)))) {
         return(TRUE)
       } else {
