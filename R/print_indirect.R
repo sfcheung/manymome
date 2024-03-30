@@ -402,5 +402,6 @@ print.indirect <- function(x,
         cat("\nNOTE:\n")
         cat(note_str, sep = "\n")
       }
+    cat("\n")
     invisible(x)
   }
