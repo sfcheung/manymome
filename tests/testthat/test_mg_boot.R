@@ -51,6 +51,13 @@ m3 ~ m1 + x
 y ~ m2 + m3 + x + w4 + xw4 + w3 + m3w3 + m3w4
 "
 
+mod_med <-
+"
+m1 ~ x
+m2 ~ m1
+y ~ m2 + x
+"
+
 
 # Check against lavaan
 
@@ -598,6 +605,81 @@ ind_chk <- indirect_effect(x = "x",
 test_that("many_indirect: multiple group", {
     expect_equal(coef(all_ind[[3]]),
                  coef(ind_chk))
+  })
+
+# Mediation only
+
+fit_med <- sem(mod_med, dat, meanstructure = TRUE, fixed.x = FALSE,
+               group = "gp",
+               group.label = c("gp3", "gp1", "gp2"))
+
+tmp1 <- cond_indirect_effects(x = "x",
+                              y = "y",
+                              m = c("m1", "m2"),
+                              fit = fit_med)
+tmp1_chk1 <- indirect_effect(x = "x",
+                             y = "y",
+                             m = c("m1", "m2"),
+                             fit = fit_med,
+                             group = 1)
+tmp1_chk2 <- indirect_effect(x = "x",
+                             y = "y",
+                             m = c("m1", "m2"),
+                             fit = fit_med,
+                             group = 2)
+tmp1_chk3 <- indirect_effect(x = "x",
+                             y = "y",
+                             m = c("m1", "m2"),
+                             fit = fit_med,
+                             group = 3)
+
+tmp2 <- cond_indirect_effects(x = "x",
+                              y = "y",
+                              m = c("m1", "m2"),
+                              fit = fit_med,
+                              groups = c(2, 1))
+
+tmp3 <- cond_indirect_effects(x = "x",
+                              y = "y",
+                              m = c("m1", "m2"),
+                              fit = fit_med,
+                              groups = c("gp1", "gp3"))
+
+test_that("cond_indirect_effects for multiple group", {
+    expect_equal(coef(tmp1),
+                 unname(c(coef(tmp1_chk1),
+                          coef(tmp1_chk2),
+                          coef(tmp1_chk3))))
+    expect_equal(coef(tmp2),
+                 unname(c(coef(tmp1_chk2),
+                          coef(tmp1_chk1))))
+    expect_equal(coef(tmp3),
+                 unname(c(coef(tmp1_chk2),
+                          coef(tmp1_chk1))))
+    expect_error(tmp2 <- cond_indirect_effects(x = "x",
+                              y = "y",
+                              m = c("m1", "m2"),
+                              fit = fit_med,
+                              groups = c(10, 20)))
+  })
+
+
+
+# Group labels helpers
+
+chk1 <- lavTech(fit2, "group.label")
+test_that("group labels helpers", {
+    expect_equal(group_labels_and_numbers(c(3, 1), fit2)$label,
+                 chk1[c(3, 1)])
+    expect_equal(group_labels_and_numbers(c("gp1", "gp3"), fit2)$number,
+                 c(2, 1))
+    expect_error(group_labels_and_numbers(c("gp5", "gp3"), fit2))
+    expect_error(group_labels_and_numbers(10, fit2))
+    expect_error(group_labels_and_numbers(1:2, "test"))
+    expect_equal(group_labels_and_numbers(fit = fit2)$label,
+                 chk1)
+    expect_equal(group_labels_and_numbers(fit = fit2)$number,
+                 seq_along(chk1))
   })
 
 skip("Long tests: Test in interactive sections")
