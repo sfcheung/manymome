@@ -96,11 +96,11 @@ confint.cond_indirect_effects <- function(object, parm, level = .95, ...) {
     out0 <- as.data.frame(object)
     full_output <- attr(object, "full_output")
     has_ci <- FALSE
-    if (is.null(full_output[[1]]$boot_ci)) {
+    if (!is.null(full_output[[1]]$boot_ci)) {
         has_ci <- TRUE
         ci_type <- "boot"
       }
-    if (is.null(full_output[[1]]$mc_ci)) {
+    if (!is.null(full_output[[1]]$mc_ci)) {
         has_ci <- TRUE
         ci_type <- "mc"
       }
