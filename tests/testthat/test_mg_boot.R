@@ -176,6 +176,12 @@ test_that("indirect_effect and multigrop", {
                  0)
   })
 
+# mod_levels
+
+test_that("mod_levels: multigroup", {
+    expect_error(mod_levels(fit2, w = "w3", w_method = "percentile"))
+  })
+
 # cond_indirect
 
 suppressWarnings(tmp2 <- cond_indirect(x = "x",
