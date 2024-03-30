@@ -68,6 +68,7 @@ cond_indirect_effects(
   mc_out = NULL,
   ci_out = NULL,
   ci_type = NULL,
+  groups = NULL,
   ...
 )
 
@@ -90,6 +91,7 @@ indirect_effect(
   make_cluster_args = list(),
   progress = TRUE,
   save_boot_full = FALSE,
+  save_boot_out = TRUE,
   mc_ci = FALSE,
   mc_out = NULL,
   save_mc_full = FALSE,
