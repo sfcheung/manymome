@@ -247,6 +247,20 @@ group_labels_and_numbers <- function(groups = NULL,
   }
 
 #' @noRd
+
+group_labels_and_numbers_cond <- function(object,
+                                          group_label_name = "Group",
+                                          group_number_name = "Group_ID") {
+    if (!inherits(object, "cond_indirect_effects")) {
+        stop("Object must be a cond_indirect_effects-class object.")
+      }
+    group_labels <- unique(object[, group_label_name, drop = TRUE])
+    group_numbers <- unique(object[, group_number_name, drop = TRUE])
+    list(label = group_labels,
+         number = group_numbers)
+  }
+
+#' @noRd
 # Check if a cond_indirect_effects-class object has wlevels.
 
 cond_indirect_effects_has_wlevels <- function(object) {
