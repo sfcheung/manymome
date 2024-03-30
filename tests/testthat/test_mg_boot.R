@@ -682,6 +682,30 @@ test_that("group labels helpers", {
                  seq_along(chk1))
   })
 
+# print.cond_indirect_effects
+
+fit_med <- sem(mod_med, dat, meanstructure = TRUE, fixed.x = FALSE,
+               group = "gp",
+               group.label = c("gp3", "gp1", "gp2"))
+
+tmp1 <- cond_indirect_effects(x = "x",
+                              y = "y",
+                              m = c("m1", "m2"),
+                              fit = fit_med)
+tmp2 <- cond_indirect_effects(x = "x",
+                              y = "y",
+                              m = c("m1", "m2"),
+                              fit = fit_med,
+                              groups = c(2, 1))
+tmp3 <- cond_indirect_effects(x = "x",
+                              y = "y",
+                              m = c("m1", "m2"),
+                              fit = fit_med,
+                              groups = c("gp1", "gp3"))
+
+tmp3
+
+
 skip("Long tests: Test in interactive sections")
 
 # Indirect with bootstrap

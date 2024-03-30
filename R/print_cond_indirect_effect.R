@@ -107,6 +107,8 @@ print.cond_indirect_effects <- function(x, digits = 3,
                                         pvalue_digits = 3,
                                         se = FALSE,
                                         ...) {
+  # TODO:
+  # - Support cases with both moderators and groups.
   full_output <- attr(x, "full_output")
   x_i <- full_output[[1]]
   my_call <- attr(x, "call")
@@ -114,6 +116,15 @@ print.cond_indirect_effects <- function(x, digits = 3,
   boot_ci <- !is.null(x_i$boot_ci)
   has_ci <- FALSE
   ci_type <- NULL
+  has_groups <- ("group" %in% tolower(colnames(x)))
+  if (has_groups) {
+      group_labels <- unique(x$Group)
+      group_numbers <- unique(x$Group_ID)
+    } else {
+      group_labels <- NULL
+      group_numbers <- NULL
+    }
+  has_wlevels <- !is.null(attr(x, "wlevels"))
   if (!is.null(x_i$boot_ci)) {
       has_ci <- TRUE
       ci_type <- "boot"
@@ -178,9 +189,15 @@ print.cond_indirect_effects <- function(x, digits = 3,
         }
     }
   out1 <- data.frame(out, check.names = FALSE)
-  wlevels <- attr(x, "wlevels")
-  w0 <- colnames(attr(wlevels, "wlevels"))
-  w1 <- colnames(wlevels)
+  if (has_wlevels) {
+      wlevels <- attr(x, "wlevels")
+      w0 <- colnames(attr(wlevels, "wlevels"))
+      w1 <- colnames(wlevels)
+    } else {
+      wlevels <- NULL
+      w0 <- NULL
+      w1 <- NULL
+    }
   mcond <- names(x_i$components)
   cond_str <- ""
   cond_str2 <- ""
@@ -194,8 +211,15 @@ print.cond_indirect_effects <- function(x, digits = 3,
       cat("\n== Conditional effects ==\n")
     }
   cat("\n Path:", path)
-  cat("\n Conditional on moderator(s):", paste0(w0, collapse = ", "))
-  cat("\n Moderator(s) represented by:", paste0(w1, collapse = ", "))
+  if (has_wlevels) {
+      cat("\n Conditional on moderator(s):", paste0(w0, collapse = ", "))
+      cat("\n Moderator(s) represented by:", paste0(w1, collapse = ", "))
+    }
+  if (has_groups) {
+      tmp <- paste0(group_labels, "[", group_numbers, "]",
+                    collapse = ", ")
+      cat("\n Conditional on group(s):", tmp)
+    }
   xold <- x
   x <- out1
   cat("\n\n")
@@ -243,9 +267,15 @@ print.cond_indirect_effects <- function(x, digits = 3,
           cat(" - The 'ind' column shows the", cond_str, "effects.", sep = " ")
         }
       cat("\n ")
+      tmp <- ifelse(has_wlevels && has_groups,
+                    "the moderators and/or groups.",
+                ifelse(has_wlevels,
+                       "the moderator(s).",
+                       "the group(s)."))
       cat(strwrap(paste("\n -", paste(sQuote(mcond), collapse = ","),
           "is/are the path coefficient(s) along the path",
-          "conditional on the moderators."), exdent = 3), sep = "\n")
+          "conditional on",
+          tmp), exdent = 3), sep = "\n")
       cat("\n")
     }
   invisible(x)
