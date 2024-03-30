@@ -704,6 +704,7 @@ indirect_effect <- function(x,
                      make_cluster_args = list(),
                      progress = TRUE,
                      save_boot_full = FALSE,
+                     save_boot_out = TRUE,
                      mc_ci = FALSE,
                      mc_out = NULL,
                      save_mc_full = FALSE,
@@ -731,6 +732,7 @@ indirect_effect <- function(x,
                   make_cluster_args = make_cluster_args,
                   progress = progress,
                   save_boot_full = save_boot_full,
+                  save_boot_out = save_boot_out,
                   mc_ci = mc_ci,
                   mc_out = mc_out,
                   save_mc_full = save_mc_full,
@@ -839,8 +841,31 @@ cond_indirect_effects <- function(wlevels,
                                   mc_out = NULL,
                                   ci_out = NULL,
                                   ci_type = NULL,
+                                  groups = NULL,
                                   ...) {
+    # Check the number of groups and handle multiple-group models
+    has_group <- FALSE
+    ngroups <- 1
+    group_numbers <- NULL
+    group_labels <- NULL
+    if (inherits(fit, "lavaan")) {
+        ngroups <- lavaan::lavTech(fit, "ngroups")
+        if (ngroups > 1) {
+            has_group <- TRUE
+            tmp <- group_labels_and_numbers(groups = groups,
+                                            fit = fit)
+            group_numbers <- tmp$number
+            group_labels <- tmp$label
+          } else {
+            if (!is.null(groups)) {
+                stop("The model has only one group but 'groups' is set.")
+              }
+          }
+      }
+    # Check and process the levels of moderators
+    has_wlevels <- FALSE
     if (!missing(wlevels)) {
+        has_wlevels <- TRUE
         wlevels_check <- check_wlevels(wlevels)
         if (!is.null(wlevels_check)) {
             wlevels <- wlevels_check
@@ -862,12 +887,21 @@ cond_indirect_effects <- function(wlevels,
 
           }
       } else {
-        stop("wlevels is required.")
+        wlevels <- NULL
+        if (!has_group) {
+            stop("wlevels is required for single-group models.")
+          }
       }
-    k <- nrow(wlevels)
-    wlevels1 <- split(wlevels, seq_len(k))
-    wlevels2 <- lapply(wlevels1, unlist)
-    names(wlevels2) <- rownames(wlevels)
+    if (has_group && has_wlevels) {
+        stop("Multiple group models with moderators not yet supported.",
+             "Will be supported soon.")
+      }
+    if (has_wlevels) {
+        k <- nrow(wlevels)
+        wlevels1 <- split(wlevels, seq_len(k))
+        wlevels2 <- lapply(wlevels1, unlist)
+        names(wlevels2) <- rownames(wlevels)
+      }
     fit_type <- cond_indirect_check_fit(fit)
     if ((fit_type == "lm") && !inherits(fit, "lm_list") &&
         is.list(fit)) {
@@ -946,78 +980,245 @@ cond_indirect_effects <- function(wlevels,
                                 progress = progress)
           }
       }
-    prods <- cond_indirect(wvalues = wlevels2[[1]],
-                            x = x,
-                            y = y,
-                            m = m,
-                            fit = fit,
-                            est = est,
-                            implied_stats = implied_stats,
-                            get_prods_only = TRUE,
-                            ...)
-    out <- lapply(wlevels2,
-                  function(wv,
-                           x,
-                           y,
-                           m,
-                           fit,
-                           est,
-                           implied_stats,
-                           boot_ci,
-                           boot_out,
-                           R,
-                           seed,
-                           prods,
-                           save_boot_out,
-                           mc_ci,
-                           mc_out,
-                           save_mc_out,
-                           ci_type,
-                           ci_out,
-                           save_ci_out,
-                           ...) {
-                              cond_indirect(wvalues = wv,
-                                            x = x,
-                                            y = y,
-                                            m = m,
-                                            fit = fit,
-                                            est = est,
-                                            implied_stats = implied_stats,
-                                            boot_ci = boot_ci,
-                                            boot_out = boot_out,
-                                            R = R,
-                                            seed = seed,
-                                            prods = prods,
-                                            save_boot_out = FALSE,
-                                            mc_ci = mc_ci,
-                                            mc_out = mc_out,
-                                            save_mc_out = FALSE,
-                                            ci_type = ci_type,
-                                            ci_out = ci_out,
-                                            save_ci_out = FALSE,
-                                            ...)
-                           },
-                  x = x,
-                  y = y,
-                  m = m,
-                  fit = fit,
-                  est = est,
-                  implied_stats = implied_stats,
-                  boot_ci = boot_ci,
-                  boot_out = boot_out,
-                  R = R,
-                  seed = seed,
-                  prods = prods,
-                  save_boot_out = FALSE,
-                  mc_ci = mc_ci,
-                  mc_out = mc_out,
-                  save_mc_out = FALSE,
-                  ci_type = ci_type,
-                  ci_out = ci_out,
-                  save_ci_out = FALSE,
-                  ...)
+    # TODO:
+    # Revise cond_indirect and friends such that
+    # no need to have three very similar blocks.
+    if (has_wlevels && !has_group) {
+        prods <- cond_indirect(wvalues = wlevels2[[1]],
+                                x = x,
+                                y = y,
+                                m = m,
+                                fit = fit,
+                                est = est,
+                                implied_stats = implied_stats,
+                                get_prods_only = TRUE,
+                                ...)
+      }
+    if (!has_wlevels && has_group) {
+        prods <- cond_indirect(x = x,
+                               y = y,
+                               m = m,
+                               fit = fit,
+                               est = est,
+                               implied_stats = implied_stats,
+                               get_prods_only = TRUE,
+                               group = 1,
+                               ...)
+      }
+    if (has_wlevels && has_group) {
+        prods <- cond_indirect(wvalues = wlevels2[[1]],
+                               x = x,
+                               y = y,
+                               m = m,
+                               fit = fit,
+                               est = est,
+                               implied_stats = implied_stats,
+                               get_prods_only = TRUE,
+                               group = 1,
+                               ...)
+      }
+    # TODO:
+    # Revise cond_indirect and friends such that
+    # no need to have three very similar blocks.
+    if (has_wlevels && !has_group) {
+        out <- lapply(wlevels2,
+                      function(wv,
+                              x,
+                              y,
+                              m,
+                              fit,
+                              est,
+                              implied_stats,
+                              boot_ci,
+                              boot_out,
+                              R,
+                              seed,
+                              prods,
+                              save_boot_out,
+                              mc_ci,
+                              mc_out,
+                              save_mc_out,
+                              ci_type,
+                              ci_out,
+                              save_ci_out,
+                              ...) {
+                                  cond_indirect(wvalues = wv,
+                                                x = x,
+                                                y = y,
+                                                m = m,
+                                                fit = fit,
+                                                est = est,
+                                                implied_stats = implied_stats,
+                                                boot_ci = boot_ci,
+                                                boot_out = boot_out,
+                                                R = R,
+                                                seed = seed,
+                                                prods = prods,
+                                                save_boot_out = FALSE,
+                                                mc_ci = mc_ci,
+                                                mc_out = mc_out,
+                                                save_mc_out = FALSE,
+                                                ci_type = ci_type,
+                                                ci_out = ci_out,
+                                                save_ci_out = FALSE,
+                                                ...)
+                              },
+                      x = x,
+                      y = y,
+                      m = m,
+                      fit = fit,
+                      est = est,
+                      implied_stats = implied_stats,
+                      boot_ci = boot_ci,
+                      boot_out = boot_out,
+                      R = R,
+                      seed = seed,
+                      prods = prods,
+                      save_boot_out = FALSE,
+                      mc_ci = mc_ci,
+                      mc_out = mc_out,
+                      save_mc_out = FALSE,
+                      ci_type = ci_type,
+                      ci_out = ci_out,
+                      save_ci_out = FALSE,
+                      ...)
+      }
+    if (!has_wlevels && has_group) {
+        out <- lapply(group_numbers,
+                      function(gn,
+                              x,
+                              y,
+                              m,
+                              fit,
+                              est,
+                              implied_stats,
+                              boot_ci,
+                              boot_out,
+                              R,
+                              seed,
+                              prods,
+                              save_boot_out,
+                              mc_ci,
+                              mc_out,
+                              save_mc_out,
+                              ci_type,
+                              ci_out,
+                              save_ci_out,
+                              ...) {
+                                  indirect_effect(x = x,
+                                                  y = y,
+                                                  m = m,
+                                                  fit = fit,
+                                                  est = est,
+                                                  implied_stats = implied_stats,
+                                                  boot_ci = boot_ci,
+                                                  boot_out = boot_out,
+                                                  R = R,
+                                                  seed = seed,
+                                                  save_boot_out = FALSE,
+                                                  mc_ci = mc_ci,
+                                                  mc_out = mc_out,
+                                                  save_mc_out = FALSE,
+                                                  ci_type = ci_type,
+                                                  ci_out = ci_out,
+                                                  save_ci_out = FALSE,
+                                                  group = gn,
+                                                  ...)
+                              },
+                      x = x,
+                      y = y,
+                      m = m,
+                      fit = fit,
+                      est = est,
+                      implied_stats = implied_stats,
+                      boot_ci = boot_ci,
+                      boot_out = boot_out,
+                      R = R,
+                      seed = seed,
+                      save_boot_out = FALSE,
+                      mc_ci = mc_ci,
+                      mc_out = mc_out,
+                      save_mc_out = FALSE,
+                      ci_type = ci_type,
+                      ci_out = ci_out,
+                      save_ci_out = FALSE,
+                      ...)
+      }
+    if (has_wlevels && has_group) {
+        # TODO
+        # - Not yet supported.
+        # - Need to use expand.grid to create
+        #   all combinations of group and wlevels
+        out <- mapply(function(gn,
+                              wv,
+                              x,
+                              y,
+                              m,
+                              fit,
+                              est,
+                              implied_stats,
+                              boot_ci,
+                              boot_out,
+                              R,
+                              seed,
+                              prods,
+                              save_boot_out,
+                              mc_ci,
+                              mc_out,
+                              save_mc_out,
+                              ci_type,
+                              ci_out,
+                              save_ci_out,
+                              ...) {
+                                  cond_indirect(wvalues = wv,
+                                                x = x,
+                                                y = y,
+                                                m = m,
+                                                fit = fit,
+                                                est = est,
+                                                implied_stats = implied_stats,
+                                                boot_ci = boot_ci,
+                                                boot_out = boot_out,
+                                                R = R,
+                                                seed = seed,
+                                                prods = prods,
+                                                save_boot_out = FALSE,
+                                                mc_ci = mc_ci,
+                                                mc_out = mc_out,
+                                                save_mc_out = FALSE,
+                                                ci_type = ci_type,
+                                                ci_out = ci_out,
+                                                save_ci_out = FALSE,
+                                                group = gn,
+                                                ...)
+                              },
+                      gn = group_numbers_long,
+                      wv = wlevels2_long,
+                      x = x,
+                      y = y,
+                      m = m,
+                      fit = fit,
+                      est = est,
+                      implied_stats = implied_stats,
+                      boot_ci = boot_ci,
+                      boot_out = boot_out,
+                      R = R,
+                      seed = seed,
+                      prods = prods,
+                      save_boot_out = FALSE,
+                      mc_ci = mc_ci,
+                      mc_out = mc_out,
+                      save_mc_out = FALSE,
+                      ci_type = ci_type,
+                      ci_out = ci_out,
+                      save_ci_out = FALSE,
+                      ...)
+      }
     if (output_type == "data.frame") {
-        out1 <- cond_indirect_effects_to_df(out, wlevels = wlevels)
+        out1 <- cond_indirect_effects_to_df(out,
+                                            wlevels = wlevels,
+                                            group_numbers = group_numbers,
+                                            group_labels = group_labels)
         class(out1) <- c("cond_indirect_effects", class(out1))
         attr(out1, "call") <- match.call()
         attr(out1, "full_output") <- out
@@ -1031,6 +1232,8 @@ cond_indirect_effects <- function(wlevels,
         attr(out1, "x") <- x
         attr(out1, "y") <- y
         attr(out1, "m") <- m
+        # TODO:
+        # - Store the expanded combination of group and wlevels
         return(out1)
       } else {
         return(out)
@@ -1136,12 +1339,25 @@ cond_indirect_check_fit <- function(fit) {
 # information on the levels of moderators.
 #' @noRd
 
-cond_indirect_effects_to_df <- function(x, wlevels) {
-    k <- nrow(wlevels)
-    wlevels_label <- attr(wlevels, "wlevels")
-    colnames(wlevels_label) <- paste0("[", colnames(wlevels_label), "]")
-    wlevels2 <- wlevels
-    colnames(wlevels2) <- paste0("(", colnames(wlevels2), ")")
+cond_indirect_effects_to_df <- function(x,
+                                        wlevels = NULL,
+                                        group_numbers = NULL,
+                                        group_labels = NULL) {
+    has_wlevels <- !is.null(wlevels)
+    has_group <- !is.null(group_numbers) || !is.null(group_labels)
+    if (has_wlevels) {
+        # TOFIX
+        wlevels_label <- attr(wlevels, "wlevels")
+        colnames(wlevels_label) <- paste0("[", colnames(wlevels_label), "]")
+        wlevels2 <- wlevels
+        colnames(wlevels2) <- paste0("(", colnames(wlevels2), ")")
+      }
+    if (has_group) {
+        group_numbers <- sapply(x, function(x) x$group_number)
+        group_labels <- sapply(x, function(x) x$group_label)
+        gp_df <- data.frame(Group = group_labels,
+                            Group_ID = group_numbers)
+      }
     standardized_x <- x[[1]]$standardized_x
     standardized_y <- x[[1]]$standardized_y
     if (standardized_x || standardized_y) {
@@ -1193,8 +1409,13 @@ cond_indirect_effects_to_df <- function(x, wlevels) {
             out <- data.frame(std = indirect_std, cc, ustd = indirect, check.names = FALSE)
           }
       }
-    out1 <- cbind(wlevels_label, wlevels2, out)
-    out1
+    if (has_wlevels) {
+        out <- cbind(wlevels_label, wlevels2, out)
+      }
+    if (has_group) {
+        out <- cbind(gp_df, out)
+      }
+    out
   }
 
 # Check the argument `wlevels` and convert it to a valid data
