@@ -1,4 +1,4 @@
-# manymome 0.1.14.2
+# manymome 0.1.14.3
 
 ## New Features
 
@@ -16,7 +16,11 @@
   multiple-group models which have
   one or more moderators within each
   group, but these models are rare.
-  (0.1.14.2)
+  Functions that do not yet support
+  multigroup models (e.g,
+  `mod_levels()`) will raise an error
+  if used on a multigroup model.
+  (0.1.14.2, 0.1.14.3)
 
 - Relaxed the requirement that only
   different paths can be used in `+`
