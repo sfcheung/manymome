@@ -62,14 +62,24 @@
 #' @export
 
 coef.cond_indirect_effects <- function(object, ...) {
+    has_wlevels <- cond_indirect_effects_has_wlevels(object)
+    has_groups <- cond_indirect_effects_has_groups(object)
     wlevels <- attr(object, "wlevels")
     if ("std" %in% colnames(object)) {
         out <- object$std
       } else {
         out <- object$ind
       }
-    if (!is.null(wlevels)) {
+    if (has_wlevels && !has_groups) {
         names(out) <- rownames(wlevels)
+      }
+    if (!has_wlevels && has_groups) {
+        tmp <- paste0(object$Group, " [", object$Group_ID, "]")
+        names(out) <- tmp
+      }
+    if (has_wlevels && has_groups) {
+        # TODO:
+        # - Support objects with both wlevels and groups
       }
     out
   }

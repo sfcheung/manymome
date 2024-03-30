@@ -646,14 +646,14 @@ tmp3 <- cond_indirect_effects(x = "x",
                               groups = c("gp1", "gp3"))
 
 test_that("cond_indirect_effects for multiple group", {
-    expect_equal(coef(tmp1),
+    expect_equal(unname(coef(tmp1)),
                  unname(c(coef(tmp1_chk1),
                           coef(tmp1_chk2),
                           coef(tmp1_chk3))))
-    expect_equal(coef(tmp2),
+    expect_equal(unname(coef(tmp2)),
                  unname(c(coef(tmp1_chk2),
                           coef(tmp1_chk1))))
-    expect_equal(coef(tmp3),
+    expect_equal(unname(coef(tmp3)),
                  unname(c(coef(tmp1_chk2),
                           coef(tmp1_chk1))))
     expect_error(tmp2 <- cond_indirect_effects(x = "x",
@@ -697,6 +697,30 @@ test_that("print.cond_indirect_effects: Multiple groups", {
     expect_output(print(tmp1),
                   "Conditional on group(s)",
                   fixed = TRUE)
+  })
+
+
+# coef.cond_indirect_effects
+
+fit_med <- sem(mod_med, dat, meanstructure = TRUE, fixed.x = FALSE,
+               group = "gp",
+               group.label = c("gp3", "gp1", "gp2"))
+
+tmp1 <- cond_indirect_effects(x = "x",
+                              y = "y",
+                              m = c("m1", "m2"),
+                              fit = fit_med)
+tmp1_3 <- indirect_effect(x = "x",
+                          y = "y",
+                          m = c("m1", "m2"),
+                          fit = fit_med,
+                          group = 3)
+
+coef(tmp1)
+
+test_that("coef.cond_indirect_effects with multiple groups", {
+    expect_equal(unname(coef(tmp1)[3]),
+                 unname(coef(tmp1_3)))
   })
 
 
@@ -906,3 +930,4 @@ test_that("confint.cond_indirect_effects with multiple groups", {
     expect_equal(unname(unlist(tmp1_boot_ci[3, ])),
                  unname(as.vector(confint(tmp1_2))))
   })
+
