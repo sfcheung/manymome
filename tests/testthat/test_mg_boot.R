@@ -768,6 +768,23 @@ test_that("cond_indirect_diff: Multiple groups", {
                  unname(coef(tmp1_1) - coef(tmp1_3)))
   })
 
+# plot.cond_indirect_effects
+
+fit_med <- sem(mod_med, dat, meanstructure = TRUE, fixed.x = FALSE,
+               group = "gp",
+               group.label = c("gp3", "gp1", "gp2"))
+
+tmp1 <- cond_indirect_effects(x = "m2",
+                              y = "y",
+                              fit = fit_med)
+
+test_that("plot.cond_indirect_effects: multiple groups", {
+    expect_no_error(p <- plot(tmp1))
+    expect_true(setequal(unique(p$layers[[1]]$data$wlevels),
+                         unique(tmp1$Group)))
+  })
+
+
 
 
 
