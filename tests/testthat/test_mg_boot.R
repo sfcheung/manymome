@@ -177,10 +177,14 @@ test_that("indirect_effect and multigrop", {
   })
 
 # mod_levels
+# mod_levels_list
 
 test_that("mod_levels: multigroup", {
     expect_error(mod_levels(fit2, w = "w3", w_method = "percentile"))
+    expect_error(mod_levels_list("w3", "w4", fit = fit2))
   })
+
+
 
 # cond_indirect
 
