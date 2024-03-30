@@ -1149,6 +1149,8 @@ cond_indirect_effects <- function(wlevels,
         # - Not yet supported.
         # - Need to use expand.grid to create
         #   all combinations of group and wlevels
+        group_numbers_long <- NULL
+        wlevels2_long <- NULL
         out <- mapply(function(gn,
                               wv,
                               x,
