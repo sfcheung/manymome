@@ -377,6 +377,17 @@
 #' groups is greater than one. Default
 #' is NULL.
 #'
+#' @param groups Either a vector of
+#' group numbers
+#' as appeared in the [summary()]
+#' or [lavaan::parameterEstimates()]
+#' output of an `lavaan`-class object,
+#' or a vector of group labels as used in
+#' the `lavaan`-class object.
+#' Used only when the number of
+#' groups is greater than one. Default
+#' is NULL.
+#'
 #' @seealso [mod_levels()] and
 #' [merge_mod_levels()] for generating
 #' levels of moderators. [do_boot] for

@@ -397,6 +397,17 @@ output is a list of the outputs from
 for creating the levels of
 moderators. Default is \code{list()}.}
 
+\item{groups}{Either a vector of
+group numbers
+as appeared in the \code{\link[=summary]{summary()}}
+or \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}
+output of an \code{lavaan}-class object,
+or a vector of group labels as used in
+the \code{lavaan}-class object.
+Used only when the number of
+groups is greater than one. Default
+is NULL.}
+
 \item{...}{For \code{\link[=many_indirect_effects]{many_indirect_effects()}},
 these are arguments to be passed to
 \code{\link[=indirect_effect]{indirect_effect()}}.}
