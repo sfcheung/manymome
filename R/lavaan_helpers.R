@@ -213,3 +213,30 @@ implied_stats_group_i <- function(object,
               })
     out
   }
+
+#' @noRd
+
+group_labels_and_numbers <- function(groups,
+                                     fit) {
+    if (!inherits(fit, "lavaan")) {
+        stop("The argument 'fit' must be a lavaan object.")
+      }
+    group_labels_all <- lavaan::lavInspect(fit, "group.label")
+    group_numbers_all <- seq_len(lavaan::lavInspect(fit, "ngroups"))
+    if (is.numeric(groups)) {
+        if (!all(groups %in% group_numbers_all)) {
+            stop("Group numbers not among the numbers in the fit object.")
+          }
+        group_numbers <- groups
+        group_labels <- group_labels_all[group_numbers]
+      }
+    if (is.character(groups)) {
+        if (!all(groups %in% group_labels_all)) {
+            stop("Group label(s) not among the labels in the fit object.")
+          }
+        group_labels <- groups
+        group_numbers <- match(groups, group_labels_all)
+      }
+    list(label = group_labels,
+         number = group_numbers)
+  }
