@@ -737,6 +737,39 @@ test_that("[.cond_indirect_effects: Multiple groups", {
                  as.data.frame(tmp1)[c(1, 3), "ind"])
   })
 
+# cond_indirect_diff
+
+fit_med <- sem(mod_med, dat, meanstructure = TRUE, fixed.x = FALSE,
+               group = "gp",
+               group.label = c("gp3", "gp1", "gp2"))
+
+tmp1 <- cond_indirect_effects(x = "x",
+                              y = "y",
+                              m = c("m1", "m2"),
+                              fit = fit_med)
+
+tmp1_diff <- cond_indirect_diff(tmp1,
+                                from = 3,
+                                to = 1)
+
+tmp1_1 <- indirect_effect(x = "x",
+                          y = "y",
+                          m = c("m1", "m2"),
+                          fit = fit_med,
+                          group = 1)
+tmp1_3 <- indirect_effect(x = "x",
+                          y = "y",
+                          m = c("m1", "m2"),
+                          fit = fit_med,
+                          group = 3)
+
+test_that("cond_indirect_diff: Multiple groups", {
+    expect_equal(unname(coef(tmp1_diff)),
+                 unname(coef(tmp1_1) - coef(tmp1_3)))
+  })
+
+
+
 
 skip("Long tests: Test in interactive sections")
 
