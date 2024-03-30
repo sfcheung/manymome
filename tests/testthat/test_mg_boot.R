@@ -607,6 +607,16 @@ test_that("many_indirect: multiple group", {
                  coef(ind_chk))
   })
 
+# indirect_effects_from_list
+
+test_that("indirect_effects_from_list: multiple group", {
+    expect_equal(unname(indirect_effects_from_list(all_ind)$ind),
+                 unname(coef(all_ind)))
+  })
+
+
+
+
 # Mediation only
 
 fit_med <- sem(mod_med, dat, meanstructure = TRUE, fixed.x = FALSE,
@@ -662,7 +672,6 @@ test_that("cond_indirect_effects for multiple group", {
                               fit = fit_med,
                               groups = c(10, 20)))
   })
-
 
 
 # Group labels helpers
@@ -995,3 +1004,17 @@ test_that("confint.cond_indirect_effects with multiple groups", {
                  unname(as.vector(confint(tmp1_2))))
   })
 
+# indirect_effects_from_list
+
+all_tmp <- all_indirect_paths(fit_med)
+all_ind <- many_indirect_effects(all_tmp,
+                                 fit = fit_med,
+                                 boot_ci = TRUE,
+                                 boot_out = fit_med_boot_out)
+
+test_that("indirect_effects_from_list: multiple group", {
+    expect_equal(unname(indirect_effects_from_list(all_ind)$ind),
+                 unname(coef(all_ind)))
+    expect_equal(unname(indirect_effects_from_list(all_ind)$`CI.lo`),
+                 unname(confint(all_ind)[, 1]))
+  })
