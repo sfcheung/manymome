@@ -71,6 +71,10 @@ NULL
 `[.cond_indirect_effects` <-
     function(x, i, j, drop = if (missing(i)) TRUE else length(j) == 1)
   {
+    # TODO:
+    # - Support object with both wlevels and groups
+    has_wlevels <- cond_indirect_effects_has_wlevels(x)
+    has_groups <- cond_indirect_effects_has_groups(x)
     out <- NextMethod()
     if (is.null(dim(out))) {
         if (!missing(j)) {
@@ -87,9 +91,11 @@ NULL
       } else {
         fo <- attr(x, "full_output")[i]
         attr(out, "full_output") <- fo
-        wl <- attr(x, "wlevels")[i, , drop = FALSE]
-        attr(wl, "wlevels") <- attr(wl, "wlevels")[i, , drop = FALSE]
-        attr(out, "wlevels") <- wl
+        if (has_wlevels) {
+            wl <- attr(x, "wlevels")[i, , drop = FALSE]
+            attr(wl, "wlevels") <- attr(wl, "wlevels")[i, , drop = FALSE]
+            attr(out, "wlevels") <- wl
+          }
         return(out)
       }
   }
