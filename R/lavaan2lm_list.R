@@ -56,6 +56,7 @@ lm_from_lavaan_list <- function(fit) {
                           lm_from_lavaan_list_i(fit = fit,
                                                 group_number = x)
                         })
+        names(out) <- group_labels
         class(out) <- c("lm_from_lavaan_list", class(out))
       } else {
         out <- lm_from_lavaan_list_i(fit = fit)
