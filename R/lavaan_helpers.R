@@ -245,3 +245,25 @@ group_labels_and_numbers <- function(groups = NULL,
     list(label = group_labels,
          number = group_numbers)
   }
+
+#' @noRd
+# Check if a cond_indirect_effects-class object has wlevels.
+
+has_wlevels <- function(object) {
+    if (!is.null(attr(object, "wlevels"))) {
+        return(TRUE)
+      } else {
+        return(FALSE)
+      }
+  }
+
+#' @noRd
+# Check if a cond_indirect_effects-class object has groups.
+
+has_groups <- function(object) {
+    if (isTRUE("group" %in% tolower(colnames(object)))) {
+        return(TRUE)
+      } else {
+        return(FALSE)
+      }
+  }
