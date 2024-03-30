@@ -692,18 +692,12 @@ tmp1 <- cond_indirect_effects(x = "x",
                               y = "y",
                               m = c("m1", "m2"),
                               fit = fit_med)
-tmp2 <- cond_indirect_effects(x = "x",
-                              y = "y",
-                              m = c("m1", "m2"),
-                              fit = fit_med,
-                              groups = c(2, 1))
-tmp3 <- cond_indirect_effects(x = "x",
-                              y = "y",
-                              m = c("m1", "m2"),
-                              fit = fit_med,
-                              groups = c("gp1", "gp3"))
 
-tmp3
+test_that("print.cond_indirect_effects: Multiple groups", {
+    expect_output(print(tmp1),
+                  "Conditional on group(s)",
+                  fixed = TRUE)
+  })
 
 
 skip("Long tests: Test in interactive sections")
@@ -728,6 +722,15 @@ suppressWarnings(fit2_chk_boot <- sem(mod2_chk, dat, meanstructure = TRUE, fixed
             iseed = 1234))
 
 fit2_chk_boot_out <- do_boot(fit2_chk_boot)
+
+fit_med <- sem(mod_med, dat, meanstructure = TRUE, fixed.x = FALSE,
+               group = "gp",
+               group.label = c("gp3", "gp1", "gp2"))
+fit_med_boot_out <- do_boot(fit_med,
+                         R = 50,
+                         seed = 1234,
+                         parallel = FALSE,
+                         progress = FALSE)
 
 suppressWarnings(tmp2 <- indirect_effect(x = "x",
                         y = "y",
@@ -879,4 +882,27 @@ test_that("indirect_effect and multigrop, boot: Math", {
                  tmp3b$boot_indirect - tmp3$boot_indirect)
     expect_equal(tmpmath3b$boot_indirect,
                  tmp3b$boot_indirect + tmp3$boot_indirect)
+  })
+
+# confint.cond_indirect_effects
+
+tmp1_boot <- cond_indirect_effects(x = "x",
+                              y = "y",
+                              m = c("m1", "m2"),
+                              fit = fit_med,
+                              boot_ci = TRUE,
+                              boot_out = fit_med_boot_out)
+suppressWarnings(tmp1_2 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = c("m1", "m2"),
+                        fit = fit_med,
+                        group = 3,
+                        boot_ci = TRUE,
+                        boot_out = fit_med_boot_out))
+
+tmp1_boot_ci <- confint(tmp1_boot)
+
+test_that("confint.cond_indirect_effects with multiple groups", {
+    expect_equal(unname(unlist(tmp1_boot_ci[3, ])),
+                 unname(as.vector(confint(tmp1_2))))
   })
