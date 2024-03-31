@@ -12,12 +12,26 @@
 #'
 #' It plots the conditional effect from
 #' `x` to `y` in a model for different
-#' levels of the moderators.
+#' levels of the moderators. For
+#' multigroup models, the group will
+#' be the 'moderator' and one line is
+#' drawn for each group.
 #'
 #' It does not support conditional
 #' indirect effects. If there is one or
 #' more mediators in `x`, it will raise
 #' an error.
+#'
+#' ## Multigroup Models
+#'
+#' Since Version 0.1.14.2, support for
+#' multigroup models has been added for models
+#' fitted by `lavaan`. If the effect
+#' for each group is drawn, the
+#' `graph_type` is automatically switched
+#' to `"bumble"` and the means and SDs
+#' in each group will be used to determine
+#' the locations of the points.
 #'
 #' @return A [ggplot2] graph. Plotted if
 #' not assigned to a name. It can be
@@ -116,9 +130,11 @@
 #' @param graph_type If `"default"`, the
 #' typical line-graph with equal
 #' end-points will be plotted. If
-#' `"tubmle"`, then the tumble graph
+#' `"tumble"`, then the tumble graph
 #' proposed by Bodner (2016) will be
-#' plotted. Default is `"default"`.
+#' plotted. Default is `"default"`
+#' for single-group models, and
+#' `"tumble"` for multigroup models.
 #'
 #' @param ... Additional arguments.
 #' Ignored.
@@ -173,6 +189,26 @@
 #' out_2 <- cond_indirect_effects(wlevels = out_mm_2, x = "x", y = "m3", fit = fit2)
 #' plot(out_2)
 #' plot(out_2, graph_type = "tumble")
+#'
+#' # Multigroup models
+#'
+#' dat <- data_med_mg
+#' mod <-
+#' "
+#' m ~ x + c1 + c2
+#' y ~ m + x + c1 + c2
+#' "
+#' fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
+#'            group = "group")
+#'
+#' # For a multigroup model, group will be used as
+#' # a moderator
+#' out <- cond_indirect_effects(x = "m",
+#'                              y = "y",
+#'                              fit = fit)
+#' out
+#' plot(out)
+#'
 #'
 #'
 #' @export
