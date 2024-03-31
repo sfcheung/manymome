@@ -20,7 +20,7 @@ lavaan::sem(), or semTools::sem.mi()."><meta property="og:image" content="https:
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,6 +41,9 @@ lavaan::sem(), or semTools::sem.mi()."><meta property="og:image" content="https:
     <h6 class="dropdown-header" data-toc-skip>&lt;Multiple Regression&gt;</h6>
     <a class="dropdown-item" href="../articles/med_lm.html">Mediation</a>
     <a class="dropdown-item" href="../articles/mome_lm.html">Moderated Mediation</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>&lt;Multigroup Models&gt;</h6>
+    <a class="dropdown-item" href="../articles/med_mg.html">Mediation in Multigroup Models</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>&lt;Multiple Imputation&gt;</h6>
     <a class="dropdown-item" href="../articles/do_mc_lavaan_mi.html">Monte Carlo Confidence Intervals with Multiple Imputation</a>
@@ -125,7 +128,8 @@ structural model fitted by <code><a href="https://rdrr.io/r/stats/lm.html" class
 <span>  ci_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  save_ci_full <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  save_ci_out <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  ci_type <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  ci_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  group <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">cond_indirect_effects</span><span class="op">(</span></span>
@@ -154,6 +158,7 @@ structural model fitted by <code><a href="https://rdrr.io/r/stats/lm.html" class
 <span>  mc_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ci_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ci_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  groups <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -176,6 +181,7 @@ structural model fitted by <code><a href="https://rdrr.io/r/stats/lm.html" class
 <span>  make_cluster_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  save_boot_full <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  save_boot_out <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  mc_ci <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  mc_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  save_mc_full <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -183,7 +189,8 @@ structural model fitted by <code><a href="https://rdrr.io/r/stats/lm.html" class
 <span>  ci_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  save_ci_full <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  save_ci_out <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  ci_type <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  ci_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  group <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">many_indirect_effects</span><span class="op">(</span><span class="va">paths</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
@@ -300,7 +307,7 @@ them from <code>fit</code>.</p></dd>
 <code>TRUE</code>, <code>boot_out</code> is <code>NULL</code>, and
 bootstrap standard errors not
 requested if <code>fit</code> is a
-<a href="https://rdrr.io/pkg/lavaan/man/lavaan-class.html" class="external-link">lavaan</a> object, this function
+<a href="https://rdrr.io/pkg/lavaan/man/lavaan-class.html" class="external-link">lavaan::lavaan</a> object, this function
 will do bootstrapping on <code>fit</code>. <code>R</code>
 is the number of bootstrap samples.
 Default is 100. For Monte Carlo
@@ -453,6 +460,18 @@ supplied, will override <code>boot_ci</code>
 and <code>mc_ci</code>.</p></dd>
 
 
+<dt>group</dt>
+<dd><p>Either the group number
+as appeared in the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
+or <code><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">lavaan::parameterEstimates()</a></code>
+output of a <a href="https://rdrr.io/pkg/lavaan/man/lavaan-class.html" class="external-link">lavaan::lavaan</a> object,
+or the group label as used in
+the <a href="https://rdrr.io/pkg/lavaan/man/lavaan-class.html" class="external-link">lavaan::lavaan</a> object.
+Used only when the number of
+groups is greater than one. Default
+is <code>NULL</code>.</p></dd>
+
+
 <dt>wlevels</dt>
 <dd><p>The output of
 <code><a href="merge_mod_levels.html">merge_mod_levels()</a></code>, or the
@@ -546,6 +565,19 @@ for creating the levels of
 moderators. Default is <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>.</p></dd>
 
 
+<dt>groups</dt>
+<dd><p>Either a vector of
+group numbers
+as appeared in the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
+or <code><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">lavaan::parameterEstimates()</a></code>
+output of a <a href="https://rdrr.io/pkg/lavaan/man/lavaan-class.html" class="external-link">lavaan::lavaan</a> object,
+or a vector of group labels as used in
+the <a href="https://rdrr.io/pkg/lavaan/man/lavaan-class.html" class="external-link">lavaan::lavaan</a> object.
+Used only when the number of
+groups is greater than one. Default
+is <code>NULL</code>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>For <code>many_indirect_effects()</code>,
 these are arguments to be passed to
@@ -571,10 +603,7 @@ these are arguments to be passed to
 
 <p>These two classes of objects have
 their own print methods for printing
-the results (see <code><a href="print.indirect.html">print.indirect()</a></code></p>
-
-
-<p>and <code><a href="print.cond_indirect_effects.html">print.cond_indirect_effects()</a></code>).
+the results (see <code><a href="print.indirect.html">print.indirect()</a></code> and <code><a href="print.cond_indirect_effects.html">print.cond_indirect_effects()</a></code>).
 They also have a <code>coef</code> method for
 extracting the estimates
 (<code><a href="coef.indirect.html">coef.indirect()</a></code> and
@@ -674,7 +703,36 @@ that again can be used in the
 </ol><p>If <code>boot_out</code> or <code>mc_out</code>
 is set, arguments such
 as <code>R</code>, <code>seed</code>, and <code>parallel</code> will
-be ignored.</p>
+be ignored.</p><div class="section">
+<h3 id="multigroup-models">Multigroup Models<a class="anchor" aria-label="anchor" href="#multigroup-models"></a></h3>
+
+
+<p>Since Version 0.1.14.2, support for
+multigroup models has been added for models
+fitted by <code>lavaan</code>. Both bootstrapping
+and Monte Carlo confidence intervals
+are supported. When used on
+a multigroup model:</p><ul><li><p>For <code>cond_indirect()</code> and
+<code>indirect_effect()</code>, users need to
+specify the <code>group</code> argument
+(by number or label). When using
+<code>cond_indirect_effects()</code>, if
+<code>group</code> is not set, all groups wil
+be used and the indirect effect
+in each group will be computed,
+kind of treating group as a moderator.</p></li>
+<li><p>For <code>many_indirect_effects()</code>,
+the paths can be generated from a
+multigroup models.</p></li>
+<li><p>Currently, <code>cond_indirect_effects()</code>
+does not support a multigroup model
+with moderators on the path selected.
+The function <code>cond_indirect()</code> does
+not have this limitation but users
+need to manually specify the desired
+value of the moderator(s).</p></li>
+</ul></div>
+
     </div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
@@ -741,10 +799,10 @@ these functions.</p></div>
 <span class="r-in"><span><span class="co"># Indirect effect from x1 through m2 to y</span></span></span>
 <span class="r-in"><span><span class="fu">indirect_effect</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==  Effect ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:  x -&gt; y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Effect 0.312 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==  Effect  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:   x -&gt; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Effect: 0.312 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Computation Formula:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   (b.y~x)</span>
@@ -801,7 +859,7 @@ these functions.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the  effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m1~x’ is/are the path coefficient(s) along the path conditional on</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    the moderators.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    the moderator(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Conditional Indirect effect from x1 through m1 to y,</span></span></span>
@@ -822,7 +880,104 @@ these functions.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m1~x’,‘y~m1’ is/are the path coefficient(s) along the path</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    conditional on the moderators.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    conditional on the moderator(s).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Multigroup models for cond_indirect_effects()</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">data_med_mg</span></span></span>
+<span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">m ~ x + c1 + c2</span></span></span>
+<span class="r-in"><span><span class="st">y ~ m + x + c1 + c2</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
+<span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">dat</span>, meanstructure <span class="op">=</span> <span class="cn">TRUE</span>, fixed.x <span class="op">=</span> <span class="cn">FALSE</span>, se <span class="op">=</span> <span class="st">"none"</span>, baseline <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>           group <span class="op">=</span> <span class="st">"group"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># If a model has more than one group,</span></span></span>
+<span class="r-in"><span><span class="co"># it will be used as a 'moderator'.</span></span></span>
+<span class="r-in"><span><span class="fu">cond_indirect_effects</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, m <span class="op">=</span> <span class="st">"m"</span>,</span></span>
+<span class="r-in"><span>                      fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Conditional indirect effects ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path: x -&gt; m -&gt; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Conditional on group(s): Group A[1], Group B[2]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Group Group_ID   ind   m~x   y~m</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Group A        1 0.409 0.880 0.465</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Group B        2 0.663 0.597 1.110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m~x’,‘y~m’ is/are the path coefficient(s) along the path conditional</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    on the group(s).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Multigroup model for indirect_effect()</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">data_med_mg</span></span></span>
+<span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">m ~ x + c1 + c2</span></span></span>
+<span class="r-in"><span><span class="st">y ~ m + x + c1 + c2</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
+<span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">dat</span>, meanstructure <span class="op">=</span> <span class="cn">TRUE</span>, fixed.x <span class="op">=</span> <span class="cn">FALSE</span>, se <span class="op">=</span> <span class="st">"none"</span>, baseline <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>           group <span class="op">=</span> <span class="st">"group"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># If a model has more than one group,</span></span></span>
+<span class="r-in"><span><span class="co"># the argument 'group' must be set.</span></span></span>
+<span class="r-in"><span><span class="va">ind1</span> <span class="op">&lt;-</span> <span class="fu">indirect_effect</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>                        y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>                        m <span class="op">=</span> <span class="st">"m"</span>,</span></span>
+<span class="r-in"><span>                        fit <span class="op">=</span> <span class="va">fit</span>,</span></span>
+<span class="r-in"><span>                        group <span class="op">=</span> <span class="st">"Group A"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ind1</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:            Group A[1]: x -&gt; m -&gt; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Indirect Effect: 0.409                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Computation Formula:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   (b.m~x)*(b.y~m)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Computation:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   (0.87989)*(0.46481)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients of Component Paths:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path Coefficient</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   m~x       0.880</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   y~m       0.465</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NOTE:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - The group label is printed before each path.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - The group number in square brackets is the number used internally in</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   lavaan.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="va">ind2</span> <span class="op">&lt;-</span> <span class="fu">indirect_effect</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>                        y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>                        m <span class="op">=</span> <span class="st">"m"</span>,</span></span>
+<span class="r-in"><span>                        fit <span class="op">=</span> <span class="va">fit</span>,</span></span>
+<span class="r-in"><span>                        group <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ind2</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:            Group B[2]: x -&gt; m -&gt; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Indirect Effect: 0.663                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Computation Formula:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   (b.m~x)*(b.y~m)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Computation:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   (0.59716)*(1.11040)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients of Component Paths:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path Coefficient</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   m~x       0.597</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   y~m       1.110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NOTE:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - The group label is printed before each path.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - The group number in square brackets is the number used internally in</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   lavaan.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
@@ -839,7 +994,6 @@ these functions.</p></div>
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">data_serial_parallel</span>,</span></span>
 <span class="r-in"><span>           fixed.x <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># All indirect paths from x to y</span></span></span>
 <span class="r-in"><span><span class="va">paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="all_indirect_paths.html">all_indirect_paths</a></span><span class="op">(</span><span class="va">fit</span>,</span></span>
 <span class="r-in"><span>                           x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
@@ -853,7 +1007,6 @@ these functions.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 x -&gt; m11 -&gt; y       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 x -&gt; m12 -&gt; y       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 x -&gt; m2 -&gt; y        </span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Indirect effect estimates</span></span></span>
 <span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">many_indirect_effects</span><span class="op">(</span><span class="va">paths</span>,</span></span>
 <span class="r-in"><span>                             fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span></span>
@@ -869,6 +1022,179 @@ these functions.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Multigroup models for many_indirect_effects()</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_med_complicated_mg</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">m11 ~ x1 + x2 + c1 + c2</span></span></span>
+<span class="r-in"><span><span class="st">m12 ~ m11 + c1 + c2</span></span></span>
+<span class="r-in"><span><span class="st">m2 ~ x1 + x2 + c1 + c2</span></span></span>
+<span class="r-in"><span><span class="st">y1 ~ m11 + m12 + x1 + x2 + c1 + c2</span></span></span>
+<span class="r-in"><span><span class="st">y2 ~ m2 + x1 + x2 + c1 + c2</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
+<span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">data_med_complicated_mg</span>, group <span class="op">=</span> <span class="st">"group"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lavaan 0.6.17 ended normally after 13 iterations</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Estimator                                         ML</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Optimization method                           NLMINB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Number of model parameters                        66</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Number of observations per group:                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Group A                                        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Group B                                        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model Test User Model:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Test statistic                                16.359</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Degrees of freedom                                14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   P-value (Chi-square)                           0.292</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Test statistic for each group:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Group A                                      7.443</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Group B                                      8.917</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parameter Estimates:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Standard errors                             Standard</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Information                                 Expected</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Information saturated (h1) model          Structured</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Group 1 [Group A]:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Regressions:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    Estimate  Std.Err  z-value  P(&gt;|z|)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   m11 ~                                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x1                0.360    0.089    4.037    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x2                0.222    0.103    2.157    0.031</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c1                0.275    0.091    3.005    0.003</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c2                0.114    0.092    1.240    0.215</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   m12 ~                                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     m11               0.593    0.088    6.698    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c1                0.030    0.091    0.327    0.743</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c2               -0.178    0.089   -1.998    0.046</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   m2 ~                                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x1                0.005    0.102    0.045    0.964</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x2                0.542    0.117    4.626    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c1                0.082    0.104    0.791    0.429</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c2                0.208    0.104    1.992    0.046</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   y1 ~                                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     m11               0.372    0.119    3.116    0.002</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     m12               0.351    0.105    3.342    0.001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x1               -0.099    0.098   -1.011    0.312</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x2               -0.067    0.107   -0.629    0.529</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c1               -0.056    0.097   -0.572    0.567</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c2               -0.149    0.096   -1.554    0.120</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   y2 ~                                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     m2                0.395    0.083    4.771    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x1                0.105    0.084    1.249    0.212</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x2                0.178    0.107    1.666    0.096</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c1               -0.076    0.087   -0.874    0.382</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c2                0.080    0.088    0.912    0.362</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Covariances:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    Estimate  Std.Err  z-value  P(&gt;|z|)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  .y1 ~~                                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .y2               -0.031    0.084   -0.368    0.713</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Intercepts:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    Estimate  Std.Err  z-value  P(&gt;|z|)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .m11               0.084    0.096    0.874    0.382</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .m12              -0.042    0.093   -0.452    0.651</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .m2                0.013    0.109    0.116    0.907</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .y1                0.011    0.098    0.108    0.914</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .y2               -0.108    0.090   -1.191    0.234</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variances:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    Estimate  Std.Err  z-value  P(&gt;|z|)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .m11               0.868    0.123    7.071    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .m12               0.820    0.116    7.071    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .m2                1.126    0.159    7.071    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .y1                0.904    0.128    7.071    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .y2                0.774    0.109    7.071    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Group 2 [Group B]:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Regressions:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    Estimate  Std.Err  z-value  P(&gt;|z|)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   m11 ~                                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x1                0.104    0.107    0.970    0.332</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x2               -0.012    0.106   -0.114    0.909</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c1                0.364    0.103    3.526    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c2                0.106    0.109    0.978    0.328</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   m12 ~                                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     m11               0.346    0.096    3.606    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c1                0.219    0.102    2.136    0.033</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c2               -0.135    0.105   -1.285    0.199</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   m2 ~                                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x1               -0.057    0.104   -0.542    0.588</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x2                0.307    0.103    2.965    0.003</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c1                0.223    0.101    2.218    0.027</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c2                0.181    0.106    1.700    0.089</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   y1 ~                                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     m11               0.351    0.100    3.509    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     m12               0.056    0.098    0.568    0.570</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x1                0.080    0.102    0.781    0.435</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x2                0.016    0.100    0.157    0.875</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c1               -0.294    0.106   -2.782    0.005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c2                0.061    0.104    0.582    0.561</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   y2 ~                                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     m2                0.398    0.099    4.025    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x1                0.023    0.104    0.224    0.823</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x2                0.301    0.107    2.812    0.005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c1                0.110    0.102    1.076    0.282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     c2               -0.008    0.107   -0.076    0.940</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Covariances:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    Estimate  Std.Err  z-value  P(&gt;|z|)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  .y1 ~~                                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .y2               -0.077    0.096   -0.805    0.421</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Intercepts:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    Estimate  Std.Err  z-value  P(&gt;|z|)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .m11               0.112    0.104    1.075    0.282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .m12               0.149    0.100    1.478    0.139</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .m2                0.112    0.101    1.107    0.268</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .y1                0.057    0.100    0.575    0.565</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .y2                0.198    0.101    1.959    0.050</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variances:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    Estimate  Std.Err  z-value  P(&gt;|z|)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .m11               1.044    0.148    7.071    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .m12               0.969    0.137    7.071    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .m2                0.992    0.140    7.071    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .y1                0.933    0.132    7.071    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .y2                0.978    0.138    7.071    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="all_indirect_paths.html">all_indirect_paths</a></span><span class="op">(</span><span class="va">fit</span>,</span></span>
+<span class="r-in"><span>                            x <span class="op">=</span> <span class="st">"x1"</span>,</span></span>
+<span class="r-in"><span>                            y <span class="op">=</span> <span class="st">"y1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">paths</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Call: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> all_indirect_paths(fit = fit, x = "x1", y = "y1")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Path(s): </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   path                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Group A.x1 -&gt; m11 -&gt; m12 -&gt; y1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Group A.x1 -&gt; m11 -&gt; y1       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Group B.x1 -&gt; m11 -&gt; m12 -&gt; y1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Group B.x1 -&gt; m11 -&gt; y1       </span>
+<span class="r-in"><span><span class="co"># Indirect effect estimates for all paths in all groups</span></span></span>
+<span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">many_indirect_effects</span><span class="op">(</span><span class="va">paths</span>,</span></span>
+<span class="r-in"><span>                             fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">out</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s)   ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                  ind</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Group A.x1 -&gt; m11 -&gt; m12 -&gt; y1 0.075</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Group A.x1 -&gt; m11 -&gt; y1        0.134</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Group B.x1 -&gt; m11 -&gt; m12 -&gt; y1 0.002</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Group B.x1 -&gt; m11 -&gt; y1        0.037</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -18,7 +18,7 @@ cond_indirect()."><meta property="og:image" content="https://sfcheung.github.io/
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,6 +39,9 @@ cond_indirect()."><meta property="og:image" content="https://sfcheung.github.io/
     <h6 class="dropdown-header" data-toc-skip>&lt;Multiple Regression&gt;</h6>
     <a class="dropdown-item" href="../articles/med_lm.html">Mediation</a>
     <a class="dropdown-item" href="../articles/mome_lm.html">Moderated Mediation</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>&lt;Multigroup Models&gt;</h6>
+    <a class="dropdown-item" href="../articles/med_mg.html">Mediation in Multigroup Models</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>&lt;Multiple Imputation&gt;</h6>
     <a class="dropdown-item" href="../articles/do_mc_lavaan_mi.html">Monte Carlo Confidence Intervals with Multiple Imputation</a>
@@ -124,8 +127,7 @@ this class.</p>
 and <code>-</code> operator are supported. These
 operators can be used to estimate and
 test a function of effects between
-the same pair of variables but along
-different paths.</p>
+the same pair of variables.</p>
 <p>For example, they can be used to
 compute and test the total effects
 along different paths. They can also
@@ -137,8 +139,7 @@ operation is valid. An operation is
 not valid if</p><ol><li><p>the two paths do not start from
 the same variable,</p></li>
 <li><p>the two paths do not end at the
-same variable, (c) a path appears in
-both objects,</p></li>
+same variable,</p></li>
 <li><p>moderators are involved but they
 are not set to the same values in
 both objects, and</p></li>
@@ -147,7 +148,31 @@ both objects, and</p></li>
 <li><p>Monte Carlo simulated
 estimates stored in
 <code>mc_out</code>, if any, are not identical.</p></li>
-</ol></div>
+</ol><div class="section">
+<h3 id="multigroup-models">Multigroup Models<a class="anchor" aria-label="anchor" href="#multigroup-models"></a></h3>
+
+
+<p>Since Version 0.1.14.2, support for
+multigroup models has been added for models
+fitted by <code>lavaan</code>. Both bootstrapping
+and Monte Carlo confidence intervals
+are supported. These operators can
+be used to compute and test the
+difference of an indirect effect
+between two groups. This can also
+be used to compute and test the
+difference between a function of
+effects between groups, for example,
+the total indirect effects between
+two groups.</p>
+<p>The operators are flexible and allow
+users to do many possible computations.
+Therefore, users need to make sure
+that the function of effects is
+meaningful.</p>
+</div>
+
+    </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="cond_indirect.html">indirect_effect()</a></code> and
@@ -215,6 +240,91 @@ estimates stored in
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">out1</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">out2</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">out3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     y~x </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.39405 </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Multigroup model with indirect effects</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">data_med_mg</span></span></span>
+<span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">m ~ x + c1 + c2</span></span></span>
+<span class="r-in"><span><span class="st">y ~ m + x + c1 + c2</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
+<span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">dat</span>, meanstructure <span class="op">=</span> <span class="cn">TRUE</span>, fixed.x <span class="op">=</span> <span class="cn">FALSE</span>, se <span class="op">=</span> <span class="st">"none"</span>, baseline <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>           group <span class="op">=</span> <span class="st">"group"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># If a model has more than one group,</span></span></span>
+<span class="r-in"><span><span class="co"># the argument 'group' must be set.</span></span></span>
+<span class="r-in"><span><span class="va">ind1</span> <span class="op">&lt;-</span> <span class="fu"><a href="cond_indirect.html">indirect_effect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>                        y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>                        m <span class="op">=</span> <span class="st">"m"</span>,</span></span>
+<span class="r-in"><span>                        fit <span class="op">=</span> <span class="va">fit</span>,</span></span>
+<span class="r-in"><span>                        group <span class="op">=</span> <span class="st">"Group A"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ind1</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:            Group A[1]: x -&gt; m -&gt; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Indirect Effect: 0.409                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Computation Formula:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   (b.m~x)*(b.y~m)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Computation:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   (0.87989)*(0.46481)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients of Component Paths:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path Coefficient</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   m~x       0.880</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   y~m       0.465</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NOTE:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - The group label is printed before each path.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - The group number in square brackets is the number used internally in</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   lavaan.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="va">ind2</span> <span class="op">&lt;-</span> <span class="fu"><a href="cond_indirect.html">indirect_effect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>                        y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>                        m <span class="op">=</span> <span class="st">"m"</span>,</span></span>
+<span class="r-in"><span>                        fit <span class="op">=</span> <span class="va">fit</span>,</span></span>
+<span class="r-in"><span>                        group <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ind2</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:            Group B[2]: x -&gt; m -&gt; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Indirect Effect: 0.663                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Computation Formula:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   (b.m~x)*(b.y~m)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Computation:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   (0.59716)*(1.11040)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients of Component Paths:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path Coefficient</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   m~x       0.597</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   y~m       1.110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NOTE:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - The group label is printed before each path.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - The group number in square brackets is the number used internally in</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   lavaan.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Compute the difference in indirect effects between groups</span></span></span>
+<span class="r-in"><span><span class="va">ind2</span> <span class="op">-</span> <span class="va">ind1</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                Group B[2]: x -&gt; m -&gt; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                Group A[1]: x -&gt; m -&gt; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Function of Effects: 0.254                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Computation of the Function of Effects:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  (Group B[2]: x-&gt;m-&gt;y)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -(Group A[1]: x-&gt;m-&gt;y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NOTE:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - The group label is printed before each path.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - The group number in square brackets is the number used internally in</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   lavaan.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -6,6 +6,7 @@ articles:
   manymome_cond_indirect_and_friends_workflow: manymome_cond_indirect_and_friends_workflow.html
   manymome_do_boot_workflow: manymome_do_boot_workflow.html
   manymome_do_mc_workflow: manymome_do_mc_workflow.html
+  med_mg: med_mg.html
   do_boot: do_boot.html
   do_mc: do_mc.html
   do_mc_lavaan_mi: do_mc_lavaan_mi.html
@@ -14,7 +15,7 @@ articles:
   med_lm: med_lm.html
   mod_levels: mod_levels.html
   mome_lm: mome_lm.html
-last_built: 2024-03-24T06:19Z
+last_built: 2024-03-31T12:31Z
 urls:
   reference: https://sfcheung.github.io/manymome/reference
   article: https://sfcheung.github.io/manymome/articles

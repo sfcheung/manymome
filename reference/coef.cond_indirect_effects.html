@@ -22,7 +22,7 @@ cond_indirect_effects()."><meta property="og:image" content="https://sfcheung.gi
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,6 +43,9 @@ cond_indirect_effects()."><meta property="og:image" content="https://sfcheung.gi
     <h6 class="dropdown-header" data-toc-skip>&lt;Multiple Regression&gt;</h6>
     <a class="dropdown-item" href="../articles/med_lm.html">Mediation</a>
     <a class="dropdown-item" href="../articles/mome_lm.html">Moderated Mediation</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>&lt;Multigroup Models&gt;</h6>
+    <a class="dropdown-item" href="../articles/med_mg.html">Mediation in Multigroup Models</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>&lt;Multiple Imputation&gt;</h6>
     <a class="dropdown-item" href="../articles/do_mc_lavaan_mi.html">Monte Carlo Confidence Intervals with Multiple Imputation</a>
@@ -167,7 +170,7 @@ of <code><a href="cond_indirect.html">cond_indirect_effects()</a></code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the  effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m1~x’ is/are the path coefficient(s) along the path conditional on</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    the moderators.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    the moderator(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">out1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD    w1: Mean w1: M-1.0SD </span>
@@ -192,7 +195,7 @@ of <code><a href="cond_indirect.html">cond_indirect_effects()</a></code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m1~x’,‘m2~m1’,‘y~m2’ is/are the path coefficient(s) along the path</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    conditional on the moderators.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    conditional on the moderator(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">out2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w4: M+1.0SD w1: M+1.0SD; w4: M-1.0SD w1: M-1.0SD; w4: M+1.0SD </span>
@@ -221,7 +224,7 @@ of <code><a href="cond_indirect.html">cond_indirect_effects()</a></code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The standardized indirect effects. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - ind: The unstandardized indirect effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m1~x’,‘m2~m1’,‘y~m2’ is/are the path coefficient(s) along the path</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    conditional on the moderators.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    conditional on the moderator(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">out2std</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w4: M+1.0SD w1: M+1.0SD; w4: M-1.0SD w1: M-1.0SD; w4: M+1.0SD </span>

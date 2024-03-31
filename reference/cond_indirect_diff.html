@@ -18,7 +18,7 @@ moderators."><meta property="og:image" content="https://sfcheung.github.io/manym
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,6 +39,9 @@ moderators."><meta property="og:image" content="https://sfcheung.github.io/manym
     <h6 class="dropdown-header" data-toc-skip>&lt;Multiple Regression&gt;</h6>
     <a class="dropdown-item" href="../articles/med_lm.html">Mediation</a>
     <a class="dropdown-item" href="../articles/mome_lm.html">Moderated Mediation</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>&lt;Multigroup Models&gt;</h6>
+    <a class="dropdown-item" href="../articles/med_mg.html">Mediation in Multigroup Models</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>&lt;Multiple Imputation&gt;</h6>
     <a class="dropdown-item" href="../articles/do_mc_lavaan_mi.html">Monte Carlo Confidence Intervals with Multiple Imputation</a>
@@ -267,7 +270,7 @@ the levels to be compared.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m1~x’,‘y~m1’ is/are the path coefficient(s) along the path</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    conditional on the moderators.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    conditional on the moderator(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">out_ind</span> <span class="op">&lt;-</span> <span class="fu">cond_indirect_diff</span><span class="op">(</span><span class="va">out</span>, from <span class="op">=</span> <span class="fl">2</span>, to <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">out_ind</span></span></span>
@@ -288,6 +291,8 @@ the levels to be compared.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               w1   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> To:   M+1.0SD 1.228</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> From: Mean    0.259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Levels compared: Row 1 - Row 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Change in Indirect Effect:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

@@ -14,7 +14,7 @@ output of cond_indirect_effects()"><meta property="og:image" content="https://sf
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,6 +35,9 @@ output of cond_indirect_effects()"><meta property="og:image" content="https://sf
     <h6 class="dropdown-header" data-toc-skip>&lt;Multiple Regression&gt;</h6>
     <a class="dropdown-item" href="../articles/med_lm.html">Mediation</a>
     <a class="dropdown-item" href="../articles/mome_lm.html">Moderated Mediation</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>&lt;Multigroup Models&gt;</h6>
+    <a class="dropdown-item" href="../articles/med_mg.html">Mediation in Multigroup Models</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>&lt;Multiple Imputation&gt;</h6>
     <a class="dropdown-item" href="../articles/do_mc_lavaan_mi.html">Monte Carlo Confidence Intervals with Multiple Imputation</a>
@@ -218,7 +221,7 @@ Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap%20-%20Pvalue.pdf
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the  effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m1~x’ is/are the path coefficient(s) along the path conditional on</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    the moderators.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    the moderator(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Conditional Indirect effect from x1 through m1 to y,</span></span></span>
@@ -240,7 +243,7 @@ Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap%20-%20Pvalue.pdf
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m1~x’,‘y~m1’ is/are the path coefficient(s) along the path</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    conditional on the moderators.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    conditional on the moderator(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">out</span>, digits <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
@@ -258,7 +261,7 @@ Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap%20-%20Pvalue.pdf
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m1~x’,‘y~m1’ is/are the path coefficient(s) along the path</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    conditional on the moderators.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    conditional on the moderator(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">out</span>, annotation <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>

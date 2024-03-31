@@ -16,7 +16,7 @@ cond_indirect()."><meta property="og:image" content="https://sfcheung.github.io/
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,6 +37,9 @@ cond_indirect()."><meta property="og:image" content="https://sfcheung.github.io/
     <h6 class="dropdown-header" data-toc-skip>&lt;Multiple Regression&gt;</h6>
     <a class="dropdown-item" href="../articles/med_lm.html">Mediation</a>
     <a class="dropdown-item" href="../articles/mome_lm.html">Moderated Mediation</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>&lt;Multigroup Models&gt;</h6>
+    <a class="dropdown-item" href="../articles/med_mg.html">Mediation in Multigroup Models</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>&lt;Multiple Imputation&gt;</h6>
     <a class="dropdown-item" href="../articles/do_mc_lavaan_mi.html">Monte Carlo Confidence Intervals with Multiple Imputation</a>
@@ -243,10 +246,10 @@ Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap%20-%20Pvalue.pdf
 <span class="r-in"><span>                              fit <span class="op">=</span> <span class="va">fit2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">indirect_2</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:           x -&gt; m1 -&gt; m2 -&gt; m3 -&gt; y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Indirect Effect 0.071                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:            x -&gt; m1 -&gt; m2 -&gt; m3 -&gt; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Indirect Effect: 0.071                   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Computation Formula:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   (b.m1~x)*(b.m2~m1)*(b.m3~m2)*(b.y~m3)</span>
@@ -261,10 +264,10 @@ Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap%20-%20Pvalue.pdf
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">indirect_2</span>, digits <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:           x -&gt; m1 -&gt; m2 -&gt; m3 -&gt; y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Indirect Effect 0.07134                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:            x -&gt; m1 -&gt; m2 -&gt; m3 -&gt; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Indirect Effect: 0.07134                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Computation Formula:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   (b.m1~x)*(b.m2~m1)*(b.m3~m2)*(b.y~m3)</span>

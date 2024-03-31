@@ -20,7 +20,7 @@ as if fitted by lavaan::sem()."><meta property="og:image" content="https://sfche
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,6 +41,9 @@ as if fitted by lavaan::sem()."><meta property="og:image" content="https://sfche
     <h6 class="dropdown-header" data-toc-skip>&lt;Multiple Regression&gt;</h6>
     <a class="dropdown-item" href="../articles/med_lm.html">Mediation</a>
     <a class="dropdown-item" href="../articles/mome_lm.html">Moderated Mediation</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>&lt;Multigroup Models&gt;</h6>
+    <a class="dropdown-item" href="../articles/med_mg.html">Mediation in Multigroup Models</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>&lt;Multiple Imputation&gt;</h6>
     <a class="dropdown-item" href="../articles/do_mc_lavaan_mi.html">Monte Carlo Confidence Intervals with Multiple Imputation</a>
@@ -242,10 +245,10 @@ input.</p></div>
 <span class="r-in"><span>                           fit <span class="op">=</span> <span class="va">lm_serial_parallel</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">outm11m12</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:           x -&gt; m11 -&gt; m12 -&gt; y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Indirect Effect 0.193               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:            x -&gt; m11 -&gt; m12 -&gt; y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Indirect Effect: 0.193               </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Computation Formula:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   (b.m11~x)*(b.m12~m11)*(b.y~m12)</span>
@@ -272,10 +275,10 @@ input.</p></div>
 <span class="r-in"><span>                           progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">outm11m12</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect  ==</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                          </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Path:               x -&gt; m11 -&gt; m12 -&gt; y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Indirect Effect     0.193               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Indirect Effect:    0.193               </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  95.0% Bootstrap CI: [-0.110 to 0.487]   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Computation Formula:</span>
