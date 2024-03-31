@@ -609,6 +609,33 @@ cond_indirect_effects(x = "x", y = "y", m = "m1",
                       wlevels = w1levels, fit = fit)
 
 
+# Multigroup model with indirect effects
+
+dat <- data_med_mg
+mod <-
+"
+m ~ x + c1 + c2
+y ~ m + x + c1 + c2
+"
+fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
+           group = "group")
+
+# If a model has more than one group,
+# the argument 'group' must be set.
+ind1 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m",
+                        fit = fit,
+                        group = "Group A")
+ind1
+ind2 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = "m",
+                        fit = fit,
+                        group = 2)
+ind2
+
+
 # Examples for many_indirect_effects():
 
 library(lavaan)

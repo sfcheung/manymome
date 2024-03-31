@@ -690,6 +690,34 @@ cond_indirect <- function(x,
 
 #' @export
 #'
+#' @examples
+#'
+#' # Multigroup model with indirect effects
+#'
+#' dat <- data_med_mg
+#' mod <-
+#' "
+#' m ~ x + c1 + c2
+#' y ~ m + x + c1 + c2
+#' "
+#' fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
+#'            group = "group")
+#'
+#' # If a model has more than one group,
+#' # the argument 'group' must be set.
+#' ind1 <- indirect_effect(x = "x",
+#'                         y = "y",
+#'                         m = "m",
+#'                         fit = fit,
+#'                         group = "Group A")
+#' ind1
+#' ind2 <- indirect_effect(x = "x",
+#'                         y = "y",
+#'                         m = "m",
+#'                         fit = fit,
+#'                         group = 2)
+#' ind2
+#'
 #' @describeIn cond_indirect Compute the
 #' indirect effect. A wrapper of
 #' [cond_indirect()]. Can be used when
