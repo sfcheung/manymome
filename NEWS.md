@@ -1,33 +1,33 @@
-# manymome 0.1.14.3
+# manymome 0.1.14.4
 
 ## New Features
 
 - Many functions have been updated to
-  work for multiple-group models fitted
+  work for multigroup models fitted
   by `lavaan`. Most common tasks are
   supported. There likely are functions
   that may not yet work on
-  multiple-group models. Checks will be
+  multigroup models. Checks will be
   added to them to alert users.
-  Documentation and vignetted to be
+  Vignettes to be
   added or updated. For now, only some
   functions (e.g.,
   `cond_indirect_effect()`) supports
-  multiple-group models which have
+  multigroup models which have
   one or more moderators within each
   group, but these models are rare.
   Functions that do not yet support
   multigroup models (e.g,
   `mod_levels()`) will raise an error
   if used on a multigroup model.
-  (0.1.14.2, 0.1.14.3)
+  (0.1.14.2, 0.1.14.3, 0.1.14.4)
 
 - Relaxed the requirement that only
   different paths can be used in `+`
   and `-`. They can now be used in
   these operations, as they may be
   paths in different groups in
-  multiple-group models. (0.1.14.2)
+  multigroup models. (0.1.14.2)
 
 - The `plot`-method of
   `cond_indirect_effects`-class objects
@@ -39,7 +39,7 @@
   approach, though leading to results
   different from those in single-group
   model using the group as a moderator,
-  makes more sense for multiple-group
+  makes more sense for multigroup
   models, in which the distribution of
   variables are allowed to be different
   between groups. (0.1.14.2)
