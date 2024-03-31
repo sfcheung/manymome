@@ -5,7 +5,13 @@
 \alias{all_paths_to_df}
 \title{Enumerate All Indirect Effects in a Model}
 \usage{
-all_indirect_paths(fit = NULL, exclude = NULL, x = NULL, y = NULL)
+all_indirect_paths(
+  fit = NULL,
+  exclude = NULL,
+  x = NULL,
+  y = NULL,
+  group = NULL
+)
 
 all_paths_to_df(all_paths)
 }
@@ -36,6 +42,19 @@ the outcome variables in at least one regression
 equation will be
 included in the search.}
 
+\item{group}{Either the group number
+as appeared in the \code{\link[=summary]{summary()}}
+or \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}
+output of a \link[lavaan:lavaan-class]{lavaan::lavaan} object,
+or the group label as used in
+the \link[lavaan:lavaan-class]{lavaan::lavaan} object.
+Used only when the number of
+groups is greater than one. Default
+is \code{NULL}. If not specified by the model
+has more than one group, than paths
+that appears in at least one group
+will be included in the output.}
+
 \item{all_paths}{An \code{all_paths}-class object. For example,
 the output of \code{\link[=all_indirect_paths]{all_indirect_paths()}}.}
 }
@@ -60,6 +79,17 @@ and \code{m}, to be used by \code{indirect_effect()}.
 \details{
 It makes use of \code{\link[igraph:all_simple_paths]{igraph::all_simple_paths()}}
 to identify paths in a model.
+\subsection{Multigroup Models}{
+
+Since Version 0.1.14.2, support for
+multigroup models has been added for models
+fitted by \code{lavaan}. If a model has more
+than one group and \code{group} is not
+specified, than paths in all groups
+will be returned. If \code{group} is
+specified, than only paths in the
+selected group will be returned.
+}
 }
 \section{Functions}{
 \itemize{
@@ -99,6 +129,32 @@ out3 <- all_indirect_paths(fit, exclude = c("c1", "c2"),
                            y = "y")
 out3
 names(out3)
+
+# Multigroup models
+
+data(data_med_complicated_mg)
+mod <-
+"
+m11 ~ x1 + x2 + c1 + c2
+m12 ~ m11 + c1 + c2
+m2 ~ x1 + x2 + c1 + c2
+y1 ~ m11 + m12 + x1 + x2 + c1 + c2
+y2 ~ m2 + x1 + x2 + c1 + c2
+"
+fit <- sem(mod, data_med_complicated_mg, group = "group")
+summary(fit)
+
+all_indirect_paths(fit,
+                   x = "x1",
+                   y = "y1")
+all_indirect_paths(fit,
+                   x = "x1",
+                   y = "y1",
+                   group = 1)
+all_indirect_paths(fit,
+                   x = "x1",
+                   y = "y1",
+                   group = "Group B")
 
 }
 \seealso{

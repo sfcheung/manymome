@@ -7,6 +7,17 @@
 #' @details It makes use of [igraph::all_simple_paths()]
 #' to identify paths in a model.
 #'
+#' ## Multigroup Models
+#'
+#' Since Version 0.1.14.2, support for
+#' multigroup models has been added for models
+#' fitted by `lavaan`. If a model has more
+#' than one group and `group` is not
+#' specified, than paths in all groups
+#' will be returned. If `group` is
+#' specified, than only paths in the
+#' selected group will be returned.
+#'
 #' @return
 #' [all_indirect_paths()] returns
 #' a list of the class `all_paths`. Each argument is a
@@ -49,6 +60,19 @@
 #' @param all_paths An `all_paths`-class object. For example,
 #' the output of [all_indirect_paths()].
 #'
+#' @param group Either the group number
+#' as appeared in the [summary()]
+#' or [lavaan::parameterEstimates()]
+#' output of a [lavaan::lavaan-class] object,
+#' or the group label as used in
+#' the [lavaan::lavaan-class] object.
+#' Used only when the number of
+#' groups is greater than one. Default
+#' is `NULL`. If not specified by the model
+#' has more than one group, than paths
+#' that appears in at least one group
+#' will be included in the output.
+#'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @seealso [indirect_effect()], [lm2list()].
@@ -85,6 +109,32 @@
 #' out3
 #' names(out3)
 #'
+#' # Multigroup models
+#'
+#' data(data_med_complicated_mg)
+#' mod <-
+#' "
+#' m11 ~ x1 + x2 + c1 + c2
+#' m12 ~ m11 + c1 + c2
+#' m2 ~ x1 + x2 + c1 + c2
+#' y1 ~ m11 + m12 + x1 + x2 + c1 + c2
+#' y2 ~ m2 + x1 + x2 + c1 + c2
+#' "
+#' fit <- sem(mod, data_med_complicated_mg, group = "group")
+#' summary(fit)
+#'
+#' all_indirect_paths(fit,
+#'                    x = "x1",
+#'                    y = "y1")
+#' all_indirect_paths(fit,
+#'                    x = "x1",
+#'                    y = "y1",
+#'                    group = 1)
+#' all_indirect_paths(fit,
+#'                    x = "x1",
+#'                    y = "y1",
+#'                    group = "Group B")
+#'
 #' @describeIn all_indirect_paths Enumerate all indirect paths.
 #'
 #' @order 1
@@ -94,26 +144,115 @@
 all_indirect_paths <- function(fit = NULL,
                                exclude = NULL,
                                x = NULL,
-                               y = NULL) {
+                               y = NULL,
+                               group = NULL) {
     fit_type <- cond_indirect_check_fit(fit)
     if (is.na(fit_type)) {
         stop("'fit' is not of a supported type.")
       }
+    ngroups <- 1
+    group_number <- NULL
+    group_label <- NULL
 
     # Create an adjancey matrix
     if (identical(fit_type, "lavaan")) {
-        beta <- lavaan::lavInspect(fit)$beta
+
+        ngroups <- lavaan::lavTech(fit, "ngroups")
+        if ((ngroups > 1) && !is.null(group)) {
+            group_labels_all <- lavaan::lavTech(fit,
+                                                "group.label")
+            if (is.numeric(group)) {
+                group_label <- group_labels_all[group]
+                group_number <- group
+              } else {
+                group_number <- match(group, group_labels_all)
+                group_label <- group
+              }
+          }
+        tmp <- lavaan::lavInspect(fit,
+                  drop.list.single.group = FALSE)
+        tmp <- lapply(tmp, function(x) x$beta)
+        beta <- tmp
       }
     if (identical(fit_type, "lavaan.mi")) {
-        beta <- lavaan::lavInspect(fit)$beta
+        # TODO:
+        # Add support for multiple group models.
+        beta <- list(lavaan::lavInspect(fit)$beta)
       }
     if (identical(fit_type, "lm")) {
-        beta <- beta_from_lm(fit)
+        beta <- list(beta_from_lm(fit))
       }
-    adj <- beta
+    if ((ngroups > 1) &&
+        (identical(fit_type, "lavaan"))) {
+        group_labels_all <- lavaan::lavTech(fit,
+                                            "group.label")
+        if (is.null(group)) {
+            groups <- group_labels_all
+            group_numbers <- seq_len(ngroups)
+          } else {
+            beta <- beta[group_number]
+            groups <- group
+            group_numbers <- group_number
+            group_labels_all <- group_labels_all[group_number]
+          }
+        tmpfct <- function(adj_i,
+                           group_i,
+                           group_label_i,
+                           group_number_i,
+                           exclude = exclude,
+                           x = x,
+                           y = y,
+                           fit = fit,
+                           fit_type = fit_type) {
+                      out <- all_indirect_paths_i(adj = adj_i,
+                                                  exclude = exclude,
+                                                  x = x,
+                                                  y = y,
+                                                  fit = fit,
+                                                  fit_type = fit_type)
+                      for (i in seq_along(out)) {
+                          out[[i]]$group_label <- group_label_i
+                          out[[i]]$group_number <- group_number_i
+                        }
+                      out
+                    }
+        out3 <- mapply(tmpfct,
+                       adj_i = beta,
+                       group_i = groups,
+                       group_label_i = group_labels_all,
+                       group_number_i = group_numbers,
+                       MoreArgs = list(exclude = exclude,
+                                       x = x,
+                                       y = y,
+                                       fit = fit,
+                                       fit_type = fit_type),
+                       SIMPLIFY = FALSE)
+        out3 <- unlist(out3,
+                       recursive = FALSE)
+      } else {
+        out3 <- all_indirect_paths_i(adj = beta[[1]],
+                                     exclude = exclude,
+                                     x = x,
+                                     y = y,
+                                     fit = fit,
+                                     fit_type = fit_type)
+      }
+
+    class(out3) <- c("all_paths", class(out3))
+    attr(out3, "call") <- match.call()
+    out3
+  }
+
+#' @noRd
+
+all_indirect_paths_i <- function(adj,
+                                 exclude = NULL,
+                                 x = NULL,
+                                 y = NULL,
+                                 fit = NULL,
+                                 fit_type = NULL) {
     adj[adj > 0] <- 1
     adj <- t(adj)
-
     # Remove excluded variables
     if (is.character(exclude)) {
         adj <- adj[!(rownames(adj) %in% exclude),
@@ -170,8 +309,6 @@ all_indirect_paths <- function(fit = NULL,
     # Format the output
     out3 <- lapply(out2, to_x_y_m)
     names(out3) <- sapply(out3, path_name)
-    class(out3) <- c("all_paths", class(out3))
-    attr(out3, "call") <- match.call()
     out3
   }
 
@@ -188,9 +325,15 @@ all_paths_to_df <- function(all_paths) {
     all_y <- sapply(all_paths, function(x) x$y)
     all_m <- sapply(all_paths, function(x) x$m,
                     simplify = FALSE)
+    all_group_label <- sapply(all_paths, function(x) x$group_label)
+    all_group_number <- sapply(all_paths, function(x) x$group_number)
     out <- data.frame(x = all_x,
                       y = all_y)
     out$m <- all_m
+    if (!any(sapply(all_group_label, is.null))) {
+        out$group_label <- all_group_label
+        out$group_number <- all_group_number
+      }
     out
   }
 

@@ -93,14 +93,16 @@ confint.cond_indirect_effects <- function(object, parm, level = .95, ...) {
     #     warning("Bootstrapping interval not in the object.")
     #     out0 <- c(NA, NA)
     #   }
+    has_wlevels <- cond_indirect_effects_has_wlevels(object)
+    has_groups <- cond_indirect_effects_has_groups(object)
     out0 <- as.data.frame(object)
     full_output <- attr(object, "full_output")
     has_ci <- FALSE
-    if (is.null(full_output[[1]]$boot_ci)) {
+    if (!is.null(full_output[[1]]$boot_ci)) {
         has_ci <- TRUE
         ci_type <- "boot"
       }
-    if (is.null(full_output[[1]]$mc_ci)) {
+    if (!is.null(full_output[[1]]$mc_ci)) {
         has_ci <- TRUE
         ci_type <- "mc"
       }
@@ -117,8 +119,18 @@ confint.cond_indirect_effects <- function(object, parm, level = .95, ...) {
                            trim = TRUE,
                            scientific = FALSE,
                            digits = 2), "%")
-    wlevels <- attr(object, "wlevels")
     colnames(out) <- cnames
-    rownames(out) <- rownames(wlevels)
+    if (has_wlevels && !has_groups) {
+        wlevels <- attr(object, "wlevels")
+        rownames(out) <- rownames(wlevels)
+      }
+    if (!has_wlevels && has_groups) {
+        tmp <- paste0(object$Group, " [", object$Group_ID, "]")
+        rownames(out) <- tmp
+      }
+    if (has_wlevels && has_groups) {
+        # TODO:
+        # - Support for having both wlevels and groups
+      }
     out
   }

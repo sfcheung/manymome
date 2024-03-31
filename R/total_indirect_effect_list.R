@@ -70,11 +70,53 @@ total_indirect_effect <- function(object,
     if (!is.list(object)) {
         stop("object is not a list")
       }
+    has_groups <- indirect_list_has_groups(object)
+    if (has_groups) {
+        tmp <- group_labels_and_numbers_list(object)
+        group_labels <- tmp$label
+        group_numbers <- tmp$number
+        i1 <- sapply(object, function(xx) xx$group_label)
+        i2 <- split(seq_along(object), i1)
+        out0 <- lapply(i2, function(xx) {
+                    object_i <- object[xx]
+                    total_indirect_effect_i(object_i,
+                                            x = x,
+                                            y = y)
+                  })
+        out0 <- out0[group_labels]
+        tmp <- sapply(out0, function(xx) !identical(xx, NA))
+        if (!any(tmp)) {
+            stop("In all groups, no paths from ", x, " to ", y, ".")
+          }
+        out0 <- out0[tmp]
+      } else {
+        # ix <- sapply(object, function(z) z$x)
+        # iy <- sapply(object, function(z) z$y)
+        # i0 <- (ix %in% x) & (iy %in% y)
+        # if (isFALSE(any(i0))) {
+        #     return(NA)
+        #   }
+        # p1 <- object[i0]
+        out0 <- total_indirect_effect_i(object = object,
+                                        x = x,
+                                        y = y)
+        if (identical(out0, NA)) {
+            stop("No paths from ", x, " to ", y, ".")
+          }
+      }
+    out0
+  }
+
+#' @noRd
+
+total_indirect_effect_i <- function(object,
+                                    x,
+                                    y) {
     ix <- sapply(object, function(z) z$x)
     iy <- sapply(object, function(z) z$y)
     i0 <- (ix %in% x) & (iy %in% y)
     if (isFALSE(any(i0))) {
-        stop("No valid path was found.")
+        return(NA)
       }
     p1 <- object[i0]
     out <- Reduce(`+`, p1)

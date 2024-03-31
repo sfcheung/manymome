@@ -12,12 +12,26 @@
 #'
 #' It plots the conditional effect from
 #' `x` to `y` in a model for different
-#' levels of the moderators.
+#' levels of the moderators. For
+#' multigroup models, the group will
+#' be the 'moderator' and one line is
+#' drawn for each group.
 #'
 #' It does not support conditional
 #' indirect effects. If there is one or
 #' more mediators in `x`, it will raise
 #' an error.
+#'
+#' ## Multigroup Models
+#'
+#' Since Version 0.1.14.2, support for
+#' multigroup models has been added for models
+#' fitted by `lavaan`. If the effect
+#' for each group is drawn, the
+#' `graph_type` is automatically switched
+#' to `"bumble"` and the means and SDs
+#' in each group will be used to determine
+#' the locations of the points.
 #'
 #' @return A [ggplot2] graph. Plotted if
 #' not assigned to a name. It can be
@@ -116,9 +130,11 @@
 #' @param graph_type If `"default"`, the
 #' typical line-graph with equal
 #' end-points will be plotted. If
-#' `"tubmle"`, then the tumble graph
+#' `"tumble"`, then the tumble graph
 #' proposed by Bodner (2016) will be
-#' plotted. Default is `"default"`.
+#' plotted. Default is `"default"`
+#' for single-group models, and
+#' `"tumble"` for multigroup models.
 #'
 #' @param ... Additional arguments.
 #' Ignored.
@@ -174,6 +190,26 @@
 #' plot(out_2)
 #' plot(out_2, graph_type = "tumble")
 #'
+#' # Multigroup models
+#'
+#' dat <- data_med_mg
+#' mod <-
+#' "
+#' m ~ x + c1 + c2
+#' y ~ m + x + c1 + c2
+#' "
+#' fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
+#'            group = "group")
+#'
+#' # For a multigroup model, group will be used as
+#' # a moderator
+#' out <- cond_indirect_effects(x = "m",
+#'                              y = "y",
+#'                              fit = fit)
+#' out
+#' plot(out)
+#'
+#'
 #'
 #' @export
 
@@ -194,11 +230,32 @@ plot.cond_indirect_effects <- function(
                             graph_type = c("default", "tumble"),
                             ...
                     ) {
+    has_groups <- cond_indirect_effects_has_groups(x)
+    has_wlevels <- cond_indirect_effects_has_wlevels(x)
+    if (has_wlevels && has_groups) {
+        stop("Objects with both wlevels and groups not yet supported")
+      }
     output <- x
+    if (has_groups) {
+        tmp <- group_labels_and_numbers_cond(output)
+        group_labels <- tmp$label
+        group_numbers <- tmp$number
+        w_label <- ifelse(w_label == "Moderator(s)",
+                          "Group",
+                          w_label)
+      } else {
+        group_labels <- NULL
+        group_numbers <- NULL
+      }
     fit <- attr(output, "fit")
     fit_type <- cond_indirect_check_fit(fit)
     x_method <- match.arg(x_method)
     graph_type <- match.arg(graph_type)
+    if (has_groups && graph_type == "default") {
+        # warning("Only tumble graph is supported for multiple group models. ",
+        #         "Changed graph_type to 'tumble'.")
+        graph_type <- "tumble"
+      }
     full_output <- attr(output, "full_output")
     full_output_1 <- full_output[[1]]
     x <- full_output_1$x
@@ -207,12 +264,14 @@ plot.cond_indirect_effects <- function(
     if (!is.null(m)) {
         stop("The plot method does not support indirect effects.")
       }
-    wlevels <- attr(output, "wlevels")
-    if (fit_type == "lm") {
-        wlevels <- ind_to_cat(wlevels)
+    if (has_wlevels) {
+        wlevels <- attr(output, "wlevels")
+        if (fit_type == "lm") {
+            wlevels <- ind_to_cat(wlevels)
+          }
+        w_names <- colnames(wlevels)
       }
-
-    w_names <- colnames(wlevels)
+    # mf0 is a list of datasets for multiple group models
     mf0 <- switch(fit_type,
                   lavaan = lavaan::lavInspect(fit, "data"),
                   lavaan.mi = lav_data_used(fit, drop_colon = FALSE),
@@ -243,9 +302,20 @@ plot.cond_indirect_effects <- function(
         x_levels_list <- replicate(nrow(wlevels), x_levels, simplify = FALSE)
       }
     if (graph_type == "tumble") {
-        x_subsets <- lapply(split(wlevels, seq_len(nrow(wlevels))),
-                            x_for_wlevels,
-                            mf = mf0, x = x)
+        if (has_wlevels && !has_groups) {
+            x_subsets <- lapply(split(wlevels, seq_len(nrow(wlevels))),
+                                x_for_wlevels,
+                                mf = mf0, x = x)
+          }
+        if (!has_wlevels && has_groups) {
+            x_subsets <- lapply(mf0, function(xx) {
+                              xx[, x, drop = TRUE]
+                            })
+          }
+        if (has_wlevels && has_groups) {
+            # TODO
+            # - Support objects with both wlevels and groups.
+          }
         x_levels_list <- lapply(x_subsets,
                                 gen_levels,
                                 method = x_method,
@@ -258,19 +328,56 @@ plot.cond_indirect_effects <- function(
     x_levels_m <- do.call(rbind, x_levels_list)
     plot_df_xstart <- data.frame(x = x_levels_m[, 1])
     plot_df_xend <- data.frame(x = x_levels_m[, 2])
-    mf2 <- data.frame(lapply(as.data.frame(dat0), sum_col),
-                      check.names = FALSE)
-    mf2 <- mf2[, -(which(colnames(mf2) %in% c(x, w_names)))]
-    plot_df_xstart <- cbind(plot_df_xstart, wlevels, mf2)
-    plot_df_xend <- cbind(plot_df_xend, wlevels, mf2)
+    if (has_groups) {
+        # mf2 has rows equal to ngroups
+        mf2 <- lapply(dat0, function(xx) {
+                    data.frame(lapply(as.data.frame(xx), sum_col),
+                          check.names = FALSE)
+                  })
+        mf2 <- lapply(mf2, function(xx) {
+                    xx[, -(which(colnames(xx) %in% c(x)))]
+                  })
+        mf2 <- do.call(rbind, mf2)
+      } else {
+        # mf2 has one single row
+        # TO-THINK:
+        # - Maybe we can use different values of other variables
+        mf2 <- data.frame(lapply(as.data.frame(dat0), sum_col),
+                          check.names = FALSE)
+        mf2 <- mf2[, -(which(colnames(mf2) %in% c(x, w_names)))]
+      }
+    if (has_groups) {
+        plot_df_xstart <- cbind(plot_df_xstart, mf2)
+        plot_df_xend <- cbind(plot_df_xend, mf2)
+      } else {
+        plot_df_xstart <- cbind(plot_df_xstart, wlevels, mf2)
+        plot_df_xend <- cbind(plot_df_xend, wlevels, mf2)
+      }
     colnames(plot_df_xstart)[1] <- x
     colnames(plot_df_xend)[1] <- x
-    plot_df_xstart[, y] <- stats::predict(fit_list,
-                                          x = x, y = y, m = m,
-                                          newdata = plot_df_xstart)
-    plot_df_xend[, y] <- stats::predict(fit_list,
-                                        x = x, y = y, m = m,
-                                        newdata = plot_df_xend)
+    if (has_groups) {
+        plot_df_xstart_i <- split(plot_df_xstart,
+                                  seq_len(nrow(plot_df_xstart)),
+                                  drop = FALSE)
+        plot_df_xend_i <- split(plot_df_xend,
+                                seq_len(nrow(plot_df_xend)),
+                                drop = FALSE)
+        plot_df_xstart[, y] <- mapply(stats::predict,
+                                  object = fit_list,
+                                  newdata = plot_df_xstart_i,
+                                  MoreArgs = list(x = x, y = y, m = m))
+        plot_df_xend[, y] <- mapply(stats::predict,
+                                  object = fit_list,
+                                  newdata = plot_df_xend_i,
+                                  MoreArgs = list(x = x, y = y, m = m))
+      } else {
+        plot_df_xstart[, y] <- stats::predict(fit_list,
+                                              x = x, y = y, m = m,
+                                              newdata = plot_df_xstart)
+        plot_df_xend[, y] <- stats::predict(fit_list,
+                                            x = x, y = y, m = m,
+                                            newdata = plot_df_xend)
+      }
 
     if (missing(x_label)) x_label <- x
     if (missing(y_label)) y_label <- y
@@ -285,16 +392,44 @@ plot.cond_indirect_effects <- function(
                           lm = lm2ptable(fit)$implied_stats)
       }
     if (x_standardized) {
-        x_sd <- sqrt(implied_stats$cov[x, x])
-        x_mean <- implied_stats$mean[x]
-        if (is.null(x_mean)) x_mean <- 0
+        if (has_groups) {
+            # x_sd and x_mean are vectors if ngroups > 1
+            group_labels <- names(fit_list)
+            implied_stats <- implied_stats[group_labels]
+            x_sd <- sapply(implied_stats, function(xx) {
+                        xx$cov[x, x]
+                      })
+            x_mean <- sapply(implied_stats, function(xx) {
+                        out <- xx$mean[x]
+                        out <- ifelse(is.null(out), 0, out)
+                        out
+                      })
+          } else {
+            x_sd <- sqrt(implied_stats$cov[x, x])
+            x_mean <- implied_stats$mean[x]
+            if (is.null(x_mean)) x_mean <- 0
+          }
         plot_df_xstart[, x] <- (plot_df_xstart[, x] - x_mean) / x_sd
         plot_df_xend[, x] <- (plot_df_xend[, x] - x_mean) / x_sd
       }
     if (y_standardized) {
-        y_sd <- sqrt(implied_stats$cov[y, y])
-        y_mean <- implied_stats$mean[y]
-        if (is.null(y_mean)) y_mean <- 0
+        if (has_groups) {
+            # y_sd and y_mean are vectors if ngroups > 1
+            group_labels <- names(fit_list)
+            implied_stats <- implied_stats[group_labels]
+            y_sd <- sapply(implied_stats, function(xx) {
+                        xx$cov[y, y]
+                      })
+            y_mean <- sapply(implied_stats, function(xx) {
+                        out <- xx$mean[y]
+                        out <- ifelse(is.null(out), 0, out)
+                        out
+                      })
+          } else {
+            y_sd <- sqrt(implied_stats$cov[y, y])
+            y_mean <- implied_stats$mean[y]
+            if (is.null(y_mean)) y_mean <- 0
+          }
         plot_df_xstart[, y] <- (plot_df_xstart[, y] - y_mean) / y_sd
         plot_df_xend[, y] <- (plot_df_xend[, y] - y_mean) / y_sd
       }
@@ -326,15 +461,18 @@ plot.cond_indirect_effects <- function(
             title <- "Conditional Effects"
           }
       }
-
-    plot_df_xstart$wlevels <- rownames(wlevels)
-    plot_df_xend$wlevels <- rownames(wlevels)
+    if (has_groups) {
+        plot_df_xstart$wlevels <- group_labels
+        plot_df_xend$wlevels <- group_labels
+      } else {
+        plot_df_xstart$wlevels <- rownames(wlevels)
+        plot_df_xend$wlevels <- rownames(wlevels)
+      }
     plot_df <- rbind(plot_df_xstart, plot_df_xend)
-
     p <- ggplot2::ggplot() +
-          ggplot2::geom_point(ggplot2::aes_string(x = x,
-                                                  y = y,
-                                                  colour = "wlevels"),
+          ggplot2::geom_point(ggplot2::aes(x = .data[[x]],
+                                           y = .data[[y]],
+                                           colour = .data[["wlevels"]]),
                               data = plot_df,
                               size = point_size) +
           ggplot2::geom_segment(ggplot2::aes(
@@ -343,7 +481,7 @@ plot.cond_indirect_effects <- function(
                 y =  plot_df_xstart[, y],
                 yend = plot_df_xend[, y],
                 colour = plot_df_xstart$wlevels
-              ), size = line_width)
+              ), linewidth = line_width)
 
     if (note_standardized & !is.null(cap_std)) {
         if (!is.null(cap_txt)) {
@@ -351,6 +489,11 @@ plot.cond_indirect_effects <- function(
           } else {
             cap_txt <- cap_std
           }
+      }
+    if (has_groups && graph_type == "default") {
+        cap_txt <- paste0(cap_txt,
+                          "\n",
+                          "Graph type is set to tumble for multiple group models.")
       }
     out <- p +
       ggplot2::labs(title = title,
@@ -369,3 +512,6 @@ plot.cond_indirect_effects <- function(
       }
     out
   }
+
+utils::globalVariables(".data")
+

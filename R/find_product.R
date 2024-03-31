@@ -46,6 +46,13 @@
 #'@noRd
 
 find_product <- function(data, target) {
+    if (is.list(data) && !is.data.frame(data)) {
+        ngroups <- length(data)
+        # Aasume all groups have the same variables
+        data <- do.call(rbind, data)
+      } else {
+        ngroups <- 1
+      }
     a_col <- data[, target]
     out <- c(NA, NA)
     q <- 0
@@ -69,6 +76,12 @@ find_product <- function(data, target) {
 #'@noRd
 
 find_all_products <- function(data, expand = TRUE) {
+    if (is.list(data) && !is.data.frame(data)) {
+        ngroups <- length(data)
+        data <- do.call(rbind, data)
+      } else {
+        ngroups <- 1
+      }
     out <- sapply(colnames(data),
                   find_product, data = data,
                   USE.NAMES = TRUE,

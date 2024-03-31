@@ -158,6 +158,11 @@ cond_indirect_diff <- function(output,
                           from = NULL,
                           to = NULL,
                           level = .95) {
+    has_wlevels <- cond_indirect_effects_has_wlevels(output)
+    has_groups <- cond_indirect_effects_has_groups(output)
+    if (has_wlevels && has_groups) {
+        stop("Objects with both wlevels and groups not yet supported")
+      }
     if (missing(output)) {
         stop("'output' is missing.")
       }
@@ -229,9 +234,29 @@ cond_indirect_diff <- function(output,
         boot_diff_p <- NA
         boot_diff_se <- NA
       }
-    wlevels <- attr(output, "wlevels")
-    wlevels_from <- wlevels[from, , drop = FALSE]
-    wlevels_to <- wlevels[to, , drop = FALSE]
+    if (has_wlevels && !has_groups) {
+        wlevels <- attr(output, "wlevels")
+        wlevels_from <- wlevels[from, , drop = FALSE]
+        wlevels_to <- wlevels[to, , drop = FALSE]
+        final_from <- wlevels_from
+        final_to <- wlevels_to
+      }
+    if (!has_wlevels && has_groups) {
+        group_labels <- output$Group
+        group_numbers <- output$Group_ID
+        group_from <- paste0(group_labels[from], " [",
+                             group_numbers[from], "]")
+        group_to <- paste0(group_labels[to], " [",
+                           group_numbers[to], "]")
+        names(group_from) <- "Group"
+        names(group_to) <- "Group"
+        final_from <- group_from
+        final_to <- group_to
+      }
+    if (has_wlevels && has_groups) {
+        # TODO:
+        # - Add support for objects with both wlevels and groups.
+      }
     out_diff_ci <- c(NA, NA)
     out_diff_se <- NA
     if (has_mc) out_diff_ci <- mc_diff_ci
@@ -243,11 +268,13 @@ cond_indirect_diff <- function(output,
                 pvalue = boot_diff_p,
                 se = out_diff_se,
                 level = level,
-                from = wlevels_from,
-                to = wlevels_to,
+                from = final_from,
+                to = final_to,
                 output = output[c(to, from), ],
                 boot_diff = boot_diff,
-                mc_diff = mc_diff)
+                mc_diff = mc_diff,
+                has_groups = has_groups,
+                has_wlevels = has_wlevels)
     class(out) <- c("cond_indirect_diff", class(out))
     out
   }
@@ -328,6 +355,8 @@ print.cond_indirect_diff <- function(x,
                                      se = FALSE,
                                      ...) {
     full_output_attr <- attr(x$output, "full_output")[[1]]
+    has_groups <- is.numeric(full_output_attr$group_number)
+    has_wlevels <- !is.null(full_output_attr$wvalues)
     print(x$output, digits = digits, annotation = FALSE, ...)
     x_type <- x$type
     if (!is.null(x_type)) {
@@ -368,6 +397,15 @@ print.cond_indirect_diff <- function(x,
       } else {
         cat("\nLevels: \n")
         print(tofrom, quote = FALSE)
+        if (!has_wlevels && has_groups) {
+            tmp <- paste0("Levels compared: ",
+                          xto0,
+                          " - ",
+                          xfrom0)
+          } else {
+            tmp <- "Levels compared: Row 1 - Row 2"
+          }
+        cat("\n", tmp, "\n", sep = "")
       }
     index_df <- data.frame(x = full_output_attr$x,
                            y = full_output_attr$y,
