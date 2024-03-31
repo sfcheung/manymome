@@ -637,8 +637,24 @@ cond_indirect_effects(x = "x", y = "m1",
 cond_indirect_effects(x = "x", y = "y", m = "m1",
                       wlevels = w1levels, fit = fit)
 
+# Multigroup models for cond_indirect_effects()
 
-# Multigroup model with indirect effects
+dat <- data_med_mg
+mod <-
+"
+m ~ x + c1 + c2
+y ~ m + x + c1 + c2
+"
+fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
+           group = "group")
+
+# If a model has more than one group,
+# it will be used as a 'moderator'.
+cond_indirect_effects(x = "x", y = "y", m = "m",
+                      fit = fit)
+
+
+# Multigroup model for indirect_effect()
 
 dat <- data_med_mg
 mod <-
@@ -688,7 +704,7 @@ out <- many_indirect_effects(paths,
                              fit = fit)
 out
 
-# Multigroup models
+# Multigroup models for many_indirect_effects()
 
 data(data_med_complicated_mg)
 mod <-
