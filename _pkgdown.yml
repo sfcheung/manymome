@@ -39,6 +39,10 @@ navbar:
       - text: Moderated Mediation
         href: articles/mome_lm.html
       - text: -------
+      - text: "<Multigroup Models>"
+      - text: Mediation in Multigroup Models
+        href: articles/med_mg.html
+      - text: -------
       - text: "<Multiple Imputation>"
       - text: Monte Carlo Confidence Intervals with Multiple Imputation
         href: articles/do_mc_lavaan_mi.html

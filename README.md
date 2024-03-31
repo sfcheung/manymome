@@ -9,7 +9,7 @@
 [![R-CMD-check](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-(Version 0.1.14.4, updated on 2024-03-31, [release history](https://sfcheung.github.io/manymome/news/index.html))
+(Version 0.1.14.5, updated on 2024-03-31, [release history](https://sfcheung.github.io/manymome/news/index.html))
 
 # manymome  <img src="man/figures/logo.png" align="right" height="150" />
 
@@ -35,6 +35,9 @@ by multiple regression. The package was introduced in:
   while Monte Carlo is supported for models
   fitted by `lavaan::sem()`.
 
+- Multigroup models fitted by `lavaan::sem()`
+  are also supported in 0.1.14.2 and later versions.
+
 # Advantages
 
 - **A Simpler Workflow**
@@ -47,7 +50,11 @@ by multiple regression. The package was introduced in:
   nearly any variable, to nearly any other variables, conditional on
   nearly any moderators,
   and at any levels of the moderators.
-  (See `vignette("manymome")` for details.)
+  (See `vignette("manymome")` for details.) This is particularly
+  convenient for multigroup models fitted by `lavaan::sem()`,
+  which are supported in 0.1.14.2 and later versions
+  (see [this guide](https://sfcheung.github.io/manymome/articles/med_mg.html),
+  for an illustration).
 
 - **Supports Both SEM-Based and Regression-Based Analysis**
 
@@ -61,6 +68,10 @@ by multiple regression. The package was introduced in:
 
   No limit on the number of predictors, mediators, and
   outcome variables, other than those by `lavaan::sem()` and `lm()`.
+  For multigroup models fitted by `lavaan::sem()`,
+  there is no inherent limit on the number of groups,
+  other than the limit due to `lavaan::sem(), if any
+  (supported in 0.1.14.2 and later versions).
 
 - **Supports Standardized Effects**
 
@@ -78,7 +89,7 @@ by multiple regression. The package was introduced in:
   Supports datasets with missing data
   through `lavaan::sem()` with full information maximum likelihood (`fiml`).
 
-  Since version 0.1.9.8, it also supports missing data handled
+  In version 0.1.9.8 or later, it also supports missing data handled
   by multiple imputation if the models are fitted by `semTools::sem.mi()`
   or `semTools::runMI()` (see `vignette("do_mc_lavaan_mi")`).
 
@@ -102,6 +113,14 @@ by multiple regression. The package was introduced in:
   Supports indirect effects among
   latent variables for models fitted by `lavaan::sem()` (see
   `vignette("med_lav")`).
+
+- **Support Treating Group As a Moderator**
+
+  For multigroup models fitted by `lavaan::sem()`, it supports
+  comparing the direct or indirect effects along any path
+  between any two groups. That is, it uses the grouping variable
+  as a moderator (illustrated [here](https://sfcheung.github.io/manymome/articles/med_mg.html);
+  supported in 0.1.14.2 and later versions).
 
 # Limitations
 
