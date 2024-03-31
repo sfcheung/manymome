@@ -10,8 +10,7 @@
 #' and `-` operator are supported. These
 #' operators can be used to estimate and
 #' test a function of effects between
-#' the same pair of variables but along
-#' different paths.
+#' the same pair of variables.
 #'
 #' For example, they can be used to
 #' compute and test the total effects
@@ -28,8 +27,7 @@
 #' the same variable,
 #'
 #' 2. the two paths do not end at the
-#' same variable, (c) a path appears in
-#' both objects,
+#' same variable,
 #'
 #' 3. moderators are involved but they
 #' are not set to the same values in
@@ -41,6 +39,28 @@
 #' 5. Monte Carlo simulated
 #' estimates stored in
 #' `mc_out`, if any, are not identical.
+#'
+#' ## Multigroup Models
+#'
+#' Since Version 0.1.14.2, support for
+#' multigroup models has been added for models
+#' fitted by `lavaan`. Both bootstrapping
+#' and Monte Carlo confidence intervals
+#' are supported. These operators can
+#' be used to compute and test the
+#' difference of an indirect effect
+#' between two groups. This can also
+#' be used to compute and test the
+#' difference between a function of
+#' effects between groups, for example,
+#' the total indirect effects between
+#' two groups.
+#'
+#' The operators are flexible and allow
+#' users to do many possible computations.
+#' Therefore, users need to make sure
+#' that the function of effects is
+#' meaningful.
 #'
 #' @return An 'indirect'-class object
 #' with a list of effects stored. See
@@ -90,6 +110,35 @@ NULL
 #' out123 <- out1 + out2 + out3
 #' out123
 #' coef(out1) + coef(out2) + coef(out3)
+#'
+#' # Multigroup model with indirect effects
+#'
+#' dat <- data_med_mg
+#' mod <-
+#' "
+#' m ~ x + c1 + c2
+#' y ~ m + x + c1 + c2
+#' "
+#' fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
+#'            group = "group")
+#'
+#' # If a model has more than one group,
+#' # the argument 'group' must be set.
+#' ind1 <- indirect_effect(x = "x",
+#'                         y = "y",
+#'                         m = "m",
+#'                         fit = fit,
+#'                         group = "Group A")
+#' ind1
+#' ind2 <- indirect_effect(x = "x",
+#'                         y = "y",
+#'                         m = "m",
+#'                         fit = fit,
+#'                         group = 2)
+#' ind2
+#'
+#' # Compute the difference in indirect effects between groups
+#' ind2 - ind1
 #'
 #' @export
 `+.indirect` <- function(e1, e2) {

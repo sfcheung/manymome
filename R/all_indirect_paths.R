@@ -7,6 +7,17 @@
 #' @details It makes use of [igraph::all_simple_paths()]
 #' to identify paths in a model.
 #'
+#' ## Multigroup Models
+#'
+#' Since Version 0.1.14.2, support for
+#' multigroup models has been added for models
+#' fitted by `lavaan`. If a model has more
+#' than one group and `group` is not
+#' specified, than paths in all groups
+#' will be returned. If `group` is
+#' specified, than only paths in the
+#' selected group will be returned.
+#'
 #' @return
 #' [all_indirect_paths()] returns
 #' a list of the class `all_paths`. Each argument is a
@@ -52,12 +63,12 @@
 #' @param group Either the group number
 #' as appeared in the [summary()]
 #' or [lavaan::parameterEstimates()]
-#' output of an `lavaan`-class object,
+#' output of a [lavaan::lavaan-class] object,
 #' or the group label as used in
-#' the `lavaan`-class object.
+#' the [lavaan::lavaan-class] object.
 #' Used only when the number of
 #' groups is greater than one. Default
-#' is NULL. If not specified by the model
+#' is `NULL`. If not specified by the model
 #' has more than one group, than paths
 #' that appears in at least one group
 #' will be included in the output.
@@ -97,6 +108,32 @@
 #'                            y = "y")
 #' out3
 #' names(out3)
+#'
+#' # Multigroup models
+#'
+#' data(data_med_complicated_mg)
+#' mod <-
+#' "
+#' m11 ~ x1 + x2 + c1 + c2
+#' m12 ~ m11 + c1 + c2
+#' m2 ~ x1 + x2 + c1 + c2
+#' y1 ~ m11 + m12 + x1 + x2 + c1 + c2
+#' y2 ~ m2 + x1 + x2 + c1 + c2
+#' "
+#' fit <- sem(mod, data_med_complicated_mg, group = "group")
+#' summary(fit)
+#'
+#' all_indirect_paths(fit,
+#'                    x = "x1",
+#'                    y = "y1")
+#' all_indirect_paths(fit,
+#'                    x = "x1",
+#'                    y = "y1",
+#'                    group = 1)
+#' all_indirect_paths(fit,
+#'                    x = "x1",
+#'                    y = "y1",
+#'                    group = "Group B")
 #'
 #' @describeIn all_indirect_paths Enumerate all indirect paths.
 #'

@@ -38,6 +38,11 @@
 #' estimates is used in all subsequent
 #' analysis.
 #'
+#' ## Multigroup Models
+#'
+#' Since Version 0.1.14.2, support for
+#' multigroup models has been added for models
+#' fitted by `lavaan`.
 #'
 #' @return A `mc_out`-class object
 #' that can be used for the `mc_out`

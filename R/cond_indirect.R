@@ -104,6 +104,37 @@
 #' as `R`, `seed`, and `parallel` will
 #' be ignored.
 #'
+#' ## Multigroup Models
+#'
+#' Since Version 0.1.14.2, support for
+#' multigroup models has been added for models
+#' fitted by `lavaan`. Both bootstrapping
+#' and Monte Carlo confidence intervals
+#' are supported. When used on
+#' a multigroup model:
+#'
+#' - For [cond_indirect()] and
+#' [indirect_effect()], users need to
+#' specify the `group` argument
+#' (by number or label). When using
+#' [cond_indirect_effects()], if
+#' `group` is not set, all groups wil
+#' be used and the indirect effect
+#' in each group will be computed,
+#' kind of treating group as a moderator.
+#'
+#' - For [many_indirect_effects()],
+#' the paths can be generated from a
+#' multigroup models.
+#'
+#' - Currently, [cond_indirect_effects()]
+#' does not support a multigroup model
+#' with moderators on the path selected.
+#' The function [cond_indirect()] does
+#' not have this limitation but users
+#' need to manually specify the desired
+#' value of the moderator(s).
+#'
 #' @return [indirect_effect()] and
 #' [cond_indirect()] return an
 #' `indirect`-class object.
@@ -113,8 +144,7 @@
 #'
 #' These two classes of objects have
 #' their own print methods for printing
-#' the results (see [print.indirect()]
-#' and [print.cond_indirect_effects()]).
+#' the results (see [print.indirect()] and [print.cond_indirect_effects()]).
 #' They also have a `coef` method for
 #' extracting the estimates
 #' ([coef.indirect()] and
@@ -212,7 +242,7 @@
 #' `TRUE`, `boot_out` is `NULL`, and
 #' bootstrap standard errors not
 #' requested if `fit` is a
-#' [lavaan-class] object, this function
+#' [lavaan::lavaan-class] object, this function
 #' will do bootstrapping on `fit`. `R`
 #' is the number of bootstrap samples.
 #' Default is 100. For Monte Carlo
@@ -370,23 +400,23 @@
 #' @param group Either the group number
 #' as appeared in the [summary()]
 #' or [lavaan::parameterEstimates()]
-#' output of an `lavaan`-class object,
+#' output of a [lavaan::lavaan-class] object,
 #' or the group label as used in
-#' the `lavaan`-class object.
+#' the [lavaan::lavaan-class] object.
 #' Used only when the number of
 #' groups is greater than one. Default
-#' is NULL.
+#' is `NULL`.
 #'
 #' @param groups Either a vector of
 #' group numbers
 #' as appeared in the [summary()]
 #' or [lavaan::parameterEstimates()]
-#' output of an `lavaan`-class object,
+#' output of a [lavaan::lavaan-class] object,
 #' or a vector of group labels as used in
-#' the `lavaan`-class object.
+#' the [lavaan::lavaan-class] object.
 #' Used only when the number of
 #' groups is greater than one. Default
-#' is NULL.
+#' is `NULL`.
 #'
 #' @seealso [mod_levels()] and
 #' [merge_mod_levels()] for generating
@@ -690,6 +720,34 @@ cond_indirect <- function(x,
 
 #' @export
 #'
+#' @examples
+#'
+#' # Multigroup model for indirect_effect()
+#'
+#' dat <- data_med_mg
+#' mod <-
+#' "
+#' m ~ x + c1 + c2
+#' y ~ m + x + c1 + c2
+#' "
+#' fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
+#'            group = "group")
+#'
+#' # If a model has more than one group,
+#' # the argument 'group' must be set.
+#' ind1 <- indirect_effect(x = "x",
+#'                         y = "y",
+#'                         m = "m",
+#'                         fit = fit,
+#'                         group = "Group A")
+#' ind1
+#' ind2 <- indirect_effect(x = "x",
+#'                         y = "y",
+#'                         m = "m",
+#'                         fit = fit,
+#'                         group = 2)
+#' ind2
+#'
 #' @describeIn cond_indirect Compute the
 #' indirect effect. A wrapper of
 #' [cond_indirect()]. Can be used when
@@ -816,6 +874,22 @@ indirect_effect <- function(x,
 #' # when w1 is equal to each of the levels
 #' cond_indirect_effects(x = "x", y = "y", m = "m1",
 #'                       wlevels = w1levels, fit = fit)
+#'
+#' # Multigroup models for cond_indirect_effects()
+#'
+#' dat <- data_med_mg
+#' mod <-
+#' "
+#' m ~ x + c1 + c2
+#' y ~ m + x + c1 + c2
+#' "
+#' fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
+#'            group = "group")
+#'
+#' # If a model has more than one group,
+#' # it will be used as a 'moderator'.
+#' cond_indirect_effects(x = "x", y = "y", m = "m",
+#'                       fit = fit)
 #'
 #' @export
 #'
@@ -1274,18 +1348,38 @@ cond_indirect_effects <- function(wlevels,
 #' "
 #' fit <- sem(mod, data_serial_parallel,
 #'            fixed.x = FALSE)
-#'
 #' # All indirect paths from x to y
 #' paths <- all_indirect_paths(fit,
 #'                            x = "x",
 #'                            y = "y")
 #' paths
-#'
 #' # Indirect effect estimates
 #' out <- many_indirect_effects(paths,
 #'                              fit = fit)
 #' out
 #'
+#' # Multigroup models for many_indirect_effects()
+#'
+#' data(data_med_complicated_mg)
+#' mod <-
+#' "
+#' m11 ~ x1 + x2 + c1 + c2
+#' m12 ~ m11 + c1 + c2
+#' m2 ~ x1 + x2 + c1 + c2
+#' y1 ~ m11 + m12 + x1 + x2 + c1 + c2
+#' y2 ~ m2 + x1 + x2 + c1 + c2
+#' "
+#' fit <- sem(mod, data_med_complicated_mg, group = "group")
+#' summary(fit)
+#'
+#' paths <- all_indirect_paths(fit,
+#'                             x = "x1",
+#'                             y = "y1")
+#' paths
+#' # Indirect effect estimates for all paths in all groups
+#' out <- many_indirect_effects(paths,
+#'                              fit = fit)
+#' out
 #'
 #' @export
 #'

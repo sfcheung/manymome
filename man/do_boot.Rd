@@ -105,6 +105,15 @@ It determines the type of the fit
 object automatically and then calls
 \code{\link[=lm2boot_out]{lm2boot_out()}}, \code{\link[=fit2boot_out]{fit2boot_out()}}, or
 \code{\link[=fit2boot_out_do_boot]{fit2boot_out_do_boot()}}.
+\subsection{Multigroup Models}{
+
+Since Version 0.1.14.2, support for
+multigroup models has been added for models
+fitted by \code{lavaan}. The implementation
+of bootstrapping is identical to
+that used by \code{lavaan}, with resampling
+done within each group.
+}
 }
 \examples{
 data(data_med_mod_ab1)
