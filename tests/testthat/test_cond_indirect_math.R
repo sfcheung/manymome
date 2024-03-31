@@ -137,7 +137,8 @@ test_that("math for indirect: mediation", {
     expect_equal(out1m1m2m3boot2$indirect_raw, outm_boot$indirect_raw + outm2_boot$indirect_raw + outm3_boot$indirect_raw)
     expect_equal(outm1minus2boot$indirect_raw, outm_boot$indirect_raw - outm2_boot$indirect_raw)
     expect_equal(outm1minus3boot$indirect_raw, outm_boot$indirect_raw - outm3_boot$indirect_raw)
-    expect_error(outm_boot + outm_boot)
+    # No longer a requirement
+    # expect_error(outm_boot + outm_boot)
     expect_equal(coef(outm1minus2), outm1minus2$indirect, ignore_attr = TRUE)
     expect_equal(coef(outm1plus3), outm1plus3$indirect, ignore_attr = TRUE)
     expect_equal(coef(outm1minus2boot), outm1minus2boot$indirect, ignore_attr = TRUE)

@@ -1,6 +1,9 @@
 skip_on_cran()
 skip_if_not_installed("semTools")
 skip_if_not_installed("Amelia")
+skip("To be examined in an interactive session")
+# It works if run in an interactive mode.
+# Something's about the methods in semTools
 # Require semTools
 library(testthat)
 library(manymome)

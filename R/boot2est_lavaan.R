@@ -181,12 +181,20 @@ fit2boot_out_do_boot <- function(fit,
         environment(gen_boot_i_lavaan) <- parent.frame()
         boot_i <- gen_boot_i_lavaan(fit)
       }
-    dat_org <- lav_data_used(fit)
-    n <- nrow(dat_org)
-    boot_test <- suppressWarnings(boot_i(dat_org))
+    dat_org <- lav_data_used(fit,
+                             drop_list_single_group = TRUE)
+    ngp <- lavaan::lavTech(fit, "ngroups")
+    if (ngp == 1) {
+        n <- nrow(dat_org)
+      } else {
+        n <- sapply(dat_org, nrow)
+      }
+    boot_test <- suppressWarnings(boot_i(dat_org,
+                                         start = lavaan::parameterTable(fit)$start))
+    # Increase the tolerance for mutliple group model
     if (!isTRUE(all.equal(unclass(lavaan::coef(fit)),
                           lavaan::coef(boot_test)[names(lavaan::coef(fit))],
-                          tolerance = sqrt(.Machine$double.eps * 1e04)))) {
+                          tolerance = sqrt(.Machine$double.eps * 1e08)))) {
         stop(paste("Something is wrong.",
                     "This function cannot reproduce the results.",
                     "Please fit the model with se = 'boot'"))
@@ -194,7 +202,12 @@ fit2boot_out_do_boot <- function(fit,
     ft <- lavaan::lavInspect(boot_test, "timing")$total
     requireNamespace("parallel", quietly = TRUE)
     if (!is.null(seed)) set.seed(seed)
-    ids <- replicate(R, sample.int(n, replace = TRUE), simplify = FALSE)
+    if (ngp == 1) {
+        ids <- replicate(R, sample.int(n, replace = TRUE), simplify = FALSE)
+      } else {
+        ids <- replicate(R, sapply(n, sample.int, replace = TRUE, simplify = TRUE),
+                         simplify = FALSE)
+      }
     if (parallel) {
         if (is.numeric(ncores)) {
             ncores0 <- parallel::detectCores()
@@ -361,8 +374,13 @@ set_est_i_lavaan <- function(est0, fit, p_free, est_df = NULL) {
     ptable <- as.data.frame(fit@ParTable)
     if (!is.null(est_df)) {
         est_df$est <- NULL
-        est0 <- merge(est_df, ptable[, c("lhs", "op", "rhs", "est")],
-                      sort = FALSE)
+        if ("group" %in% colnames(est_df)) {
+            est0 <- merge(est_df, ptable[, c("lhs", "op", "rhs", "block", "group", "est")],
+                          sort = FALSE)
+          } else {
+            est0 <- merge(est_df, ptable[, c("lhs", "op", "rhs", "est")],
+                          sort = FALSE)
+          }
         class(est0) <- class(est_df)
         return(est0)
       } else {
@@ -445,22 +463,49 @@ get_implied_i_lavaan <- function(est0, fit, fit_tmp = NULL) {
                                              delta = TRUE)
       }
     out <- lav_implied_all(fit)
+    ngroups <- lavaan::lavTech(fit, "ngroups")
     out_names <- names(out)
     implied_names <- names(implied)
     out1 <- out
+    # For multigroup models, use the format of lavaan::lav_model_implied()
+    # - Estimates than groups.
     for (x in out_names) {
         if (x %in% implied_names) {
           if (!is.null(implied[[x]][[1]])) {
-              out1[[x]][] <- implied[[x]][[1]]
+              if (ngroups > 1) {
+                  for (j in seq_len(ngroups)) {
+                      out1[[x]][[j]][] <- implied[[x]][[j]]
+                    }
+                } else {
+                  out1[[x]][] <- implied[[x]][[1]]
+                }
+            } else {
+              if (ngroups > 1) {
+                  for (j in seq_len(ngroups)) {
+                      out1[[x]][[j]][] <- NA
+                    }
+                } else {
+                  out1[[x]][] <- NA
+                }
+            }
+        } else {
+          if (ngroups > 1) {
+              for (j in seq_len(ngroups)) {
+                  out1[[x]][[j]][] <- NA
+                }
             } else {
               out1[[x]][] <- NA
             }
-        } else {
-          out1[[x]][] <- NA
         }
       }
     if (has_lv) {
-        out1$mean_lv <- implied$mean_lv[[1]]
+        if (ngroups > 1) {
+            for (j in seq_len(ngroups)) {
+                out1[["mean_lv"]][[j]][] <- NA
+              }
+          } else {
+            out1$mean_lv <- implied$mean_lv[[1]]
+          }
       }
     out1
   }
@@ -566,24 +611,34 @@ gen_boot_i_lavaan <- function(fit) {
 
   X_old <- fit_data@X
 
-  function(d, i = NULL) {
+  function(d, i = NULL, start = NULL) {
       force(fit_data)
       force(fit_model)
       force(fit_sampstats)
       force(fit_opts)
       force(fit_pt)
       force(fit)
+      fit_pt1 <- fit_pt
+      if (!is.null(start)) {
+          fit_pt1$start <- start
+        }
       if (is.null(i)) {
           return(lavaan::lavaan(slotData = fit_data,
                                 slotModel = fit_model,
                                 slotSampleStats = fit_sampstats,
                                 slotOptions = fit_opts,
-                                slotParTable = fit_pt))
+                                slotParTable = fit_pt1))
         } else {
-          # Support for multigroup models will be added later.
-          b_i <- list(i)
+          # 2024-03-29: Added support for multigroup models
+          if (!is.list(i)) {
+              b_i <- list(i)
+            } else {
+              b_i <- i
+            }
           X_new <- X_old
-          X_new[[1]] <- X_new[[1]][i, , drop = FALSE]
+          for (j in seq_along(X_new)) {
+              X_new[[j]] <- X_new[[j]][b_i[[j]], , drop = FALSE]
+            }
           fit_data_new <- lavaan::lav_data_update(
                                     lavdata = fit_data,
                                     newX = X_new,
@@ -615,7 +670,7 @@ gen_boot_i_lavaan <- function(fit) {
                                     slotModel = fit_model_i,
                                     slotSampleStats = fit_sampstats_new,
                                     slotOptions = fit_opts,
-                                    slotParTable = fit_pt),
+                                    slotParTable = fit_pt1),
                           error = function(e) e,
                           warning = function(e) e)
           if (inherits(out, "error") || inherits(out, "warning")) {
@@ -631,6 +686,8 @@ gen_boot_i_lavaan <- function(fit) {
                               implied_stats = NA,
                               ok = FALSE)
                 }
+              # If ngroups > 1,
+              #   cov, mean, and mean_lv are lists.
               implied <- list(cov = lavaan::lavInspect(out, "cov.all"),
                               mean = lavaan::lavInspect(out, "mean.ov"),
                               mean_lv = lavaan::lavInspect(out, "mean.lv"))

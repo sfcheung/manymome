@@ -1,9 +1,63 @@
-# manymome 0.1.13.6
+# manymome 0.1.14.5
 
-- Fixed a nonessential bug with the math
-  operator: `indirect_raw`, though not
-  used for now, is now computed correctly
-  when using `+` and `-`. (0.1.13.1)
+## New Features
+
+- Many functions have been updated to
+  work for multigroup models fitted
+  by `lavaan`. Most common tasks are
+  supported. There likely are functions
+  that may not yet work on
+  multigroup models. Checks will be
+  added to them to alert users.
+  For now, only some
+  functions (e.g.,
+  `cond_indirect_effect()`) supports
+  multigroup models which have
+  one or more moderators within each
+  group, but these models are rare.
+  Functions that do not yet support
+  multigroup models (e.g,
+  `mod_levels()`) will raise an error
+  if used on a multigroup model.
+  (0.1.14.2 to 0.1.14.5)
+
+- Relaxed the requirement that only
+  different paths can be used in `+`
+  and `-`. They can now be used in
+  these operations, as they may be
+  paths in different groups in
+  multigroup models. (0.1.14.2)
+
+- The `plot`-method of
+  `cond_indirect_effects`-class objects
+  will be forced to be a tumble graph
+  if the lines for different groups
+  are to be plotted. In these cases,
+  the data within each group will be used,
+  including standardization. This
+  approach, though leading to results
+  different from those in single-group
+  model using the group as a moderator,
+  makes more sense for multigroup
+  models, in which the distribution of
+  variables are allowed to be different
+  between groups. (0.1.14.2)
+
+## Miscellaneous
+
+- If a dataset has a variable which
+  is a product of itself and another
+  variable (e.g., `x*y == x`),
+  `find_products()` will be trapped
+  in an infinite loop. This
+  "product term" will no longer be
+  treated as a "product term."
+  (0.1.14.1)
+
+# manymome 0.1.14
+
+## New Features
+
 - The standardizers (`scale_x` and
   `scale_y`) for each bootstrap or
   simulated sample are now stored, such
@@ -11,6 +65,13 @@
   the unstandardized effect can be
   computed even if standardization is
   requested. (0.1.13.2)
+
+## Bug Fixes
+
+- Fixed a nonessential bug with the math
+  operator: `indirect_raw`, though not
+  used for now, is now computed correctly
+  when using `+` and `-`. (0.1.13.1)
 - Fixed a minor typo in documentation.
   (0.1.13.3)
 - Fixed a minor issue with the print
@@ -25,6 +86,8 @@
 - Fixed a few more tests that should
   not be run if suggested packages are
   not installed. (0.1.13.6)
+- No longer raises an error for dichotomous
+  moderators. (0.1.13.7)
 
 # manymome 0.1.13
 

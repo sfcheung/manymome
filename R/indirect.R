@@ -124,6 +124,16 @@
 #' latent variables and observed
 #' variables. Default is `TRUE`.
 #'
+#' @param group Either the group number
+#' as appeared in the [summary()]
+#' or [lavaan::parameterEstimates()]
+#' output of an `lavaan`-class object,
+#' or the group label as used in
+#' the `lavaan`-class object.
+#' Used only when the number of
+#' groups is greater than one. Default
+#' is NULL.
+#'
 #' @seealso [indirect_effect()],
 #' [cond_indirect_effects()], and
 #' [cond_indirect()], the high level
@@ -183,10 +193,37 @@ indirect_i <- function(x,
                      data = NULL,
                      expand = TRUE,
                      warn = TRUE,
-                     allow_mixing_lav_and_obs = TRUE) {
+                     allow_mixing_lav_and_obs = TRUE,
+                     group = NULL) {
     if (is.null(est)) {
       est <- lav_est(fit)
     }
+    ngroups <- 1
+    if (!is.null(est$group)) {
+        if (max(est$group) > 1) {
+            ngroups <- max(est$group)
+          }
+      }
+    if ((ngroups > 1) &&
+        !is.numeric(group) &&
+        !is.character(group)) {
+        stop("The model has more than one group but group is not set.")
+      }
+    if (ngroups > 1) {
+        group_labels_all <- lavaan::lavTech(fit,
+                                            "group.label")
+        if (is.numeric(group)) {
+            group_label <- group_labels_all[group]
+            group_number <- group
+          } else {
+            group_number <- match(group, group_labels_all)
+            group_label <- group
+          }
+      } else {
+        group_labels_all <- NULL
+        group_number <- NULL
+        group_label <- NULL
+      }
     chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
     if (!chkpath) {
         msg <- paste0("No path from ", sQuote(x), " to ", sQuote(y),
@@ -206,7 +243,8 @@ indirect_i <- function(x,
     bs <- mapply(get_b,
                  x = xs,
                  y = ys,
-                 MoreArgs = list(est = est))
+                 MoreArgs = list(est = est,
+                                 group_number = group_number))
     bs_org <- bs
     names(bs_org) <- bs_names
     chk_lv <- unique(c(xs, ys)) %in% check_lv_in_est(est)
@@ -343,7 +381,9 @@ indirect_i <- function(x,
               }
             sum(b_i * wvalues_i)
           }
-        b_cond <- sapply(prods, tmpfct)
+        prods_tmp <- prods_group_i(prods,
+                                   group_number = group_number)
+        b_cond <- sapply(prods_tmp, tmpfct)
         bs <- bs + b_cond
       } else {
         b_cond <- rep(NA, length(bs))
@@ -353,7 +393,8 @@ indirect_i <- function(x,
                           MoreArgs = list(digits = computation_digits,
                                           y = y,
                                           wvalues = wvalues,
-                                          warn = warn),
+                                          warn = warn,
+                                          group_number = group_number),
                           USE.NAMES = TRUE,
                           SIMPLIFY = FALSE)
     b_all_str0 <- paste0("(", b_cond_str, ")", collapse = "*")
@@ -365,6 +406,10 @@ indirect_i <- function(x,
     if (standardized_x || standardized_y) {
         if (is.null(implied_stats)) {
             implied_stats <- lav_implied_all(fit)
+          }
+        if (!is.null(group_number)) {
+            implied_stats <- implied_stats_group_i(implied_stats,
+                                                   group_number = group_number)
           }
         if (standardized_x) {
             scale_x <- sqrt(diag(implied_stats$cov)[x])
@@ -398,7 +443,9 @@ indirect_i <- function(x,
                 y = y,
                 m = m,
                 computation_values = b_all_str0,
-                computation_symbols = b_all_str1)
+                computation_symbols = b_all_str1,
+                group_number = group_number,
+                group_label = group_label)
     class(out) <- "indirect"
     return(out)
   }
@@ -406,13 +453,19 @@ indirect_i <- function(x,
 #' @noRd
 
 gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL,
-                            warn = TRUE) {
+                            warn = TRUE,
+                            group_number = NULL) {
     yiname_old <- yiname
     yiname <- paste0("b.", yiname)
     if (all(is.na(xi)) || is.null(xi$prod)) {
         out <- formatC(yi, digits = digits, format = "f")
         names(out) <- yiname
         return(out)
+      }
+    if (is.numeric(group_number)) {
+        tmp <- sapply(xi$b, function(xx) xx[group_number])
+        names(tmp) <- names(xi$b)
+        xi$b <- tmp
       }
     b_i <- xi$b
     b_i0 <- paste0("b.", names(b_i))
@@ -471,15 +524,15 @@ gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL,
     out1 <- paste0(y0, " + ",
                     paste0("(", b_i0, ")*(", w_i2, ")",
                           collapse = " + "))
-
-    out2 <- paste0("(", formatC(yi, digits = digits, format = "f"),
+    out2 <- tryCatch(paste0("(", formatC(yi, digits = digits, format = "f"),
                     ") + ",
                     paste0("(",
                           formatC(b_i, digits = digits, format = "f"),
                           ")*(",
                           wvalues_i0,
                           ")",
-                          collapse = " + "))
+                          collapse = " + ")), error = function(e) e)
+    if (inherits(out2, "error")) browser()
     names(out2) <- out1
     out2
   }
@@ -499,14 +552,41 @@ update_prods <- function(prods, est) {
         if (all(is.na(prods_i))) {
             return(pout_i)
           } else {
-            est_i <- est[(est$lhs == prods_i$y) &
-                        (est$op == "~") &
-                        (est$rhs %in% prods_i$prod), "est"]
-            pout_i$b <- est_i
-            names(pout_i$b) <- prods_i$prod
+            if (is.list(pout_i$b)) {
+                for (pp in pout_i$prod) {
+                    est_i <- est[(est$lhs == prods_i$y) &
+                                 (est$op == "~") &
+                                 (est$rhs %in% pp), "est"]
+                    pout_i$b[[pp]][] <- est_i
+                  }
+              } else {
+                est_i <- est[(est$lhs == prods_i$y) &
+                            (est$op == "~") &
+                            (est$rhs %in% prods_i$prod), "est"]
+                pout_i$b <- est_i
+                names(pout_i$b) <- prods_i$prod
+              }
             return(pout_i)
           }
       }
     pout <- sapply(prods, tmpfct, simplify = FALSE)
+    pout
+  }
+
+#' @noRd
+
+prods_group_i <- function(prods,
+                          group_number = NULL) {
+    if (!is.numeric(group_number)) {
+        return(prods)
+      }
+    pout <- prods
+    for (i in seq_along(pout)) {
+        if (!identical(pout[[i]], NA)) {
+            tmp <- sapply(pout[[i]]$b, function(xx) xx[group_number])
+            names(tmp) <- names(pout[[i]]$b)
+            pout[[i]]$b <- tmp
+          }
+      }
     pout
   }

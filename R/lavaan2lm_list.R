@@ -46,9 +46,43 @@
 #'
 #' @export
 
-
 lm_from_lavaan_list <- function(fit) {
+    ngroups <- lavaan::lavTech(fit, "ngroups")
+    if (ngroups > 1) {
+        group_numbers <- seq_len(ngroups)
+        group_labels <- lavaan::lavTech(fit, "group.label")
+        out <- lapply(group_numbers,
+                      function(x) {
+                          lm_from_lavaan_list_i(fit = fit,
+                                                group_number = x)
+                        })
+        names(out) <- group_labels
+        class(out) <- c("lm_from_lavaan_list", class(out))
+      } else {
+        out <- lm_from_lavaan_list_i(fit = fit)
+      }
+    out
+  }
+
+#' @noRd
+
+lm_from_lavaan_list_i <- function(fit,
+                                  group_number = NULL) {
     ptable <- lav_ptable(fit)
+    if ("group" %in% colnames(ptable)) {
+        tmp <- unique(ptable$group)
+        if (length(tmp) > 1) {
+            if (is.null(group_number)) {
+                stop("The model has more than one groups but group_number not set.")
+              }
+            if (!(group_number %in% tmp)) {
+                stop("group_number is", group_number,
+                     "but group numbers in the model are",
+                     paste0(tmp, collapse = ", "))
+              }
+            ptable <- ptable[ptable$group == group_number, ]
+          }
+      }
     # Get all dvs (ov.nox, lv.ox)
     dvs <- lavaan_get_dvs(ptable)
     dat <- lav_data_used(fit)

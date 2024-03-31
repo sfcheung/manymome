@@ -6,3 +6,4 @@
 ^data-raw$
 ^rebuild_vignettes.R$
 ^\.lintr$
+^\.vscode$

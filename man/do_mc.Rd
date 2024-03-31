@@ -103,6 +103,12 @@ each call to
 that the same set of Monte Carlo
 estimates is used in all subsequent
 analysis.
+\subsection{Multigroup Models}{
+
+Since Version 0.1.14.2, support for
+multigroup models has been added for models
+fitted by \code{lavaan}.
+}
 }
 \section{Functions}{
 \itemize{

@@ -34,6 +34,15 @@
 #' [lm2boot_out()], [fit2boot_out()], or
 #' [fit2boot_out_do_boot()].
 #'
+#' ## Multigroup Models
+#'
+#' Since Version 0.1.14.2, support for
+#' multigroup models has been added for models
+#' fitted by `lavaan`. The implementation
+#' of bootstrapping is identical to
+#' that used by `lavaan`, with resampling
+#' done within each group.
+#'
 #' @return A `boot_out`-class object
 #' that can be used for the `boot_out`
 #' argument of
