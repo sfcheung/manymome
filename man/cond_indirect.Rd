@@ -542,7 +542,7 @@ be ignored.
 \subsection{Multigroup Models}{
 
 Since Version 0.1.14.2, support for
-multigroup models is added for models
+multigroup models has been added for models
 fitted by \code{lavaan}. Both bootstrapping
 and Monte Carlo confidence intervals
 are supported. When used on
