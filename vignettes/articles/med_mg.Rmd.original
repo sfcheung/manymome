@@ -1,0 +1,560 @@
+---
+title: "Multigroup Models With Mediation Effects"
+author: "Shu Fai Cheung & Sing-Hang Cheung"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig.align: "center"
+    toc: true
+    number_sections: false
+bibliography: references.bib
+csl: apa.csl
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = ""
+)
+```
+
+# Introduction
+
+This article is a brief illustration of how to use
+[manymome](https://sfcheung.github.io/manymome/index.html)
+([Cheung & Cheung, 2023](https://doi.org/10.3758/s13428-023-02224-z))
+to compute and test indirect effects
+in a multigroup model fitted by
+`lavaan`. [^mgver]
+
+This article only focuses on issues specific
+to multigroup models. Readers are assumed to have basic
+understanding on using `manymome`.
+Please refer to
+the [Get Started](https://sfcheung.github.io/manymome/articles/manymome.html)
+guide for a full introduction, and
+[this section](https://sfcheung.github.io/manymome/articles/manymome.html#mediation-only)
+on an illustration on a mediation model.
+
+[^mgver]: Support for multigroup model was introduced
+in Version 0.1.14.2.
+
+# Model
+
+This is the sample data set that comes with the package:
+
+```{r dataset_me_mg}
+library(manymome)
+dat <- data_med_mg
+print(head(dat), digits = 3)
+```
+
+Suppose this is the model being fitted, with `c1` and
+`c2` the control variables. The grouping variable is `group`,
+with two possible values, `"Group A"` and `"Group B"`.
+
+```{r manymome_draw_med_mg, echo = FALSE, fig.cap = "Simple Mediation Model"}
+library(semPlot)
+suppressMessages(library(lavaan))
+mod <-
+"
+m ~ x + c1 + c2
+y ~ m + x + c1 + c2
+"
+fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c(NA, "m", NA,
+                     "x", NA, "y",
+                     "c1", NA, NA,
+                     "c2", NA, NA), 4, 3, byrow = TRUE)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 10,
+              asize = 5,
+              DoNotPlot = TRUE)
+plot(p)
+text(label = "(Covariances excluded for readability)",
+     x = .25, y = -1,
+     adj = c(.5, .5))
+```
+
+# Fitting the Model
+
+We first fit this multigroup model in
+`lavaan::sem()` as usual. There is
+no need to label any parameters because
+`manymome` will extract the parameters
+automatically.
+
+```{r}
+mod_med <-
+"
+m ~ x + c1 + c2
+y ~ m + x + c1 + c2
+"
+fit <- sem(model = mod_med,
+           data = dat,
+           fixed.x = FALSE,
+           group = "group")
+```
+
+These are the estimates of the paths:
+
+```{r est_med_mg}
+summary(fit,
+        estimates = TRUE)
+```
+
+# Generate Bootstrap estimates
+
+We can use `do_boot()` to generate
+the bootstrap estimates first
+(see [this article](https://sfcheung.github.io/manymome/articles/do_boot.html)
+for an illustration on this function).
+The argument `ncores` can be omitted
+if the default value is acceptable.
+
+```{r do_boot_mg, results = FALSE}
+fit_boot_out <- do_boot(fit = fit,
+                        R = 5000,
+                        seed = 53253,
+                        ncores = 8)
+```
+
+# Estimate Indirect Effects
+
+## Estimate Each Effect by `indirect_effect()`
+
+The function `indirect_effect()` can be used to as usual
+to estimate an indirect effect
+and form its bootstrapping or Monte Carlo
+confidence interval along a path in a model
+that starts with any numeric variable, ends with
+any numeric variable, through any numeric variable(s).
+A detailed illustration can be found in
+[this section](https://sfcheung.github.io/manymome/articles/manymome.html#est_indirect).
+
+For a multigroup model, the only
+difference is that users need to specify
+the group using the argument `group`.
+It can be set to the group label
+as used in `lavaan` (`"Group A"`
+or `"Group B"` in this example)
+or the group number used in `lavaan`
+
+```{r do_indirect_mg_A}
+ind_gpA <- indirect_effect(x = "x",
+                           y = "y",
+                           m = "m",
+                           fit = fit,
+                           group = "Group A",
+                           boot_ci = TRUE,
+                           boot_out = fit_boot_out)
+```
+
+This is the output:
+
+```{r out_med_A}
+ind_gpA
+```
+
+The indirect effect from `x` to `y` through `m` in
+`"Group A"` is `r formatC(coef(ind_gpA), digits = 3, format = "f")`,
+with a 95% confidence interval of
+[`r paste0(formatC(confint(ind_gpA), digits = 3, format = "f"), collapse = ", ")`],
+significantly different from zero (*p* < .05).
+
+We illustrate computing the indirect effect in
+`"Group B"`, using group number:
+
+```{r do_indirect_mg_B}
+ind_gpB <- indirect_effect(x = "x",
+                           y = "y",
+                           m = "m",
+                           fit = fit,
+                           group = 2,
+                           boot_ci = TRUE,
+                           boot_out = fit_boot_out)
+```
+
+This is the output:
+
+```{r out_med_B}
+ind_gpB
+```
+
+The indirect effect from `x` to `y` through `m` in
+`"Group B"` is `r formatC(coef(ind_gpB), digits = 3, format = "f")`,
+with a 95% confidence interval of
+[`r paste0(formatC(confint(ind_gpA), digits = 3, format = "f"), collapse = ", ")`],
+also significantly different from zero (*p* < .05).
+
+## Treating Group as a "Moderator"
+
+Instead of computing the indirect effects one-by-one,
+we can also treat the grouping variable as
+a "moderator" and use
+`cond_indirect_effects()` to compute
+the indirect effects along a path for
+all groups. The detailed illustration
+of this function can be found [here](https://sfcheung.github.io/manymome/articles/manymome.html#conditional-indirect-effects).
+When use on a multigroup model,
+wwe can omit the argument `wlevels`.
+The function will automatically identify
+all groups in a model, and compute
+the indirect effect of the requested
+path in each model.
+
+```{r}
+ind <- cond_indirect_effects(x = "x",
+                             y = "y",
+                             m = "m",
+                             fit = fit,
+                             boot_ci = TRUE,
+                             boot_out = fit_boot_out)
+```
+
+This is the output:
+
+```{r}
+ind
+```
+
+The results are identical to those computed
+individually using `indirect_effect()`. Using
+`cond_indirect_effects()` is convenient when
+the number of groups is more than two.
+
+# Compute and Test Between-Group difference
+
+There are several ways to compute and test
+the difference in indirect effects between
+two groups.
+
+## Using the Math Operator `-`
+
+The math operator `-` (described [here](https://sfcheung.github.io/manymome/reference/math_indirect.html))
+can be used if the indirect effects
+have been computed individually by
+`indirect_effect()`. We have already
+computed the path `x->m->y` before
+for the two groups. Let us compute the
+differences:
+
+```{r}
+ind_diff <- ind_gpB - ind_gpA
+ind_diff
+```
+
+The difference in indirect effects from `x` to `y` through `m`
+is `r formatC(coef(ind_diff), digits = 3, format = "f")`,
+with a 95% confidence interval of
+[`r paste0(formatC(confint(ind_diff), digits = 3, format = "f"), collapse = ", ")`],
+not significantly different from zero (*p* < .05). Therefore,
+we conclude that the two groups are not significantly
+different on the indirect effects.
+
+## Using `cond_indirect_diff()`
+
+If the indirect effects are computed using
+`cond_indirect_effects()`, we can use the function
+`cond_indirect_diff()` to compute the difference
+(described [here](https://sfcheung.github.io/manymome/reference/cond_indirect_diff.html))
+This is more convenient than using the math
+operator when the number of groups is
+greater than two.
+
+Let us use `cond_indirect_diff()` on the
+output of `cond_indirect_effects()`:
+
+```{r}
+ind_diff2 <- cond_indirect_diff(ind,
+                                from = 1,
+                                to = 2)
+ind_diff2
+```
+
+The convention is `to` row minus `from` row.
+Though may sound not intuitive, the printout
+always states clearly which group is subtracted
+from which group. The results are identical
+to those using the math operator.
+
+# Advanced Skills
+
+## Standardized Indirect Effects
+
+Standardized indirect effects can be computed
+as for single-group models (described [here](https://sfcheung.github.io/manymome/articles/manymome.html#standardized-indirect-effect)),
+by setting `standardized_x` and/or `standardized_y`.
+This is an example:
+
+```{r}
+std_gpA <- indirect_effect(x = "x",
+                           y = "y",
+                           m = "m",
+                           fit = fit,
+                           group = "Group A",
+                           boot_ci = TRUE,
+                           boot_out = fit_boot_out,
+                           standardized_x = TRUE,
+                           standardized_y = TRUE)
+std_gpA
+```
+
+```{r}
+std_gpB <- indirect_effect(x = "x",
+                           y = "y",
+                           m = "m",
+                           fit = fit,
+                           group = "Group B",
+                           boot_ci = TRUE,
+                           boot_out = fit_boot_out,
+                           standardized_x = TRUE,
+                           standardized_y = TRUE)
+std_gpB
+```
+
+In `"Group A"`, the (completely) standardized indirect effect
+from `x` to `y` through `m` is
+`r formatC(coef(std_gpA), digits = 3, format = "f")`. In
+`"Group B"`, this effect is
+`r formatC(coef(std_gpB), digits = 3, format = "f")`.
+
+Note that, unlike single-group model, in multigroup models,
+the standardized indirect effect in a group uses the
+the standard deviations of `x`- and `y`-variables in this group
+to do the standardization. Therefore, two groups can have
+different unstandardized
+effects on a path but similar standardized effects on the
+same path, or have similar unstandardized effects on a path
+but different standardized effects on this path. This is a
+known phenomenon in multigroup structural equation model.
+
+The difference in the two completely standardized indirect
+effects can computed and tested using the math operator `-`:
+
+```{r}
+std_diff <- std_gpB - std_gpA
+std_diff
+```
+
+The difference in completely standardized indirect effects
+from `x` to `y` through `m`
+is `r formatC(coef(std_diff), digits = 3, format = "f")`,
+with a 95% confidence interval of
+[`r paste0(formatC(confint(std_diff), digits = 3, format = "f"), collapse = ", ")`],
+not significantly different from zero (*p* < .05). Therefore,
+we conclude that the two groups are also not significantly
+different on the completely standardized indirect effects.
+
+The function `cond_indirect_effects()` and
+`cond_indirect_diff()` can also be used with standardization:
+
+```{r}
+std <- cond_indirect_effects(x = "x",
+                             y = "y",
+                             m = "m",
+                             fit = fit,
+                             boot_ci = TRUE,
+                             boot_out = fit_boot_out,
+                             standardized_x = TRUE,
+                             standardized_y = TRUE)
+std
+```
+
+```{r}
+std_diff2 <- cond_indirect_diff(std,
+                                from = 1,
+                                to = 2)
+std_diff2
+```
+
+The results, again, are identical to those using
+`indirect_effect()` and the math operator `-`.
+
+## Finding All Indirect Paths in a Multigroup Model
+
+Suppose a model which has more than one, or has many,
+indirect paths, is fitted to this dataset:
+
+```{r}
+dat2 <- data_med_complicated_mg
+print(head(dat2), digits = 2)
+```
+
+```{r med_complicated, echo = FALSE, fig.cap = "A Complicated Path Model"}
+library(semPlot)
+suppressMessages(library(lavaan))
+mod2 <-
+"
+m11 ~ x1 + x2
+m12 ~ m11 + x1 + x2
+m2 ~ x1 + x2
+y1 ~ m2 + m12 + m11 + x1 + x2
+y2 ~ m2 + m12 + m11 + x1 + x2
+"
+fit0 <- sem(mod2, dat2, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c(  NA,  "m11",   NA, "m12",   NA,
+                     "x1",     NA,   NA,    NA, "y1",
+                     "x2",     NA,   NA,    NA, "y2",
+                       NA,     NA, "m2",    NA,   NA), byrow = TRUE, 4, 5)
+p <- semPaths(fit0,
+              residuals = FALSE,
+              sizeMan = 8,
+              exoCov = FALSE,
+              node.width = 1,
+              edge.label.cex = .50,
+              label.cex = .75,
+              style = "ram",
+              mar = c(5, 5, 5, 5),
+              layout = layout_m,
+              DoNotPlot = TRUE)
+p$graphAttributes$Edges$color[18:19] <- "white"
+plot(p)
+text(-1.2, -1, paste("(Covariances and\ncontrol variables",
+                    "omitted for readability)", sep = "\n"),
+     adj = c(0, .5))
+```
+
+We first fit this model in `lavaan`:
+
+```{r}
+mod2 <-
+"
+m11 ~ x1 + x2
+m12 ~ m11 + x1 + x2
+m2 ~ x1 + x2
+y1 ~ m2 + m12 + m11 + x1 + x2
+y2 ~ m2 + m12 + m11 + x1 + x2
+"
+fit2 <- sem(mod2, data = dat2, group = "group")
+```
+
+The function `all_indirect_paths()` can be used on a
+multigroup model to identify indirect paths. The search
+can be restricted by setting arguments such as
+`x`, `y`, and `exclude` (see the [help page](file:///C:/GitHub/manymome/docs/reference/all_indirect_paths.html)
+for details).
+
+For example, the following identify all paths from `x1`
+to `y1`:
+
+```{r}
+paths_x1_y1 <- all_indirect_paths(fit = fit2,
+                                  x = "x1",
+                                  y = "y1")
+```
+
+If the `group` argument is not specified, it will automatically
+identify all paths in all groups, as shown in the printout:
+
+```{r}
+paths_x1_y1
+```
+
+We can then use `many_indirect_effects()` to
+compute the indirect effects for all paths identified:
+
+```{r}
+all_ind_x1_y1 <- many_indirect_effects(paths_x1_y1,
+                                       fit = fit2)
+all_ind_x1_y1
+```
+
+Bootstrapping and Monte Carlo confidence intervals can
+be formed in the same way they are formed for single-group
+models.
+
+## Computing, Testing, and Plotting Conditional Effects
+
+Though the focus is on indirect effect,
+the main functions in `manymome` can also be used for
+computing and plotting the effects along the direct path
+between two variables. That is, we can focus on the
+moderating effect of group on a direct path.
+
+For example, in the simple mediation model examined
+above, suppose we are interested in the between-group
+difference in the path from `m` to `y`, the "b path".
+We can first
+compute the conditional effect using `cond_indirect_effects()`,
+without setting the mediator:
+
+```{r}
+path1 <- cond_indirect_effects(x = "m",
+                               y = "y",
+                               fit = fit,
+                               boot_ci = TRUE,
+                               boot_out = fit_boot_out)
+path1
+```
+
+The difference between the two paths can be tested
+using bootstrapping confidence interval using
+`cond_indirect_diff()`:
+
+```{r}
+path1_diff <- cond_indirect_diff(path1,
+                                 from = 1,
+                                 to = 2)
+path1_diff
+```
+
+Based on bootstrapping, the effect of `m` on `y`
+in `"Group B"` is significantly greater than that
+in `"Group A"` (*p* < .05). (This is compatible
+with the conclusion on the indirect effects because
+two groups can have no difference on `ab` even if
+they differ on `a` and/or `b`.)
+
+The `plot` method for the output
+of `cond_indirect_effects()` can also be used
+for multigroup models:
+
+```{r manymome_draw_mod_mg, echo = FALSE, fig.cap = "Conditional Effects"}
+plot(path1)
+```
+
+Note that, for multigroup models, the *tumble*
+graph proposed by @bodner_tumble_2016 will
+always be used. The position of a line for
+a group is determined by the descriptive statistics
+of this group (e.g, means and SDs). For example,
+the line segment of `"Group A"` is far to the right
+because `"Group A"` has a larger mean of `m` than
+`"Group B"`:
+
+```{r}
+by(dat$m, dat$group, mean)
+```
+
+It would be misleading if the two lines are plotted on the
+same horizontal position, assuming incorrectly that the ranges
+of `m` are similar in the two groups.
+
+The vertical positions of the two lines are similarly determined
+by the distributions of other predictors in each
+group (the control variables
+and `x` in this example).
+
+Details of the `plot` method can be found
+in the [help page](https://sfcheung.github.io/manymome/reference/plot.cond_indirect_effects.html).
+
+# Final Remarks
+
+There are some limitations on the support
+for multigroup models. Currently,
+multiple imputation is not supported.
+Moreover, most functions do not (yet)
+support multigroup models with
+within-group moderators, except for
+`cond_indirect()`. We would appreciate
+users to report issues discovered when
+using [manymome](https://sfcheung.github.io/manymome/index.html)
+on multigroup models at [GitHub](https://github.com/sfcheung/manymome/issues).
+
+# Reference(s)

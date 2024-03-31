@@ -12,3 +12,12 @@ knitr::knit("do_mc.Rmd.original", output = "do_mc.Rmd")
 knitr::knit("do_mc_lavaan_mi.Rmd.original", output = "do_mc_lavaan_mi.Rmd")
 
 setwd(base_dir)
+
+# For articles
+
+base_dir <- getwd()
+
+setwd("vignettes/articles")
+knitr::knit("med_mg.Rmd.originaL", output = "med_mg.Rmd")
+
+setwd(base_dir)
