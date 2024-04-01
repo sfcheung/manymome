@@ -827,7 +827,65 @@ test_that("plot.cond_indirect_effects: multiple groups", {
                          unique(tmp1$Group)))
   })
 
+# Plot with implied stat
 
+dat_meq <- dat
+dat_meq[dat$gp == "gp1", "x"] <- dat_meq[dat$gp == "gp1", "x"] - 2
+dat_meq[dat$gp == "gp2", "x"] <- dat_meq[dat$gp == "gp2", "x"] + 2
+
+fit_med_meq1 <- sem(mod_med, dat_meq, meanstructure = TRUE, fixed.x = FALSE,
+               group = "gp",
+               group.label = c("gp3", "gp1", "gp2"))
+mod_med_meq <-
+"
+m1 ~ x
+m2 ~ m1
+y ~ m2 + x
+x ~ c(mx, mx, mx) * 1
+"
+mod_med_msdeq <-
+"
+m1 ~ x
+m2 ~ m1
+y ~ m2 + x
+x ~ c(mx, mx, mx) * 1
+x ~~ c(vx, vx, vx) * x
+"
+fit_med_meq2 <- sem(mod_med_meq, dat_meq, meanstructure = TRUE, fixed.x = FALSE,
+               group = "gp",
+               group.label = c("gp3", "gp1", "gp2"))
+fit_med_meq3 <- sem(mod_med_msdeq, dat_meq, meanstructure = TRUE, fixed.x = FALSE,
+               group = "gp",
+               group.label = c("gp3", "gp1", "gp2"))
+
+tmp1 <- cond_indirect_effects(x = "x",
+                              y = "m1",
+                              fit = fit_med_meq1)
+tmp2 <- cond_indirect_effects(x = "x",
+                              y = "m1",
+                              fit = fit_med_meq2)
+tmp3 <- cond_indirect_effects(x = "x",
+                              y = "m1",
+                              fit = fit_med_meq3)
+
+p1a <- plot(tmp1)
+p2a <- plot(tmp2)
+p2b <- plot(tmp2, use_implied_stats = TRUE)
+p3a <- plot(tmp3)
+p3b <- plot(tmp3, use_implied_stats = TRUE)
+
+test_that("plot.cond_indirect_effects: multiple groups, implied stats", {
+    expect_equal(p1a$layers[[1]]$data$x,
+                 p2a$layers[[1]]$data$x)
+    expect_equal(p1a$layers[[1]]$data$x,
+                 p3a$layers[[1]]$data$x)
+    expect_equal(var((p2b$layers[[1]]$data[1:3, "x"] + p2b$layers[[1]]$data[4:6, "x"]) / 2),
+                 0)
+    expect_equal(var((p3b$layers[[1]]$data[1:3, "x"] + p3b$layers[[1]]$data[4:6, "x"]) / 2),
+                 0)
+    expect_equal(var(p3b$layers[[1]]$data[1:3, "x"]), 0)
+    expect_equal(var(p3b$layers[[1]]$data[4:6, "x"]), 0)
+  })
 
 
 

@@ -69,3 +69,25 @@ x_for_w_categorical <- function(w_i, mf, x, w, row_id = FALSE, ...) {
         return(x1)
       }
   }
+
+#' @noRd
+# Rescale data such that the means and SDs are those required
+
+scale_by_implied <- function(data_original, implied) {
+    data_new <- data_original
+    for (x in colnames(data_original)) {
+        raw_v <- data_original[, x]
+        mean_v <- mean(raw_v)
+        sd_v <- stats::sd(raw_v)
+        sd_v_implied <- sqrt(implied$cov[x, x])
+        if (!(all(is.na(implied$mean)) || is.null(implied$mean))) {
+            mean_v_implied <- implied$mean[x]
+          } else {
+            mean_v_implied <- mean_v
+          }
+        z_v <- scale(data_original[, x])[, 1]
+        new_v <- z_v * sd_v_implied + mean_v_implied
+        data_new[, x] <- new_v
+      }
+    data_new
+  }

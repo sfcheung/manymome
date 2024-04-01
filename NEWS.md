@@ -1,4 +1,4 @@
-# manymome 0.1.14.5
+# manymome 0.1.14.6
 
 ## New Features
 
@@ -41,7 +41,11 @@
   makes more sense for multigroup
   models, in which the distribution of
   variables are allowed to be different
-  between groups. (0.1.14.2)
+  between groups. If desired, users
+  can use the model implied statistics
+  to determine the means and SDs, which
+  is useful when equality constraints
+  are present. (0.1.14.2, 0.1.14.6)
 
 ## Miscellaneous
 

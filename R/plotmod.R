@@ -29,9 +29,19 @@
 #' fitted by `lavaan`. If the effect
 #' for each group is drawn, the
 #' `graph_type` is automatically switched
-#' to `"bumble"` and the means and SDs
+#' to `"tumble"` and the means and SDs
 #' in each group will be used to determine
 #' the locations of the points.
+#'
+#' If the multigroup model has any equality
+#' constraints, the implied means and/or
+#' SDs may be different from those of
+#' the raw data. For example, the mean
+#' of a the `x`-variable may be constrained
+#' to be equal in this model. To plot
+#' the tumble graph using the model implied
+#' means and SDs, set `use_implied_stats`
+#' to `TRUE`.
 #'
 #' @return A [ggplot2] graph. Plotted if
 #' not assigned to a name. It can be
@@ -136,6 +146,16 @@
 #' for single-group models, and
 #' `"tumble"` for multigroup models.
 #'
+#' @param use_implied_stats For a
+#' multigroup model, if `TRUE`,
+#' model implied statistics will be
+#' used in computing the means and SDs,
+#' which take into equality constraints,
+#' if any.
+#' If `FALSE`, the default, then the raw
+#' data is
+#' used to compute the means and SDs.
+#'
 #' @param ... Additional arguments.
 #' Ignored.
 #'
@@ -228,6 +248,7 @@ plot.cond_indirect_effects <- function(
                             line_width = 1,
                             point_size = 5,
                             graph_type = c("default", "tumble"),
+                            use_implied_stats = FALSE,
                             ...
                     ) {
     has_groups <- cond_indirect_effects_has_groups(x)
@@ -272,10 +293,19 @@ plot.cond_indirect_effects <- function(
         w_names <- colnames(wlevels)
       }
     # mf0 is a list of datasets for multiple group models
+    # TODO:
+    # - Add support for paths involving latent variables
     mf0 <- switch(fit_type,
                   lavaan = lavaan::lavInspect(fit, "data"),
                   lavaan.mi = lav_data_used(fit, drop_colon = FALSE),
                   lm = merge_model_frame(fit))
+    if (has_groups && use_implied_stats) {
+        fit_implied_stats <- lavaan::lavInspect(fit, "implied")
+        fit_implied_stats <- fit_implied_stats[names(mf0)]
+        mf0 <- mapply(scale_by_implied,
+                      data_original = mf0,
+                      implied = fit_implied_stats)
+      }
     fit_list <- switch(fit_type,
                        lavaan = lm_from_lavaan_list(fit),
                        lavaan.mi = lm_from_lavaan_list(fit),

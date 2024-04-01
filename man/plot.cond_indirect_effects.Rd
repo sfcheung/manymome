@@ -19,6 +19,7 @@
   line_width = 1,
   point_size = 5,
   graph_type = c("default", "tumble"),
+  use_implied_stats = FALSE,
   ...
 )
 }
@@ -121,6 +122,16 @@ plotted. Default is \code{"default"}
 for single-group models, and
 \code{"tumble"} for multigroup models.}
 
+\item{use_implied_stats}{For a
+multigroup model, if \code{TRUE},
+model implied statistics will be
+used in computing the means and SDs,
+which take into equality constraints,
+if any.
+If \code{FALSE}, the default, then the raw
+data is
+used to compute the means and SDs.}
+
 \item{...}{Additional arguments.
 Ignored.}
 }
@@ -160,9 +171,19 @@ multigroup models has been added for models
 fitted by \code{lavaan}. If the effect
 for each group is drawn, the
 \code{graph_type} is automatically switched
-to \code{"bumble"} and the means and SDs
+to \code{"tumble"} and the means and SDs
 in each group will be used to determine
 the locations of the points.
+
+If the multigroup model has any equality
+constraints, the implied means and/or
+SDs may be different from those of
+the raw data. For example, the mean
+of a the \code{x}-variable may be constrained
+to be equal in this model. To plot
+the tumble graph using the model implied
+means and SDs, set \code{use_implied_stats}
+to \code{TRUE}.
 }
 }
 \examples{
