@@ -887,7 +887,61 @@ test_that("plot.cond_indirect_effects: multiple groups, implied stats", {
     expect_equal(var(p3b$layers[[1]]$data[4:6, "x"]), 0)
   })
 
+# Plot with latent variables
 
+dat_lav <- data_serial_parallel_latent
+set.seed(1234)
+dat_lav$gp <- sort(sample(c("gp1", "gp2", "gp3"), size = nrow(dat_lav), replace = TRUE))
+dat_lav[dat_lav$gp == "gp2", c("x1", "x2", "x3")] <- dat_lav[dat_lav$gp == "gp2", c("x1", "x2", "x3")] + 3
+dat_lav[dat_lav$gp == "gp3", c("x1", "x2", "x3")] <- dat_lav[dat_lav$gp == "gp3", c("x1", "x2", "x3")] - 3
+dat_lav[dat_lav$gp == "gp2", c("m11a", "m11b", "m11c")] <- dat_lav[dat_lav$gp == "gp2", c("m11a", "m11b", "m11c")] * 2
+dat_lav[dat_lav$gp == "gp3", c("m11a", "m11b", "m11c")] <- dat_lav[dat_lav$gp == "gp3", c("m11a", "m11b", "m11c")] * -3
+
+mod_lav <-
+"
+fx1 =~ x1 + x2 + x3
+fm11 =~ m11a + m11b + m11c
+fy1 =~ y1 + y2 + y3
+fm11 ~ fx1
+fy1 ~ fm11 + fx1
+"
+fit_lav <- sem(mod_lav, dat_lav, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
+               group = "gp",
+               group.equal = c("loadings", "intercepts"))
+
+tmp1 <- cond_indirect_effects(x = "fx1",
+                              y = "fm11",
+                              fit = fit_lav)
+tmp1
+
+tmp2 <- cond_indirect_effects(x = "fx1",
+                              y = "fm11",
+                              fit = fit_lav,
+                              standardized_x = TRUE,
+                              standardized_y = TRUE)
+tmp2
+
+p1 <- plot(tmp1)
+p1
+p2 <- plot(tmp2)
+p2
+
+sd_lv1 <- lavInspect(fit_lav, "cov.lv")
+sd_lv1 <- sapply(sd_lv1, function(x) sqrt(diag(x)), simplify = FALSE)
+sd_lv1_fx1 <- sapply(sd_lv1, function(x) x["fx1"])
+mean_lv1 <- lavInspect(fit_lav, "mean.lv")
+mean_lv1_fx1 <- sapply(mean_lv1, function(x) x["fx1"])
+
+test_that("plot.cond_indirect_effects: multiple groups, latent", {
+    expect_equal(mean_lv1_fx1 - p1$layers[[1]]$data$fx1[1:3],
+                 sd_lv1_fx1)
+    expect_equal(p1$layers[[1]]$data$fx1[4:6] - mean_lv1_fx1,
+                 sd_lv1_fx1)
+    expect_equal(p2$layers[[1]]$data$fx1[1:3],
+                 c(-1, -1, -1))
+    expect_equal(p2$layers[[1]]$data$fx1[4:6],
+                 c(1, 1, 1))
+  })
 
 skip("Long tests: Test in interactive sections")
 

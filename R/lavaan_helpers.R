@@ -322,3 +322,29 @@ group_labels_and_numbers_list <- function(object) {
     list(label = group_labels,
          number = group_numbers)
   }
+
+#' @noRd
+# Check if a cond_indirect_effects-class object has latent x- or y-variables.
+
+cond_indirect_effects_has_x_y <- function(object) {
+    fit <- attr(object, "fit")
+    fit_type <- cond_indirect_check_fit(fit)
+    if (isFALSE(fit_type %in% c("lavaan", "lavaan.mi"))) {
+        out <- list(x_latent = NA,
+                    y_latent = NA)
+        return(out)
+      } else {
+        fit_lav <- lavaan::lavNames(fit, "lv")
+        if (length(fit_lav) == 0) {
+            out <- list(x_latent = NA,
+                        y_latent = NA)
+            return(out)
+          }
+        full_output <- attr(object, "full_output")[[1]]
+        fit_x <- full_output$x
+        fit_y <- full_output$y
+        out <- list(x_latent = isTRUE(fit_x %in% fit_lav),
+                    y_latent = isTRUE(fit_y %in% fit_lav))
+        return(out)
+      }
+  }
