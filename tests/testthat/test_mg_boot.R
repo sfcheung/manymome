@@ -44,6 +44,7 @@ ab2_stdx := a2*b2*sqrt(v_x2)
 ab3_stdx := a3*b3*sqrt(v_x3)
 "
 
+# A model that does not use ":".
 dat$m3w3 <- dat$m3 * dat$w3
 mod3 <-
 "
@@ -51,6 +52,7 @@ m3 ~ m1 + x
 y ~ m2 + m3 + x + w4 + xw4 + w3 + m3w3 + m3w4
 "
 
+# A mediation-only model.
 mod_med <-
 "
 m1 ~ x
@@ -58,10 +60,9 @@ m2 ~ m1
 y ~ m2 + x
 "
 
-
 # Check against lavaan
 
-fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE,
+fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
            group = "gp",
            group.label = c("gp3", "gp1", "gp2"))
 fit_boot <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE,
@@ -83,7 +84,7 @@ test_that("Check against lavaan boot", {
 
 # get_implied_i_lavaan
 
-fit_tmp <- sem(mod, dat[-c(1:10), ], meanstructure = TRUE, fixed.x = FALSE,
+fit_tmp <- sem(mod, dat[-c(1:10), ], meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
                group = "gp",
                group.label = c("gp3", "gp1", "gp2"))
 my_implied <- get_implied_i(coef(fit), fit_tmp)
@@ -96,10 +97,10 @@ test_that("Check against lavaan implied", {
 
 # get_prod
 
-fit2 <- sem(mod2, dat, meanstructure = TRUE, fixed.x = FALSE,
+fit2 <- sem(mod2, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
             group = "gp",
             group.label = c("gp3", "gp1", "gp2"))
-fit2_chk <- sem(mod2_chk, dat, meanstructure = TRUE, fixed.x = FALSE,
+fit2_chk <- sem(mod2_chk, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
             group = "gp",
             group.label = c("gp3", "gp1", "gp2"))
 
@@ -131,15 +132,6 @@ test_that("get_prod and friends", {
     expect_true(length(tmp$b$xw4) == 3)
   })
 
-tmp1 <- get_prod(x = "x",
-                 y = "y",
-                 fit = fit2,
-                 expand = TRUE)
-tmp1_ng <- get_prod(x = "x",
-                    y = "y",
-                    fit = fit2_ng,
-                    expand = TRUE)
-
 # indirect_i
 
 suppressWarnings(tmp2 <- indirect_effect(x = "x",
@@ -152,19 +144,7 @@ suppressWarnings(tmp3 <- indirect_effect(x = "x",
                         m = "m3",
                         fit = fit2,
                         group = 1))
-# tmp2_chk <- est_tmp[(est_tmp$lhs == "m3") &
-#                     (est_tmp$rhs == "x") &
-#                     (est_tmp$group == 2), "est"] *
-#             est_tmp[(est_tmp$lhs == "y") &
-#                     (est_tmp$rhs == "m3") &
-#                     (est_tmp$group == 2), "est"]
 tmp2_chk <- coef(fit2_chk, type = "user")["ab2"]
-# tmp3_chk <- est_tmp[(est_tmp$lhs == "m3") &
-#                     (est_tmp$rhs == "x") &
-#                     (est_tmp$group == 1), "est"] *
-#             est_tmp[(est_tmp$lhs == "y") &
-#                     (est_tmp$rhs == "m3") &
-#                     (est_tmp$group == 1), "est"]
 tmp3_chk <- coef(fit2_chk, type = "user")["ab1"]
 
 test_that("indirect_effect and multigrop", {
@@ -184,8 +164,6 @@ test_that("mod_levels: multigroup", {
     expect_error(mod_levels_list("w3", "w4", fit = fit2))
   })
 
-
-
 # cond_indirect
 
 suppressWarnings(tmp2 <- cond_indirect(x = "x",
@@ -200,31 +178,7 @@ suppressWarnings(tmp3 <- cond_indirect(x = "x",
                         fit = fit2,
                         wvalues = c(w3 = 3, w4 = -2),
                         group = "gp3"))
-# tmp2_chk <- est_tmp[(est_tmp$lhs == "m3") &
-#                     (est_tmp$rhs == "x") &
-#                     (est_tmp$group == 2), "est"] *
-#             (est_tmp[(est_tmp$lhs == "y") &
-#                      (est_tmp$rhs == "m3") &
-#                      (est_tmp$group == 2), "est"] +
-#              est_tmp[(est_tmp$lhs == "y") &
-#                      (est_tmp$rhs == "m3:w3") &
-#                      (est_tmp$group == 2), "est"] +
-#              est_tmp[(est_tmp$lhs == "y") &
-#                      (est_tmp$rhs == "m3w4") &
-#                      (est_tmp$group == 2), "est"] * 2)
 tmp2_chk <- coef(fit2_chk, type = "user")["ab2_d"]
-# tmp3_chk <- est_tmp[(est_tmp$lhs == "m3") &
-#                     (est_tmp$rhs == "x") &
-#                     (est_tmp$group == 1), "est"] *
-#             (est_tmp[(est_tmp$lhs == "y") &
-#                      (est_tmp$rhs == "m3") &
-#                      (est_tmp$group == 1), "est"] +
-#              est_tmp[(est_tmp$lhs == "y") &
-#                      (est_tmp$rhs == "m3:w3") &
-#                      (est_tmp$group == 1), "est"] * 3+
-#              est_tmp[(est_tmp$lhs == "y") &
-#                      (est_tmp$rhs == "m3w4") &
-#                      (est_tmp$group == 1), "est"] * -2)
 tmp3_chk <- coef(fit2_chk, type = "user")["ab1_d"]
 
 test_that("indirect_effect and multigrop", {
@@ -364,12 +318,19 @@ test_that("indirect_effect and multigrop", {
 
 # Check do_mc
 
+fit_4_mc <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE,
+           group = "gp",
+           group.label = c("gp3", "gp1", "gp2"))
+fit2_4_mc <- sem(mod2, dat, meanstructure = TRUE, fixed.x = FALSE,
+            group = "gp",
+            group.label = c("gp3", "gp1", "gp2"))
+
 fit_eq <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE,
               group = "gp",
               group.label = c("gp3", "gp1", "gp2"),
               group.equal = "regressions")
 
-fit_mc_out <- do_mc(fit, R = 4,
+fit_mc_out <- do_mc(fit_4_mc, R = 4,
                    seed = 2345,
                    progress = FALSE,
                    parallel = FALSE)
@@ -379,7 +340,7 @@ fit_eq_mc_out <- do_mc(fit_eq, R = 4,
                        progress = FALSE,
                        parallel = FALSE)
 
-fit_mc_out <- do_mc(fit2, R = 50,
+fit_mc_out <- do_mc(fit2_4_mc, R = 50,
                    seed = 2345,
                    progress = FALSE,
                    parallel = FALSE)
@@ -575,7 +536,7 @@ m3 ~ c(NA, 0, NA)*m1
 y ~ m3
 "
 
-fit_tmp <- sem(mod_tmp, dat, meanstructure = TRUE, fixed.x = FALSE,
+fit_tmp <- sem(mod_tmp, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
                group = "gp",
                group.label = c("gp3", "gp1", "gp2"))
 
@@ -613,13 +574,13 @@ w3 ~ m2
 y ~ m3 + w3
 "
 
-fit_tmp <- sem(mod_tmp, dat, meanstructure = TRUE, fixed.x = FALSE,
+fit_tmp <- sem(mod_tmp, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
                group = "gp",
                group.label = c("gp3", "gp1", "gp2"))
-fit_tmp_2 <- sem(mod_tmp_2, dat, meanstructure = TRUE, fixed.x = FALSE,
+fit_tmp_2 <- sem(mod_tmp_2, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
                group = "gp",
                group.label = c("gp3", "gp1", "gp2"))
-fit_tmp_ng <- sem(mod_tmp_ng, dat, meanstructure = TRUE, fixed.x = FALSE)
+fit_tmp_ng <- sem(mod_tmp_ng, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,)
 
 all_tmp <- all_indirect_paths(fit_tmp)
 all_paths <- all_paths_to_df(all_tmp)
@@ -653,7 +614,7 @@ test_that("total_indirect_effect: multiple group", {
 
 # Mediation only
 
-fit_med <- sem(mod_med, dat, meanstructure = TRUE, fixed.x = FALSE,
+fit_med <- sem(mod_med, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
                group = "gp",
                group.label = c("gp3", "gp1", "gp2"))
 
@@ -727,7 +688,7 @@ test_that("group labels helpers", {
 
 # print.cond_indirect_effects
 
-fit_med <- sem(mod_med, dat, meanstructure = TRUE, fixed.x = FALSE,
+fit_med <- sem(mod_med, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
                group = "gp",
                group.label = c("gp3", "gp1", "gp2"))
 
@@ -745,7 +706,7 @@ test_that("print.cond_indirect_effects: Multiple groups", {
 
 # coef.cond_indirect_effects
 
-fit_med <- sem(mod_med, dat, meanstructure = TRUE, fixed.x = FALSE,
+fit_med <- sem(mod_med, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
                group = "gp",
                group.label = c("gp3", "gp1", "gp2"))
 
@@ -766,7 +727,7 @@ test_that("coef.cond_indirect_effects with multiple groups", {
 
 # [.cond_indirect_effects
 
-fit_med <- sem(mod_med, dat, meanstructure = TRUE, fixed.x = FALSE,
+fit_med <- sem(mod_med, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
                group = "gp",
                group.label = c("gp3", "gp1", "gp2"))
 
@@ -782,7 +743,7 @@ test_that("[.cond_indirect_effects: Multiple groups", {
 
 # cond_indirect_diff
 
-fit_med <- sem(mod_med, dat, meanstructure = TRUE, fixed.x = FALSE,
+fit_med <- sem(mod_med, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
                group = "gp",
                group.label = c("gp3", "gp1", "gp2"))
 
@@ -813,7 +774,7 @@ test_that("cond_indirect_diff: Multiple groups", {
 
 # plot.cond_indirect_effects
 
-fit_med <- sem(mod_med, dat, meanstructure = TRUE, fixed.x = FALSE,
+fit_med <- sem(mod_med, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
                group = "gp",
                group.label = c("gp3", "gp1", "gp2"))
 
@@ -827,9 +788,117 @@ test_that("plot.cond_indirect_effects: multiple groups", {
                          unique(tmp1$Group)))
   })
 
+# Plot with implied stat
 
+dat_meq <- dat
+dat_meq[dat$gp == "gp1", "x"] <- dat_meq[dat$gp == "gp1", "x"] - 2
+dat_meq[dat$gp == "gp2", "x"] <- dat_meq[dat$gp == "gp2", "x"] + 2
 
+fit_med_meq1 <- sem(mod_med, dat_meq, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
+               group = "gp",
+               group.label = c("gp3", "gp1", "gp2"))
+mod_med_meq <-
+"
+m1 ~ x
+m2 ~ m1
+y ~ m2 + x
+x ~ c(mx, mx, mx) * 1
+"
+mod_med_msdeq <-
+"
+m1 ~ x
+m2 ~ m1
+y ~ m2 + x
+x ~ c(mx, mx, mx) * 1
+x ~~ c(vx, vx, vx) * x
+"
+fit_med_meq2 <- sem(mod_med_meq, dat_meq, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
+               group = "gp",
+               group.label = c("gp3", "gp1", "gp2"))
+fit_med_meq3 <- sem(mod_med_msdeq, dat_meq, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
+               group = "gp",
+               group.label = c("gp3", "gp1", "gp2"))
 
+tmp1 <- cond_indirect_effects(x = "x",
+                              y = "m1",
+                              fit = fit_med_meq1)
+tmp2 <- cond_indirect_effects(x = "x",
+                              y = "m1",
+                              fit = fit_med_meq2)
+tmp3 <- cond_indirect_effects(x = "x",
+                              y = "m1",
+                              fit = fit_med_meq3)
+
+p1a <- plot(tmp1)
+p2a <- plot(tmp2)
+p2b <- plot(tmp2, use_implied_stats = TRUE)
+p3a <- plot(tmp3)
+p3b <- plot(tmp3, use_implied_stats = TRUE)
+
+test_that("plot.cond_indirect_effects: multiple groups, implied stats", {
+    expect_equal(p1a$layers[[1]]$data$x,
+                 p2a$layers[[1]]$data$x)
+    expect_equal(p1a$layers[[1]]$data$x,
+                 p3a$layers[[1]]$data$x)
+    expect_equal(var((p2b$layers[[1]]$data[1:3, "x"] + p2b$layers[[1]]$data[4:6, "x"]) / 2),
+                 0)
+    expect_equal(var((p3b$layers[[1]]$data[1:3, "x"] + p3b$layers[[1]]$data[4:6, "x"]) / 2),
+                 0)
+    expect_equal(var(p3b$layers[[1]]$data[1:3, "x"]), 0)
+    expect_equal(var(p3b$layers[[1]]$data[4:6, "x"]), 0)
+  })
+
+# Plot with latent variables
+
+dat_lav <- data_serial_parallel_latent
+set.seed(1234)
+dat_lav$gp <- sort(sample(c("gp1", "gp2", "gp3"), size = nrow(dat_lav), replace = TRUE))
+dat_lav[dat_lav$gp == "gp2", c("x1", "x2", "x3")] <- dat_lav[dat_lav$gp == "gp2", c("x1", "x2", "x3")] + 3
+dat_lav[dat_lav$gp == "gp3", c("x1", "x2", "x3")] <- dat_lav[dat_lav$gp == "gp3", c("x1", "x2", "x3")] - 3
+dat_lav[dat_lav$gp == "gp2", c("m11a", "m11b", "m11c")] <- dat_lav[dat_lav$gp == "gp2", c("m11a", "m11b", "m11c")] * 2
+dat_lav[dat_lav$gp == "gp3", c("m11a", "m11b", "m11c")] <- dat_lav[dat_lav$gp == "gp3", c("m11a", "m11b", "m11c")] * -3
+
+mod_lav <-
+"
+fx1 =~ x1 + x2 + x3
+fm11 =~ m11a + m11b + m11c
+fy1 =~ y1 + y2 + y3
+fm11 ~ fx1
+fy1 ~ fm11 + fx1
+"
+fit_lav <- sem(mod_lav, dat_lav, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
+               group = "gp",
+               group.equal = c("loadings", "intercepts"))
+
+tmp1 <- cond_indirect_effects(x = "fx1",
+                              y = "fm11",
+                              fit = fit_lav)
+
+tmp2 <- cond_indirect_effects(x = "fx1",
+                              y = "fm11",
+                              fit = fit_lav,
+                              standardized_x = TRUE,
+                              standardized_y = TRUE)
+
+p1 <- plot(tmp1)
+p2 <- plot(tmp2)
+
+sd_lv1 <- lavInspect(fit_lav, "cov.lv")
+sd_lv1 <- sapply(sd_lv1, function(x) sqrt(diag(x)), simplify = FALSE)
+sd_lv1_fx1 <- sapply(sd_lv1, function(x) x["fx1"])
+mean_lv1 <- lavInspect(fit_lav, "mean.lv")
+mean_lv1_fx1 <- sapply(mean_lv1, function(x) x["fx1"])
+
+test_that("plot.cond_indirect_effects: multiple groups, latent", {
+    expect_equal(mean_lv1_fx1 - p1$layers[[1]]$data$fx1[1:3],
+                 sd_lv1_fx1)
+    expect_equal(p1$layers[[1]]$data$fx1[4:6] - mean_lv1_fx1,
+                 sd_lv1_fx1)
+    expect_equal(p2$layers[[1]]$data$fx1[1:3],
+                 c(-1, -1, -1))
+    expect_equal(p2$layers[[1]]$data$fx1[4:6],
+                 c(1, 1, 1))
+  })
 
 skip("Long tests: Test in interactive sections")
 

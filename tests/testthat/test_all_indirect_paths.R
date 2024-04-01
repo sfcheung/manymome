@@ -218,6 +218,28 @@ confint(ind_1_stdx)
 confint(ind_1_stdy)
 confint(ind_1_std)
 
+# Test many_indirect_effects reusing boot_out
+
+out_tmp <- outa4[c(1, 3)]
+
+ind_1_reuse <- many_indirect_effects(out_tmp,
+                                     fit = fit,
+                                     R = 50,
+                                     boot_ci = TRUE,
+                                     seed = 98743,
+                                     ncores = 2)
+
+fit_tmp <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
+ind_1_reuse <- many_indirect_effects(out_tmp,
+                                     fit = fit_tmp,
+                                     R = 50,
+                                     mc_ci = TRUE,
+                                     seed = 98743,
+                                     ncores = 2)
+
+# NOTE: Need to inspect manually to see whether bootstrapping
+#       was done only once.
+
 # Test total_indirect_effect
 
 tot1_no_ci <- total_indirect_effect(ind_1_no_ci, x = "x1", y = "y1")

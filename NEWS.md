@@ -1,4 +1,4 @@
-# manymome 0.1.14.5
+# manymome 0.1.14.9
 
 ## New Features
 
@@ -41,7 +41,19 @@
   makes more sense for multigroup
   models, in which the distribution of
   variables are allowed to be different
-  between groups. (0.1.14.2)
+  between groups. If desired, users
+  can use the model implied statistics
+  to determine the means and SDs, which
+  is useful when equality constraints
+  are present. (0.1.14.2, 0.1.14.6)
+
+- The `plot`-method of
+  `cond_indirect_effects`-class objects
+  now supports plotting a path that
+  involves latent variables. The model
+  implied statistics will always be used
+  for the latent variables when determining
+  the means and SDs. (0.1.14.7)
 
 ## Miscellaneous
 
@@ -53,6 +65,18 @@
   "product term" will no longer be
   treated as a "product term."
   (0.1.14.1)
+
+- Bootstrapping and Monte Carlo
+  simulation will no longer be run
+  once for each path in
+  `many_indirect_effects()`. If
+  `do_boot()` or `do_mc()` is not used
+  first but bootstrapping or Monte
+  Carlo confidence intervals are
+  requested, this process will be done
+  only once, and the estimates will be
+  reused by all paths. (0.1.14.9)
+
 
 # manymome 0.1.14
 

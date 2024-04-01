@@ -29,9 +29,30 @@
 #' fitted by `lavaan`. If the effect
 #' for each group is drawn, the
 #' `graph_type` is automatically switched
-#' to `"bumble"` and the means and SDs
+#' to `"tumble"` and the means and SDs
 #' in each group will be used to determine
 #' the locations of the points.
+#'
+#' If the multigroup model has any equality
+#' constraints, the implied means and/or
+#' SDs may be different from those of
+#' the raw data. For example, the mean
+#' of the `x`-variable may be constrained
+#' to be equal in this model. To plot
+#' the tumble graph using the model implied
+#' means and SDs, set `use_implied_stats`
+#' to `TRUE`.
+#'
+#' ## Latent Variables
+#'
+#' A path that involves a latent `x`-variable
+#' and/or a latent `y`-variable can be
+#' plotted. Because the latent variables
+#' have no observed data, the model
+#' implied statistics will always be used
+#' to get the means and SDs to compute
+#' values such as the low and high points
+#' of the `x`-variable.
 #'
 #' @return A [ggplot2] graph. Plotted if
 #' not assigned to a name. It can be
@@ -78,7 +99,9 @@
 #' variable, `"sd"`. If equal to
 #' `"percentile"`, then the percentiles
 #' of the focal variable in the dataset
-#' is used.
+#' is used. If the focal variable is
+#' a latent variable, only
+#' `"sd"` can be used.
 #'
 #' @param x_percentiles If `x_method` is
 #' `"percentile"`, then this argument
@@ -135,6 +158,18 @@
 #' plotted. Default is `"default"`
 #' for single-group models, and
 #' `"tumble"` for multigroup models.
+#'
+#' @param use_implied_stats For a
+#' multigroup model, if `TRUE`,
+#' model implied statistics will be
+#' used in computing the means and SDs,
+#' which take into equality constraints,
+#' if any.
+#' If `FALSE`, the default, then the raw
+#' data is
+#' used to compute the means and SDs.
+#' For latent variables, model implied
+#' statistics are always used.
 #'
 #' @param ... Additional arguments.
 #' Ignored.
@@ -228,6 +263,7 @@ plot.cond_indirect_effects <- function(
                             line_width = 1,
                             point_size = 5,
                             graph_type = c("default", "tumble"),
+                            use_implied_stats = FALSE,
                             ...
                     ) {
     has_groups <- cond_indirect_effects_has_groups(x)
@@ -249,7 +285,18 @@ plot.cond_indirect_effects <- function(
       }
     fit <- attr(output, "fit")
     fit_type <- cond_indirect_check_fit(fit)
+    tmp <- cond_indirect_effects_has_x_y(x)
+    x_latent <- tmp$x_latent
+    y_latent <- tmp$y_latent
+    latent_vars <- switch(fit_type,
+                          lavaan = lavaan::lavNames(fit, "lv"),
+                          lavaan.mi = lavaan::lavNames(fit, "lv"),
+                          lm = character(0))
+    has_latent <- (length(latent_vars) > 0)
     x_method <- match.arg(x_method)
+    if ((x_method == "percentile") && x_latent) {
+        stop("x_method cannot be 'percentile' if x is a latent variable.")
+      }
     graph_type <- match.arg(graph_type)
     if (has_groups && graph_type == "default") {
         # warning("Only tumble graph is supported for multiple group models. ",
@@ -272,10 +319,40 @@ plot.cond_indirect_effects <- function(
         w_names <- colnames(wlevels)
       }
     # mf0 is a list of datasets for multiple group models
+    # TODO:
+    # - Add support for paths involving latent variables
     mf0 <- switch(fit_type,
                   lavaan = lavaan::lavInspect(fit, "data"),
                   lavaan.mi = lav_data_used(fit, drop_colon = FALSE),
                   lm = merge_model_frame(fit))
+    if (has_groups && use_implied_stats) {
+        fit_implied_stats <- lavaan::lavInspect(fit, "implied")
+        fit_implied_stats <- fit_implied_stats[names(mf0)]
+        mf0 <- mapply(scale_by_implied,
+                      data_original = mf0,
+                      implied = fit_implied_stats,
+                      SIMPLIFY = FALSE)
+      }
+    # Add fill-in data if latent variables are present.
+    # The covariance structure with observed variables is not maintained but
+    # this is not an issue because only univariate means and SDs are used.
+    if (has_latent && (fit_type == "lavaan")) {
+        cov_lv <- lavaan::lavInspect(fit, "cov.lv")
+        mean_lv <- lavaan::lavInspect(fit, "mean.lv")
+        if (has_groups) {
+            cov_lv <- cov_lv[names(mf0)]
+            mean_lv <- mean_lv[names(mf0)]
+            mf0 <- mapply(add_fillin_lv,
+                          data_original = mf0,
+                          cov_lv = cov_lv,
+                          mean_lv = mean_lv,
+                          SIMPLIFY = FALSE)
+          } else {
+            mf0 <- add_fillin_lv(mf0,
+                                 cov_lv = cov_lv,
+                                 mean_lv = mean_lv)
+          }
+      }
     fit_list <- switch(fit_type,
                        lavaan = lm_from_lavaan_list(fit),
                        lavaan.mi = lm_from_lavaan_list(fit),
@@ -283,10 +360,11 @@ plot.cond_indirect_effects <- function(
     if ((fit_type == "lm") && !inherits(fit_list, "lm_list")) {
         fit_list <- lm2list(fit_list)
       }
-    dat0 <- switch(fit_type,
-                  lavaan = lavaan::lavInspect(fit, "data"),
-                  lavaan.mi = lav_data_used(fit, drop_colon = FALSE),
-                  lm = merge_model_frame(fit))
+    # dat0 <- switch(fit_type,
+    #               lavaan = lavaan::lavInspect(fit, "data"),
+    #               lavaan.mi = lav_data_used(fit, drop_colon = FALSE),
+    #               lm = merge_model_frame(fit))
+    dat0 <- mf0
     x_numeric <- TRUE
     if (!x_numeric) {
         stop("x variable must be a numeric variable.")
@@ -390,6 +468,24 @@ plot.cond_indirect_effects <- function(
                           lavaan = lavaan::lavInspect(fit, "implied"),
                           lavaan.mi = lav_implied_all(fit),
                           lm = lm2ptable(fit)$implied_stats)
+        if (has_latent) {
+            # Cannot use "cov.all" because we also need the mean vectors.
+            # numeric(0) if an element is not present.
+            cov_lv <- lavaan::lavInspect(fit, "cov.lv")
+            mean_lv <- lavaan::lavInspect(fit, "mean.lv")
+            if (has_groups) {
+                implied_stats <- mapply(add_lv_implied,
+                                   implied_stats = implied_stats,
+                                   cov_lv = cov_lv,
+                                   mean_lv = mean_lv,
+                                   SIMPLIFY = FALSE)
+              } else {
+                implied_stats <- add_lv_implied(
+                                   implied_stats = implied_stats,
+                                   cov_lv = cov_lv,
+                                   mean_lv = mean_lv)
+              }
+          }
       }
     if (x_standardized) {
         if (has_groups) {
@@ -397,7 +493,7 @@ plot.cond_indirect_effects <- function(
             group_labels <- names(fit_list)
             implied_stats <- implied_stats[group_labels]
             x_sd <- sapply(implied_stats, function(xx) {
-                        xx$cov[x, x]
+                        sqrt(xx$cov[x, x])
                       })
             x_mean <- sapply(implied_stats, function(xx) {
                         out <- xx$mean[x]
