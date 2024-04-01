@@ -569,6 +569,25 @@ need to manually specify the desired
 value of the moderator(s).
 }
 }
+
+\subsection{\code{\link[=many_indirect_effects]{many_indirect_effects()}}}{
+
+If bootstrapping or Monte Carlo
+confidence intervals are requested,
+it is advised to use \code{\link[=do_boot]{do_boot()}}
+first to simulate the estimates.
+Nevertheless, In Version 0.1.14.9
+and later versions, if \code{boot_ci}
+or \code{mc_ci} is \code{TRUE} when calling
+\code{\link[=many_indirect_effects]{many_indirect_effects()}} but
+\code{boot_out} or \code{mc_out} is not set,
+bootstrapping or simulation will
+be done only once, and then the
+bootstrapping or simulated estimates
+will be used for all paths. This
+prevents accidentally repeating the
+process once for each direct path.
+}
 }
 \section{Functions}{
 \itemize{

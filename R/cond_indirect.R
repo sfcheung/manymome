@@ -135,6 +135,24 @@
 #' need to manually specify the desired
 #' value of the moderator(s).
 #'
+#' ## [many_indirect_effects()]
+#'
+#' If bootstrapping or Monte Carlo
+#' confidence intervals are requested,
+#' it is advised to use [do_boot()]
+#' first to simulate the estimates.
+#' Nevertheless, In Version 0.1.14.9
+#' and later versions, if `boot_ci`
+#' or `mc_ci` is `TRUE` when calling
+#' [many_indirect_effects()] but
+#' `boot_out` or `mc_out` is not set,
+#' bootstrapping or simulation will
+#' be done only once, and then the
+#' bootstrapping or simulated estimates
+#' will be used for all paths. This
+#' prevents accidentally repeating the
+#' process once for each direct path.
+#'
 #' @return [indirect_effect()] and
 #' [cond_indirect()] return an
 #' `indirect`-class object.
@@ -1393,20 +1411,62 @@ cond_indirect_effects <- function(wlevels,
 many_indirect_effects <- function(paths, ...) {
     path_names <- names(paths)
     xym <- all_paths_to_df(paths)
+    args <- list(...)
+    if ((isTRUE(args$boot_ci) && is.null(args$boot_out)) ||
+        (isTRUE(args$mc_ci) && is.null(args$mc_out))) {
+        do_sim_once <- TRUE
+      } else {
+        do_sim_once <- FALSE
+      }
     if ("group_label" %in% colnames(xym)) {
+        if (do_sim_once) {
+            args_tmp <- utils::modifyList(args,
+                                x = xym$x[1],
+                                y = xym$y[1],
+                                m = xym$m[1],
+                                group = xym$group_number[1])
+            sim_out <- do.call(indirect_effect, args_tmp)
+            if (isTRUE(args$boot_ci)) {
+                args_final <- utils::modifyList(args,
+                              list(boot_out = sim_out))
+              }
+            if (isTRUE(args$mc_ci)) {
+                args_final <- utils::modifyList(args,
+                              list(mc_out = sim_out))
+              }
+          } else {
+            args_final <- args
+          }
         out <- mapply(indirect_effect,
                       x = xym$x,
                       y = xym$y,
                       m = xym$m,
                       group = xym$group_number,
-                      MoreArgs = list(...),
+                      MoreArgs = args_final,
                       SIMPLIFY = FALSE)
       } else {
+        if (do_sim_once) {
+            args_tmp <- utils::modifyList(args,
+                           list(x = xym$x[1],
+                                y = xym$y[1],
+                                m = xym$m[1]))
+            sim_out <- do.call(indirect_effect, args_tmp)
+            if (isTRUE(args$boot_ci)) {
+                args_final <- utils::modifyList(args,
+                              list(boot_out = sim_out))
+              }
+            if (isTRUE(args$mc_ci)) {
+                args_final <- utils::modifyList(args,
+                              list(mc_out = sim_out))
+              }
+          } else {
+            args_final <- args
+          }
         out <- mapply(indirect_effect,
                       x = xym$x,
                       y = xym$y,
                       m = xym$m,
-                      MoreArgs = list(...),
+                      MoreArgs = args_final,
                       SIMPLIFY = FALSE)
       }
     names(out) <- path_names
