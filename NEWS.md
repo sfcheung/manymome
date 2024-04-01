@@ -1,4 +1,4 @@
-# manymome 0.1.14.6
+# manymome 0.1.14.7
 
 ## New Features
 
@@ -46,6 +46,14 @@
   to determine the means and SDs, which
   is useful when equality constraints
   are present. (0.1.14.2, 0.1.14.6)
+
+- The `plot`-method of
+  `cond_indirect_effects`-class objects
+  now supports plotting a path that
+  involves latent variables. The model
+  implied statistics will always be used
+  for the latent variables when determining
+  the means and SDs. (0.1.14.7)
 
 ## Miscellaneous
 

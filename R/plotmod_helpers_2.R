@@ -91,3 +91,47 @@ scale_by_implied <- function(data_original, implied) {
       }
     data_new
   }
+
+#' @noRd
+# Add fill-in latent variable data
+
+add_fillin_lv <- function(data_original, cov_lv, mean_lv = NULL) {
+    lv <- colnames(cov_lv)
+    if (is.null(mean_lv)) {
+        mean_lv <- rep(0, length(lv))
+        names(mean_lv) <- lv
+      }
+    n <- nrow(data_original)
+    dat_lv <- MASS::mvrnorm(n, mu = mean_lv, Sigma = cov_lv, empirical = TRUE)
+    data_new <- cbind(data_original, dat_lv)
+  }
+
+#' @noRd
+# Add implied stats of lv
+
+add_lv_implied <- function(implied_stats, cov_lv, mean_lv = NULL) {
+    lv <- colnames(cov_lv)
+    if (is.null(mean_lv)) {
+        mean_lv <- rep(0, length(lv))
+        names(mean_lv) <- lv
+      }
+    p1 <- nrow(implied_stats$cov)
+    p2 <- length(lv)
+    zero <- matrix(0, nrow = p1, ncol = p2)
+    colnames(zero) <- lv
+    rownames(zero) <- rownames(implied_stats$cov)
+    new_cov <- rbind(cbind(implied_stats$cov, zero),
+                     cbind(t(zero), cov_lv))
+    class(new_cov) <- class(implied_stats$cov)
+    if (!is.null(implied_stats$mean)) {
+        mean_ov <- implied_stats$mean
+      } else {
+        mean_ov <- rep(0, p1)
+        names(mean_ov) <- colnames(implied_stats$cov)
+      }
+    new_mean <- c(mean_ov,
+                  mean_lv)
+    class(new_mean) <- class(mean_lv)
+    out <- list(cov = new_cov,
+                mean = new_mean)
+  }
