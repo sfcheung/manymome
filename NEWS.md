@@ -1,4 +1,4 @@
-# manymome 0.1.14.8
+# manymome 0.1.14.9
 
 ## New Features
 
@@ -65,6 +65,18 @@
   "product term" will no longer be
   treated as a "product term."
   (0.1.14.1)
+
+- Bootstrapping and Monte Carlo
+  simulation will no longer be run
+  once for each path in
+  `many_indirect_effects()`. If
+  `do_boot()` or `do_mc()` is not used
+  first but bootstrapping or Monte
+  Carlo confidence intervals are
+  requested, this process will be done
+  only once, and the estimates will be
+  reused by all paths. (0.1.14.9)
+
 
 # manymome 0.1.14
 
