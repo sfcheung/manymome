@@ -20,7 +20,7 @@ lavaan::sem(), or semTools::sem.mi()."><meta property="og:image" content="https:
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.9</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -732,6 +732,27 @@ not have this limitation but users
 need to manually specify the desired
 value of the moderator(s).</p></li>
 </ul></div>
+
+<div class="section">
+<h3 id="many-indirect-effects-"><code>many_indirect_effects()</code><a class="anchor" aria-label="anchor" href="#many-indirect-effects-"></a></h3>
+
+
+<p>If bootstrapping or Monte Carlo
+confidence intervals are requested,
+it is advised to use <code><a href="do_boot.html">do_boot()</a></code>
+first to simulate the estimates.
+Nevertheless, In Version 0.1.14.9
+and later versions, if <code>boot_ci</code>
+or <code>mc_ci</code> is <code>TRUE</code> when calling
+<code>many_indirect_effects()</code> but
+<code>boot_out</code> or <code>mc_out</code> is not set,
+bootstrapping or simulation will
+be done only once, and then the
+bootstrapping or simulated estimates
+will be used for all paths. This
+prevents accidentally repeating the
+process once for each direct path.</p>
+</div>
 
     </div>
     <div class="section level2">
