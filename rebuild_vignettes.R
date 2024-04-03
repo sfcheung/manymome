@@ -18,6 +18,6 @@ setwd(base_dir)
 base_dir <- getwd()
 
 setwd("vignettes/articles")
-knitr::knit("med_mg.Rmd.originaL", output = "med_mg.Rmd")
+knitr::knit("med_mg.Rmd.original", output = "med_mg.Rmd")
 
 setwd(base_dir)

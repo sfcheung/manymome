@@ -522,14 +522,25 @@ plot(path1)
 Note that, for multigroup models, the *tumble*
 graph proposed by @bodner_tumble_2016 will
 always be used. The position of a line for
-a group is determined by the descriptive statistics
-of this group (e.g, means and SDs). For example,
+a group is determined by the model implied
+means and SDs of this group. If no equality
+constraints imposed, these means and SDs are
+close to the sample means and SDs.
+For example,
 the line segment of `"Group A"` is far to the right
 because `"Group A"` has a larger mean of `m` than
-`"Group B"`:
+`"Group B"`.
+
+These are the model implied means and SDs:
 
 ```{r}
-by(dat$m, dat$group, mean)
+# Model implied means
+lavInspect(fit, "mean.ov")
+
+# Model implied SDs
+tmp <- lavInspect(fit, "cov.ov")
+sqrt(diag(tmp[["Group A"]]))
+sqrt(diag(tmp[["Group B"]]))
 ```
 
 It would be misleading if the two lines are plotted on the

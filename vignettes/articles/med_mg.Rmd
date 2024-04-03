@@ -1,7 +1,7 @@
 ---
 title: "Multigroup Models With Mediation Effects"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2024-03-31"
+date: "2024-04-03"
 output:
   html_document:
     fig.align: "center"
@@ -204,7 +204,7 @@ fit_boot_out <- do_boot(fit = fit,
                         seed = 53253,
                         ncores = 8)
 #> 8 processes started to run bootstrapping.
-#> The expected CPU time is about 0 second(s).
+#> The expected CPU time is about 7.5 second(s).
 ```
 
 # Estimate Indirect Effects
@@ -889,20 +889,37 @@ for multigroup models:
 Note that, for multigroup models, the *tumble*
 graph proposed by @bodner_tumble_2016 will
 always be used. The position of a line for
-a group is determined by the descriptive statistics
-of this group (e.g, means and SDs). For example,
+a group is determined by the model implied
+means and SDs of this group. If no equality
+constraints imposed, these means and SDs are
+close to the sample means and SDs.
+For example,
 the line segment of `"Group A"` is far to the right
 because `"Group A"` has a larger mean of `m` than
-`"Group B"`:
+`"Group B"`.
+
+These are the model implied means and SDs:
 
 
 ```r
-by(dat$m, dat$group, mean)
-#> dat$group: Group A
-#> [1] 18.43357
-#> ------------------------------------------------------------ 
-#> dat$group: Group B
-#> [1] 13.42327
+# Model implied means
+lavInspect(fit, "mean.ov")
+#> $`Group A`
+#>      m      y      x     c1     c2 
+#> 18.434 17.973  9.985  2.055  4.883 
+#> 
+#> $`Group B`
+#>      m      y      x     c1     c2 
+#> 13.423 18.915 10.046  2.138  5.088
+
+# Model implied SDs
+tmp <- lavInspect(fit, "cov.ov")
+sqrt(diag(tmp[["Group A"]]))
+#>         m         y         x        c1        c2 
+#> 1.4916076 2.2158085 1.1055723 0.9687943 1.0741628
+sqrt(diag(tmp[["Group B"]]))
+#>         m         y         x        c1        c2 
+#> 1.2142143 2.5838604 1.0094330 0.9518064 1.0594076
 ```
 
 It would be misleading if the two lines are plotted on the
