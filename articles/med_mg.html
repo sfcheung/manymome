@@ -35,7 +35,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.10</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -110,7 +110,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2024-03-31</h4>
+            <h4 data-toc-skip class="date">2024-04-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/HEAD/vignettes/articles/med_mg.Rmd" class="external-link"><code>vignettes/articles/med_mg.Rmd</code></a></small>
       <div class="d-none name"><code>med_mg.Rmd</code></div>
@@ -290,7 +290,7 @@ acceptable.</p>
 <span>                        seed <span class="op">=</span> <span class="fl">53253</span>,</span>
 <span>                        ncores <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 8 processes started to run bootstrapping.</span></span>
-<span><span class="co">#&gt; The expected CPU time is about 0 second(s).</span></span></code></pre></div>
+<span><span class="co">#&gt; The expected CPU time is about 7.5 second(s).</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="estimate-indirect-effects">Estimate Indirect Effects<a class="anchor" aria-label="anchor" href="#estimate-indirect-effects"></a>
@@ -875,18 +875,32 @@ models:</p>
 </div>
 <p>Note that, for multigroup models, the <em>tumble</em> graph proposed
 by <span class="citation">Bodner (2016)</span> will always be used. The
-position of a line for a group is determined by the descriptive
-statistics of this group (e.g, means and SDs). For example, the line
+position of a line for a group is determined by the model implied means
+and SDs of this group. If no equality constraints imposed, these means
+and SDs are close to the sample means and SDs. For example, the line
 segment of <code>"Group A"</code> is far to the right because
 <code>"Group A"</code> has a larger mean of <code>m</code> than
-<code>"Group B"</code>:</p>
+<code>"Group B"</code>.</p>
+<p>These are the model implied means and SDs:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/by.html" class="external-link">by</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">m</span>, <span class="va">dat</span><span class="op">$</span><span class="va">group</span>, <span class="va">mean</span><span class="op">)</span></span>
-<span><span class="co">#&gt; dat$group: Group A</span></span>
-<span><span class="co">#&gt; [1] 18.43357</span></span>
-<span><span class="co">#&gt; ------------------------------------------------------------ </span></span>
-<span><span class="co">#&gt; dat$group: Group B</span></span>
-<span><span class="co">#&gt; [1] 13.42327</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Model implied means</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/lavInspect.html" class="external-link">lavInspect</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"mean.ov"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`Group A`</span></span>
+<span><span class="co">#&gt;      m      y      x     c1     c2 </span></span>
+<span><span class="co">#&gt; 18.434 17.973  9.985  2.055  4.883 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $`Group B`</span></span>
+<span><span class="co">#&gt;      m      y      x     c1     c2 </span></span>
+<span><span class="co">#&gt; 13.423 18.915 10.046  2.138  5.088</span></span>
+<span></span>
+<span><span class="co"># Model implied SDs</span></span>
+<span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/lavInspect.html" class="external-link">lavInspect</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"cov.ov"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">[[</span><span class="st">"Group A"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         m         y         x        c1        c2 </span></span>
+<span><span class="co">#&gt; 1.4916076 2.2158085 1.1055723 0.9687943 1.0741628</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">[[</span><span class="st">"Group B"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         m         y         x        c1        c2 </span></span>
+<span><span class="co">#&gt; 1.2142143 2.5838604 1.0094330 0.9518064 1.0594076</span></span></code></pre></div>
 <p>It would be misleading if the two lines are plotted on the same
 horizontal position, assuming incorrectly that the ranges of
 <code>m</code> are similar in the two groups.</p>
