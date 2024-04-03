@@ -591,12 +591,12 @@ plot.cond_indirect_effects <- function(
     if (has_groups && graph_type_original == "default") {
         cap_txt <- paste0(cap_txt,
                           "\n",
-                          "Graph type is set to tumble for multiple group models.")
+                          "Graph type is set to tumble for multigroup models.")
       }
     if (use_implied_stats && fit_type != "lm") {
         cap_txt <- paste0(cap_txt,
                           "\n",
-                          "Model implied means and SDs are used in drawing the points'.")
+                          "Model implied means and SDs are used in drawing the points.")
       }
     out <- p +
       ggplot2::labs(title = title,

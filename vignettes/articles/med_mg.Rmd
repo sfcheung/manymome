@@ -204,7 +204,7 @@ fit_boot_out <- do_boot(fit = fit,
                         seed = 53253,
                         ncores = 8)
 #> 8 processes started to run bootstrapping.
-#> The expected CPU time is about 7.5 second(s).
+#> The expected CPU time is about 0 second(s).
 ```
 
 # Estimate Indirect Effects

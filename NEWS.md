@@ -1,4 +1,4 @@
-# manymome 0.1.14.10
+# manymome 0.1.14.11
 
 ## New Features
 
@@ -46,7 +46,7 @@
   are used to determine the means and SDs
   used in drawing he plot. This approach
   is useful when equality constraints
-  are present. (0.1.14.2, 0.1.14.6, 0.1.14.10)
+  are present. (0.1.14.2, 0.1.14.6, 0.1.14.10, 0.1.14.11)
 
 - The `plot`-method of
   `cond_indirect_effects`-class objects
