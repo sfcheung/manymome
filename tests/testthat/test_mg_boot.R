@@ -829,10 +829,10 @@ tmp3 <- cond_indirect_effects(x = "x",
                               y = "m1",
                               fit = fit_med_meq3)
 
-p1a <- plot(tmp1)
-p2a <- plot(tmp2)
+p1a <- plot(tmp1, use_implied_stats = FALSE)
+p2a <- plot(tmp2, use_implied_stats = FALSE)
 p2b <- plot(tmp2, use_implied_stats = TRUE)
-p3a <- plot(tmp3)
+p3a <- plot(tmp3, use_implied_stats = FALSE)
 p3b <- plot(tmp3, use_implied_stats = TRUE)
 
 test_that("plot.cond_indirect_effects: multiple groups, implied stats", {

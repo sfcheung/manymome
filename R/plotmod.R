@@ -161,11 +161,12 @@
 #'
 #' @param use_implied_stats For a
 #' multigroup model, if `TRUE`,
+#' the default,
 #' model implied statistics will be
 #' used in computing the means and SDs,
 #' which take into equality constraints,
 #' if any.
-#' If `FALSE`, the default, then the raw
+#' If `FALSE`, then the raw
 #' data is
 #' used to compute the means and SDs.
 #' For latent variables, model implied
@@ -263,7 +264,7 @@ plot.cond_indirect_effects <- function(
                             line_width = 1,
                             point_size = 5,
                             graph_type = c("default", "tumble"),
-                            use_implied_stats = FALSE,
+                            use_implied_stats = TRUE,
                             ...
                     ) {
     has_groups <- cond_indirect_effects_has_groups(x)
@@ -298,6 +299,7 @@ plot.cond_indirect_effects <- function(
         stop("x_method cannot be 'percentile' if x is a latent variable.")
       }
     graph_type <- match.arg(graph_type)
+    graph_type_original <- graph_type
     if (has_groups && graph_type == "default") {
         # warning("Only tumble graph is supported for multiple group models. ",
         #         "Changed graph_type to 'tumble'.")
@@ -586,10 +588,15 @@ plot.cond_indirect_effects <- function(
             cap_txt <- cap_std
           }
       }
-    if (has_groups && graph_type == "default") {
+    if (has_groups && graph_type_original == "default") {
         cap_txt <- paste0(cap_txt,
                           "\n",
                           "Graph type is set to tumble for multiple group models.")
+      }
+    if (use_implied_stats && fit_type != "lm") {
+        cap_txt <- paste0(cap_txt,
+                          "\n",
+                          "Model implied means and SDs are used in drawing the points'.")
       }
     out <- p +
       ggplot2::labs(title = title,

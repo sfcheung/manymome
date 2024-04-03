@@ -19,7 +19,7 @@
   line_width = 1,
   point_size = 5,
   graph_type = c("default", "tumble"),
-  use_implied_stats = FALSE,
+  use_implied_stats = TRUE,
   ...
 )
 }
@@ -126,11 +126,12 @@ for single-group models, and
 
 \item{use_implied_stats}{For a
 multigroup model, if \code{TRUE},
+the default,
 model implied statistics will be
 used in computing the means and SDs,
 which take into equality constraints,
 if any.
-If \code{FALSE}, the default, then the raw
+If \code{FALSE}, then the raw
 data is
 used to compute the means and SDs.
 For latent variables, model implied
