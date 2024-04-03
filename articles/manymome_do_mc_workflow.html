@@ -35,7 +35,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.10</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.11</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -131,8 +131,8 @@ functions to form confidence intervals.</p>
 <code>do_mc()</code><a class="anchor" aria-label="anchor" href="#do_mc"></a>
 </h2>
 <div class="figure">
-<div id="htmlwidget-f561ccdc54507135b8a4" style="width:800px;height:480px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f561ccdc54507135b8a4">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> Z\n\n  Z{{\"How was the model fitted?\"}}\n%%  Zla[\"Fitted by lavaan()\"]\n%%  Zlm[\"Fitted by lm()\"]\n%%  Z -- lm --> Zlm\n%%  Z -- lavaan --> Zla\n  Z -- lavaan --> A\n  Z -- lm --> B:::errornode\n\n  subgraph lm [ ]\n  B([\"Raise an error. lm() not supported.\"])\n  end\n\n  subgraph lavaan [ ]\n  A[\"Call gen_mc_est() to generate Monte Carlo estimates\"]\n  A2[[\"Call fit2mc_out() to generate the implied statistics\"]]\n  end\n\n  A --> A2:::subnode\n  C([\"Return a mc_out-class object\"])\n  A2 --> C:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
+<div id="htmlwidget-5f28701cfd6f6cf394d9" style="width:800px;height:480px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5f28701cfd6f6cf394d9">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> Z\n\n  Z{{\"How was the model fitted?\"}}\n%%  Zla[\"Fitted by lavaan()\"]\n%%  Zlm[\"Fitted by lm()\"]\n%%  Z -- lm --> Zlm\n%%  Z -- lavaan --> Zla\n  Z -- lavaan --> A\n  Z -- lm --> B:::errornode\n\n  subgraph lm [ ]\n  B([\"Raise an error. lm() not supported.\"])\n  end\n\n  subgraph lavaan [ ]\n  A[\"Call gen_mc_est() to generate Monte Carlo estimates\"]\n  A2[[\"Call fit2mc_out() to generate the implied statistics\"]]\n  end\n\n  A --> A2:::subnode\n  C([\"Return a mc_out-class object\"])\n  A2 --> C:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
 Workflow of <code><a href="../reference/do_mc.html">manymome::do_mc()</a></code>
 </p>
 </div>
@@ -143,8 +143,8 @@ Workflow of <code><a href="../reference/do_mc.html">manymome::do_mc()</a></code>
 </h2>
 <p>It retrieves stored Monte Carlo estimates</p>
 <div class="figure">
-<div id="htmlwidget-d1909e6ca0bf8862896e" style="width:700px;height:380px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d1909e6ca0bf8862896e">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> A\n\n  A[\"mc_est <- mc2est()\"]\n  B[\"mc_implied <- mc2implied()\"]\n  B2[\"Combine mc_est and mc_implied\"]\n  C([\"Return a mc_out-class object\"])\n  A --> B\n  B --> B2\n  B2 --> C:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
+<div id="htmlwidget-7d028af2109587b2331e" style="width:700px;height:380px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7d028af2109587b2331e">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> A\n\n  A[\"mc_est <- mc2est()\"]\n  B[\"mc_implied <- mc2implied()\"]\n  B2[\"Combine mc_est and mc_implied\"]\n  C([\"Return a mc_out-class object\"])\n  A --> B\n  B --> B2\n  B2 --> C:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
 Workflow of <code><a href="../reference/fit2mc_out.html">manymome::fit2mc_out()</a></code>
 </p>
 </div>
