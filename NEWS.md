@@ -1,4 +1,4 @@
-# manymome 0.1.14.9
+# manymome 0.1.14.10
 
 ## New Features
 
@@ -41,11 +41,12 @@
   makes more sense for multigroup
   models, in which the distribution of
   variables are allowed to be different
-  between groups. If desired, users
-  can use the model implied statistics
-  to determine the means and SDs, which
+  between groups. Since 0.1.14.10,
+  by default, the model implied statistics
+  are used to determine the means and SDs
+  used in drawing he plot. This approach
   is useful when equality constraints
-  are present. (0.1.14.2, 0.1.14.6)
+  are present. (0.1.14.2, 0.1.14.6, 0.1.14.10)
 
 - The `plot`-method of
   `cond_indirect_effects`-class objects
