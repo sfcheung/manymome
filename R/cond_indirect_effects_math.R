@@ -290,12 +290,42 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
             bse0_mc <- bse0
           }
       }
+    if (has_group) {
+        scale_x_out <- c(e1$scale_x, e2$scale_x)
+        scale_y_out <- c(e1$scale_y, e2$scale_y)
+      } else {
+        scale_x_out <- e1$scale_x
+        scale_y_out <- e1$scale_y
+      }
+    if (has_group) {
+        out_boot_scale_x <- join_sim_scale_factor(e1 = e1,
+                                                  e2 = e2,
+                                                  scaled = "x",
+                                                  prefix = "boot")
+        out_boot_scale_y <- join_sim_scale_factor(e1 = e1,
+                                                  e2 = e2,
+                                                  scaled = "y",
+                                                  prefix = "boot")
+        out_mc_scale_x <- join_sim_scale_factor(e1 = e1,
+                                                  e2 = e2,
+                                                  scaled = "x",
+                                                  prefix = "mc")
+        out_mc_scale_y <- join_sim_scale_factor(e1 = e1,
+                                                  e2 = e2,
+                                                  scaled = "y",
+                                                  prefix = "mc")
+      } else {
+        out_boot_scale_x <- e1$boot_scale_x
+        out_boot_scale_y <- e1$boot_scale_y
+        out_mc_scale_x <- e1$mc_scale_x
+        out_mc_scale_y <- e1$mc_scale_y
+      }
     out <- list(indirect = est0,
                 indirect_raw = est0_raw,
                 components = cp0,
                 components_conditional = cpc0,
-                scale_x = e1$scale_x,
-                scale_y = e1$scale_y,
+                scale_x = scale_x_out,
+                scale_y = scale_y_out,
                 standardized_x = e1$standardized_x,
                 standardized_y = e1$standardized_y,
                 wvalues = join_wvalues(e1, e2),
@@ -310,13 +340,13 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
                 boot_ci = bci0_boot,
                 boot_p = bp0_boot,
                 boot_se = bse0_boot,
-                boot_scale_x = e1$boot_scale_x,
-                boot_scale_y = e1$boot_scale_y,
+                boot_scale_x = out_boot_scale_x,
+                boot_scale_y = out_boot_scale_y,
                 mc_indirect = bind0_mc,
                 mc_ci = bci0_mc,
                 mc_se = bse0_mc,
-                mc_scale_x = e1$mc_scale_x,
-                mc_scale_y = e1$mc_scale_y,
+                mc_scale_x = out_mc_scale_x,
+                mc_scale_y = out_mc_scale_y,
                 level = level0,
                 boot_out = e1$boot_out,
                 mc_out = e1$mc_out,
@@ -436,4 +466,31 @@ join_wvalues <- function(e1, e2) {
       }
     wv0 <- c(wv1, wv2[wvnames])
     return(wv0)
+  }
+
+#' @noRd
+
+join_sim_scale_factor <- function(e1, e2,
+                                  scaled = c("x", "y"),
+                                  prefix = c("boot", "mc")) {
+    scaled <- match.arg(scaled)
+    prefix <- match.arg(prefix)
+    scaled_name <- paste0(prefix, "_scale_", scaled)
+    # Assume e1 and e2 are consistent in standardization
+    if (!is.numeric(e1[scaled_name]) &&
+        !is.list(e1[scaled_name])) {
+        return(e1[scaled_name])
+      }
+    if (!is.list(e1[scaled_name])) {
+        e1_sim_scale <- list(e1[scaled_name])
+      } else {
+        e1_sim_scale <- e1[scaled_name]
+      }
+    if (!is.list(e2[scaled_name])) {
+        e2_sim_scale <- list(e2[scaled_name])
+      } else {
+        e2_sim_scale <- e2[scaled_name]
+      }
+    out_sim_scale <- c(e1_sim_scale, e2_sim_scale)
+    out_sim_scale
   }
