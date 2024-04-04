@@ -1,60 +1,38 @@
-skip("WIP")
+skip_on_cran()
 
-#' @title Pseudo Johnson-Neyman Probing
-#'
-#' @description One paragraph description
-#'
-#' @details Details
-#'   (Include subjects for verbs.)
-#'   (Use 3rd person forms for verbs.)
-#'
-#' @return
-#' Specify what are returned.
-#'
-#' @param arg1 Argument description.
-#' @param ... Additional arguments.
-#'
-#' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
-#'
-#' @references
-#' Cheung, S. F., Cheung, S.-H., Lau, E. Y. Y., Hui, C. H., & Vong, W. N.
-#' (2022) Improving an old way to measure moderation effect in standardized
-#' units. Advance online publication. *Health Psychology*.
-#' \doi{10.1037/hea0001188}
-#'
-#' @seealso [functionname()]
-#'
-#' @family relatedfunctions
-#'
-#' @examples
-#' \donttest{
-#' }
-#'
-#' @export
-#'
-#' @describeIn topic Description of this function
-#' @order 1
-tmpfct <- function(x, y = c("a", "b", "c"), d = NA) {
-  }
-
-library(lavaan)
+library(testthat)
 library(manymome)
-library(ggplot2)
+suppressMessages(library(lavaan))
+
+# Test
+
 dat <- data_med_mod_a
 dat$wx <- dat$x * dat$w
+dat$w2 <- -1 * dat$w
+dat$w2x <- dat$x * dat$w2
 mod <-
 "
-m ~ x  + w + wx
+m ~ x + w + wx
+y  ~ m + x
+"
+mod2 <-
+"
+m ~ x + w2 + w2x
 y  ~ m + x
 "
 fit <- sem(mod, dat,
            meanstructure = TRUE, fixed.x = FALSE,
            se = "none", baseline = FALSE)
-est <- parameterEstimates(fit)
+fit_mc <- sem(mod, dat,
+           meanstructure = TRUE, fixed.x = FALSE,
+           baseline = FALSE)
+fit2 <- sem(mod2, dat,
+           meanstructure = TRUE, fixed.x = FALSE,
+           se = "none", baseline = FALSE)
 
 # Create levels of w1, the moderators
 wlevels <- mod_levels("w", fit = fit, sd_from_mean = c(-5, 0, 5))
-wlevels
+wlevels2 <- mod_levels("w2", fit = fit2, sd_from_mean = c(-5, 0, 5))
 
 # Conditional effects from x to y when w1 is equal to each of the levels
 boot_out <- do_boot(fit,
@@ -62,120 +40,139 @@ boot_out <- do_boot(fit,
                     seed = 4314,
                     parallel = FALSE,
                     progress = FALSE)
+boot_out2 <- do_boot(fit2,
+                    R = 50,
+                    seed = 4314,
+                    parallel = FALSE,
+                    progress = FALSE)
+mc_out <- do_mc(fit_mc,
+                R = 100,
+                seed = 1234,
+                parallel = FALSE,
+                progress = FALSE)
 out <- cond_indirect_effects(x = "x", y = "y", m = "m",
                              wlevels = wlevels,
                              fit = fit,
                              boot_ci = TRUE,
                              boot_out = boot_out)
-out
-confint(out)
-
-tmpfct <- function(w0, which = c("lower", "upper"),
-                   type = c("distance", "limit", "ci", "est")) {
-    which <- match.arg(which)
-    type <- match.arg(type)
-    out <- cond_indirect(wvalues = c(w = w0),
-                        x = "x", y = "y", m = "m",
-                        fit = fit,
-                        boot_ci = TRUE, boot_out = boot_out)
-    out1 <- (switch(which, lower = confint(out)[2],
-                           upper = confint(out)[1]))
-    return(switch(type,
-                  distance = out1^2,
-                  limit = out1,
-                  ci = confint(out),
-                  est = coef(out)))
-  }
-tmpfct(-3)
-tmpfct(2)
-tmpfct(3)
-
-
-w1_bound <- mod_levels(w = "w", fit = fit, sd_from_mean = c(-5, 5))
-w_lower <- optim(min(wlevels),
-              fn = function(x) tmpfct(x, which = "lower"), method = "Brent",
-              lower = min(wlevels), upper = max(wlevels))
-w_upper <- optim(max(wlevels),
-              fn = function(x) tmpfct(x, which = "upper"), method = "Brent",
-              lower = min(wlevels), upper = max(wlevels))
-w_lower$par
-w_upper$par
-w1_bound
-
-cond_indirect_effects(x = "x", y = "y", m = "m",
-                      wlevels = mod_levels("w",
-                                           values = c(w_lower$par, w_upper$par),
-                                           fit = fit),
-                      fit = fit,
-                      boot_ci = TRUE, boot_out = boot_out)
-
-wi <- seq(from = min(wlevels) - 6, to = max(wlevels) + 6, length.out = 100)
-tmplower <- sapply(wi, function(x) tmpfct(x, which = "lower", type = "distance"))
-plot(wi, tmplower)
-abline(h = 0)
-tmpupper <- sapply(wi, function(x) tmpfct(x, which = "upper", type = "distance"))
-plot(wi, tmpupper)
-abline(h = 0)
-
-tmpci <- sapply(wi, function(x) tmpfct(x, type = "ci"))
-tmpest <- sapply(wi, function(x) tmpfct(x, type = "est"))
-ylim <- c(min(tmpci), max(tmpci))
-plot(wi, tmpci[1, ], ylim = ylim, type = "l", lty = "dotted",
-     ylab = "Conditional Indirect Effect",
-     xlab = "Moderator")
-points(wi, tmpci[2, ], type = "l", lty = "dotted")
-points(wi, tmpest, type = "l", lwd = 2)
-abline(h = 0, lwd = 1)
-
-wi <- seq(from = min(wlevels) - 6, to = max(wlevels) + 6, length.out = 100)
-wlevels_long <- mod_levels(w = "w", fit = fit, values = wi)
-tmp <- cond_indirect_effects(wlevels = wlevels_long,
-                             x = "x", y = "y", m = "m",
+out_stdx <- cond_indirect_effects(x = "x", y = "y", m = "m",
+                             wlevels = wlevels,
                              fit = fit,
-                             boot_ci = TRUE, boot_out = boot_out)
-plot_effect_vs_w(tmp)
-tmpdat <- data.frame(w = attr(tmp, "wlevels")$w,
-                     ci.lower = confint(tmp)[, 1],
-                     ci.upper = confint(tmp)[, 2],
-                     effect = coef(tmp))
-p <- ggplot(tmpdat) +
-     geom_line(aes(x = w, y = ci.lower), linetype = "dotted", size = 1) +
-     geom_line(aes(x = w, y = ci.upper), linetype = "dotted", size = 1) +
-     geom_line(aes(x = w, y = effect), linetype = "solid", size = 1) +
-     geom_hline(yintercept = 0, linetype = "solid", color = "red", size = .5) +
-     theme(panel.background = element_rect(fill = "lightgrey"))
-plot(p)
+                             standardized_x = TRUE,
+                             boot_ci = TRUE,
+                             boot_out = boot_out)
+out_stdxy <- cond_indirect_effects(x = "x", y = "y", m = "m",
+                             wlevels = wlevels,
+                             fit = fit,
+                             standardized_x = TRUE,
+                             standardized_y = TRUE,
+                             boot_ci = TRUE,
+                             boot_out = boot_out)
+out2 <- cond_indirect_effects(x = "x", y = "y", m = "m",
+                             wlevels = wlevels2,
+                             fit = fit2,
+                             boot_ci = TRUE,
+                             boot_out = boot_out2)
+out_mc <- cond_indirect_effects(x = "x", y = "y", m = "m",
+                             wlevels = wlevels,
+                             fit = fit_mc,
+                             mc_ci = TRUE,
+                             mc_out = mc_out)
+out_direct <- cond_indirect_effects(x = "x", y = "m",
+                             wlevels = wlevels,
+                             fit = fit,
+                             boot_ci = TRUE,
+                             boot_out = boot_out)
+out_mc_direct <- cond_indirect_effects(x = "x", y = "m",
+                             wlevels = wlevels,
+                             fit = fit_mc,
+                             mc_ci = TRUE,
+                             mc_out = mc_out)
+out_nb <- cond_indirect_effects(x = "x", y = "y", m = "m",
+                             wlevels = wlevels,
+                             fit = fit)
 
-tmpfct <- function(w0, which = c("lower", "upper")) {
-    out <- cond_indirect(wvalues = c(w = w0),
-                         x = "x", y = "y", m = "m",
-                         fit = fit,
-                         boot_ci = TRUE, boot_out = boot_out)
-    switch(which, lower = confint(out)[2],
-                  upper = confint(out)[1])^2
-  }
-w_lower <- optim(min(wlevels_long),
-              fn = function(x) tmpfct(x, which = "lower"), method = "Brent",
-              lower = min(wlevels_long), upper = max(wlevels_long))
-w_upper <- optim(max(wlevels_long),
-              fn = function(x) tmpfct(x, which = "upper"), method = "Brent",
-              lower = min(wlevels_long), upper = max(wlevels_long))
-w_lower$par
-w_upper$par
+test_that("pseudo_johnson_neyman", {
+    w_range <- pseudo_johnson_neyman(out)
+    expect_equal(confint(w_range$cond_effects)[1, 1], 0,
+                 tolerance = 1e-5)
+    expect_equal(confint(w_range$cond_effects)[2, 2], 0,
+                 tolerance = 1e-5)
 
-# If not in the range
+    w_range_stdx <- pseudo_johnson_neyman(out_stdx)
+    expect_equal(confint(w_range_stdx$cond_effects)[1, 1], 0,
+                 tolerance = 1e-5)
+    expect_equal(confint(w_range_stdx$cond_effects)[2, 2], 0,
+                 tolerance = 1e-5)
 
-tmpfct <- function(w0, which = c("lower", "upper")) {
-    out <- cond_indirect(wvalues = c(w = w0),
-                         x = "x", y = "y", m = "m",
-                         fit = fit,
-                         boot_ci = TRUE, boot_out = boot_out)
-    switch(which, lower = confint(out)[2],
-                  upper = confint(out)[1])^2
-  }
-w_lower <- optimize(function(x) tmpfct(x, which = "lower"),
-              lower = min(wlevels_long) + 3, upper = max(wlevels_long))
-w_upper <- optimize(function(x) tmpfct(x, which = "upper"),
-              lower = min(wlevels_long) + 3, upper = max(wlevels_long))
-if (isTRUE(all.equal(w_lower$objective, 0))) w_lower$minimum else NA
-if (isTRUE(all.equal(w_upper$objective, 0))) w_upper$minimum else NA
+    w_range_stdxy <- pseudo_johnson_neyman(out_stdxy)
+    expect_equal(confint(w_range_stdxy$cond_effects)[1, 1], 0,
+                 tolerance = 1e-5)
+    expect_equal(confint(w_range_stdxy$cond_effects)[2, 2], 0,
+                 tolerance = 1e-5)
+
+    w_range_not_found1 <- pseudo_johnson_neyman(out, w_lower = -5)
+    expect_equal(confint(w_range_not_found1$cond_effects)[1, 1], 0,
+                 tolerance = 1e-5)
+    expect_false(confint(w_range_not_found1$cond_effects)[2, 1] > 0)
+
+    w_range_not_found1_ext <- pseudo_johnson_neyman(out, w_lower = -5, extendInt = "yes")
+    expect_equal(confint(w_range_not_found1_ext$cond_effects)[1, 1], 0,
+                 tolerance = 1e-5)
+    expect_equal(confint(w_range_not_found1_ext$cond_effects)[2, 2], 0,
+                 tolerance = 1e-5)
+
+    w_range_not_found2 <- pseudo_johnson_neyman(out, w_upper = 0)
+    expect_false(confint(w_range_not_found2$cond_effects)[1, 1] > 0)
+    expect_equal(confint(w_range_not_found2$cond_effects)[2, 2], 0,
+                 tolerance = 1e-5)
+
+    w_range_not_found3 <- pseudo_johnson_neyman(out,
+                                                w_lower = -5, w_upper = 0)
+    expect_false(confint(w_range_not_found3$cond_effects)[1, 1] > 0)
+    expect_false(confint(w_range_not_found3$cond_effects)[2, 2] < 0)
+
+    w_range2 <- pseudo_johnson_neyman(out2)
+    expect_equal(confint(w_range2$cond_effects)[1, 2], 0,
+                 tolerance = 1e-5)
+    expect_equal(confint(w_range2$cond_effects)[2, 1], 0,
+                 tolerance = 1e-5)
+
+    w_range_direct <- pseudo_johnson_neyman(out_direct)
+    expect_equal(confint(w_range_direct$cond_effects)[1, 1], 0,
+                 tolerance = 1e-5)
+    expect_equal(confint(w_range_direct$cond_effects)[2, 2], 0,
+                 tolerance = 1e-5)
+
+    w_range_mc <- pseudo_johnson_neyman(out_mc)
+    expect_equal(confint(w_range_mc$cond_effects)[1, 1], 0,
+                 tolerance = 1e-5)
+    expect_false(confint(w_range_mc$cond_effects)[2, 1] > 0)
+    w_range_mc_direct <- pseudo_johnson_neyman(out_mc_direct)
+    expect_equal(confint(w_range_mc_direct$cond_effects)[1, 1], 0,
+                 tolerance = 1e-5)
+    expect_false(confint(w_range_mc_direct$cond_effects)[2, 1] > 0)
+})
+
+# Trap error
+
+date <- data_med_mod_a
+date$wx <- dat$x * dat$w
+date$c1m <- dat$c1 * dat$m
+mode <-
+"
+m ~ x + w + wx
+y  ~ m + x + c1 + c1m
+"
+suppressWarnings(fite <- sem(mode, date,
+                            meanstructure = TRUE, fixed.x = FALSE,
+                            se = "none", baseline = FALSE))
+oute <- cond_indirect_effects(x = "x", y = "y", m = "m",
+                             wlevels = c("w", "c1"),
+                             fit = fite)
+
+test_that("pseudo_johnson_neyman: expect error", {
+  expect_error(pseudo_johnson_neyman(oute))
+  expect_error(pseudo_johnson_neyman(out_nb))
+  expect_error(pseudo_johnson_neyman(1))
+})

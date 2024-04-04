@@ -1,4 +1,4 @@
-# manymome 0.1.14.15
+# manymome 0.1.14.16
 
 ## New Features
 
@@ -62,6 +62,15 @@
   against a moderator, using the output
   of `cond_indirect_effects()`. (0.1.14.14 - 0.1.14.15)
 
+- Added `pseudo_johnson_neyman()`. It
+  used the pseudo Johnson-Neyman approach
+  (Hayes, 2022) to find the value of
+  a moderator at which the conditional
+  effect (direct or indirect) changes
+  from nonsignificant to significant
+  (or vice versa), based on the
+  confidence interval selected.
+   (0.1.14.16)
 
 ## Miscellaneous
 
