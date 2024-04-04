@@ -1338,7 +1338,7 @@ cond_indirect_effects <- function(wlevels,
         attr(out1, "est") <- est
         attr(out1, "implied_stats") <- implied_stats
         if (boot_ci) attr(out1, "boot_out") <- boot_out
-        if (mc_ci) attr(out1, "ci_out") <- ci_out
+        if (mc_ci) attr(out1, "mc_out") <- mc_out
         attr(out1, "prods") <- prods
         attr(out1, "x") <- x
         attr(out1, "y") <- y
