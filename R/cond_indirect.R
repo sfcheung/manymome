@@ -225,11 +225,17 @@
 #'
 #' @param standardized_x Logical.
 #' Whether `x` will be standardized.
-#' Default is `FALSE`.
+#' Default is `FALSE`. For multigroup
+#' models, model implied standard
+#' deviation for the selected group
+#' will be used.
 #'
 #' @param standardized_y Logical.
 #' Whether `y` will be standardized.
-#' Default is `FALSE`.
+#' Default is `FALSE`. For multigroup
+#' models, model implied standard
+#' deviation for the selected group
+#' will be used.
 #'
 #' @param boot_ci Logical. Whether
 #' bootstrap confidence interval will be

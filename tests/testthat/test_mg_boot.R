@@ -60,6 +60,15 @@ m2 ~ m1
 y ~ m2 + x
 "
 
+# A mediation-only model with equal x-variances
+mod_med_xvar_eq <-
+"
+m1 ~ x
+m2 ~ m1
+y ~ m2 + x
+x ~~ c(vx, vx, vx)*x
+"
+
 # Check against lavaan
 
 fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
@@ -235,6 +244,45 @@ test_that("indirect_effect and multigrop", {
                  tmp3_chk)
     expect_equal(unname(coef(tmp4)),
                  tmp3_chk * sd_x_3)
+  })
+
+# indirect_i: stdx / stdy, xvar equal
+
+fit_eq_tmp <- sem(mod_med_xvar_eq, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE,
+               group = "gp",
+               group.label = c("gp3", "gp1", "gp2"))
+
+suppressWarnings(tmp_eq_1 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = c("m1", "m2"),
+                        fit = fit_eq_tmp,
+                        group = "gp1",
+                        standardized_x = TRUE))
+suppressWarnings(tmp_eq_2 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = c("m1", "m2"),
+                        fit = fit_eq_tmp,
+                        group = "gp2",
+                        standardized_x = TRUE))
+suppressWarnings(tmp_eq_3 <- indirect_effect(x = "x",
+                        y = "y",
+                        m = c("m1", "m2"),
+                        fit = fit_eq_tmp,
+                        group = "gp3",
+                        standardized_x = TRUE))
+vx_tmp <- lavInspect(fit_eq_tmp, "cov.ov")
+vx_tmp <- sapply(vx_tmp, function(xx) sqrt(diag(xx)["x"]))
+
+test_that("Check std with equality constraint", {
+    expect_equal(tmp_eq_1$scale_x,
+                 tmp_eq_2$scale_x,
+                 ignore_attr = TRUE)
+    expect_equal(tmp_eq_1$scale_x,
+                 tmp_eq_3$scale_x,
+                 ignore_attr = TRUE)
+    expect_equal(tmp_eq_1$scale_x,
+                 vx_tmp[1],
+                 ignore_attr = TRUE)
   })
 
 ## Math
