@@ -244,11 +244,11 @@ plot_effect_vs_w <- function(object,
     path_str <- path_name(full_output_1)
     wlevels <- attr(object, "wlevels")
     w_types <- attr(wlevels, "w_types")
-    if (length(w_types) > 1) {
+    if (ncol(wlevels) > 1) {
         stop("Only an effect with one moderator is supported.")
       }
-    if (w_types != "numeric") {
-        stop("Only numeric moderator is supported.")
+    if (!is.numeric(wlevels[, 1])) {
+        stop("Only numeric moderators are supported.")
       }
     if (is.null(w)) {
         w <- attr(wlevels, "names")
