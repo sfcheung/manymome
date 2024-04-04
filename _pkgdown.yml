@@ -100,6 +100,7 @@ reference:
   - index_of_mome
   - cond_indirect_diff
   - plot.cond_indirect_effects
+  - plot_effect_vs_w
   - indirect_proportion
   - delta_med
 - title: Moderator Levels
