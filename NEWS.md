@@ -57,6 +57,12 @@
   for the latent variables when determining
   the means and SDs. (0.1.14.7)
 
+- Added `plot_effect_vs_w()`. It
+  can plot an effect (direct or indirect)
+  against a moderator, using the output
+  of `cond_indirect_effects()`. (0.1.14.14)
+
+
 ## Miscellaneous
 
 - If a dataset has a variable which
