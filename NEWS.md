@@ -1,4 +1,4 @@
-# manymome 0.1.14.11
+# manymome 0.1.14.13
 
 ## New Features
 
@@ -19,7 +19,8 @@
   multigroup models (e.g,
   `mod_levels()`) will raise an error
   if used on a multigroup model.
-  (0.1.14.2 to 0.1.14.5)
+  (0.1.14.2 to 0.1.14.5,
+   0.1.14.12 - 0.1.14.13)
 
 - Relaxed the requirement that only
   different paths can be used in `+`

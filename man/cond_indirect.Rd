@@ -155,11 +155,17 @@ Default is \code{NULL}.}
 
 \item{standardized_x}{Logical.
 Whether \code{x} will be standardized.
-Default is \code{FALSE}.}
+Default is \code{FALSE}. For multigroup
+models, model implied standard
+deviation for the selected group
+will be used.}
 
 \item{standardized_y}{Logical.
 Whether \code{y} will be standardized.
-Default is \code{FALSE}.}
+Default is \code{FALSE}. For multigroup
+models, model implied standard
+deviation for the selected group
+will be used.}
 
 \item{boot_ci}{Logical. Whether
 bootstrap confidence interval will be
