@@ -1,4 +1,4 @@
-# manymome 0.1.14.13
+# manymome 0.1.14.15
 
 ## New Features
 
@@ -60,7 +60,7 @@
 - Added `plot_effect_vs_w()`. It
   can plot an effect (direct or indirect)
   against a moderator, using the output
-  of `cond_indirect_effects()`. (0.1.14.14)
+  of `cond_indirect_effects()`. (0.1.14.14 - 0.1.14.15)
 
 
 ## Miscellaneous
