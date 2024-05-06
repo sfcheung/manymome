@@ -63,7 +63,7 @@
 #'
 #' # Model Requirements
 #'
-#' For now, by defaul, it only
+#' For now, by default, it only
 #' computes Delta_Med
 #' for the types
 #' of models discussed in
