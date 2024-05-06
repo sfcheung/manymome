@@ -1,61 +1,79 @@
-# manymome 0.1.14.16
+# manymome 0.2.0
 
 ## New Features
 
-- Many functions have been updated to
-  work for multigroup models fitted
-  by `lavaan`. Most common tasks are
-  supported. There likely are functions
-  that may not yet work on
-  multigroup models. Checks will be
-  added to them to alert users.
-  For now, only some
-  functions (e.g.,
-  `cond_indirect_effect()`) supports
-  multigroup models which have
-  one or more moderators within each
-  group, but these models are rare.
-  Functions that do not yet support
-  multigroup models (e.g,
-  `mod_levels()`) will raise an error
-  if used on a multigroup model.
-  (0.1.14.2 to 0.1.14.5,
-   0.1.14.12 - 0.1.14.13)
+### Multigroup Models Supported
 
-- Relaxed the requirement that only
-  different paths can be used in `+`
-  and `-`. They can now be used in
-  these operations, as they may be
-  paths in different groups in
-  multigroup models. (0.1.14.2)
+- Support for mediation paths in
+  multigroup models fitted
+  by `lavaan` has been added.
+  Demonstrations can be found
+  in this [article](https://sfcheung.github.io/manymome/articles/med_mg.html)
 
-- The `plot`-method of
-  `cond_indirect_effects`-class objects
-  will be forced to be a tumble graph
-  if the lines for different groups
-  are to be plotted. In these cases,
-  the data within each group will be used,
-  including standardization. This
-  approach, though leading to results
-  different from those in single-group
-  model using the group as a moderator,
-  makes more sense for multigroup
-  models, in which the distribution of
-  variables are allowed to be different
-  between groups. Since 0.1.14.10,
-  by default, the model implied statistics
-  are used to determine the means and SDs
-  used in drawing he plot. This approach
-  is useful when equality constraints
-  are present. (0.1.14.2, 0.1.14.6, 0.1.14.10, 0.1.14.11)
+    - Many functions have been updated to
+      work for multigroup models with
+      mediators fitted
+      by `lavaan`.
+      Most common tasks
+      support multigroup models.
+      For functions that
+      support moderators, the group
+      variable will be used automatically
+      as a moderator.
+      Checks will be added to functions
+      not yet support multigroup models
+      to alert users.
 
-- The `plot`-method of
-  `cond_indirect_effects`-class objects
-  now supports plotting a path that
-  involves latent variables. The model
-  implied statistics will always be used
-  for the latent variables when determining
-  the means and SDs. (0.1.14.7)
+    - For paths moderated in multigroup
+      models, only some functions
+      (e.g., `cond_indirect_effect()`)
+      are supported. However, multigroup
+      models with moderators are rare.
+      Functions that do not yet support
+      multigroup models (e.g,
+      `mod_levels()`) will raise an error
+      if used on a multigroup model.
+      Support may be added in the future.
+
+    - The `+` and `-` operators can now be
+      used on different paths because
+      they may be
+      paths in different groups in
+      multigroup models.
+
+    - The `plot`-method of
+      `cond_indirect_effects`-class objects
+      will be forced to be a tumble graph
+      if the lines for different groups
+      are to be plotted. In these cases,
+      the data within each group will be used,
+      including standardization. This
+      approach, though leading to results
+      different from those in single-group
+      model using the group as a moderator,
+      makes more sense for multigroup
+      models, in which the distribution of
+      variables are allowed to be different
+      between groups. Since 0.1.14.10,
+      by default, the model implied statistics
+      are used to determine the means and SDs
+      used in drawing the plot. This approach
+      is useful when between-group
+      equality constraints
+      are present.
+
+    - The `plot`-method of
+      `cond_indirect_effects`-class objects
+      now supports plotting a path that
+      involves latent variables. The model
+      implied statistics will always be used
+      for the latent variables when determining
+      the means and SDs. This is useful
+      because the group-variable can
+      be treated as a moderator by
+      `cond_indirect_effects()`. (0.1.14.7)
+
+### Other New Features
 
 - Added `plot_effect_vs_w()`. It
   can plot an effect (direct or indirect)
@@ -93,7 +111,6 @@
   requested, this process will be done
   only once, and the estimates will be
   reused by all paths. (0.1.14.9)
-
 
 # manymome 0.1.14
 
