@@ -1,21 +1,21 @@
 pandoc: 3.1.11
-pkgdown: 2.0.7
+pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
+  do_boot: do_boot.html
+  do_mc_lavaan_mi: do_mc_lavaan_mi.html
+  do_mc: do_mc.html
   get_prod: get_prod.html
   manymome_cond_indirect_and_friends_workflow: manymome_cond_indirect_and_friends_workflow.html
   manymome_do_boot_workflow: manymome_do_boot_workflow.html
   manymome_do_mc_workflow: manymome_do_mc_workflow.html
-  med_mg: med_mg.html
-  do_boot: do_boot.html
-  do_mc: do_mc.html
-  do_mc_lavaan_mi: do_mc_lavaan_mi.html
   manymome: manymome.html
   med_lav: med_lav.html
   med_lm: med_lm.html
+  med_mg: med_mg.html
   mod_levels: mod_levels.html
   mome_lm: mome_lm.html
-last_built: 2024-04-04T14:18Z
+last_built: 2024-05-06T13:25Z
 urls:
   reference: https://sfcheung.github.io/manymome/reference
   article: https://sfcheung.github.io/manymome/articles

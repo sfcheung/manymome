@@ -19,7 +19,7 @@
 <link href="../deps/Oxygen_Mono-0.4.9/font.css" rel="stylesheet">
 <!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Technical Appendix: Workflow of `do_boot()`">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Technical Appendix: Workflow of `do_boot()`">
 <meta property="og:description" content="manymome">
 <meta property="og:image" content="https://sfcheung.github.io/manymome/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -31,11 +31,11 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary" data-bs-theme="dark"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -131,8 +131,8 @@ functions to form confidence intervals.</p>
 <code>do_boot()</code><a class="anchor" aria-label="anchor" href="#do_boot"></a>
 </h2>
 <div class="figure">
-<div id="htmlwidget-bafe2a16b7e4a5097d4b" style="width:800px;height:400px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-bafe2a16b7e4a5097d4b">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  Z{{\"How was the model fitted?\"}}\n  ZZ:::startend --> Z\n%%  Zla[\"Fitted by lavaan()\"]\n%%  Zlm[\"Fitted by lm()\"]\n%%  Z -- lm --> Zlm\n%%  Z -- lavaan --> Zla\n  Z -- lavaan --> A\n  Z -- lm --> B\n\n  subgraph lavaan [ ]\n  A{{\"Are bootstrap estimates stored?\"}}\n  AYes[[\"Call fit2boot_out()\"]]\n  ANo[[\"Call fit2boot_out_do_boot()\"]]\n  end\n\n%%  Zla --> A\n  A -- Yes --> AYes:::subnode\n  A -- No --> ANo:::subnode\n\n  subgraph lm [ ]\n  B{{\"Parallel processing?\"}}\n  BYes[[\"Call lm2boot_out_parallel()\"]]\n  BNo[[\"Call lm2boot_out()\"]]\n  end\n\n%%  Zlm --> B\n  B -- Yes --> BYes:::subnode\n  B -- No --> BNo:::subnode\n\n  C([\"Return a boot_out-class object\"])\n  AYes --> C:::startend\n  ANo --> C\n  BYes --> C\n  BNo --> C\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
+<div id="htmlwidget-ac96cb3ee4656e2e9ec3" style="width:800px;height:400px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  Z{{\"How was the model fitted?\"}}\n  ZZ:::startend --> Z\n%%  Zla[\"Fitted by lavaan()\"]\n%%  Zlm[\"Fitted by lm()\"]\n%%  Z -- lm --> Zlm\n%%  Z -- lavaan --> Zla\n  Z -- lavaan --> A\n  Z -- lm --> B\n\n  subgraph lavaan [ ]\n  A{{\"Are bootstrap estimates stored?\"}}\n  AYes[[\"Call fit2boot_out()\"]]\n  ANo[[\"Call fit2boot_out_do_boot()\"]]\n  end\n\n%%  Zla --> A\n  A -- Yes --> AYes:::subnode\n  A -- No --> ANo:::subnode\n\n  subgraph lm [ ]\n  B{{\"Parallel processing?\"}}\n  BYes[[\"Call lm2boot_out_parallel()\"]]\n  BNo[[\"Call lm2boot_out()\"]]\n  end\n\n%%  Zlm --> B\n  B -- Yes --> BYes:::subnode\n  B -- No --> BNo:::subnode\n\n  C([\"Return a boot_out-class object\"])\n  AYes --> C:::startend\n  ANo --> C\n  BYes --> C\n  BNo --> C\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
 Workflow of <code><a href="../reference/do_boot.html">manymome::do_boot()</a></code>
 </p>
 </div>
@@ -147,8 +147,8 @@ Workflow of <code><a href="../reference/do_boot.html">manymome::do_boot()</a></c
 </h3>
 <p>It retrieves stored bootstrap estimates.</p>
 <div class="figure">
-<div id="htmlwidget-b5729471d9be0b41b90c" style="width:700px;height:400px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-b5729471d9be0b41b90c">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> A\n\n  A[\"boot_est <- boot2est()\"]\n  B[\"boot_implied <- boot2implied()\"]\n  B2[\"Combine boot_est and boot_implied\"]\n  C([\"Return a boot_out-class object\"])\n  A --> B\n  B --> B2\n  B2 --> C:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
+<div id="htmlwidget-e5c8c404fe174e4c81bd" style="width:700px;height:400px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e5c8c404fe174e4c81bd">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> A\n\n  A[\"boot_est <- boot2est()\"]\n  B[\"boot_implied <- boot2implied()\"]\n  B2[\"Combine boot_est and boot_implied\"]\n  C([\"Return a boot_out-class object\"])\n  A --> B\n  B --> B2\n  B2 --> C:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
 Workflow of <code><a href="../reference/fit2boot_out.html">manymome::fit2boot_out()</a></code>
 </p>
 </div>
@@ -158,8 +158,8 @@ Workflow of <code><a href="../reference/fit2boot_out.html">manymome::fit2boot_ou
 <code>fit2boot_out_do_boot()</code><a class="anchor" aria-label="anchor" href="#fit2boot_out_do_boot"></a>
 </h3>
 <div class="figure">
-<div id="htmlwidget-a6358135bf3b0e22753b" style="width:700px;height:500px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a6358135bf3b0e22753b">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> A\n\n  A[\"Call gen_boot_i() to create<br>a function, boot_i(), for doing one bootstrap replication\"]\n  B[\"Generate indices (ids) locally\"]\n  A --> B\n  C[\"Call boot_i() R times\"]\n  D[\"Keep only replications with valid values\"]\n  E([\"Return a boot_out-class object\"])\n  B --> C\n  C --> D\n  D --> E:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
+<div id="htmlwidget-36aa3d2a04d42bbc2145" style="width:700px;height:500px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-36aa3d2a04d42bbc2145">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> A\n\n  A[\"Call gen_boot_i() to create<br>a function, boot_i(), for doing one bootstrap replication\"]\n  B[\"Generate indices (ids) locally\"]\n  A --> B\n  C[\"Call boot_i() R times\"]\n  D[\"Keep only replications with valid values\"]\n  E([\"Return a boot_out-class object\"])\n  B --> C\n  C --> D\n  D --> E:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
 Workflow of <code><a href="../reference/fit2boot_out.html">manymome::fit2boot_out_do_boot()</a></code>
 </p>
 </div>
@@ -174,8 +174,8 @@ Workflow of <code><a href="../reference/fit2boot_out.html">manymome::fit2boot_ou
 <code>lm2boot_out_parallel()</code><a class="anchor" aria-label="anchor" href="#lm2boot_out_parallel"></a>
 </h3>
 <div class="figure">
-<div id="htmlwidget-44180329dc0dba2152ae" style="width:700px;height:450px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-44180329dc0dba2152ae">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> A\n\n  A[\"Call merge_model_frame() to reconstruct the data\"]\n  B[\"Generate indices (ids) locally\"]\n  A --> B\n  C[\"Call lm_boot2est_i() R times\"]\n  E([\"Return a boot_out-class object\"])\n  B --> C\n  C --> E:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
+<div id="htmlwidget-febe03efa1a2d8d52a86" style="width:700px;height:450px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-febe03efa1a2d8d52a86">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> A\n\n  A[\"Call merge_model_frame() to reconstruct the data\"]\n  B[\"Generate indices (ids) locally\"]\n  A --> B\n  C[\"Call lm_boot2est_i() R times\"]\n  E([\"Return a boot_out-class object\"])\n  B --> C\n  C --> E:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
 Workflow of <code><a href="../reference/lm2boot_out.html">manymome::lm2boot_out_parallel()</a></code>
 </p>
 </div>
@@ -185,8 +185,8 @@ Workflow of <code><a href="../reference/lm2boot_out.html">manymome::lm2boot_out_
 <code>lm2boot_out()</code><a class="anchor" aria-label="anchor" href="#lm2boot_out"></a>
 </h3>
 <div class="figure">
-<div id="htmlwidget-c41c2fcae82b5e12e7e2" style="width:700px;height:380px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c41c2fcae82b5e12e7e2">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> A\n\n  A[\"Call merge_model_frame() to reconstruct the data\"]\n  C[\"Call lm_boot2est_i() R times\"]\n  E([\"Return a boot_out-class object\"])\n  A --> C\n  C --> E:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
+<div id="htmlwidget-1fb4450895fe099f74a1" style="width:700px;height:380px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1fb4450895fe099f74a1">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef mcnode fill:#FFFFDD;\n  classDef bootnode fill:#DDFFFF;\n  classDef lavnode fill:#FFDDFF;\n  classDef lmnode fill:#FFDDDD;\n  classDef subnode fill:#FFFFDD;\n\n  ZZ([\"Start\"])\n  ZZ:::startend --> A\n\n  A[\"Call merge_model_frame() to reconstruct the data\"]\n  C[\"Call lm_boot2est_i() R times\"]\n  E([\"Return a boot_out-class object\"])\n  A --> C\n  C --> E:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
 Workflow of <code><a href="../reference/lm2boot_out.html">manymome::lm2boot_out()</a></code>
 </p>
 </div>
@@ -222,13 +222,11 @@ bootstrap confidence intervals, in many (though not all) models.
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p>
-<p>Developed by Shu Fai Cheung, Sing-Hang Cheung.</p>
+  <p>Developed by Shu Fai Cheung, Sing-Hang Cheung.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
     </footer>
