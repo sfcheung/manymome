@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,11 +77,11 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.0" id="manymome-020">manymome 0.2.0<a class="anchor" aria-label="anchor" href="#manymome-020"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.2.1" id="manymome-021">manymome 0.2.1<a class="anchor" aria-label="anchor" href="#manymome-021"></a></h2>
 <div class="section level3">
-<h3 id="new-features-0-2-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
+<h3 id="new-features-0-2-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-1"></a></h3>
 <div class="section level4">
-<h4 id="multigroup-models-supported-0-2-0">Multigroup Models Supported<a class="anchor" aria-label="anchor" href="#multigroup-models-supported-0-2-0"></a></h4>
+<h4 id="multigroup-models-supported-0-2-1">Multigroup Models Supported<a class="anchor" aria-label="anchor" href="#multigroup-models-supported-0-2-1"></a></h4>
 <ul><li>
 <p>Support for mediation paths in multigroup models fitted by <code>lavaan</code> has been added. Demonstrations can be found in this <a href="https://sfcheung.github.io/manymome/articles/med_mg.html">article</a></p>
 <ul><li><p>Many functions have been updated to work for multigroup models with mediators fitted by <code>lavaan</code>. Most common tasks support multigroup models. For functions that support moderators, the group variable will be used automatically as a moderator. Checks will be added to functions not yet support multigroup models to alert users.</p></li>
@@ -92,15 +92,15 @@
 </ul></li>
 </ul></div>
 <div class="section level4">
-<h4 id="other-new-features-0-2-0">Other New Features<a class="anchor" aria-label="anchor" href="#other-new-features-0-2-0"></a></h4>
+<h4 id="other-new-features-0-2-1">Other New Features<a class="anchor" aria-label="anchor" href="#other-new-features-0-2-1"></a></h4>
 <ul><li><p>Added <code><a href="../reference/plot_effect_vs_w.html">plot_effect_vs_w()</a></code>. It can plot an effect (direct or indirect) against a moderator, using the output of <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>. (0.1.14.14 - 0.1.14.15)</p></li>
 <li><p>Added <code><a href="../reference/pseudo_johnson_neyman.html">pseudo_johnson_neyman()</a></code>. It used the pseudo Johnson-Neyman approach (Hayes, 2022) to find the value of a moderator at which the conditional effect (direct or indirect) changes from nonsignificant to significant (or vice versa), based on the confidence interval selected. (0.1.14.16)</p></li>
 </ul></div>
 </div>
 <div class="section level3">
-<h3 id="miscellaneous-0-2-0">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-2-0"></a></h3>
+<h3 id="miscellaneous-0-2-1">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-2-1"></a></h3>
 <ul><li><p>If a dataset has a variable which is a product of itself and another variable (e.g., <code>x*y == x</code>), <code>find_products()</code> will be trapped in an infinite loop. This “product term” will no longer be treated as a “product term.” (0.1.14.1)</p></li>
-<li><p>Bootstrapping and Monte Carlo simulation will no longer be run once for each path in <code><a href="../reference/cond_indirect.html">many_indirect_effects()</a></code>. If <code><a href="../reference/do_boot.html">do_boot()</a></code> or <code><a href="../reference/do_mc.html">do_mc()</a></code> is not used first but bootstrapping or Monte Carlo confidence intervals are requested, this process will be done only once, and the estimates will be reused by all paths. (0.1.14.9)</p></li>
+<li><p>Bootstrapping and Monte Carlo simulation will no longer be run once for each path in <code><a href="../reference/cond_indirect.html">many_indirect_effects()</a></code>. If <code><a href="../reference/do_boot.html">do_boot()</a></code> or <code><a href="../reference/do_mc.html">do_mc()</a></code> is not used first but bootstrapping or Monte Carlo confidence intervals are requested, this process will be done only once, and the estimates will be reused by all paths. (0.1.14.9, a bug fixed in 0.2.1)</p></li>
 </ul></div>
 </div>
     <div class="section level2">
