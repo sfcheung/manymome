@@ -1,4 +1,4 @@
-# manymome 0.2.0
+# manymome 0.2.1
 
 ## New Features
 
@@ -110,7 +110,8 @@
   Carlo confidence intervals are
   requested, this process will be done
   only once, and the estimates will be
-  reused by all paths. (0.1.14.9)
+  reused by all paths. (0.1.14.9,
+  a bug fixed in 0.2.1)
 
 # manymome 0.1.14
 
