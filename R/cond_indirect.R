@@ -1427,9 +1427,9 @@ many_indirect_effects <- function(paths, ...) {
     if ("group_label" %in% colnames(xym)) {
         if (do_sim_once) {
             args_tmp <- utils::modifyList(args,
-                                x = xym$x[1],
-                                y = xym$y[1],
-                                m = xym$m[1],
+                                x = xym$x[[1]],
+                                y = xym$y[[1]],
+                                m = xym$m[[1]],
                                 group = xym$group_number[1])
             sim_out <- do.call(indirect_effect, args_tmp)
             if (isTRUE(args$boot_ci)) {
@@ -1453,9 +1453,9 @@ many_indirect_effects <- function(paths, ...) {
       } else {
         if (do_sim_once) {
             args_tmp <- utils::modifyList(args,
-                           list(x = xym$x[1],
-                                y = xym$y[1],
-                                m = xym$m[1]))
+                           list(x = xym$x[[1]],
+                                y = xym$y[[1]],
+                                m = xym$m[[1]]))
             sim_out <- do.call(indirect_effect, args_tmp)
             if (isTRUE(args$boot_ci)) {
                 args_final <- utils::modifyList(args,
