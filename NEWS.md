@@ -1,3 +1,18 @@
+# manymome 0.2.1.2
+
+## Miscellaneous
+
+- Try not setting the environment when
+  calling `gen_boot_i_lavaan()`, which
+  may not be necessary. (0.2.1.2)
+
+## Bug Fixes
+
+- Fix a bug in `do_boot()` for
+  multigroup models when all groups
+  have exactly the same number of
+  cases. (0.2.2.1)
+
 # manymome 0.2.1
 
 ## New Features

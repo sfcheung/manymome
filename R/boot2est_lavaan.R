@@ -178,7 +178,7 @@ fit2boot_out_do_boot <- function(fit,
         environment(gen_boot_i_update) <- parent.frame()
         boot_i <- gen_boot_i_update(fit)
       } else {
-        environment(gen_boot_i_lavaan) <- parent.frame()
+        # environment(gen_boot_i_lavaan) <- parent.frame()
         boot_i <- gen_boot_i_lavaan(fit)
       }
     dat_org <- lav_data_used(fit,
@@ -195,9 +195,24 @@ fit2boot_out_do_boot <- function(fit,
     if (!isTRUE(all.equal(unclass(lavaan::coef(fit)),
                           lavaan::coef(boot_test)[names(lavaan::coef(fit))],
                           tolerance = sqrt(.Machine$double.eps * 1e08)))) {
-        stop(paste("Something is wrong.",
-                    "This function cannot reproduce the results.",
-                    "Please fit the model with se = 'boot'"))
+        if (isFALSE(identical(internal$gen_boot, "update"))) {
+            # Try again
+            environment(gen_boot_i_lavaan) <- parent.frame()
+            boot_i <- gen_boot_i_lavaan(fit)
+            boot_test <- suppressWarnings(boot_i(dat_org,
+                                                start = lavaan::parameterTable(fit)$start))
+            if (!isTRUE(all.equal(unclass(lavaan::coef(fit)),
+                          lavaan::coef(boot_test)[names(lavaan::coef(fit))],
+                          tolerance = sqrt(.Machine$double.eps * 1e08)))) {
+                stop(paste("Something is wrong with gen_boot_i_lavaan().",
+                            "This function cannot reproduce the results.",
+                            "Please fit the model with se = 'boot'"))
+              }
+          } else {
+            stop(paste("Something is wrong with gen_boot_i_update().",
+                        "This function cannot reproduce the results.",
+                        "Please fit the model with se = 'boot'"))
+          }
       }
     ft <- lavaan::lavInspect(boot_test, "timing")$total
     requireNamespace("parallel", quietly = TRUE)
@@ -205,7 +220,7 @@ fit2boot_out_do_boot <- function(fit,
     if (ngp == 1) {
         ids <- replicate(R, sample.int(n, replace = TRUE), simplify = FALSE)
       } else {
-        ids <- replicate(R, sapply(n, sample.int, replace = TRUE, simplify = TRUE),
+        ids <- replicate(R, sapply(n, sample.int, replace = TRUE, simplify = FALSE),
                          simplify = FALSE)
       }
     if (parallel) {
