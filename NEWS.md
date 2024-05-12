@@ -1,3 +1,12 @@
+# manymome 0.2.1.1
+
+## Bug Fixes
+
+- Fix a bug in `do_boot()` for
+  multigroup models when all groups
+  have exactly the same number of
+  cases. (0.2.2.1)
+
 # manymome 0.2.1
 
 ## New Features

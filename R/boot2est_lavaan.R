@@ -205,7 +205,7 @@ fit2boot_out_do_boot <- function(fit,
     if (ngp == 1) {
         ids <- replicate(R, sample.int(n, replace = TRUE), simplify = FALSE)
       } else {
-        ids <- replicate(R, sapply(n, sample.int, replace = TRUE, simplify = TRUE),
+        ids <- replicate(R, sapply(n, sample.int, replace = TRUE, simplify = FALSE),
                          simplify = FALSE)
       }
     if (parallel) {
