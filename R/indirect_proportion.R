@@ -170,12 +170,16 @@ indirect_proportion <- function(x,
         effects_sum <- Reduce(`+`, all_inds) + direct
         rep_prop <- all_inds[[which(ind_i)]][[rep_name]] /
                       effects_sum[[rep_name]]
-        nboot <- length(rep_prop)
-        tmp <- list(t = matrix(rep_prop, nrow = nboot, ncol = 1),
-                    t0 = ind_prop,
-                    R = nboot)
-        boot_ci0 <- boot::boot.ci(tmp, conf = level, type = "perc")
-        boot_ci1 <- boot_ci0$percent[4:5]
+        # nboot <- length(rep_prop)
+        # tmp <- list(t = matrix(rep_prop, nrow = nboot, ncol = 1),
+        #             t0 = ind_prop,
+        #             R = nboot)
+        # boot_ci0 <- boot::boot.ci(tmp, conf = level, type = "perc")
+        # boot_ci1 <- boot_ci0$percent[4:5]
+        boot_ci1 <- boot_ci_internal(t0 = ind_prop,
+                            t = rep_prop,
+                            level = level,
+                            boot_ci_type = "perc")
         names(boot_ci1) <- paste0(formatC(c(100 * (1 - level) / 2,
                                      100 * (1 - (1 - level) / 2)), 2,
                                      format = "f"), "%")

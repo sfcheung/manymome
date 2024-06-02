@@ -198,12 +198,16 @@ cond_indirect_diff <- function(output,
         mc_diff <- mc_i_to - mc_i_from
         # levels0 <- c((1 - level) / 2, 1 - (1 - level) / 2)
         # boot_diff_ci <- stats::quantile(boot_diff, probs = levels0)
-        boot_tmp <- list(t0 = effect_diff,
-                         t = matrix(mc_diff, ncol = 1),
-                         R = length(mc_diff))
-        mc_diff_ci <- boot::boot.ci(boot_tmp,
-                            type = "perc",
-                            conf = level)$percent[4:5]
+        # boot_tmp <- list(t0 = effect_diff,
+        #                  t = matrix(mc_diff, ncol = 1),
+        #                  R = length(mc_diff))
+        # mc_diff_ci <- boot::boot.ci(boot_tmp,
+        #                     type = "perc",
+        #                     conf = level)$percent[4:5]
+        mc_diff_ci <- boot_ci_internal(t0 = effect_diff,
+                                       t = mc_diff,
+                                       level = level,
+                                       boot_ci_type = "perc")
         names(mc_diff_ci) <- paste0(formatC(c(100 * (1 - level) / 2,
                                       100 * (1 - (1 - level) / 2)), 2,
                                       format = "f"), "%")
@@ -217,12 +221,16 @@ cond_indirect_diff <- function(output,
         boot_diff <- boot_i_to - boot_i_from
         # levels0 <- c((1 - level) / 2, 1 - (1 - level) / 2)
         # boot_diff_ci <- stats::quantile(boot_diff, probs = levels0)
-        boot_tmp <- list(t0 = effect_diff,
-                         t = matrix(boot_diff, ncol = 1),
-                         R = length(boot_diff))
-        boot_diff_ci <- boot::boot.ci(boot_tmp,
-                            type = "perc",
-                            conf = level)$percent[4:5]
+        # boot_tmp <- list(t0 = effect_diff,
+        #                  t = matrix(boot_diff, ncol = 1),
+        #                  R = length(boot_diff))
+        # boot_diff_ci <- boot::boot.ci(boot_tmp,
+        #                     type = "perc",
+        #                     conf = level)$percent[4:5]
+        boot_diff_ci <- boot_ci_internal(t0 = effect_diff,
+                                t = boot_diff,
+                                level = level,
+                                boot_ci_type = "perc")
         names(boot_diff_ci) <- paste0(formatC(c(100 * (1 - level) / 2,
                                       100 * (1 - (1 - level) / 2)), 2,
                                       format = "f"), "%")

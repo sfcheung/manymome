@@ -677,15 +677,19 @@ cond_indirect <- function(x,
         if (save_mc_full) {
             out0$mc_full <- out_mc
           }
-        nboot <- length(out_mc)
+        # nboot <- length(out_mc)
         out0$mc_indirect <- sapply(out_mc, function(x) x$indirect)
         out0$mc_scale_x <- unname(sapply(out_mc, function(x) x$scale_x))
         out0$mc_scale_y <- unname(sapply(out_mc, function(x) x$scale_y))
-        tmp <- list(t = matrix(out0$mc_indirect, nrow = nboot, ncol = 1),
-                    t0 = out0$indirect,
-                    R = nboot)
-        boot_ci0 <- boot::boot.ci(tmp, conf = level, type = "perc")
-        boot_ci1 <- boot_ci0$percent[4:5]
+        # tmp <- list(t = matrix(out0$mc_indirect, nrow = nboot, ncol = 1),
+        #             t0 = out0$indirect,
+        #             R = nboot)
+        # boot_ci0 <- boot::boot.ci(tmp, conf = level, type = "perc")
+        # boot_ci1 <- boot_ci0$percent[4:5]
+        boot_ci1 <- boot_ci_internal(t0 = out0$indirect,
+                            t = out0$mc_indirect,
+                            level = level,
+                            boot_ci_type = "perc")
         names(boot_ci1) <- paste0(formatC(c(100 * (1 - level) / 2,
                                      100 * (1 - (1 - level) / 2)), 2,
                                      format = "f"), "%")
@@ -716,15 +720,19 @@ cond_indirect <- function(x,
         if (save_boot_full) {
             out0$boot_full <- out_boot
           }
-        nboot <- length(out_boot)
+        # nboot <- length(out_boot)
         out0$boot_indirect <- sapply(out_boot, function(x) x$indirect)
         out0$boot_scale_x <- unname(sapply(out_boot, function(x) x$scale_x))
         out0$boot_scale_y <- unname(sapply(out_boot, function(x) x$scale_y))
-        tmp <- list(t = matrix(out0$boot_indirect, nrow = nboot, ncol = 1),
-                    t0 = out0$indirect,
-                    R = nboot)
-        boot_ci0 <- boot::boot.ci(tmp, conf = level, type = "perc")
-        boot_ci1 <- boot_ci0$percent[4:5]
+        # tmp <- list(t = matrix(out0$boot_indirect, nrow = nboot, ncol = 1),
+        #             t0 = out0$indirect,
+        #             R = nboot)
+        # boot_ci0 <- boot::boot.ci(tmp, conf = level, type = "perc")
+        # boot_ci1 <- boot_ci0$percent[4:5]
+        boot_ci1 <- boot_ci_internal(t0 = out0$indirect,
+                            t = out0$boot_indirect,
+                            level = level,
+                            boot_ci_type = "perc")
         names(boot_ci1) <- paste0(formatC(c(100 * (1 - level) / 2,
                                      100 * (1 - (1 - level) / 2)), 2,
                                      format = "f"), "%")
