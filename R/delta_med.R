@@ -473,9 +473,9 @@ form_boot_ci <- function(est,
                         t = boot_est,
                         level = level,
                         boot_ci_type = "perc")
-    names(boot_ci1) <- paste0(formatC(c(100 * (1 - level) / 2,
-                                  100 * (1 - (1 - level) / 2)), 2,
-                                  format = "f"), "%")
+    # names(boot_ci1) <- paste0(formatC(c(100 * (1 - level) / 2,
+    #                               100 * (1 - (1 - level) / 2)), 2,
+    #                               format = "f"), "%")
     out$boot_ci <- boot_ci1
     out$level <- level
     out$boot_p <- est2p(out$boot_est)

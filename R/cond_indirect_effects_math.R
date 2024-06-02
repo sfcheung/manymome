@@ -233,9 +233,9 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
                             t = bind0,
                             level = level0,
                             boot_ci_type = "perc")
-        names(boot_ci1) <- paste0(formatC(c(100 * (1 - level0) / 2,
-                                      100 * (1 - (1 - level0) / 2)), 2,
-                                      format = "f"), "%")
+        # names(boot_ci1) <- paste0(formatC(c(100 * (1 - level0) / 2,
+        #                               100 * (1 - (1 - level0) / 2)), 2,
+        #                               format = "f"), "%")
         bci0 <- boot_ci1
         bp0 <- est2p(bind0)
         bse0 <- stats::sd(bind0, na.rm = TRUE)

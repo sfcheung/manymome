@@ -690,9 +690,9 @@ cond_indirect <- function(x,
                             t = out0$mc_indirect,
                             level = level,
                             boot_ci_type = "perc")
-        names(boot_ci1) <- paste0(formatC(c(100 * (1 - level) / 2,
-                                     100 * (1 - (1 - level) / 2)), 2,
-                                     format = "f"), "%")
+        # names(boot_ci1) <- paste0(formatC(c(100 * (1 - level) / 2,
+        #                              100 * (1 - (1 - level) / 2)), 2,
+        #                              format = "f"), "%")
         out0$mc_ci <- boot_ci1
         out0$level <- level
         out0$mc_se <- stats::sd(out0$mc_indirect, na.rm = TRUE)
@@ -733,9 +733,9 @@ cond_indirect <- function(x,
                             t = out0$boot_indirect,
                             level = level,
                             boot_ci_type = "perc")
-        names(boot_ci1) <- paste0(formatC(c(100 * (1 - level) / 2,
-                                     100 * (1 - (1 - level) / 2)), 2,
-                                     format = "f"), "%")
+        # names(boot_ci1) <- paste0(formatC(c(100 * (1 - level) / 2,
+        #                              100 * (1 - (1 - level) / 2)), 2,
+        #                              format = "f"), "%")
         out0$boot_ci <- boot_ci1
         out0$level <- level
         out0$boot_p <- est2p(out0$boot_indirect)

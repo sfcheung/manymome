@@ -98,7 +98,8 @@ confint.indirect <- function(object, parm, level = .95, ...) {
         out0 <- boot_ci_internal(t0 = object$indirect,
                         t = ind_i,
                         level = level,
-                        boot_ci_type = "perc")
+                        boot_ci_type = "perc",
+                        add_names = FALSE)
       } else {
         warning("Confidence interval not in the object.")
         out0 <- c(NA, NA)

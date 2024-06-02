@@ -180,9 +180,9 @@ indirect_proportion <- function(x,
                             t = rep_prop,
                             level = level,
                             boot_ci_type = "perc")
-        names(boot_ci1) <- paste0(formatC(c(100 * (1 - level) / 2,
-                                     100 * (1 - (1 - level) / 2)), 2,
-                                     format = "f"), "%")
+        # names(boot_ci1) <- paste0(formatC(c(100 * (1 - level) / 2,
+        #                              100 * (1 - (1 - level) / 2)), 2,
+        #                              format = "f"), "%")
       }
     out <- list(proportion = ind_prop,
                 x = x,

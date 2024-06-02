@@ -208,9 +208,9 @@ cond_indirect_diff <- function(output,
                                        t = mc_diff,
                                        level = level,
                                        boot_ci_type = "perc")
-        names(mc_diff_ci) <- paste0(formatC(c(100 * (1 - level) / 2,
-                                      100 * (1 - (1 - level) / 2)), 2,
-                                      format = "f"), "%")
+        # names(mc_diff_ci) <- paste0(formatC(c(100 * (1 - level) / 2,
+        #                               100 * (1 - (1 - level) / 2)), 2,
+        #                               format = "f"), "%")
         mc_diff_se <- stats::sd(mc_diff, na.rm = TRUE)
       } else {
         mc_diff <- NA
@@ -231,9 +231,9 @@ cond_indirect_diff <- function(output,
                                 t = boot_diff,
                                 level = level,
                                 boot_ci_type = "perc")
-        names(boot_diff_ci) <- paste0(formatC(c(100 * (1 - level) / 2,
-                                      100 * (1 - (1 - level) / 2)), 2,
-                                      format = "f"), "%")
+        # names(boot_diff_ci) <- paste0(formatC(c(100 * (1 - level) / 2,
+        #                               100 * (1 - (1 - level) / 2)), 2,
+        #                               format = "f"), "%")
         boot_diff_p <- est2p(boot_diff)
         boot_diff_se <- stats::sd(boot_diff, na.rm = TRUE)
       } else {
