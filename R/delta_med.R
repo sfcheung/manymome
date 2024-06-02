@@ -202,6 +202,16 @@
 #' has any latent variables. Default
 #' is `TRUE`.
 #'
+#' @param boot_type If bootstrap
+#' confidence interval is to be formed,
+#' the type of bootstrap confidence
+#' interval. The supported types
+#' are `"perc"` (percentile bootstrap
+#' confidence interval, the default and
+#' recommended type) and `"bc"`
+#' (bias-corrected, or BC, bootstrap
+#' confidence interval).
+#'
 #' @references
 #' Liu, H., Yuan, K.-H., & Li, H. (2023).
 #' A systematic framework for defining
@@ -264,8 +274,10 @@ delta_med <- function(x,
                       skip_check_single_x = FALSE,
                       skip_check_m_between_x_y = FALSE,
                       skip_check_x_to_y = FALSE,
-                      skip_check_latent_variables = FALSE
+                      skip_check_latent_variables = FALSE,
+                      boot_type = c("perc", "bc")
                       ) {
+    boot_type <- match.arg(boot_type)
     if (missing(x) || missing(m) || missing(y)) {
         stop("x, m, and y must all be specified.")
       }
@@ -310,10 +322,11 @@ delta_med <- function(x,
           }
         R <- length(boot_out)
         dm_boot <- sapply(out_boot, `[[`, "delta_med")
-        # TODO (BC): Add support for BC bootstrap CI
+        # TOCHEDCK (BC): Add support for BC bootstrap CI [DONE]
         dm_boot_out <- form_boot_ci(est = dm,
                                     boot_est = dm_boot,
-                                    level = level)
+                                    level = level,
+                                    boot_type = boot_type)
         dm_boot_ci <- dm_boot_out$boot_ci
         dm_boot_p <- dm_boot_out$boot_p
         dm_boot_se <- dm_boot_out$boot_se
@@ -345,6 +358,7 @@ delta_med <- function(x,
     out$boot_var_predicted_full <- boot_var_predicted_full
     out$boot_var_predicted_no_mediators <- boot_var_predicted_no_mediators
     out$level <- level
+    out$boot_type <- boot_type
     out$call <- match.call()
     class(out) <- "delta_med"
     out
@@ -460,14 +474,16 @@ est_2_coef <- function(est,
 
 form_boot_ci <- function(est,
                          boot_est,
-                         level = .95) {
+                         level = .95,
+                         boot_type = c("perc", "bc")) {
+    boot_type <- match.arg(boot_type)
     out <- list()
     out$est <- est
     out$boot_est <- boot_est
     boot_ci1 <- boot_ci_internal(t0 = est,
                         t = boot_est,
                         level = level,
-                        boot_ci_type = "perc")
+                        boot_type = boot_type)
     out$boot_ci <- boot_ci1
     out$level <- level
     out$boot_p <- est2p(out$boot_est)

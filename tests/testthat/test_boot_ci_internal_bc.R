@@ -33,7 +33,7 @@ fit_boot_def <- fit_boot_est[, 1, drop = FALSE] *
 # Internal BC CI
 suppressWarnings(bc_ci <- boot_ci_internal(t0 = est0,
                                            t = as.vector(fit_boot_def),
-                                           boot_ci_type = "bc",
+                                           boot_type = "bc",
                                            level = .90))
 
 expect_equal(unname(unlist(as.data.frame(est_bc[22, c("ci.lower", "ci.upper")]))),

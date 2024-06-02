@@ -210,20 +210,20 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
     level0 <- e1$level
     has_ci <- FALSE
     ci_type <- NULL
-    boot_ci_type <- NULL
+    boot_type <- NULL
     if (!is.null(e1$boot_indirect) && !is.null(e2$boot_indirect)) {
         has_ci <- TRUE
         ci_type <- "boot"
         ind_name <- "boot_indirect"
-        if (identical(e1$boot_ci_type,
-                      e2$boot_ci_type)) {
-            boot_ci_type <- e1$boot_ci_type
+        if (identical(e1$boot_type,
+                      e2$boot_type)) {
+            boot_type <- e1$boot_type
           } else {
-            boot_ci_type <- "perc"
+            boot_type <- "perc"
           }
-        boot_ci_type <- ifelse(is.null(boot_ci_type),
+        boot_type <- ifelse(is.null(boot_type),
                                yes = "perc",
-                               boot_ci_type)
+                               boot_type)
       }
     if (!is.null(e1$mc_indirect) && !is.null(e2$mc_indirect)) {
         has_ci <- TRUE
@@ -244,7 +244,7 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
         boot_ci1 <- boot_ci_internal(t0 = est0,
                             t = bind0,
                             level = level0,
-                            boot_ci_type = "perc")
+                            boot_type = "perc")
         bci0 <- boot_ci1
         bp0 <- est2p(bind0)
         bse0 <- stats::sd(bind0, na.rm = TRUE)
@@ -333,7 +333,7 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
         out_mc_scale_x <- e1$mc_scale_x
         out_mc_scale_y <- e1$mc_scale_y
       }
-    # TOCHECK (BC): Store boot_ci_type [DONE]
+    # TOCHECK (BC): Store boot_type [DONE]
     out <- list(indirect = est0,
                 indirect_raw = est0_raw,
                 components = cp0,
@@ -366,7 +366,7 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
                 mc_out = e1$mc_out,
                 group_number = gnumber0,
                 group_label = glabel0,
-                boot_ci_type = boot_ci_type
+                boot_type = boot_type
                 )
     class(out) <- c("indirect", class(out))
     out

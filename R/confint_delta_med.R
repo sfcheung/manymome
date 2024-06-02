@@ -36,6 +36,16 @@
 #' when the object was created will be
 #' used.
 #'
+#' @param boot_type If bootstrap
+#' confidence interval is to be formed,
+#' the type of bootstrap confidence
+#' interval. The supported types
+#' are `"perc"` (percentile bootstrap
+#' confidence interval, the default and
+#' recommended type) and `"bc"`
+#' (bias-corrected, or BC, bootstrap
+#' confidence interval).
+#'
 #' @param ...  Optional arguments.
 #' Ignored.
 #'
@@ -78,7 +88,9 @@
 confint.delta_med <- function(object,
                               parm,
                               level = NULL,
+                              boot_type = c("perc", "bc"),
                               ...) {
+    boot_type <- match.arg(boot_type)
     if (is.null(level)) {
         ci_level <- object$level
       } else {
@@ -105,12 +117,17 @@ confint.delta_med <- function(object,
       } else {
         dm_boot <- object$boot_est
         R <- length(stats::na.omit(dm_boot))
-        # TODO (BC): Add support for BC bootstrap CI
+        # TOCHECK (BC): Add support for BC bootstrap CI
         if (!is.null(level)) {
             dm_boot_out <- form_boot_ci(est = object$delta_med,
                                         boot_est = dm_boot,
-                                        level = level)
+                                        level = level,
+                                        boot_type = boot_type)
+            tmp <- switch(boot_type,
+                          perc = "Percentile",
+                          bc = "Bias-Corrected")
             out[] <- dm_boot_out$boot_ci
+            colnames(out) <- paste(tmp, colnames(out))
           } else {
             out[] <- object$boot_ci
           }

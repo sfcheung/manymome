@@ -192,7 +192,7 @@ cond_indirect_diff <- function(output,
     effect_diff <- stats::coef(output_full_to) - stats::coef(output_full_from)
     if (is.null(boot_i_from) || is.null(boot_i_to)) {
         has_boot <- FALSE
-        boot_ci_type <- NULL
+        boot_type <- NULL
       } else {
         has_boot <- TRUE
       }
@@ -207,7 +207,7 @@ cond_indirect_diff <- function(output,
         mc_diff_ci <- boot_ci_internal(t0 = effect_diff,
                                        t = mc_diff,
                                        level = level,
-                                       boot_ci_type = "perc")
+                                       boot_type = "perc")
         mc_diff_se <- stats::sd(mc_diff, na.rm = TRUE)
       } else {
         mc_diff <- NA
@@ -215,17 +215,17 @@ cond_indirect_diff <- function(output,
         mc_diff_se <- NA
       }
     if (has_boot) {
-        if (identical(output_full_from$boot_ci_type,
-                      output_full_to$boot_ci_type)) {
-            boot_ci_type <- output_full_from$boot_ci_type
+        if (identical(output_full_from$boot_type,
+                      output_full_to$boot_type)) {
+            boot_type <- output_full_from$boot_type
           } else {
-            boot_ci_type <- "perc"
+            boot_type <- "perc"
           }
         boot_diff <- boot_i_to - boot_i_from
         boot_diff_ci <- boot_ci_internal(t0 = effect_diff,
                                 t = boot_diff,
                                 level = level,
-                                boot_ci_type = boot_ci_type)
+                                boot_type = boot_type)
         boot_diff_p <- est2p(boot_diff)
         boot_diff_se <- stats::sd(boot_diff, na.rm = TRUE)
       } else {
@@ -263,7 +263,7 @@ cond_indirect_diff <- function(output,
     if (has_boot) out_diff_ci <- boot_diff_ci
     if (has_mc) out_diff_se <- mc_diff_se
     if (has_boot) out_diff_se <- boot_diff_se
-    # TOCHECK (BC): Store boot_ci_type [DONE]
+    # TOCHECK (BC): Store boot_type [DONE]
     out <- list(index = effect_diff,
                 ci = out_diff_ci,
                 pvalue = boot_diff_p,
@@ -276,7 +276,7 @@ cond_indirect_diff <- function(output,
                 mc_diff = mc_diff,
                 has_groups = has_groups,
                 has_wlevels = has_wlevels,
-                boot_ci_type = boot_ci_type)
+                boot_type = boot_type)
     class(out) <- c("cond_indirect_diff", class(out))
     out
   }

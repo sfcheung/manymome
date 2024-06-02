@@ -36,7 +36,7 @@
 #' default is .95, returning the 95%
 #' confidence interval.
 #'
-#' @param boot_ci_type If bootstrap
+#' @param boot_type If bootstrap
 #' confidence interval is to be formed,
 #' the type of bootstrap confidence
 #' interval. The supported types
@@ -89,17 +89,17 @@
 #' @export
 
 
-confint.indirect <- function(object, parm, level = .95, boot_ci_type = c("perc", "bc"), ...) {
-    boot_ci_type <- match.arg(boot_ci_type)
+confint.indirect <- function(object, parm, level = .95, boot_type = c("perc", "bc"), ...) {
+    boot_type <- match.arg(boot_type)
     has_ci <- FALSE
     if (isTRUE(!is.null(object$boot_ci))) {
         has_ci <- TRUE
         ci_type <- "boot"
         ind_i <- object$boot_indirect
-        boot_ci_type <- ifelse(is.null(object$boot_ci_type),
-                               boot_ci_type,
-                               object$boot_ci_type)
-        # TOCHECK (BC): Store boot_ci_type in colnames [DONE]
+        boot_type <- ifelse(is.null(object$boot_type),
+                               boot_type,
+                               object$boot_type)
+        # TOCHECK (BC): Store boot_type in colnames [DONE]
       }
     if (isTRUE(!is.null(object$mc_ci))) {
         has_ci <- TRUE
@@ -110,8 +110,8 @@ confint.indirect <- function(object, parm, level = .95, boot_ci_type = c("perc",
         out0 <- boot_ci_internal(t0 = object$indirect,
                         t = ind_i,
                         level = level,
-                        boot_ci_type = ifelse(ci_type == "boot",
-                                              boot_ci_type,
+                        boot_type = ifelse(ci_type == "boot",
+                                              boot_type,
                                               "perc"),
                         add_names = FALSE)
       } else {
@@ -126,7 +126,7 @@ confint.indirect <- function(object, parm, level = .95, boot_ci_type = c("perc",
                            digits = 2), "%")
     if (has_ci) {
         if (ci_type == "boot") {
-            tmp <- switch(boot_ci_type,
+            tmp <- switch(boot_type,
                           perc = "Percentile: ",
                           bc = "Bias-Corrected: ")
             cnames <- paste0(tmp, cnames)

@@ -28,6 +28,16 @@
 #' additional information will be printed.
 #' Default is `FALSE`.
 #'
+#' @param boot_type If bootstrap
+#' confidence interval is to be formed,
+#' the type of bootstrap confidence
+#' interval. The supported types
+#' are `"perc"` (percentile bootstrap
+#' confidence interval, the default and
+#' recommended type) and `"bc"`
+#' (bias-corrected, or BC, bootstrap
+#' confidence interval).
+#'
 #' @param ...  Optional arguments.
 #' Ignored.
 #'
@@ -79,7 +89,9 @@ print.delta_med <- function(x,
                             digits = 3,
                             level = NULL,
                             full = FALSE,
+                            boot_type = c("perc", "bc"),
                             ...) {
+    boot_type <- match.arg(boot_type)
     x_call <- x$call
     call_x <- x$x
     call_m <- x$m
@@ -94,10 +106,11 @@ print.delta_med <- function(x,
         dm_boot <- x$boot_est
         R <- length(stats::na.omit(dm_boot))
         if (!is.null(level)) {
-            # TODO (BC): Store boot_ci_type
+            # TOCHECK (BC): Use boot_type [DONE]
             dm_boot_out <- form_boot_ci(est = dm,
                                         boot_est = dm_boot,
-                                        level = level)
+                                        level = level,
+                                        boot_type = boot_type)
             dm_boot_ci <- dm_boot_out$boot_ci
             dm_boot_p <- dm_boot_out$boot_p
             dm_boot_se <- dm_boot_out$boot_se
@@ -124,9 +137,14 @@ print.delta_med <- function(x,
     tmp1 <- "Delta_med"
     tmp2 <- formatC(dm, digits = digits, format = "f")
     if (has_boot_ci) {
+      browser()
         tmp1 <- c(tmp1,
                   paste0(formatC(level*100, digits = 1, format = "f"),
-                         "% Bootstrap confidence interval",
+                         "% Bootstrap ",
+                         switch(boot_type,
+                                perc = "percentile",
+                                bc = "bias-corrected"),
+                         " confidence interval",
                          collapse = ""))
         tmp2 <- c(tmp2,
                   paste0("[",
