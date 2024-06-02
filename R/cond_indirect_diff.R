@@ -64,10 +64,17 @@
 #' intervals are requested in calling
 #' [cond_indirect_effects()],
 #' [cond_indirect_diff()] will also form
-#' the percentile confidence
+#' the bootstrap confidence
 #' interval for the difference in
 #' conditional indirect effects
 #' using the stored estimates.
+#'
+#' If bootstrap confidence interval is
+#' to be formed and both effects used
+#' the same type of interval, then that
+#' type will be used. Otherwise,
+#' percentile confidence interval will
+#' be formed.
 #'
 #' @return A `cond_indirect_diff`-class
 #' object. This class has a `print`
@@ -207,11 +214,17 @@ cond_indirect_diff <- function(output,
         mc_diff_se <- NA
       }
     if (has_boot) {
+        if (identical(output_full_from$boot_ci_type,
+                      output_full_to$boot_ci_type)) {
+            boot_ci_type <- output_full_from$boot_ci_type
+          } else {
+            boot_ci_type <- "perc"
+          }
         boot_diff <- boot_i_to - boot_i_from
         boot_diff_ci <- boot_ci_internal(t0 = effect_diff,
                                 t = boot_diff,
                                 level = level,
-                                boot_ci_type = "perc")
+                                boot_ci_type = boot_ci_type)
         boot_diff_p <- est2p(boot_diff)
         boot_diff_se <- stats::sd(boot_diff, na.rm = TRUE)
       } else {
@@ -249,7 +262,7 @@ cond_indirect_diff <- function(output,
     if (has_boot) out_diff_ci <- boot_diff_ci
     if (has_mc) out_diff_se <- mc_diff_se
     if (has_boot) out_diff_se <- boot_diff_se
-    # TODO (BC): Store boot_ci_type
+    # TOCHECK (BC): Store boot_ci_type [DONE]
     out <- list(index = effect_diff,
                 ci = out_diff_ci,
                 pvalue = boot_diff_p,
@@ -261,7 +274,8 @@ cond_indirect_diff <- function(output,
                 boot_diff = boot_diff,
                 mc_diff = mc_diff,
                 has_groups = has_groups,
-                has_wlevels = has_wlevels)
+                has_wlevels = has_wlevels,
+                boot_ci_type = boot_ci_type)
     class(out) <- c("cond_indirect_diff", class(out))
     out
   }
