@@ -442,6 +442,16 @@
 #' groups is greater than one. Default
 #' is `NULL`.
 #'
+#' @param boot_ci_type If bootstrap
+#' confidence interval is to be formed,
+#' the type of bootstrap confidence
+#' interval. The supported types
+#' are `"perc"` (percentile bootstrap
+#' confidence interval, the default and
+#' recommended type) and `"bc"`
+#' (bias-corrected, or BC, bootstrap
+#' confidence interval).
+#'
 #' @seealso [mod_levels()] and
 #' [merge_mod_levels()] for generating
 #' levels of moderators. [do_boot] for
@@ -516,7 +526,8 @@ cond_indirect <- function(x,
                      save_ci_full = FALSE,
                      save_ci_out = TRUE,
                      ci_type = NULL,
-                     group = NULL) {
+                     group = NULL,
+                     boot_ci_type = c("perc", "bc")) {
     fit_type <- cond_indirect_check_fit(fit)
     chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
     if (!chkpath) {
@@ -717,18 +728,18 @@ cond_indirect <- function(x,
         boot_ci1 <- boot_ci_internal(t0 = out0$indirect,
                             t = out0$boot_indirect,
                             level = level,
-                            boot_ci_type = "perc")
+                            boot_ci_type = boot_ci_type)
         out0$boot_ci <- boot_ci1
         out0$level <- level
         out0$boot_p <- est2p(out0$boot_indirect)
         out0$boot_se <- stats::sd(out0$boot_indirect, na.rm = TRUE)
+        out0$boot_ci_type
         if (save_boot_out) {
             out0$boot_out <- boot_out
           } else {
             out0$boot_out <- NULL
           }
-        # TODO:
-        # - Store boot_ci_type
+        # TOCHECK (BC): Store boot_ci_type [DONE]
       }
     out0$cond_indirect_call <- match.call()
     out0
