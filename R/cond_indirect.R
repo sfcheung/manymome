@@ -528,6 +528,7 @@ cond_indirect <- function(x,
                      ci_type = NULL,
                      group = NULL,
                      boot_ci_type = c("perc", "bc")) {
+    boot_ci_type <- match.arg(boot_ci_type)
     fit_type <- cond_indirect_check_fit(fit)
     chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
     if (!chkpath) {
