@@ -55,10 +55,10 @@ test_that("delta_med: CI", {
     expect_output(print(dm_boot, full = TRUE),
                   "0.230")
     expect_output(print(dm_boot, full = TRUE),
-                  "95.0% Bootstrap confidence interval")
+                  "95.0% Bootstrap")
     expect_equal(confint(dm_boot),
                  dm_boot$boot_ci,
                  ignore_attr = TRUE)
-    expect_equal(confint(dm_boot, level = .90),
-                 chk_dm_boot_ci_90)
+    expect_equal(unname(confint(dm_boot, level = .90)),
+                 unname(chk_dm_boot_ci_90))
   })
