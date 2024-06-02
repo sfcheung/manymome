@@ -36,6 +36,19 @@
 #' default is .95, returning the 95%
 #' confidence interval.
 #'
+#' @param boot_ci_type If bootstrap
+#' confidence interval is to be formed,
+#' the type of bootstrap confidence
+#' interval. The supported types
+#' are `"perc"` (percentile bootstrap
+#' confidence interval, the recommended)
+#' and `"bc"`
+#' (bias-corrected, or BC, bootstrap
+#' confidence interval). If the type
+#' has been set when forming `object`,
+#' then the stored type will be used.
+#' Otherwise, the default is `"perc"`.
+#'
 #' @param ...  Additional arguments.
 #' Ignored by the function.
 #'
@@ -76,13 +89,17 @@
 #' @export
 
 
-confint.indirect <- function(object, parm, level = .95, ...) {
+confint.indirect <- function(object, parm, level = .95, boot_ci_type = c("perc", "bc"), ...) {
+    boot_ci_type <- match.arg(boot_ci_type)
     has_ci <- FALSE
     if (isTRUE(!is.null(object$boot_ci))) {
         has_ci <- TRUE
         ci_type <- "boot"
         ind_i <- object$boot_indirect
-        # TODO (BC): Store boot_ci_type in colnames
+        boot_ci_type <- ifelse(is.null(object$boot_ci_type),
+                               boot_ci_type,
+                               object$boot_ci_type)
+        # TOCHECK (BC): Store boot_ci_type in colnames [DONE]
       }
     if (isTRUE(!is.null(object$mc_ci))) {
         has_ci <- TRUE
@@ -93,7 +110,9 @@ confint.indirect <- function(object, parm, level = .95, ...) {
         out0 <- boot_ci_internal(t0 = object$indirect,
                         t = ind_i,
                         level = level,
-                        boot_ci_type = "perc",
+                        boot_ci_type = ifelse(ci_type == "boot",
+                                              boot_ci_type,
+                                              "perc"),
                         add_names = FALSE)
       } else {
         warning("Confidence interval not in the object.")
@@ -105,6 +124,15 @@ confint.indirect <- function(object, parm, level = .95, ...) {
                            trim = TRUE,
                            scientific = FALSE,
                            digits = 2), "%")
+    if (ci_type == "boot") {
+        tmp <- switch(boot_ci_type,
+                      perc = "Percentile: ",
+                      bc = "Bias-Corrected: ")
+        cnames <- paste0(tmp, cnames)
+      }
+    if (ci_type == "mc") {
+        cnames <- paste0("Monte Carlo: ", cnames)
+      }
     rnames <- paste0(object$y, "~", object$x)
     out <- array(data = out0,
                  dim = c(1, 2),
