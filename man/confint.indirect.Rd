@@ -6,7 +6,7 @@
 Indirect Effect or Conditional
 Indirect Effect}
 \usage{
-\method{confint}{indirect}(object, parm, level = 0.95, ...)
+\method{confint}{indirect}(object, parm, level = 0.95, boot_type = c("perc", "bc"), ...)
 }
 \arguments{
 \item{object}{The output of
@@ -20,6 +20,19 @@ parameter.}
 \item{level}{The level of confidence,
 default is .95, returning the 95\%
 confidence interval.}
+
+\item{boot_type}{If bootstrap
+confidence interval is to be formed,
+the type of bootstrap confidence
+interval. The supported types
+are \code{"perc"} (percentile bootstrap
+confidence interval, the recommended)
+and \code{"bc"}
+(bias-corrected, or BC, bootstrap
+confidence interval). If the type
+has been set when forming \code{object},
+then the stored type will be used.
+Otherwise, the default is \code{"perc"}.}
 
 \item{...}{Additional arguments.
 Ignored by the function.}
