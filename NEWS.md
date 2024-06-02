@@ -1,10 +1,14 @@
-# manymome 0.2.1.2
+# manymome 0.2.1.3
 
 ## Miscellaneous
 
 - Try not setting the environment when
   calling `gen_boot_i_lavaan()`, which
   may not be necessary. (0.2.1.2)
+
+- Factor out confidence interval
+  computation into an internal function.
+  (0.2.1.3)
 
 ## Bug Fixes
 

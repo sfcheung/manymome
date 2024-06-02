@@ -360,14 +360,10 @@ index_of_momome <- function(x,
     if (all(has_mc, has_boot)) stop("Cannot for both Monte Carlo and bootstrap confidence intervals.")
     if (has_mc) {
         ind_mc <- i1$mc_diff - i0$mc_diff
-        tmp <- list(t = matrix(ind_mc, nrow = length(ind_mc), ncol = 1),
-                    t0 = ind,
-                    R = length(ind_mc))
-        mc_ci0 <- boot::boot.ci(tmp, conf = level, type = "perc")
-        ind_mc_ci <- mc_ci0$percent[4:5]
-        names(ind_mc_ci) <- paste0(formatC(c(100 * (1 - level) / 2,
-                                      100 * (1 - (1 - level) / 2)), 2,
-                                      format = "f"), "%")
+        ind_mc_ci <- boot_ci_internal(t0 = ind,
+                                      t = ind_mc,
+                                      level = level,
+                                      boot_ci_type = "perc")
         ind_mc_se <- stats::sd(ind_mc, na.rm = TRUE)
       } else {
         ind_mc <- NA
@@ -376,14 +372,10 @@ index_of_momome <- function(x,
       }
     if (has_boot) {
         ind_boot <- i1$boot_diff - i0$boot_diff
-        tmp <- list(t = matrix(ind_boot, nrow = length(ind_boot), ncol = 1),
-                    t0 = ind,
-                    R = length(ind_boot))
-        boot_ci0 <- boot::boot.ci(tmp, conf = level, type = "perc")
-        ind_boot_ci <- boot_ci0$percent[4:5]
-        names(ind_boot_ci) <- paste0(formatC(c(100 * (1 - level) / 2,
-                                      100 * (1 - (1 - level) / 2)), 2,
-                                      format = "f"), "%")
+        ind_boot_ci <- boot_ci_internal(t0 = ind,
+                               t = ind_boot,
+                               level = level,
+                               boot_ci_type = "perc")
         ind_boot_p <- est2p(ind_boot)
         ind_boot_se <- stats::sd(ind_boot, na.rm = TRUE)
       } else {

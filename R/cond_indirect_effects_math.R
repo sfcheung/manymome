@@ -223,15 +223,10 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
         bind0 <- NULL
       }
     if (!is.null(bind0)) {
-        nboot <- length(bind0)
-        tmp <- list(t = matrix(bind0, nrow = nboot, ncol = 1),
-                    t0 = est0,
-                    R = nboot)
-        boot_ci0 <- boot::boot.ci(tmp, conf = level0, type = "perc")
-        boot_ci1 <- boot_ci0$percent[4:5]
-        names(boot_ci1) <- paste0(formatC(c(100 * (1 - level0) / 2,
-                                      100 * (1 - (1 - level0) / 2)), 2,
-                                      format = "f"), "%")
+        boot_ci1 <- boot_ci_internal(t0 = est0,
+                            t = bind0,
+                            level = level0,
+                            boot_ci_type = "perc")
         bci0 <- boot_ci1
         bp0 <- est2p(bind0)
         bse0 <- stats::sd(bind0, na.rm = TRUE)
