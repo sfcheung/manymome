@@ -137,7 +137,6 @@ print.delta_med <- function(x,
     tmp1 <- "Delta_med"
     tmp2 <- formatC(dm, digits = digits, format = "f")
     if (has_boot_ci) {
-      browser()
         tmp1 <- c(tmp1,
                   paste0(formatC(level*100, digits = 1, format = "f"),
                          "% Bootstrap ",
