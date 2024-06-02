@@ -175,6 +175,8 @@ indirect_proportion <- function(x,
                             level = level,
                             boot_ci_type = "perc")
       }
+    # TODO:
+    # - Store boot_ci_type
     out <- list(proportion = ind_prop,
                 x = x,
                 y = y,

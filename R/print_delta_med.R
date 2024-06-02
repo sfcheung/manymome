@@ -94,6 +94,8 @@ print.delta_med <- function(x,
         dm_boot <- x$boot_est
         R <- length(stats::na.omit(dm_boot))
         if (!is.null(level)) {
+            # TODO:
+            # - Store boot_ci_type
             dm_boot_out <- form_boot_ci(est = dm,
                                         boot_est = dm_boot,
                                         level = level)

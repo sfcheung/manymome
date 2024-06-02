@@ -82,6 +82,8 @@ confint.indirect <- function(object, parm, level = .95, ...) {
         has_ci <- TRUE
         ci_type <- "boot"
         ind_i <- object$boot_indirect
+        # TODO:
+        # - Store boot_ci_type in colnames
       }
     if (isTRUE(!is.null(object$mc_ci))) {
         has_ci <- TRUE

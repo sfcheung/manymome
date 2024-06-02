@@ -727,6 +727,8 @@ cond_indirect <- function(x,
           } else {
             out0$boot_out <- NULL
           }
+        # TODO:
+        # - Store boot_ci_type
       }
     out0$cond_indirect_call <- match.call()
     out0

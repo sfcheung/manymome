@@ -105,6 +105,8 @@ confint.delta_med <- function(object,
       } else {
         dm_boot <- object$boot_est
         R <- length(stats::na.omit(dm_boot))
+        # TODO:
+        # - Add support for BC bootstrap CI
         if (!is.null(level)) {
             dm_boot_out <- form_boot_ci(est = object$delta_med,
                                         boot_est = dm_boot,
