@@ -89,12 +89,6 @@ confint.indirect <- function(object, parm, level = .95, ...) {
         ind_i <- object$mc_indirect
       }
     if (has_ci) {
-        # boot_out <- list(t0 = object$indirect,
-        #                  t = matrix(ind_i, ncol = 1),
-        #                  R = length(ind_i))
-        # out0 <- boot::boot.ci(boot_out,
-        #                     type = "perc",
-        #                     conf = level)$percent[4:5]
         out0 <- boot_ci_internal(t0 = object$indirect,
                         t = ind_i,
                         level = level,

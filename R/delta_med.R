@@ -463,19 +463,10 @@ form_boot_ci <- function(est,
     out <- list()
     out$est <- est
     out$boot_est <- boot_est
-    # nboot <- length(boot_est)
-    # tmp <- list(t = matrix(boot_est, nrow = nboot, ncol = 1),
-    #             t0 = est,
-    #             R = nboot)
-    # boot_ci0 <- boot::boot.ci(tmp, conf = level, type = "perc")
-    # boot_ci1 <- boot_ci0$percent[4:5]
     boot_ci1 <- boot_ci_internal(t0 = est,
                         t = boot_est,
                         level = level,
                         boot_ci_type = "perc")
-    # names(boot_ci1) <- paste0(formatC(c(100 * (1 - level) / 2,
-    #                               100 * (1 - (1 - level) / 2)), 2,
-    #                               format = "f"), "%")
     out$boot_ci <- boot_ci1
     out$level <- level
     out$boot_p <- est2p(out$boot_est)
