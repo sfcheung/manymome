@@ -310,8 +310,7 @@ delta_med <- function(x,
           }
         R <- length(boot_out)
         dm_boot <- sapply(out_boot, `[[`, "delta_med")
-        # TODO:
-        # - Add support for BC bootstrap CI
+        # TODO (BC): Add support for BC bootstrap CI
         dm_boot_out <- form_boot_ci(est = dm,
                                     boot_est = dm_boot,
                                     level = level)

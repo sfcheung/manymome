@@ -315,8 +315,7 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
         out_mc_scale_x <- e1$mc_scale_x
         out_mc_scale_y <- e1$mc_scale_y
       }
-    # TODO:
-    # - Store boot_ci_type
+    # TODO (BC): Store boot_ci_type
     out <- list(indirect = est0,
                 indirect_raw = est0_raw,
                 components = cp0,

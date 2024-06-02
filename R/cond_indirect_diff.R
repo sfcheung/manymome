@@ -249,8 +249,7 @@ cond_indirect_diff <- function(output,
     if (has_boot) out_diff_ci <- boot_diff_ci
     if (has_mc) out_diff_se <- mc_diff_se
     if (has_boot) out_diff_se <- boot_diff_se
-    # TODO:
-    # - Store boot_ci_type
+    # TODO (BC): Store boot_ci_type
     out <- list(index = effect_diff,
                 ci = out_diff_ci,
                 pvalue = boot_diff_p,
