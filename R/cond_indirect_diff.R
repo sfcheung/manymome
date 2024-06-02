@@ -192,6 +192,7 @@ cond_indirect_diff <- function(output,
     effect_diff <- stats::coef(output_full_to) - stats::coef(output_full_from)
     if (is.null(boot_i_from) || is.null(boot_i_to)) {
         has_boot <- FALSE
+        boot_ci_type <- NULL
       } else {
         has_boot <- TRUE
       }

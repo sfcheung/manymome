@@ -124,14 +124,16 @@ confint.indirect <- function(object, parm, level = .95, boot_ci_type = c("perc",
                            trim = TRUE,
                            scientific = FALSE,
                            digits = 2), "%")
-    if (ci_type == "boot") {
-        tmp <- switch(boot_ci_type,
-                      perc = "Percentile: ",
-                      bc = "Bias-Corrected: ")
-        cnames <- paste0(tmp, cnames)
-      }
-    if (ci_type == "mc") {
-        cnames <- paste0("Monte Carlo: ", cnames)
+    if (has_ci) {
+        if (ci_type == "boot") {
+            tmp <- switch(boot_ci_type,
+                          perc = "Percentile: ",
+                          bc = "Bias-Corrected: ")
+            cnames <- paste0(tmp, cnames)
+          }
+        if (ci_type == "mc") {
+            cnames <- paste0("Monte Carlo: ", cnames)
+          }
       }
     rnames <- paste0(object$y, "~", object$x)
     out <- array(data = out0,
