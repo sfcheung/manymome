@@ -4,14 +4,7 @@
 \alias{print.delta_med}
 \title{Print a 'delta_med' Class Object}
 \usage{
-\method{print}{delta_med}(
-  x,
-  digits = 3,
-  level = NULL,
-  full = FALSE,
-  boot_type = c("perc", "bc"),
-  ...
-)
+\method{print}{delta_med}(x, digits = 3, level = NULL, full = FALSE, boot_type, ...)
 }
 \arguments{
 \item{x}{A \code{delta_med}-class object.}
@@ -36,10 +29,11 @@ confidence interval is to be formed,
 the type of bootstrap confidence
 interval. The supported types
 are \code{"perc"} (percentile bootstrap
-confidence interval, the default and
-recommended type) and \code{"bc"}
+confidence interval, the recommended
+method) and \code{"bc"}
 (bias-corrected, or BC, bootstrap
-confidence interval).}
+confidence interval). If not supplied,
+the stored \code{boot_type} will be used.}
 
 \item{...}{Optional arguments.
 Ignored.}
