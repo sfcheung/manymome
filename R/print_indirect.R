@@ -134,6 +134,7 @@ print.indirect <- function(x,
     standardized <- (standardized_x && standardized_y)
     has_ci <- FALSE
     ci_type <- NULL
+    boot_type <- NULL
     if (is.numeric(x$group_number)) {
         has_group <- TRUE
       } else {
@@ -145,6 +146,8 @@ print.indirect <- function(x,
         ci_name <- "boot_ci"
         se_name <- "boot_se"
         R <- length(x$boot_indirect)
+        boot_type <- x$boot_type
+        if (is.null(boot_type)) boot_type <- "perc"
       }
     if (isTRUE(!is.null(x$mc_ci))) {
         has_ci <- TRUE
@@ -336,8 +339,11 @@ print.indirect <- function(x,
       }
     if (has_ci) {
         cat("\n\n")
+        tmp <- switch(boot_type,
+                      perc = "Percentile",
+                      bc = "Bias-corrected")
         tmp1 <- switch(ci_type,
-                  boot = paste("Percentile confidence interval formed by nonparametric bootstrapping",
+                  boot = paste(tmp, "confidence interval formed by nonparametric bootstrapping",
                           "with ",
                           R,
                           " bootstrap samples."),
