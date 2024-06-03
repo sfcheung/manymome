@@ -405,7 +405,6 @@ index_of_momome <- function(x,
     if (has_boot) ind_ci <- ind_boot_ci
     if (has_mc) ind_se <- ind_mc_se
     if (has_boot) ind_se <- ind_boot_se
-    # TOCHECK (BC): Store boot_type [DONE]
     out <- list(index = ind,
                 ci = ind_ci,
                 pvalue = ind_boot_p,
