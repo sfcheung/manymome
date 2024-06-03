@@ -341,8 +341,8 @@ print.indirect <- function(x,
         cat("\n\n")
         tmp <- switch(ci_type,
                       boot = switch(boot_type,
-                                    perc = "percentile",
-                                    bc = "bias-corrected"),
+                                    perc = "Percentile",
+                                    bc = "Bias-corrected"),
                       mc = NULL)
         tmp1 <- switch(ci_type,
                   boot = paste(tmp, "confidence interval formed by nonparametric bootstrapping",

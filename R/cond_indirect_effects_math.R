@@ -46,7 +46,7 @@
 #' type will be used.
 #' Otherwise, percentile bootstrap
 #' confidence interval, the recommended
-#' method, will be uesd.
+#' method, will be used.
 #'
 #' ## Multigroup Models
 #'
@@ -333,7 +333,6 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
         out_mc_scale_x <- e1$mc_scale_x
         out_mc_scale_y <- e1$mc_scale_y
       }
-    # TOCHECK (BC): Store boot_type [DONE]
     out <- list(indirect = est0,
                 indirect_raw = est0_raw,
                 components = cp0,
