@@ -189,9 +189,11 @@ print.indirect_list <- function(x, digits = 3,
         if (has_ci) {
             level_str <- paste0(formatC(level * 100, 1, format = "f"), "%")
             cat("\n ")
-            tmp <- switch(boot_type,
-                          perc = "percentile",
-                          bc = "bias-corrected")
+            tmp <- switch(ci_type,
+                          boot = switch(boot_type,
+                                        perc = "percentile",
+                                        bc = "bias-corrected"),
+                          mc = NULL)
             tmp1 <- switch(ci_type,
                       boot = paste(tmp, "confidence intervals",
                                    "by nonparametric bootstrapping with"),
