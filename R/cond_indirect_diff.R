@@ -263,6 +263,9 @@ cond_indirect_diff <- function(output,
     if (has_boot) out_diff_ci <- boot_diff_ci
     if (has_mc) out_diff_se <- mc_diff_se
     if (has_boot) out_diff_se <- boot_diff_se
+    ci_type <- NA
+    if (has_mc) ci_type <- "mc"
+    if (has_boot) ci_type <- "boot"
     # TOCHECK (BC): Store boot_type [DONE]
     out <- list(index = effect_diff,
                 ci = out_diff_ci,
@@ -276,7 +279,8 @@ cond_indirect_diff <- function(output,
                 mc_diff = mc_diff,
                 has_groups = has_groups,
                 has_wlevels = has_wlevels,
-                boot_type = boot_type)
+                boot_type = boot_type,
+                ci_type = ci_type)
     class(out) <- c("cond_indirect_diff", class(out))
     out
   }
@@ -413,6 +417,7 @@ print.cond_indirect_diff <- function(x,
                            y = full_output_attr$y,
                            Change = formatC(x$index, digits = digits, format = "f"))
     has_ci <- !all(is.na(x$ci))
+    ci_type <- x$ci_type
     if (has_ci) {
         index_df$CI.lo <- formatC(x$ci[1], digits = digits, format = "f")
         index_df$CI.hi <- formatC(x$ci[2], digits = digits, format = "f")
@@ -445,9 +450,15 @@ print.cond_indirect_diff <- function(x,
     print(index_df, nd = digits)
     cat("\n ")
     if (has_ci) {
+        boot_type <- x$boot_type
+        tmp <- switch(ci_type,
+                      mc = "Monte Carlo",
+                      boot = switch(boot_type,
+                                    perc = "percentile",
+                                    bc = "bias-corrected"))
         cat(strwrap(paste0("- [CI.lo, CI.hi]: ",
                           x$level * 100,
-                          "% percentile confidence interval."), exdent = 3),
+                          "% ", tmp, " confidence interval."), exdent = 3),
                           sep = "\n")
         if (!identical(NA, x$boot_diff) && !is.na(x$pvalue) &&
             pvalue) {

@@ -734,7 +734,7 @@ cond_indirect <- function(x,
         out0$level <- level
         out0$boot_p <- est2p(out0$boot_indirect)
         out0$boot_se <- stats::sd(out0$boot_indirect, na.rm = TRUE)
-        out0$boot_type
+        out0$boot_type <- boot_type
         if (save_boot_out) {
             out0$boot_out <- boot_out
           } else {
