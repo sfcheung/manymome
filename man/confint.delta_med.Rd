@@ -5,7 +5,7 @@
 \title{Confidence Interval for
 Delta_Med in a 'delta_med'-Class Object}
 \usage{
-\method{confint}{delta_med}(object, parm, level = NULL, boot_type = c("perc", "bc"), ...)
+\method{confint}{delta_med}(object, parm, level = NULL, boot_type, ...)
 }
 \arguments{
 \item{object}{The output of
@@ -25,10 +25,11 @@ confidence interval is to be formed,
 the type of bootstrap confidence
 interval. The supported types
 are \code{"perc"} (percentile bootstrap
-confidence interval, the default and
-recommended type) and \code{"bc"}
+confidence interval, the recommended
+method) and \code{"bc"}
 (bias-corrected, or BC, bootstrap
-confidence interval).}
+confidence interval). If not supplied,
+the stored \code{boot_type} will be used.}
 
 \item{...}{Optional arguments.
 Ignored.}

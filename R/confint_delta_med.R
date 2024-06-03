@@ -41,10 +41,11 @@
 #' the type of bootstrap confidence
 #' interval. The supported types
 #' are `"perc"` (percentile bootstrap
-#' confidence interval, the default and
-#' recommended type) and `"bc"`
+#' confidence interval, the recommended
+#' method) and `"bc"`
 #' (bias-corrected, or BC, bootstrap
-#' confidence interval).
+#' confidence interval). If not supplied,
+#' the stored `boot_type` will be used.
 #'
 #' @param ...  Optional arguments.
 #' Ignored.
@@ -88,14 +89,24 @@
 confint.delta_med <- function(object,
                               parm,
                               level = NULL,
-                              boot_type = c("perc", "bc"),
+                              boot_type,
                               ...) {
-    boot_type <- match.arg(boot_type)
+    if (missing(boot_type)) {
+        ci_boot_type <- object$boot_type
+      } else {
+        ci_boot_type <- boot_type
+      }
     if (is.null(level)) {
         ci_level <- object$level
       } else {
         ci_level <- level
       }
+    if ((ci_boot_type == object$boot_type) &&
+        (ci_level == object$level)) {
+          new_ci <- FALSE
+        } else {
+          new_ci <- TRUE
+        }
 
     # Borrowed from stats::confint()
     probs <- c((1 - ci_level) / 2, 1 - (1 - ci_level) / 2)
@@ -118,18 +129,20 @@ confint.delta_med <- function(object,
         dm_boot <- object$boot_est
         R <- length(stats::na.omit(dm_boot))
         # TOCHECK (BC): Add support for BC bootstrap CI
-        if (!is.null(level)) {
+        tmp <- switch(ci_boot_type,
+                      perc = "Percentile",
+                      bc = "Bias-Corrected")
+        if (new_ci) {
             dm_boot_out <- form_boot_ci(est = object$delta_med,
                                         boot_est = dm_boot,
-                                        level = level,
-                                        boot_type = boot_type)
-            tmp <- switch(boot_type,
-                          perc = "Percentile",
-                          bc = "Bias-Corrected")
+                                        level = ci_level,
+                                        boot_type = ci_boot_type)
+
             out[] <- dm_boot_out$boot_ci
             colnames(out) <- paste(tmp, colnames(out))
           } else {
             out[] <- object$boot_ci
+            colnames(out) <- paste(tmp, colnames(out))
           }
         return(out)
       }

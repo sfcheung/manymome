@@ -92,6 +92,7 @@ print.delta_med <- function(x,
                             boot_type = c("perc", "bc"),
                             ...) {
     boot_type <- match.arg(boot_type)
+    if (!is.null(x$boot_type)) boot_type <- x$boot_type
     x_call <- x$call
     call_x <- x$x
     call_m <- x$m
