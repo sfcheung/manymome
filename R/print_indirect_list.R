@@ -112,10 +112,13 @@ print.indirect_list <- function(x, digits = 3,
     standardized <- (standardized_x && standardized_y)
     has_ci <- FALSE
     ci_type <- NULL
+    boot_type <- NULL
     if (isTRUE(!is.null(x[[1]]$boot_ci))) {
         has_ci <- TRUE
         ci_type <- "boot"
         ind_name <- "boot_indirect"
+        boot_type <- x[[1]]$boot_type
+        if (is.null(boot_type)) boot_type <- "perc"
       }
     if (isTRUE(!is.null(x[[1]]$mc_ci))) {
         has_ci <- TRUE
@@ -186,8 +189,11 @@ print.indirect_list <- function(x, digits = 3,
         if (has_ci) {
             level_str <- paste0(formatC(level * 100, 1, format = "f"), "%")
             cat("\n ")
+            tmp <- switch(boot_type,
+                          perc = "percentile",
+                          bc = "bias-corrected")
             tmp1 <- switch(ci_type,
-                      boot = paste("percentile confidence intervals",
+                      boot = paste(tmp, "confidence intervals",
                                    "by nonparametric bootstrapping with"),
                       mc = "Monte Carlo confidence intervals with")
             tmp2 <- switch(ci_type,
