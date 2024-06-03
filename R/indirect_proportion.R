@@ -64,16 +64,6 @@
 #' [semTools::runMI()] or
 #' its wrapper, such as [semTools::sem.mi()].
 #'
-#' @param boot_type If bootstrap
-#' confidence interval is to be formed,
-#' the type of bootstrap confidence
-#' interval. The supported types
-#' are `"perc"` (percentile bootstrap
-#' confidence interval, the default and
-#' recommended type) and `"bc"`
-#' (bias-corrected, or BC, bootstrap
-#' confidence interval).
-#'
 #'
 #' @references
 #' Alwin, D. F., & Hauser, R. M. (1975).
@@ -109,9 +99,9 @@
 indirect_proportion <- function(x,
                                 y,
                                 m = NULL,
-                                fit = NULL,
-                                boot_type = c("perc", "bc")) {
-    boot_type <- match.arg(boot_type)
+                                fit = NULL) {
+    # Support for boot tentatively added but not enabled.
+    boot_type <- "perc"
     if (is.null(m)) {
         stop("m cannot be NULL.")
       }
@@ -121,7 +111,7 @@ indirect_proportion <- function(x,
                     fit = fit)) {
         stop("The path is not valid.")
       }
-    # Do not enable CI for now
+    # TODO: Do not enable CI for now
     boot_out <- NULL
     mc_out <- NULL
     level <- .95
@@ -188,7 +178,7 @@ indirect_proportion <- function(x,
                             level = level,
                             boot_type = "perc")
       }
-    # TOCHECK (BC): Store boot_type [DONE]
+    # TODO: May add CI later.
     out <- list(proportion = ind_prop,
                 x = x,
                 y = y,

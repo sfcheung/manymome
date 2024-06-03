@@ -4,7 +4,7 @@
 \alias{indirect_proportion}
 \title{Proportion of Effect Mediated}
 \usage{
-indirect_proportion(x, y, m = NULL, fit = NULL, boot_type = c("perc", "bc"))
+indirect_proportion(x, y, m = NULL, fit = NULL)
 }
 \arguments{
 \item{x}{The name of the \code{x} variable.
@@ -27,16 +27,6 @@ a \code{lavaan.mi} object
 returned by
 \code{\link[semTools:runMI]{semTools::runMI()}} or
 its wrapper, such as \code{\link[semTools:runMI]{semTools::sem.mi()}}.}
-
-\item{boot_type}{If bootstrap
-confidence interval is to be formed,
-the type of bootstrap confidence
-interval. The supported types
-are \code{"perc"} (percentile bootstrap
-confidence interval, the default and
-recommended type) and \code{"bc"}
-(bias-corrected, or BC, bootstrap
-confidence interval).}
 }
 \value{
 An \code{indirect_proportion} class object.
