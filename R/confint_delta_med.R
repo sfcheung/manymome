@@ -128,7 +128,6 @@ confint.delta_med <- function(object,
       } else {
         dm_boot <- object$boot_est
         R <- length(stats::na.omit(dm_boot))
-        # TOCHECK (BC): Add support for BC bootstrap CI
         tmp <- switch(ci_boot_type,
                       perc = "Percentile",
                       bc = "Bias-Corrected")

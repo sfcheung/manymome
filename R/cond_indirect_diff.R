@@ -266,7 +266,6 @@ cond_indirect_diff <- function(output,
     ci_type <- NA
     if (has_mc) ci_type <- "mc"
     if (has_boot) ci_type <- "boot"
-    # TOCHECK (BC): Store boot_type [DONE]
     out <- list(index = effect_diff,
                 ci = out_diff_ci,
                 pvalue = boot_diff_p,

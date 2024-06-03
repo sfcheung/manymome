@@ -740,7 +740,6 @@ cond_indirect <- function(x,
           } else {
             out0$boot_out <- NULL
           }
-        # TOCHECK (BC): Store boot_type [DONE]
       }
     out0$cond_indirect_call <- match.call()
     out0
