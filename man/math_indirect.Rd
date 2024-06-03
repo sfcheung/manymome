@@ -66,7 +66,7 @@ bootstrap confidence interval, that
 type will be used.
 Otherwise, percentile bootstrap
 confidence interval, the recommended
-method, will be uesd.
+method, will be used.
 \subsection{Multigroup Models}{
 
 Since Version 0.1.14.2, support for
