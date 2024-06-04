@@ -27,7 +27,7 @@ to use `do_boot()` from the package
 ([Cheung & Cheung, 2023](https://doi.org/10.3758/s13428-023-02224-z))
 to generate bootstrap estimates for
 `indirect_effect()` and `cond_indirect_effects()` to
-form percentile bootstrap confidence intervals.
+form bootstrap confidence intervals.
 
 Although `indirect_effect()` and `cond_indirect_effects()`
 can also be used to generate bootstrap estimates
@@ -131,7 +131,7 @@ interval of the *standardized* indirect effect.
 
 ```{r do_boot_lavaan}
 boot_out_lavaan <- do_boot(fit = fit_lavaan,
-                           R = 100,
+                           R = 500,
                            ncores = 1,
                            seed = 58491)
 ```
@@ -142,7 +142,7 @@ Usually, just three arguments are needed:
 
 - `R`: The number of bootstrap samples. Should
   be at least 2000 or even 5000 in real
-  research. 100 is used here just for illustration.
+  research. 500 is used here just for illustration.
 
 - `ncores`: The number of CPU cores to be used
   in generating bootstrap estimates in parallel
@@ -197,7 +197,7 @@ When calling `indirect_effect()` or
 argument `boot_out` can be assigned the
 output of `do_bout()`. They will then
 retrieve he stored bootstrap estimates
-to form the bootstrap confidence
+to form the percentile bootstrap confidence
 intervals, if requested.
 
 ```{r indirect_lav}
@@ -213,6 +213,16 @@ out_lavaan
 Reusing the bootstrap estimates can ensure that
 all analysis with bootstrap confidence intervals
 are based on the same set of bootstrap samples.
+
+The function also supports bias-corrected (BC)
+confidence interval, which can be requested
+by adding `boot_type = "bc"` to the call
+of `indirect_effect()`. However, authors
+in some recent work do not advocate this
+method (e.g., Falk & Biesanz, 2015;
+Hayes, 2022; Tofighi & Kelley, 2020).
+Therefore, this option is provided merely
+for research purpose.
 
 # Demonstration: `lm()`
 
@@ -254,7 +264,7 @@ instead of the output of `lavaan::sem()`:
 
 ```{r do_boot_lm}
 boot_out_lm <- do_boot(fit = fit_lm,
-                       R = 100,
+                       R = 500,
                        seed = 98715,
                        ncores = 1)
 ```
@@ -289,6 +299,14 @@ out_lm <- indirect_effect(x = "x",
                           boot_out = boot_out_lm)
 out_lm
 ```
+
+As long as users are aware of the potential
+problem with bias-corrected (BC) bootstrap
+confidence interval (see the references
+cited above), `boot_type = "bc"` can be
+used to request BC bootstrap confidence
+interval instead of the default percentile
+bootstrap confidence interval.
 
 # The Structure of the Output
 
@@ -379,7 +397,7 @@ in each bootstrap sample.
 For further information on `do_boot()`,
 please refer to its help page.
 
-# Reference
+# References
 
 Cheung, S. F., & Cheung, S.-H. (2023). *manymome*: An R
 package for computing the indirect effects, conditional
@@ -387,3 +405,11 @@ effects, and conditional indirect effects, standardized or
 unstandardized, and their bootstrap confidence intervals,
 in many (though not all) models. *Behavior Research Methods*.
 https://doi.org/10.3758/s13428-023-02224-z
+
+Falk, C. F., & Biesanz, J. C. (2015). Inference and interval estimation methods for indirect effects with latent variable models. *Structural Equation Modeling: A Multidisciplinary Journal, 22*(1), 24--38. https://doi.org/10.1080/10705511.2014.935266
+
+Hayes, A. F. (2022). *Introduction to mediation, moderation, and conditional process analysis: A regression-based approach* (Third Edition). The Guilford Press.
+
+Tofighi, D., & Kelley, K. (2020). Indirect effects in sequential mediation models: Evaluating methods for hypothesis testing and confidence interval formation. *Multivariate Behavioral Research, 55*(2), 188--210. https://doi.org/10.1080/00273171.2019.1618545
+
+

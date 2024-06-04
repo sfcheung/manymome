@@ -1,7 +1,7 @@
 ---
 title: "Generate Bootstrap Estimates"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2023-10-06"
+date: "2024-06-04"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -21,7 +21,7 @@ to use `do_boot()` from the package
 ([Cheung & Cheung, 2023](https://doi.org/10.3758/s13428-023-02224-z))
 to generate bootstrap estimates for
 `indirect_effect()` and `cond_indirect_effects()` to
-form percentile bootstrap confidence intervals.
+form bootstrap confidence intervals.
 
 Although `indirect_effect()` and `cond_indirect_effects()`
 can also be used to generate bootstrap estimates
@@ -50,7 +50,7 @@ The following workflow will be demonstrated;
 The data set for illustration:
 
 
-```r
+``` r
 library(manymome)
 dat <- data_med
 head(dat)
@@ -76,7 +76,7 @@ will be fitted:
 We first fit the model by `lavaan::sem()`:
 
 
-```r
+``` r
 mod <-
 "
 m ~ x + c1 + c2
@@ -86,7 +86,7 @@ fit_lavaan <- sem(model = mod, data = dat,
            fixed.x = FALSE,
            estimator = "MLR")
 summary(fit_lavaan)
-#> lavaan 0.6.16 ended normally after 1 iteration
+#> lavaan 0.6.17 ended normally after 1 iteration
 #> 
 #>   Estimator                                         ML
 #>   Optimization method                           NLMINB
@@ -154,9 +154,9 @@ but are needed to form the confidence
 interval of the *standardized* indirect effect.
 
 
-```r
+``` r
 boot_out_lavaan <- do_boot(fit = fit_lavaan,
-                           R = 100,
+                           R = 500,
                            ncores = 1,
                            seed = 58491)
 ```
@@ -167,7 +167,7 @@ Usually, just three arguments are needed:
 
 - `R`: The number of bootstrap samples. Should
   be at least 2000 or even 5000 in real
-  research. 100 is used here just for illustration.
+  research. 500 is used here just for illustration.
 
 - `ncores`: The number of CPU cores to be used
   in generating bootstrap estimates in parallel
@@ -199,7 +199,7 @@ run, it is recommended to save
 the output using `saveRDS()` or `save()`:
 
 
-```r
+``` r
 ### Use saveRDS() ###
 # Save the output
 saveRDS(boot_out_lavaan, file = "boot_out_lavaan.rds")
@@ -223,11 +223,11 @@ When calling `indirect_effect()` or
 argument `boot_out` can be assigned the
 output of `do_bout()`. They will then
 retrieve he stored bootstrap estimates
-to form the bootstrap confidence
+to form the percentile bootstrap confidence
 intervals, if requested.
 
 
-```r
+``` r
 out_lavaan <- indirect_effect(x = "x",
                               y = "y",
                               m = "m",
@@ -236,11 +236,11 @@ out_lavaan <- indirect_effect(x = "x",
                               boot_out = boot_out_lavaan)
 out_lavaan
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                      
 #>  Path:               x -> m -> y     
-#>  Indirect Effect     0.733           
-#>  95.0% Bootstrap CI: [0.279 to 1.202]
+#>  Indirect Effect:    0.733           
+#>  95.0% Bootstrap CI: [0.270 to 1.228]
 #> 
 #> Computation Formula:
 #>   (b.m~x)*(b.y~m)
@@ -248,7 +248,7 @@ out_lavaan
 #>   (0.93469)*(0.78469)
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
+#> with 500 bootstrap samples.
 #> 
 #> Coefficients of Component Paths:
 #>  Path Coefficient
@@ -260,6 +260,16 @@ Reusing the bootstrap estimates can ensure that
 all analysis with bootstrap confidence intervals
 are based on the same set of bootstrap samples.
 
+The function also supports bias-corrected (BC)
+confidence interval, which can be requested
+by adding `boot_type = "bc"` to the call
+of `indirect_effect()`. However, authors
+in some recent work do not advocate this
+method (e.g., Falk & Biesanz, 2015;
+Hayes, 2022; Tofighi & Kelley, 2020).
+Therefore, this option is provided merely
+for research purpose.
+
 # Demonstration: `lm()`
 
 ## Fit the Model by Several Calls to `lm()`
@@ -270,7 +280,7 @@ regression models, one predicts `m` and
 the other predicts `y`:
 
 
-```r
+``` r
 # Fit Models
 lm_m <- lm(m ~ x + c1 + c2, dat)
 lm_y <- lm(y ~ m + x + c1 + c2, dat)
@@ -297,6 +307,9 @@ summary(lm_m)
 #> Residual standard error: 0.8425 on 96 degrees of freedom
 #> Multiple R-squared:  0.5981,	Adjusted R-squared:  0.5855 
 #> F-statistic: 47.62 on 3 and 96 DF,  p-value: < 2.2e-16
+```
+
+``` r
 #
 # ###### Regression: Predict y ######
 #
@@ -330,7 +343,7 @@ regression outputs to one object using
 `lm_list`-class object.
 
 
-```r
+``` r
 fit_lm <- lm2list(lm_m, lm_y)
 fit_lm
 #> 
@@ -346,9 +359,9 @@ above, using the output of `lm2list()`
 instead of the output of `lavaan::sem()`:
 
 
-```r
+``` r
 boot_out_lm <- do_boot(fit = fit_lm,
-                       R = 100,
+                       R = 500,
                        seed = 98715,
                        ncores = 1)
 ```
@@ -375,7 +388,7 @@ argument `boot_out` to the output of
 `do_bout()`:
 
 
-```r
+``` r
 out_lm <- indirect_effect(x = "x",
                           y = "y",
                           m = "m",
@@ -384,11 +397,11 @@ out_lm <- indirect_effect(x = "x",
                           boot_out = boot_out_lm)
 out_lm
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                      
 #>  Path:               x -> m -> y     
-#>  Indirect Effect     0.733           
-#>  95.0% Bootstrap CI: [0.277 to 1.206]
+#>  Indirect Effect:    0.733           
+#>  95.0% Bootstrap CI: [0.292 to 1.201]
 #> 
 #> Computation Formula:
 #>   (b.m~x)*(b.y~m)
@@ -396,13 +409,21 @@ out_lm
 #>   (0.93469)*(0.78469)
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
-#> with 100 bootstrap samples.
+#> with 500 bootstrap samples.
 #> 
 #> Coefficients of Component Paths:
 #>  Path Coefficient
 #>   m~x       0.935
 #>   y~m       0.785
 ```
+
+As long as users are aware of the potential
+problem with bias-corrected (BC) bootstrap
+confidence interval (see the references
+cited above), `boot_type = "bc"` can be
+used to request BC bootstrap confidence
+interval instead of the default percentile
+bootstrap confidence interval.
 
 # The Structure of the Output
 
@@ -417,7 +438,7 @@ and `ok`.
 This is the content of `est` of the first list:
 
 
-```r
+``` r
 boot_out_lavaan[[1]]$est
 #>    lhs op rhs    est
 #> 1    m  ~   x  0.828
@@ -448,7 +469,7 @@ This is the content of `implied_stats` of the
 first list:
 
 
-```r
+``` r
 boot_out_lavaan[[1]]$implied_stats
 #> $cov
 #>         m      y      x     c1     c2
@@ -495,7 +516,7 @@ two elements: `est` and `implied_stats`.
 This is the content of `est` of the first list:
 
 
-```r
+``` r
 boot_out_lm[[1]]$est
 #>   lhs op rhs        est
 #> 1   m  ~   x  0.9583396
@@ -518,7 +539,7 @@ This is the content of `implied_stats` of the
 first list:
 
 
-```r
+``` r
 boot_out_lm[[1]]$implied_stats
 #> $cov
 #>             m          x         c1          c2          y
@@ -549,7 +570,7 @@ in each bootstrap sample.
 For further information on `do_boot()`,
 please refer to its help page.
 
-# Reference
+# References
 
 Cheung, S. F., & Cheung, S.-H. (2023). *manymome*: An R
 package for computing the indirect effects, conditional
@@ -557,3 +578,11 @@ effects, and conditional indirect effects, standardized or
 unstandardized, and their bootstrap confidence intervals,
 in many (though not all) models. *Behavior Research Methods*.
 https://doi.org/10.3758/s13428-023-02224-z
+
+Falk, C. F., & Biesanz, J. C. (2015). Inference and interval estimation methods for indirect effects with latent variable models. *Structural Equation Modeling: A Multidisciplinary Journal, 22*(1), 24--38. https://doi.org/10.1080/10705511.2014.935266
+
+Hayes, A. F. (2022). *Introduction to mediation, moderation, and conditional process analysis: A regression-based approach* (Third Edition). The Guilford Press.
+
+Tofighi, D., & Kelley, K. (2020). Indirect effects in sequential mediation models: Evaluating methods for hypothesis testing and confidence interval formation. *Multivariate Behavioral Research, 55*(2), 188--210. https://doi.org/10.1080/00273171.2019.1618545
+
+
