@@ -16,7 +16,8 @@ delta_med(
   skip_check_single_x = FALSE,
   skip_check_m_between_x_y = FALSE,
   skip_check_x_to_y = FALSE,
-  skip_check_latent_variables = FALSE
+  skip_check_latent_variables = FALSE,
+  boot_type = c("perc", "bc")
 )
 }
 \arguments{
@@ -79,6 +80,16 @@ from \code{x} to \code{y}. Default is \code{TRUE}.}
 \item{skip_check_latent_variables}{Logical. Check whether the model
 has any latent variables. Default
 is \code{TRUE}.}
+
+\item{boot_type}{If bootstrap
+confidence interval is to be formed,
+the type of bootstrap confidence
+interval. The supported types
+are \code{"perc"} (percentile bootstrap
+confidence interval, the default and
+recommended type) and \code{"bc"}
+(bias-corrected, or BC, bootstrap
+confidence interval).}
 }
 \value{
 A \code{delta_med} class object.

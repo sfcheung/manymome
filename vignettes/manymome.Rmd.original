@@ -260,7 +260,7 @@ to estimate standardized effects.
 
 ```{r do_boot}
 fit_boot <- do_boot(fit = fit,
-                    R = 100,
+                    R = 500,
                     seed = 53253,
                     ncores = 1)
 ```
@@ -270,7 +270,7 @@ These are the major arguments:
 - `fit`: The output of `lavaan::sem()`.
 
 - `R`: The number of bootstrap samples, which should be 2000
-  or even 5000 in real research. `R` is set to 100 here just
+  or even 5000 in real research. `R` is set to 500 here just
   for illustration.
 
 - `seed`: The seed to reproduce the results.
@@ -341,6 +341,18 @@ above their means. The indirect effect at these levels of `w1` and `w2` are
 `r formatC(coef(out_cond)[1], digits = 3, format = "f")`, with
 95% bootstrap confidence interval
 [`r paste0(formatC(unlist(confint(out_cond)[1, ]), digits = 3, format = "f"), collapse = ", ")`].
+
+The function `cond_indirect_effects()`,
+as well as other functions described below,
+also supports bias-corrected (BC)
+confidence interval, which can be requested
+by adding `boot_type = "bc"` to the call.
+However, authors
+in some recent work do not advocate this
+method (e.g., Falk & Biesanz, 2015;
+Hayes, 2022; Tofighi & Kelley, 2020).
+Therefore, this option is provided merely
+for research purpose.
 
 #### Examine the Effect at a Particular Set of Levels of the Moderators
 
@@ -520,7 +532,7 @@ We generate the bootstrap estimates first (`R` should be
 
 ```{r do_boot2}
 fit2_boot <- do_boot(fit = fit2,
-                    R = 100,
+                    R = 500,
                     seed = 53253,
                     ncores = 1)
 ```
@@ -642,7 +654,7 @@ out_med <- indirect_effect(x = "x",
                            m = c("m1", "m2"),
                            fit = fit_med,
                            boot_ci = TRUE,
-                           R = 100,
+                           R = 500,
                            seed = 43143,
                            ncores = 1)
 ```
@@ -659,7 +671,7 @@ The main arguments are:
 - `fit`: The output of `lavaan::sem()`.
 - `boot_ci`: Set to `TRUE` to request bootstrapping confidence intervals.
              Default is `FALSE`.
-- `R`: The number of bootstrap samples. Only 100 bootstrap samples
+- `R`: The number of bootstrap samples. Only 500 bootstrap samples
         for illustration. Set `R` to 2000 or even 5000 in real research.
 - `seed`: The seed for the random number generator.
 - `ncores`: The number of processes in parallel processing.
@@ -876,8 +888,7 @@ certainly not all.
 There are models that it does not yet support. For example,
 it does not support a path that starts with a nominal
 categorical variable.
-It also only supports percentile bootstrap confidence interval
-(although this is merely a preference of us). Other tools
+Other tools
 need to be used for these cases. See
 [this section](https://sfcheung.github.io/manymome/index.html#limitations)
 for other limitations.
@@ -919,6 +930,8 @@ unstandardized, and their bootstrap confidence intervals,
 in many (though not all) models. *Behavior Research Methods*.
 https://doi.org/10.3758/s13428-023-02224-z
 
+Falk, C. F., & Biesanz, J. C. (2015). Inference and interval estimation methods for indirect effects with latent variable models. *Structural Equation Modeling: A Multidisciplinary Journal, 22*(1), 24--38. https://doi.org/10.1080/10705511.2014.935266
+
 Friedrich, R. J. (1982). In defense of multiplicative terms
 in multiple regression equations.
 *American Journal of Political Science, 26*(4), 797-833.
@@ -934,6 +947,7 @@ mediation: Quantification, inference, and interpretation.
 *Communication Monographs, 85*(1), 4-40.
 https://doi.org/10.1080/03637751.2017.1352100
 
+Hayes, A. F. (2022). *Introduction to mediation, moderation, and conditional process analysis: A regression-based approach* (Third Edition). The Guilford Press.
 
 Kwan, J. L. Y., & Chan, W. (2018). Variable system:
 An alternative approach for the analysis of mediated moderation.
@@ -946,4 +960,8 @@ mediation analysis: An illustration using the association
 of gender with delinquency and mental health.
 *Journal of Criminal Psychology, 5*(2), 99-123.
 https://doi.org/10.1108/JCP-02-2015-0010
+
+Tofighi, D., & Kelley, K. (2020). Indirect effects in sequential mediation models: Evaluating methods for hypothesis testing and confidence interval formation. *Multivariate Behavioral Research, 55*(2), 188--210. https://doi.org/10.1080/00273171.2019.1618545
+
+
 

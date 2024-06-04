@@ -9,7 +9,7 @@
 [![R-CMD-check](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-(Version 0.2.1.2, updated on 2024-05-12, [release history](https://sfcheung.github.io/manymome/news/index.html))
+(Version 0.2.1.5, updated on 2024-06-04, [release history](https://sfcheung.github.io/manymome/news/index.html))
 
 # manymome  <img src="man/figures/logo.png" align="right" height="150" />
 
@@ -133,7 +133,8 @@ Despite the aforementioned advantages, the current version of
 
 - Does not support multilevel models (although `lavaan` does).
 
-- For bootstrapping, only supports nonparametric bootstrapping and percentile
+- For bootstrapping, only supports nonparametric bootstrapping,
+and supports only percentile and bias-corrected
 confidence interval. Does not support other bootstrapping methods such parametric bootstrapping.
 
 - Only supports OLS estimation when `lm()` is used.

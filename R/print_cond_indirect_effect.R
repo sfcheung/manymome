@@ -116,6 +116,7 @@ print.cond_indirect_effects <- function(x, digits = 3,
   boot_ci <- !is.null(x_i$boot_ci)
   has_ci <- FALSE
   ci_type <- NULL
+  boot_type <- NULL
   has_groups <- ("group" %in% tolower(colnames(x)))
   if (has_groups) {
       group_labels <- unique(x$Group)
@@ -130,6 +131,8 @@ print.cond_indirect_effects <- function(x, digits = 3,
       ci_type <- "boot"
       ind_name <- "boot_indirect"
       se_name <- "boot_se"
+      boot_type <- x_i$boot_type
+      if (is.null(boot_type)) boot_type <- "perc"
     }
   if (!is.null(x_i$mc_ci)) {
       has_ci <- TRUE
@@ -228,8 +231,13 @@ print.cond_indirect_effects <- function(x, digits = 3,
       if (has_ci) {
           level_str <- paste0(formatC(level * 100, 1, format = "f"), "%")
           cat("\n ")
+          tmp <- switch(ci_type,
+                        boot = switch(boot_type,
+                                      perc = "percentile",
+                                      bc = "bias-corrected"),
+                        mc = NULL)
           tmp1 <- switch(ci_type,
-                    boot = "percentile confidence intervals by nonparametric bootstrapping",
+                    boot = paste(tmp, "confidence intervals by nonparametric bootstrapping"),
                     mc = "Monte Carlo confidence intervals")
           tmp2 <- switch(ci_type,
                     boot = paste("with", R, "samples."),

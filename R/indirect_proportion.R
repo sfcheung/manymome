@@ -100,6 +100,8 @@ indirect_proportion <- function(x,
                                 y,
                                 m = NULL,
                                 fit = NULL) {
+    # Support for boot tentatively added but not enabled.
+    boot_type <- "perc"
     if (is.null(m)) {
         stop("m cannot be NULL.")
       }
@@ -109,7 +111,7 @@ indirect_proportion <- function(x,
                     fit = fit)) {
         stop("The path is not valid.")
       }
-    # Do not enable CI for now
+    # TODO: Do not enable CI for now
     boot_out <- NULL
     mc_out <- NULL
     level <- .95
@@ -132,6 +134,7 @@ indirect_proportion <- function(x,
         mc_ci <- TRUE
         rep_name <- "mc_indirect"
         ci_name <- "mc_ci"
+        boot_type <- "perc"
       }
     direct <- try(indirect_effect(x = x,
                                   y = y,
@@ -170,16 +173,12 @@ indirect_proportion <- function(x,
         effects_sum <- Reduce(`+`, all_inds) + direct
         rep_prop <- all_inds[[which(ind_i)]][[rep_name]] /
                       effects_sum[[rep_name]]
-        nboot <- length(rep_prop)
-        tmp <- list(t = matrix(rep_prop, nrow = nboot, ncol = 1),
-                    t0 = ind_prop,
-                    R = nboot)
-        boot_ci0 <- boot::boot.ci(tmp, conf = level, type = "perc")
-        boot_ci1 <- boot_ci0$percent[4:5]
-        names(boot_ci1) <- paste0(formatC(c(100 * (1 - level) / 2,
-                                     100 * (1 - (1 - level) / 2)), 2,
-                                     format = "f"), "%")
+        boot_ci1 <- boot_ci_internal(t0 = ind_prop,
+                            t = rep_prop,
+                            level = level,
+                            boot_type = "perc")
       }
+    # TODO: May add CI later.
     out <- list(proportion = ind_prop,
                 x = x,
                 y = y,
@@ -188,7 +187,8 @@ indirect_proportion <- function(x,
                 all_indirects = all_inds,
                 direct = direct,
                 indirect_effect = ind_effect,
-                total_effect = total_effect)
+                total_effect = total_effect,
+                boot_type = boot_type)
     if (!is.null(ci_type)) {
         out[[rep_name]] <- rep_prop
         out[[ci_name]] <- boot_ci1

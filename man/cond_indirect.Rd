@@ -39,7 +39,8 @@ cond_indirect(
   save_ci_full = FALSE,
   save_ci_out = TRUE,
   ci_type = NULL,
-  group = NULL
+  group = NULL,
+  boot_type = c("perc", "bc")
 )
 
 cond_indirect_effects(
@@ -68,6 +69,7 @@ cond_indirect_effects(
   mc_out = NULL,
   ci_out = NULL,
   ci_type = NULL,
+  boot_type = c("perc", "bc"),
   groups = NULL,
   ...
 )
@@ -100,6 +102,7 @@ indirect_effect(
   save_ci_full = FALSE,
   save_ci_out = TRUE,
   ci_type = NULL,
+  boot_type = c("perc", "bc"),
   group = NULL
 )
 
@@ -323,6 +326,16 @@ the \link[lavaan:lavaan-class]{lavaan::lavaan} object.
 Used only when the number of
 groups is greater than one. Default
 is \code{NULL}.}
+
+\item{boot_type}{If bootstrap
+confidence interval is to be formed,
+the type of bootstrap confidence
+interval. The supported types
+are \code{"perc"} (percentile bootstrap
+confidence interval, the default and
+recommended type) and \code{"bc"}
+(bias-corrected, or BC, bootstrap
+confidence interval).}
 
 \item{wlevels}{The output of
 \code{\link[=merge_mod_levels]{merge_mod_levels()}}, or the

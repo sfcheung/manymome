@@ -36,6 +36,17 @@
 #' default is .95, returning the 95%
 #' confidence interval.
 #'
+#' @param boot_type If bootstrap
+#' confidence interval is to be formed,
+#' the type of bootstrap confidence
+#' interval. The supported types
+#' are `"perc"` (percentile bootstrap
+#' confidence interval, the recommended
+#' method) and `"bc"`
+#' (bias-corrected, or BC, bootstrap
+#' confidence interval). If not supplied,
+#' the stored `boot_type` will be used.
+#'
 #' @param ...  Additional arguments.
 #' Ignored by the function.
 #'
@@ -76,25 +87,52 @@
 #' @export
 
 
-confint.indirect <- function(object, parm, level = .95, ...) {
+confint.indirect <- function(object,
+                             parm,
+                             level = .95,
+                             boot_type,
+                             ...) {
+    if (missing(boot_type)) {
+        ci_boot_type <- object$boot_type
+      } else {
+        ci_boot_type <- boot_type
+      }
     has_ci <- FALSE
     if (isTRUE(!is.null(object$boot_ci))) {
         has_ci <- TRUE
+        old_ci <- object$boot_ci
         ci_type <- "boot"
         ind_i <- object$boot_indirect
+        if ((level == object$level) &&
+            (ci_boot_type == object$boot_type)) {
+            new_ci <- FALSE
+          } else {
+            new_ci <- TRUE
+          }
       }
     if (isTRUE(!is.null(object$mc_ci))) {
         has_ci <- TRUE
+        old_ci <- object$mc_ci
         ci_type <- "mc"
         ind_i <- object$mc_indirect
+        if (level == object$level) {
+            new_ci <- FALSE
+          } else {
+            new_ci <- TRUE
+          }
       }
     if (has_ci) {
-        boot_out <- list(t0 = object$indirect,
-                         t = matrix(ind_i, ncol = 1),
-                         R = length(ind_i))
-        out0 <- boot::boot.ci(boot_out,
-                            type = "perc",
-                            conf = level)$percent[4:5]
+        if (new_ci) {
+            out0 <- boot_ci_internal(t0 = object$indirect,
+                            t = ind_i,
+                            level = level,
+                            boot_type = ifelse(ci_type == "boot",
+                                               ci_boot_type,
+                                               "perc"),
+                            add_names = FALSE)
+          } else {
+            out0 <- old_ci
+          }
       } else {
         warning("Confidence interval not in the object.")
         out0 <- c(NA, NA)
@@ -105,6 +143,17 @@ confint.indirect <- function(object, parm, level = .95, ...) {
                            trim = TRUE,
                            scientific = FALSE,
                            digits = 2), "%")
+    if (has_ci) {
+        if (ci_type == "boot") {
+            tmp <- switch(ci_boot_type,
+                          perc = "Percentile: ",
+                          bc = "Bias-Corrected: ")
+            cnames <- paste0(tmp, cnames)
+          }
+        if (ci_type == "mc") {
+            cnames <- paste0("Monte Carlo: ", cnames)
+          }
+      }
     rnames <- paste0(object$y, "~", object$x)
     out <- array(data = out0,
                  dim = c(1, 2),

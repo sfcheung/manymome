@@ -532,7 +532,6 @@ gen_computation <- function(xi, yi, yiname, digits = 3, y, wvalues = NULL,
                           wvalues_i0,
                           ")",
                           collapse = " + ")), error = function(e) e)
-    if (inherits(out2, "error")) browser()
     names(out2) <- out1
     out2
   }

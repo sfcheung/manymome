@@ -101,10 +101,14 @@
 #'
 
 lm2list <- function(...) {
-    check_lm_consistency(...)
     outputs <- list(...)
+    if (length(outputs) > 1) {
+        check_lm_consistency(...)
+      }
     if ((is.list(outputs)) && (length(outputs) == 1)) {
-        outputs <- unlist(outputs, recursive = FALSE)
+        if (!inherits(outputs[[1]], "lm")) {
+            outputs <- unlist(outputs, recursive = FALSE)
+          }
       }
     class(outputs) <- c("lm_list", class(outputs))
     outputs
