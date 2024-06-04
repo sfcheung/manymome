@@ -442,6 +442,16 @@
 #' groups is greater than one. Default
 #' is `NULL`.
 #'
+#' @param boot_type If bootstrap
+#' confidence interval is to be formed,
+#' the type of bootstrap confidence
+#' interval. The supported types
+#' are `"perc"` (percentile bootstrap
+#' confidence interval, the default and
+#' recommended type) and `"bc"`
+#' (bias-corrected, or BC, bootstrap
+#' confidence interval).
+#'
 #' @seealso [mod_levels()] and
 #' [merge_mod_levels()] for generating
 #' levels of moderators. [do_boot] for
@@ -516,7 +526,9 @@ cond_indirect <- function(x,
                      save_ci_full = FALSE,
                      save_ci_out = TRUE,
                      ci_type = NULL,
-                     group = NULL) {
+                     group = NULL,
+                     boot_type = c("perc", "bc")) {
+    boot_type <- match.arg(boot_type)
     fit_type <- cond_indirect_check_fit(fit)
     chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
     if (!chkpath) {
@@ -683,7 +695,7 @@ cond_indirect <- function(x,
         boot_ci1 <- boot_ci_internal(t0 = out0$indirect,
                             t = out0$mc_indirect,
                             level = level,
-                            boot_ci_type = "perc")
+                            boot_type = "perc")
         out0$mc_ci <- boot_ci1
         out0$level <- level
         out0$mc_se <- stats::sd(out0$mc_indirect, na.rm = TRUE)
@@ -717,11 +729,12 @@ cond_indirect <- function(x,
         boot_ci1 <- boot_ci_internal(t0 = out0$indirect,
                             t = out0$boot_indirect,
                             level = level,
-                            boot_ci_type = "perc")
+                            boot_type = boot_type)
         out0$boot_ci <- boot_ci1
         out0$level <- level
         out0$boot_p <- est2p(out0$boot_indirect)
         out0$boot_se <- stats::sd(out0$boot_indirect, na.rm = TRUE)
+        out0$boot_type <- boot_type
         if (save_boot_out) {
             out0$boot_out <- boot_out
           } else {
@@ -796,7 +809,9 @@ indirect_effect <- function(x,
                      save_ci_full = FALSE,
                      save_ci_out = TRUE,
                      ci_type = NULL,
+                     boot_type = c("perc", "bc"),
                      group = NULL) {
+    boot_type <- match.arg(boot_type)
     cond_indirect(x = x,
                   y = y,
                   m = m,
@@ -824,6 +839,7 @@ indirect_effect <- function(x,
                   save_ci_full = save_ci_full,
                   save_ci_out = save_ci_out,
                   ci_type = ci_type,
+                  boot_type = boot_type,
                   group = group)
   }
 
@@ -940,8 +956,10 @@ cond_indirect_effects <- function(wlevels,
                                   mc_out = NULL,
                                   ci_out = NULL,
                                   ci_type = NULL,
+                                  boot_type = c("perc", "bc"),
                                   groups = NULL,
                                   ...) {
+    boot_type <- match.arg(boot_type)
     # Check the number of groups and handle multiple-group models
     has_group <- FALSE
     ngroups <- 1
@@ -1140,6 +1158,7 @@ cond_indirect_effects <- function(wlevels,
                               ci_type,
                               ci_out,
                               save_ci_out,
+                              boot_type,
                               ...) {
                                   cond_indirect(wvalues = wv,
                                                 x = x,
@@ -1160,6 +1179,7 @@ cond_indirect_effects <- function(wlevels,
                                                 ci_type = ci_type,
                                                 ci_out = ci_out,
                                                 save_ci_out = FALSE,
+                                                boot_type = boot_type,
                                                 ...)
                               },
                       x = x,
@@ -1180,6 +1200,7 @@ cond_indirect_effects <- function(wlevels,
                       ci_type = ci_type,
                       ci_out = ci_out,
                       save_ci_out = FALSE,
+                      boot_type = boot_type,
                       ...)
       }
     if (!has_wlevels && has_group) {
@@ -1203,6 +1224,7 @@ cond_indirect_effects <- function(wlevels,
                               ci_type,
                               ci_out,
                               save_ci_out,
+                              boot_type,
                               ...) {
                                   indirect_effect(x = x,
                                                   y = y,
@@ -1221,6 +1243,7 @@ cond_indirect_effects <- function(wlevels,
                                                   ci_type = ci_type,
                                                   ci_out = ci_out,
                                                   save_ci_out = FALSE,
+                                                  boot_type = boot_type,
                                                   group = gn,
                                                   ...)
                               },
@@ -1241,6 +1264,7 @@ cond_indirect_effects <- function(wlevels,
                       ci_type = ci_type,
                       ci_out = ci_out,
                       save_ci_out = FALSE,
+                      boot_type = boot_type,
                       ...)
       }
     if (has_wlevels && has_group) {
@@ -1270,6 +1294,7 @@ cond_indirect_effects <- function(wlevels,
                               ci_type,
                               ci_out,
                               save_ci_out,
+                              boot_type,
                               ...) {
                                   cond_indirect(wvalues = wv,
                                                 x = x,
@@ -1290,6 +1315,7 @@ cond_indirect_effects <- function(wlevels,
                                                 ci_type = ci_type,
                                                 ci_out = ci_out,
                                                 save_ci_out = FALSE,
+                                                boot_type = boot_type,
                                                 group = gn,
                                                 ...)
                               },
@@ -1313,6 +1339,7 @@ cond_indirect_effects <- function(wlevels,
                       ci_type = ci_type,
                       ci_out = ci_out,
                       save_ci_out = FALSE,
+                      boot_type = boot_type,
                       ...)
       }
     if (output_type == "data.frame") {

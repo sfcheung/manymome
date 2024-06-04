@@ -40,6 +40,14 @@
 #' estimates stored in
 #' `mc_out`, if any, are not identical.
 #'
+#' If bootstrap estimates are stored and
+#' both objects used the same type of
+#' bootstrap confidence interval, that
+#' type will be used.
+#' Otherwise, percentile bootstrap
+#' confidence interval, the recommended
+#' method, will be used.
+#'
 #' ## Multigroup Models
 #'
 #' Since Version 0.1.14.2, support for
@@ -202,10 +210,20 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
     level0 <- e1$level
     has_ci <- FALSE
     ci_type <- NULL
+    boot_type <- NULL
     if (!is.null(e1$boot_indirect) && !is.null(e2$boot_indirect)) {
         has_ci <- TRUE
         ci_type <- "boot"
         ind_name <- "boot_indirect"
+        if (identical(e1$boot_type,
+                      e2$boot_type)) {
+            boot_type <- e1$boot_type
+          } else {
+            boot_type <- "perc"
+          }
+        boot_type <- ifelse(is.null(boot_type),
+                               yes = "perc",
+                               boot_type)
       }
     if (!is.null(e1$mc_indirect) && !is.null(e2$mc_indirect)) {
         has_ci <- TRUE
@@ -226,7 +244,7 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
         boot_ci1 <- boot_ci_internal(t0 = est0,
                             t = bind0,
                             level = level0,
-                            boot_ci_type = "perc")
+                            boot_type = "perc")
         bci0 <- boot_ci1
         bp0 <- est2p(bind0)
         bse0 <- stats::sd(bind0, na.rm = TRUE)
@@ -346,7 +364,8 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
                 boot_out = e1$boot_out,
                 mc_out = e1$mc_out,
                 group_number = gnumber0,
-                group_label = glabel0
+                group_label = glabel0,
+                boot_type = boot_type
                 )
     class(out) <- c("indirect", class(out))
     out

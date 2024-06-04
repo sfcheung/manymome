@@ -23,6 +23,7 @@ index_of_mome(
   mc_out = NULL,
   ci_type = NULL,
   ci_out = NULL,
+  boot_type = c("perc", "bc"),
   ...
 )
 
@@ -43,6 +44,7 @@ index_of_momome(
   mc_out = NULL,
   ci_type = NULL,
   ci_out = NULL,
+  boot_type = c("perc", "bc"),
   ...
 )
 }
@@ -159,6 +161,16 @@ If \code{ci_type} is \code{"boot"}, this
 argument will be used as \code{boot_out}.
 If \code{ci_type} is \code{"mc"}, this
 argument will be used as \code{mc_out}.}
+
+\item{boot_type}{If bootstrap
+confidence interval is to be formed,
+the type of bootstrap confidence
+interval. The supported types
+are \code{"perc"} (percentile bootstrap
+confidence interval, the default and
+recommended type) and \code{"bc"}
+(bias-corrected, or BC, bootstrap
+confidence interval).}
 
 \item{...}{Arguments to be passed to
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}}

@@ -100,6 +100,8 @@ indirect_proportion <- function(x,
                                 y,
                                 m = NULL,
                                 fit = NULL) {
+    # Support for boot tentatively added but not enabled.
+    boot_type <- "perc"
     if (is.null(m)) {
         stop("m cannot be NULL.")
       }
@@ -109,7 +111,7 @@ indirect_proportion <- function(x,
                     fit = fit)) {
         stop("The path is not valid.")
       }
-    # Do not enable CI for now
+    # TODO: Do not enable CI for now
     boot_out <- NULL
     mc_out <- NULL
     level <- .95
@@ -132,6 +134,7 @@ indirect_proportion <- function(x,
         mc_ci <- TRUE
         rep_name <- "mc_indirect"
         ci_name <- "mc_ci"
+        boot_type <- "perc"
       }
     direct <- try(indirect_effect(x = x,
                                   y = y,
@@ -173,8 +176,9 @@ indirect_proportion <- function(x,
         boot_ci1 <- boot_ci_internal(t0 = ind_prop,
                             t = rep_prop,
                             level = level,
-                            boot_ci_type = "perc")
+                            boot_type = "perc")
       }
+    # TODO: May add CI later.
     out <- list(proportion = ind_prop,
                 x = x,
                 y = y,
@@ -183,7 +187,8 @@ indirect_proportion <- function(x,
                 all_indirects = all_inds,
                 direct = direct,
                 indirect_effect = ind_effect,
-                total_effect = total_effect)
+                total_effect = total_effect,
+                boot_type = boot_type)
     if (!is.null(ci_type)) {
         out[[rep_name]] <- rep_prop
         out[[ci_name]] <- boot_ci1

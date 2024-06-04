@@ -98,10 +98,17 @@ or Monte Carlo confidence
 intervals are requested in calling
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
 \code{\link[=cond_indirect_diff]{cond_indirect_diff()}} will also form
-the percentile confidence
+the bootstrap confidence
 interval for the difference in
 conditional indirect effects
 using the stored estimates.
+
+If bootstrap confidence interval is
+to be formed and both effects used
+the same type of interval, then that
+type will be used. Otherwise,
+percentile confidence interval will
+be formed.
 }
 \section{Functions}{
 \itemize{

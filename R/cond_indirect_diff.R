@@ -64,10 +64,17 @@
 #' intervals are requested in calling
 #' [cond_indirect_effects()],
 #' [cond_indirect_diff()] will also form
-#' the percentile confidence
+#' the bootstrap confidence
 #' interval for the difference in
 #' conditional indirect effects
 #' using the stored estimates.
+#'
+#' If bootstrap confidence interval is
+#' to be formed and both effects used
+#' the same type of interval, then that
+#' type will be used. Otherwise,
+#' percentile confidence interval will
+#' be formed.
 #'
 #' @return A `cond_indirect_diff`-class
 #' object. This class has a `print`
@@ -185,6 +192,7 @@ cond_indirect_diff <- function(output,
     effect_diff <- stats::coef(output_full_to) - stats::coef(output_full_from)
     if (is.null(boot_i_from) || is.null(boot_i_to)) {
         has_boot <- FALSE
+        boot_type <- NULL
       } else {
         has_boot <- TRUE
       }
@@ -199,7 +207,7 @@ cond_indirect_diff <- function(output,
         mc_diff_ci <- boot_ci_internal(t0 = effect_diff,
                                        t = mc_diff,
                                        level = level,
-                                       boot_ci_type = "perc")
+                                       boot_type = "perc")
         mc_diff_se <- stats::sd(mc_diff, na.rm = TRUE)
       } else {
         mc_diff <- NA
@@ -207,11 +215,17 @@ cond_indirect_diff <- function(output,
         mc_diff_se <- NA
       }
     if (has_boot) {
+        if (identical(output_full_from$boot_type,
+                      output_full_to$boot_type)) {
+            boot_type <- output_full_from$boot_type
+          } else {
+            boot_type <- "perc"
+          }
         boot_diff <- boot_i_to - boot_i_from
         boot_diff_ci <- boot_ci_internal(t0 = effect_diff,
                                 t = boot_diff,
                                 level = level,
-                                boot_ci_type = "perc")
+                                boot_type = boot_type)
         boot_diff_p <- est2p(boot_diff)
         boot_diff_se <- stats::sd(boot_diff, na.rm = TRUE)
       } else {
@@ -249,6 +263,9 @@ cond_indirect_diff <- function(output,
     if (has_boot) out_diff_ci <- boot_diff_ci
     if (has_mc) out_diff_se <- mc_diff_se
     if (has_boot) out_diff_se <- boot_diff_se
+    ci_type <- NA
+    if (has_mc) ci_type <- "mc"
+    if (has_boot) ci_type <- "boot"
     out <- list(index = effect_diff,
                 ci = out_diff_ci,
                 pvalue = boot_diff_p,
@@ -260,7 +277,9 @@ cond_indirect_diff <- function(output,
                 boot_diff = boot_diff,
                 mc_diff = mc_diff,
                 has_groups = has_groups,
-                has_wlevels = has_wlevels)
+                has_wlevels = has_wlevels,
+                boot_type = boot_type,
+                ci_type = ci_type)
     class(out) <- c("cond_indirect_diff", class(out))
     out
   }
@@ -397,6 +416,7 @@ print.cond_indirect_diff <- function(x,
                            y = full_output_attr$y,
                            Change = formatC(x$index, digits = digits, format = "f"))
     has_ci <- !all(is.na(x$ci))
+    ci_type <- x$ci_type
     if (has_ci) {
         index_df$CI.lo <- formatC(x$ci[1], digits = digits, format = "f")
         index_df$CI.hi <- formatC(x$ci[2], digits = digits, format = "f")
@@ -429,9 +449,15 @@ print.cond_indirect_diff <- function(x,
     print(index_df, nd = digits)
     cat("\n ")
     if (has_ci) {
+        boot_type <- x$boot_type
+        tmp <- switch(ci_type,
+                      mc = "Monte Carlo",
+                      boot = switch(boot_type,
+                                    perc = "percentile",
+                                    bc = "bias-corrected"))
         cat(strwrap(paste0("- [CI.lo, CI.hi]: ",
                           x$level * 100,
-                          "% percentile confidence interval."), exdent = 3),
+                          "% ", tmp, " confidence interval."), exdent = 3),
                           sep = "\n")
         if (!identical(NA, x$boot_diff) && !is.na(x$pvalue) &&
             pvalue) {

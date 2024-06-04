@@ -28,6 +28,17 @@
 #' additional information will be printed.
 #' Default is `FALSE`.
 #'
+#' @param boot_type If bootstrap
+#' confidence interval is to be formed,
+#' the type of bootstrap confidence
+#' interval. The supported types
+#' are `"perc"` (percentile bootstrap
+#' confidence interval, the recommended
+#' method) and `"bc"`
+#' (bias-corrected, or BC, bootstrap
+#' confidence interval). If not supplied,
+#' the stored `boot_type` will be used.
+#'
 #' @param ...  Optional arguments.
 #' Ignored.
 #'
@@ -79,7 +90,24 @@ print.delta_med <- function(x,
                             digits = 3,
                             level = NULL,
                             full = FALSE,
+                            boot_type,
                             ...) {
+    if (missing(boot_type)) {
+        ci_boot_type <- x$boot_type
+      } else {
+        ci_boot_type <- boot_type
+      }
+    if (is.null(level)) {
+        ci_level <- x$level
+      } else {
+        ci_level <- level
+      }
+    if ((ci_boot_type == x$boot_type) &&
+        (ci_level == x$level)) {
+          new_ci <- FALSE
+        } else {
+          new_ci <- TRUE
+        }
     x_call <- x$call
     call_x <- x$x
     call_m <- x$m
@@ -93,10 +121,11 @@ print.delta_med <- function(x,
     if (has_boot_ci) {
         dm_boot <- x$boot_est
         R <- length(stats::na.omit(dm_boot))
-        if (!is.null(level)) {
+        if (new_ci) {
             dm_boot_out <- form_boot_ci(est = dm,
                                         boot_est = dm_boot,
-                                        level = level)
+                                        level = ci_level,
+                                        boot_type = ci_boot_type)
             dm_boot_ci <- dm_boot_out$boot_ci
             dm_boot_p <- dm_boot_out$boot_p
             dm_boot_se <- dm_boot_out$boot_se
@@ -125,7 +154,11 @@ print.delta_med <- function(x,
     if (has_boot_ci) {
         tmp1 <- c(tmp1,
                   paste0(formatC(level*100, digits = 1, format = "f"),
-                         "% Bootstrap confidence interval",
+                         "% Bootstrap ",
+                         switch(ci_boot_type,
+                                perc = "percentile",
+                                bc = "bias-corrected"),
+                         " confidence interval",
                          collapse = ""))
         tmp2 <- c(tmp2,
                   paste0("[",

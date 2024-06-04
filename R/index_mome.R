@@ -162,6 +162,15 @@
 #' supplied, will override `boot_ci`
 #' and `mc_ci`.
 #'
+#' @param boot_type If bootstrap
+#' confidence interval is to be formed,
+#' the type of bootstrap confidence
+#' interval. The supported types
+#' are `"perc"` (percentile bootstrap
+#' confidence interval, the default and
+#' recommended type) and `"bc"`
+#' (bias-corrected, or BC, bootstrap
+#' confidence interval).
 #'
 #' @param ... Arguments to be passed to
 #' [cond_indirect_effects()]
@@ -234,7 +243,9 @@ index_of_mome <- function(x,
                           mc_out = NULL,
                           ci_type = NULL,
                           ci_out = NULL,
+                          boot_type = c("perc", "bc"),
                           ...) {
+    boot_type <- match.arg(boot_type)
     if (is.null(w) || length(w) != 1) {
         stop("The path must have exactly one moderator.")
       }
@@ -259,6 +270,7 @@ index_of_mome <- function(x,
                                  mc_out = mc_out,
                                  ci_type = ci_type,
                                  ci_out = ci_out,
+                                 boot_type = boot_type,
                                  ...)
     out <- cond_indirect_diff(out, from = 2, to = 1, level = level)
     out$type <- "index_of_mome"
@@ -315,7 +327,9 @@ index_of_momome <- function(x,
                             mc_out = NULL,
                             ci_type = NULL,
                             ci_out = NULL,
+                            boot_type = c("perc", "bc"),
                             ...) {
+    boot_type <- match.arg(boot_type)
     if (is.null(w) || is.null(z) ||
         length(w) != 1 || length(z) != 1) {
         stop("The path must have exactly two moderators.")
@@ -343,6 +357,7 @@ index_of_momome <- function(x,
                                  mc_out = mc_out,
                                  ci_type = ci_type,
                                  ci_out = ci_out,
+                                 boot_type = boot_type,
                                  ...)
     i0 <- cond_indirect_diff(out, from = 4, to = 3, level = level)
     i1 <- cond_indirect_diff(out, from = 2, to = 1, level = level)
@@ -363,7 +378,7 @@ index_of_momome <- function(x,
         ind_mc_ci <- boot_ci_internal(t0 = ind,
                                       t = ind_mc,
                                       level = level,
-                                      boot_ci_type = "perc")
+                                      boot_type = "perc")
         ind_mc_se <- stats::sd(ind_mc, na.rm = TRUE)
       } else {
         ind_mc <- NA
@@ -375,7 +390,7 @@ index_of_momome <- function(x,
         ind_boot_ci <- boot_ci_internal(t0 = ind,
                                t = ind_boot,
                                level = level,
-                               boot_ci_type = "perc")
+                               boot_type = boot_type)
         ind_boot_p <- est2p(ind_boot)
         ind_boot_se <- stats::sd(ind_boot, na.rm = TRUE)
       } else {
@@ -390,6 +405,8 @@ index_of_momome <- function(x,
     if (has_boot) ind_ci <- ind_boot_ci
     if (has_mc) ind_se <- ind_mc_se
     if (has_boot) ind_se <- ind_boot_se
+    if (has_mc) ci_type <- "mc"
+    if (has_boot) ci_type <- "boot"
     out <- list(index = ind,
                 ci = ind_ci,
                 pvalue = ind_boot_p,
@@ -402,7 +419,9 @@ index_of_momome <- function(x,
                 output = out,
                 boot_diff = ind_boot,
                 mc_diff = ind_mc,
-                type = "index_of_momome")
+                type = "index_of_momome",
+                boot_type = boot_type,
+                ci_type = ci_type)
     class(out) <- c("cond_indirect_diff", class(out))
     out
   }

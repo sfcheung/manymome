@@ -1,4 +1,16 @@
-# manymome 0.2.1.3
+# manymome 0.2.1.4
+
+## New Features
+
+- Added support for bias-corrected (BC)
+  confidence intervals when bootstrapping
+  is done. This can be requested by
+  adding `boot_type = "bc"` in applicable
+  funcion. BC confidence interval is
+  not recommended in some recent works
+  (see [Get Started](https://sfcheung.github.io/manymome/articles/manymome.html)
+  for selected references). It is added
+  merely for research purpose. (0.2.1.4)
 
 ## Miscellaneous
 
@@ -6,7 +18,7 @@
   calling `gen_boot_i_lavaan()`, which
   may not be necessary. (0.2.1.2)
 
-- Factor out confidence interval
+- Factored out confidence interval
   computation into an internal function.
   (0.2.1.3)
 
