@@ -1,4 +1,4 @@
-# manymome 0.2.1.4
+# manymome 0.2.1.5
 
 ## New Features
 
@@ -21,6 +21,13 @@
 - Factored out confidence interval
   computation into an internal function.
   (0.2.1.3)
+
+- `lm2list()` now supports having only
+  one regression model as the input.
+  This allows users to use functions
+  such as `cond_indirect_effects()`
+  on a model with only moderators.
+  (0.2.1.5)
 
 ## Bug Fixes
 
