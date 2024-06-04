@@ -20,7 +20,7 @@ cond_indirect()."><meta property="og:image" content="https://sfcheung.github.io/
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,7 +99,7 @@ stored in the output of
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for indirect</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">parm</span>, level <span class="op">=</span> <span class="fl">0.95</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">parm</span>, level <span class="op">=</span> <span class="fl">0.95</span>, <span class="va">boot_type</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -120,6 +120,19 @@ parameter.</p></dd>
 <dd><p>The level of confidence,
 default is .95, returning the 95%
 confidence interval.</p></dd>
+
+
+<dt>boot_type</dt>
+<dd><p>If bootstrap
+confidence interval is to be formed,
+the type of bootstrap confidence
+interval. The supported types
+are <code>"perc"</code> (percentile bootstrap
+confidence interval, the recommended
+method) and <code>"bc"</code>
+(bias-corrected, or BC, bootstrap
+confidence interval). If not supplied,
+the stored <code>boot_type</code> will be used.</p></dd>
 
 
 <dt>...</dt>
@@ -204,8 +217,8 @@ percentile confidence interval.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   y~m2       0.309</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">out1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           2.5 %    97.5 %</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> y~x -0.05232493 0.1562506</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Percentile: 2.5 % Percentile: 97.5 %</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> y~x       -0.05232493          0.1562506</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

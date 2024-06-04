@@ -14,7 +14,7 @@ output of delta_med()."><meta property="og:image" content="https://sfcheung.gith
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -90,7 +90,7 @@ output of <code><a href="delta_med.html">delta_med()</a></code>.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for delta_med</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">parm</span>, level <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">parm</span>, level <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">boot_type</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -111,6 +111,19 @@ allowed.</p></dd>
 default is <code>NULL</code> and the level used
 when the object was created will be
 used.</p></dd>
+
+
+<dt>boot_type</dt>
+<dd><p>If bootstrap
+confidence interval is to be formed,
+the type of bootstrap confidence
+interval. The supported types
+are <code>"perc"</code> (percentile bootstrap
+confidence interval, the recommended
+method) and <code>"bc"</code>
+(bias-corrected, or BC, bootstrap
+confidence interval). If not supplied,
+the stored <code>boot_type</code> will be used.</p></dd>
 
 
 <dt>...</dt>
@@ -188,15 +201,15 @@ call <code><a href="delta_med.html">delta_med()</a></code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Mediator(s) (m)     : m </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Outcome variable (y): y </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Delta_med                          :          0.230</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 95.0% Bootstrap confidence interval: [0.097, 0.318]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Number of bootstrap samples        :             45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Delta_med                                     :          0.230</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95.0% Bootstrap percentile confidence interval: [0.097, 0.318]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of bootstrap samples                   :             45</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Paths removed:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  m~x</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">dm_boot</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                2.5 %    97.5 %</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Delta_Med 0.09725932 0.3175632</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           Percentile 2.5 % Percentile 97.5 %</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Delta_Med       0.09725932         0.3175632</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -16,7 +16,7 @@ indirect effect."><meta property="og:image" content="https://sfcheung.github.io/
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,7 +104,8 @@ indirect effect.</p>
 <span>  skip_check_single_x <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  skip_check_m_between_x_y <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  skip_check_x_to_y <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  skip_check_latent_variables <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  skip_check_latent_variables <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  boot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"perc"</span>, <span class="st">"bc"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -192,6 +193,18 @@ from <code>x</code> to <code>y</code>. Default is <code>TRUE</code>.</p></dd>
 <dd><p>Logical. Check whether the model
 has any latent variables. Default
 is <code>TRUE</code>.</p></dd>
+
+
+<dt>boot_type</dt>
+<dd><p>If bootstrap
+confidence interval is to be formed,
+the type of bootstrap confidence
+interval. The supported types
+are <code>"perc"</code> (percentile bootstrap
+confidence interval, the default and
+recommended type) and <code>"bc"</code>
+(bias-corrected, or BC, bootstrap
+confidence interval).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -399,15 +412,15 @@ https://doi.org/10.1037/met0000571</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Mediator(s) (m)     : m </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Outcome variable (y): y </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Delta_med                          :          0.230</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 95.0% Bootstrap confidence interval: [0.097, 0.318]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Number of bootstrap samples        :             45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Delta_med                                     :          0.230</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95.0% Bootstrap percentile confidence interval: [0.097, 0.318]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of bootstrap samples                   :             45</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Paths removed:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  m~x</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">dm_boot</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                2.5 %    97.5 %</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Delta_Med 0.09725932 0.3175632</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           Percentile 2.5 % Percentile 97.5 %</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Delta_Med       0.09725932         0.3175632</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

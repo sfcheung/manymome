@@ -35,7 +35,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -110,7 +110,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2023-10-06</h4>
+            <h4 data-toc-skip class="date">2024-06-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/HEAD/vignettes/do_boot.Rmd" class="external-link"><code>vignettes/do_boot.Rmd</code></a></small>
       <div class="d-none name"><code>do_boot.Rmd</code></div>
@@ -125,7 +125,7 @@
 <code><a href="../reference/do_boot.html">do_boot()</a></code> from the package <a href="https://sfcheung.github.io/manymome/index.html">manymome</a> (<a href="https://doi.org/10.3758/s13428-023-02224-z" class="external-link">Cheung &amp; Cheung,
 2023</a>) to generate bootstrap estimates for
 <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> and <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>
-to form percentile bootstrap confidence intervals.</p>
+to form bootstrap confidence intervals.</p>
 <p>Although <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> and
 <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> can also be used to generate
 bootstrap estimates when they are called (see
@@ -184,7 +184,7 @@ one outcome variable (<code>y</code>), and two control variables
 <span>           fixed.x <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>           estimator <span class="op">=</span> <span class="st">"MLR"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit_lavaan</span><span class="op">)</span></span>
-<span><span class="co">#&gt; lavaan 0.6.16 ended normally after 1 iteration</span></span>
+<span><span class="co">#&gt; lavaan 0.6.17 ended normally after 1 iteration</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Estimator                                         ML</span></span>
 <span><span class="co">#&gt;   Optimization method                           NLMINB</span></span>
@@ -248,7 +248,7 @@ parameters but are needed to form the confidence interval of the
 <em>standardized</em> indirect effect.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">boot_out_lavaan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_boot.html">do_boot</a></span><span class="op">(</span>fit <span class="op">=</span> <span class="va">fit_lavaan</span>,</span>
-<span>                           R <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>                           R <span class="op">=</span> <span class="fl">500</span>,</span>
 <span>                           ncores <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>                           seed <span class="op">=</span> <span class="fl">58491</span><span class="op">)</span></span></code></pre></div>
 <p>Usually, just three arguments are needed:</p>
@@ -256,7 +256,7 @@ parameters but are needed to form the confidence interval of the
 <li><p><code>fit</code>: The output of
 <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>.</p></li>
 <li><p><code>R</code>: The number of bootstrap samples. Should be at
-least 2000 or even 5000 in real research. 100 is used here just for
+least 2000 or even 5000 in real research. 500 is used here just for
 illustration.</p></li>
 <li><p><code>ncores</code>: The number of CPU cores to be used in
 generating bootstrap estimates in parallel processing.</p></li>
@@ -299,8 +299,8 @@ probably a more popular function.</p>
 <p>When calling <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> or
 <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>, the argument <code>boot_out</code>
 can be assigned the output of <code>do_bout()</code>. They will then
-retrieve he stored bootstrap estimates to form the bootstrap confidence
-intervals, if requested.</p>
+retrieve he stored bootstrap estimates to form the percentile bootstrap
+confidence intervals, if requested.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_lavaan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">indirect_effect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span>
 <span>                              y <span class="op">=</span> <span class="st">"y"</span>,</span>
@@ -310,11 +310,11 @@ intervals, if requested.</p>
 <span>                              boot_out <span class="op">=</span> <span class="va">boot_out_lavaan</span><span class="op">)</span></span>
 <span><span class="va">out_lavaan</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; == Indirect Effect ==</span></span>
+<span><span class="co">#&gt; == Indirect Effect  ==</span></span>
 <span><span class="co">#&gt;                                      </span></span>
 <span><span class="co">#&gt;  Path:               x -&gt; m -&gt; y     </span></span>
-<span><span class="co">#&gt;  Indirect Effect     0.733           </span></span>
-<span><span class="co">#&gt;  95.0% Bootstrap CI: [0.279 to 1.202]</span></span>
+<span><span class="co">#&gt;  Indirect Effect:    0.733           </span></span>
+<span><span class="co">#&gt;  95.0% Bootstrap CI: [0.270 to 1.228]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m~x)*(b.y~m)</span></span>
@@ -322,7 +322,7 @@ intervals, if requested.</p>
 <span><span class="co">#&gt;   (0.93469)*(0.78469)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
-<span><span class="co">#&gt; with 100 bootstrap samples.</span></span>
+<span><span class="co">#&gt; with 500 bootstrap samples.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients of Component Paths:</span></span>
 <span><span class="co">#&gt;  Path Coefficient</span></span>
@@ -331,6 +331,12 @@ intervals, if requested.</p>
 <p>Reusing the bootstrap estimates can ensure that all analysis with
 bootstrap confidence intervals are based on the same set of bootstrap
 samples.</p>
+<p>The function also supports bias-corrected (BC) confidence interval,
+which can be requested by adding <code>boot_type = "bc"</code> to the
+call of <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>. However, authors in some recent
+work do not advocate this method (e.g., Falk &amp; Biesanz, 2015; Hayes,
+2022; Tofighi &amp; Kelley, 2020). Therefore, this option is provided
+merely for research purpose.</p>
 </div>
 </div>
 <div class="section level2">
@@ -368,8 +374,9 @@ predicts <code>y</code>:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Residual standard error: 0.8425 on 96 degrees of freedom</span></span>
 <span><span class="co">#&gt; Multiple R-squared:  0.5981, Adjusted R-squared:  0.5855 </span></span>
-<span><span class="co">#&gt; F-statistic: 47.62 on 3 and 96 DF,  p-value: &lt; 2.2e-16</span></span>
-<span><span class="co">#</span></span>
+<span><span class="co">#&gt; F-statistic: 47.62 on 3 and 96 DF,  p-value: &lt; 2.2e-16</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#</span></span>
 <span><span class="co"># ###### Regression: Predict y ######</span></span>
 <span><span class="co">#</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lm_y</span><span class="op">)</span></span>
@@ -397,7 +404,7 @@ predicts <code>y</code>:</p>
 <p>To use <code><a href="../reference/do_boot.html">do_boot()</a></code>, we first combine the regression
 outputs to one object using <code><a href="../reference/lm2list.html">lm2list()</a></code>. The output is an
 <code>lm_list</code>-class object.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lm2list.html">lm2list</a></span><span class="op">(</span><span class="va">lm_m</span>, <span class="va">lm_y</span><span class="op">)</span></span>
 <span><span class="va">fit_lm</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -411,9 +418,9 @@ outputs to one object using <code><a href="../reference/lm2list.html">lm2list()<
 <p>We can now use <code><a href="../reference/do_boot.html">do_boot()</a></code> as described above, using the
 output of <code><a href="../reference/lm2list.html">lm2list()</a></code> instead of the output of
 <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">boot_out_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_boot.html">do_boot</a></span><span class="op">(</span>fit <span class="op">=</span> <span class="va">fit_lm</span>,</span>
-<span>                       R <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>                       R <span class="op">=</span> <span class="fl">500</span>,</span>
 <span>                       seed <span class="op">=</span> <span class="fl">98715</span>,</span>
 <span>                       ncores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p>Like working on the outputs of <code><a href="https://rdrr.io/pkg/lavaan/man/lavaan.html" class="external-link">lavaan::lavaan()</a></code>,
@@ -432,7 +439,7 @@ samples will be generated every time.</p>
 <p>When calling <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> or
 <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>, we cab set the argument
 <code>boot_out</code> to the output of <code>do_bout()</code>:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">indirect_effect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span>
 <span>                          y <span class="op">=</span> <span class="st">"y"</span>,</span>
 <span>                          m <span class="op">=</span> <span class="st">"m"</span>,</span>
@@ -441,11 +448,11 @@ samples will be generated every time.</p>
 <span>                          boot_out <span class="op">=</span> <span class="va">boot_out_lm</span><span class="op">)</span></span>
 <span><span class="va">out_lm</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; == Indirect Effect ==</span></span>
+<span><span class="co">#&gt; == Indirect Effect  ==</span></span>
 <span><span class="co">#&gt;                                      </span></span>
 <span><span class="co">#&gt;  Path:               x -&gt; m -&gt; y     </span></span>
-<span><span class="co">#&gt;  Indirect Effect     0.733           </span></span>
-<span><span class="co">#&gt;  95.0% Bootstrap CI: [0.277 to 1.206]</span></span>
+<span><span class="co">#&gt;  Indirect Effect:    0.733           </span></span>
+<span><span class="co">#&gt;  95.0% Bootstrap CI: [0.292 to 1.201]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m~x)*(b.y~m)</span></span>
@@ -453,12 +460,17 @@ samples will be generated every time.</p>
 <span><span class="co">#&gt;   (0.93469)*(0.78469)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
-<span><span class="co">#&gt; with 100 bootstrap samples.</span></span>
+<span><span class="co">#&gt; with 500 bootstrap samples.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients of Component Paths:</span></span>
 <span><span class="co">#&gt;  Path Coefficient</span></span>
 <span><span class="co">#&gt;   m~x       0.935</span></span>
 <span><span class="co">#&gt;   y~m       0.785</span></span></code></pre></div>
+<p>As long as users are aware of the potential problem with
+bias-corrected (BC) bootstrap confidence interval (see the references
+cited above), <code>boot_type = "bc"</code> can be used to request BC
+bootstrap confidence interval instead of the default percentile
+bootstrap confidence interval.</p>
 </div>
 </div>
 <div class="section level2">
@@ -472,7 +484,7 @@ class <code>boot_out</code>, which is a list of <code>R</code> lists,
 each with three elements: <code>est</code>, <code>implied_stats</code>,
 and <code>ok</code>.</p>
 <p>This is the content of <code>est</code> of the first list:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">boot_out_lavaan</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">est</span></span>
 <span><span class="co">#&gt;    lhs op rhs    est</span></span>
 <span><span class="co">#&gt; 1    m  ~   x  0.828</span></span>
@@ -498,7 +510,7 @@ parameters are used so other rows, if any, are not used even if
 present.</p>
 <p>This is the content of <code>implied_stats</code> of the first
 list:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">boot_out_lavaan</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">implied_stats</span></span>
 <span><span class="co">#&gt; $cov</span></span>
 <span><span class="co">#&gt;         m      y      x     c1     c2</span></span>
@@ -534,7 +546,7 @@ used in forming confidence intervals.</p>
 <code>boot_out</code>, which is a list of <code>R</code> lists, each
 with two elements: <code>est</code> and <code>implied_stats</code>.</p>
 <p>This is the content of <code>est</code> of the first list:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">boot_out_lm</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">est</span></span>
 <span><span class="co">#&gt;   lhs op rhs        est</span></span>
 <span><span class="co">#&gt; 1   m  ~   x  0.9583396</span></span>
@@ -551,7 +563,7 @@ with two elements: <code>est</code> and <code>implied_stats</code>.</p>
 the estimates based on <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.</p>
 <p>This is the content of <code>implied_stats</code> of the first
 list:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">boot_out_lm</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">implied_stats</span></span>
 <span><span class="co">#&gt; $cov</span></span>
 <span><span class="co">#&gt;             m          x         c1          c2          y</span></span>
@@ -579,13 +591,24 @@ means of all variables in each bootstrap sample.</p>
 its help page.</p>
 </div>
 <div class="section level2">
-<h2 id="reference">Reference<a class="anchor" aria-label="anchor" href="#reference"></a>
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <p>Cheung, S. F., &amp; Cheung, S.-H. (2023). <em>manymome</em>: An R
 package for computing the indirect effects, conditional effects, and
 conditional indirect effects, standardized or unstandardized, and their
 bootstrap confidence intervals, in many (though not all) models.
 <em>Behavior Research Methods</em>. <a href="https://doi.org/10.3758/s13428-023-02224-z" class="external-link uri">https://doi.org/10.3758/s13428-023-02224-z</a></p>
+<p>Falk, C. F., &amp; Biesanz, J. C. (2015). Inference and interval
+estimation methods for indirect effects with latent variable models.
+<em>Structural Equation Modeling: A Multidisciplinary Journal,
+22</em>(1), 24–38. <a href="https://doi.org/10.1080/10705511.2014.935266" class="external-link uri">https://doi.org/10.1080/10705511.2014.935266</a></p>
+<p>Hayes, A. F. (2022). <em>Introduction to mediation, moderation, and
+conditional process analysis: A regression-based approach</em> (Third
+Edition). The Guilford Press.</p>
+<p>Tofighi, D., &amp; Kelley, K. (2020). Indirect effects in sequential
+mediation models: Evaluating methods for hypothesis testing and
+confidence interval formation. <em>Multivariate Behavioral Research,
+55</em>(2), 188–210. <a href="https://doi.org/10.1080/00273171.2019.1618545" class="external-link uri">https://doi.org/10.1080/00273171.2019.1618545</a></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

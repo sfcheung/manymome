@@ -35,7 +35,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -110,7 +110,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2024-05-12</h4>
+            <h4 data-toc-skip class="date">2024-06-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/HEAD/vignettes/mod_levels.Rmd" class="external-link"><code>vignettes/mod_levels.Rmd</code></a></small>
       <div class="d-none name"><code>mod_levels.Rmd</code></div>
@@ -150,8 +150,9 @@ moderators other than those default levels.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lavaan.ugent.be" class="external-link">lavaan</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; This is lavaan 0.6-17</span></span>
-<span><span class="co">#&gt; lavaan is FREE software! Please report any bugs.</span></span>
-<span><span class="va">dat</span><span class="op">$</span><span class="va">w1x</span> <span class="op">&lt;-</span> <span class="va">dat</span><span class="op">$</span><span class="va">w1</span> <span class="op">*</span> <span class="va">dat</span><span class="op">$</span><span class="va">x</span></span>
+<span><span class="co">#&gt; lavaan is FREE software! Please report any bugs.</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dat</span><span class="op">$</span><span class="va">w1x</span> <span class="op">&lt;-</span> <span class="va">dat</span><span class="op">$</span><span class="va">w1</span> <span class="op">*</span> <span class="va">dat</span><span class="op">$</span><span class="va">x</span></span>
 <span><span class="va">dat</span><span class="op">$</span><span class="va">w2m</span> <span class="op">&lt;-</span> <span class="va">dat</span><span class="op">$</span><span class="va">w2</span> <span class="op">*</span> <span class="va">dat</span><span class="op">$</span><span class="va">m</span></span>
 <span><span class="va">mod</span> <span class="op">&lt;-</span></span>
 <span><span class="st">"</span></span>
@@ -171,7 +172,7 @@ moderators other than those default levels.</p>
 To generate these three levels for <code>w1</code>, one standard
 deviation (SD) below mean, mean, and one SD above mean, just call
 <code><a href="../reference/mod_levels.html">mod_levels()</a></code>:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">w1levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mod_levels.html">mod_levels</a></span><span class="op">(</span>w <span class="op">=</span> <span class="st">"w1"</span>, fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span>
 <span><span class="va">w1levels</span></span>
 <span><span class="co">#&gt;               w1</span></span>
@@ -184,7 +185,7 @@ because it will automatically generate these default levels.</p>
 mean, we can set the argument <code>sd_from_mean</code> to a vector of
 distances from means, which are <code>-1</code> and <code>1</code> in
 this example:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">w1levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mod_levels.html">mod_levels</a></span><span class="op">(</span>w <span class="op">=</span> <span class="st">"w1"</span>, fit <span class="op">=</span> <span class="va">fit</span>,</span>
 <span>                       sd_from_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">w1levels</span></span>
@@ -197,7 +198,7 @@ this example:</p>
 </h3>
 <p>To generate the levels based on percentiles, set the argument
 <code>w_method</code> to <code>"percentile"</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">w1levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mod_levels.html">mod_levels</a></span><span class="op">(</span>w <span class="op">=</span> <span class="st">"w1"</span>, fit <span class="op">=</span> <span class="va">fit</span>,</span>
 <span>                       w_method <span class="op">=</span> <span class="st">"percentile"</span><span class="op">)</span></span>
 <span><span class="va">w1levels</span></span>
@@ -211,7 +212,7 @@ distribution.</p>
 <p>Suppose we want to change the percentiles to be used, for example,
 25th and 75th, set the argument <code>percentiles</code> as shown
 below:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">w1levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mod_levels.html">mod_levels</a></span><span class="op">(</span>w <span class="op">=</span> <span class="st">"w1"</span>, fit <span class="op">=</span> <span class="va">fit</span>,</span>
 <span>                       w_method <span class="op">=</span> <span class="st">"percentile"</span>,</span>
 <span>                       percentiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.25</span>, <span class="fl">.75</span><span class="op">)</span><span class="op">)</span></span>
@@ -225,7 +226,7 @@ below:</p>
 </h3>
 <p>If there are values that are meaningful for a moderator, they can be
 used by setting <code>values</code> to a vector of values:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">w1levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mod_levels.html">mod_levels</a></span><span class="op">(</span>w <span class="op">=</span> <span class="st">"w1"</span>, fit <span class="op">=</span> <span class="va">fit</span>,</span>
 <span>                       values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">w1levels</span></span>
@@ -235,7 +236,7 @@ used by setting <code>values</code> to a vector of values:</p>
 <span><span class="co">#&gt; 2  2</span></span></code></pre></div>
 <p>The output of <code>mod_levels</code> can be used when calling
 <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>wlevels <span class="op">=</span> <span class="va">w1levels</span>,</span>
 <span>                             x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"m"</span>,</span>
 <span>                             fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span>
@@ -264,7 +265,7 @@ automatically from the object assigned to <code>wlevels</code>.</p>
 <p>In the previous example, there are two moderators. We can call
 <code><a href="../reference/mod_levels.html">mod_levels()</a></code> once for each of them, or call
 <code><a href="../reference/mod_levels.html">mod_levels_list()</a></code>:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wlevels_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mod_levels.html">mod_levels_list</a></span><span class="op">(</span><span class="st">"w1"</span>, <span class="st">"w2"</span>, fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span>
 <span><span class="va">wlevels_list</span></span>
 <span><span class="co">#&gt; [[1]]</span></span>
@@ -281,7 +282,7 @@ two or more moderators, the default levels are two: one SD below mean
 and one SD above mean.</p>
 <p>The function <code><a href="../reference/mod_levels.html">mod_levels_list()</a></code> can merge the output into
 one table by setting <code>merge</code> to <code>TRUE</code>:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wlevels_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mod_levels.html">mod_levels_list</a></span><span class="op">(</span><span class="st">"w1"</span>, <span class="st">"w2"</span>, fit <span class="op">=</span> <span class="va">fit</span>,</span>
 <span>                                merge <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">wlevels_list</span></span>
@@ -296,7 +297,7 @@ settings will be used for all moderators. Most arguments of
 For example, if we want to use 25th and 75th percentiles for both
 <code>w1</code> and <code>w2</code>, use <code>w_method</code> and
 <code>percentiles</code> as before:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wlevels_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mod_levels.html">mod_levels_list</a></span><span class="op">(</span><span class="st">"w1"</span>, <span class="st">"w2"</span>, fit <span class="op">=</span> <span class="va">fit</span>,</span>
 <span>                                w_method <span class="op">=</span> <span class="st">"percentile"</span>,</span>
 <span>                                percentiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.25</span>, <span class="fl">.75</span><span class="op">)</span>,</span>
@@ -314,19 +315,21 @@ For example, if we want to use 25th and 75th percentiles for both
 <p>If we need to use different settings for the two moderators, then we
 need to call <code><a href="../reference/mod_levels.html">mod_levels()</a></code> once for each of them, and merge
 the results by <code><a href="../reference/merge_mod_levels.html">merge_mod_levels()</a></code>:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">w1levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mod_levels.html">mod_levels</a></span><span class="op">(</span>w <span class="op">=</span> <span class="st">"w1"</span>, fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span>
 <span><span class="va">w1levels</span></span>
 <span><span class="co">#&gt;               w1</span></span>
 <span><span class="co">#&gt; M+1.0SD 6.173157</span></span>
 <span><span class="co">#&gt; Mean    5.105602</span></span>
-<span><span class="co">#&gt; M-1.0SD 4.038047</span></span>
-<span><span class="va">w2levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mod_levels.html">mod_levels</a></span><span class="op">(</span>w <span class="op">=</span> <span class="st">"w2"</span>, fit <span class="op">=</span> <span class="va">fit</span>, values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; M-1.0SD 4.038047</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">w2levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mod_levels.html">mod_levels</a></span><span class="op">(</span>w <span class="op">=</span> <span class="st">"w2"</span>, fit <span class="op">=</span> <span class="va">fit</span>, values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">w2levels</span></span>
 <span><span class="co">#&gt;   w2</span></span>
 <span><span class="co">#&gt; 5  5</span></span>
-<span><span class="co">#&gt; 2  2</span></span>
-<span><span class="va">wlevels_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/merge_mod_levels.html">merge_mod_levels</a></span><span class="op">(</span><span class="va">w1levels</span>, <span class="va">w2levels</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 2  2</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">wlevels_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/merge_mod_levels.html">merge_mod_levels</a></span><span class="op">(</span><span class="va">w1levels</span>, <span class="va">w2levels</span><span class="op">)</span></span>
 <span><span class="va">wlevels_all</span></span>
 <span><span class="co">#&gt;                          w1 w2</span></span>
 <span><span class="co">#&gt; w1: M+1.0SD; w2: 5 6.173157  5</span></span>
@@ -342,7 +345,7 @@ the results by <code><a href="../reference/merge_mod_levels.html">merge_mod_leve
 </h2>
 <p>We use the dataset <code>data_med_mod_serial_cat</code> for
 illustration:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">data_med_mod_serial_cat</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      x     w1    w2   m1   m2    y   c1   c2</span></span>
@@ -361,7 +364,7 @@ categories and <code>w2</code> with two categories. We use only
 <p>To fit a model using path analysis, two dummy variables need to be
 created for <code>w1</code>. This can be done by
 <code><a href="../reference/factor2var.html">factor2var()</a></code> or similar functions from other packages.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">w1dummies</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/factor2var.html">factor2var</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">w1</span>, prefix <span class="op">=</span> <span class="st">"w1"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">w1dummies</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        w1group2 w1group3</span></span>
@@ -370,8 +373,9 @@ created for <code>w1</code>. This can be done by
 <span><span class="co">#&gt; group2        1        0</span></span>
 <span><span class="co">#&gt; group1        0        0</span></span>
 <span><span class="co">#&gt; group3        0        1</span></span>
-<span><span class="co">#&gt; group2        1        0</span></span>
-<span><span class="co"># Add them to the dataset</span></span>
+<span><span class="co">#&gt; group2        1        0</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Add them to the dataset</span></span>
 <span><span class="va">dat</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"w1group2"</span>, <span class="st">"w1group3"</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">w1dummies</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      x     w1    w2   m1   m2    y   c1   c2 w1group2 w1group3</span></span>
@@ -382,7 +386,7 @@ created for <code>w1</code>. This can be done by
 <span><span class="co">#&gt; 5 7.76 group3 team1 4.49 4.83 4.01 4.35 4.16        0        1</span></span>
 <span><span class="co">#&gt; 6 6.84 group2 team2 5.72 6.31 3.38 4.32 4.48        1        0</span></span></code></pre></div>
 <p>This is the model:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat</span><span class="op">$</span><span class="va">w1group2x</span> <span class="op">&lt;-</span> <span class="va">dat</span><span class="op">$</span><span class="va">w1group2</span> <span class="op">*</span> <span class="va">dat</span><span class="op">$</span><span class="va">x</span></span>
 <span><span class="va">dat</span><span class="op">$</span><span class="va">w1group3x</span> <span class="op">&lt;-</span> <span class="va">dat</span><span class="op">$</span><span class="va">w1group3</span> <span class="op">*</span> <span class="va">dat</span><span class="op">$</span><span class="va">x</span></span>
 <span><span class="va">mod</span> <span class="op">&lt;-</span></span>
@@ -399,7 +403,7 @@ created for <code>w1</code>. This can be done by
 combinations of the coding). This can be generated by
 <code><a href="../reference/mod_levels.html">mod_levels()</a></code>. <code>w</code> should be a vector of the
 dummy variables:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">w1levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mod_levels.html">mod_levels</a></span><span class="op">(</span>w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"w1group2"</span>, <span class="st">"w1group3"</span><span class="op">)</span>, fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span>
 <span><span class="va">w1levels</span></span>
 <span><span class="co">#&gt;           w1group2 w1group3</span></span>
@@ -412,7 +416,7 @@ names of the dummy variables. The common part, <code>"w1group"</code>,
 is removed.</p>
 <p>To tell <code>mod_levels</code> which part to be removed, set
 <code>prefix</code> to the part to be removed:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">w1levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mod_levels.html">mod_levels</a></span><span class="op">(</span>w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"w1group2"</span>, <span class="st">"w1group3"</span><span class="op">)</span>, fit <span class="op">=</span> <span class="va">fit</span>,</span>
 <span>                       prefix <span class="op">=</span> <span class="st">"w1"</span><span class="op">)</span></span>
 <span><span class="va">w1levels</span></span>
@@ -424,7 +428,7 @@ is removed.</p>
 <code>Reference</code> because its name cannot be determined from the
 names of the dummy variables. The label can be changed by setting
 <code>reference_group_label</code>:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">w1levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mod_levels.html">mod_levels</a></span><span class="op">(</span>w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"w1group2"</span>, <span class="st">"w1group3"</span><span class="op">)</span>, fit <span class="op">=</span> <span class="va">fit</span>,</span>
 <span>                       prefix <span class="op">=</span> <span class="st">"w1"</span>,</span>
 <span>                       reference_group_label <span class="op">=</span> <span class="st">"group1"</span><span class="op">)</span></span>
@@ -435,7 +439,7 @@ names of the dummy variables. The label can be changed by setting
 <span><span class="co">#&gt; group3        0        1</span></span></code></pre></div>
 <p>The output can then be used in
 <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>wlevels <span class="op">=</span> <span class="va">w1levels</span>,</span>
 <span>                             x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, m <span class="op">=</span> <span class="st">"m1"</span>,</span>
 <span>                             fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span>
@@ -463,7 +467,7 @@ names of the dummy variables. The label can be changed by setting
 <code>values</code> and supply a <em>named</em> <em>list</em> of numeric
 vectors: the <em>name</em> is the group label and the <em>vector</em> is
 the coding:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">w1levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mod_levels.html">mod_levels</a></span><span class="op">(</span>w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"w1group2"</span>, <span class="st">"w1group3"</span><span class="op">)</span>, fit <span class="op">=</span> <span class="va">fit</span>,</span>
 <span>                       values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>group1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span>
 <span>                                     group2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
@@ -483,22 +487,24 @@ generated separately and then merged by
 <code><a href="../reference/merge_mod_levels.html">merge_mod_levels()</a></code>.</p>
 <p>Using the example in the previous section, pretending that
 <code>x</code> is a numeric moderator:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">xlevels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mod_levels.html">mod_levels</a></span><span class="op">(</span>w <span class="op">=</span> <span class="st">"x"</span>, fit <span class="op">=</span> <span class="va">fit</span>,</span>
 <span>                      sd_from_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">xlevels</span></span>
 <span><span class="co">#&gt;                x</span></span>
 <span><span class="co">#&gt; M+1.0SD 7.149362</span></span>
-<span><span class="co">#&gt; M-1.0SD 5.087437</span></span>
-<span><span class="va">w1levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mod_levels.html">mod_levels</a></span><span class="op">(</span>w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"w1group2"</span>, <span class="st">"w1group3"</span><span class="op">)</span>, fit <span class="op">=</span> <span class="va">fit</span>,</span>
+<span><span class="co">#&gt; M-1.0SD 5.087437</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">w1levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mod_levels.html">mod_levels</a></span><span class="op">(</span>w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"w1group2"</span>, <span class="st">"w1group3"</span><span class="op">)</span>, fit <span class="op">=</span> <span class="va">fit</span>,</span>
 <span>                       prefix <span class="op">=</span> <span class="st">"w1"</span>,</span>
 <span>                       reference_group_label <span class="op">=</span> <span class="st">"group1"</span><span class="op">)</span></span>
 <span><span class="va">w1levels</span></span>
 <span><span class="co">#&gt;        w1group2 w1group3</span></span>
 <span><span class="co">#&gt; group1        0        0</span></span>
 <span><span class="co">#&gt; group2        1        0</span></span>
-<span><span class="co">#&gt; group3        0        1</span></span>
-<span><span class="va">wlevels_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/merge_mod_levels.html">merge_mod_levels</a></span><span class="op">(</span><span class="va">xlevels</span>, <span class="va">w1levels</span><span class="op">)</span></span>
+<span><span class="co">#&gt; group3        0        1</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">wlevels_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/merge_mod_levels.html">merge_mod_levels</a></span><span class="op">(</span><span class="va">xlevels</span>, <span class="va">w1levels</span><span class="op">)</span></span>
 <span><span class="va">wlevels_all</span></span>
 <span><span class="co">#&gt;                               x w1group2 w1group3</span></span>
 <span><span class="co">#&gt; x: M+1.0SD; w1: group1 7.149362        0        0</span></span>

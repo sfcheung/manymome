@@ -16,7 +16,7 @@ moderators."><meta property="og:image" content="https://sfcheung.github.io/manym
     
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -189,10 +189,16 @@ or Monte Carlo confidence
 intervals are requested in calling
 <code><a href="cond_indirect.html">cond_indirect_effects()</a></code>,
 <code>cond_indirect_diff()</code> will also form
-the percentile confidence
+the bootstrap confidence
 interval for the difference in
 conditional indirect effects
 using the stored estimates.</p>
+<p>If bootstrap confidence interval is
+to be formed and both effects used
+the same type of interval, then that
+type will be used. Otherwise,
+percentile confidence interval will
+be formed.</p>
     </div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
