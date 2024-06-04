@@ -133,7 +133,8 @@ Despite the aforementioned advantages, the current version of
 
 - Does not support multilevel models (although `lavaan` does).
 
-- For bootstrapping, only supports nonparametric bootstrapping and percentile
+- For bootstrapping, only supports nonparametric bootstrapping,
+and supports only percentile and bias-corrected
 confidence interval. Does not support other bootstrapping methods such parametric bootstrapping.
 
 - Only supports OLS estimation when `lm()` is used.
