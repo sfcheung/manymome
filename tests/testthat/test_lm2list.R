@@ -30,4 +30,7 @@ test_that("lm2list", {
     expect_error(lm2list(lm_m2, lm_ext))
     expect_error(lm2list(lm_m1, lm_m2, lm_m3, lm_diffn))
     expect_error(lm2list(lm_m1b, lm_m2b, lm_m3b, lm_yb))
+    expect_identical(lm2list(lm_m1, lm_m2, lm_m3, lm_y),
+                     lm2list(list(lm_m1, lm_m2, lm_m3, lm_y)))
+    expect_no_error(lm2list(lm_m2))
   })
