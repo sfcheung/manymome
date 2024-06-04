@@ -531,8 +531,7 @@ out_momome
 #>       x y Index  CI.lo CI.hi
 #> Index x y 0.042 -0.003 0.116
 #> 
-#> 
-#> Error in switch(ci_type, mc = "Monte Carlo", boot = switch(boot_type, : EXPR must be a length 1 vector
+#>  - [CI.lo, CI.hi]: 95% percentile confidence interval.
 ```
 
 The index of moderated moderated mediation is
