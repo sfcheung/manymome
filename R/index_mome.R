@@ -405,6 +405,8 @@ index_of_momome <- function(x,
     if (has_boot) ind_ci <- ind_boot_ci
     if (has_mc) ind_se <- ind_mc_se
     if (has_boot) ind_se <- ind_boot_se
+    if (has_mc) ci_type <- "mc"
+    if (has_boot) ci_type <- "boot"
     out <- list(index = ind,
                 ci = ind_ci,
                 pvalue = ind_boot_p,
@@ -418,7 +420,8 @@ index_of_momome <- function(x,
                 boot_diff = ind_boot,
                 mc_diff = ind_mc,
                 type = "index_of_momome",
-                boot_type = boot_type)
+                boot_type = boot_type,
+                ci_type = ci_type)
     class(out) <- c("cond_indirect_diff", class(out))
     out
   }
