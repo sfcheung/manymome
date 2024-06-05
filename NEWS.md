@@ -1,4 +1,4 @@
-# manymome 0.2.1.5
+# manymome 0.2.2
 
 ## New Features
 
