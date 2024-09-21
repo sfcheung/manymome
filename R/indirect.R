@@ -144,7 +144,7 @@
 #' mediator, and both `x` and `y` are
 #' not standardized.
 #'
-#' @param fit_df_residual A numeric
+#' @param df_residual A numeric
 #' vector of the residual degrees of
 #' freedom for the model of each
 #' response variable (`y`-variable).
@@ -217,7 +217,7 @@ indirect_i <- function(x,
                      allow_mixing_lav_and_obs = TRUE,
                      group = NULL,
                      est_vcov = NULL,
-                     fit_df_residual = NULL) {
+                     df_residual = NULL) {
     # If called by cond_indirect() with boot_ci or mc_ci,
     # only these arguments are used:
     # - est
@@ -246,7 +246,7 @@ indirect_i <- function(x,
     # - group
     # Need these arguments to compute SE
     # - est_vcov
-    # - fit_df_residual
+    # - df_residual
 
     if (is.null(est)) {
       est <- lav_est(fit)
@@ -403,16 +403,17 @@ indirect_i <- function(x,
       } else {
         b_cond <- rep(NA, length(bs))
       }
-    if (is.null(m) && !is.null(est_vcov) && !is.null(fit_df_residual)) {
+    if (is.null(m) && !is.null(est_vcov) && !is.null(df_residual)) {
         # TODO: Add support for lavaan and lavaan.mi
         if (!is.null(wvalues)) {
             bs_se <- sapply(prods_tmp,
                             FUN = cond_se,
-                            est_vcov = est_vcov)
-            bs_df_residual <- fit_df_residual[y]
+                            est_vcov = est_vcov,
+                            wvalues = wvalues)
+            bs_df_residual <- df_residual[y]
           } else {
             bs_se <- sqrt(est_vcov[[y]][x, x])
-            bs_df_residual <- unname(fit_df_residual[y])
+            bs_df_residual <- unname(df_residual[y])
           }
       } else {
         bs_se <- NA
@@ -476,8 +477,8 @@ indirect_i <- function(x,
                 computation_symbols = b_all_str1,
                 group_number = group_number,
                 group_label = group_label,
-                indirect_normal_se = bs_se,
-                indirect_normal_df_residual = bs_df_residual)
+                original_se = bs_se,
+                df_residual = bs_df_residual)
     class(out) <- "indirect"
     return(out)
   }
