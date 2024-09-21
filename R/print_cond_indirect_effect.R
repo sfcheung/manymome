@@ -60,6 +60,13 @@
 #' values, depending on the method used
 #' to form the confidence intervals.
 #'
+#' @param level The level of confidence
+#' for the confidence intervals computed
+#' from standard errors. Used only for
+#' paths with out mediators and both
+#' `x`- and `y`-variables are not
+#' standardized.
+#'
 #' @param ...  Other arguments. Not
 #' used.
 #'
@@ -106,6 +113,8 @@ print.cond_indirect_effects <- function(x, digits = 3,
                                         pvalue = FALSE,
                                         pvalue_digits = 3,
                                         se = FALSE,
+                                        level = .95,
+                                        se_ci = FALSE,
                                         ...) {
   # TODO:
   # - Support cases with both moderators and groups.
@@ -190,6 +199,81 @@ print.cond_indirect_effects <- function(x, digits = 3,
           j <- length(out)
           out <- c(out[1:i], list(SE = ind_se), out[(i + 1):j])
         }
+    }
+  se_out <- cond_effects_original_se(x)
+  has_original_se <- !is.null(se_out)
+  print_original_se <- FALSE
+  if (!has_ci && !has_m && !has_groups && has_wlevels &&
+      !standardized_x && !standardized_y &&
+      has_original_se) {
+      print_original_se <- TRUE
+      # t or Wald SE, CI, and p-values
+      # TODO: Support multiple-group models
+      # Moderation only
+      # Add SE
+      out_original <- list()
+      if (se) {
+          out_se <- unname(se_out$se)
+          out_se <- sapply(out_se, function(xx) {
+              if (!is.na(xx)) {
+                  return(formatC(xx, digits = digits, format = "f"))
+                } else {
+                  return("NA")
+                }
+            })
+          out_original <- c(out_original,
+                            list(SE = out_se))
+        }
+      if (pvalue) {
+          out_stat <- unname(se_out$stat)
+          out_stat <- sapply(out_stat, function(xx) {
+              if (!is.na(xx)) {
+                  return(formatC(xx, digits = digits, format = "f"))
+                } else {
+                  return("NA")
+                }
+            })
+          out_p <- unname(se_out$p)
+          out_p <- sapply(out_p, function(xx) {
+                        if (!is.na(xx)) {
+                            return(formatC(xx, digits = pvalue_digits, format = "f"))
+                          } else {
+                            return("NA")
+                          }
+                      })
+          out_sig <- as.character(unname(se_out$sig))
+          out_original <- c(out_original,
+                            list(Stat = out_stat,
+                                 pvalue = out_p,
+                                 Sig = out_sig))
+        }
+      if (se_ci) {
+          out_cilo <- unname(se_out$cilo)
+          out_cihi <- unname(se_out$cihi)
+          out_cilo <- sapply(out_cilo, function(xx) {
+              if (!is.na(xx)) {
+                  return(formatC(xx, digits = digits, format = "f"))
+                } else {
+                  return("NA")
+                }
+            })
+          out_cihi <- sapply(out_cihi, function(xx) {
+              if (!is.na(xx)) {
+                  return(formatC(xx, digits = digits, format = "f"))
+                } else {
+                  return("NA")
+                }
+            })
+          out_original <- c(out_original,
+                            list(`CI.lo` = out_cilo,
+                                 `CI.hi` = out_cihi))
+        }
+      i <- which(names(out) == "ind")
+      j <- length(out)
+      out <- c(out[1:i], out_original, out[(i + 1):j])
+      # Drop the component column
+      i <- which(names(out) %in% names(x_i$components))
+      out <- out[-i]
     }
   out1 <- data.frame(out, check.names = FALSE)
   if (has_wlevels) {
@@ -294,4 +378,73 @@ format_numeric <- function(xi, digits = 3, check_integer = TRUE) {
     if (isTRUE(all.equal(round(xi), xi))) return(round(xi, 0))
     xi <- formatC(xi, digits = digits, format = "f")
     xi
+  }
+
+cond_effects_original_se <- function(object,
+                                     level = .95,
+                                     append = FALSE) {
+    full_output <- attr(object, "full_output")
+    full_output_1 <- full_output[[1]]
+    if (full_output_1$standardized_x ||
+        full_output_1$standardized_y) {
+        if (append) {
+            return(object)
+          } else {
+            return(NULL)
+          }
+      }
+    if (!is.null(full_output_1$m)) {
+        if (append) {
+            return(object)
+          } else {
+            return(NULL)
+          }
+      }
+    if (is.null(full_output_1$original_se)) {
+        if (append) {
+            return(object)
+          } else {
+            return(NULL)
+          }
+      }
+    est <- object$ind
+    se <- sapply(full_output,
+                 function(x) x$original_se)
+    dfres <- sapply(full_output,
+                    function(x) x$df_residual)
+    test_stat <- est / se
+    p <- 2 * pt(abs(test_stat),
+                df = dfres,
+                lower.tail = FALSE)
+    sig <- stats::symnum(p,
+                         corr = FALSE,
+                         na = FALSE,
+                         cutpoints = c(0, 0.001, 0.01, 0.05, 1),
+                         symbols = c("***", "**", "*", " "))
+    z_crit <- -1 * qt((1 - level) / 2,
+                      df = dfres,
+                      lower.tail = TRUE)
+    cilo <- est - z_crit * se
+    cihi <- est + z_crit * se
+    if (append) {
+        object$SE <- se
+        object$Stat <- test_stat
+        object$P <- p
+        object$Sig <- sig
+        object$CI.Lo <- cilo
+        object$CI.Hi <- cihi
+        attr(object, "sig_legend") <- attr(sig, "legend")
+        attr(object, "original_se_level") <- level
+        return(object)
+      } else {
+        out <- list(se = se,
+                    stat = test_stat,
+                    pvalue = p,
+                    sig = sig,
+                    cilo = cilo,
+                    cihi = cihi)
+        attr(out, "sig_legend") <- attr(sig, "legend")
+        attr(out, "original_se_level") <- level
+        return(out)
+      }
   }
