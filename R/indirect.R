@@ -232,6 +232,18 @@ indirect_i <- function(x,
     # - warn
     # - prods
     # - group
+    # If called by cond_indirect() to compute the point estimate:
+    # - x
+    # - y
+    # - m
+    # - fit
+    # - est
+    # - implied_stats
+    # - wvalues
+    # - standardized_x
+    # - standardized_y
+    # - prods
+    # - group
 
     if (is.null(est)) {
       est <- lav_est(fit)
