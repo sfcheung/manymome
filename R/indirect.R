@@ -218,6 +218,21 @@ indirect_i <- function(x,
                      group = NULL,
                      est_vcov = NULL,
                      fit_df_residual = NULL) {
+    # If called by cond_indirect() with boot_ci or mc_ci,
+    # only these arguments are used:
+    # - est
+    # - implied_stats
+    # - x
+    # - y
+    # - m
+    # - fit
+    # - wvalues
+    # - standardized_x
+    # - standardized_y
+    # - warn
+    # - prods
+    # - group
+
     if (is.null(est)) {
       est <- lav_est(fit)
     }
