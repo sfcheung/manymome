@@ -20,10 +20,14 @@
 #'
 #' @noRd
 
-lm_list_vcov <- function(object) {
+lm_list_vcov <- function(object,
+                         est = NULL) {
     vcov0 <- lapply(object,
                     stats::vcov)
-    est <- lm2ptable(object)$est
+    if (is.null(est)) {
+        coefs <- lapply(object, coef2lor)
+        est <- do.call(rbind, coefs)
+      }
     ys <- sapply(object,
                  get_response)
     names(vcov0) <- ys
