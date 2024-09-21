@@ -194,7 +194,8 @@ indirect_i <- function(x,
                      expand = TRUE,
                      warn = TRUE,
                      allow_mixing_lav_and_obs = TRUE,
-                     group = NULL) {
+                     group = NULL,
+                     est_vcov = NULL) {
     if (is.null(est)) {
       est <- lav_est(fit)
     }
@@ -430,6 +431,10 @@ indirect_i <- function(x,
       }
     # Compute OLS or Wald SE, t, CI, and p
     # TODO:
+    #   - Do this only if m is NULL
+    b_all_se <- cond_se(xi = prods_tmp,
+                       est_vcov = est_vcov,
+                       est = est)
     b_all_final <- b_all * scale_x / scale_y
     out <- list(indirect = unname(b_all_final),
                 indirect_raw = unname(b_all),
