@@ -428,6 +428,8 @@ indirect_i <- function(x,
                                  "sd_", names(scale_y))
           }
       }
+    # Compute OLS or Wald SE, t, CI, and p
+    # TODO:
     b_all_final <- b_all * scale_x / scale_y
     out <- list(indirect = unname(b_all_final),
                 indirect_raw = unname(b_all),
