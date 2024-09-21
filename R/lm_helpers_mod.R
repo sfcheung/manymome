@@ -61,10 +61,14 @@ lm_list_vcov <- function(object,
 #' @param est_vcov The variance-covariance
 #' matrix of all the parameters in a model.
 #'
+#' @param wvalues A vector of the values
+#' of the moderators.
+#'
 #' @noRd
 
 cond_se <- function(xi,
-                    est_vcov) {
+                    est_vcov,
+                    wvalues) {
     if (all(is.na(xi))) return(0)
     if (is.null(xi$prod)) return(0)
     prod_i <- xi$prod
