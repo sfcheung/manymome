@@ -134,6 +134,27 @@
 #' groups is greater than one. Default
 #' is NULL.
 #'
+#' @param est_vcov A list of
+#' variance-covariance matrix of
+#' estimates, one for each response
+#' variable (`y`-variable). Used only
+#' for models fitted by [stats::lm()]
+#' for now. It is used to compute the
+#' standard error for a path with no
+#' mediator, and both `x` and `y` are
+#' not standardized.
+#'
+#' @param fit_df_residual A numeric
+#' vector of the residual degrees of
+#' freedom for the model of each
+#' response variable (`y`-variable).
+#' Used only for models fitted by
+#' [stats::lm()] for now. It is used to
+#' compute the *p*-value and confidence
+#' interval for a path with no mediator
+#' and both `x` and `y` are not
+#' standardized.
+#'
 #' @seealso [indirect_effect()],
 #' [cond_indirect_effects()], and
 #' [cond_indirect()], the high level
@@ -195,7 +216,8 @@ indirect_i <- function(x,
                      warn = TRUE,
                      allow_mixing_lav_and_obs = TRUE,
                      group = NULL,
-                     est_vcov = NULL) {
+                     est_vcov = NULL,
+                     fit_df_residual = NULL) {
     if (is.null(est)) {
       est <- lav_est(fit)
     }
@@ -389,6 +411,21 @@ indirect_i <- function(x,
       } else {
         b_cond <- rep(NA, length(bs))
       }
+    if (is.null(m) && !is.null(est_vcov) && !is.null(fit_df_residual)) {
+        # TODO: Add support for lavaan and lavaan.mi
+        if (!is.null(wvalues)) {
+            bs_se <- sapply(prods_tmp,
+                            FUN = cond_se,
+                            est_vcov = est_vcov)
+            bs_df_residual <- fit_df_residual[y]
+          } else {
+            bs_se <- sqrt(est_vcov[[y]][x, x])
+            bs_df_residual <- unname(fit_df_residual[y])
+          }
+      } else {
+        bs_se <- NA
+        bs_df_residual <- NA
+      }
     b_cond_str <- mapply(gen_computation, xi = prods, yi = bs_org,
                           yiname = names(bs_org),
                           MoreArgs = list(digits = computation_digits,
@@ -429,12 +466,6 @@ indirect_i <- function(x,
                                  "sd_", names(scale_y))
           }
       }
-    # Compute OLS or Wald SE, t, CI, and p
-    # TODO:
-    #   - Do this only if m is NULL
-    b_all_se <- cond_se(xi = prods_tmp,
-                       est_vcov = est_vcov,
-                       est = est)
     b_all_final <- b_all * scale_x / scale_y
     out <- list(indirect = unname(b_all_final),
                 indirect_raw = unname(b_all),
@@ -452,7 +483,9 @@ indirect_i <- function(x,
                 computation_values = b_all_str0,
                 computation_symbols = b_all_str1,
                 group_number = group_number,
-                group_label = group_label)
+                group_label = group_label,
+                indirect_normal_se = bs_se,
+                indirect_normal_df_residual = bs_df_residual)
     class(out) <- "indirect"
     return(out)
   }

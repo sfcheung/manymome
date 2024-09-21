@@ -14,63 +14,9 @@ lm3fit <- lm2ptable(lm3_list)
 lm1fit$vcov <- lm_list_vcov(lm1_list)
 lm2fit$vcov <- lm_list_vcov(lm2_list)
 lm3fit$vcov <- lm_list_vcov(lm3_list)
-
-lm_list_vcov <- function(object) {
-    vcov0 <- lapply(object,
-                    stats::vcov)
-    est <- lm2ptable(object)$est
-    ys <- sapply(object,
-                 get_response)
-    names(vcov0) <- ys
-    est$uid <- seq_len(nrow(est))
-    for (yy in ys) {
-        vcov1 <- vcov0[[yy]]
-        vcov_names <- colnames(vcov1)
-        j <- est$lhs == yy
-        i <- match(vcov_names, est[j, "rhs"])
-        k <- est[j, "uid"][i]
-        l <- match("(Intercept)", vcov_names)
-        k[l] <- est[j & est$op == "~1", "uid"]
-        m <- order(k)
-        vcov2 <- vcov1[m, m]
-        vcov0[[yy]] <- vcov2
-      }
-    vcov0
-  }
-
-cond_se <- function(xi,
-                    est_vcov,
-                    est) {
-    if (all(is.na(xi))) return(0)
-    if (is.null(xi$prod)) return(0)
-    b_i <- xi$b
-    w_i <- xi$w
-    if (is.list(w_i)) {
-        w_i0 <- sapply(w_i, paste0, collapse = ":")
-      } else {
-        w_i0 <- w_i
-      }
-    wvalues_i <- mapply(function(b1, w1, wvalues) {
-                      prod(wvalues[w1])
-                    },
-                    b1 = b_i,
-                    w1 = w_i,
-                    MoreArgs = list(wvalues = wvalues))
-    wv_na <- is.na(wvalues_i)
-    if (isTRUE(any(wv_na))) {
-        wvalues_i[wv_na] <- 0
-        names(wvalues_i) <- w_i0
-      }
-    yi <- xi$y
-    est_vcov_i <- est_vcov[[yi]][c(xi$x, w_i0), c(xi$x, w_i0), drop = FALSE]
-    b0 <- matrix(c(1, wvalues_i),
-                 ncol = 1)
-    out <- t(b0) %*% est_vcov_i %*% b0
-    out <- sqrt(as.numeric(out))
-    out
-  }
-
-lm_list_vcov(lm1_list)
+lm1fit$df_residual <- lm_df_residual(lm1_list)
+lm2fit$df_residual <- lm_df_residual(lm2_list)
+lm3fit$df_residual <- lm_df_residual(lm3_list)
 
 suppressMessages(suppressMessages(library(lavaan)))
 dat$w1x <- dat$w1 * dat$x
@@ -96,42 +42,89 @@ est3 <- parameterEstimates(fit3)
 
 wvalues <- c(w1 = 5, w2 = -4)
 
+dat2 <- data_med_mod_b_mod
+dat2$w1 <- dat2$w1 - wvalues["w1"]
+dat2$w2 <- dat2$w2 - wvalues["w2"]
+lm_m2 <- lm(m ~ x*w1 + c1 + c2, dat2)
+lm_y2 <- lm(y ~ w1*m*w2 + x + c1 + c2, dat2)
+x_cond <- coef(lm_m2)["x"]
+x_cond_se <- sqrt(vcov(lm_m2)["x", "x"])
+m_cond <- coef(lm_y2)["m"]
+m_cond_se <- sqrt(vcov(lm_y2)["m", "m"])
+
 # Moderation
+ce_1a <- indirect_i(x = "x", y = "m",
+                    fit = NULL,
+                    est = lm1fit$est,
+                    data = lm1fit$data,
+                    implied_stats = lm1fit$implied_stats,
+                    wvalues = wvalues,
+                    est_vcov = lm1fit$vcov,
+                    fit_df_residual = lm1fit$df_residual)
 ce_1b <- indirect_i(x = "m", y = "y",
                     fit = NULL,
                     est = lm1fit$est,
                     data = lm1fit$data,
                     implied_stats = lm1fit$implied_stats,
                     wvalues = wvalues,
-                    est_vcov = lm1fit$vcov)
-ce_2b <- indirect_i(x = "x", y = "m",
-                    fit = NULL,
-                    est = lm2fit$est,
-                    data = lm2fit$data,
-                    implied_stats = lm2fit$implied_stats,
-                    wvalues = wvalues,
-                    est_vcov = )
-ce_1b_chk2 <- (est[est$label == "a", "est"] +
-                wvalues["w1"] * est[est$label == "ad1", "est"]) *
-              (est[est$label == "b", "est"] +
-                wvalues["w1"] * est[est$label == "bd1", "est"] +
-                wvalues["w2"] * est[est$label == "bd2", "est"] +
-                wvalues["w1"] * wvalues["w2"] * est[est$label == "be12", "est"])
+                    est_vcov = lm1fit$vcov,
+                    fit_df_residual = lm1fit$df_residual)
+ce_2 <- indirect_i(x = "x", y = "m",
+                   fit = NULL,
+                   est = lm2fit$est,
+                   data = lm2fit$data,
+                   implied_stats = lm2fit$implied_stats,
+                   wvalues = wvalues,
+                   est_vcov = lm2fit$vcov,
+                   fit_df_residual = lm2fit$df_residual)
+ce_3 <- indirect_i(x = "m", y = "y",
+                   fit = NULL,
+                   est = lm3fit$est,
+                   data = lm3fit$data,
+                   implied_stats = lm3fit$implied_stats,
+                   wvalues = wvalues,
+                   est_vcov = lm3fit$vcov,
+                   fit_df_residual = lm3fit$df_residual)
 
-ce_2b_chk <- indirect_i(x = "x", y = "y", m = "m",
-                      est = lm2fit$est,
-                      data = lm2fit$data,
-                      wvalues = wvalues)
-
-test_that("Check indirect: 3-way", {
+test_that("Check SE and df", {
     expect_equal(
-        ce_1b_chk$indirect,
-        ce_1b_chk2,
+        coef(ce_1a),
+        x_cond,
         ignore_attr = TRUE
       )
     expect_equal(
-        ce_1b_chk$indirect,
-        ce_2b_chk$indirect,
+        coef(ce_1b),
+        m_cond,
+        ignore_attr = TRUE
+      )
+    expect_equal(
+        ce_1a$indirect_normal_se,
+        x_cond_se,
+        ignore_attr = TRUE
+      )
+    expect_equal(
+        ce_1b$indirect_normal_se,
+        m_cond_se,
+        ignore_attr = TRUE
+      )
+    expect_equal(
+        ce_1a$indirect_normal_se,
+        ce_2$indirect_normal_se,
+        ignore_attr = TRUE
+      )
+    expect_equal(
+        ce_1b$indirect_normal_se,
+        ce_3$indirect_normal_se,
+        ignore_attr = TRUE
+      )
+    expect_equal(
+        ce_1a$indirect_normal_df_residual,
+        ce_2$indirect_normal_df_residual,
+        ignore_attr = TRUE
+      )
+    expect_equal(
+        ce_1b$indirect_normal_df_residual,
+        ce_3$indirect_normal_df_residual,
         ignore_attr = TRUE
       )
   })
