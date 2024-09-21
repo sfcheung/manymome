@@ -58,5 +58,7 @@ lm2ptable <- function(outputs) {
     row.names(out) <- NULL
     list(est = out,
          data = mm,
-         implied_stats = data2implied(mm))
+         implied_stats = data2implied(mm),
+         vcov = lm_list_vcov(outputs),
+         df_residual = lm_df_residual(outputs))
   }
