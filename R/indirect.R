@@ -244,6 +244,9 @@ indirect_i <- function(x,
     # - standardized_y
     # - prods
     # - group
+    # Need these arguments to compute SE
+    # - est_vcov
+    # - fit_df_residual
 
     if (is.null(est)) {
       est <- lav_est(fit)
