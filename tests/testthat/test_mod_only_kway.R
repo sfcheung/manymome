@@ -263,3 +263,65 @@ test_that("Check SE and df", {
         ignore_attr = TRUE
       )
   })
+
+# cond_indirect_effects
+
+cos_1a <- cond_indirect_effects(wlevels = "w1",
+                                x = "x", y = "m",
+                                fit = lm1_list)
+cos_1b <- cond_indirect_effects(wlevels = c("w1", "w2"),
+                                x = "m", y = "y",
+                                fit = lm1_list)
+cos_2 <- cond_indirect_effects(wlevels = "w1",
+                               x = "x", y = "m",
+                               fit = lm2_list)
+cos_3 <- cond_indirect_effects(wlevels = c("w1", "w2"),
+                               x = "m", y = "y",
+                               fit = lm3_list)
+
+cond_effects_original_se <- function(object,
+                                     level = .95) {
+    full_output <- attr(object, "full_output")
+    full_output_1 <- full_output[[1]]
+    if (full_output_1$standardized_x ||
+        full_output_1$standardized_y) {
+        return(object)
+      }
+    if (!is.null(full_output_1$m)) {
+        return(object)
+      }
+    if (is.null(full_output_1$original_se)) {
+        return(object)
+      }
+    est <- object$ind
+    se <- sapply(full_output,
+                 function(x) x$original_se)
+    dfres <- sapply(full_output,
+                    function(x) x$df_residual)
+    p <- 2 * pt(abs(est / se),
+                df = dfres,
+                lower.tail = FALSE)
+    sig <- stats::symnum(p,
+                         corr = FALSE,
+                         na = FALSE,
+                         cutpoints = c(0, 0.001, 0.01, 0.05, 1),
+                         symbols = c("***", "**", "*", " "))
+    z_crit <- -1 * qt((1 - level) / 2,
+                      df = dfres,
+                      lower.tail = TRUE)
+    cilo <- est - z_crit * se
+    cihi <- est + z_crit * se
+    object$SE <- se
+    object$PValue <- p
+    object$Sig <- sig
+    object$CI.Lo <- cilo
+    object$CI.Hi <- cihi
+    attr(object, "sig_legend") <- attr(sig, "legend")
+    attr(object, "original_se_level") <- level
+    object
+  }
+
+cond_effects_original_se(cos_1a)
+cond_effects_original_se(cos_1b)
+cond_effects_original_se(cos_2)
+cond_effects_original_se(cos_3)
