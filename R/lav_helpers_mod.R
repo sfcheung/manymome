@@ -20,3 +20,36 @@ lav_df_residual <- function(object) {
     names(out) <- dvs
     out
   }
+
+#' @title A 'lavaan'-VCOV List
+#'
+#' @description Convert a 'lavaan'-VCOV
+#' to a list of VOCV matrices.
+#'
+#' @noRd
+
+est_vcov_list <- function(est_vcov,
+                          est) {
+    if (is.list(est_vcov)) {
+        if (!inherits(est_vcov[[1]], "lavaan.matrix.symmetric")) {
+            # Assume it is a vcov from lm
+            return(est_vcov)
+          }
+      }
+    # TODO: Handle multiple-group models
+    est$est_labels <- lavaan::lav_partable_labels(est)
+    vcov_names <- colnames(est_vcov)
+    # TODO: Support intercept
+    tmpfct <- function(yi) {
+        esti <- est[(est$lhs == yi) & (est$op == "~"), ]
+        i <- match(esti$est_labels, vcov_names)
+        vcovi <- est_vcov[i, i]
+        colnames(vcovi) <- rownames(vcovi) <- esti$rhs
+        vcovi
+      }
+    ys <- lavaan_get_dvs(est)
+    out <- lapply(ys,
+                  tmpfct)
+    names(out) <- ys
+    out
+  }

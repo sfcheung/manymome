@@ -1,4 +1,5 @@
-skip("WIP")
+skip_on_cran()
+
 library(testthat)
 library(manymome)
 
@@ -40,9 +41,6 @@ y ~ b * m + cp * x + bf1 * w1 + bf2 * w2 +
 fit1 <- sem(mod1, dat, fixed.x = FALSE, warn = FALSE)
 fit2 <- sem(mod2, dat, fixed.x = FALSE, warn = FALSE)
 fit3 <- sem(mod3, dat, fixed.x = FALSE, warn = FALSE)
-est1 <- parameterEstimates(fit1)
-est2 <- parameterEstimates(fit2)
-est3 <- parameterEstimates(fit3)
 
 wvalues <- c(w1 = 5, w2 = -4)
 
@@ -55,6 +53,21 @@ x_cond <- coef(lm_m2)["x"]
 x_cond_se <- sqrt(vcov(lm_m2)["x", "x"])
 m_cond <- coef(lm_y2)["m"]
 m_cond_se <- sqrt(vcov(lm_y2)["m", "m"])
+
+dat2$w1x <- dat2$w1 * dat2$x
+dat2$w1m <- dat2$w1 * dat2$m
+dat2$w2m <- dat2$w2 * dat2$m
+dat2$w1w2 <- dat2$w1 * dat2$w2
+dat2$w1mw2 <- dat2$w1 * dat2$m * dat2$w2
+fit1_chk <- sem(mod1, dat2, fixed.x = FALSE, warn = FALSE)
+fit2_chk <- sem(mod2, dat2, fixed.x = FALSE, warn = FALSE)
+fit3_chk <- sem(mod3, dat2, fixed.x = FALSE, warn = FALSE)
+x_scond <- coef(fit1_chk)["a"]
+x_scond_se <- parameterEstimates(fit1_chk)[1, "se"]
+m_scond <- coef(fit1_chk)["b"]
+m_scond_se <- parameterEstimates(fit1_chk)[6, "se"]
+m3_scond <- coef(fit3_chk)["b"]
+m3_scond_se <- parameterEstimates(fit3_chk)[1, "se"]
 
 # Moderation
 ce_1a <- indirect_i(x = "x", y = "m",
@@ -194,7 +207,59 @@ test_that("Check SE and df", {
 
 se_1a <- indirect_i(x = "x", y = "m",
                     fit = fit1,
+                    est = lav_est(fit1),
                     implied_stats = lav_implied_all(fit1),
                     wvalues = wvalues,
-                    est_vcov = lavaan::lavInspect(fit1, "vcov"),
-                    df_residual = Inf)
+                    est_vcov = get_vcov(fit1),
+                    df_residual = lav_df_residual(fit1))
+
+se_1b <- indirect_i(x = "m", y = "y",
+                    fit = fit1,
+                    est = lav_est(fit1),
+                    implied_stats = lav_implied_all(fit1),
+                    wvalues = wvalues,
+                    est_vcov = get_vcov(fit1),
+                    df_residual = lav_df_residual(fit1))
+
+se_3 <- indirect_i(x = "m", y = "y",
+                   fit = fit3,
+                   est = lav_est(fit3),
+                   implied_stats = lav_implied_all(fit3),
+                   wvalues = wvalues,
+                   est_vcov = get_vcov(fit3),
+                   df_residual = lav_df_residual(fit3))
+
+test_that("Check SE and df", {
+    expect_equal(
+        coef(se_1a),
+        x_scond,
+        ignore_attr = TRUE
+      )
+    expect_equal(
+        coef(se_1b),
+        m_scond,
+        ignore_attr = TRUE
+      )
+    expect_equal(
+        se_1a$original_se,
+        x_scond_se,
+        ignore_attr = TRUE
+      )
+    # # Difference due to the covariances omitted
+    # expect_equal(
+    #     se_1b$original_se,
+    #     m_scond_se,
+    #     ignore_attr = TRUE
+    #   )
+
+    expect_equal(
+        coef(se_3),
+        m_scond,
+        ignore_attr = TRUE
+      )
+    expect_equal(
+        se_3$original_se,
+        m3_scond_se,
+        ignore_attr = TRUE
+      )
+  })

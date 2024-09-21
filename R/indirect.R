@@ -403,8 +403,13 @@ indirect_i <- function(x,
       } else {
         b_cond <- rep(NA, length(bs))
       }
-    if (is.null(m) && !is.null(est_vcov) && !is.null(df_residual)) {
-        # TODO: Add support for lavaan and lavaan.mi
+    if (is.null(m) &&
+        !is.null(est_vcov) &&
+        !is.null(df_residual) &&
+        ngroups == 1) {
+        # TODO: Add support for multigroup-models
+        est_vcov <- est_vcov_list(est_vcov = est_vcov,
+                                  est = est)
         if (!is.null(wvalues)) {
             bs_se <- sapply(prods_tmp,
                             FUN = cond_se,
