@@ -362,44 +362,6 @@ indirect_i <- function(x,
                             all_lv = prods_lv,
                             all_obs = prods_obs)
           }
-        # # Old version
-        # # Delete if the version above works
-        # if (isTRUE(all(chk_lv))) {
-        #     prods <- mapply(get_prod,
-        #                     x = xs,
-        #                     y = ys,
-        #                     operator = "_x_",
-        #                     MoreArgs = list(est = est),
-        #                     SIMPLIFY = FALSE)
-        #   } else {
-        #     if (is.null(data)) {
-        #         # Try to get the data from fit
-        #         if (!is.null(fit)) {
-        #             fit_type <- cond_indirect_check_fit(fit)
-        #             data <- switch(fit_type,
-        #                           lavaan = lav_data_used(fit, drop_colon = FALSE),
-        #                           lavaan.mi = lav_data_used(fit, drop_colon = FALSE),
-        #                           lm = lm2ptable(fit)$data)
-        #           }
-        #       }
-        #     if (!is.null(fit)) {
-        #         prods <- mapply(get_prod,
-        #                         x = xs,
-        #                         y = ys,
-        #                         MoreArgs = list(fit = fit,
-        #                                         data = data,
-        #                                         expand = expand),
-        #                         SIMPLIFY = FALSE)
-        #       } else {
-        #         prods <- mapply(get_prod,
-        #                         x = xs,
-        #                         y = ys,
-        #                         MoreArgs = list(est = est,
-        #                                         data = data,
-        #                                         expand = expand),
-        #                         SIMPLIFY = FALSE)
-        #       }
-        #   }
       } else {
         # prods is supplied.
         # Need to update the estimates
