@@ -180,6 +180,11 @@ print.cond_indirect_effects <- function(x, digits = 3,
                                         ...) {
   # TODO:
   # - Support cases with both moderators and groups.
+  fit_type <- tryCatch(cond_indirect_check_fit(attr(x, "fit")),
+                       error = function(e) e)
+  if (inherits(fit_type, "error")) {
+      fit_type <- "unknown"
+    }
   full_output <- attr(x, "full_output")
   x_i <- full_output[[1]]
   my_call <- attr(x, "call")
@@ -216,7 +221,9 @@ print.cond_indirect_effects <- function(x, digits = 3,
   has_m <- isTRUE(!is.null(x_i$m))
 
   # Default to OLS or Wald SE
-  se_out <- cond_effects_original_se(x)
+  se_out <- cond_effects_original_se(x,
+                                     level = level,
+                                     append = FALSE)
   has_original_se <- !is.null(se_out)
   print_original_se <- FALSE
   if (!has_ci &&
@@ -332,7 +339,12 @@ print.cond_indirect_effects <- function(x, digits = 3,
                             return("NA")
                           }
                       })
-          out_sig <- as.character(unname(se_out$sig))
+          out_sig0 <- as.character(unname(se_out$sig))
+          out_sig <- tryCatch(format_stars(out_sig0),
+                              error = function(e) e)
+          if (inherits(out_sig, "error")) {
+              out_sig <- out_sig0
+            }
           out_original <- c(out_original,
                             list(Stat = out_stat,
                                  pvalue = out_p,
@@ -429,6 +441,60 @@ print.cond_indirect_effects <- function(x, digits = 3,
               tmp1 <- " - [SE] are standard errors."
               cat(tmp1, sep = "\n")
             }
+        } else if (print_original_se) {
+          # Original SE used
+          cat("\n ")
+          level_str <- paste0(formatC(level * 100, 1, format = "f"), "%")
+          if (se) {
+            tmp <- switch(fit_type,
+                          lavaan = "'lavaan' standard errors.",
+                          lavaan.mi = "'lavaan' standard errors.",
+                          lm = "regression standard errors.",
+                          "standard errors.")
+                cat(strwrap(paste(" - [SE] are",
+                                  tmp), exdent = 3), sep = "\n")
+            }
+          if ("Stat" %in% colnames(x)) {
+              tmp <- switch(fit_type,
+                            lavaan = "the z statistics used to test the effects.",
+                            lavaan.mi = "the z statistics used to test the effects.",
+                            lm = "the t statistics used to test the effects.",
+                            "the statistics used to test the effects.")
+              cat(" ")
+              cat(strwrap(paste("- [Stat] are",
+                                tmp), exdent = 3), sep = "\n")
+            }
+          if (pvalue) {
+              tmp <- switch(fit_type,
+                            lavaan = "p-values computed from 'Stat'.",
+                            lavaan.mi = "p-values computed from 'Stat'.",
+                            lm = "p-values computed from 'Stat'.",
+                            "p-values computed from 'Stat'.")
+              cat(" ")
+              cat(strwrap(paste("- [pvalue] are",
+                                tmp), exdent = 3), sep = "\n")
+            }
+          if ("Sig" %in% colnames(x)) {
+              tmp <- attr(se_out$sig, "legend")
+              cat(" ")
+              cat(strwrap(paste0("- [Sig]: ",
+                                tmp, "."), exdent = 3), sep = "\n")
+            }
+          if (se_ci) {
+              tmp <- switch(fit_type,
+                            lavaan = "confidence interval computed from 'lavaan' standard errors.",
+                            lavaan.mi = "confidence interval computed from 'lavaan' standard errors.",
+                            lm = "confidence interval computed from regression standard errors.",
+                            "confidence interval computed from standard errors.")
+              cat(" ")
+              cat(strwrap(paste("- [CI.lo to CI.hi] are",
+                                level_str,
+                                tmp), exdent = 3), sep = "\n")
+            }
+          # if (pvalue && (ci_type == "boot")) {
+          #     tmp1 <- " - [pvalue] are asymmetric bootstrap p-values."
+          #     cat(tmp1, sep = "\n")
+          #   }
         } else {
           cat("\n")
         }
@@ -455,10 +521,12 @@ print.cond_indirect_effects <- function(x, digits = 3,
                 ifelse(has_wlevels,
                        "the moderator(s).",
                        "the group(s)."))
-      cat(strwrap(paste("\n -", paste(sQuote(mcond), collapse = ","),
-          "is/are the path coefficient(s) along the path",
-          "conditional on",
-          tmp), exdent = 3), sep = "\n")
+      if (!print_original_se) {
+          cat(strwrap(paste("\n -", paste(sQuote(mcond), collapse = ","),
+              "is/are the path coefficient(s) along the path",
+              "conditional on",
+              tmp), exdent = 3), sep = "\n")
+        }
       cat("\n")
     }
   invisible(x)
@@ -469,6 +537,22 @@ format_numeric <- function(xi, digits = 3, check_integer = TRUE) {
     if (isTRUE(all.equal(round(xi), xi))) return(round(xi, 0))
     xi <- formatC(xi, digits = digits, format = "f")
     xi
+  }
+
+format_stars <- function(sigs) {
+    if (!is.character(sigs)) return(format(sigs))
+    max_width <- max(sapply(sigs, nchar), na.rm = TRUE)
+    out <- sapply(sigs,
+            function(xx) {
+                if (is.na(xx)) return(xx)
+                yy <- max_width - nchar(xx)
+                if (yy > 0) {
+                    xx <- paste0(xx, rep(" ", yy), collapse = "")
+                  } else {
+                    return(xx)
+                  }
+              })
+    out
   }
 
 cond_effects_original_se <- function(object,

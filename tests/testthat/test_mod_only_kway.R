@@ -221,6 +221,14 @@ se_1b <- indirect_i(x = "m", y = "y",
                     est_vcov = get_vcov(fit1),
                     df_residual = lav_df_residual(fit1))
 
+se_2 <- indirect_i(x = "x", y = "m",
+                   fit = fit2,
+                   est = lav_est(fit2),
+                   implied_stats = lav_implied_all(fit2),
+                   wvalues = wvalues,
+                   est_vcov = get_vcov(fit2),
+                   df_residual = lav_df_residual(fit2))
+
 se_3 <- indirect_i(x = "m", y = "y",
                    fit = fit3,
                    est = lav_est(fit3),
@@ -228,6 +236,19 @@ se_3 <- indirect_i(x = "m", y = "y",
                    wvalues = wvalues,
                    est_vcov = get_vcov(fit3),
                    df_residual = lav_df_residual(fit3))
+
+so_1a <- cond_indirect(x = "x", y = "m",
+                       fit = fit1,
+                       wvalues = wvalues)
+so_1b <- cond_indirect(x = "m", y = "y",
+                       fit = fit1,
+                       wvalues = wvalues)
+so_2 <- cond_indirect(x = "x", y = "m",
+                      fit = fit2,
+                      wvalues = wvalues)
+so_3 <- cond_indirect(x = "m", y = "y",
+                      fit = fit3,
+                      wvalues = wvalues)
 
 test_that("Check SE and df", {
     expect_equal(
@@ -262,6 +283,28 @@ test_that("Check SE and df", {
         m3_scond_se,
         ignore_attr = TRUE
       )
+
+    expect_equal(
+        so_1a$original_se,
+        se_1a$original_se,
+        ignore_attr = TRUE
+      )
+    expect_equal(
+        so_1b$original_se,
+        se_1b$original_se,
+        ignore_attr = TRUE
+      )
+    expect_equal(
+        so_2$original_se,
+        se_2$original_se,
+        ignore_attr = TRUE
+      )
+    expect_equal(
+        so_3$original_se,
+        se_3$original_se,
+        ignore_attr = TRUE
+      )
+
   })
 
 # cond_indirect_effects
@@ -279,11 +322,26 @@ cos_3 <- cond_indirect_effects(wlevels = c("w1", "w2"),
                                x = "m", y = "y",
                                fit = lm3_list)
 
-print(cos_1a,
-      se = TRUE,
-      pvalue = TRUE,
-      se_ci = TRUE)
+sos_1a <- cond_indirect_effects(wlevels = "w1",
+                                x = "x", y = "m",
+                                fit = fit1)
+sos_1b <- cond_indirect_effects(wlevels = c("w1", "w2"),
+                                x = "m", y = "y",
+                                fit = fit1)
+sos_2 <- cond_indirect_effects(wlevels = "w1",
+                               x = "x", y = "m",
+                               fit = fit2)
+sos_3 <- cond_indirect_effects(wlevels = c("w1", "w2"),
+                               x = "m", y = "y",
+                               fit = fit3)
 
-print(cos_1b,
-      se = TRUE,
-      pvalue = TRUE)
+
+print(cos_1a)
+print(cos_1b)
+print(cos_2)
+print(cos_3)
+
+print(sos_1a)
+print(sos_1b)
+print(sos_2)
+print(sos_3, level = .60)
