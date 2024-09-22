@@ -54,15 +54,30 @@
 #' then the variance-covariance matrix
 #' of the coefficient estimates will be
 #' used, and the *p*-value and confidence
-#' interval are computed from the *t*
+#' intervals are computed from the *t*
 #' statistic.
 #'
 #' If the model is fitted by structural
 #' equation modeling using `lavaan`, then
 #' the variance-covariance computed by
 #' `lavaan` will be used, and the *p*-value
-#' and confidence interval are computed
+#' and confidence intervals are computed
 #' from the *z* statistic.
+#'
+##' ## Caution
+#'
+#' If the model is fitted by structural
+#' equation modeling and has moderators,
+#' the standard errors, *p*-values,
+#' and confidence interval computed
+#' from the variance-covariance matrices
+#' for conditional effects
+#' can only be trusted if all covariances
+#' involving the product terms are free.
+#' If any of them are fixed, for example,
+#' fixed to zero, it is possible
+#' that the model is not invariant to
+#' linear transformation of the variables.
 #'
 #' @return `x` is returned invisibly.
 #'  Called for its side effect.
@@ -504,10 +519,29 @@ print.cond_indirect_effects <- function(x, digits = 3,
                                 level_str,
                                 tmp), exdent = 3), sep = "\n")
             }
-          # if (pvalue && (ci_type == "boot")) {
-          #     tmp1 <- " - [pvalue] are asymmetric bootstrap p-values."
-          #     cat(tmp1, sep = "\n")
-          #   }
+          if (fit_type %in% c("lavaan", "lavaan.mi")) {
+              cat(" ")
+              tmp <- paste("- IMPORTANT: For a model fitted by structural equation model,",
+                           "the p-values and confidence intervals",
+                           "for the conditional effects",
+                           "computed from standard errors can only be trusted if",
+                           "all covariances involving the product terms are free.",
+                           "Otherwise, the model may not be invariant to",
+                           "linear transformation of the variables.")
+              cat(strwrap(tmp, exdent = 3), sep = "\n")
+            }
+#' If the model is fitted by structural
+#' equation modeling and has moderators,
+#' the standard errors, *p*-values,
+#' and confidence interval computed
+#' from the variance-covariance matrices
+#' for conditional effects
+#' can only be trusted if all covariances
+#' involving the product terms are free.
+#' If any of them are fixed, for example,
+#' fixed to zero, it is possible
+#' that the model is not invariant to
+#' linear transformation of the variables.
         } else {
           cat("\n")
         }
