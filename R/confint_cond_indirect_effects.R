@@ -13,14 +13,61 @@
 #'
 #' The type of confidence intervals
 #' depends on the call used to
-#' compute the effects. This function
+#' compute the effects. If confidence
+#' intervals have already been formed
+#' (e.g., by bootstrapping or Monte
+#' Carlo), then this function
 #' merely retrieves the confidence
-#' intervals stored, if any,
-#' which could be formed by
-#' nonparametric bootstrapping,
-#' Monte Carlo simulation, or other
-#' methods to be supported in the
-#' future.
+#' intervals stored.
+#'
+#' If the following conditions are met, the
+#' stored standard errors, if available,
+#' will be used test an effect and
+#' form it confidence interval:
+#'
+#' - Confidence intervals have not been
+#'  formed (e.g., by bootstrapping or
+#'  Monte Carlo).
+#'
+#' - The path has no mediators.
+#'
+#' - The model has only one group.
+#'
+#' - The path is moderated by one or
+#'  more moderator.
+#'
+#' - Both the `x`-variable and the
+#'  `y`-variable are not standardized.
+#'
+#' If the model is fitted by OLS
+#' regression (e.g., using [stats::lm()]),
+#' then the variance-covariance matrix
+#' of the coefficient estimates will be
+#' used, and confidence
+#' intervals are computed from the *t*
+#' statistic.
+#'
+#' If the model is fitted by structural
+#' equation modeling using `lavaan`, then
+#' the variance-covariance computed by
+#' `lavaan` will be used,
+#' and confidence intervals are computed
+#' from the *z* statistic.
+#'
+#' ## Caution
+#'
+#' If the model is fitted by structural
+#' equation modeling and has moderators,
+#' the standard errors, *p*-values,
+#' and confidence interval computed
+#' from the variance-covariance matrices
+#' for conditional effects
+#' can only be trusted if all covariances
+#' involving the product terms are free.
+#' If any of them are fixed, for example,
+#' fixed to zero, it is possible
+#' that the model is not invariant to
+#' linear transformation of the variables.
 #'
 #' @param object The output of
 #' [cond_indirect_effects()].
@@ -97,6 +144,7 @@ confint.cond_indirect_effects <- function(object, parm, level = .95, ...) {
     has_groups <- cond_indirect_effects_has_groups(object)
     out0 <- as.data.frame(object)
     full_output <- attr(object, "full_output")
+    x_i <- full_output[[1]]
     has_ci <- FALSE
     if (!is.null(full_output[[1]]$boot_ci)) {
         has_ci <- TRUE
@@ -105,6 +153,24 @@ confint.cond_indirect_effects <- function(object, parm, level = .95, ...) {
     if (!is.null(full_output[[1]]$mc_ci)) {
         has_ci <- TRUE
         ci_type <- "mc"
+      }
+    se_out <- cond_effects_original_se(object,
+                                       level = level,
+                                       append = FALSE)
+    has_original_se <- !is.null(se_out)
+    has_m <- isTRUE(!is.null(x_i$m))
+    standardized_x <- x_i$standardized_x
+    standardized_y <- x_i$standardized_y
+    if (!has_ci &&
+        !has_m &&
+        !has_groups &&
+        has_wlevels &&
+        !standardized_x &&
+        !standardized_y &&
+        has_original_se) {
+        out0[, c("CI.lo")] <- se_out$cilo
+        out0[, c("CI.hi")] <- se_out$cihi
+        has_ci <- TRUE
       }
     if (!has_ci) {
           warning("Confidence intervals not in the object.")

@@ -371,3 +371,27 @@ test_that("Print", {
                   fixed = TRUE)
   })
 
+# CI
+
+test_that("confint", {
+    expect_equal(confint(cos_1a),
+                 confint(cos_2),
+                 ignore_attr = TRUE)
+    expect_equal(confint(cos_1b),
+                 confint(cos_3),
+                 ignore_attr = TRUE)
+    expect_equal(confint(sos_1a),
+                 confint(sos_2),
+                 ignore_attr = TRUE)
+    # Should not be equal due to covariances fixed to zero
+    # expect_equal(confint(sos_1b),
+    #              confint(sos_3),
+    #              ignore_attr = TRUE)
+    expect_equal(confint(sos_1a, level = .75),
+                 confint(sos_2, level = .75),
+                 ignore_attr = TRUE)
+    expect_true(all(confint(sos_1a, level = .75)[, 1] >
+                    confint(sos_2, level = .85)[, 1]))
+    expect_true(all(confint(cos_1b, level = .75)[, 2] <
+                    confint(cos_3, level = .85)[, 2]))
+  })
