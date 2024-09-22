@@ -203,14 +203,18 @@ print.cond_indirect_effects <- function(x, digits = 3,
   se_out <- cond_effects_original_se(x)
   has_original_se <- !is.null(se_out)
   print_original_se <- FALSE
-  if (!has_ci && !has_m && !has_groups && has_wlevels &&
-      !standardized_x && !standardized_y &&
+  if (!has_ci &&
+      !has_m &&
+      !has_groups &&
+      has_wlevels &&
+      !standardized_x &&
+      !standardized_y &&
       has_original_se) {
+      # OLS or Wald SE
+      # Moderation only
       print_original_se <- TRUE
       # t or Wald SE, CI, and p-values
       # TODO: Support multiple-group models
-      # Moderation only
-      # Add SE
       out_original <- list()
       if (se) {
           out_se <- unname(se_out$se)
