@@ -44,7 +44,7 @@ est_vcov_list <- function(est_vcov,
         esti <- est[(est$lhs == yi) & (est$op == "~"), ]
         i <- match(esti$est_labels, vcov_names)
         if (all(is.na(i))) return(matrix(numeric(0), 0, 0))
-        vcovi <- est_vcov[i, i]
+        vcovi <- est_vcov[i, i, drop = FALSE]
         colnames(vcovi) <- rownames(vcovi) <- esti$rhs
         vcovi
       }
