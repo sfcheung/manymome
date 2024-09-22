@@ -26,7 +26,8 @@ plot_effect_vs_w(
   line_args = list(),
   band_args = list(),
   intervals_args = list(),
-  zero_line_args = list()
+  zero_line_args = list(),
+  level = 0.95
 )
 }
 \arguments{
@@ -181,6 +182,13 @@ additional arguments to be passed
 to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}} for the line
 at zero.
 Default is \code{list()}.}
+
+\item{level}{The level of confidence
+for the confidence intervals computed
+from the original standard errors. Used only for
+paths without mediators and both
+\code{x}- and \code{y}-variables are not
+standardized.}
 }
 \value{
 A \link{ggplot2} graph. Plotted if
@@ -212,6 +220,55 @@ as illustrated in the example.
 Currently, this function only supports
 a path with exactly one moderator,
 and the moderator is a numeric variable.
+\subsection{Using Original Standard Errors}{
+
+If the following conditions are met, the
+stored standard errors, if available,
+will be used to
+form the confidence intervals:
+\itemize{
+\item Confidence intervals have not been
+formed (e.g., by bootstrapping or
+Monte Carlo).
+\item The path has no mediators.
+\item The model has only one group.
+\item The path is moderated by one or
+more moderator.
+\item Both the \code{x}-variable and the
+\code{y}-variable are not standardized.
+}
+
+If the model is fitted by OLS
+regression (e.g., using \code{\link[stats:lm]{stats::lm()}}),
+then the variance-covariance matrix
+of the coefficient estimates will be
+used, and confidence
+intervals are computed from the \emph{t}
+statistic.
+
+If the model is fitted by structural
+equation modeling using \code{lavaan}, then
+the variance-covariance computed by
+\code{lavaan} will be used,
+and confidence intervals are computed
+from the \emph{z} statistic.
+}
+
+\subsection{Caution}{
+
+If the model is fitted by structural
+equation modeling and has moderators,
+the standard errors, \emph{p}-values,
+and confidence interval computed
+from the variance-covariance matrices
+for conditional effects
+can only be trusted if all covariances
+involving the product terms are free.
+If any of them are fixed, for example,
+fixed to zero, it is possible
+that the model is not invariant to
+linear transformation of the variables.
+}
 }
 \examples{
 

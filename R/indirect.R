@@ -134,6 +134,27 @@
 #' groups is greater than one. Default
 #' is NULL.
 #'
+#' @param est_vcov A list of
+#' variance-covariance matrix of
+#' estimates, one for each response
+#' variable (`y`-variable). Used only
+#' for models fitted by [stats::lm()]
+#' for now. It is used to compute the
+#' standard error for a path with no
+#' mediator, and both `x` and `y` are
+#' not standardized.
+#'
+#' @param df_residual A numeric
+#' vector of the residual degrees of
+#' freedom for the model of each
+#' response variable (`y`-variable).
+#' Used only for models fitted by
+#' [stats::lm()] for now. It is used to
+#' compute the *p*-value and confidence
+#' interval for a path with no mediator
+#' and both `x` and `y` are not
+#' standardized.
+#'
 #' @seealso [indirect_effect()],
 #' [cond_indirect_effects()], and
 #' [cond_indirect()], the high level
@@ -194,7 +215,39 @@ indirect_i <- function(x,
                      expand = TRUE,
                      warn = TRUE,
                      allow_mixing_lav_and_obs = TRUE,
-                     group = NULL) {
+                     group = NULL,
+                     est_vcov = NULL,
+                     df_residual = NULL) {
+    # If called by cond_indirect() with boot_ci or mc_ci,
+    # only these arguments are used:
+    # - est
+    # - implied_stats
+    # - x
+    # - y
+    # - m
+    # - fit
+    # - wvalues
+    # - standardized_x
+    # - standardized_y
+    # - warn
+    # - prods
+    # - group
+    # If called by cond_indirect() to compute the point estimate:
+    # - x
+    # - y
+    # - m
+    # - fit
+    # - est
+    # - implied_stats
+    # - wvalues
+    # - standardized_x
+    # - standardized_y
+    # - prods
+    # - group
+    # Need these arguments to compute SE
+    # - est_vcov
+    # - df_residual
+
     if (is.null(est)) {
       est <- lav_est(fit)
     }
@@ -312,44 +365,6 @@ indirect_i <- function(x,
                             all_lv = prods_lv,
                             all_obs = prods_obs)
           }
-        # # Old version
-        # # Delete if the version above works
-        # if (isTRUE(all(chk_lv))) {
-        #     prods <- mapply(get_prod,
-        #                     x = xs,
-        #                     y = ys,
-        #                     operator = "_x_",
-        #                     MoreArgs = list(est = est),
-        #                     SIMPLIFY = FALSE)
-        #   } else {
-        #     if (is.null(data)) {
-        #         # Try to get the data from fit
-        #         if (!is.null(fit)) {
-        #             fit_type <- cond_indirect_check_fit(fit)
-        #             data <- switch(fit_type,
-        #                           lavaan = lav_data_used(fit, drop_colon = FALSE),
-        #                           lavaan.mi = lav_data_used(fit, drop_colon = FALSE),
-        #                           lm = lm2ptable(fit)$data)
-        #           }
-        #       }
-        #     if (!is.null(fit)) {
-        #         prods <- mapply(get_prod,
-        #                         x = xs,
-        #                         y = ys,
-        #                         MoreArgs = list(fit = fit,
-        #                                         data = data,
-        #                                         expand = expand),
-        #                         SIMPLIFY = FALSE)
-        #       } else {
-        #         prods <- mapply(get_prod,
-        #                         x = xs,
-        #                         y = ys,
-        #                         MoreArgs = list(est = est,
-        #                                         data = data,
-        #                                         expand = expand),
-        #                         SIMPLIFY = FALSE)
-        #       }
-        #   }
       } else {
         # prods is supplied.
         # Need to update the estimates
@@ -387,6 +402,27 @@ indirect_i <- function(x,
         bs <- bs + b_cond
       } else {
         b_cond <- rep(NA, length(bs))
+      }
+    if (is.null(m) &&
+        !is.null(est_vcov) &&
+        !is.null(df_residual) &&
+        ngroups == 1) {
+        # TODO: Add support for multigroup-models
+        est_vcov <- est_vcov_list(est_vcov = est_vcov,
+                                  est = est)
+        if (!is.null(wvalues)) {
+            bs_se <- sapply(prods_tmp,
+                            FUN = cond_se,
+                            est_vcov = est_vcov,
+                            wvalues = wvalues)
+            bs_df_residual <- df_residual[y]
+          } else {
+            bs_se <- sqrt(est_vcov[[y]][x, x])
+            bs_df_residual <- unname(df_residual[y])
+          }
+      } else {
+        bs_se <- NA
+        bs_df_residual <- NA
       }
     b_cond_str <- mapply(gen_computation, xi = prods, yi = bs_org,
                           yiname = names(bs_org),
@@ -445,7 +481,9 @@ indirect_i <- function(x,
                 computation_values = b_all_str0,
                 computation_symbols = b_all_str1,
                 group_number = group_number,
-                group_label = group_label)
+                group_label = group_label,
+                original_se = bs_se,
+                df_residual = bs_df_residual)
     class(out) <- "indirect"
     return(out)
   }
