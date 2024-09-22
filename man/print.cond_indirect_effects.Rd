@@ -138,15 +138,31 @@ regression (e.g., using \code{\link[stats:lm]{stats::lm()}}),
 then the variance-covariance matrix
 of the coefficient estimates will be
 used, and the \emph{p}-value and confidence
-interval are computed from the \emph{t}
+intervals are computed from the \emph{t}
 statistic.
 
 If the model is fitted by structural
 equation modeling using \code{lavaan}, then
 the variance-covariance computed by
 \code{lavaan} will be used, and the \emph{p}-value
-and confidence interval are computed
+and confidence intervals are computed
 from the \emph{z} statistic.
+}
+
+\subsection{Caution}{
+
+If the model is fitted by structural
+equation modeling and has moderators,
+the standard errors, \emph{p}-values,
+and confidence interval computed
+from the variance-covariance matrices
+for conditional effects
+can only be trusted if all covariances
+involving the product terms are free.
+If any of them are fixed, for example,
+fixed to zero, it is possible
+that the model is not invariant to
+linear transformation of the variables.
 }
 }
 \examples{
