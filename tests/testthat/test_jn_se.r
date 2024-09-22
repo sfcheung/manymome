@@ -64,14 +64,16 @@ johnson_neyman <- function(object = NULL,
         mc_ci <- has_mc_out
         standardized_x <- full_output_i$standardized_x
         standardized_y <- full_output_i$standardized_y
+        se_out <- cond_effects_original_se(object)
+        has_se <- !is.null(se_out)
         if (ncol(wlevels0) != 1) {
             stop("Support only one moderator.")
           }
         if (!is.numeric(wlevels0[, 1])) {
             stop("Support only numeric moderator.")
           }
-        if (!has_boot_out && !has_mc_out) {
-            stop("Confidence intervals not in 'object'.")
+        if (!has_boot_out && !has_mc_out && !has_se) {
+            stop("Confidence intervals or SEs not in 'object'.")
           }
       } else {
         stop("'object' needs to be an output of cond_indirect_effects().")
@@ -88,6 +90,7 @@ johnson_neyman <- function(object = NULL,
         w_upper <- w_tmp[2]
       }
     wlevel_interval <- c(w_lower, w_upper)
+        browser()
     w_lower_ci <- pseudo_johnson_neyman_one_bound(w0 = w_lower,
                                                   object = object,
                                                   type = "ci")
@@ -176,4 +179,4 @@ johnson_neyman <- function(object = NULL,
     out
   }
 
-johnson_neyman(out)
+johnson_neyman(out1)
