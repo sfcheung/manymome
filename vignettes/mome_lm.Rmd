@@ -1,7 +1,7 @@
 ---
 title: "Moderated Mediation Analysis by Multiple Regression"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2023-10-06"
+date: "2024-09-22"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -33,7 +33,7 @@ This is the sample data set used for
 illustration:
 
 
-```r
+``` r
 library(manymome)
 dat <- data_med_mod_a
 print(head(dat), digits = 3)
@@ -61,7 +61,7 @@ The path parameters
 can be estimated by two multiple regression models:
 
 
-```r
+``` r
 lm_m <- lm(m ~ x*w + c1 + c2, dat)
 lm_y <- lm(y ~ m + x + c1 + c2, dat)
 ```
@@ -70,7 +70,7 @@ These are the estimates of the regression coefficient
 of the paths:
 
 
-```r
+``` r
 # ###### Predict m ######
 #
 summary(lm_m)
@@ -128,7 +128,7 @@ models into one object (a system of regression models)
 using `lm2list()`:
 
 
-```r
+``` r
 fit_lm <- lm2list(lm_m, lm_y)
 fit_lm
 #> 
@@ -159,7 +159,7 @@ any effects to be estimated.
 
 
 
-```r
+``` r
 boot_out_lm <- do_boot(fit_lm,
                        R = 100,
                        seed = 54532,
@@ -195,7 +195,7 @@ conditional on `w`:
 of `cond_indirect_effects()` on the arguments.)
 
 
-```r
+``` r
 out_xmy_on_w <- cond_indirect_effects(wlevels = "w",
                                       x = "x",
                                       y = "y",
@@ -218,9 +218,9 @@ out_xmy_on_w
 #> 
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
 #>    nonparametric bootstrapping with 100 samples.
-#>  - The 'ind' column shows the indirect effects.
+#>  - The 'ind' column shows the conditional indirect effects.
 #>  - 'm~x','y~m' is/are the path coefficient(s) along the path conditional
-#>    on the moderators.
+#>    on the moderator(s).
 ```
 
 When `w` is one standard deviation
@@ -259,7 +259,7 @@ path `x -> m -> y`:
 of `index_of_mome()` on the arguments.)
 
 
-```r
+``` r
 out_mome <- index_of_mome(x = "x",
                           y = "y",
                           m = "m",
@@ -306,7 +306,7 @@ can be estimated by setting
 `standardized_x` and `standardized_y` to `TRUE`:
 
 
-```r
+``` r
 std_xmy_on_w <- cond_indirect_effects(wlevels = "w",
                                       x = "x",
                                       y = "y",
@@ -331,10 +331,10 @@ std_xmy_on_w
 #> 
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
 #>    nonparametric bootstrapping with 100 samples.
-#>  - std: The standardized indirect effects. 
-#>  - ind: The unstandardized indirect effects.
+#>  - std: The standardized conditional indirect effects. 
+#>  - ind: The unstandardized conditional indirect effects.
 #>  - 'm~x','y~m' is/are the path coefficient(s) along the path conditional
-#>    on the moderators.
+#>    on the moderator(s).
 ```
 
 The standardized indirect effect is

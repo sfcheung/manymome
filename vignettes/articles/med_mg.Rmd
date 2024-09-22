@@ -1,7 +1,7 @@
 ---
 title: "Multigroup Models With Mediation Effects"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2024-04-03"
+date: "2024-09-22"
 output:
   html_document:
     fig.align: "center"
@@ -39,7 +39,7 @@ in Version 0.1.14.2.
 This is the sample data set that comes with the package:
 
 
-```r
+``` r
 library(manymome)
 dat <- data_med_mg
 print(head(dat), digits = 3)
@@ -67,7 +67,7 @@ no need to label any parameters because
 automatically.
 
 
-```r
+``` r
 mod_med <-
 "
 m ~ x + c1 + c2
@@ -82,10 +82,10 @@ fit <- sem(model = mod_med,
 These are the estimates of the paths:
 
 
-```r
+``` r
 summary(fit,
         estimates = TRUE)
-#> lavaan 0.6.17 ended normally after 1 iteration
+#> lavaan 0.6-18 ended normally after 1 iteration
 #> 
 #>   Estimator                                         ML
 #>   Optimization method                           NLMINB
@@ -198,7 +198,7 @@ The argument `ncores` can be omitted
 if the default value is acceptable.
 
 
-```r
+``` r
 fit_boot_out <- do_boot(fit = fit,
                         R = 5000,
                         seed = 53253,
@@ -229,7 +229,7 @@ or `"Group B"` in this example)
 or the group number used in `lavaan`
 
 
-```r
+``` r
 ind_gpA <- indirect_effect(x = "x",
                            y = "y",
                            m = "m",
@@ -242,7 +242,7 @@ ind_gpA <- indirect_effect(x = "x",
 This is the output:
 
 
-```r
+``` r
 ind_gpA
 #> 
 #> == Indirect Effect  ==
@@ -280,7 +280,7 @@ We illustrate computing the indirect effect in
 `"Group B"`, using group number:
 
 
-```r
+``` r
 ind_gpB <- indirect_effect(x = "x",
                            y = "y",
                            m = "m",
@@ -293,7 +293,7 @@ ind_gpB <- indirect_effect(x = "x",
 This is the output:
 
 
-```r
+``` r
 ind_gpB
 #> 
 #> == Indirect Effect  ==
@@ -344,7 +344,7 @@ the indirect effect of the requested
 path in each model.
 
 
-```r
+``` r
 ind <- cond_indirect_effects(x = "x",
                              y = "y",
                              m = "m",
@@ -356,7 +356,7 @@ ind <- cond_indirect_effects(x = "x",
 This is the output:
 
 
-```r
+``` r
 ind
 #> 
 #> == Conditional indirect effects ==
@@ -397,7 +397,7 @@ for the two groups. Let us compute the
 differences:
 
 
-```r
+``` r
 ind_diff <- ind_gpB - ind_gpA
 ind_diff
 #> 
@@ -444,7 +444,7 @@ Let us use `cond_indirect_diff()` on the
 output of `cond_indirect_effects()`:
 
 
-```r
+``` r
 ind_diff2 <- cond_indirect_diff(ind,
                                 from = 1,
                                 to = 2)
@@ -492,7 +492,7 @@ by setting `standardized_x` and/or `standardized_y`.
 This is an example:
 
 
-```r
+``` r
 std_gpA <- indirect_effect(x = "x",
                            y = "y",
                            m = "m",
@@ -533,7 +533,7 @@ std_gpA
 ```
 
 
-```r
+``` r
 std_gpB <- indirect_effect(x = "x",
                            y = "y",
                            m = "m",
@@ -593,7 +593,7 @@ The difference in the two completely standardized indirect
 effects can computed and tested using the math operator `-`:
 
 
-```r
+``` r
 std_diff <- std_gpB - std_gpA
 std_diff
 #> 
@@ -631,7 +631,7 @@ The function `cond_indirect_effects()` and
 `cond_indirect_diff()` can also be used with standardization:
 
 
-```r
+``` r
 std <- cond_indirect_effects(x = "x",
                              y = "y",
                              m = "m",
@@ -660,7 +660,7 @@ std
 ```
 
 
-```r
+``` r
 std_diff2 <- cond_indirect_diff(std,
                                 from = 1,
                                 to = 2)
@@ -703,7 +703,7 @@ Suppose a model which has more than one, or has many,
 indirect paths, is fitted to this dataset:
 
 
-```r
+``` r
 dat2 <- data_med_complicated_mg
 print(head(dat2), digits = 2)
 #>     m11   m12     m2     y1     y2    x1     x2    c1      c2   group
@@ -720,7 +720,7 @@ print(head(dat2), digits = 2)
 We first fit this model in `lavaan`:
 
 
-```r
+``` r
 mod2 <-
 "
 m11 ~ x1 + x2
@@ -742,7 +742,7 @@ For example, the following identify all paths from `x1`
 to `y1`:
 
 
-```r
+``` r
 paths_x1_y1 <- all_indirect_paths(fit = fit2,
                                   x = "x1",
                                   y = "y1")
@@ -752,7 +752,7 @@ If the `group` argument is not specified, it will automatically
 identify all paths in all groups, as shown in the printout:
 
 
-```r
+``` r
 paths_x1_y1
 #> Call: 
 #> all_indirect_paths(fit = fit2, x = "x1", y = "y1")
@@ -772,7 +772,7 @@ We can then use `many_indirect_effects()` to
 compute the indirect effects for all paths identified:
 
 
-```r
+``` r
 all_ind_x1_y1 <- many_indirect_effects(paths_x1_y1,
                                        fit = fit2)
 all_ind_x1_y1
@@ -812,7 +812,7 @@ compute the conditional effect using `cond_indirect_effects()`,
 without setting the mediator:
 
 
-```r
+``` r
 path1 <- cond_indirect_effects(x = "m",
                                y = "y",
                                fit = fit,
@@ -831,7 +831,7 @@ path1
 #> 
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
 #>    nonparametric bootstrapping with 5000 samples.
-#>  - The 'ind' column shows the  effects.
+#>  - The 'ind' column shows the direct effects.
 #>  - 'y~m' is/are the path coefficient(s) along the path conditional on
 #>    the group(s).
 ```
@@ -841,7 +841,7 @@ using bootstrapping confidence interval using
 `cond_indirect_diff()`:
 
 
-```r
+``` r
 path1_diff <- cond_indirect_diff(path1,
                                  from = 1,
                                  to = 2)
@@ -901,7 +901,7 @@ because `"Group A"` has a larger mean of `m` than
 These are the model implied means and SDs:
 
 
-```r
+``` r
 # Model implied means
 lavInspect(fit, "mean.ov")
 #> $`Group A`

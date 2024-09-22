@@ -1,7 +1,7 @@
 ---
 title: "Mediation Analysis by Multiple Regression"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2023-10-06"
+date: "2024-09-22"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -31,7 +31,7 @@ This is the sample dataset used for
 illustration:
 
 
-```r
+``` r
 library(manymome)
 dat <- data_med_complicated
 print(round(head(dat), 2))
@@ -58,7 +58,7 @@ Despite the apparent complexity, the path parameters
 can be estimated by five multiple regression models:
 
 
-```r
+``` r
 lm_m11 <- lm(m11 ~ x1 + x2 + c1 + c2, dat)
 lm_m12 <- lm(m12 ~ m11 + x1 + x2 + c1 + c2, dat)
 lm_m2 <- lm(m2 ~ x1 + x2 + c1 + c2, dat)
@@ -84,7 +84,7 @@ five models into one object (a system of regression models)
 using `lm2list()`:
 
 
-```r
+``` r
 fit_lm <- lm2list(lm_m11, lm_m12, lm_m2, lm_y1, lm_y2)
 fit_lm
 #> 
@@ -118,7 +118,7 @@ any indirect effects to be estimated.
 
 
 
-```r
+``` r
 boot_out_lm <- do_boot(fit_lm,
                        R = 100,
                        seed = 54532,
@@ -151,7 +151,7 @@ effect from `x1` to `y1` through `m11` and `m12`:
 of `indirect_effect()` on the arguments.)
 
 
-```r
+``` r
 out_x1m11m12y1 <- indirect_effect(x = "x1",
                                   y = "y1",
                                   m = c("m11", "m12"),
@@ -160,10 +160,10 @@ out_x1m11m12y1 <- indirect_effect(x = "x1",
                                   boot_out = boot_out_lm)
 out_x1m11m12y1
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                            
 #>  Path:               x1 -> m11 -> m12 -> y1
-#>  Indirect Effect     0.037                 
+#>  Indirect Effect:    0.037                 
 #>  95.0% Bootstrap CI: [0.003 to 0.077]      
 #> 
 #> Computation Formula:
@@ -190,7 +190,7 @@ Similarly, we can estimate the indirect
 effect from `x2` to `y2` through `m2`:
 
 
-```r
+``` r
 out_x2m2y2 <- indirect_effect(x = "x2",
                               y = "y2",
                               m = "m2",
@@ -199,10 +199,10 @@ out_x2m2y2 <- indirect_effect(x = "x2",
                               boot_out = boot_out_lm)
 out_x2m2y2
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                        
 #>  Path:               x2 -> m2 -> y2    
-#>  Indirect Effect     -0.126            
+#>  Indirect Effect:    -0.126            
 #>  95.0% Bootstrap CI: [-0.233 to -0.043]
 #> 
 #> Computation Formula:
@@ -230,7 +230,7 @@ we want to estimate the indirect effect from `x2` to `m12`
 through `m11`, we just call `indirect_effect()`:
 
 
-```r
+``` r
 out_x2m11m12 <- indirect_effect(x = "x2",
                                 y = "m12",
                                 m = "m11",
@@ -239,10 +239,10 @@ out_x2m11m12 <- indirect_effect(x = "x2",
                                 boot_out = boot_out_lm)
 out_x2m11m12
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                       
 #>  Path:               x2 -> m11 -> m12 
-#>  Indirect Effect     -0.020           
+#>  Indirect Effect:    -0.020           
 #>  95.0% Bootstrap CI: [-0.139 to 0.110]
 #> 
 #> Computation Formula:
@@ -279,7 +279,7 @@ can be estimated by setting
 `standardized_x` and `standardized_y` to `TRUE:
 
 
-```r
+``` r
 std_x1m11m12y1 <- indirect_effect(x = "x1",
                                   y = "y1",
                                   m = c("m11", "m12"),
@@ -290,10 +290,10 @@ std_x1m11m12y1 <- indirect_effect(x = "x1",
                                   standardized_y = TRUE)
 std_x1m11m12y1
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect (Both 'x1' and 'y1' Standardized) ==
 #>                                            
 #>  Path:               x1 -> m11 -> m12 -> y1
-#>  Indirect Effect     0.039                 
+#>  Indirect Effect:    0.039                 
 #>  95.0% Bootstrap CI: [0.004 to 0.085]      
 #> 
 #> Computation Formula:
@@ -310,7 +310,9 @@ std_x1m11m12y1
 #>  m12~m11       0.454
 #>   y1~m12       0.234
 #> 
-#> NOTE: The effects of the component paths are from the model, not standardized.
+#> NOTE:
+#> - The effects of the component paths are from the model, not
+#>   standardized.
 ```
 
 The standardized indirect effect is
@@ -322,7 +324,7 @@ Similarly, we can estimate the standardized indirect
 effect from `x1` to `y1` through `m2`:
 
 
-```r
+``` r
 std_x1m2y1 <- indirect_effect(x = "x1",
                               y = "y1",
                               m = "m2",
@@ -333,10 +335,10 @@ std_x1m2y1 <- indirect_effect(x = "x1",
                               standardized_y = TRUE)
 std_x1m2y1
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect (Both 'x1' and 'y1' Standardized) ==
 #>                                       
 #>  Path:               x1 -> m2 -> y1   
-#>  Indirect Effect     -0.010           
+#>  Indirect Effect:    -0.010           
 #>  95.0% Bootstrap CI: [-0.069 to 0.067]
 #> 
 #> Computation Formula:
@@ -352,7 +354,9 @@ std_x1m2y1
 #>  m2~x1      0.0223
 #>  y1~m2     -0.4330
 #> 
-#> NOTE: The effects of the component paths are from the model, not standardized.
+#> NOTE:
+#> - The effects of the component paths are from the model, not
+#>   standardized.
 ```
 
 The standardized indirect effect is
@@ -379,7 +383,7 @@ already been computed. We compute
 the indirect effects along Paths b, c, and d below:
 
 
-```r
+``` r
 out_x1m11y1 <- indirect_effect(x = "x1",
                                y = "y1",
                                m = "m11",
@@ -388,10 +392,10 @@ out_x1m11y1 <- indirect_effect(x = "x1",
                                boot_out = boot_out_lm)
 out_x1m11y1
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                       
 #>  Path:               x1 -> m11 -> y1  
-#>  Indirect Effect     0.052            
+#>  Indirect Effect:    0.052            
 #>  95.0% Bootstrap CI: [-0.036 to 0.103]
 #> 
 #> Computation Formula:
@@ -409,7 +413,7 @@ out_x1m11y1
 ```
 
 
-```r
+``` r
 out_x1m12y1 <- indirect_effect(x = "x1",
                                y = "y1",
                                m = "m12",
@@ -418,10 +422,10 @@ out_x1m12y1 <- indirect_effect(x = "x1",
                                boot_out = boot_out_lm)
 out_x1m12y1
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                        
 #>  Path:               x1 -> m12 -> y1   
-#>  Indirect Effect     -0.050            
+#>  Indirect Effect:    -0.050            
 #>  95.0% Bootstrap CI: [-0.125 to -0.000]
 #> 
 #> Computation Formula:
@@ -439,7 +443,7 @@ out_x1m12y1
 ```
 
 
-```r
+``` r
 out_x1m2y1 <- indirect_effect(x = "x1",
                                y = "y1",
                                m = "m2",
@@ -448,10 +452,10 @@ out_x1m2y1 <- indirect_effect(x = "x1",
                                boot_out = boot_out_lm)
 out_x1m2y1
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                       
 #>  Path:               x1 -> m2 -> y1   
-#>  Indirect Effect     -0.010           
+#>  Indirect Effect:    -0.010           
 #>  95.0% Bootstrap CI: [-0.077 to 0.064]
 #> 
 #> Computation Formula:
@@ -471,11 +475,11 @@ out_x1m2y1
 We can now compute the total *indirect* effect:
 
 
-```r
+``` r
 out_x1y1_total <- out_x1m11m12y1 + out_x1m11y1 + out_x1m12y1 + out_x1m2y1
 out_x1y1_total
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                             
 #>  Path:                x1 -> m11 -> m12 -> y1
 #>  Path:                x1 -> m11 -> y1       
@@ -511,11 +515,11 @@ the indirect effect of `x1` on `y1` through `m11` and `m12`
 and the indirect effect of `x1` on `y1` through `m2`:
 
 
-```r
+``` r
 out_x1_diff <- out_x1m11m12y1 - out_x1m2y1
 out_x1_diff
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                             
 #>  Path:                x1 -> m11 -> m12 -> y1
 #>  Path:                x1 -> m2 -> y1        
@@ -549,7 +553,7 @@ indirect paths (a path with at least
 one mediator) in a model:
 
 
-```r
+``` r
 all_paths <- all_indirect_paths(fit = fit_lm)
 all_paths
 #> Call: 
@@ -604,7 +608,7 @@ a mediator are also included.
 Users can customize the search:
 
 
-```r
+``` r
 all_paths <- all_indirect_paths(fit = fit_lm,
                                 x = c("x1", "x2"),
                                 y = c("y1", "y2"),
@@ -649,7 +653,7 @@ The output is a `all_paths`-class object.
 It can be used in `many_indirect_effects()`
 
 
-```r
+``` r
 out_all <- many_indirect_effects(paths = all_paths,
                                  fit = fit_lm,
                                  boot_ci = TRUE,
@@ -668,7 +672,7 @@ a summary of the indirect effects will
 be printed:
 
 
-```r
+``` r
 out_all
 #> 
 #> ==  Indirect Effect(s)   ==
@@ -706,14 +710,14 @@ the indices or the path names
 An example using index:
 
 
-```r
+``` r
 out1 <- out_all[[1]]
 out1
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                            
 #>  Path:               x1 -> m11 -> m12 -> y1
-#>  Indirect Effect     0.037                 
+#>  Indirect Effect:    0.037                 
 #>  95.0% Bootstrap CI: [0.003 to 0.077]      
 #> 
 #> Computation Formula:
@@ -736,14 +740,14 @@ recommended because the name is usually
 long):
 
 
-```r
+``` r
 out2 <- out_all[["x2 -> m2 -> y2"]]
 out2
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                        
 #>  Path:               x2 -> m2 -> y2    
-#>  Indirect Effect     -0.126            
+#>  Indirect Effect:    -0.126            
 #>  95.0% Bootstrap CI: [-0.233 to -0.043]
 #> 
 #> Computation Formula:
@@ -776,13 +780,13 @@ variables in a list of paths can be
 computed by `total_indirect_effect()`.
 
 
-```r
+``` r
 total_x1_y1 <- total_indirect_effect(out_all,
                                      x = "x1",
                                      y = "y1")
 total_x1_y1
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                             
 #>  Path:                x1 -> m11 -> m12 -> y1
 #>  Path:                x1 -> m11 -> y1       

@@ -1,4 +1,4 @@
-# manymome 0.2.2.1
+# manymome 0.2.2.2
 
 ## New Features
 
@@ -22,6 +22,10 @@
   variables if some covariances involving
   the product terms are not freely
   estimated. (0.2.2.1)
+
+## Miscellaneous
+
+- Updated some vignettes (0.2.2.2).
 
 # manymome 0.2.2
 

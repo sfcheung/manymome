@@ -1,7 +1,7 @@
 ---
 title: "Generate Monte Carlo Estimates"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2023-10-06"
+date: "2024-09-22"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -70,7 +70,7 @@ The following workflow will be demonstrated;
 The data set for illustration:
 
 
-```r
+``` r
 library(manymome)
 dat <- data_med
 head(dat)
@@ -96,7 +96,7 @@ will be fitted:
 Fit the model by `lavaan::sem()`:
 
 
-```r
+``` r
 mod <-
 "
 m ~ x + c1 + c2
@@ -106,7 +106,7 @@ fit_lavaan <- sem(model = mod, data = dat,
                   fixed.x = FALSE,
                   estimator = "MLR")
 summary(fit_lavaan)
-#> lavaan 0.6.16 ended normally after 1 iteration
+#> lavaan 0.6-18 ended normally after 1 iteration
 #> 
 #>   Estimator                                         ML
 #>   Optimization method                           NLMINB
@@ -173,7 +173,7 @@ but are needed to form the confidence
 interval of the *standardized* indirect effect.
 
 
-```r
+``` r
 mc_out_lavaan <- do_mc(fit = fit_lavaan,
                        R = 10000,
                        seed = 4234)
@@ -208,7 +208,7 @@ to form the Monte Carlo confidence
 intervals, if requested.
 
 
-```r
+``` r
 out_lavaan <- indirect_effect(x = "x",
                               y = "y",
                               m = "m",
@@ -217,10 +217,10 @@ out_lavaan <- indirect_effect(x = "x",
                               mc_out = mc_out_lavaan)
 out_lavaan
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                        
 #>  Path:                 x -> m -> y     
-#>  Indirect Effect       0.733           
+#>  Indirect Effect:      0.733           
 #>  95.0% Monte Carlo CI: [0.301 to 1.180]
 #> 
 #> Computation Formula:
@@ -264,7 +264,7 @@ two elements: `est` and `implied_stats`.
 This is the content of `est` of the first list:
 
 
-```r
+``` r
 mc_out_lavaan[[1]]$est
 #>    lhs op rhs    est
 #> 1    m  ~   x  0.909
@@ -293,7 +293,7 @@ This is the content of `implied_stats` of the
 first list:
 
 
-```r
+``` r
 mc_out_lavaan[[1]]$implied_stats
 #> $cov
 #>         m      y      x     c1     c2
