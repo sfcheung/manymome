@@ -9,9 +9,11 @@
   x,
   digits = 3,
   annotation = TRUE,
-  pvalue = FALSE,
+  pvalue = NULL,
   pvalue_digits = 3,
-  se = FALSE,
+  se = NULL,
+  level = 0.95,
+  se_ci = TRUE,
   ...
 )
 }
@@ -30,7 +32,14 @@ effects is to be printed. Default is
 \item{pvalue}{Logical. If \code{TRUE},
 asymmetric \emph{p}-values based on
 bootstrapping will be printed if
-available. Default is \code{FALSE.}}
+available. Default to \code{FALSE} if
+confidence intervals have already
+computed. Default to \code{TRUE} if
+no confidence intervals have been
+computed and the original standard
+errors are to be used. See Details
+on when the original standard errors
+will be used by default.}
 
 \item{pvalue_digits}{Number of decimal
 places to display for the \emph{p}-values.
@@ -43,7 +52,33 @@ are also printed. They are simply the
 standard deviations of the bootstrap
 estimates or Monte Carlo simulated
 values, depending on the method used
-to form the confidence intervals.}
+to form the confidence intervals.
+Default to \code{FALSE} if
+confidence intervals are available.
+Default to \code{TRUE} if
+no confidence intervals have been
+computed and the original standard
+errors are to be used. See Details
+on when the original standard errors
+will be used by default.}
+
+\item{level}{The level of confidence
+for the confidence intervals computed
+from the original standard errors. Used only for
+paths without mediators and both
+\code{x}- and \code{y}-variables are not
+standardized.}
+
+\item{se_ci}{Logical. If \code{TRUE} and
+confidence interval has not been
+computed, the function will try
+to compute them from stored
+standard errors if the original
+standard errors are to be used.
+Ignored
+if confidence intervals have already
+been computed. Default
+to \code{TRUE}.}
 
 \item{...}{Other arguments. Not
 used.}
@@ -80,6 +115,39 @@ with a higher confidence level will
 include zero, while a confidence
 interval with a lower confidence level
 will exclude zero.
+\subsection{Using Original Standard Errors}{
+
+If these conditions are met, the
+stored standard errors, if available,
+will be used test an effect and
+form it confidence interval:
+\itemize{
+\item Confidence intervals have not been
+formed (e.g., by bootstrapping or
+Monte Carlo).
+\item The path has no mediators.
+\item The model has only one group.
+\item The path is moderated by one or
+more moderator.
+\item Both the \code{x}-variable and the
+\code{y}-variable are not standardized.
+}
+
+If the model is fitted by OLS
+regression (e.g., using \code{\link[stats:lm]{stats::lm()}}),
+then the variance-covariance matrix
+of the coefficient estimates will be
+used, and the \emph{p}-value and confidence
+interval are computed from the \emph{t}
+statistic.
+
+If the model is fitted by structural
+equation modeling using \code{lavaan}, then
+the variance-covariance computed by
+\code{lavaan} will be used, and the \emph{p}-value
+and confidence interval are computed
+from the \emph{z} statistic.
+}
 }
 \examples{
 

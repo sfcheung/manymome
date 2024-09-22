@@ -24,7 +24,7 @@ indirect_i(
   allow_mixing_lav_and_obs = TRUE,
   group = NULL,
   est_vcov = NULL,
-  fit_df_residual = NULL
+  df_residual = NULL
 )
 }
 \arguments{
@@ -146,7 +146,7 @@ standard error for a path with no
 mediator, and both \code{x} and \code{y} are
 not standardized.}
 
-\item{fit_df_residual}{A numeric
+\item{df_residual}{A numeric
 vector of the residual degrees of
 freedom for the model of each
 response variable (\code{y}-variable).

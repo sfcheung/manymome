@@ -28,6 +28,42 @@
 #' interval with a lower confidence level
 #' will exclude zero.
 #'
+#' ## Using Original Standard Errors
+#'
+#' If these conditions are met, the
+#' stored standard errors, if available,
+#' will be used test an effect and
+#' form it confidence interval:
+#'
+#' - Confidence intervals have not been
+#'  formed (e.g., by bootstrapping or
+#'  Monte Carlo).
+#'
+#' - The path has no mediators.
+#'
+#' - The model has only one group.
+#'
+#' - The path is moderated by one or
+#'  more moderator.
+#'
+#' - Both the `x`-variable and the
+#'  `y`-variable are not standardized.
+#'
+#' If the model is fitted by OLS
+#' regression (e.g., using [stats::lm()]),
+#' then the variance-covariance matrix
+#' of the coefficient estimates will be
+#' used, and the *p*-value and confidence
+#' interval are computed from the *t*
+#' statistic.
+#'
+#' If the model is fitted by structural
+#' equation modeling using `lavaan`, then
+#' the variance-covariance computed by
+#' `lavaan` will be used, and the *p*-value
+#' and confidence interval are computed
+#' from the *z* statistic.
+#'
 #' @return `x` is returned invisibly.
 #'  Called for its side effect.
 #'
@@ -45,7 +81,14 @@
 #' @param pvalue Logical. If `TRUE`,
 #' asymmetric *p*-values based on
 #' bootstrapping will be printed if
-#' available. Default is `FALSE.`
+#' available. Default to `FALSE` if
+#' confidence intervals have already
+#' computed. Default to `TRUE` if
+#' no confidence intervals have been
+#' computed and the original standard
+#' errors are to be used. See Details
+#' on when the original standard errors
+#' will be used by default.
 #'
 #' @param pvalue_digits Number of decimal
 #' places to display for the *p*-values.
@@ -59,13 +102,32 @@
 #' estimates or Monte Carlo simulated
 #' values, depending on the method used
 #' to form the confidence intervals.
+#' Default to `FALSE` if
+#' confidence intervals are available.
+#' Default to `TRUE` if
+#' no confidence intervals have been
+#' computed and the original standard
+#' errors are to be used. See Details
+#' on when the original standard errors
+#' will be used by default.
 #'
 #' @param level The level of confidence
 #' for the confidence intervals computed
-#' from standard errors. Used only for
-#' paths with out mediators and both
+#' from the original standard errors. Used only for
+#' paths without mediators and both
 #' `x`- and `y`-variables are not
 #' standardized.
+#'
+#' @param se_ci Logical. If `TRUE` and
+#' confidence interval has not been
+#' computed, the function will try
+#' to compute them from stored
+#' standard errors if the original
+#' standard errors are to be used.
+#' Ignored
+#' if confidence intervals have already
+#' been computed. Default
+#' to `TRUE`.
 #'
 #' @param ...  Other arguments. Not
 #' used.
@@ -110,11 +172,11 @@
 
 print.cond_indirect_effects <- function(x, digits = 3,
                                         annotation = TRUE,
-                                        pvalue = FALSE,
+                                        pvalue = NULL,
                                         pvalue_digits = 3,
-                                        se = FALSE,
+                                        se = NULL,
                                         level = .95,
-                                        se_ci = FALSE,
+                                        se_ci = TRUE,
                                         ...) {
   # TODO:
   # - Support cases with both moderators and groups.
@@ -151,8 +213,36 @@ print.cond_indirect_effects <- function(x, digits = 3,
     }
   standardized_x <- x_i$standardized_x
   standardized_y <- x_i$standardized_y
-  level <- x_i$level
   has_m <- isTRUE(!is.null(x_i$m))
+
+  # Default to OLS or Wald SE
+  se_out <- cond_effects_original_se(x)
+  has_original_se <- !is.null(se_out)
+  print_original_se <- FALSE
+  if (!has_ci &&
+      !has_m &&
+      !has_groups &&
+      has_wlevels &&
+      !standardized_x &&
+      !standardized_y &&
+      has_original_se) {
+      print_original_se <- TRUE
+      if (is.null(pvalue)) {
+          pvalue <- TRUE
+        }
+      if (is.null(se)) {
+          se <- TRUE
+        }
+    } else {
+      if (is.null(pvalue)) {
+          pvalue <- FALSE
+        }
+      if (is.null(se)) {
+          se <- FALSE
+        }
+      level <- x_i$level
+    }
+
   R <- ifelse(has_ci, length(x_i[[ind_name]]),
                        NA)
   x0 <- attr(x, "x")
@@ -200,9 +290,6 @@ print.cond_indirect_effects <- function(x, digits = 3,
           out <- c(out[1:i], list(SE = ind_se), out[(i + 1):j])
         }
     }
-  se_out <- cond_effects_original_se(x)
-  has_original_se <- !is.null(se_out)
-  print_original_se <- FALSE
   if (!has_ci &&
       !has_m &&
       !has_groups &&
