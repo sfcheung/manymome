@@ -394,4 +394,10 @@ test_that("confint", {
                     confint(sos_2, level = .85)[, 1]))
     expect_true(all(confint(cos_1b, level = .75)[, 2] <
                     confint(cos_3, level = .85)[, 2]))
+
+    sos_1a_se <- cond_effects_original_se(sos_1a)
+    sos_1a_full <- attr(sos_1a, "full_output")
+    expect_equal(as.vector(confint(sos_1a_full[[2]])),
+                 c(sos_1a_se$cilo[2], sos_1a_se$cihi[2]),
+                 ignore_attr = TRUE)
   })
