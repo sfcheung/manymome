@@ -90,7 +90,6 @@ johnson_neyman <- function(object = NULL,
         w_upper <- w_tmp[2]
       }
     wlevel_interval <- c(w_lower, w_upper)
-        browser()
     w_lower_ci <- pseudo_johnson_neyman_one_bound(w0 = w_lower,
                                                   object = object,
                                                   type = "ci")
