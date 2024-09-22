@@ -335,13 +335,39 @@ sos_3 <- cond_indirect_effects(wlevels = c("w1", "w2"),
                                x = "m", y = "y",
                                fit = fit3)
 
+test_that("Print", {
+    expect_output(print(cos_1b),
+                  "Stat",
+                  fixed = TRUE)
+    expect_output(print(cos_1b),
+                  "regression",
+                  fixed = TRUE)
+    expect_false(any(grepl("pvalue",
+                           capture.output(print(cos_1b, pvalue = FALSE)),
+                           fixed = TRUE)))
+    expect_false(any(grepl("pvalue",
+                           capture.output(print(cos_1b, pvalue = FALSE)),
+                           fixed = TRUE)))
+    expect_false(any(grepl("CI.lo",
+                           capture.output(print(cos_1b, se_ci = FALSE)),
+                           fixed = TRUE)))
+    expect_output(print(sos_1b),
+                  "Stat",
+                  fixed = TRUE)
+    expect_output(print(sos_1b),
+                  "lavaan",
+                  fixed = TRUE)
+    expect_false(any(grepl("pvalue",
+                           capture.output(print(sos_1b, pvalue = FALSE)),
+                           fixed = TRUE)))
+    expect_false(any(grepl("pvalue",
+                           capture.output(print(sos_1b, pvalue = FALSE)),
+                           fixed = TRUE)))
+    expect_false(any(grepl("CI.lo",
+                           capture.output(print(sos_1b, se_ci = FALSE)),
+                           fixed = TRUE)))
+    expect_output(print(sos_1b, level = .60),
+                  "60.0%",
+                  fixed = TRUE)
+  })
 
-print(cos_1a)
-print(cos_1b)
-print(cos_2)
-print(cos_3)
-
-print(sos_1a)
-print(sos_1b)
-print(sos_2)
-print(sos_3, level = .60)
