@@ -55,7 +55,8 @@ test_that("cond_indirect: lm", {
   })
 
 test_that("confint for indirect: lm", {
-    expect_warning(confint(out))
+    # SE-based CI is valid and returned now.
+    # expect_warning(confint(out))
     expect_equal(coef(out),  out_boot$indirect, ignore_attr = TRUE)
     expect_equal(confint(out_boot),  out_boot$boot_ci, ignore_attr = TRUE)
   })

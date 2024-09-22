@@ -24,6 +24,55 @@
 #' the future, and uses them to form the
 #' percentile confidence interval.
 #'
+#' If the following conditions are met, the
+#' stored standard errors, if available,
+#' will be used test an effect and
+#' form it confidence interval:
+#'
+#' - Confidence intervals have not been
+#'  formed (e.g., by bootstrapping or
+#'  Monte Carlo).
+#'
+#' - The path has no mediators.
+#'
+#' - The model has only one group.
+#'
+#' - The path is moderated by one or
+#'  more moderator.
+#'
+#' - Both the `x`-variable and the
+#'  `y`-variable are not standardized.
+#'
+#' If the model is fitted by OLS
+#' regression (e.g., using [stats::lm()]),
+#' then the variance-covariance matrix
+#' of the coefficient estimates will be
+#' used, and confidence
+#' intervals are computed from the *t*
+#' statistic.
+#'
+#' If the model is fitted by structural
+#' equation modeling using `lavaan`, then
+#' the variance-covariance computed by
+#' `lavaan` will be used,
+#' and confidence intervals are computed
+#' from the *z* statistic.
+#'
+#' ## Caution
+#'
+#' If the model is fitted by structural
+#' equation modeling and has moderators,
+#' the standard errors, *p*-values,
+#' and confidence interval computed
+#' from the variance-covariance matrices
+#' for conditional effects
+#' can only be trusted if all covariances
+#' involving the product terms are free.
+#' If any of them are fixed, for example,
+#' fixed to zero, it is possible
+#' that the model is not invariant to
+#' linear transformation of the variables.
+#'
 #' @param object The output of
 #' [indirect_effect()] or
 #' [cond_indirect()].
@@ -121,17 +170,39 @@ confint.indirect <- function(object,
             new_ci <- TRUE
           }
       }
+    se_out <- cond_effect_original_se(object,
+                                      level = level)
+    has_original_se <- !is.null(se_out)
+    has_m <- isTRUE(!is.null(object$m))
+    standardized_x <- object$standardized_x
+    standardized_y <- object$standardized_y
+    has_groups <- !is.null(object$group_number)
+    has_wlevels <- !is.null(object$wvalues)
+    if (!has_ci &&
+        !has_m &&
+        !has_groups &&
+        has_wlevels &&
+        !standardized_x &&
+        !standardized_y &&
+        has_original_se) {
+        ci_type <- "se"
+        has_ci <- TRUE
+      }
     if (has_ci) {
-        if (new_ci) {
-            out0 <- boot_ci_internal(t0 = object$indirect,
-                            t = ind_i,
-                            level = level,
-                            boot_type = ifelse(ci_type == "boot",
-                                               ci_boot_type,
-                                               "perc"),
-                            add_names = FALSE)
+        if (ci_type == "se") {
+            out0 <- c(se_out$cilo, se_out$cihi)
           } else {
-            out0 <- old_ci
+            if (new_ci) {
+                out0 <- boot_ci_internal(t0 = object$indirect,
+                                t = ind_i,
+                                level = level,
+                                boot_type = ifelse(ci_type == "boot",
+                                                  ci_boot_type,
+                                                  "perc"),
+                                add_names = FALSE)
+              } else {
+                out0 <- old_ci
+              }
           }
       } else {
         warning("Confidence interval not in the object.")
@@ -159,4 +230,45 @@ confint.indirect <- function(object,
                  dim = c(1, 2),
                  dimnames = list(rnames, cnames))
     out
+  }
+
+#' @noRd
+
+cond_effect_original_se <- function(object,
+                                    level = .95) {
+    if (!is.null(object$m)) {
+        return(NULL)
+      }
+    if (is.null(object$original_se)) {
+        return(NULL)
+      }
+    est <- object$indirect
+    se <- unname(object$original_se)
+    if (is.na(se)) {
+        return(NULL)
+      }
+    dfres <- object$df_residual
+    test_stat <- est / se
+    p <- 2 * stats::pt(abs(test_stat),
+                       df = dfres,
+                       lower.tail = FALSE)
+    sig <- stats::symnum(p,
+                         corr = FALSE,
+                         na = FALSE,
+                         cutpoints = c(0, 0.001, 0.01, 0.05, 1),
+                         symbols = c("***", "**", "*", " "))
+    z_crit <- -1 * stats::qt((1 - level) / 2,
+                             df = dfres,
+                             lower.tail = TRUE)
+    cilo <- est - z_crit * se
+    cihi <- est + z_crit * se
+    out <- list(se = se,
+                stat = test_stat,
+                pvalue = p,
+                sig = sig,
+                cilo = cilo,
+                cihi = cihi)
+    attr(out, "sig_legend") <- attr(sig, "legend")
+    attr(out, "original_se_level") <- level
+    return(out)
   }

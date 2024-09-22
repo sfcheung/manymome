@@ -163,7 +163,8 @@ test_that("cond_indirect: lm, moderation only", {
   })
 
 test_that("confint for indirect: lm, moderation only", {
-    expect_warning(confint(outmo))
+    # SE-CI is valid and returned now
+    # expect_warning(confint(outmo))
     expect_equal(coef(outmo),  outmo_boot$indirect, ignore_attr = TRUE)
     expect_equal(confint(outmo_boot),  outmo_boot$boot_ci, ignore_attr = TRUE)
   })
