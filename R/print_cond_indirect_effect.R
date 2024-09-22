@@ -392,8 +392,21 @@ print.cond_indirect_effects <- function(x, digits = 3,
   cond_str <- ""
   cond_str2 <- ""
   if (has_m) {
-      cond_str <- "indirect"
-      cond_str2 <- "Indirect"
+      if (has_wlevels) {
+          cond_str <- "conditional indirect"
+          cond_str2 <- "Conditional indirect"
+        } else {
+          cond_str <- "indirect"
+          cond_str2 <- "Indirect"
+        }
+    } else {
+      if (has_wlevels) {
+          cond_str <- "conditional"
+          cond_str2 <- "Conditional"
+        } else {
+          cond_str <- "direct"
+          cond_str2 <- "Direct"
+        }
     }
   if (has_m) {
       cat("\n== Conditional indirect effects ==\n")
