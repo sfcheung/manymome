@@ -361,9 +361,9 @@ print.cond_indirect_effects <- function(x, digits = 3,
               out_sig <- out_sig0
             }
           out_original <- c(out_original,
-                            list(Stat = out_stat,
-                                 pvalue = out_p,
-                                 Sig = out_sig))
+                            list(Stat = unname(out_stat),
+                                 pvalue = unname(out_p),
+                                 Sig = unname(out_sig)))
         }
       if (se_ci) {
           out_cilo <- unname(se_out$cilo)
