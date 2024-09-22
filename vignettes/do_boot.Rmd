@@ -1,7 +1,7 @@
 ---
 title: "Generate Bootstrap Estimates"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2024-06-04"
+date: "2024-09-22"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -86,7 +86,7 @@ fit_lavaan <- sem(model = mod, data = dat,
            fixed.x = FALSE,
            estimator = "MLR")
 summary(fit_lavaan)
-#> lavaan 0.6.17 ended normally after 1 iteration
+#> lavaan 0.6-18 ended normally after 1 iteration
 #> 
 #>   Estimator                                         ML
 #>   Optimization method                           NLMINB
@@ -307,9 +307,6 @@ summary(lm_m)
 #> Residual standard error: 0.8425 on 96 degrees of freedom
 #> Multiple R-squared:  0.5981,	Adjusted R-squared:  0.5855 
 #> F-statistic: 47.62 on 3 and 96 DF,  p-value: < 2.2e-16
-```
-
-``` r
 #
 # ###### Regression: Predict y ######
 #

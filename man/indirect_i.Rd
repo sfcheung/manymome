@@ -22,7 +22,9 @@ indirect_i(
   expand = TRUE,
   warn = TRUE,
   allow_mixing_lav_and_obs = TRUE,
-  group = NULL
+  group = NULL,
+  est_vcov = NULL,
+  df_residual = NULL
 )
 }
 \arguments{
@@ -133,6 +135,27 @@ the \code{lavaan}-class object.
 Used only when the number of
 groups is greater than one. Default
 is NULL.}
+
+\item{est_vcov}{A list of
+variance-covariance matrix of
+estimates, one for each response
+variable (\code{y}-variable). Used only
+for models fitted by \code{\link[stats:lm]{stats::lm()}}
+for now. It is used to compute the
+standard error for a path with no
+mediator, and both \code{x} and \code{y} are
+not standardized.}
+
+\item{df_residual}{A numeric
+vector of the residual degrees of
+freedom for the model of each
+response variable (\code{y}-variable).
+Used only for models fitted by
+\code{\link[stats:lm]{stats::lm()}} for now. It is used to
+compute the \emph{p}-value and confidence
+interval for a path with no mediator
+and both \code{x} and \code{y} are not
+standardized.}
 }
 \value{
 It returns an

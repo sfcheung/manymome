@@ -1,3 +1,32 @@
+# manymome 0.2.2.2
+
+## New Features
+
+- Added support for using model-based
+  standard errors (and the covariances)
+  of estimates to compute the standard
+  errors, *p*-values, and confidence
+  intervals for conditional effects.
+  This should be used only for effects
+  without mediators and with both `x`-
+  and `y`-variables not standardized.
+  The standard errors, *p*-values,
+  and confidence intervals are printed
+  by default when certain conditions
+  are met. These statistics are for
+  models fitted by multiple regression.
+  They should be used with cautions for
+  models fitted by structural equation
+  modeling because the model may not be
+  invariant to linear transformation of
+  variables if some covariances involving
+  the product terms are not freely
+  estimated. (0.2.2.1)
+
+## Miscellaneous
+
+- Updated some vignettes (0.2.2.2).
+
 # manymome 0.2.2
 
 ## New Features

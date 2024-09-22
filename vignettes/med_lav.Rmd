@@ -1,7 +1,7 @@
 ---
 title: "Mediation Models with Latent Variables"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2023-10-06"
+date: "2024-09-22"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -29,7 +29,7 @@ This is the sample dataset used for
 illustration:
 
 
-```r
+``` r
 library(manymome)
 dat <- data_sem
 print(round(head(dat), 1))
@@ -53,7 +53,7 @@ Suppose this is the model to be fitted:
 This model can be fitted by `lavaan::sem()`:
 
 
-```r
+``` r
 mod <-
 "
 f1 =~ x01 + x02 + x03
@@ -71,7 +71,7 @@ These are the estimates of
 the paths between the latent variables:
 
 
-```r
+``` r
 est <- parameterEstimates(fit_med)
 est[est$op == "~", ]
 #>    lhs op rhs   est    se     z pvalue ci.lower ci.upper
@@ -96,7 +96,7 @@ bootstrap estimates to be used by
 `indirect_effect()`:
 
 
-```r
+``` r
 boot_out_med <- do_boot(fit_med,
                         R = 100,
                         seed = 98171,
@@ -127,7 +127,7 @@ Suppose we want to estimate the indirect
 effect from `f1` to `f4` through `f3`:
 
 
-```r
+``` r
 out_f1f3f4 <- indirect_effect(x = "f1",
                               y = "f4",
                               m = "f3",
@@ -136,10 +136,10 @@ out_f1f3f4 <- indirect_effect(x = "f1",
                               boot_out = boot_out_med)
 out_f1f3f4
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                       
 #>  Path:               f1 -> f3 -> f4   
-#>  Indirect Effect     0.098            
+#>  Indirect Effect:    0.098            
 #>  95.0% Bootstrap CI: [-0.007 to 0.216]
 #> 
 #> Computation Formula:
@@ -165,7 +165,7 @@ Similarly, we can estimate the indirect
 effect from `f2` to `f4` through `f3`:
 
 
-```r
+``` r
 out_f2f3f4 <- indirect_effect(x = "f2",
                               y = "f4",
                               m = "f3",
@@ -174,10 +174,10 @@ out_f2f3f4 <- indirect_effect(x = "f2",
                               boot_out = boot_out_med)
 out_f2f3f4
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                      
 #>  Path:               f2 -> f3 -> f4  
-#>  Indirect Effect     0.131           
+#>  Indirect Effect:    0.131           
 #>  95.0% Bootstrap CI: [0.049 to 0.254]
 #> 
 #> Computation Formula:
@@ -207,7 +207,7 @@ can be estimated by setting
 `standardized_x` and `standardized_y` to `TRUE:
 
 
-```r
+``` r
 std_f1f3f4 <- indirect_effect(x = "f1",
                               y = "f4",
                               m = "f3",
@@ -218,10 +218,10 @@ std_f1f3f4 <- indirect_effect(x = "f1",
                               standardized_y = TRUE)
 std_f1f3f4
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect (Both 'f1' and 'f4' Standardized) ==
 #>                                       
 #>  Path:               f1 -> f3 -> f4   
-#>  Indirect Effect     0.073            
+#>  Indirect Effect:    0.073            
 #>  95.0% Bootstrap CI: [-0.005 to 0.157]
 #> 
 #> Computation Formula:
@@ -237,7 +237,9 @@ std_f1f3f4
 #>  f3~f1       0.243
 #>  f4~f3       0.402
 #> 
-#> NOTE: The effects of the component paths are from the model, not standardized.
+#> NOTE:
+#> - The effects of the component paths are from the model, not
+#>   standardized.
 ```
 
 The standardized indirect effect is
@@ -249,7 +251,7 @@ Similarly, we can estimate the standardized indirect
 effect from `f2` to `f4` through `f3`:
 
 
-```r
+``` r
 std_f2f3f4 <- indirect_effect(x = "f2",
                               y = "f4",
                               m = "f3",
@@ -260,10 +262,10 @@ std_f2f3f4 <- indirect_effect(x = "f2",
                               standardized_y = TRUE)
 std_f2f3f4
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect (Both 'f2' and 'f4' Standardized) ==
 #>                                      
 #>  Path:               f2 -> f3 -> f4  
-#>  Indirect Effect     0.116           
+#>  Indirect Effect:    0.116           
 #>  95.0% Bootstrap CI: [0.044 to 0.204]
 #> 
 #> Computation Formula:
@@ -279,7 +281,9 @@ std_f2f3f4
 #>  f3~f2       0.326
 #>  f4~f3       0.402
 #> 
-#> NOTE: The effects of the component paths are from the model, not standardized.
+#> NOTE:
+#> - The effects of the component paths are from the model, not
+#>   standardized.
 ```
 
 The standardized indirect effect is
@@ -309,7 +313,7 @@ computed above with bootstrap confidence
 interval:
 
 
-```r
+``` r
 out_f1f4 <- indirect_effect(x = "f1",
                             y = "f4",
                             fit = fit_med,
@@ -317,10 +321,10 @@ out_f1f4 <- indirect_effect(x = "f1",
                             boot_out = boot_out_med)
 out_f1f4
 #> 
-#> ==  Effect ==
+#> ==  Effect  ==
 #>                                      
 #>  Path:               f1 -> f4        
-#>  Effect              0.447           
+#>  Effect:             0.447           
 #>  95.0% Bootstrap CI: [0.203 to 0.753]
 #> 
 #> Computation Formula:
@@ -335,11 +339,11 @@ out_f1f4
 We can now compute the total effect:
 
 
-```r
+``` r
 out_f1_total <- out_f1f3f4 + out_f1f4
 out_f1_total
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                       
 #>  Path:                f1 -> f3 -> f4  
 #>  Path:                f1 -> f4        
@@ -368,11 +372,11 @@ the indirect effect of `f1` on `f4` and the
 direct effect of `f1` on `f4`:
 
 
-```r
+``` r
 out_f1_diff <- out_f1f4 - out_f1f3f4
 out_f1_diff
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                        
 #>  Path:                f1 -> f4         
 #>  Path:                f1 -> f3 -> f4   
@@ -403,7 +407,7 @@ indirect paths (a path with at least
 one mediator) in a model:
 
 
-```r
+``` r
 all_paths <- all_indirect_paths(fit = fit_med)
 all_paths
 #> Call: 
@@ -418,7 +422,7 @@ The output is a `all_paths`-class object.
 It can be used in `many_indirect_effects()`
 
 
-```r
+``` r
 out_all <- many_indirect_effects(paths = all_paths,
                                  fit = fit_med,
                                  boot_ci = TRUE,
@@ -436,7 +440,7 @@ a summary of the indirect effects will
 be printed:
 
 
-```r
+``` r
 out_all
 #> 
 #> ==  Indirect Effect(s)   ==
@@ -460,14 +464,14 @@ the indices or the path names
 An example using index:
 
 
-```r
+``` r
 out1 <- out_all[[1]]
 out1
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                       
 #>  Path:               f1 -> f3 -> f4   
-#>  Indirect Effect     0.098            
+#>  Indirect Effect:    0.098            
 #>  95.0% Bootstrap CI: [-0.007 to 0.216]
 #> 
 #> Computation Formula:
@@ -489,14 +493,14 @@ recommended because the name is usually
 long):
 
 
-```r
+``` r
 out2 <- out_all[["f2 -> f3 -> f4"]]
 out2
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                      
 #>  Path:               f2 -> f3 -> f4  
-#>  Indirect Effect     0.131           
+#>  Indirect Effect:    0.131           
 #>  95.0% Bootstrap CI: [0.049 to 0.254]
 #> 
 #> Computation Formula:

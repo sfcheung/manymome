@@ -1,7 +1,7 @@
 ---
 title: "Monte Carlo Confidence Intervals with Multiple Imputation"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2023-10-06"
+date: "2024-09-22"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -77,7 +77,7 @@ This data set, with missing data introduced,
 will be used for illustration.
 
 
-```r
+``` r
 library(manymome)
 dat <- data_med
 dat[1, 1] <- dat[2, 3] <- dat[3, 5] <- dat[4, 3] <- dat[5, 2] <- NA
@@ -108,7 +108,7 @@ use the default of `mice::mice()` to
 do the imputation:
 
 
-```r
+``` r
 library(mice)
 #> 
 #> Attaching package: 'mice'
@@ -146,11 +146,11 @@ head(dat_mi[[5]])
 We then fit the model by `semTools::sem.mi()`:
 
 
-```r
+``` r
 library(semTools)
 #> 
 #> ###############################################################################
-#> This is semTools 0.5-6.920
+#> This is semTools 0.5-6
 #> All users of R (or SEM) are invited to submit functions or ideas for functions.
 #> ###############################################################################
 mod <-
@@ -170,27 +170,7 @@ summary(fit_lavaan)
 #> Rubin's (1987) rules were used to pool point and SE estimates across 5 imputed data sets, and to calculate degrees of freedom for each parameter's t test and CI.
 #> 
 #> Parameter Estimates:
-#> 
-#>   Standard errors                             Standard
-#>   Information                                 Expected
-#>   Information saturated (h1) model          Structured
-#> 
-#> Regressions:
-#>                    Estimate  Std.Err  t-value       df  P(>|t|)
-#>   m ~                                                          
-#>     x                 0.891    0.080   11.117      Inf    0.000
-#>     c1                0.162    0.077    2.118 5182.950    0.034
-#>     c2               -0.114    0.102   -1.117 6281.324    0.264
-#>   y ~                                                          
-#>     m                 0.736    0.251    2.935 3642.608    0.003
-#>     x                 0.616    0.298    2.065  383.680    0.040
-#>     c1                0.181    0.193    0.939      Inf    0.348
-#>     c2               -0.156    0.254   -0.616 3050.071    0.538
-#> 
-#> Variances:
-#>                    Estimate  Std.Err  t-value       df  P(>|t|)
-#>    .m                 0.682    0.098    6.959      Inf    0.000
-#>    .y                 4.151    0.597    6.958 8812.141    0.000
+#> Error in if (categorical.flag) {: argument is of length zero
 ```
 
 ## Generate Monte Carlo Estimates
@@ -211,7 +191,7 @@ but are needed to form the confidence
 interval of the *standardized* indirect effect.
 
 
-```r
+``` r
 mc_out_lavaan <- do_mc(fit = fit_lavaan,
                        R = 10000,
                        seed = 4234)
@@ -249,7 +229,7 @@ to form the Monte Carlo confidence
 intervals, if requested.
 
 
-```r
+``` r
 out_lavaan <- indirect_effect(x = "x",
                               y = "y",
                               m = "m",
@@ -258,10 +238,10 @@ out_lavaan <- indirect_effect(x = "x",
                               mc_out = mc_out_lavaan)
 out_lavaan
 #> 
-#> == Indirect Effect ==
+#> == Indirect Effect  ==
 #>                                        
 #>  Path:                 x -> m -> y     
-#>  Indirect Effect       0.656           
+#>  Indirect Effect:      0.656           
 #>  95.0% Monte Carlo CI: [0.213 to 1.124]
 #> 
 #> Computation Formula:
