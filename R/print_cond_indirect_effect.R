@@ -530,18 +530,6 @@ print.cond_indirect_effects <- function(x, digits = 3,
                            "linear transformation of the variables.")
               cat(strwrap(tmp, exdent = 3), sep = "\n")
             }
-#' If the model is fitted by structural
-#' equation modeling and has moderators,
-#' the standard errors, *p*-values,
-#' and confidence interval computed
-#' from the variance-covariance matrices
-#' for conditional effects
-#' can only be trusted if all covariances
-#' involving the product terms are free.
-#' If any of them are fixed, for example,
-#' fixed to zero, it is possible
-#' that the model is not invariant to
-#' linear transformation of the variables.
         } else {
           cat("\n")
         }
@@ -635,17 +623,17 @@ cond_effects_original_se <- function(object,
     dfres <- sapply(full_output,
                     function(x) x$df_residual)
     test_stat <- est / se
-    p <- 2 * pt(abs(test_stat),
-                df = dfres,
-                lower.tail = FALSE)
+    p <- 2 * stats::pt(abs(test_stat),
+                       df = dfres,
+                       lower.tail = FALSE)
     sig <- stats::symnum(p,
                          corr = FALSE,
                          na = FALSE,
                          cutpoints = c(0, 0.001, 0.01, 0.05, 1),
                          symbols = c("***", "**", "*", " "))
-    z_crit <- -1 * qt((1 - level) / 2,
-                      df = dfres,
-                      lower.tail = TRUE)
+    z_crit <- -1 * stats::qt((1 - level) / 2,
+                             df = dfres,
+                             lower.tail = TRUE)
     cilo <- est - z_crit * se
     cihi <- est + z_crit * se
     if (append) {
