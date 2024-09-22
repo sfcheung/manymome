@@ -1,4 +1,4 @@
-# manymome 0.2.2.2
+# manymome 0.2.2.3
 
 ## New Features
 
@@ -22,6 +22,14 @@
   variables if some covariances involving
   the product terms are not freely
   estimated. (0.2.2.1)
+
+## Bug Fixes
+
+- Fix a minor bug in
+  `print.cond_indirect_effects()`:
+  row names are no longer occasionally
+  added when SE-based *p*-values
+  are printed. (0.2.2.3)
 
 ## Miscellaneous
 

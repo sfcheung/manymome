@@ -386,6 +386,7 @@ print.cond_indirect_effects <- function(x, digits = 3,
                             list(`CI.lo` = out_cilo,
                                  `CI.hi` = out_cihi))
         }
+      rownames(out_original) <- NULL
       i <- which(names(out) == "ind")
       j <- length(out)
       out <- c(out[1:i], out_original, out[(i + 1):j])
