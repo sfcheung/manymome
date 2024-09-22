@@ -620,6 +620,9 @@ cond_effects_original_se <- function(object,
     est <- object$ind
     se <- sapply(full_output,
                  function(x) x$original_se)
+    if (all(is.na(se))) {
+        return(NULL)
+      }
     dfres <- sapply(full_output,
                     function(x) x$df_residual)
     test_stat <- est / se

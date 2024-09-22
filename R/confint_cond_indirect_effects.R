@@ -174,8 +174,8 @@ confint.cond_indirect_effects <- function(object, parm, level = .95, ...) {
       }
     if (!has_ci) {
           warning("Confidence intervals not in the object.")
-          out0 <- data.frame(x1 = rep(NA, nrow(object)),
-                             x2 = rep(NA, nrow(object)))
+          out <- data.frame("CI.o" = rep(NA, nrow(object)),
+                             "CI.hi" = rep(NA, nrow(object)))
       } else {
         out <- out0[, c("CI.lo", "CI.hi")]
       }
