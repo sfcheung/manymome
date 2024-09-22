@@ -28,8 +28,8 @@ fit2 <- lm2list(lm(m ~ x*w2 + c1 + c2, dat))
 wlevels1 <- mod_levels("w", fit = fit1, sd_from_mean = c(-5, 0, 5))
 wlevels2 <- mod_levels("w2", fit = fit2, sd_from_mean = c(-5, 0, 5))
 
-out1 <- cond_indirect_effects(x = "m",
-                              y = "y",
+out1 <- cond_indirect_effects(x = "x",
+                              y = "m",
                               wlevels = wlevels1,
                               fit = fit1)
 
