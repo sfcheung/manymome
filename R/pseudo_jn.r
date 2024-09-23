@@ -523,9 +523,18 @@ print.pseudo_johnson_neyman <- function(x, digits = 3, ...) {
     w_range_lb_str <- formatC(w_range_lb, digits = digits, format = "f")
     w_range_ub_str <- formatC(w_range_ub, digits = digits, format = "f")
     cat("\n")
-    cat("== Pseudo Johnson-Neyman Probing ==\n")
+    if (!is.null(cond_effects_original_se(out_cond))) {
+        cat("== Johnson-Neyman Probing ==\n")
+      } else {
+        cat("== Pseudo Johnson-Neyman Probing ==\n")
+      }
     cat("\n")
     str_tmp <- character(0)
+    str_just <- paste0("- On 'Sig': A conditional effect at the bound of the range ",
+                       "may be marked as ",
+                       "significant or not significant. ",
+                       "However, it can be treated as 'just significant' if ",
+                       "its confidence interval practically 'touches' zero.")
     if (w_min_valid && w_max_valid) {
         str_tmp <- c(str_tmp,
                    paste0("The conditional effect is ",
@@ -583,6 +592,15 @@ print.pseudo_johnson_neyman <- function(x, digits = 3, ...) {
                             "the range being searched (",
                             w_range_lb_str, " to ", w_range_ub_str, "). ",
                             "Set a higher value for 'w_upper' if necessary."))
+      }
+    tmp <- as.vector(unlist(stats::confint(out_cond)))
+    tmp2 <- sapply(tmp,
+              function(x) {
+                  isTRUE(all.equal(x, 0, tolerance = 1e-5))
+                })
+    if (any(tmp2)) {
+        str_tmp <- c(str_tmp,
+                    str_just)
       }
     str_tmp_final <- strwrap(str_tmp,
                             exdent = 0)
