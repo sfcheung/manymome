@@ -191,10 +191,11 @@
 #' @param digits Number of digits to
 #' display. Default is 3.
 #'
-#' @param level The level of significance
-#' to be used. It is used only when
-#' standard errors are used to test
-#' for significance. Default is .95.
+#' @param level The level of confidence
+#' of the confidence level. One minus
+#' this level is the level of significance.
+#' Default is .95, equivalent to a
+#' level of significance of .05.
 #'
 #' @param ... Other arguments. Not used.
 #'
@@ -380,14 +381,16 @@ pseudo_johnson_neyman <- function(object = NULL,
                                       mc_ci = mc_ci,
                                       mc_out = mc_out,
                                       standardized_x = standardized_x,
-                                      standardized_y = standardized_y)
+                                      standardized_y = standardized_y,
+                                      level = level)
     out <- list(cond_effects = out_cond,
                 w_min_valid = w_min_valid,
                 w_max_valid = w_max_valid,
                 w_range_lb = w_min,
                 w_range_ub = w_max,
                 w_lower = w_lower,
-                w_upper = w_upper)
+                w_upper = w_upper,
+                level = level)
     class(out) <- c("pseudo_johnson_neyman", class(out))
     out
   }
@@ -491,7 +494,8 @@ print.pseudo_johnson_neyman <- function(x, digits = 3, ...) {
     out_cond <- x$cond_effects
     full_output_i <- attr(out_cond, "full_output", exact = TRUE)[[1]]
     w <- names(full_output_i$wvalues)[1]
-    ci_level <- full_output_i$level
+    # ci_level <- full_output_i$level
+    ci_level <- x$level
     sig_level <- 1 - ci_level
     w_range <- c(x$w_lower, x$w_upper)
     w_range_lb <- min(w_range)
