@@ -1,4 +1,4 @@
-# manymome 0.2.2.3
+# manymome 0.2.2.4
 
 ## New Features
 
@@ -23,17 +23,33 @@
   the product terms are not freely
   estimated. (0.2.2.1)
 
+- Updated `pseudo_johnson_neyman()` to
+  support the SE-based test. The metho
+  is equivalent to the (true)
+  Johnson-Neyman when SE-based test is
+  used. Add `johnson_neyman()` as an
+  alias to `pseudo_johnson_neyman()`.
+  (0.2.2.4)
+
 ## Bug Fixes
 
-- Fix a minor bug in
+- Fixed a minor bug in
   `print.cond_indirect_effects()`:
   row names are no longer occasionally
   added when SE-based *p*-values
   are printed. (0.2.2.3)
 
+- Fixed a bug in the formatting of the
+  'stars' when SE-based *p*-values
+  are printed. (0.2.2.4)
+
 ## Miscellaneous
 
 - Updated some vignettes (0.2.2.2).
+
+- Updated `confint.indirect()` for
+  SE-based confidence interval.
+  (0.2.2.4)
 
 # manymome 0.2.2
 
