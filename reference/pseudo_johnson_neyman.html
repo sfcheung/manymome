@@ -15,7 +15,7 @@ effect is not significant."><meta property="og:image" content="https://sfcheung.
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,7 +84,18 @@ effect is not significant.</p>
 <span>  w_upper <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  optimize_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"uniroot"</span>, <span class="st">"optimize"</span><span class="op">)</span>,</span>
 <span>  extendInt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"yes"</span>, <span class="st">"downX"</span>, <span class="st">"upX"</span><span class="op">)</span>,</span>
-<span>  tol <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">^</span><span class="fl">0.25</span></span>
+<span>  tol <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">^</span><span class="fl">0.25</span>,</span>
+<span>  level <span class="op">=</span> <span class="fl">0.95</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">johnson_neyman</span><span class="op">(</span></span>
+<span>  object <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  w_lower <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  w_upper <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  optimize_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"uniroot"</span>, <span class="st">"optimize"</span><span class="op">)</span>,</span>
+<span>  extendInt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"yes"</span>, <span class="st">"downX"</span>, <span class="st">"upX"</span><span class="op">)</span>,</span>
+<span>  tol <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">^</span><span class="fl">0.25</span>,</span>
+<span>  level <span class="op">=</span> <span class="fl">0.95</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'pseudo_johnson_neyman'</span></span>
@@ -143,6 +154,14 @@ for details.</p></dd>
 <dd><p>The tolerance level used
 by both <code><a href="https://rdrr.io/r/stats/uniroot.html" class="external-link">stats::uniroot()</a></code> and
 <code><a href="https://rdrr.io/r/stats/optimize.html" class="external-link">stats::optimize()</a></code>.</p></dd>
+
+
+<dt id="arg-level">level<a class="anchor" aria-label="anchor" href="#arg-level"></a></dt>
+<dd><p>The level of confidence
+of the confidence level. One minus
+this level is the level of significance.
+Default is .95, equivalent to a
+level of significance of .05.</p></dd>
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
@@ -215,7 +234,16 @@ strictly speaking, the effects at
 the end points are still either
 significant or not significant, even
 if the confidence limit is very close
-to zero.</p><div class="section">
+to zero.</p>
+<p>Though numerical method is used,
+if the test is conducted using the
+standard error (see below), the result is
+equivalent to the (true)
+Johnson-Neyman (1936) probing.
+The function <code>johnson_neyman()</code> is
+just an alias to <code>pseudo_johnson_neyman()</code>,
+with the name consistent with what
+it does in this special case.</p><div class="section">
 <h3 id="supported-methods">Supported Methods<a class="anchor" aria-label="anchor" href="#supported-methods"></a></h3>
 
 
@@ -236,16 +264,24 @@ or more mediator), with <code>x</code> and/or
 
 
 <p>To be eligible for using this function,
-one form of confidence intervals
+one of these conditions must be met:</p><ul><li><p>One form of confidence intervals
 (e.g, bootstrapping or Monte Carlo)
 must has been requested (e.g.,
 setting <code>boot_ci = TRUE</code> or
 <code>mc_ci = TRUE</code>) when calling
-<code><a href="cond_indirect.html">cond_indirect_effects()</a></code>.</p>
-<p>The confidence level of the confidence
+<code><a href="cond_indirect.html">cond_indirect_effects()</a></code>.</p></li>
+<li><p>Tests can be done using stored
+standard errors: A path with no
+mediator and both the <code>x</code>- and
+<code>y</code>-variables are not standardized.</p></li>
+</ul><p>For pre-computed confidence intervals,
+the confidence level of the confidence
 intervals adopted when calling
 <code><a href="cond_indirect.html">cond_indirect_effects()</a></code> will be used
 by this function.</p>
+<p>For tests conducted by standard
+errors, the argument <code>level</code> is used
+to control the level of significance.</p>
 </div>
 
 <div class="section">
@@ -296,7 +332,8 @@ method for output of <code>pseudo_johnson_neyman()</code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>Hayes, A. F. (2022). <em>Introduction to mediation, moderation, and conditional process analysis: A regression-based approach</em> (Third edition). The Guilford Press.</p>
+    <p>Johnson, P. O., &amp; Neyman, J. (1936). Test of certain linear hypotheses and their application to some educational problems. <em>Statistical Research Memoirs, 1</em>, 57–93.</p>
+<p>Hayes, A. F. (2022). <em>Introduction to mediation, moderation, and conditional process analysis: A regression-based approach</em> (Third edition). The Guilford Press.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -344,6 +381,10 @@ method for output of <code>pseudo_johnson_neyman()</code>.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The conditional effect is not significant when w is greater than -6.938</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> and less than 1.114, and is significant when w is outside this range,</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> at 0.05 level of significance.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - On 'Sig': A conditional effect at the bound of the range may be</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> marked as significant or not significant. However, it can be treated as</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 'just significant' if its confidence interval practically 'touches'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> zero.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> == Conditional indirect effects ==</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

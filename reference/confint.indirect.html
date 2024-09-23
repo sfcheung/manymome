@@ -17,7 +17,7 @@ cond_indirect()."><meta property="og:image" content="https://sfcheung.github.io/
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -146,6 +146,48 @@ Monte Carlo simulation, or other
 methods to be supported in
 the future, and uses them to form the
 percentile confidence interval.</p>
+<p>If the following conditions are met, the
+stored standard errors, if available,
+will be used test an effect and
+form it confidence interval:</p><ul><li><p>Confidence intervals have not been
+formed (e.g., by bootstrapping or
+Monte Carlo).</p></li>
+<li><p>The path has no mediators.</p></li>
+<li><p>The model has only one group.</p></li>
+<li><p>The path is moderated by one or
+more moderator.</p></li>
+<li><p>Both the <code>x</code>-variable and the
+<code>y</code>-variable are not standardized.</p></li>
+</ul><p>If the model is fitted by OLS
+regression (e.g., using <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">stats::lm()</a></code>),
+then the variance-covariance matrix
+of the coefficient estimates will be
+used, and confidence
+intervals are computed from the <em>t</em>
+statistic.</p>
+<p>If the model is fitted by structural
+equation modeling using <code>lavaan</code>, then
+the variance-covariance computed by
+<code>lavaan</code> will be used,
+and confidence intervals are computed
+from the <em>z</em> statistic.</p><div class="section">
+<h3 id="caution">Caution<a class="anchor" aria-label="anchor" href="#caution"></a></h3>
+
+
+<p>If the model is fitted by structural
+equation modeling and has moderators,
+the standard errors, <em>p</em>-values,
+and confidence interval computed
+from the variance-covariance matrices
+for conditional effects
+can only be trusted if all covariances
+involving the product terms are free.
+If any of them are fixed, for example,
+fixed to zero, it is possible
+that the model is not invariant to
+linear transformation of the variables.</p>
+</div>
+
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
