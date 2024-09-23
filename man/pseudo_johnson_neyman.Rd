@@ -11,7 +11,8 @@ pseudo_johnson_neyman(
   w_upper = NULL,
   optimize_method = c("uniroot", "optimize"),
   extendInt = c("no", "yes", "downX", "upX"),
-  tol = .Machine$double.eps^0.25
+  tol = .Machine$double.eps^0.25,
+  level = 0.95
 )
 
 \method{print}{pseudo_johnson_neyman}(x, digits = 3, ...)
@@ -54,6 +55,11 @@ for details.}
 \item{tol}{The tolerance level used
 by both \code{\link[stats:uniroot]{stats::uniroot()}} and
 \code{\link[stats:optimize]{stats::optimize()}}.}
+
+\item{level}{The level of significance
+to be used. It is used only when
+standard errors are used to test
+for significance. Default is .95.}
 
 \item{x}{The output of
 \code{\link[=pseudo_johnson_neyman]{pseudo_johnson_neyman()}}.}
@@ -130,6 +136,12 @@ the end points are still either
 significant or not significant, even
 if the confidence limit is very close
 to zero.
+
+Though numerical method is used,
+if the test is conducted using the
+standard error (see below), the result is
+equivalent to the (true)
+Johnson-Neyman probing.
 \subsection{Supported Methods}{
 
 This function supports models fitted
@@ -147,17 +159,29 @@ or more mediator), with \code{x} and/or
 \subsection{Requirements}{
 
 To be eligible for using this function,
-one form of confidence intervals
+one of these conditions must be met:
+\itemize{
+\item One form of confidence intervals
 (e.g, bootstrapping or Monte Carlo)
 must has been requested (e.g.,
 setting \code{boot_ci = TRUE} or
 \code{mc_ci = TRUE}) when calling
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+\item Tests can be done using stored
+standard errors: A path with no
+mediator and both the \code{x}- and
+\code{y}-variables are not standardized.
+}
 
-The confidence level of the confidence
+For pre-computed confidence intervals,
+the confidence level of the confidence
 intervals adopted when calling
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} will be used
 by this function.
+
+For tests conducted by standard
+errors, the argument \code{level} is used
+to control the level of significance.
 }
 
 \subsection{Possible failures}{

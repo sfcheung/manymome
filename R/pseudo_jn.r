@@ -38,6 +38,12 @@
 #' if the confidence limit is very close
 #' to zero.
 #'
+#' Though numerical method is used,
+#' if the test is conducted using the
+#' standard error (see below), the result is
+#' equivalent to the (true)
+#' Johnson-Neyman probing.
+#'
 #' ## Supported Methods
 #'
 #' This function supports models fitted
@@ -54,17 +60,29 @@
 #' ## Requirements
 #'
 #' To be eligible for using this function,
-#' one form of confidence intervals
+#' one of these conditions must be met:
+#'
+#' - One form of confidence intervals
 #' (e.g, bootstrapping or Monte Carlo)
 #' must has been requested (e.g.,
 #' setting `boot_ci = TRUE` or
 #' `mc_ci = TRUE`) when calling
 #' [cond_indirect_effects()].
 #'
-#' The confidence level of the confidence
+#' - Tests can be done using stored
+#' standard errors: A path with no
+#' mediator and both the `x`- and
+#' `y`-variables are not standardized.
+#'
+#' For pre-computed confidence intervals,
+#' the confidence level of the confidence
 #' intervals adopted when calling
 #' [cond_indirect_effects()] will be used
 #' by this function.
+#'
+#' For tests conducted by standard
+#' errors, the argument `level` is used
+#' to control the level of significance.
 #'
 #' ## Possible failures
 #'
