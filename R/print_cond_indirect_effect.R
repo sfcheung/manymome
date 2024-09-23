@@ -583,12 +583,13 @@ format_stars <- function(sigs) {
                 if (is.na(xx)) return(xx)
                 yy <- max_width - nchar(xx)
                 if (yy > 0) {
-                    xx <- paste0(xx, rep(" ", yy), collapse = "")
+                    xx <- paste0(xx,
+                                 paste0(rep(" ", yy), collapse = ""))
                   } else {
                     return(xx)
                   }
               })
-    out
+    unname(out)
   }
 
 cond_effects_original_se <- function(object,
