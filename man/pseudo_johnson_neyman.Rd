@@ -2,6 +2,7 @@
 % Please edit documentation in R/pseudo_jn.r
 \name{pseudo_johnson_neyman}
 \alias{pseudo_johnson_neyman}
+\alias{johnson_neyman}
 \alias{print.pseudo_johnson_neyman}
 \title{Pseudo Johnson-Neyman Probing}
 \usage{
@@ -11,7 +12,18 @@ pseudo_johnson_neyman(
   w_upper = NULL,
   optimize_method = c("uniroot", "optimize"),
   extendInt = c("no", "yes", "downX", "upX"),
-  tol = .Machine$double.eps^0.25
+  tol = .Machine$double.eps^0.25,
+  level = 0.95
+)
+
+johnson_neyman(
+  object = NULL,
+  w_lower = NULL,
+  w_upper = NULL,
+  optimize_method = c("uniroot", "optimize"),
+  extendInt = c("no", "yes", "downX", "upX"),
+  tol = .Machine$double.eps^0.25,
+  level = 0.95
 )
 
 \method{print}{pseudo_johnson_neyman}(x, digits = 3, ...)
@@ -54,6 +66,12 @@ for details.}
 \item{tol}{The tolerance level used
 by both \code{\link[stats:uniroot]{stats::uniroot()}} and
 \code{\link[stats:optimize]{stats::optimize()}}.}
+
+\item{level}{The level of confidence
+of the confidence level. One minus
+this level is the level of significance.
+Default is .95, equivalent to a
+level of significance of .05.}
 
 \item{x}{The output of
 \code{\link[=pseudo_johnson_neyman]{pseudo_johnson_neyman()}}.}
@@ -130,6 +148,16 @@ the end points are still either
 significant or not significant, even
 if the confidence limit is very close
 to zero.
+
+Though numerical method is used,
+if the test is conducted using the
+standard error (see below), the result is
+equivalent to the (true)
+Johnson-Neyman (1936) probing.
+The function \code{\link[=johnson_neyman]{johnson_neyman()}} is
+just an alias to \code{\link[=pseudo_johnson_neyman]{pseudo_johnson_neyman()}},
+with the name consistent with what
+it does in this special case.
 \subsection{Supported Methods}{
 
 This function supports models fitted
@@ -147,17 +175,29 @@ or more mediator), with \code{x} and/or
 \subsection{Requirements}{
 
 To be eligible for using this function,
-one form of confidence intervals
+one of these conditions must be met:
+\itemize{
+\item One form of confidence intervals
 (e.g, bootstrapping or Monte Carlo)
 must has been requested (e.g.,
 setting \code{boot_ci = TRUE} or
 \code{mc_ci = TRUE}) when calling
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+\item Tests can be done using stored
+standard errors: A path with no
+mediator and both the \code{x}- and
+\code{y}-variables are not standardized.
+}
 
-The confidence level of the confidence
+For pre-computed confidence intervals,
+the confidence level of the confidence
 intervals adopted when calling
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} will be used
 by this function.
+
+For tests conducted by standard
+errors, the argument \code{level} is used
+to control the level of significance.
 }
 
 \subsection{Possible failures}{
@@ -242,6 +282,8 @@ plot_effect_vs_w(out_jn$cond_effects)
 
 }
 \references{
+Johnson, P. O., & Neyman, J. (1936). Test of certain linear hypotheses and their application to some educational problems. \emph{Statistical Research Memoirs, 1}, 57--93.
+
 Hayes, A. F. (2022). \emph{Introduction to mediation, moderation, and conditional process analysis: A regression-based approach} (Third edition). The Guilford Press.
 }
 \seealso{

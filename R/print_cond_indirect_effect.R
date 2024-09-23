@@ -361,9 +361,9 @@ print.cond_indirect_effects <- function(x, digits = 3,
               out_sig <- out_sig0
             }
           out_original <- c(out_original,
-                            list(Stat = out_stat,
-                                 pvalue = out_p,
-                                 Sig = out_sig))
+                            list(Stat = unname(out_stat),
+                                 pvalue = unname(out_p),
+                                 Sig = unname(out_sig)))
         }
       if (se_ci) {
           out_cilo <- unname(se_out$cilo)
@@ -386,6 +386,7 @@ print.cond_indirect_effects <- function(x, digits = 3,
                             list(`CI.lo` = out_cilo,
                                  `CI.hi` = out_cihi))
         }
+      rownames(out_original) <- NULL
       i <- which(names(out) == "ind")
       j <- length(out)
       out <- c(out[1:i], out_original, out[(i + 1):j])
@@ -582,12 +583,13 @@ format_stars <- function(sigs) {
                 if (is.na(xx)) return(xx)
                 yy <- max_width - nchar(xx)
                 if (yy > 0) {
-                    xx <- paste0(xx, rep(" ", yy), collapse = "")
+                    xx <- paste0(xx,
+                                 paste0(rep(" ", yy), collapse = ""))
                   } else {
                     return(xx)
                   }
               })
-    out
+    unname(out)
   }
 
 cond_effects_original_se <- function(object,

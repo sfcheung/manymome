@@ -63,6 +63,52 @@ Monte Carlo simulation, or other
 methods to be supported in
 the future, and uses them to form the
 percentile confidence interval.
+
+If the following conditions are met, the
+stored standard errors, if available,
+will be used test an effect and
+form it confidence interval:
+\itemize{
+\item Confidence intervals have not been
+formed (e.g., by bootstrapping or
+Monte Carlo).
+\item The path has no mediators.
+\item The model has only one group.
+\item The path is moderated by one or
+more moderator.
+\item Both the \code{x}-variable and the
+\code{y}-variable are not standardized.
+}
+
+If the model is fitted by OLS
+regression (e.g., using \code{\link[stats:lm]{stats::lm()}}),
+then the variance-covariance matrix
+of the coefficient estimates will be
+used, and confidence
+intervals are computed from the \emph{t}
+statistic.
+
+If the model is fitted by structural
+equation modeling using \code{lavaan}, then
+the variance-covariance computed by
+\code{lavaan} will be used,
+and confidence intervals are computed
+from the \emph{z} statistic.
+\subsection{Caution}{
+
+If the model is fitted by structural
+equation modeling and has moderators,
+the standard errors, \emph{p}-values,
+and confidence interval computed
+from the variance-covariance matrices
+for conditional effects
+can only be trusted if all covariances
+involving the product terms are free.
+If any of them are fixed, for example,
+fixed to zero, it is possible
+that the model is not invariant to
+linear transformation of the variables.
+}
 }
 \examples{
 

@@ -152,6 +152,26 @@ test_that("pseudo_johnson_neyman", {
     expect_equal(confint(w_range_mc_direct$cond_effects)[1, 1], 0,
                  tolerance = 1e-5)
     expect_false(confint(w_range_mc_direct$cond_effects)[2, 1] > 0)
+
+    # Check level: bootstrap
+    w_range <- pseudo_johnson_neyman(out)
+    w_range_narrower <- pseudo_johnson_neyman(out, level = .90)
+    expect_true(min(w_range$cond_effects$ind) < min(w_range_narrower$cond_effects$ind))
+    expect_true(max(w_range$cond_effects$ind) > max(w_range_narrower$cond_effects$ind))
+    expect_equal(confint(w_range_narrower$cond_effects)[1, 1], 0,
+                 tolerance = 1e-5)
+    expect_equal(confint(w_range_narrower$cond_effects)[2, 2], 0,
+                 tolerance = 1e-5)
+
+    # Check level: MC
+    w_range_mc_narrower <- pseudo_johnson_neyman(out_mc, level = .80)
+    w_range_mc_narrower2 <- pseudo_johnson_neyman(out_mc, level = .60)
+    expect_true(min(w_range_mc_narrower$cond_effects$ind) < min(w_range_mc_narrower2$cond_effects$ind))
+    expect_true(max(w_range_mc_narrower$cond_effects$ind) > max(w_range_mc_narrower2$cond_effects$ind))
+    expect_equal(confint(w_range_narrower$cond_effects)[1, 1], 0,
+                 tolerance = 1e-5)
+    expect_equal(confint(w_range_narrower$cond_effects)[2, 2], 0,
+                 tolerance = 1e-5)
 })
 
 # Trap error
