@@ -2,10 +2,21 @@
 % Please edit documentation in R/pseudo_jn.r
 \name{pseudo_johnson_neyman}
 \alias{pseudo_johnson_neyman}
+\alias{johnson_neyman}
 \alias{print.pseudo_johnson_neyman}
 \title{Pseudo Johnson-Neyman Probing}
 \usage{
 pseudo_johnson_neyman(
+  object = NULL,
+  w_lower = NULL,
+  w_upper = NULL,
+  optimize_method = c("uniroot", "optimize"),
+  extendInt = c("no", "yes", "downX", "upX"),
+  tol = .Machine$double.eps^0.25,
+  level = 0.95
+)
+
+johnson_neyman(
   object = NULL,
   w_lower = NULL,
   w_upper = NULL,
@@ -56,10 +67,11 @@ for details.}
 by both \code{\link[stats:uniroot]{stats::uniroot()}} and
 \code{\link[stats:optimize]{stats::optimize()}}.}
 
-\item{level}{The level of significance
-to be used. It is used only when
-standard errors are used to test
-for significance. Default is .95.}
+\item{level}{The level of confidence
+of the confidence level. One minus
+this level is the level of significance.
+Default is .95, equivalent to a
+level of significance of .05.}
 
 \item{x}{The output of
 \code{\link[=pseudo_johnson_neyman]{pseudo_johnson_neyman()}}.}
@@ -141,7 +153,11 @@ Though numerical method is used,
 if the test is conducted using the
 standard error (see below), the result is
 equivalent to the (true)
-Johnson-Neyman probing.
+Johnson-Neyman (1936) probing.
+The function \code{\link[=johnson_neyman]{johnson_neyman()}} is
+just an alias to \code{\link[=pseudo_johnson_neyman]{pseudo_johnson_neyman()}},
+with the name consistent with what
+it does in this special case.
 \subsection{Supported Methods}{
 
 This function supports models fitted
@@ -266,6 +282,8 @@ plot_effect_vs_w(out_jn$cond_effects)
 
 }
 \references{
+Johnson, P. O., & Neyman, J. (1936). Test of certain linear hypotheses and their application to some educational problems. \emph{Statistical Research Memoirs, 1}, 57--93.
+
 Hayes, A. F. (2022). \emph{Introduction to mediation, moderation, and conditional process analysis: A regression-based approach} (Third edition). The Guilford Press.
 }
 \seealso{

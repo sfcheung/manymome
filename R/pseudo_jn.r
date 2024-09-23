@@ -42,7 +42,11 @@
 #' if the test is conducted using the
 #' standard error (see below), the result is
 #' equivalent to the (true)
-#' Johnson-Neyman probing.
+#' Johnson-Neyman (1936) probing.
+#' The function [johnson_neyman()] is
+#' just an alias to [pseudo_johnson_neyman()],
+#' with the name consistent with what
+#' it does in this special case.
 #'
 #' ## Supported Methods
 #'
@@ -200,6 +204,8 @@
 #' @param ... Other arguments. Not used.
 #'
 #' @references
+#' Johnson, P. O., & Neyman, J. (1936). Test of certain linear hypotheses and their application to some educational problems. *Statistical Research Memoirs, 1*, 57--93.
+#'
 #' Hayes, A. F. (2022). *Introduction to mediation, moderation, and conditional process analysis: A regression-based approach* (Third edition). The Guilford Press.
 #'
 #'
@@ -324,7 +330,8 @@ pseudo_johnson_neyman <- function(object = NULL,
                             wlevel_interval = wlevel_interval,
                             which = "lower",
                             extendInt = extendInt,
-                            tol = tol),
+                            tol = tol,
+                            level = level),
                          error = function(e) e)
         if (inherits(w_lb, "error")) {
             w_lb <- w_lb_0
@@ -334,7 +341,8 @@ pseudo_johnson_neyman <- function(object = NULL,
                             wlevel_interval = wlevel_interval,
                             which = "upper",
                             extendInt = extendInt,
-                            tol = tol),
+                            tol = tol,
+                            level = level),
                          error = function(e) e)
         if (inherits(w_ub, "error")) {
             w_ub <- w_ub_0
@@ -347,12 +355,14 @@ pseudo_johnson_neyman <- function(object = NULL,
         w_lb <- tryCatch(pseudo_johnson_neyman_optimize(object = object,
                             wlevel_interval = wlevel_interval,
                             which = "lower",
-                            tol = tol),
+                            tol = tol,
+                            level = level),
                          error = function(e) e)
         w_ub <- tryCatch(pseudo_johnson_neyman_optimize(object = object,
                             wlevel_interval = wlevel_interval,
                             which = "upper",
-                            tol = tol),
+                            tol = tol,
+                            level = level),
                          error = function(e) e)
         if (inherits(w_lb, "error") || inherits(w_ub, "error")) {
             stop("The search failed. Try setting optimize_method to 'uniroot'.")
@@ -394,6 +404,10 @@ pseudo_johnson_neyman <- function(object = NULL,
     class(out) <- c("pseudo_johnson_neyman", class(out))
     out
   }
+
+#' @rdname pseudo_johnson_neyman
+#' @export
+johnson_neyman <- pseudo_johnson_neyman
 
 #' @noRd
 
@@ -632,7 +646,8 @@ pseudo_johnson_neyman_one_bound <- function(w0,
                          boot_ci = boot_ci,
                          boot_out = boot_out,
                          mc_ci = mc_ci,
-                         mc_out = mc_out)
+                         mc_out = mc_out,
+                         level = level)
     out1 <- switch(which, lower = stats::confint(out, level = level)[1, 2] + adj,
                           upper = stats::confint(out, level = level)[1, 1] - adj)
     return(switch(type,
