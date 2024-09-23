@@ -38,6 +38,16 @@
 #' if the confidence limit is very close
 #' to zero.
 #'
+#' Though numerical method is used,
+#' if the test is conducted using the
+#' standard error (see below), the result is
+#' equivalent to the (true)
+#' Johnson-Neyman (1936) probing.
+#' The function [johnson_neyman()] is
+#' just an alias to [pseudo_johnson_neyman()],
+#' with the name consistent with what
+#' it does in this special case.
+#'
 #' ## Supported Methods
 #'
 #' This function supports models fitted
@@ -54,17 +64,29 @@
 #' ## Requirements
 #'
 #' To be eligible for using this function,
-#' one form of confidence intervals
+#' one of these conditions must be met:
+#'
+#' - One form of confidence intervals
 #' (e.g, bootstrapping or Monte Carlo)
 #' must has been requested (e.g.,
 #' setting `boot_ci = TRUE` or
 #' `mc_ci = TRUE`) when calling
 #' [cond_indirect_effects()].
 #'
-#' The confidence level of the confidence
+#' - Tests can be done using stored
+#' standard errors: A path with no
+#' mediator and both the `x`- and
+#' `y`-variables are not standardized.
+#'
+#' For pre-computed confidence intervals,
+#' the confidence level of the confidence
 #' intervals adopted when calling
 #' [cond_indirect_effects()] will be used
 #' by this function.
+#'
+#' For tests conducted by standard
+#' errors, the argument `level` is used
+#' to control the level of significance.
 #'
 #' ## Possible failures
 #'
@@ -173,9 +195,17 @@
 #' @param digits Number of digits to
 #' display. Default is 3.
 #'
+#' @param level The level of confidence
+#' of the confidence level. One minus
+#' this level is the level of significance.
+#' Default is .95, equivalent to a
+#' level of significance of .05.
+#'
 #' @param ... Other arguments. Not used.
 #'
 #' @references
+#' Johnson, P. O., & Neyman, J. (1936). Test of certain linear hypotheses and their application to some educational problems. *Statistical Research Memoirs, 1*, 57--93.
+#'
 #' Hayes, A. F. (2022). *Introduction to mediation, moderation, and conditional process analysis: A regression-based approach* (Third edition). The Guilford Press.
 #'
 #'
@@ -226,7 +256,8 @@ pseudo_johnson_neyman <- function(object = NULL,
                                   w_upper = NULL,
                                   optimize_method = c("uniroot", "optimize"),
                                   extendInt = c("no", "yes", "downX", "upX"),
-                                  tol = .Machine$double.eps^0.25) {
+                                  tol = .Machine$double.eps^0.25,
+                                  level = .95) {
     optimize_method <- match.arg(optimize_method)
     if (inherits(object, "cond_indirect_effects")) {
         if (cond_indirect_effects_has_groups(object)) {
@@ -252,14 +283,16 @@ pseudo_johnson_neyman <- function(object = NULL,
         mc_ci <- has_mc_out
         standardized_x <- full_output_i$standardized_x
         standardized_y <- full_output_i$standardized_y
+        se_out <- cond_effects_original_se(object)
+        has_se <- !is.null(se_out)
         if (ncol(wlevels0) != 1) {
             stop("Support only one moderator.")
           }
         if (!is.numeric(wlevels0[, 1])) {
             stop("Support only numeric moderator.")
           }
-        if (!has_boot_out && !has_mc_out) {
-            stop("Confidence intervals not in 'object'.")
+        if (!has_boot_out && !has_mc_out && !has_se) {
+            stop("Confidence intervals or SEs not in 'object'.")
           }
       } else {
         stop("'object' needs to be an output of cond_indirect_effects().")
@@ -278,10 +311,12 @@ pseudo_johnson_neyman <- function(object = NULL,
     wlevel_interval <- c(w_lower, w_upper)
     w_lower_ci <- pseudo_johnson_neyman_one_bound(w0 = w_lower,
                                                   object = object,
-                                                  type = "ci")
+                                                  type = "ci",
+                                                  level = level)
     w_upper_ci <- pseudo_johnson_neyman_one_bound(w0 = w_upper,
                                                   object = object,
-                                                  type = "ci")
+                                                  type = "ci",
+                                                  level = level)
     w_increasing <- (w_upper_ci[1, 2] > w_lower_ci[1, 2])
     if (w_increasing) {
         w_lb_0 <- list(w = w_lower, objective = w_lower_ci[1, 2])
@@ -295,7 +330,8 @@ pseudo_johnson_neyman <- function(object = NULL,
                             wlevel_interval = wlevel_interval,
                             which = "lower",
                             extendInt = extendInt,
-                            tol = tol),
+                            tol = tol,
+                            level = level),
                          error = function(e) e)
         if (inherits(w_lb, "error")) {
             w_lb <- w_lb_0
@@ -305,7 +341,8 @@ pseudo_johnson_neyman <- function(object = NULL,
                             wlevel_interval = wlevel_interval,
                             which = "upper",
                             extendInt = extendInt,
-                            tol = tol),
+                            tol = tol,
+                            level = level),
                          error = function(e) e)
         if (inherits(w_ub, "error")) {
             w_ub <- w_ub_0
@@ -318,12 +355,14 @@ pseudo_johnson_neyman <- function(object = NULL,
         w_lb <- tryCatch(pseudo_johnson_neyman_optimize(object = object,
                             wlevel_interval = wlevel_interval,
                             which = "lower",
-                            tol = tol),
+                            tol = tol,
+                            level = level),
                          error = function(e) e)
         w_ub <- tryCatch(pseudo_johnson_neyman_optimize(object = object,
                             wlevel_interval = wlevel_interval,
                             which = "upper",
-                            tol = tol),
+                            tol = tol,
+                            level = level),
                          error = function(e) e)
         if (inherits(w_lb, "error") || inherits(w_ub, "error")) {
             stop("The search failed. Try setting optimize_method to 'uniroot'.")
@@ -352,17 +391,23 @@ pseudo_johnson_neyman <- function(object = NULL,
                                       mc_ci = mc_ci,
                                       mc_out = mc_out,
                                       standardized_x = standardized_x,
-                                      standardized_y = standardized_y)
+                                      standardized_y = standardized_y,
+                                      level = level)
     out <- list(cond_effects = out_cond,
                 w_min_valid = w_min_valid,
                 w_max_valid = w_max_valid,
                 w_range_lb = w_min,
                 w_range_ub = w_max,
                 w_lower = w_lower,
-                w_upper = w_upper)
+                w_upper = w_upper,
+                level = level)
     class(out) <- c("pseudo_johnson_neyman", class(out))
     out
   }
+
+#' @rdname pseudo_johnson_neyman
+#' @export
+johnson_neyman <- pseudo_johnson_neyman
 
 #' @noRd
 
@@ -371,19 +416,22 @@ pseudo_johnson_neyman_uniroot <- function(object,
                                           which = c("lower", "upper"),
                                           extendInt = c("no", "yes", "downX", "upX"),
                                           tol = .Machine$double.eps^0.25,
-                                          maxiter = 1000) {
+                                          maxiter = 1000,
+                                          level = .95) {
     w_b <- stats::uniroot(pseudo_johnson_neyman_one_bound,
                           interval = wlevel_interval,
                           object = object,
                           which = which,
                           type = "limit",
+                          level = level,
                           extendInt = extendInt,
                           tol = tol,
                           maxiter = maxiter)
     tmp <- pseudo_johnson_neyman_one_bound(w0 = w_b$root,
                                            object = object,
                                            which = which,
-                                           type = "ci")
+                                           type = "ci",
+                                           level = level)
     chk <- switch(which,
                   lower = (tmp[2] < 0) && isTRUE(all.equal(tmp[2], 0)),
                   upper = (tmp[1] > 0) && isTRUE(all.equal(tmp[1], 0)))
@@ -398,6 +446,7 @@ pseudo_johnson_neyman_uniroot <- function(object,
                                which = which,
                                type = "limit",
                                adj = adj_tmp,
+                               level = level,
                                extendInt = "no",
                                tol = tol,
                                maxiter = maxiter)
@@ -411,18 +460,21 @@ pseudo_johnson_neyman_optimize <- function(object,
                                            wlevel_interval,
                                            which = c("lower", "upper"),
                                            tol = .Machine$double.eps^0.25,
-                                           maximum = FALSE) {
+                                           maximum = FALSE,
+                                           level = .95) {
     w_b <- stats::optimize(pseudo_johnson_neyman_one_bound,
                               interval = wlevel_interval,
                               object = object,
                               which = which,
                               type = "distance",
                               maximum = maximum,
-                              tol = tol)
+                              tol = tol,
+                              level = level)
     tmp <- pseudo_johnson_neyman_one_bound(w0 = w_b$minimum,
                                            object = object,
                                            which = which,
-                                           type = "ci")
+                                           type = "ci",
+                                           level = level)
     chk <- switch(which,
                   lower = (tmp[2] < 0) && isTRUE(all.equal(tmp[2], 0)),
                   upper = (tmp[1] > 0) && isTRUE(all.equal(tmp[1], 0)))
@@ -437,6 +489,7 @@ pseudo_johnson_neyman_optimize <- function(object,
                                   which = which,
                                   type = "distance",
                                   adj = adj_tmp,
+                                  level = level,
                                   maximum = maximum,
                                   tol = tol)
       }
@@ -455,7 +508,8 @@ print.pseudo_johnson_neyman <- function(x, digits = 3, ...) {
     out_cond <- x$cond_effects
     full_output_i <- attr(out_cond, "full_output", exact = TRUE)[[1]]
     w <- names(full_output_i$wvalues)[1]
-    ci_level <- full_output_i$level
+    # ci_level <- full_output_i$level
+    ci_level <- x$level
     sig_level <- 1 - ci_level
     w_range <- c(x$w_lower, x$w_upper)
     w_range_lb <- min(w_range)
@@ -469,9 +523,18 @@ print.pseudo_johnson_neyman <- function(x, digits = 3, ...) {
     w_range_lb_str <- formatC(w_range_lb, digits = digits, format = "f")
     w_range_ub_str <- formatC(w_range_ub, digits = digits, format = "f")
     cat("\n")
-    cat("== Pseudo Johnson-Neyman Probing ==\n")
+    if (!is.null(cond_effects_original_se(out_cond))) {
+        cat("== Johnson-Neyman Probing ==\n")
+      } else {
+        cat("== Pseudo Johnson-Neyman Probing ==\n")
+      }
     cat("\n")
     str_tmp <- character(0)
+    str_just <- paste0("- On 'Sig': A conditional effect at the bound of the range ",
+                       "may be marked as ",
+                       "significant or not significant. ",
+                       "However, it can be treated as 'just significant' if ",
+                       "its confidence interval practically 'touches' zero.")
     if (w_min_valid && w_max_valid) {
         str_tmp <- c(str_tmp,
                    paste0("The conditional effect is ",
@@ -530,6 +593,15 @@ print.pseudo_johnson_neyman <- function(x, digits = 3, ...) {
                             w_range_lb_str, " to ", w_range_ub_str, "). ",
                             "Set a higher value for 'w_upper' if necessary."))
       }
+    tmp <- as.vector(unlist(stats::confint(out_cond)))
+    tmp2 <- sapply(tmp,
+              function(x) {
+                  isTRUE(all.equal(x, 0, tolerance = 1e-5))
+                })
+    if (any(tmp2)) {
+        str_tmp <- c(str_tmp,
+                    str_just)
+      }
     str_tmp_final <- strwrap(str_tmp,
                             exdent = 0)
     cat(str_tmp_final, sep = "\n")
@@ -554,7 +626,8 @@ pseudo_johnson_neyman_one_bound <- function(w0,
                                             standardized_y = FALSE,
                                             which = c("lower", "upper"),
                                             type = c("distance", "limit", "ci", "est", "full_out"),
-                                            adj = 0) {
+                                            adj = 0,
+                                            level = .95) {
     which <- match.arg(which)
     type <- match.arg(type)
     if (inherits(object, "cond_indirect_effects")) {
@@ -591,13 +664,14 @@ pseudo_johnson_neyman_one_bound <- function(w0,
                          boot_ci = boot_ci,
                          boot_out = boot_out,
                          mc_ci = mc_ci,
-                         mc_out = mc_out)
-    out1 <- switch(which, lower = stats::confint(out)[1, 2] + adj,
-                          upper = stats::confint(out)[1, 1] - adj)
+                         mc_out = mc_out,
+                         level = level)
+    out1 <- switch(which, lower = stats::confint(out, level = level)[1, 2] + adj,
+                          upper = stats::confint(out, level = level)[1, 1] - adj)
     return(switch(type,
                   distance = out1^2,
                   limit = out1,
-                  ci = stats::confint(out),
+                  ci = stats::confint(out, level = level),
                   est = stats::coef(out),
                   full_out = out))
   }
