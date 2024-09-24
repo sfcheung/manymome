@@ -1,4 +1,4 @@
-# manymome 0.2.2.7
+# manymome 0.2.2.8
 
 ## New Features
 
@@ -66,6 +66,9 @@
 - Updated `confint.indirect()` for
   SE-based confidence interval.
   (0.2.2.4)
+
+- Fixed a minor typo in the example
+  of `indirect_effect()`. (0.2.2.8)
 
 # manymome 0.2.2
 

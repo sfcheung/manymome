@@ -478,7 +478,7 @@
 #' cond_indirect(x = "x", y = "m1",
 #'               wvalues = c(w1 = hi_w1), fit = fit)
 #'
-#' # Indirect effect from x1 through m2 to y
+#' # Direct effect from x to y (direct because no 'm' variables)
 #' indirect_effect(x = "x", y = "y", fit = fit)
 #'
 #' # Conditional Indirect effect from x1 through m1 to y, when w1 is 1 SD above mean
