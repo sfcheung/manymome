@@ -1,4 +1,4 @@
-# manymome 0.2.2.5
+# manymome 0.2.2.6
 
 ## New Features
 
@@ -46,6 +46,11 @@
 - Fixed some issues related to
   `mod_levels()` in some special
   cases. (0.2.2.5)
+
+- SE-based confidence interval no longer
+  computed for paths not moderated, even
+  if moderator values are set.
+  (0.2.2.6)
 
 ## Miscellaneous
 

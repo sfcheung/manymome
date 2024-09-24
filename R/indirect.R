@@ -372,6 +372,7 @@ indirect_i <- function(x,
       }
     if (get_prods_only) return(prods)
     names(prods) <- ys
+    has_w <- isFALSE(all(is.na(unlist(prods))))
     if (!is.null(wvalues)) {
         tmpfct <- function(xi) {
             if (all(is.na(xi))) return(0)
@@ -406,7 +407,8 @@ indirect_i <- function(x,
     if (is.null(m) &&
         !is.null(est_vcov) &&
         !is.null(df_residual) &&
-        ngroups == 1) {
+        ngroups == 1 &&
+        has_w) {
         # TODO: Add support for multigroup-models
         est_vcov <- est_vcov_list(est_vcov = est_vcov,
                                   est = est)
@@ -484,6 +486,7 @@ indirect_i <- function(x,
                 group_label = group_label,
                 original_se = bs_se,
                 df_residual = bs_df_residual)
+
     class(out) <- "indirect"
     return(out)
   }
