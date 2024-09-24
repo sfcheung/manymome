@@ -4,6 +4,7 @@
 \alias{cond_indirect}
 \alias{cond_indirect_effects}
 \alias{indirect_effect}
+\alias{cond_effects}
 \alias{many_indirect_effects}
 \title{Conditional, Indirect, and
 Conditional Indirect Effects}
@@ -104,6 +105,37 @@ indirect_effect(
   ci_type = NULL,
   boot_type = c("perc", "bc"),
   group = NULL
+)
+
+cond_effects(
+  wlevels,
+  x,
+  y,
+  m = NULL,
+  fit = NULL,
+  w_type = "auto",
+  w_method = "sd",
+  sd_from_mean = NULL,
+  percentiles = NULL,
+  est = NULL,
+  implied_stats = NULL,
+  boot_ci = FALSE,
+  R = 100,
+  seed = NULL,
+  parallel = TRUE,
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  make_cluster_args = list(),
+  progress = TRUE,
+  boot_out = NULL,
+  output_type = "data.frame",
+  mod_levels_list_args = list(),
+  mc_ci = FALSE,
+  mc_out = NULL,
+  ci_out = NULL,
+  ci_type = NULL,
+  boot_type = c("perc", "bc"),
+  groups = NULL,
+  ...
 )
 
 many_indirect_effects(paths, ...)
@@ -625,6 +657,11 @@ indirect effect. A wrapper of
 \code{\link[=cond_indirect]{cond_indirect()}}. Can be used when
 there is no moderator.
 
+\item \code{cond_effects()}: Just
+an alias to \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
+a better name when a path has no
+moderator.
+
 \item \code{many_indirect_effects()}: Compute the
 indirect effects along more than one paths.
 It call \code{\link[=indirect_effect]{indirect_effect()}} once for
@@ -651,7 +688,7 @@ hi_w1 <- mean(dat$w1) + sd(dat$w1)
 cond_indirect(x = "x", y = "m1",
               wvalues = c(w1 = hi_w1), fit = fit)
 
-# Indirect effect from x1 through m2 to y
+# Direct effect from x to y (direct because no 'm' variables)
 indirect_effect(x = "x", y = "y", fit = fit)
 
 # Conditional Indirect effect from x1 through m1 to y, when w1 is 1 SD above mean

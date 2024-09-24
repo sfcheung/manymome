@@ -1,4 +1,4 @@
-# manymome 0.2.2.5
+# manymome 0.2.2.10
 
 ## New Features
 
@@ -31,6 +31,13 @@
   alias to `pseudo_johnson_neyman()`.
   (0.2.2.4)
 
+- Added `fill_wlevels()` to add levels
+  of moderator to an output of
+  `cond_indirect_effects()`, such that
+  the confidence band of a plot of
+  effects against a moderator can be
+  smoother. (0.2.2.7)
+
 ## Bug Fixes
 
 - Fixed a minor bug in
@@ -47,6 +54,11 @@
   `mod_levels()` in some special
   cases. (0.2.2.5)
 
+- SE-based confidence interval no longer
+  computed for paths not moderated, even
+  if moderator values are set.
+  (0.2.2.6)
+
 ## Miscellaneous
 
 - Updated some vignettes (0.2.2.2).
@@ -54,6 +66,18 @@
 - Updated `confint.indirect()` for
   SE-based confidence interval.
   (0.2.2.4)
+
+- Fixed a minor typo in the example
+  of `indirect_effect()`. (0.2.2.8)
+
+- Added `cond_effects()`, an alias to
+  `cond_indirect_effects()`. A better
+  name when a path has no mediator.
+  (0.2.2.9)
+
+- Revised an internal test involving
+  MI to prevent random errors due to
+  method dispatch. (0.2.2.10)
 
 # manymome 0.2.2
 

@@ -17,7 +17,10 @@ test_that("get_implied_i with ov", {
 
 test_that("lav_implied_all with ov", {
     tmpa2 <- lav_implied_all(fit1_mi)
-    tmpa2_chk <- get_implied_i(coef(fit1_mi), fit1_mi)
+    tmpa2_chk <- get_implied_i(methods::getMethod("coef",
+                                signature = "lavaan.mi",
+                                where = asNamespace("semTools"))(fit1_mi),
+                               fit1_mi)
     expect_identical(tmpa2, tmpa2_chk)
   })
 
@@ -29,7 +32,10 @@ test_that("get_implied_i with lv", {
 
 test_that("lav_implied_all with lv", {
     tmpa2 <- lav_implied_all(fit_lv_mi)
-    tmpa2_chk <- get_implied_i(coef(fit_lv_mi), fit_lv_mi)
+    tmpa2_chk <- get_implied_i(methods::getMethod("coef",
+                                signature = "lavaan.mi",
+                                where = asNamespace("semTools"))(fit_lv_mi),
+                               fit_lv_mi)
     expect_identical(tmpa2, tmpa2_chk)
   })
 
