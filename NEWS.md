@@ -1,4 +1,4 @@
-# manymome 0.2.2.6
+# manymome 0.2.2.7
 
 ## New Features
 
@@ -30,6 +30,13 @@
   used. Add `johnson_neyman()` as an
   alias to `pseudo_johnson_neyman()`.
   (0.2.2.4)
+
+- Added `fill_wlevels()` to add levels
+  of moderator to an output of
+  `cond_indirect_effects()`, such that
+  the confidence band of a plot of
+  effects against a moderator can be
+  smoother. (0.2.2.7)
 
 ## Bug Fixes
 
