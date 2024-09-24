@@ -15,7 +15,7 @@ lavaan::sem(), or semTools::sem.mi()."><meta property="og:image" content="https:
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.10</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -174,6 +174,37 @@ structural model fitted by <code><a href="https://rdrr.io/r/stats/lm.html" class
 <span>  ci_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  boot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"perc"</span>, <span class="st">"bc"</span><span class="op">)</span>,</span>
 <span>  group <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cond_effects</span><span class="op">(</span></span>
+<span>  <span class="va">wlevels</span>,</span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">y</span>,</span>
+<span>  m <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  fit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  w_type <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  w_method <span class="op">=</span> <span class="st">"sd"</span>,</span>
+<span>  sd_from_mean <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  percentiles <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  est <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  implied_stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  boot_ci <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  R <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  parallel <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  make_cluster_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  boot_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  output_type <span class="op">=</span> <span class="st">"data.frame"</span>,</span>
+<span>  mod_levels_list_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  mc_ci <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  mc_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ci_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ci_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  boot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"perc"</span>, <span class="st">"bc"</span><span class="op">)</span>,</span>
+<span>  groups <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">many_indirect_effects</span><span class="op">(</span><span class="va">paths</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
@@ -767,6 +798,10 @@ levels of the moderator(s).</p></li>
 indirect effect. A wrapper of
 <code>cond_indirect()</code>. Can be used when
 there is no moderator.</p></li>
+<li><p><code>cond_effects()</code>: Just
+an alias to <code>cond_indirect_effects()</code>,
+a better name when a path has no
+moderator.</p></li>
 <li><p><code>many_indirect_effects()</code>: Compute the
 indirect effects along more than one paths.
 It call <code>indirect_effect()</code> once for
@@ -814,7 +849,7 @@ these functions.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Computation:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ((0.46277) + (0.23380)*(1.22806))</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Indirect effect from x1 through m2 to y</span></span></span>
+<span class="r-in"><span><span class="co"># Direct effect from x to y (direct because no 'm' variables)</span></span></span>
 <span class="r-in"><span><span class="fu">indirect_effect</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ==  Effect  ==</span>

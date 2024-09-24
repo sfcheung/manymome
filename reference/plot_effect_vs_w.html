@@ -13,7 +13,7 @@ band if available."><meta property="og:image" content="https://sfcheung.github.i
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.10</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,7 +99,9 @@ band if available.</p>
 <span>  intervals_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  zero_line_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  level <span class="op">=</span> <span class="fl">0.95</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">fill_wlevels</span><span class="op">(</span><span class="va">to_fill</span>, cond_out <span class="op">=</span> <span class="cn">NULL</span>, k <span class="op">=</span> <span class="fl">21</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -310,13 +312,39 @@ paths without mediators and both
 <code>x</code>- and <code>y</code>-variables are not
 standardized.</p></dd>
 
+
+<dt id="arg-to-fill">to_fill<a class="anchor" aria-label="anchor" href="#arg-to-fill"></a></dt>
+<dd><p>The output of
+<code><a href="cond_indirect.html">cond_indirect_effects()</a></code> or
+<code><a href="pseudo_johnson_neyman.html">pseudo_johnson_neyman()</a></code>, for which
+additional levels of the moderator
+will be added.</p></dd>
+
+
+<dt id="arg-cond-out">cond_out<a class="anchor" aria-label="anchor" href="#arg-cond-out"></a></dt>
+<dd><p>If <code>to_fill</code> is
+the output of <code><a href="pseudo_johnson_neyman.html">pseudo_johnson_neyman()</a></code>,
+the original output of <code><a href="cond_indirect.html">cond_indirect_effects()</a></code>
+used in the call to <code><a href="pseudo_johnson_neyman.html">pseudo_johnson_neyman()</a></code>
+need to be supplied through this argument.</p></dd>
+
+
+<dt id="arg-k">k<a class="anchor" aria-label="anchor" href="#arg-k"></a></dt>
+<dd><p>The desired number of levels
+of the moderator.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <a href="https://ggplot2.tidyverse.org/reference/ggplot2-package.html" class="external-link">ggplot2</a> graph. Plotted if
+    <p><code>plot_effect_vs_w()</code> returns a
+<a href="https://ggplot2.tidyverse.org/reference/ggplot2-package.html" class="external-link">ggplot2</a> graph. Plotted if
 not assigned to a name. It can be
 further modified like a usual
 <a href="https://ggplot2.tidyverse.org/reference/ggplot2-package.html" class="external-link">ggplot2</a> graph.</p>
+<p><code>fill_wlevels()</code> returns an updated
+output of <code><a href="cond_indirect.html">cond_indirect_effects()</a></code>
+with the desired number of levels of
+the moderator.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -383,6 +411,22 @@ that the model is not invariant to
 linear transformation of the variables.</p>
 </div>
 
+<p>The function <code>fill_wlevels()</code> is
+a helper to automatically
+fill in additional levels
+of the moderators, to plot a graph
+with smooth confidence band. It
+accepts the output of <code><a href="cond_indirect.html">cond_indirect_effects()</a></code>
+or <code><a href="pseudo_johnson_neyman.html">pseudo_johnson_neyman()</a></code>, finds
+the range of the values of the
+moderator, and returns an output
+of <code><a href="cond_indirect.html">cond_indirect_effects()</a></code> with
+the desired number of levels within
+this range. It is intended to be a
+helper. If it does not work, users
+can still get the desired number of
+levels by setting the values manually
+when calling <code><a href="cond_indirect.html">cond_indirect_effects()</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -425,6 +469,91 @@ linear transformation of the variables.</p>
 <span class="r-in"><span>                     color <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">p2</span></span></span>
 <span class="r-plt img"><img src="plot_effect_vs_w-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Use fill_wlevels to add moderator levels:</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">data_med_mod_a</span></span></span>
+<span class="r-in"><span><span class="va">lm_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">m</span> <span class="op">~</span> <span class="va">x</span><span class="op">*</span><span class="va">w</span> <span class="op">+</span> <span class="va">c1</span> <span class="op">+</span> <span class="va">c2</span>, <span class="va">dat</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lm_y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">m</span> <span class="op">+</span> <span class="va">x</span> <span class="op">+</span> <span class="va">c1</span> <span class="op">+</span> <span class="va">c2</span>, <span class="va">dat</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="lm2list.html">lm2list</a></span><span class="op">(</span><span class="va">lm_m</span>, <span class="va">lm_y</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">wlevels</span> <span class="op">&lt;-</span> <span class="fu"><a href="mod_levels.html">mod_levels</a></span><span class="op">(</span>w <span class="op">=</span> <span class="st">"w"</span>,</span></span>
+<span class="r-in"><span>                      sd_from_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                      fit <span class="op">=</span> <span class="va">fit_lm</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">wlevels</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  w</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M+3.0SD  5.1338282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mean     2.1792785</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M-3.0SD -0.7752712</span>
+<span class="r-in"><span><span class="va">cond_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>wlevels <span class="op">=</span> <span class="va">wlevels</span>,</span></span>
+<span class="r-in"><span>                                  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>                                  y <span class="op">=</span> <span class="st">"m"</span>,</span></span>
+<span class="r-in"><span>                                  fit <span class="op">=</span> <span class="va">fit_lm</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cond_out</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Conditional effects ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path: x -&gt; m</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Conditional on moderator(s): w</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [w]    (w)    ind    SE   Stat pvalue Sig  CI.lo CI.hi</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+3.0SD  5.134  5.119 1.428  3.584  0.001 ***  2.283 7.955</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Mean     2.179  2.228 0.457  4.874  0.000 ***  1.321 3.136</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M-3.0SD -0.775 -0.663 1.546 -0.429  0.669     -3.733 2.407</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are regression standard errors.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [Stat] are the t statistics used to test the effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are p-values computed from 'Stat'.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [Sig]: 0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘ ’ 1.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    regression standard errors.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the conditional effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-in"><span><span class="co"># Only 3 points</span></span></span>
+<span class="r-in"><span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">plot_effect_vs_w</span><span class="op">(</span><span class="va">cond_out</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">p1</span></span></span>
+<span class="r-plt img"><img src="plot_effect_vs_w-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co"># Increase the number of levels to 15</span></span></span>
+<span class="r-in"><span><span class="va">cond_out_filled</span> <span class="op">&lt;-</span> <span class="fu">fill_wlevels</span><span class="op">(</span><span class="va">cond_out</span>,</span></span>
+<span class="r-in"><span>                                k <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cond_out_filled</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Conditional effects ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Path: x -&gt; m</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Conditional on moderator(s): w</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   [w]    (w)    ind    SE   Stat pvalue Sig  CI.lo CI.hi</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  5.13382823045524    5.134  5.119 1.428  3.584  0.001 ***  2.283 7.955</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  4.71174970320561    4.712  4.706 1.238  3.801  0.000 ***  2.248 7.164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  4.28967117595598    4.290  4.293 1.052  4.080  0.000 ***  2.204 6.383</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  3.86759264870635    3.868  3.880 0.874  4.439  0.000 ***  2.145 5.616</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  3.44551412145672    3.446  3.467 0.709  4.892  0.000 ***  2.060 4.875</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  3.0234355942071     3.023  3.054 0.568  5.377  0.000 ***  1.926 4.182</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  2.60135706695747    2.601  2.641 0.474  5.569  0.000 ***  1.700 3.583</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  2.17927853970784    2.179  2.228 0.457  4.874  0.000 ***  1.321 3.136</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  1.75720001245821    1.757  1.815 0.524  3.462  0.001 ***  0.774 2.857</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 1.33512148520858    1.335  1.402 0.650  2.156  0.034 *    0.111 2.693</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.913042957958955   0.913  0.989 0.808  1.225  0.224     -0.615 2.593</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.490964430709327   0.491  0.576 0.982  0.587  0.559     -1.373 2.526</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.068885903459699   0.069  0.163 1.165  0.140  0.889     -2.150 2.477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 -0.353192623789929 -0.353 -0.250 1.354 -0.184  0.854     -2.938 2.439</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 -0.775271151039557 -0.775 -0.663 1.546 -0.429  0.669     -3.733 2.407</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are regression standard errors.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [Stat] are the t statistics used to test the effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are p-values computed from 'Stat'.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [Sig]: 0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘ ’ 1.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    regression standard errors.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the conditional effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-in"><span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu">plot_effect_vs_w</span><span class="op">(</span><span class="va">cond_out_filled</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">p2</span></span></span>
+<span class="r-plt img"><img src="plot_effect_vs_w-4.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
