@@ -13,7 +13,7 @@ preserved if appropriate."><meta property="og:image" content="https://sfcheung.g
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -183,45 +183,45 @@ which subsetting is preferred.</p>
 <span class="r-in"><span><span class="va">lm_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="lm2list.html">lm2list</a></span><span class="op">(</span><span class="va">lm_m1</span>, <span class="va">lm_y</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">w1gp_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="mod_levels.html">mod_levels</a></span><span class="op">(</span><span class="va">lm_out</span>, w <span class="op">=</span> <span class="st">"w1"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">w1gp_levels</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   w1group2 w1group3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        0        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        0        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        w1group2 w1group3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> group1        0        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> group2        1        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> group3        0        1</span>
 <span class="r-in"><span><span class="va">w1gp_levels</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   w1group2 w1group3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        w1group2 w1group3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> group2        1        0</span>
 <span class="r-in"><span><span class="va">w1gp_levels</span><span class="op">[</span><span class="fl">3</span>, <span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   w1group2 w1group3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        0        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        w1group2 w1group3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> group3        0        1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">merged_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="merge_mod_levels.html">merge_mod_levels</a></span><span class="op">(</span><span class="va">w1_levels</span>, <span class="va">w1gp_levels</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">merged_levels</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                          w1 w1group2 w1group3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w1: 1 6.173157        0        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w1: 2 6.173157        1        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w1: 3 6.173157        0        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: Mean; w1: 1    5.105602        0        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: Mean; w1: 2    5.105602        1        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: Mean; w1: 3    5.105602        0        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M-1.0SD; w1: 1 4.038047        0        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M-1.0SD; w1: 2 4.038047        1        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M-1.0SD; w1: 3 4.038047        0        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                               w1 w1group2 w1group3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w1: group1 6.173157        0        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w1: group2 6.173157        1        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w1: group3 6.173157        0        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: Mean; w1: group1    5.105602        0        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: Mean; w1: group2    5.105602        1        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: Mean; w1: group3    5.105602        0        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M-1.0SD; w1: group1 4.038047        0        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M-1.0SD; w1: group2 4.038047        1        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M-1.0SD; w1: group3 4.038047        0        1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">merged_levels</span><span class="op">[</span><span class="fl">4</span><span class="op">:</span><span class="fl">6</span>, <span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       w1 w1group2 w1group3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: Mean; w1: 1 5.105602        0        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: Mean; w1: 2 5.105602        1        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: Mean; w1: 3 5.105602        0        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                            w1 w1group2 w1group3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: Mean; w1: group1 5.105602        0        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: Mean; w1: group2 5.105602        1        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: Mean; w1: group3 5.105602        0        1</span>
 <span class="r-in"><span><span class="va">merged_levels</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                    w1group2 w1group3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w1: 1        0        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w1: 2        1        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w1: 3        0        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         w1group2 w1group3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w1: group1        0        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w1: group2        1        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w1: group3        0        1</span>
 <span class="r-in"><span><span class="va">merged_levels</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">7</span><span class="op">)</span>, <span class="fl">1</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                          w1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w1: 1 6.173157</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: Mean; w1: 1    5.105602</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M-1.0SD; w1: 1 4.038047</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                               w1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M+1.0SD; w1: group1 6.173157</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: Mean; w1: group1    5.105602</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> w1: M-1.0SD; w1: group1 4.038047</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
