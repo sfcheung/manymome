@@ -2,6 +2,7 @@
 % Please edit documentation in R/plot_effect_vs_w.R
 \name{plot_effect_vs_w}
 \alias{plot_effect_vs_w}
+\alias{fill_wlevels}
 \title{Plot an Effect Against a Moderator}
 \usage{
 plot_effect_vs_w(
@@ -29,6 +30,8 @@ plot_effect_vs_w(
   zero_line_args = list(),
   level = 0.95
 )
+
+fill_wlevels(to_fill, cond_out = NULL, k = 21)
 }
 \arguments{
 \item{object}{The output of
@@ -189,12 +192,32 @@ from the original standard errors. Used only for
 paths without mediators and both
 \code{x}- and \code{y}-variables are not
 standardized.}
+
+\item{to_fill}{The output of
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} or
+\code{\link[=pseudo_johnson_neyman]{pseudo_johnson_neyman()}}, for which
+additional levels of the moderator
+will be added.}
+
+\item{cond_out}{If \code{to_fill} is
+the output of \code{\link[=pseudo_johnson_neyman]{pseudo_johnson_neyman()}},
+the original output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
+used in the call to \code{\link[=pseudo_johnson_neyman]{pseudo_johnson_neyman()}}
+need to be supplied through this argument.}
+
+\item{k}{The desired number of levels
+of the moderator.}
 }
 \value{
 A \link{ggplot2} graph. Plotted if
 not assigned to a name. It can be
 further modified like a usual
 \link{ggplot2} graph.
+
+\code{\link[=fill_wlevels]{fill_wlevels()}} returns an updated
+output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
+with the desired number of levels of
+the moderator.
 }
 \description{
 It plots an effect, direct
@@ -269,6 +292,23 @@ fixed to zero, it is possible
 that the model is not invariant to
 linear transformation of the variables.
 }
+
+The function \code{\link[=fill_wlevels]{fill_wlevels()}} is
+a helper to automatically
+fill in additional levels
+of the moderators, to plot a graph
+with smooth confidence band. It
+accepts the output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
+or \code{\link[=pseudo_johnson_neyman]{pseudo_johnson_neyman()}}, finds
+the range of the values of the
+moderator, and returns an output
+of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} with
+the desired number of levels within
+this range. It is intended to be a
+helper. If it does not work, users
+can still get the desired number of
+levels by setting the values manually
+when calling \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 }
 \examples{
 
