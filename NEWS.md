@@ -1,4 +1,4 @@
-# manymome 0.2.2.9
+# manymome 0.2.2.10
 
 ## New Features
 
@@ -74,6 +74,10 @@
   `cond_indirect_effects()`. A better
   name when a path has no mediator.
   (0.2.2.9)
+
+- Revised an internal test involving
+  MI to prevent random errors due to
+  method dispatch. (0.2.2.10)
 
 # manymome 0.2.2
 
