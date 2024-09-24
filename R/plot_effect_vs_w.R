@@ -75,7 +75,9 @@
 #' linear transformation of the variables.
 #'
 #'
-#' @return A [ggplot2] graph. Plotted if
+#' @return
+#' [plot_effect_vs_w()] returns a
+#' [ggplot2] graph. Plotted if
 #' not assigned to a name. It can be
 #' further modified like a usual
 #' [ggplot2] graph.
