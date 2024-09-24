@@ -209,7 +209,8 @@ need to be supplied through this argument.}
 of the moderator.}
 }
 \value{
-A \link{ggplot2} graph. Plotted if
+\code{\link[=plot_effect_vs_w]{plot_effect_vs_w()}} returns a
+\link{ggplot2} graph. Plotted if
 not assigned to a name. It can be
 further modified like a usual
 \link{ggplot2} graph.
@@ -343,6 +344,33 @@ library(ggplot2)
 p2 <- p + geom_vline(xintercept = mean(dat$w),
                      color = "red")
 p2
+
+
+# Use fill_wlevels to add moderator levels:
+
+dat <- data_med_mod_a
+lm_m <- lm(m ~ x*w + c1 + c2, dat)
+lm_y <- lm(y ~ m + x + c1 + c2, dat)
+fit_lm <- lm2list(lm_m, lm_y)
+wlevels <- mod_levels(w = "w",
+                      sd_from_mean = c(-3, 0, 3),
+                      fit = fit_lm)
+wlevels
+cond_out <- cond_indirect_effects(wlevels = wlevels,
+                                  x = "x",
+                                  y = "m",
+                                  fit = fit_lm)
+cond_out
+# Only 3 points
+p1 <- plot_effect_vs_w(cond_out)
+p1
+# Increase the number of levels to 15
+cond_out_filled <- fill_wlevels(cond_out,
+                                k = 15)
+cond_out_filled
+p2 <- plot_effect_vs_w(cond_out_filled)
+p2
+
 
 }
 \seealso{

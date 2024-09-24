@@ -462,6 +462,34 @@ plot_effect_vs_w <- function(object,
 #' with the desired number of levels of
 #' the moderator.
 #'
+#' @examples
+#'
+#' # Use fill_wlevels to add moderator levels:
+#'
+#' dat <- data_med_mod_a
+#' lm_m <- lm(m ~ x*w + c1 + c2, dat)
+#' lm_y <- lm(y ~ m + x + c1 + c2, dat)
+#' fit_lm <- lm2list(lm_m, lm_y)
+#' wlevels <- mod_levels(w = "w",
+#'                       sd_from_mean = c(-3, 0, 3),
+#'                       fit = fit_lm)
+#' wlevels
+#' cond_out <- cond_indirect_effects(wlevels = wlevels,
+#'                                   x = "x",
+#'                                   y = "m",
+#'                                   fit = fit_lm)
+#' cond_out
+#' # Only 3 points
+#' p1 <- plot_effect_vs_w(cond_out)
+#' p1
+#' # Increase the number of levels to 15
+#' cond_out_filled <- fill_wlevels(cond_out,
+#'                                 k = 15)
+#' cond_out_filled
+#' p2 <- plot_effect_vs_w(cond_out_filled)
+#' p2
+#'
+#'
 #' @rdname plot_effect_vs_w
 #' @export
 
