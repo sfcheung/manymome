@@ -146,6 +146,14 @@ out_lav_mc_direct <- cond_indirect_effects(wlevels = "w",
                                     mc_ci = TRUE,
                                     mc_out = mc_out_lav)
 
+out_lm_direct_auto <- cond_indirect_effects(wlevels = "w",
+                                x = "x",
+                                y = "m",
+                                fit = fit_lm,
+                                sd_from_mean = c(-2, 2),
+                                boot_ci = TRUE,
+                                boot_out = boot_out_lm)
+
 test_that("plot_effect_vs_w", {
   expect_no_error(p1 <- plot_effect_vs_w(out_lm,
                                          w = "w"))
@@ -218,6 +226,19 @@ test_that("plot_effect_vs_w", {
   p17
 })
 
+wrange <- pseudo_johnson_neyman(out_lm_direct_auto)
+wrange_extended <- fill_wlevels(wrange,
+                                out_lm_direct_auto,
+                                k = 11)
+wrange_extended2 <- fill_wlevels(out_lm_direct_auto,
+                                 k = 7)
+
+test_that("Expand wlevels", {
+  expect_no_error(p1 <- plot_effect_vs_w(wrange_extended))
+  p1
+  expect_no_error(p1 <- plot_effect_vs_w(wrange_extended2))
+  p1
+})
 
 # Multigroup
 
