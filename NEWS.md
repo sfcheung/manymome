@@ -1,4 +1,4 @@
-# manymome 0.2.2.8
+# manymome 0.2.2.9
 
 ## New Features
 
@@ -69,6 +69,11 @@
 
 - Fixed a minor typo in the example
   of `indirect_effect()`. (0.2.2.8)
+
+- Added `cond_effects()`, an alias to
+  `cond_indirect_effects()`. A better
+  name when a path has no mediator.
+  (0.2.2.9)
 
 # manymome 0.2.2
 

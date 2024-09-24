@@ -1384,6 +1384,15 @@ cond_indirect_effects <- function(wlevels,
       }
   }
 
+#' @describeIn cond_indirect Just
+#' an alias to [cond_indirect_effects()],
+#' a better name when a path has no
+#' moderator.
+#'
+#' @export
+#' @order 4
+cond_effects <- cond_indirect_effects
+
 #' @param paths The output of [all_indirect_paths()]
 #'
 #' @param ... For [many_indirect_effects()],
@@ -1445,7 +1454,7 @@ cond_indirect_effects <- function(wlevels,
 #' It call [indirect_effect()] once for
 #' each of the path.
 #'
-#' @order 4
+#' @order 5
 
 many_indirect_effects <- function(paths, ...) {
     path_names <- names(paths)
