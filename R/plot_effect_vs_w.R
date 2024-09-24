@@ -306,7 +306,7 @@ plot_effect_vs_w <- function(object,
     standardized_y <- full_output_1$standardized_y
     path_str <- path_name(full_output_1)
     wlevels <- attr(object, "wlevels")
-    w_types <- attr(wlevels, "w_types")
+    w_type <- attr(wlevels, "w_type")
     has_wlevels <- cond_indirect_effects_has_wlevels(object)
     has_groups <- cond_indirect_effects_has_groups(object)
     if (ncol(wlevels) > 1) {
