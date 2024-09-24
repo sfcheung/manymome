@@ -454,7 +454,7 @@ mod_levels_i_lavaan_categorical <- mod_levels_i_lm_categorical <- function(fit,
             tmp <- cbind(w_source = mf[, w_source, drop = FALSE], mm[, w, drop = FALSE])
             tmp <- tmp[!duplicated(tmp), , drop = FALSE]
             tmp2 <- merge(x = w_gp, y = tmp, sort = FALSE)
-            rownames(w_gp) <- tmp2$w_source
+            rownames(w_gp) <- tmp2[, w_source]
           }
       }
     if (is.null(prefix)) {

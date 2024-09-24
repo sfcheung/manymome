@@ -87,7 +87,7 @@ out_m_1_chk <- structure(list(w1 = c(1.22805757313838, 1.22805757313838, 1.22805
     "M-1.0SD", "M-1.0SD", "M-1.0SD"), w4 = c("84%", "50%", "16%",
     "84%", "50%", "16%", "84%", "50%", "16%")), class = "data.frame", row.names = c("1",
 "2", "3", "4", "5", "6", "7", "8", "9")), wvars = list(w1 = "w1",
-    w4 = "w4"), w_types = c(w1 = "numeric", w4 = "numeric"))
+    w4 = "w4"), w_type = c(w1 = "numeric", w4 = "numeric"))
 
 out_m_2_chk <- structure(list(w1 = c(1.22805757313838, 1.22805757313838, 1.22805757313838,
 0.258999906944399, 0.258999906944399, 0.258999906944399, -0.71005775924958,
@@ -100,7 +100,7 @@ out_m_2_chk <- structure(list(w1 = c(1.22805757313838, 1.22805757313838, 1.22805
     "M-1.0SD", "M-1.0SD", "M-1.0SD"), gp = c("gp1", "gp2", "gp3",
     "gp1", "gp2", "gp3", "gp1", "gp2", "gp3")), class = "data.frame", row.names = c("1",
 "2", "3", "4", "5", "6", "7", "8", "9")), wvars = list(w1 = "w1",
-    gp = c("gpgp2", "gpgp3")), w_types = c(w1 = "numeric", gp = "categorical"
+    gp = c("gpgp2", "gpgp3")), w_type = c(w1 = "numeric", gp = "categorical"
 ))
 
 out_m_3_chk <- structure(list(w1 = c(1.22805757313838, 1.22805757313838, 1.22805757313838,
@@ -119,7 +119,7 @@ out_m_3_chk <- structure(list(w1 = c(1.22805757313838, 1.22805757313838, 1.22805
     "beta", "gamma", "sigma", "alpha", "beta", "gamma", "sigma"
     )), class = "data.frame", row.names = c("1", "2", "3", "4",
 "5", "6", "7", "8", "9", "10", "11", "12")), wvars = list(w1 = "w1",
-    city = c("citybeta", "citygamma", "citysigma")), w_types = c(w1 = "numeric",
+    city = c("citybeta", "citygamma", "citysigma")), w_type = c(w1 = "numeric",
 city = "categorical"))
 
 out_m_4_chk <- structure(list(citybeta = c(0, 0, 1, 1, 0, 0, 0, 0), citygamma = c(0,
@@ -134,7 +134,7 @@ out_m_4_chk <- structure(list(citybeta = c(0, 0, 1, 1, 0, 0, 0, 0), citygamma = 
     "sigma", "sigma"), w1 = c("75%", "25%", "75%", "25%", "75%",
     "25%", "75%", "25%")), class = "data.frame", row.names = c("1",
 "2", "3", "4", "5", "6", "7", "8")), wvars = list(city = c("citybeta",
-"citygamma", "citysigma"), w1 = "w1"), w_types = c(city = "categorical",
+"citygamma", "citysigma"), w1 = "w1"), w_type = c(city = "categorical",
 w1 = "numeric"))
 
 out_m_5_chk <- structure(list(gpgp2 = c(0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0),
@@ -152,7 +152,7 @@ out_m_5_chk <- structure(list(gpgp2 = c(0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0),
     "gamma", "sigma")), class = "data.frame", row.names = c("1",
 "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")), wvars = list(
     gp = c("gpgp2", "gpgp3"), city = c("citybeta", "citygamma",
-    "citysigma")), w_types = c(gp = "categorical", city = "categorical"
+    "citysigma")), w_type = c(gp = "categorical", city = "categorical"
 ))
 
 test_that("merge_mod_levels", {

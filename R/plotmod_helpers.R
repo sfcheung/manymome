@@ -144,13 +144,13 @@ ind_to_cat <- function(wlevels) {
     wlevels0 <- attr(wlevels, "wlevels")
     wvars <- attr(wlevels, "wvars")
     wnames <- names(wvars)
-    w_types <- attr(wlevels, "w_types")
+    w_type <- attr(wlevels, "w_type")
     tmpfct <- function(wn, wt, wlevels, wlevels0) {
         switch(wt,
                categorical = wlevels0[, wn],
                numeric = wlevels[, wn])
       }
-    out <- mapply(tmpfct, wn = wnames, wt = w_types,
+    out <- mapply(tmpfct, wn = wnames, wt = w_type,
                             MoreArgs = list(wlevels = wlevels,
                                             wlevels0 = wlevels0),
                     SIMPLIFY = FALSE)

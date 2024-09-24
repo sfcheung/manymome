@@ -1,4 +1,4 @@
-# manymome 0.2.2.4
+# manymome 0.2.2.5
 
 ## New Features
 
@@ -42,6 +42,10 @@
 - Fixed a bug in the formatting of the
   'stars' when SE-based *p*-values
   are printed. (0.2.2.4)
+
+- Fixed some issues related to
+  `mod_levels()` in some special
+  cases. (0.2.2.5)
 
 ## Miscellaneous
 
