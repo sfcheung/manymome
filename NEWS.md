@@ -1,4 +1,4 @@
-# manymome 0.2.2.11
+# manymome 0.2.2.12
 
 ## New Features
 
@@ -79,6 +79,9 @@
 - Revised an internal test involving
   MI to prevent random errors due to
   method dispatch. (0.2.2.10)
+
+- Fixed some help pages for R CMD check
+  notes. (0.2.2.12)
 
 # manymome 0.2.2
 
