@@ -1,4 +1,4 @@
-# manymome 0.2.2.12
+# manymome 0.2.3
 
 ## New Features
 
@@ -24,10 +24,10 @@
   estimated. (0.2.2.1)
 
 - Updated `pseudo_johnson_neyman()` to
-  support the SE-based test. The metho
+  support the SE-based test. The method
   is equivalent to the (true)
   Johnson-Neyman when SE-based test is
-  used. Add `johnson_neyman()` as an
+  used. Added `johnson_neyman()` as an
   alias to `pseudo_johnson_neyman()`.
   (0.2.2.4)
 
@@ -40,33 +40,11 @@
 
 ## Bug Fixes
 
-- Fixed a minor bug in
-  `print.cond_indirect_effects()`:
-  row names are no longer occasionally
-  added when SE-based *p*-values
-  are printed. (0.2.2.3)
-
-- Fixed a bug in the formatting of the
-  'stars' when SE-based *p*-values
-  are printed. (0.2.2.4)
-
 - Fixed some issues related to
   `mod_levels()` in some special
   cases. (0.2.2.5)
 
-- SE-based confidence interval no longer
-  computed for paths not moderated, even
-  if moderator values are set.
-  (0.2.2.6)
-
 ## Miscellaneous
-
-- Updated some vignettes (0.2.2.2)
-  (0.2.2.11)
-
-- Updated `confint.indirect()` for
-  SE-based confidence interval.
-  (0.2.2.4)
 
 - Fixed a minor typo in the example
   of `indirect_effect()`. (0.2.2.8)
@@ -76,12 +54,8 @@
   name when a path has no mediator.
   (0.2.2.9)
 
-- Revised an internal test involving
-  MI to prevent random errors due to
-  method dispatch. (0.2.2.10)
-
-- Fixed some help pages for R CMD check
-  notes. (0.2.2.12)
+- Finalize 0.2.3. Kept only updates
+  relevant to users of 0.2.2. (0.2.3)
 
 # manymome 0.2.2
 
