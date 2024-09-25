@@ -23,7 +23,7 @@ default, the path goes from \code{x} to
 
 \item{fit}{The fit object. Currently
 only supports a
-\link[lavaan:lavaan-class]{lavaan::lavaan} object or a
+\code{lavaan::lavaan-class} object or a
 list of outputs of \code{\link[=lm]{lm()}}.
 It can also be
 a \code{lavaan.mi} object
@@ -53,7 +53,7 @@ defined by a predictor (\code{x}), an
 outcome (\code{y}), and optionally a
 sequence of mediators (\code{m}), exists
 in a model. It can check models in a
-\link[lavaan:lavaan-class]{lavaan::lavaan} object or a
+\code{lavaan::lavaan-class} object or a
 list of outputs of \code{\link[=lm]{lm()}}.
 It also support
 \code{lavaan.mi} objects
@@ -61,8 +61,8 @@ returned by
 \code{\link[semTools:runMI]{semTools::runMI()}} or
 its wrapper, such as \code{\link[semTools:runMI]{semTools::sem.mi()}}.
 
-For example, in the ql
-in \link{lavaan} syntax
+For example, in the following model
+in \code{lavaan} syntax
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{m1 ~ x
 m2 ~ m1

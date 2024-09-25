@@ -67,7 +67,7 @@ from \code{x} to \code{y}.}
 moderator.}
 
 \item{fit}{The fit object. Can be a
-\link[lavaan:lavaan-class]{lavaan::lavaan} object, a list
+\code{lavaan::lavaan-class} object, a list
 of \code{\link[=lm]{lm()}} outputs, or an object
 created by \code{\link[=lm2list]{lm2list()}}.
 It can also be
@@ -105,7 +105,7 @@ them from \code{fit}.}
 \code{TRUE}, \code{boot_out} is \code{NULL}, and
 bootstrap standard errors not
 requested if \code{fit} is a
-\linkS4class{lavaan} object, this function
+\code{lavaan-class} object, this function
 will do bootstrapping on \code{fit}. \code{R}
 is the number of bootstrap samples.
 Default is 100. For Monte Carlo

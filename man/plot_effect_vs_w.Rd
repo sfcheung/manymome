@@ -210,10 +210,10 @@ of the moderator.}
 }
 \value{
 \code{\link[=plot_effect_vs_w]{plot_effect_vs_w()}} returns a
-\link{ggplot2} graph. Plotted if
+\code{ggplot2} graph. Plotted if
 not assigned to a name. It can be
 further modified like a usual
-\link{ggplot2} graph.
+\code{ggplot2} graph.
 
 \code{\link[=fill_wlevels]{fill_wlevels()}} returns an updated
 output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
