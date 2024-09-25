@@ -67,7 +67,7 @@
 #' mediation.
 #'
 #' @param fit The fit object. Can be a
-#' [lavaan::lavaan-class] object, a list
+#' `lavaan::lavaan-class` object, a list
 #' of [lm()] outputs, or an object
 #' created by [lm2list()].
 #' It can also be
@@ -105,7 +105,7 @@
 #' `TRUE`, `boot_out` is `NULL`, and
 #' bootstrap standard errors not
 #' requested if `fit` is a
-#' [lavaan-class] object, this function
+#' `lavaan-class` object, this function
 #' will do bootstrapping on `fit`. `R`
 #' is the number of bootstrap samples.
 #' Default is 100. For Monte Carlo

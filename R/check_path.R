@@ -9,7 +9,7 @@
 #' outcome (`y`), and optionally a
 #' sequence of mediators (`m`), exists
 #' in a model. It can check models in a
-#' [lavaan::lavaan-class] object or a
+#' `lavaan::lavaan-class` object or a
 #' list of outputs of [lm()].
 #' It also support
 #' `lavaan.mi` objects
@@ -17,8 +17,8 @@
 #' [semTools::runMI()] or
 #' its wrapper, such as [semTools::sem.mi()].
 #'
-#' For example, in the ql
-#' in [lavaan] syntax
+#' For example, in the following model
+#' in `lavaan` syntax
 #'
 #' ```
 #' m1 ~ x
@@ -39,7 +39,7 @@
 #'
 #' @param fit The fit object. Currently
 #' only supports a
-#' [lavaan::lavaan-class] object or a
+#' `lavaan::lavaan-class` object or a
 #' list of outputs of [lm()].
 #' It can also be
 #' a `lavaan.mi` object

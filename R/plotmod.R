@@ -54,10 +54,10 @@
 #' values such as the low and high points
 #' of the `x`-variable.
 #'
-#' @return A [ggplot2] graph. Plotted if
+#' @return A `ggplot2` graph. Plotted if
 #' not assigned to a name. It can be
 #' further modified like a usual
-#' [ggplot2] graph.
+#' `ggplot2` graph.
 #'
 #' @param x The output of
 #' [cond_indirect_effects()]. (Named `x`
