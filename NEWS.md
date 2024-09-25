@@ -1,4 +1,4 @@
-# manymome 0.2.2.10
+# manymome 0.2.2.11
 
 ## New Features
 
@@ -61,7 +61,8 @@
 
 ## Miscellaneous
 
-- Updated some vignettes (0.2.2.2).
+- Updated some vignettes (0.2.2.2)
+  (0.2.2.11)
 
 - Updated `confint.indirect()` for
   SE-based confidence interval.
