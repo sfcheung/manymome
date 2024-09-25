@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.10</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,27 +60,22 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.2.10" id="manymome-02210">manymome 0.2.2.10<a class="anchor" aria-label="anchor" href="#manymome-02210"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.2.3" id="manymome-023">manymome 0.2.3<a class="anchor" aria-label="anchor" href="#manymome-023"></a></h2>
 <div class="section level3">
-<h3 id="new-features-0-2-2-10">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-2-10"></a></h3>
+<h3 id="new-features-0-2-3">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-3"></a></h3>
 <ul><li><p>Added support for using model-based standard errors (and the covariances) of estimates to compute the standard errors, <em>p</em>-values, and confidence intervals for conditional effects. This should be used only for effects without mediators and with both <code>x</code>- and <code>y</code>-variables not standardized. The standard errors, <em>p</em>-values, and confidence intervals are printed by default when certain conditions are met. These statistics are for models fitted by multiple regression. They should be used with cautions for models fitted by structural equation modeling because the model may not be invariant to linear transformation of variables if some covariances involving the product terms are not freely estimated. (0.2.2.1)</p></li>
-<li><p>Updated <code><a href="../reference/pseudo_johnson_neyman.html">pseudo_johnson_neyman()</a></code> to support the SE-based test. The metho is equivalent to the (true) Johnson-Neyman when SE-based test is used. Add <code><a href="../reference/pseudo_johnson_neyman.html">johnson_neyman()</a></code> as an alias to <code><a href="../reference/pseudo_johnson_neyman.html">pseudo_johnson_neyman()</a></code>. (0.2.2.4)</p></li>
+<li><p>Updated <code><a href="../reference/pseudo_johnson_neyman.html">pseudo_johnson_neyman()</a></code> to support the SE-based test. The method is equivalent to the (true) Johnson-Neyman when SE-based test is used. Added <code><a href="../reference/pseudo_johnson_neyman.html">johnson_neyman()</a></code> as an alias to <code><a href="../reference/pseudo_johnson_neyman.html">pseudo_johnson_neyman()</a></code>. (0.2.2.4)</p></li>
 <li><p>Added <code><a href="../reference/plot_effect_vs_w.html">fill_wlevels()</a></code> to add levels of moderator to an output of <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>, such that the confidence band of a plot of effects against a moderator can be smoother. (0.2.2.7)</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-0-2-2-10">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-2-10"></a></h3>
-<ul><li><p>Fixed a minor bug in <code><a href="../reference/print.cond_indirect_effects.html">print.cond_indirect_effects()</a></code>: row names are no longer occasionally added when SE-based <em>p</em>-values are printed. (0.2.2.3)</p></li>
-<li><p>Fixed a bug in the formatting of the ‘stars’ when SE-based <em>p</em>-values are printed. (0.2.2.4)</p></li>
-<li><p>Fixed some issues related to <code><a href="../reference/mod_levels.html">mod_levels()</a></code> in some special cases. (0.2.2.5)</p></li>
-<li><p>SE-based confidence interval no longer computed for paths not moderated, even if moderator values are set. (0.2.2.6)</p></li>
+<h3 id="bug-fixes-0-2-3">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-3"></a></h3>
+<ul><li>Fixed some issues related to <code><a href="../reference/mod_levels.html">mod_levels()</a></code> in some special cases. (0.2.2.5)</li>
 </ul></div>
 <div class="section level3">
-<h3 id="miscellaneous-0-2-2-10">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-2-2-10"></a></h3>
-<ul><li><p>Updated some vignettes (0.2.2.2).</p></li>
-<li><p>Updated <code><a href="../reference/confint.indirect.html">confint.indirect()</a></code> for SE-based confidence interval. (0.2.2.4)</p></li>
-<li><p>Fixed a minor typo in the example of <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>. (0.2.2.8)</p></li>
+<h3 id="miscellaneous-0-2-3">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-2-3"></a></h3>
+<ul><li><p>Fixed a minor typo in the example of <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>. (0.2.2.8)</p></li>
 <li><p>Added <code><a href="../reference/cond_indirect.html">cond_effects()</a></code>, an alias to <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>. A better name when a path has no mediator. (0.2.2.9)</p></li>
-<li><p>Revised an internal test involving MI to prevent random errors due to method dispatch. (0.2.2.10)</p></li>
+<li><p>Finalize 0.2.3. Kept only updates relevant to users of 0.2.2. (0.2.3)</p></li>
 </ul></div>
 </div>
     <div class="section level2">

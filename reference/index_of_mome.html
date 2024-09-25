@@ -13,7 +13,7 @@ proposed by Hayes (2015, 2018)."><meta property="og:image" content="https://sfch
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.10</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -148,7 +148,7 @@ moderator.</p></dd>
 
 <dt id="arg-fit">fit<a class="anchor" aria-label="anchor" href="#arg-fit"></a></dt>
 <dd><p>The fit object. Can be a
-<a href="https://rdrr.io/pkg/lavaan/man/lavaan-class.html" class="external-link">lavaan::lavaan</a> object, a list
+<code>lavaan::lavaan-class</code> object, a list
 of <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> outputs, or an object
 created by <code><a href="lm2list.html">lm2list()</a></code>.
 It can also be
@@ -194,7 +194,7 @@ them from <code>fit</code>.</p></dd>
 <code>TRUE</code>, <code>boot_out</code> is <code>NULL</code>, and
 bootstrap standard errors not
 requested if <code>fit</code> is a
-<a href="https://rdrr.io/pkg/lavaan/man/lavaan-class.html" class="external-link">lavaan</a> object, this function
+<code>lavaan-class</code> object, this function
 will do bootstrapping on <code>fit</code>. <code>R</code>
 is the number of bootstrap samples.
 Default is 100. For Monte Carlo
