@@ -1,7 +1,7 @@
 ---
 title: "Mediation Models with Latent Variables"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2024-09-22"
+date: "2024-09-25"
 output:
   rmarkdown::html_vignette:
     number_sections: true

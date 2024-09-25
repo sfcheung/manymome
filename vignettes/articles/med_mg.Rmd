@@ -1,7 +1,7 @@
 ---
 title: "Multigroup Models With Mediation Effects"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2024-09-22"
+date: "2024-09-25"
 output:
   html_document:
     fig.align: "center"
@@ -204,7 +204,7 @@ fit_boot_out <- do_boot(fit = fit,
                         seed = 53253,
                         ncores = 8)
 #> 8 processes started to run bootstrapping.
-#> The expected CPU time is about 0 second(s).
+#> The expected CPU time is about 22.5 second(s).
 ```
 
 # Estimate Indirect Effects

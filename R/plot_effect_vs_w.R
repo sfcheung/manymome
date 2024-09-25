@@ -77,10 +77,10 @@
 #'
 #' @return
 #' [plot_effect_vs_w()] returns a
-#' [ggplot2] graph. Plotted if
+#' `ggplot2` graph. Plotted if
 #' not assigned to a name. It can be
 #' further modified like a usual
-#' [ggplot2] graph.
+#' `ggplot2` graph.
 #'
 #' @param object The output of
 #' [cond_indirect_effects()].

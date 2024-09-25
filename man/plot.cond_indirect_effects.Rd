@@ -141,10 +141,10 @@ statistics are always used.}
 Ignored.}
 }
 \value{
-A \link{ggplot2} graph. Plotted if
+A \code{ggplot2} graph. Plotted if
 not assigned to a name. It can be
 further modified like a usual
-\link{ggplot2} graph.
+\code{ggplot2} graph.
 }
 \description{
 Plot the conditional
