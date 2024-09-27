@@ -1,6 +1,13 @@
-# manymome 0.2.3.2
+# manymome 0.2.3.3
 
 ## New Features
+
+- The `plot()` method of the output
+  of `cond_indirect_effect()` now supports
+  using `facet_grid()` to plot the
+  conditional effects when there are
+  two or more moderators in a path.
+  (0.2.3.3)
 
 - If all paths have the same `x`
   variables, the argument `x` can be
