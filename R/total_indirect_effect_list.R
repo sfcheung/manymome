@@ -20,12 +20,14 @@
 #' of `indirect`-class objects.
 #'
 #' @param x Character. The name of the `x` variable.
-#' All paths start from `x` will be
-#' included.
+#' All paths starting from `x` will be
+#' included. Can be omitted if all paths
+#' have the same `x`.
 #'
 #' @param y Character. The name of the `y` variable.
-#' All paths end at `y` will be included.
-#'
+#' All paths ending at `y` will be included.
+#' Can be omitted if all paths have the
+#' same `y`.
 #'
 #' @seealso [many_indirect_effects()]
 #'
@@ -64,9 +66,27 @@
 total_indirect_effect <- function(object,
                                   x,
                                   y) {
-    if (missing(x) || missing(y)) {
-        stop("Both 'x' and 'y' must be supplied")
+    xs <- unique(unname(sapply(object, function(xx) xx$x)))
+    ys <- unique(unname(sapply(object, function(xx) xx$y)))
+    if (missing(x)) {
+        if (length(xs) != 1) {
+            stop("'x' must be one of ",
+                 paste(xs, collapse = ", "))
+          } else {
+            x <- xs
+          }
       }
+    if (missing(y)) {
+        if (length(ys) != 1) {
+            stop("'y' must be one of ",
+                 paste(ys, collapse = ", "))
+          } else {
+            y <- ys
+          }
+      }
+    # if (missing(x) || missing(y)) {
+    #     stop("Both 'x' and 'y' must be supplied")
+    #   }
     if (!is.list(object)) {
         stop("object is not a list")
       }

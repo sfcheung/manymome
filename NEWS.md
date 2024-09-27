@@ -1,4 +1,15 @@
-# manymome 0.2.3.1
+# manymome 0.2.3.2
+
+## New Features
+
+- If all paths have the same `x`
+  variables, the argument `x` can be
+  omitted when calling
+  `total_indirect_effect()`. Similarly,
+  if all paths have the same `y`
+  variables, the argument `y` can also be
+  omitted when calling
+  `total_indirect_effect()`. (0.2.3.2)
 
 ## Bug Fixes
 
