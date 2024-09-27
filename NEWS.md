@@ -1,3 +1,30 @@
+# manymome 0.2.3.3
+
+## New Features
+
+- The `plot()` method of the output
+  of `cond_indirect_effect()` now supports
+  using `facet_grid()` to plot the
+  conditional effects when there are
+  two or more moderators in a path.
+  (0.2.3.3)
+
+- If all paths have the same `x`
+  variables, the argument `x` can be
+  omitted when calling
+  `total_indirect_effect()`. Similarly,
+  if all paths have the same `y`
+  variables, the argument `y` can also be
+  omitted when calling
+  `total_indirect_effect()`. (0.2.3.2)
+
+## Bug Fixes
+
+- Fixed an issue related to
+  the internal function
+  `merge_model_matrix()` in some special
+  cases. (0.2.3.1)
+
 # manymome 0.2.3
 
 ## New Features

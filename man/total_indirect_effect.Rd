@@ -13,11 +13,14 @@ total_indirect_effect(object, x, y)
 of \code{indirect}-class objects.}
 
 \item{x}{Character. The name of the \code{x} variable.
-All paths start from \code{x} will be
-included.}
+All paths starting from \code{x} will be
+included. Can be omitted if all paths
+have the same \code{x}.}
 
 \item{y}{Character. The name of the \code{y} variable.
-All paths end at \code{y} will be included.}
+All paths ending at \code{y} will be included.
+Can be omitted if all paths have the
+same \code{y}.}
 }
 \value{
 An \code{indirect}-class
