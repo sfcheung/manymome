@@ -72,7 +72,7 @@ merge_model_matrix <- function(outputs) {
     mm <- lapply(outputs,
                  function(x) {
                     out <- stats::model.matrix(x,
-                              contrasts.arg = x$contrasts)[, -1]
+                              contrasts.arg = x$contrasts)[, -1, drop = FALSE]
                     y_data <- get_response_data(x)
                     cbind(y_data, out)
                   })
