@@ -1,3 +1,12 @@
+# manymome 0.2.3.1
+
+## Bug Fixes
+
+- Fixed an issue related to
+  the internal function
+  `merge_model_matrix()` in some special
+  cases. (0.2.3.1)
+
 # manymome 0.2.3
 
 ## New Features
