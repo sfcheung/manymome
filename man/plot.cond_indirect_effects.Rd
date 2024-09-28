@@ -23,6 +23,7 @@
   facet_grid_cols = NULL,
   facet_grid_rows = NULL,
   facet_grid_args = list(as.table = FALSE, labeller = "label_both"),
+  digits = 4,
   ...
 )
 }
@@ -153,6 +154,11 @@ arguments to be used in calling
 \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}. Ignored
 if \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}} is not
 used.}
+
+\item{digits}{The number of decimal
+places to be printed for numerical
+moderators when \code{facet_grid} is used.
+Default is 4.}
 
 \item{...}{Additional arguments.
 Ignored.}

@@ -1,4 +1,4 @@
-# manymome 0.2.3.4
+# manymome 0.2.3.5
 
 ## New Features
 
@@ -7,7 +7,7 @@
   using `facet_grid()` to plot the
   conditional effects when there are
   two or more moderators in a path.
-  (0.2.3.3)
+  (0.2.3.3, 0.2.3.5)
 
 ## Improvement
 
