@@ -656,9 +656,9 @@ cond_indirect <- function(x,
             est_vcov <- lm_est$vcov
           }
         if (is.null(lm_est$df_residual)) {
-            df_residual <- lm_list_vcov(fit)
-          } else {
             df_residual <- lm_df_residual(fit)
+          } else {
+            df_residual <- lm_est$df_residual
           }
         fit_data <- lm_est$data
       }
