@@ -32,7 +32,7 @@
 
     <a class="navbar-brand me-2" href="index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,7 +87,7 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9">
-<p>(Version 0.2.3.5, updated on 2024-09-28, <a href="https://sfcheung.github.io/manymome/news/index.html">release history</a>)</p>
+<p>(Version 0.2.3.7, updated on 2024-09-28, <a href="https://sfcheung.github.io/manymome/news/index.html">release history</a>)</p>
 <div class="section level1">
 <div class="page-header">
 <img src="logo.png" class="logo" alt=""><h1 id="manymome-">manymome <a class="anchor" aria-label="anchor" href="#manymome-"></a>
@@ -156,7 +156,7 @@
 </h1>
 <p>Despite the aforementioned advantages, the current version of <code>manymome</code> has the following limitations:</p>
 <ul>
-<li><p>Does not (officially) support categorical predictors.</p></li>
+<li><p>Does not (officially) support categorical <code>x</code>-variables with more than two categories. Note that most functions will work with dichotomous <code>x</code>-variables, and the effect of <code>x</code> is simply the difference in predicted <code>y</code> between the two levels if coded as 0 and 1 (or any coding with a difference of 1, e.g., 1 and 2).</p></li>
 <li><p>Does not support multilevel models (although <code>lavaan</code> does).</p></li>
 <li><p>For bootstrapping, only supports nonparametric bootstrapping, and supports only percentile and bias-corrected confidence interval. Does not support other bootstrapping methods such parametric bootstrapping.</p></li>
 <li><p>Only supports OLS estimation when <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> is used.</p></li>
