@@ -28,7 +28,7 @@
 #' @export
 
 print.lm_list <- function(x, ...) {
-    cat("\nThe models:\n")
+    cat("\nThe model(s):\n")
     lapply(x, function(y) print(y$call$formula))
     cat("\n")
     invisible(x)
