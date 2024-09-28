@@ -31,6 +31,9 @@
 get_intercept <- function(x,
                           fit,
                           est = NULL) {
+    if (!missing(fit)) {
+         fit <- auto_lm2list(fit)
+      }
     if (is.null(est)) {
       est <- lav_est(fit, se = FALSE, ci = FALSE)
     }

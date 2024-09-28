@@ -1,0 +1,46 @@
+skip_on_cran()
+
+library(testthat)
+library(manymome)
+suppressMessages(library(lavaan))
+
+test_that("auto_lm2list", {
+
+dat <- modmed_x1m3w4y1
+lm_y <- lm(y ~ x, dat)
+lm_m <- lm(m1 ~ x, dat)
+lm_all <- lm2list(lm_y, lm_m)
+lm_w <- lm(y ~ x*w1, dat)
+lm_yw <- lm2list(lm_w, lm(x ~ m1, dat))
+fit_lav <- sem(c("m1 ~ x", "y ~ x"), data = dat)
+
+expect_true(inherits(auto_lm2list(lm_y), "lm_list"))
+expect_true(inherits(auto_lm2list(lm_all), "lm_list"))
+expect_true(inherits(auto_lm2list(fit_lav), "lavaan"))
+expect_equal(length(all_indirect_paths(lm_y)), 0)
+expect_no_error(lm2boot_out_parallel(lm_m, R = 10, parallel = FALSE, progress = FALSE))
+expect_no_error(lm2boot_out(lm_m, R = 10, progress = FALSE))
+expect_true(check_path(x = "x", y = "y", fit = lm_y))
+tmp1 <- suppressWarnings(cond_indirect(x = "x", y = "y", fit = lm_w))
+tmp2 <- suppressWarnings(cond_indirect(x = "x", y = "y", fit = lm_yw))
+expect_equal(coef(tmp1), coef(tmp2))
+tmp1 <- suppressWarnings(indirect_effect(x = "x", y = "y", fit = lm_w))
+tmp2 <- suppressWarnings(indirect_effect(x = "x", y = "y", fit = lm_yw))
+expect_equal(coef(tmp1), coef(tmp2))
+tmp1 <- cond_indirect_effects(x = "x", y = "y", wlevels = "w1", fit = lm_w)
+tmp2 <- cond_indirect_effects(x = "x", y = "y", wlevels = "w1", fit = lm_yw)
+expect_equal(coef(tmp1), coef(tmp2))
+tmp1 <- do_boot(fit = lm_w, R = 10, seed = 1234, parallel = FALSE, progress = FALSE)
+tmp2 <- do_boot(fit = lm2list(lm_w), R = 10, seed = 1234, parallel = FALSE, progress = FALSE)
+expect_equal(tmp1[[1]]$est$est, tmp2[[1]]$est$est)
+expect_error(get_b(x = "x", y = "y", fit = lm_y))
+expect_error(get_b(x = "m1", y = "y", fit = lm2list(fit_lav)))
+expect_error(get_intercept(x = "x", fit = lm_y))
+expect_error(get_intercept(x = "m1", fit = lm2list(fit_lav)))
+tmp1 <- get_prod(x = "x", y = "y", fit = lm_w, est = lm2ptable(lm_w)$est, data = lm2ptable(lm_w)$data)
+tmp2 <- get_prod(x = "x", y = "y", fit = lm_yw, est = lm2ptable(lm_yw)$est, data = lm2ptable(lm_yw)$data)
+expect_equal(coef(tmp1), coef(tmp2))
+tmp1 <- mod_levels(w = "w1", fit = lm_w)$w1
+tmp2 <- mod_levels(w = "w1", fit = lm_yw)$w1
+expect_equal(tmp1, tmp2)
+})

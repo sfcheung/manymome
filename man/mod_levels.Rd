@@ -44,7 +44,10 @@ It can also be
 a \code{lavaan.mi} object
 returned by
 \code{\link[semTools:runMI]{semTools::runMI()}} or
-its wrapper, such as \code{\link[semTools:runMI]{semTools::sem.mi()}}.}
+its wrapper, such as \code{\link[semTools:runMI]{semTools::sem.mi()}}.
+If it is a single model fitted by
+\code{\link[=lm]{lm()}}, it will be automatically converted
+to a list by \code{\link[=lm2list]{lm2list()}}.}
 
 \item{w_type}{Character. Whether the
 moderator is a \code{"numeric"} variable

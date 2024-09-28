@@ -247,7 +247,7 @@ indirect_i <- function(x,
     # Need these arguments to compute SE
     # - est_vcov
     # - df_residual
-
+    fit <- auto_lm2list(fit)
     if (is.null(est)) {
       est <- lav_est(fit)
     }

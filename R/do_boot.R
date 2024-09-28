@@ -58,11 +58,14 @@
 #' the variables in each bootstrap
 #' sample.
 #'
-#' @param fit Either (a) a list of `lm`
+#' @param fit It can be (a) a list of `lm`
 #' class objects, or the output of
 #' [lm2list()] (i.e., an `lm_list`-class
 #' object), or (b) the output of
 #' [lavaan::sem()].
+#' If it is a single model fitted by
+#' [lm()], it will be automatically converted
+#' to a list by [lm2list()].
 #'
 #' @param R The number of bootstrap
 #' samples. Default is 100.
@@ -137,6 +140,9 @@ do_boot <- function(fit,
                     ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                     make_cluster_args = list(),
                     progress = TRUE) {
+    if (!missing(fit)) {
+         fit <- auto_lm2list(fit)
+      }
     fit_type <- cond_indirect_check_fit(fit)
     if (fit_type == "lavaan.mi") {
         stop("Bootstrapping does not support multiple imputation.")

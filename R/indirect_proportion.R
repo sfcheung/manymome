@@ -101,6 +101,7 @@ indirect_proportion <- function(x,
                                 m = NULL,
                                 fit = NULL) {
     # Support for boot tentatively added but not enabled.
+    fit <- auto_lm2list(fit)
     boot_type <- "perc"
     if (is.null(m)) {
         stop("m cannot be NULL.")
