@@ -70,7 +70,10 @@ cond_se <- function(xi,
                     est_vcov,
                     wvalues) {
     if (all(is.na(xi))) return(0)
-    if (is.null(xi$prod)) return(0)
+    if (is.null(xi$prod)) {
+        out <- sqrt(est_vcov[[xi$y]][xi$x, xi$x, drop = FALSE])
+        return(out)
+      }
     prod_i <- xi$prod
     b_i <- xi$b
     w_i <- xi$w

@@ -12,7 +12,10 @@ cond_out <- cond_indirect_effects(wlevels = "w",
                                   y = "y",
                                   fit = fit_lm)
 test_that("No moderator", {
-    expect_false(any(grepl("standard errors",
-                           capture.output(print(cond_out)))))
-    expect_true(is.null(cond_effects_original_se(cond_out)))
+    # Updated in 0.2.3.8.
+    # SEs are computed even for a direct path in
+    # a y-model with no product term.
+    expect_true(any(grepl("standard errors",
+                          capture.output(print(cond_out)))))
+    expect_false(is.null(cond_effects_original_se(cond_out)))
   })
