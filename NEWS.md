@@ -1,4 +1,4 @@
-# manymome 0.2.3.10
+# manymome 0.2.3.11
 
 ## New Features
 
@@ -45,12 +45,15 @@
   original standard error when
   appropriate. (0.2.3.10)
 
-## Documentation
+## Documentation and Notes
 
 - Corrected `README` to remark that
   dichotomous `x`-variables are supported
   by most functions if coded as a
   numeric dummy variable. (0.2.3.7)
+
+- Fix the wording in the printout
+  of `lm_list` objects. (0.2.3.11)
 
 ## Bug Fixes
 
