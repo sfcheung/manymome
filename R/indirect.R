@@ -407,18 +407,24 @@ indirect_i <- function(x,
     if (is.null(m) &&
         !is.null(est_vcov) &&
         !is.null(df_residual) &&
-        ngroups == 1 &&
-        has_w) {
+        ngroups == 1) {
         # TODO: Add support for multigroup-models
         est_vcov <- est_vcov_list(est_vcov = est_vcov,
                                   est = est)
-        if (!is.null(wvalues)) {
-            bs_se <- sapply(prods_tmp,
-                            FUN = cond_se,
-                            est_vcov = est_vcov,
-                            wvalues = wvalues)
-            bs_df_residual <- df_residual[y]
+        if (has_w) {
+            # A direct path with some product terms in the y-model
+            if (!is.null(wvalues)) {
+                bs_se <- sapply(prods_tmp,
+                                FUN = cond_se,
+                                est_vcov = est_vcov,
+                                wvalues = wvalues)
+                bs_df_residual <- unname(df_residual[y])
+              } else {
+                bs_se <- sqrt(est_vcov[[y]][x, x])
+                bs_df_residual <- unname(df_residual[y])
+              }
           } else {
+            # A direct path with no product term in the y-model
             bs_se <- sqrt(est_vcov[[y]][x, x])
             bs_df_residual <- unname(df_residual[y])
           }
@@ -426,6 +432,8 @@ indirect_i <- function(x,
         bs_se <- NA
         bs_df_residual <- NA
       }
+    bs_se <- unname(bs_se)
+    bs_df_residual <- unname(bs_df_residual)
     b_cond_str <- mapply(gen_computation, xi = prods, yi = bs_org,
                           yiname = names(bs_org),
                           MoreArgs = list(digits = computation_digits,
