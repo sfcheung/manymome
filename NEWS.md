@@ -1,4 +1,4 @@
-# manymome 0.2.3.7
+# manymome 0.2.3.8
 
 ## New Features
 
@@ -27,6 +27,11 @@
   use the output of `lm()` directly,
   such as when computing effects in a
   moderation-only model. (0.2.3.4)
+
+- *P*-values and confidence intervals
+  based on standard errors will now be
+  computed even for direct paths not
+  moderated. (0.2.3.8)
 
 ## Documentation
 
