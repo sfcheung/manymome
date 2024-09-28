@@ -6,7 +6,9 @@
 #' indirect effect of one row of the
 #' output of [cond_indirect_effects()].
 #'
-#' @details It just extracts the
+#' @details
+#' [get_one_cond_indirect_effect()]
+#' extracts the
 #' corresponding output of
 #' [cond_indirect()] from the requested
 #' row.
@@ -17,11 +19,13 @@
 #' @param row The row number of the row
 #' to be retrieved.
 #'
-#' @return An `indirect`-class object,
+#' @return
+#' [get_one_cond_indirect_effect()]
+#' returns an `indirect`-class object,
 #' similar to the output of
 #' [indirect_effect()] and
 #' [cond_indirect()]. See
-#' [indirect_effect)] and
+#' [indirect_effect()] and
 #' [cond_indirect()] for details on
 #' these classes.
 #'
@@ -57,6 +61,8 @@
 #'                               wlevels = c("w1", "w4"), fit = fit)
 #' get_one_cond_indirect_effect(out2, 4)
 #'
+#' @rdname get_one_cond_indirect_effect
+#'
 #' @export
 
 get_one_cond_indirect_effect <- function(object, row) {
@@ -65,10 +71,61 @@ get_one_cond_indirect_effect <- function(object, row) {
     out
   }
 
-#' @describeIn
-#' get_one_cond_indirect_effect An alias
-#' to [get_one_cond_indirect_effect()]
+#' @rdname get_one_cond_indirect_effect
+#'
+#' @details
+#' [get_one_cond_effect()] is an
+#' alias of [get_one_cond_indirect_effect()].
 #'
 #' @export
 
 get_one_cond_effect <- get_one_cond_indirect_effect
+
+#' @param ... Optional arguments to be
+#' passed to teh `print` method of
+#' the output of
+#' [indirect_effect()] and
+#' [cond_indirect()]
+#'
+#' @return
+#' [print_all_cond_indirect_effects()]
+#' returns the object invisibly. Called
+#' for its side effect.
+#'
+#' @examples
+#'
+#' print_all_cond_indirect_effects(out2, digits = 2)
+#'
+#' @rdname get_one_cond_indirect_effect
+#'
+#' @details
+#' [print_all_cond_indirect_effects()] loops over
+#' the conditional effects and print all
+#' of them.
+#'
+#' @export
+
+print_all_cond_indirect_effects <- function(object, ...) {
+    full_output <- attr(object, "full_output")
+    wlevels <- attr(object, "wlevels")
+    wlevels_names <- rownames(wlevels)
+    section_sep <- paste0(rep("-",
+                          round(getOption("width") * .80)),
+                          collapse = "")
+    for (xx in seq_along(full_output)) {
+        cat(section_sep, "\n")
+        cat("Moderator Level:",
+            wlevels_names[xx], "\n")
+        print(full_output[[xx]], ...)
+      }
+    return(invisible(object))
+  }
+
+#' @rdname get_one_cond_indirect_effect
+#'
+#' @details
+#' [print_all_cond_effects()] is an
+#' alias of [print_all_cond_indirect_effects()].
+#'
+#' @export
+print_all_cond_effects <- print_all_cond_indirect_effects

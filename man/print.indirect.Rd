@@ -5,7 +5,16 @@
 \title{Print an 'indirect' Class
 Object}
 \usage{
-\method{print}{indirect}(x, digits = 3, pvalue = FALSE, pvalue_digits = 3, se = FALSE, ...)
+\method{print}{indirect}(
+  x,
+  digits = 3,
+  pvalue = NULL,
+  pvalue_digits = 3,
+  se = NULL,
+  level = 0.95,
+  se_ci = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{The output of
@@ -16,22 +25,60 @@ Object}
 display. Default is 3.}
 
 \item{pvalue}{Logical. If \code{TRUE},
-asymmetric \emph{p}-value based on
+asymmetric \emph{p}-values based on
 bootstrapping will be printed if
-available.}
+available. Default to \code{FALSE} if
+confidence intervals have already
+computed. Default to \code{TRUE} if
+no confidence intervals have been
+computed and the original standard
+errors are to be used. See Details
+on when the original standard errors
+will be used by default. Default is
+\code{NULL} and its value determined as
+stated above.}
 
 \item{pvalue_digits}{Number of decimal
 places to display for the \emph{p}-value.
 Default is 3.}
 
 \item{se}{Logical. If \code{TRUE} and
-confidence interval is available, the
-standard error of the estimate is
-also printed. This is simply the
+confidence interval has been formed,
+the standard error of the estimates
+are also printed. It is simply the
 standard deviation of the bootstrap
 estimates or Monte Carlo simulated
 values, depending on the method used
-to form the confidence interval.}
+to form the confidence intervals.
+Default to \code{FALSE} if
+confidence interval has been
+formed.
+Default to \code{TRUE} if
+no confidence interval has been
+computed and the original standard
+errors are to be used. See Details
+on when the original standard errors
+will be used by default.
+Default is \code{NULL} and its value
+determined as stated above.}
+
+\item{level}{The level of confidence
+for the confidence interval computed
+from the original standard errors. Used only for
+paths without mediators and both
+\code{x}- and \code{y}-variables are not
+standardized.}
+
+\item{se_ci}{Logical. If \code{TRUE} and
+confidence interval has not been
+computed, the function will try
+to compute them from stored
+standard error if the original
+standard error is to be used.
+Ignored
+if confidence interval has already
+been computed. Default
+to \code{TRUE}.}
 
 \item{...}{Other arguments. Not used.}
 }
@@ -74,6 +121,53 @@ directly. Therefore, \emph{p}-value is not
 printed by default. Nevertheless,
 users who need it can request it
 by setting \code{pvalue} to \code{TRUE}.
+\subsection{Using Original Standard Errors}{
+
+If these conditions are met, the
+stored standard error, if available,
+will be used to test an effect and
+form it confidence interval:
+\itemize{
+\item Confidence interval has not been
+formed (e.g., by bootstrapping or
+Monte Carlo).
+\item The path has no mediators.
+\item The model has only one group.
+\item Both the \code{x}-variable and the
+\code{y}-variable are not standardized.
+}
+
+If the model is fitted by OLS
+regression (e.g., using \code{\link[stats:lm]{stats::lm()}}),
+then the variance-covariance matrix
+of the coefficient estimates will be
+used, and the \emph{p}-value and confidence
+interval are computed from the \emph{t}
+statistic.
+
+If the model is fitted by structural
+equation modeling using \code{lavaan}, then
+the variance-covariance computed by
+\code{lavaan} will be used, and the \emph{p}-value
+and confidence interval are computed
+from the \emph{z} statistic.
+}
+
+\subsection{Caution}{
+
+If the model is fitted by structural
+equation modeling and has moderators,
+the standard errors, \emph{p}-values,
+and confidence interval computed
+from the variance-covariance matrices
+for conditional effects
+can only be trusted if all covariances
+involving the product terms are free.
+If any some of them are fixed, for example,
+fixed to zero, it is possible
+that the model is not invariant to
+linear transformation of the variables.
+}
 }
 \examples{
 

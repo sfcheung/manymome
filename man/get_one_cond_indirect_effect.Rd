@@ -3,6 +3,8 @@
 \name{get_one_cond_indirect_effect}
 \alias{get_one_cond_indirect_effect}
 \alias{get_one_cond_effect}
+\alias{print_all_cond_indirect_effects}
+\alias{print_all_cond_effects}
 \title{Get The Conditional Indirect
 Effect for One Row of
 'cond_indirect_effects' Output}
@@ -10,6 +12,10 @@ Effect for One Row of
 get_one_cond_indirect_effect(object, row)
 
 get_one_cond_effect(object, row)
+
+print_all_cond_indirect_effects(object, ...)
+
+print_all_cond_effects(object, ...)
 }
 \arguments{
 \item{object}{The output of
@@ -17,18 +23,26 @@ get_one_cond_effect(object, row)
 
 \item{row}{The row number of the row
 to be retrieved.}
+
+\item{...}{Optional arguments to be
+passed to teh \code{print} method of
+the output of
+\code{\link[=indirect_effect]{indirect_effect()}} and
+\code{\link[=cond_indirect]{cond_indirect()}}}
 }
 \value{
-An \code{indirect}-class object,
+\code{\link[=get_one_cond_indirect_effect]{get_one_cond_indirect_effect()}}
+returns an \code{indirect}-class object,
 similar to the output of
 \code{\link[=indirect_effect]{indirect_effect()}} and
 \code{\link[=cond_indirect]{cond_indirect()}}. See
-[indirect_effect)] and
+\code{\link[=indirect_effect]{indirect_effect()}} and
 \code{\link[=cond_indirect]{cond_indirect()}} for details on
 these classes.
 
-[indirect_effect)]: R:indirect_effect)
-\code{\link[=cond_indirect]{cond_indirect()}}: R:cond_indirect()
+\code{\link[=print_all_cond_indirect_effects]{print_all_cond_indirect_effects()}}
+returns the object invisibly. Called
+for its side effect.
 }
 \description{
 Return the conditional
@@ -36,17 +50,22 @@ indirect effect of one row of the
 output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 }
 \details{
-It just extracts the
+\code{\link[=get_one_cond_indirect_effect]{get_one_cond_indirect_effect()}}
+extracts the
 corresponding output of
 \code{\link[=cond_indirect]{cond_indirect()}} from the requested
 row.
-}
-\section{Functions}{
-\itemize{
-\item \code{get_one_cond_effect()}: An alias
-to \code{\link[=get_one_cond_indirect_effect]{get_one_cond_indirect_effect()}}
 
-}}
+\code{\link[=get_one_cond_effect]{get_one_cond_effect()}} is an
+alias of \code{\link[=get_one_cond_indirect_effect]{get_one_cond_indirect_effect()}}.
+
+\code{\link[=print_all_cond_indirect_effects]{print_all_cond_indirect_effects()}} loops over
+the conditional effects and print all
+of them.
+
+\code{\link[=print_all_cond_effects]{print_all_cond_effects()}} is an
+alias of \code{\link[=print_all_cond_indirect_effects]{print_all_cond_indirect_effects()}}.
+}
 \examples{
 
 library(lavaan)
@@ -75,6 +94,9 @@ get_one_cond_indirect_effect(out1, 3)
 out2 <- cond_indirect_effects(x = "x", y = "y", m = c("m1", "m2"),
                               wlevels = c("w1", "w4"), fit = fit)
 get_one_cond_indirect_effect(out2, 4)
+
+
+print_all_cond_indirect_effects(out2, digits = 2)
 
 }
 \seealso{

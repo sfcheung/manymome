@@ -1,4 +1,4 @@
-# manymome 0.2.3.8
+# manymome 0.2.3.10
 
 ## New Features
 
@@ -32,6 +32,18 @@
   based on standard errors will now be
   computed even for direct paths not
   moderated. (0.2.3.8)
+
+- Added `print_all_cond_indirect_effects()`
+  and `print_all_cond_effects()` for
+  printing the full output of all
+  conditional indirect effects.
+  (0.2.3.9)
+
+- Updated the `print` method of
+  indirect effect to print *p*-value
+  and confidence interval computed from
+  original standard error when
+  appropriate. (0.2.3.10)
 
 ## Documentation
 
