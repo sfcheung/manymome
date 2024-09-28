@@ -11,7 +11,7 @@ cond_indirect()."><meta property="og:image" content="https://sfcheung.github.io/
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.10</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,16 @@ output of <code><a href="cond_indirect.html">indirect_effect()</a></code> or
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'indirect'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, digits <span class="op">=</span> <span class="fl">3</span>, pvalue <span class="op">=</span> <span class="cn">FALSE</span>, pvalue_digits <span class="op">=</span> <span class="fl">3</span>, se <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  digits <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  pvalue <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pvalue_digits <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  se <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  se_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -93,9 +102,18 @@ display. Default is 3.</p></dd>
 
 <dt id="arg-pvalue">pvalue<a class="anchor" aria-label="anchor" href="#arg-pvalue"></a></dt>
 <dd><p>Logical. If <code>TRUE</code>,
-asymmetric <em>p</em>-value based on
+asymmetric <em>p</em>-values based on
 bootstrapping will be printed if
-available.</p></dd>
+available. Default to <code>FALSE</code> if
+confidence intervals have already
+computed. Default to <code>TRUE</code> if
+no confidence intervals have been
+computed and the original standard
+errors are to be used. See Details
+on when the original standard errors
+will be used by default. Default is
+<code>NULL</code> and its value determined as
+stated above.</p></dd>
 
 
 <dt id="arg-pvalue-digits">pvalue_digits<a class="anchor" aria-label="anchor" href="#arg-pvalue-digits"></a></dt>
@@ -106,13 +124,46 @@ Default is 3.</p></dd>
 
 <dt id="arg-se">se<a class="anchor" aria-label="anchor" href="#arg-se"></a></dt>
 <dd><p>Logical. If <code>TRUE</code> and
-confidence interval is available, the
-standard error of the estimate is
-also printed. This is simply the
+confidence interval has been formed,
+the standard error of the estimates
+are also printed. It is simply the
 standard deviation of the bootstrap
 estimates or Monte Carlo simulated
 values, depending on the method used
-to form the confidence interval.</p></dd>
+to form the confidence intervals.
+Default to <code>FALSE</code> if
+confidence interval has been
+formed.
+Default to <code>TRUE</code> if
+no confidence interval has been
+computed and the original standard
+errors are to be used. See Details
+on when the original standard errors
+will be used by default.
+Default is <code>NULL</code> and its value
+determined as stated above.</p></dd>
+
+
+<dt id="arg-level">level<a class="anchor" aria-label="anchor" href="#arg-level"></a></dt>
+<dd><p>The level of confidence
+for the confidence interval computed
+from the original standard errors. Used only for
+paths without mediators and both
+<code>x</code>- and <code>y</code>-variables are not
+standardized.</p></dd>
+
+
+<dt id="arg-se-ci">se_ci<a class="anchor" aria-label="anchor" href="#arg-se-ci"></a></dt>
+<dd><p>Logical. If <code>TRUE</code> and
+confidence interval has not been
+computed, the function will try
+to compute them from stored
+standard error if the original
+standard error is to be used.
+Ignored
+if confidence interval has already
+been computed. Default
+to <code>TRUE</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -151,7 +202,53 @@ will exclude zero.</p>
 directly. Therefore, <em>p</em>-value is not
 printed by default. Nevertheless,
 users who need it can request it
-by setting <code>pvalue</code> to <code>TRUE</code>.</p>
+by setting <code>pvalue</code> to <code>TRUE</code>.</p><div class="section">
+<h3 id="using-original-standard-errors">Using Original Standard Errors<a class="anchor" aria-label="anchor" href="#using-original-standard-errors"></a></h3>
+
+
+<p>If these conditions are met, the
+stored standard error, if available,
+will be used to test an effect and
+form it confidence interval:</p><ul><li><p>Confidence interval has not been
+formed (e.g., by bootstrapping or
+Monte Carlo).</p></li>
+<li><p>The path has no mediators.</p></li>
+<li><p>The model has only one group.</p></li>
+<li><p>Both the <code>x</code>-variable and the
+<code>y</code>-variable are not standardized.</p></li>
+</ul><p>If the model is fitted by OLS
+regression (e.g., using <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">stats::lm()</a></code>),
+then the variance-covariance matrix
+of the coefficient estimates will be
+used, and the <em>p</em>-value and confidence
+interval are computed from the <em>t</em>
+statistic.</p>
+<p>If the model is fitted by structural
+equation modeling using <code>lavaan</code>, then
+the variance-covariance computed by
+<code>lavaan</code> will be used, and the <em>p</em>-value
+and confidence interval are computed
+from the <em>z</em> statistic.</p>
+</div>
+
+<div class="section">
+<h3 id="caution">Caution<a class="anchor" aria-label="anchor" href="#caution"></a></h3>
+
+
+<p>If the model is fitted by structural
+equation modeling and has moderators,
+the standard errors, <em>p</em>-values,
+and confidence interval computed
+from the variance-covariance matrices
+for conditional effects
+can only be trusted if all covariances
+involving the product terms are free.
+If any some of them are fixed, for example,
+fixed to zero, it is possible
+that the model is not invariant to
+linear transformation of the variables.</p>
+</div>
+
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
