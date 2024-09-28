@@ -612,10 +612,16 @@ plot.cond_indirect_effects <- function(
             if (!all(facet_grid_cols %in% w_names)) {
                 stop("'facet_grid_cols' must be among the moderators.")
               }
+            if (length(facet_grid_cols) != 1) {
+                stop("Having more than one column in facet_grid is not yet supported.")
+              }
           }
         if (!is.null(facet_grid_rows)) {
             if (!all(facet_grid_rows %in% w_names)) {
                 stop("'facet_grid_rows' must be among the moderators.")
+              }
+            if (length(facet_grid_rows) != 1) {
+                stop("Having more than one row in facet_grid is not yet supported.")
               }
           }
         w_names_in <- setdiff(w_names, union(facet_grid_cols, facet_grid_rows))

@@ -1,4 +1,4 @@
-# manymome 0.2.3.5
+# manymome 0.2.3.7
 
 ## New Features
 
@@ -7,7 +7,7 @@
   using `facet_grid()` to plot the
   conditional effects when there are
   two or more moderators in a path.
-  (0.2.3.3, 0.2.3.5)
+  (0.2.3.3, 0.2.3.5, 0.2.3.6)
 
 ## Improvement
 
@@ -27,6 +27,13 @@
   use the output of `lm()` directly,
   such as when computing effects in a
   moderation-only model. (0.2.3.4)
+
+## Documentation
+
+- Corrected `README` to remark that
+  dichotomous `x`-variables are supported
+  by most functions if coded as a
+  numeric dummy variable. (0.2.3.7)
 
 ## Bug Fixes
 
