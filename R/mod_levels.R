@@ -56,6 +56,9 @@
 #' returned by
 #' [semTools::runMI()] or
 #' its wrapper, such as [semTools::sem.mi()].
+#' If it is a single model fitted by
+#' [lm()], it will be automatically converted
+#' to a list by [lm2list()].
 #'
 #' @param w_type Character. Whether the
 #' moderator is a `"numeric"` variable
@@ -226,6 +229,9 @@ mod_levels <- function(w,
                        values = NULL,
                        reference_group_label = NULL,
                        descending = TRUE) {
+    if (!missing(fit)) {
+         fit <- auto_lm2list(fit)
+      }
     fit_type <- cond_indirect_check_fit(fit)
     if (fit_type == "lavaan") {
         if (lavaan::lavTech(fit, "ngroups") > 1) {
@@ -317,6 +323,9 @@ mod_levels_list <- function(...,
                             prefix = NULL,
                             descending = TRUE,
                             merge = FALSE) {
+    if (!missing(fit)) {
+         fit <- auto_lm2list(fit)
+      }
     x <- list(...)
     p <- length(x)
     if (is.null(sd_from_mean)) {

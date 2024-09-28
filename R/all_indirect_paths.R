@@ -31,10 +31,13 @@
 #' columns, `x`, `y`, and `m`, which can be used by
 #' functions such as [indirect_effect()].
 #'
-#' @param fit A fit object. Either the output of
+#' @param fit A fit object. It can be the output of
 #' [lavaan::lavaan()] or its wrapper such as [lavaan::sem()],
 #' or a list of the output of [lm()] or the output of
 #' [lm2list()].
+#' If it is a single model fitted by
+#' [lm()], it will be automatically converted
+#' to a list by [lm2list()].
 #'
 #' @param exclude A character vector of variables to be excluded
 #' in the search, such as control variables.
@@ -146,6 +149,9 @@ all_indirect_paths <- function(fit = NULL,
                                x = NULL,
                                y = NULL,
                                group = NULL) {
+    if (!is.null(fit)) {
+        fit <- auto_lm2list(fit)
+      }
     fit_type <- cond_indirect_check_fit(fit)
     if (is.na(fit_type)) {
         stop("'fit' is not of a supported type.")

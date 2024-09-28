@@ -187,6 +187,11 @@
 #' if [ggplot2::facet_grid()] is not
 #' used.
 #'
+#' @param digits The number of decimal
+#' places to be printed for numerical
+#' moderators when `facet_grid` is used.
+#' Default is 4.
+#'
 #' @param ... Additional arguments.
 #' Ignored.
 #'
@@ -284,6 +289,7 @@ plot.cond_indirect_effects <- function(
                             facet_grid_rows = NULL,
                             facet_grid_args = list(as.table = FALSE,
                                                    labeller = "label_both"),
+                            digits = 4,
                             ...
                     ) {
     has_groups <- cond_indirect_effects_has_groups(x)
@@ -617,11 +623,14 @@ plot.cond_indirect_effects <- function(
             w_names_in <- NULL
           }
         plot_df_tmp <- w_to_numeric(plot_df,
-                                    w_names = w_names)
+                                    w_names = w_names,
+                                    digits = digits)
         plot_df_xstart_tmp <- w_to_numeric(plot_df_xstart,
-                                           w_names = w_names)
+                                           w_names = w_names,
+                                           digits = digits)
         plot_df_xend_tmp <- w_to_numeric(plot_df_xend,
-                                         w_names = w_names)
+                                         w_names = w_names,
+                                         digits = digits)
         plot_df_xstart_end <- plot_df_xstart_tmp
         plot_df_xstart_end[paste0(x, "___end")] <- plot_df_xend_tmp[, x, drop = TRUE]
         plot_df_xstart_end[paste0(y, "___end")] <- plot_df_xend_tmp[, y, drop = TRUE]
@@ -702,8 +711,9 @@ w_to_numeric <- function(xx,
     for (i in colnames(xx)) {
         if (is.numeric(xx[, i]) &&
             (i %in% w_names)) {
-            xx[, i] <- as.factor(round(xx[, i],
-                                 digits = digits))
+            xx[, i] <- as.factor(formatC(xx[, i],
+                                         digits = digits,
+                                         format = "f"))
           }
       }
     xx

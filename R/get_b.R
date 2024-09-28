@@ -32,6 +32,9 @@ get_b <- function(x,
                   fit,
                   est = NULL,
                   group_number = NULL) {
+    if (!missing(fit)) {
+         fit <- auto_lm2list(fit)
+      }
     if (is.null(est)) {
       est <- lav_est(fit, se = FALSE, ci = FALSE)
     }

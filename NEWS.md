@@ -1,4 +1,4 @@
-# manymome 0.2.3.3
+# manymome 0.2.3.5
 
 ## New Features
 
@@ -7,7 +7,9 @@
   using `facet_grid()` to plot the
   conditional effects when there are
   two or more moderators in a path.
-  (0.2.3.3)
+  (0.2.3.3, 0.2.3.5)
+
+## Improvement
 
 - If all paths have the same `x`
   variables, the argument `x` can be
@@ -17,6 +19,14 @@
   variables, the argument `y` can also be
   omitted when calling
   `total_indirect_effect()`. (0.2.3.2)
+
+- If appropriate, most functions will
+  automatically convert a single
+  model fitted by `lm()` to a list by
+  `lm2list()`. This allows users to
+  use the output of `lm()` directly,
+  such as when computing effects in a
+  moderation-only model. (0.2.3.4)
 
 ## Bug Fixes
 

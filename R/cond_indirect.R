@@ -198,6 +198,9 @@
 #' returned by
 #' [semTools::runMI()] or
 #' its wrapper, such as [semTools::sem.mi()].
+#' If it is a single model fitted by
+#' [lm()], it will be automatically converted
+#' to a list by [lm2list()].
 #'
 #' @param est The output of
 #' [lavaan::parameterEstimates()]. If
@@ -528,6 +531,7 @@ cond_indirect <- function(x,
                      ci_type = NULL,
                      group = NULL,
                      boot_type = c("perc", "bc")) {
+    fit <- auto_lm2list(fit)
     boot_type <- match.arg(boot_type)
     fit_type <- cond_indirect_check_fit(fit)
     chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
@@ -827,6 +831,7 @@ indirect_effect <- function(x,
                      ci_type = NULL,
                      boot_type = c("perc", "bc"),
                      group = NULL) {
+    fit <- auto_lm2list(fit)
     boot_type <- match.arg(boot_type)
     cond_indirect(x = x,
                   y = y,
@@ -975,6 +980,7 @@ cond_indirect_effects <- function(wlevels,
                                   boot_type = c("perc", "bc"),
                                   groups = NULL,
                                   ...) {
+    fit <- auto_lm2list(fit)
     boot_type <- match.arg(boot_type)
     # Check the number of groups and handle multiple-group models
     has_group <- FALSE

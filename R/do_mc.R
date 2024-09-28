@@ -134,6 +134,9 @@ do_mc <- function(fit,
                     ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                     make_cluster_args = list(),
                     progress = TRUE) {
+    if (!missing(fit)) {
+         fit <- auto_lm2list(fit)
+      }
     fit_type <- cond_indirect_check_fit(fit)
     if (fit_type == "lavaan" || fit_type == "lavaan.mi") {
         fit0 <- gen_mc_est(fit = fit,
@@ -161,6 +164,9 @@ gen_mc_est <- function(fit,
                        seed = NULL) {
     # fit_vcov <- tryCatch(lavaan::lavInspect(fit, "vcov"),
     #                         error = function(e) e)
+    if (!missing(fit)) {
+         fit <- auto_lm2list(fit)
+      }
     fit_vcov <- tryCatch(get_vcov(fit),
                          error = function(e) e)
       if (inherits(fit_vcov, "error")) {

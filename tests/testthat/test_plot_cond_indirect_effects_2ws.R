@@ -19,9 +19,9 @@ out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "m3", y = "y", fit = fit_
 test_that("Two moderators", {
   expect_no_error(plot(out_1))
   expect_no_error(plot(out_1, facet_grid_rows = "gp"))
-  expect_no_error(plot(out_1, facet_grid_cols = "gp"))
+  expect_no_error(plot(out_1, facet_grid_cols = "gp", digits = 3))
   expect_no_error(plot(out_1, facet_grid_rows = "w4"))
-  expect_no_error(plot(out_1, facet_grid_cols = "w4"))
+  expect_no_error(plot(out_1, facet_grid_cols = "w4", digits = 2))
 
   expect_no_error(plot(out_1, graph_type = "tumble"))
   expect_no_error(plot(out_1, facet_grid_rows = "gp", graph_type = "tumble"))
@@ -43,7 +43,7 @@ out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "m3", y = "y", fit = fit_
 test_that("Three moderators", {
   expect_no_error(plot(out_1))
   expect_no_error(plot(out_1, facet_grid_rows = "gp", facet_grid_cols = "city"))
-  expect_no_error(plot(out_1, facet_grid_rows = "gp", facet_grid_cols = "w4"))
+  expect_no_error(plot(out_1, facet_grid_rows = "gp", facet_grid_cols = "w4", digits = 1))
   expect_no_error(plot(out_1, facet_grid_rows = "w4", facet_grid_cols = "city"))
 
   expect_no_error(plot(out_1, graph_type = "tumble"))
