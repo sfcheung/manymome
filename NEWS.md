@@ -1,4 +1,4 @@
-# manymome 0.2.3.9
+# manymome 0.2.3.10
 
 ## New Features
 
@@ -38,6 +38,12 @@
   printing the full output of all
   conditional indirect effects.
   (0.2.3.9)
+
+- Updated the `print` method of
+  indirect effect to print *p*-value
+  and confidence interval computed from
+  original standard error when
+  appropriate. (0.2.3.10)
 
 ## Documentation
 

@@ -35,6 +35,54 @@
 #' users who need it can request it
 #' by setting `pvalue` to `TRUE`.
 #'
+#' ## Using Original Standard Errors
+#'
+#' If these conditions are met, the
+#' stored standard error, if available,
+#' will be used to test an effect and
+#' form it confidence interval:
+#'
+#' - Confidence interval has not been
+#'  formed (e.g., by bootstrapping or
+#'  Monte Carlo).
+#'
+#' - The path has no mediators.
+#'
+#' - The model has only one group.
+#'
+#' - Both the `x`-variable and the
+#'  `y`-variable are not standardized.
+#'
+#' If the model is fitted by OLS
+#' regression (e.g., using [stats::lm()]),
+#' then the variance-covariance matrix
+#' of the coefficient estimates will be
+#' used, and the *p*-value and confidence
+#' interval are computed from the *t*
+#' statistic.
+#'
+#' If the model is fitted by structural
+#' equation modeling using `lavaan`, then
+#' the variance-covariance computed by
+#' `lavaan` will be used, and the *p*-value
+#' and confidence interval are computed
+#' from the *z* statistic.
+#'
+##' ## Caution
+#'
+#' If the model is fitted by structural
+#' equation modeling and has moderators,
+#' the standard errors, *p*-values,
+#' and confidence interval computed
+#' from the variance-covariance matrices
+#' for conditional effects
+#' can only be trusted if all covariances
+#' involving the product terms are free.
+#' If any some of them are fixed, for example,
+#' fixed to zero, it is possible
+#' that the model is not invariant to
+#' linear transformation of the variables.
+#'
 #' @return `x` is returned invisibly.
 #' Called for its side effect.
 #'
@@ -46,22 +94,61 @@
 #' display. Default is 3.
 #'
 #' @param pvalue Logical. If `TRUE`,
-#' asymmetric *p*-value based on
+#' asymmetric *p*-values based on
 #' bootstrapping will be printed if
-#' available.
+#' available. Default to `FALSE` if
+#' confidence intervals have already
+#' computed. Default to `TRUE` if
+#' no confidence intervals have been
+#' computed and the original standard
+#' errors are to be used. See Details
+#' on when the original standard errors
+#' will be used by default. Default is
+#' `NULL` and its value determined as
+#' stated above.
 #'
 #' @param pvalue_digits Number of decimal
 #' places to display for the *p*-value.
 #' Default is 3.
 #'
 #' @param se Logical. If `TRUE` and
-#' confidence interval is available, the
-#' standard error of the estimate is
-#' also printed. This is simply the
+#' confidence interval has been formed,
+#' the standard error of the estimates
+#' are also printed. It is simply the
 #' standard deviation of the bootstrap
 #' estimates or Monte Carlo simulated
 #' values, depending on the method used
-#' to form the confidence interval.
+#' to form the confidence intervals.
+#' Default to `FALSE` if
+#' confidence interval has been
+#' formed.
+#' Default to `TRUE` if
+#' no confidence interval has been
+#' computed and the original standard
+#' errors are to be used. See Details
+#' on when the original standard errors
+#' will be used by default.
+#' Default is `NULL` and its value
+#' determined as stated above.
+#'
+#' @param level The level of confidence
+#' for the confidence interval computed
+#' from the original standard errors. Used only for
+#' paths without mediators and both
+#' `x`- and `y`-variables are not
+#' standardized.
+#'
+#' @param se_ci Logical. If `TRUE` and
+#' confidence interval has not been
+#' computed, the function will try
+#' to compute them from stored
+#' standard error if the original
+#' standard error is to be used.
+#' Ignored
+#' if confidence interval has already
+#' been computed. Default
+#' to `TRUE`.
+#'
 #'
 #' @param ... Other arguments. Not used.
 #'
@@ -122,9 +209,11 @@
 
 print.indirect <- function(x,
                            digits = 3,
-                           pvalue = FALSE,
+                           pvalue = NULL,
                            pvalue_digits = 3,
-                           se = FALSE,
+                           se = NULL,
+                           level = .95,
+                           se_ci = TRUE,
                            ...) {
     xold <- x
     my_call <- x$call
@@ -132,6 +221,7 @@ print.indirect <- function(x,
     standardized_x <- x$standardized_x
     standardized_y <- x$standardized_y
     standardized <- (standardized_x && standardized_y)
+    has_groups <- !is.null(x$group_number)
     has_ci <- FALSE
     ci_type <- NULL
     boot_type <- NULL
@@ -182,6 +272,37 @@ print.indirect <- function(x,
       }
     x0 <- x$x
     y0 <- x$y
+
+    # Default to OLS or Wald SE
+    se_out <- indirect_effect_original_se(xold,
+                                          level = level)
+    has_original_se <- !is.null(se_out)
+    print_original_se <- FALSE
+    if (!has_ci &&
+        !has_m &&
+        !has_groups &&
+        !standardized_x &&
+        !standardized_y &&
+        has_original_se) {
+        print_original_se <- TRUE
+        if (is.null(pvalue)) {
+            pvalue <- TRUE
+          }
+        if (is.null(se)) {
+            se <- TRUE
+          }
+      } else {
+        if (is.null(pvalue)) {
+            pvalue <- FALSE
+          }
+        if (is.null(se)) {
+            se <- FALSE
+          }
+        if (!is.null(x$level)) {
+            level <- x$level
+          }
+      }
+
     if (has_m) {
         if (is.list(mnames)) {
           path <- sapply(mnames, function(mm) {
@@ -306,6 +427,47 @@ print.indirect <- function(x,
           }
         if (has_ci) {ptable <- rbind(ptable, b_row, b_row2, b_row3)}
       }
+    if (print_original_se) {
+        if (!is.null(se_out$se) && se) {
+            tmp1 <- data.frame(Factor = "Standard Error:",
+                               Value = formatC(se_out$se,
+                                               digits = digits,
+                                               format = "f"))
+            tmp2 <- data.frame(Factor = "Test Statistic:",
+                               Value = formatC(se_out$stat,
+                                               digits = digits,
+                                               format = "f"))
+            ptable <- rbind(ptable, tmp1, tmp2)
+          }
+        if (!is.null(se_out$se) &&
+            se &&
+            is.numeric(se_out$dfres)) {
+            if (isFALSE(identical(se_out$dfres, Inf))) {
+                tmp1 <- data.frame(Factor = "df (Residual)",
+                                   Value = se_out$dfres)
+                ptable <- rbind(ptable, tmp1)
+              }
+          }
+        if (!is.null(se_out$pvalue) && pvalue) {
+            tmp1 <- data.frame(Factor = "P-Value:",
+                               Value = formatC(se_out$pvalue,
+                                               digits = pvalue_digits,
+                                               format = "f"))
+            ptable <- rbind(ptable, tmp1)
+          }
+        if (!is.null(se_out$cilo) && se_ci) {
+            tmp1 <- paste0("[",
+                           paste0(formatC(se_out$cilo, digits, format = "f"),
+                                  " to ",
+                                  formatC(se_out$cihi, digits, format = "f")),
+                           "]")
+            str0 <- paste0(formatC(level * 100, 1, format = "f"), "%",
+                           " Confidence Interval:")
+            tmp2 <- data.frame(Factor = str0,
+                               Value = tmp1)
+            ptable <- rbind(ptable, tmp2)
+          }
+      }
     if (has_group) {
         # ptable <- rbind(ptable,
         #                 c("Group Label:", x$group_label))
@@ -367,6 +529,28 @@ print.indirect <- function(x,
             cat(strwrap(tmp1), sep = "\n")
           }
       }
+    if (print_original_se) {
+        cat("\n\n")
+        tmp <- character(0)
+        if (se) {
+            tmp1 <- paste("- Standard error extracted or computed",
+                          "from the 'lavaan' or regression output.")
+            tmp2 <- paste("- Test statistic is t statistic for regression",
+                          "and z statistic for 'lavaan'.")
+            tmp <- c(tmp1, tmp2)
+          }
+        if (pvalue) {
+            tmp1 <- paste("- P-value computed from the t statistic",
+                          "or z statistic.")
+            tmp <- c(tmp, tmp1)
+          }
+        if (se_ci) {
+            tmp1 <- paste("- Confidendce interval formed from the t statistic",
+                          "or z statistic.")
+            tmp <- c(tmp, tmp1)
+          }
+        cat(strwrap(tmp, exdent = 2), sep = "\n")
+      }
     print_note <- FALSE
     if (standardized_x ||
         standardized_y ||
@@ -374,7 +558,7 @@ print.indirect <- function(x,
         print_note <- TRUE
       }
     note_str <- character(0)
-    if (has_m & !is.list(mpathnames)) {
+    if (has_m && !is.list(mpathnames)) {
         if (has_w) {
           out <- data.frame(mpathnames, m0c, m0)
           rownames(out) <- NULL
@@ -412,4 +596,50 @@ print.indirect <- function(x,
       }
     cat("\n")
     invisible(x)
+  }
+
+#' @noRd
+
+indirect_effect_original_se <- function(object,
+                                        level = .95) {
+    if (object$standardized_x ||
+        object$standardized_y) {
+        return(NULL)
+      }
+    if (!is.null(object$m)) {
+        return(NULL)
+      }
+    if (is.null(object$original_se)) {
+        return(NULL)
+      }
+    est <- object$indirect
+    se <- object$original_se
+    if (is.na(se)) {
+        return(NULL)
+      }
+    dfres <- object$df_residual
+    test_stat <- est / se
+    p <- 2 * stats::pt(abs(test_stat),
+                       df = dfres,
+                       lower.tail = FALSE)
+    sig <- stats::symnum(p,
+                         corr = FALSE,
+                         na = FALSE,
+                         cutpoints = c(0, 0.001, 0.01, 0.05, 1),
+                         symbols = c("***", "**", "*", " "))
+    z_crit <- -1 * stats::qt((1 - level) / 2,
+                             df = dfres,
+                             lower.tail = TRUE)
+    cilo <- est - z_crit * se
+    cihi <- est + z_crit * se
+    out <- list(se = se,
+                stat = test_stat,
+                pvalue = p,
+                sig = sig,
+                cilo = cilo,
+                cihi = cihi,
+                dfres = dfres)
+    attr(out, "sig_legend") <- attr(sig, "legend")
+    attr(out, "original_se_level") <- level
+    return(out)
   }
