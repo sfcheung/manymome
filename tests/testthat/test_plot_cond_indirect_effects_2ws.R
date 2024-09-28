@@ -51,3 +51,8 @@ test_that("Three moderators", {
   expect_no_error(plot(out_1, graph_type = "tumble", facet_grid_rows = "gp", facet_grid_cols = "w4"))
   expect_no_error(plot(out_1, graph_type = "tumble", facet_grid_rows = "w4", facet_grid_cols = "city"))
 })
+
+test_that("Three moderators", {
+  expect_error(plot(out_1, facet_grid_cols = c("gp", "w4")))
+  expect_error(plot(out_1, facet_grid_rows = c("gp", "w4")))
+})
