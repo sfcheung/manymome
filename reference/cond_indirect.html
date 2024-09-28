@@ -15,7 +15,7 @@ lavaan::sem(), or semTools::sem.mi()."><meta property="og:image" content="https:
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -242,7 +242,10 @@ It can also be
 a <code>lavaan.mi</code> object
 returned by
 <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::runMI()</a></code> or
-its wrapper, such as <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::sem.mi()</a></code>.</p></dd>
+its wrapper, such as <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::sem.mi()</a></code>.
+If it is a single model fitted by
+<code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>, it will be automatically converted
+to a list by <code><a href="lm2list.html">lm2list()</a></code>.</p></dd>
 
 
 <dt id="arg-est">est<a class="anchor" aria-label="anchor" href="#arg-est"></a></dt>

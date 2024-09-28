@@ -15,7 +15,7 @@ cond_indirect(),"><meta property="og:image" content="https://sfcheung.github.io/
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,11 +94,14 @@ estimates to be used by
 
 
 <dl><dt id="arg-fit">fit<a class="anchor" aria-label="anchor" href="#arg-fit"></a></dt>
-<dd><p>Either (a) a list of <code>lm</code>
+<dd><p>It can be (a) a list of <code>lm</code>
 class objects, or the output of
 <code><a href="lm2list.html">lm2list()</a></code> (i.e., an <code>lm_list</code>-class
 object), or (b) the output of
-<code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>.</p></dd>
+<code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>.
+If it is a single model fitted by
+<code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>, it will be automatically converted
+to a list by <code><a href="lm2list.html">lm2list()</a></code>.</p></dd>
 
 
 <dt id="arg-r">R<a class="anchor" aria-label="anchor" href="#arg-r"></a></dt>

@@ -11,7 +11,7 @@ and m, to be used by indirect_effect()."><meta property="og:image" content="http
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,10 +88,13 @@ and <code>m</code>, to be used by <code><a href="cond_indirect.html">indirect_ef
 
 
 <dl><dt id="arg-fit">fit<a class="anchor" aria-label="anchor" href="#arg-fit"></a></dt>
-<dd><p>A fit object. Either the output of
+<dd><p>A fit object. It can be the output of
 <code><a href="https://rdrr.io/pkg/lavaan/man/lavaan.html" class="external-link">lavaan::lavaan()</a></code> or its wrapper such as <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>,
 or a list of the output of <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> or the output of
-<code><a href="lm2list.html">lm2list()</a></code>.</p></dd>
+<code><a href="lm2list.html">lm2list()</a></code>.
+If it is a single model fitted by
+<code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>, it will be automatically converted
+to a list by <code><a href="lm2list.html">lm2list()</a></code>.</p></dd>
 
 
 <dt id="arg-exclude">exclude<a class="anchor" aria-label="anchor" href="#arg-exclude"></a></dt>
