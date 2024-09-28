@@ -17,11 +17,14 @@ do_boot(
 )
 }
 \arguments{
-\item{fit}{Either (a) a list of \code{lm}
+\item{fit}{It can be (a) a list of \code{lm}
 class objects, or the output of
 \code{\link[=lm2list]{lm2list()}} (i.e., an \code{lm_list}-class
 object), or (b) the output of
-\code{\link[lavaan:sem]{lavaan::sem()}}.}
+\code{\link[lavaan:sem]{lavaan::sem()}}.
+If it is a single model fitted by
+\code{\link[=lm]{lm()}}, it will be automatically converted
+to a list by \code{\link[=lm2list]{lm2list()}}.}
 
 \item{R}{The number of bootstrap
 samples. Default is 100.}

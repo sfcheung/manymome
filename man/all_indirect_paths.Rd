@@ -16,10 +16,13 @@ all_indirect_paths(
 all_paths_to_df(all_paths)
 }
 \arguments{
-\item{fit}{A fit object. Either the output of
+\item{fit}{A fit object. It can be the output of
 \code{\link[lavaan:lavaan]{lavaan::lavaan()}} or its wrapper such as \code{\link[lavaan:sem]{lavaan::sem()}},
 or a list of the output of \code{\link[=lm]{lm()}} or the output of
-\code{\link[=lm2list]{lm2list()}}.}
+\code{\link[=lm2list]{lm2list()}}.
+If it is a single model fitted by
+\code{\link[=lm]{lm()}}, it will be automatically converted
+to a list by \code{\link[=lm2list]{lm2list()}}.}
 
 \item{exclude}{A character vector of variables to be excluded
 in the search, such as control variables.}

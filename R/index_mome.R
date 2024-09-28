@@ -245,6 +245,7 @@ index_of_mome <- function(x,
                           ci_out = NULL,
                           boot_type = c("perc", "bc"),
                           ...) {
+    fit <- auto_lm2list(fit)
     boot_type <- match.arg(boot_type)
     if (is.null(w) || length(w) != 1) {
         stop("The path must have exactly one moderator.")
@@ -329,6 +330,7 @@ index_of_momome <- function(x,
                             ci_out = NULL,
                             boot_type = c("perc", "bc"),
                             ...) {
+    fit <- auto_lm2list(fit)
     boot_type <- match.arg(boot_type)
     if (is.null(w) || is.null(z) ||
         length(w) != 1 || length(z) != 1) {

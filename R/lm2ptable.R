@@ -52,6 +52,9 @@
 #'
 
 lm2ptable <- function(outputs) {
+    if (!missing(outputs)) {
+        outputs <- auto_lm2list(outputs)
+      }
     mm <- merge_model_matrix(outputs)
     coefs <- lapply(outputs, coef2lor)
     out <- do.call(rbind, coefs)

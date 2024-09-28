@@ -101,6 +101,9 @@
 
 lm2boot_out <- function(outputs, R = 100, seed = NULL,
                         progress = TRUE) {
+    if (!missing(outputs)) {
+         outputs <- auto_lm2list(outputs)
+      }
     out_type <- cond_indirect_check_fit(outputs)
     if (out_type != "lm") {
         stop("'outputs' must be a list of 'lm()' outputs.")
@@ -181,6 +184,9 @@ lm2boot_out_parallel <- function(outputs,
                                  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                                  make_cluster_args = list(),
                                  progress = TRUE) {
+    if (!missing(outputs)) {
+         outputs <- auto_lm2list(outputs)
+      }
     out_type <- cond_indirect_check_fit(outputs)
     if (out_type != "lm") {
         stop("'outputs' must be a list of 'lm()' outputs.")

@@ -46,6 +46,9 @@
 #' returned by
 #' [semTools::runMI()] or
 #' its wrapper, such as [semTools::sem.mi()].
+#' If it is a single model fitted by
+#' [lm()], it will be automatically converted
+#' to a list by [lm2list()].
 #'
 #' @param x Character. The name of
 #' predictor at the start of the path.
@@ -99,6 +102,7 @@ check_path <- function(x,
                        m = NULL,
                        fit = NULL,
                        est = NULL) {
+    fit <- auto_lm2list(fit)
     if (is.null(est)) {
       fit_type <- cond_indirect_check_fit(fit)
       est <- switch(fit_type,

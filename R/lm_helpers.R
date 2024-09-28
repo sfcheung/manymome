@@ -153,3 +153,11 @@ check_cases <- function(x) {
       }
     return(TRUE)
   }
+
+auto_lm2list <- function(object) {
+    if (inherits(object, "lm")) {
+        out <- lm2list(object)
+        return(out)
+      }
+    object
+  }
