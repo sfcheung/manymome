@@ -9,7 +9,7 @@ output of many_indirect_effects()."><meta property="og:image" content="https://s
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.11</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.12</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,6 +77,7 @@ output of <code><a href="cond_indirect.html">many_indirect_effects()</a></code>.
 <span>  pvalue <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  pvalue_digits <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  se <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  for_each_path <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -126,8 +127,21 @@ values, depending on the method used
 to form the confidence intervals.</p></dd>
 
 
+<dt id="arg-for-each-path">for_each_path<a class="anchor" aria-label="anchor" href="#arg-for-each-path"></a></dt>
+<dd><p>Logical. If
+<code>TRUE</code>, each of the paths will be
+printed individually, using the
+<code>print</code>-method of the output of
+<code><a href="cond_indirect.html">indirect_effect()</a></code>. Default is
+<code>FALSE</code>.</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Other arguments. Not used.</p></dd>
+<dd><p>Other arguments. If
+<code>for_each_path</code> is <code>TRUE</code>, they
+will be passed to the print method
+of the output of <code><a href="cond_indirect.html">indirect_effect()</a></code>.
+Ignored otherwise.</p></dd>
 
 </dl></div>
     <div class="section level2">
