@@ -60,7 +60,19 @@
 #' values, depending on the method used
 #' to form the confidence intervals.
 #'
-#' @param ... Other arguments. Not used.
+#' @param for_each_path Logical. If
+#' `TRUE`, each of the paths will be
+#' printed individually, using the
+#' `print`-method of the output of
+#' [indirect_effect()]. Default is
+#' `FALSE`.
+#'
+#' @param ... Other arguments. If
+#' `for_each_path` is `TRUE`, they
+#' will be passed to the print method
+#' of the output of [indirect_effect()].
+#' Ignored otherwise.
+#'
 #'
 #'
 #' @references
@@ -101,7 +113,23 @@ print.indirect_list <- function(x, digits = 3,
                                 pvalue = FALSE,
                                 pvalue_digits = 3,
                                 se = FALSE,
+                                for_each_path = FALSE,
                                 ...) {
+    if (for_each_path) {
+        section_sep <- paste0(rep("-",
+                              round(getOption("width") * .80)),
+                              collapse = "")
+        for (xx in x) {
+            cat(section_sep, "\n")
+            print(xx,
+                  digits = digits,
+                  pvalue = pvalue,
+                  pvalue_digits = pvalue_digits,
+                  se = se,
+                  ...)
+          }
+        return(invisible(x))
+      }
     xold <- x
     my_call <- attr(x, "call")
     x_paths <- attr(x, "paths")

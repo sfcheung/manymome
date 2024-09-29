@@ -1,4 +1,4 @@
-# manymome 0.2.3.11
+# manymome 0.2.3.12
 
 ## New Features
 
@@ -44,6 +44,13 @@
   and confidence interval computed from
   original standard error when
   appropriate. (0.2.3.10)
+
+- Added `for_each_path` argument to the
+  `print`-method of `indirect_list`
+  objects. Setting it to `TRUE` to print
+  each path in the output of
+  `many_indirect_effects()` individually.
+  (0.2.3.12)
 
 ## Documentation and Notes
 
