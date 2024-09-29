@@ -12,6 +12,7 @@ Object}
   pvalue = FALSE,
   pvalue_digits = 3,
   se = FALSE,
+  for_each_path = FALSE,
   ...
 )
 }
@@ -45,7 +46,18 @@ estimates or Monte Carlo simulated
 values, depending on the method used
 to form the confidence intervals.}
 
-\item{...}{Other arguments. Not used.}
+\item{for_each_path}{Logical. If
+\code{TRUE}, each of the paths will be
+printed individually, using the
+\code{print}-method of the output of
+\code{\link[=indirect_effect]{indirect_effect()}}. Default is
+\code{FALSE}.}
+
+\item{...}{Other arguments. If
+\code{for_each_path} is \code{TRUE}, they
+will be passed to the print method
+of the output of \code{\link[=indirect_effect]{indirect_effect()}}.
+Ignored otherwise.}
 }
 \value{
 \code{x} is returned invisibly.

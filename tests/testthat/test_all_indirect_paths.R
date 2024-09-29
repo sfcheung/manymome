@@ -150,28 +150,33 @@ out_tmp <- outa4[c(1, 3, 5, 6)]
 ind_1_no_ci <- many_indirect_effects(out_tmp,
                                fit = fit)
 ind_1_no_ci
+print(ind_1_no_ci, digits = 4, for_each_path = TRUE)
 
 ind_1_no_ci_stdx <- many_indirect_effects(out_tmp,
                                fit = fit,
                                standardized_x = TRUE)
 ind_1_no_ci_stdx
+print(ind_1_no_ci_stdx, digits = 4, for_each_path = TRUE)
 
 ind_1_no_ci_stdy <- many_indirect_effects(out_tmp,
                                fit = fit,
                                standardized_y = TRUE)
 ind_1_no_ci_stdy
+print(ind_1_no_ci_stdy, digits = 4, for_each_path = TRUE)
 
 ind_1_no_ci_std <- many_indirect_effects(out_tmp,
                                fit = fit,
                                standardized_x = TRUE,
                                standardized_y = TRUE)
 ind_1_no_ci_std
+print(ind_1_no_ci_std, digits = 4, for_each_path = TRUE)
 
 ind_1 <- many_indirect_effects(out_tmp,
                                fit = fit,
                                boot_ci = TRUE,
                                boot_out = fit_boot_out)
 ind_1
+print(ind_1, digits = 4, pvalue = TRUE, for_each_path = TRUE)
 
 ind_1_stdx <- many_indirect_effects(out_tmp,
                                fit = fit,
