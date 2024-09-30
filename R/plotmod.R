@@ -612,16 +612,10 @@ plot.cond_indirect_effects <- function(
             if (!all(facet_grid_cols %in% w_names)) {
                 stop("'facet_grid_cols' must be among the moderators.")
               }
-            if (length(facet_grid_cols) != 1) {
-                stop("Having more than one column in facet_grid is not yet supported.")
-              }
           }
         if (!is.null(facet_grid_rows)) {
             if (!all(facet_grid_rows %in% w_names)) {
                 stop("'facet_grid_rows' must be among the moderators.")
-              }
-            if (length(facet_grid_rows) != 1) {
-                stop("Having more than one row in facet_grid is not yet supported.")
               }
           }
         w_names_in <- setdiff(w_names, union(facet_grid_cols, facet_grid_rows))
@@ -640,34 +634,55 @@ plot.cond_indirect_effects <- function(
         plot_df_xstart_end <- plot_df_xstart_tmp
         plot_df_xstart_end[paste0(x, "___end")] <- plot_df_xend_tmp[, x, drop = TRUE]
         plot_df_xstart_end[paste0(y, "___end")] <- plot_df_xend_tmp[, y, drop = TRUE]
-        p <- ggplot2::ggplot() +
-              ggplot2::geom_point(ggplot2::aes(x = .data[[x]],
-                                               y = .data[[y]],
-                                               colour = .data[[w_names_in]]),
-                                  data = plot_df_tmp,
-                                  size = point_size) +
-              ggplot2::geom_segment(ggplot2::aes(
-                    x =  .data[[x]],
-                    xend =  .data[[paste0(x, "___end")]],
-                    y =  .data[[y]],
-                    yend = .data[[paste0(y, "___end")]],
-                    colour = .data[[w_names_in]],
-                  ),
-                  data = plot_df_xstart_end,
-                  linewidth = line_width)
-        if (!is.null(facet_grid_cols)) {
-            cols_tmp <- ggplot2::vars(.data[[facet_grid_cols]])
+        p <- ggplot2::ggplot()
+        if (is.null(w_names_in)) {
+            # This solution is not ideal. Code duplicated.
+            # But work for now.
+            p <- p + ggplot2::geom_point(ggplot2::aes(x = .data[[x]],
+                                                      y = .data[[y]]),
+                                         data = plot_df_tmp,
+                                         size = point_size) +
+                      ggplot2::geom_segment(ggplot2::aes(x =  .data[[x]],
+                                                         xend =  .data[[paste0(x, "___end")]],
+                                                         y =  .data[[y]],
+                                                         yend = .data[[paste0(y, "___end")]]),
+                                            data = plot_df_xstart_end,
+                                            linewidth = line_width)
           } else {
-            cols_tmp <- NULL
+            p <- p + ggplot2::geom_point(ggplot2::aes(x = .data[[x]],
+                                                      y = .data[[y]],
+                                                      colour = .data[[w_names_in]]),
+                                         data = plot_df_tmp,
+                                         size = point_size) +
+                      ggplot2::geom_segment(ggplot2::aes(x =  .data[[x]],
+                                                         xend =  .data[[paste0(x, "___end")]],
+                                                         y =  .data[[y]],
+                                                         yend = .data[[paste0(y, "___end")]],
+                                                         colour =  .data[[w_names_in]]),
+                                            data = plot_df_xstart_end,
+                                            linewidth = line_width)
+          }
+        if (!is.null(facet_grid_cols)) {
+            cols_tmp <- sapply(facet_grid_cols,
+                               function(xx) paste0(".data[[", sQuote(xx), "]]"))
+            cols_tmp <- paste0("quote(ggplot2::vars(",
+                          paste(cols_tmp, collapse = ","),
+                          "))")
+          } else {
+            cols_tmp <- "NULL"
           }
         if (!is.null(facet_grid_rows)) {
-            rows_tmp <- ggplot2::vars(.data[[facet_grid_rows]])
+            rows_tmp <- sapply(facet_grid_rows,
+                              function(xx) paste0(".data[[", sQuote(xx), "]]"))
+            rows_tmp <- paste0("quote(ggplot2::vars(",
+                          paste(rows_tmp, collapse = ","),
+                          "))")
           } else {
-            rows_tmp <- NULL
+            rows_tmp <- "NULL"
           }
-        facet_grid_args_final <- utils::modifyList(list(rows = rows_tmp,
-                                                        cols = cols_tmp),
-                                                   facet_grid_args)
+        facet_grid_args_final <- utils::modifyList(facet_grid_args,
+                                                   list(cols = eval(parse(text = cols_tmp)),
+                                                        rows = eval(parse(text = rows_tmp))))
         p <- p + do.call(ggplot2::facet_grid,
                          facet_grid_args_final)
       }
