@@ -28,6 +28,12 @@ test_that("Two moderators", {
   expect_no_error(plot(out_1, facet_grid_cols = "gp", graph_type = "tumble"))
   expect_no_error(plot(out_1, facet_grid_rows = "w4", graph_type = "tumble"))
   expect_no_error(plot(out_1, facet_grid_cols = "w4", graph_type = "tumble"))
+
+  expect_no_error(plot(out_1, facet_grid_rows = "gp", facet_grid_cols = "w4"))
+  expect_no_error(plot(out_1, facet_grid_rows = "w4", facet_grid_cols = "gp"))
+
+  expect_no_error(plot(out_1, facet_grid_rows = c("gp", "w4")))
+  expect_no_error(plot(out_1, facet_grid_cols = c("gp", "w4")))
 })
 
 lm_m3 <- lm(m3 ~ m1, dat)
@@ -50,9 +56,10 @@ test_that("Three moderators", {
   expect_no_error(plot(out_1, graph_type = "tumble", facet_grid_rows = "gp", facet_grid_cols = "city"))
   expect_no_error(plot(out_1, graph_type = "tumble", facet_grid_rows = "gp", facet_grid_cols = "w4"))
   expect_no_error(plot(out_1, graph_type = "tumble", facet_grid_rows = "w4", facet_grid_cols = "city"))
+
+  expect_no_error(plot(out_1, graph_type = "tumble", facet_grid_rows = c("gp", "city")))
+  expect_no_error(plot(out_1, graph_type = "tumble", facet_grid_rows = c("w4", "city")))
+  expect_no_error(plot(out_1, graph_type = "tumble", facet_grid_cols = c("gp", "city"), facet_grid_rows = "w4"))
+
 })
 
-test_that("Three moderators", {
-  expect_error(plot(out_1, facet_grid_cols = c("gp", "w4")))
-  expect_error(plot(out_1, facet_grid_rows = c("gp", "w4")))
-})
