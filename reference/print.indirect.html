@@ -11,7 +11,7 @@ cond_indirect()."><meta property="og:image" content="https://sfcheung.github.io/
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.13</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.14</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,6 +81,7 @@ output of <code><a href="cond_indirect.html">indirect_effect()</a></code> or
 <span>  se <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span>
 <span>  se_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  wrap_computation <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -164,6 +165,14 @@ Ignored
 if confidence interval has already
 been computed. Default
 to <code>TRUE</code>.</p></dd>
+
+
+<dt id="arg-wrap-computation">wrap_computation<a class="anchor" aria-label="anchor" href="#arg-wrap-computation"></a></dt>
+<dd><p>Logical.
+If <code>TRUE</code>, the default, long
+computational symbols and values
+will be wrapped to fit to the screen
+width.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -294,9 +303,14 @@ Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap%20-%20Pvalue.pdf
 <span class="r-out co"><span class="r-pr">#&gt;</span>  When:                        w1 = 5.000, w2 = 4.000, w3 = 2.000, w4 = 3.000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Computation Formula:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   (b.m1~x + (b.x:w1)*(w1))*(b.m2~m1 + (b.m1:w2)*(w2))*(b.m3~m2 + (b.m2:w3)*(w3))*(b.y~m3 + (b.m3:w4)*(w4))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   (b.m1~x + (b.x:w1)*(w1))*(b.m2~m1 + (b.m1:w2)*(w2))*(b.m3~m2 +</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   (b.m2:w3)*(w3))*(b.y~m3 + (b.m3:w4)*(w4))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Computation:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ((0.46277) + (0.23380)*(5.00000))*((0.36130) + (0.13284)*(4.00000))*((0.68691) + (0.10880)*(2.00000))*((0.40487) + (0.16260)*(3.00000))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ((0.46277) + (0.23380)*(5.00000))*((0.36130) +</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   (0.13284)*(4.00000))*((0.68691) + (0.10880)*(2.00000))*((0.40487) +</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   (0.16260)*(3.00000))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients of Component Paths:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Path Conditional Effect Original Coefficient</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   m1~x              1.632                0.463</span>
@@ -330,8 +344,10 @@ Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap%20-%20Pvalue.pdf
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Computation Formula:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   (b.m1~x)*(b.m2~m1)*(b.m3~m2)*(b.y~m3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Computation:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   (0.52252)*(0.39883)*(0.80339)*(0.42610)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients of Component Paths:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Path Coefficient</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   m1~x       0.523</span>
@@ -348,8 +364,10 @@ Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap%20-%20Pvalue.pdf
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Computation Formula:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   (b.m1~x)*(b.m2~m1)*(b.m3~m2)*(b.y~m3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Computation:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   (0.52252)*(0.39883)*(0.80339)*(0.42610)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients of Component Paths:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Path Coefficient</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   m1~x     0.52252</span>

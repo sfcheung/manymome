@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.13</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.14</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,27 +60,28 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.3.13" id="manymome-02313">manymome 0.2.3.13<a class="anchor" aria-label="anchor" href="#manymome-02313"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.2.3.14" id="manymome-02314">manymome 0.2.3.14<a class="anchor" aria-label="anchor" href="#manymome-02314"></a></h2>
 <div class="section level3">
-<h3 id="new-features-0-2-3-13">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-3-13"></a></h3>
+<h3 id="new-features-0-2-3-14">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-3-14"></a></h3>
 <ul><li>The <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> method of the output of <code>cond_indirect_effect()</code> now supports using <code><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid()</a></code> to plot the conditional effects when there are two or more moderators in a path. (0.2.3.3, 0.2.3.5, 0.2.3.6, 0.2.3.13)</li>
 </ul></div>
 <div class="section level3">
-<h3 id="improvement-0-2-3-13">Improvement<a class="anchor" aria-label="anchor" href="#improvement-0-2-3-13"></a></h3>
+<h3 id="improvement-0-2-3-14">Improvement<a class="anchor" aria-label="anchor" href="#improvement-0-2-3-14"></a></h3>
 <ul><li><p>If all paths have the same <code>x</code> variables, the argument <code>x</code> can be omitted when calling <code><a href="../reference/total_indirect_effect.html">total_indirect_effect()</a></code>. Similarly, if all paths have the same <code>y</code> variables, the argument <code>y</code> can also be omitted when calling <code><a href="../reference/total_indirect_effect.html">total_indirect_effect()</a></code>. (0.2.3.2)</p></li>
 <li><p>If appropriate, most functions will automatically convert a single model fitted by <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> to a list by <code><a href="../reference/lm2list.html">lm2list()</a></code>. This allows users to use the output of <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> directly, such as when computing effects in a moderation-only model. (0.2.3.4)</p></li>
 <li><p><em>P</em>-values and confidence intervals based on standard errors will now be computed even for direct paths not moderated. (0.2.3.8)</p></li>
 <li><p>Added <code><a href="../reference/get_one_cond_indirect_effect.html">print_all_cond_indirect_effects()</a></code> and <code><a href="../reference/get_one_cond_indirect_effect.html">print_all_cond_effects()</a></code> for printing the full output of all conditional indirect effects. (0.2.3.9)</p></li>
 <li><p>Updated the <code>print</code> method of indirect effect to print <em>p</em>-value and confidence interval computed from original standard error when appropriate. (0.2.3.10)</p></li>
 <li><p>Added <code>for_each_path</code> argument to the <code>print</code>-method of <code>indirect_list</code> objects. Setting it to <code>TRUE</code> to print each path in the output of <code><a href="../reference/cond_indirect.html">many_indirect_effects()</a></code> individually. (0.2.3.12)</p></li>
+<li><p>Added <code>wrap_computation</code> to the argument of <code><a href="../reference/print.indirect.html">print.indirect()</a></code> to wrap the printout of long computational formulas. (0.2.3.14)</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="documentation-and-notes-0-2-3-13">Documentation and Notes<a class="anchor" aria-label="anchor" href="#documentation-and-notes-0-2-3-13"></a></h3>
+<h3 id="documentation-and-notes-0-2-3-14">Documentation and Notes<a class="anchor" aria-label="anchor" href="#documentation-and-notes-0-2-3-14"></a></h3>
 <ul><li><p>Corrected <code>README</code> to remark that dichotomous <code>x</code>-variables are supported by most functions if coded as a numeric dummy variable. (0.2.3.7)</p></li>
 <li><p>Fix the wording in the printout of <code>lm_list</code> objects. (0.2.3.11)</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-0-2-3-13">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-3-13"></a></h3>
+<h3 id="bug-fixes-0-2-3-14">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-3-14"></a></h3>
 <ul><li>Fixed an issue related to the internal function <code>merge_model_matrix()</code> in some special cases. (0.2.3.1)</li>
 </ul></div>
 </div>
