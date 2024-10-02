@@ -13,6 +13,7 @@ Object}
   se = NULL,
   level = 0.95,
   se_ci = TRUE,
+  wrap_computation = TRUE,
   ...
 )
 }
@@ -79,6 +80,12 @@ Ignored
 if confidence interval has already
 been computed. Default
 to \code{TRUE}.}
+
+\item{wrap_computation}{Logical.
+If \code{TRUE}, the default, long
+computational symbols and values
+will be wrapped to fit to the screen
+width.}
 
 \item{...}{Other arguments. Not used.}
 }
