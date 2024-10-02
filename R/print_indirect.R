@@ -149,6 +149,11 @@
 #' been computed. Default
 #' to `TRUE`.
 #'
+#' @param wrap_computation Logical.
+#' If `TRUE`, the default, long
+#' computational symbols and values
+#' will be wrapped to fit to the screen
+#' width.
 #'
 #' @param ... Other arguments. Not used.
 #'
@@ -214,6 +219,7 @@ print.indirect <- function(x,
                            se = NULL,
                            level = .95,
                            se_ci = TRUE,
+                           wrap_computation = TRUE,
                            ...) {
     xold <- x
     my_call <- x$call
@@ -487,7 +493,15 @@ print.indirect <- function(x,
             # cat("\n", paste(x$op, x$computation_symbol, collapse = "\n"))
           } else {
             cat("\nComputation Formula:")
-            cat("\n ", x$computation_symbol)
+            if (wrap_computation) {
+                tmp <- strwrap(x$computation_symbol,
+                               indent = 2,
+                               exdent = 2)
+                cat("\n")
+                cat(tmp, sep = "\n")
+              } else {
+                cat("\n ", x$computation_symbol)
+              }
           }
       }
     if (!is.null(x$computation_values)) {
@@ -496,7 +510,15 @@ print.indirect <- function(x,
             # cat("\n", paste(x$op, x$computation_values, collapse = "\n"))
           } else {
             cat("\nComputation:")
-            cat("\n ", x$computation_values)
+            if (wrap_computation) {
+                tmp <- strwrap(x$computation_values,
+                               indent = 2,
+                               exdent = 2)
+                cat("\n")
+                cat(tmp, sep = "\n")
+              } else {
+                cat("\n ", x$computation_values)
+              }
           }
       }
     if (has_ci) {

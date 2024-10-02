@@ -1,4 +1,4 @@
-# manymome 0.2.3.13
+# manymome 0.2.3.14
 
 ## New Features
 
@@ -51,6 +51,11 @@
   each path in the output of
   `many_indirect_effects()` individually.
   (0.2.3.12)
+
+- Added `wrap_computation` to the argument
+  of `print.indirect()` to wrap the printout
+  of long computational formulas.
+  (0.2.3.14)
 
 ## Documentation and Notes
 
