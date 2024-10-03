@@ -314,7 +314,7 @@ plot_effect_vs_w <- function(object,
     if (ncol(wlevels) > 1) {
         stop("Only an effect with one moderator is supported.")
       }
-    if (!is.numeric(wlevels[, 1])) {
+    if (!((isTRUE(w_type == "numeric")) || is.null(w_type))) {
         stop("Only numeric moderators are supported.")
       }
     if (is.null(w)) {

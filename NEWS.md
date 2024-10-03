@@ -1,4 +1,4 @@
-# manymome 0.2.3.14
+# manymome 0.2.3.15
 
 ## New Features
 
@@ -56,6 +56,10 @@
   of `print.indirect()` to wrap the printout
   of long computational formulas.
   (0.2.3.14)
+
+- Updated `plot_effect_vs_w()` to check
+  whether a moderator is numeric.
+  (0.2.3.15)
 
 ## Documentation and Notes
 

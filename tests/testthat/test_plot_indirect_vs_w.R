@@ -240,6 +240,15 @@ test_that("Expand wlevels", {
   p1
 })
 
+test_that("Detect categorical moderators", {
+dat <- data_med_mod_serial_cat
+lm_m <- lm(m1 ~ x*w2, dat)
+lm_y <- lm(y ~ m1 + x, dat)
+lm_all <- lm2list(lm_m, lm_y)
+cond_out <- cond_indirect_effects(x = "x", y = "y", m = "m1", wlevels = "w2", fit = lm_all)
+expect_error(plot_effect_vs_w(cond_out), "numeric moderators")
+})
+
 # Multigroup
 
 # On hold. cond_indirect_effects() does not yet support
