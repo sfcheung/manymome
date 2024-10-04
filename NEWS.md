@@ -1,4 +1,4 @@
-# manymome 0.2.3.15
+# manymome 0.2.3.16
 
 ## New Features
 
@@ -60,6 +60,11 @@
 - Updated `plot_effect_vs_w()` to check
   whether a moderator is numeric.
   (0.2.3.15)
+
+- Updated `print.cond_indirect_effects()`.
+  Disabled the printing of the (only)
+  component path when a path has no
+  mediator. (0.2.3.16)
 
 ## Documentation and Notes
 
