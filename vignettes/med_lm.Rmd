@@ -1,7 +1,7 @@
 ---
 title: "Mediation Analysis by Multiple Regression"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2024-09-25"
+date: "2024-10-04"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -88,7 +88,7 @@ using `lm2list()`:
 fit_lm <- lm2list(lm_m11, lm_m12, lm_m2, lm_y1, lm_y2)
 fit_lm
 #> 
-#> The models:
+#> The model(s):
 #> m11 ~ x1 + x2 + c1 + c2
 #> m12 ~ m11 + x1 + x2 + c1 + c2
 #> m2 ~ x1 + x2 + c1 + c2
@@ -168,8 +168,10 @@ out_x1m11m12y1
 #> 
 #> Computation Formula:
 #>   (b.m11~x1)*(b.m12~m11)*(b.y1~m12)
+#> 
 #> Computation:
 #>   (0.35204)*(0.45408)*(0.23402)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 100 bootstrap samples.
@@ -207,8 +209,10 @@ out_x2m2y2
 #> 
 #> Computation Formula:
 #>   (b.m2~x2)*(b.y2~m2)
+#> 
 #> Computation:
 #>   (0.28901)*(-0.43598)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 100 bootstrap samples.
@@ -247,8 +251,10 @@ out_x2m11m12
 #> 
 #> Computation Formula:
 #>   (b.m11~x2)*(b.m12~m11)
+#> 
 #> Computation:
 #>   (-0.04471)*(0.45408)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 100 bootstrap samples.
@@ -298,8 +304,10 @@ std_x1m11m12y1
 #> 
 #> Computation Formula:
 #>   (b.m11~x1)*(b.m12~m11)*(b.y1~m12)*sd_x1/sd_y1
+#> 
 #> Computation:
 #>   (0.35204)*(0.45408)*(0.23402)*(1.11605)/(1.06579)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 100 bootstrap samples.
@@ -343,8 +351,10 @@ std_x1m2y1
 #> 
 #> Computation Formula:
 #>   (b.m2~x1)*(b.y1~m2)*sd_x1/sd_y1
+#> 
 #> Computation:
 #>   (0.02233)*(-0.43300)*(1.11605)/(1.06579)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 100 bootstrap samples.
@@ -400,8 +410,10 @@ out_x1m11y1
 #> 
 #> Computation Formula:
 #>   (b.m11~x1)*(b.y1~m11)
+#> 
 #> Computation:
 #>   (0.35204)*(0.14694)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 100 bootstrap samples.
@@ -430,8 +442,10 @@ out_x1m12y1
 #> 
 #> Computation Formula:
 #>   (b.m12~x1)*(b.y1~m12)
+#> 
 #> Computation:
 #>   (-0.21182)*(0.23402)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 100 bootstrap samples.
@@ -460,8 +474,10 @@ out_x1m2y1
 #> 
 #> Computation Formula:
 #>   (b.m2~x1)*(b.y1~m2)
+#> 
 #> Computation:
 #>   (0.02233)*(-0.43300)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 100 bootstrap samples.
@@ -722,8 +738,10 @@ out1
 #> 
 #> Computation Formula:
 #>   (b.m11~x1)*(b.m12~m11)*(b.y1~m12)
+#> 
 #> Computation:
 #>   (0.35204)*(0.45408)*(0.23402)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 100 bootstrap samples.
@@ -752,8 +770,10 @@ out2
 #> 
 #> Computation Formula:
 #>   (b.m2~x2)*(b.y2~m2)
+#> 
 #> Computation:
 #>   (0.28901)*(-0.43598)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 100 bootstrap samples.

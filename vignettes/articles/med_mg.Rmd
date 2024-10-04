@@ -1,7 +1,7 @@
 ---
 title: "Multigroup Models With Mediation Effects"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2024-09-25"
+date: "2024-10-04"
 output:
   html_document:
     fig.align: "center"
@@ -85,7 +85,7 @@ These are the estimates of the paths:
 ``` r
 summary(fit,
         estimates = TRUE)
-#> lavaan 0.6-18 ended normally after 1 iteration
+#> lavaan 0.6-19 ended normally after 1 iteration
 #> 
 #>   Estimator                                         ML
 #>   Optimization method                           NLMINB
@@ -204,7 +204,7 @@ fit_boot_out <- do_boot(fit = fit,
                         seed = 53253,
                         ncores = 8)
 #> 8 processes started to run bootstrapping.
-#> The expected CPU time is about 22.5 second(s).
+#> The expected CPU time is about 15 second(s).
 ```
 
 # Estimate Indirect Effects
@@ -253,8 +253,10 @@ ind_gpA
 #> 
 #> Computation Formula:
 #>   (b.m~x)*(b.y~m)
+#> 
 #> Computation:
 #>   (0.87989)*(0.46481)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 5000 bootstrap samples.
@@ -304,8 +306,10 @@ ind_gpB
 #> 
 #> Computation Formula:
 #>   (b.m~x)*(b.y~m)
+#> 
 #> Computation:
 #>   (0.59716)*(1.11040)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 5000 bootstrap samples.
@@ -512,8 +516,10 @@ std_gpA
 #> 
 #> Computation Formula:
 #>   (b.m~x)*(b.y~m)*sd_x/sd_y
+#> 
 #> Computation:
 #>   (0.87989)*(0.46481)*(1.10557)/(2.21581)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 5000 bootstrap samples.
@@ -553,8 +559,10 @@ std_gpB
 #> 
 #> Computation Formula:
 #>   (b.m~x)*(b.y~m)*sd_x/sd_y
+#> 
 #> Computation:
 #>   (0.59716)*(1.11040)*(1.00943)/(2.58386)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 5000 bootstrap samples.
@@ -825,15 +833,14 @@ path1
 #>  Path: m -> y
 #>  Conditional on group(s): Group A[1], Group B[2]
 #> 
-#>     Group Group_ID   ind CI.lo CI.hi Sig   y~m
-#> 1 Group A        1 0.465 0.110 0.819 Sig 0.465
-#> 2 Group B        2 1.110 0.765 1.475 Sig 1.110
+#>     Group Group_ID   ind CI.lo CI.hi Sig
+#> 1 Group A        1 0.465 0.110 0.819 Sig
+#> 2 Group B        2 1.110 0.765 1.475 Sig
 #> 
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - The 'ind' column shows the direct effects.
-#>  - 'y~m' is/are the path coefficient(s) along the path conditional on
-#>    the group(s).
+#> 
 ```
 
 The difference between the two paths can be tested
@@ -852,9 +859,9 @@ path1_diff
 #>  Path: m -> y
 #>  Conditional on group(s): Group B[2], Group A[1]
 #> 
-#>     Group Group_ID   ind CI.lo CI.hi Sig   y~m
-#> 1 Group B        2 1.110 0.765 1.475 Sig 1.110
-#> 2 Group A        1 0.465 0.110 0.819 Sig 0.465
+#>     Group Group_ID   ind CI.lo CI.hi Sig
+#> 1 Group B        2 1.110 0.765 1.475 Sig
+#> 2 Group A        1 0.465 0.110 0.819 Sig
 #> 
 #> == Difference in Conditional Indirect Effect ==
 #> 
