@@ -1,4 +1,4 @@
-# manymome 0.2.3.16
+# manymome 0.2.4
 
 ## New Features
 
@@ -54,7 +54,8 @@
 
 - Added `wrap_computation` to the argument
   of `print.indirect()` to wrap the printout
-  of long computational formulas.
+  of long computational formulas. Default
+  set to `TRUE`.
   (0.2.3.14)
 
 - Updated `plot_effect_vs_w()` to check
