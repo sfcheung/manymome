@@ -69,8 +69,9 @@ sos_2 <- cond_indirect_effects(wlevels = "w1",
 sos_3 <- cond_indirect_effects(wlevels = c("w1", "w2"),
                                x = "m", y = "y",
                                fit = fit3)
-
-plot_effect_vs_w(cos_1a, level = .99) + ggplot2::ylim(0, 1)
-plot_effect_vs_w(cos_1a) + ggplot2::ylim(0, 1)
-plot_effect_vs_w(cos_1a, level = .60) + ggplot2::ylim(0, 1)
-plot_effect_vs_w(cos_1a, level = .50) + ggplot2::ylim(0, 1)
+test_that("mod only", {
+expect_no_error(plot_effect_vs_w(cos_1a, level = .99) + ggplot2::ylim(0, 1))
+expect_no_error(plot_effect_vs_w(cos_1a) + ggplot2::ylim(0, 1))
+expect_no_error(plot_effect_vs_w(cos_1a, level = .60) + ggplot2::ylim(0, 1))
+expect_no_error(plot_effect_vs_w(cos_1a, level = .50) + ggplot2::ylim(0, 1))
+})

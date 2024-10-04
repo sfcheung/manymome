@@ -1,7 +1,7 @@
 ---
 title: "Mediation Models with Latent Variables"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2024-09-25"
+date: "2024-10-04"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -144,8 +144,10 @@ out_f1f3f4
 #> 
 #> Computation Formula:
 #>   (b.f3~f1)*(b.f4~f3)
+#> 
 #> Computation:
 #>   (0.24307)*(0.40186)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 100 bootstrap samples.
@@ -182,8 +184,10 @@ out_f2f3f4
 #> 
 #> Computation Formula:
 #>   (b.f3~f2)*(b.f4~f3)
+#> 
 #> Computation:
 #>   (0.32561)*(0.40186)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 100 bootstrap samples.
@@ -226,8 +230,10 @@ std_f1f3f4
 #> 
 #> Computation Formula:
 #>   (b.f3~f1)*(b.f4~f3)*sd_f1/sd_f4
+#> 
 #> Computation:
 #>   (0.24307)*(0.40186)*(0.87470)/(1.17421)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 100 bootstrap samples.
@@ -270,8 +276,10 @@ std_f2f3f4
 #> 
 #> Computation Formula:
 #>   (b.f3~f2)*(b.f4~f3)*sd_f2/sd_f4
+#> 
 #> Computation:
 #>   (0.32561)*(0.40186)*(1.03782)/(1.17421)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 100 bootstrap samples.
@@ -329,8 +337,10 @@ out_f1f4
 #> 
 #> Computation Formula:
 #>   (b.f4~f1)
+#> 
 #> Computation:
 #>   (0.44749)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 100 bootstrap samples.
@@ -476,8 +486,10 @@ out1
 #> 
 #> Computation Formula:
 #>   (b.f3~f1)*(b.f4~f3)
+#> 
 #> Computation:
 #>   (0.24307)*(0.40186)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 100 bootstrap samples.
@@ -505,8 +517,10 @@ out2
 #> 
 #> Computation Formula:
 #>   (b.f3~f2)*(b.f4~f3)
+#> 
 #> Computation:
 #>   (0.32561)*(0.40186)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 100 bootstrap samples.

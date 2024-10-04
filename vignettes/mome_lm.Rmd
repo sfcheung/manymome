@@ -1,7 +1,7 @@
 ---
 title: "Moderated Mediation Analysis by Multiple Regression"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2024-09-25"
+date: "2024-10-04"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -132,7 +132,7 @@ using `lm2list()`:
 fit_lm <- lm2list(lm_m, lm_y)
 fit_lm
 #> 
-#> The models:
+#> The model(s):
 #> m ~ x * w + c1 + c2
 #> y ~ m + x + c1 + c2
 ```

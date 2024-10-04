@@ -1,7 +1,7 @@
 ---
 title: "manymome"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2024-09-25"
+date: "2024-10-04"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -384,8 +384,10 @@ get_one_cond_indirect_effect(out_cond, 1)
 #> 
 #> Computation Formula:
 #>   (b.m~x + (b.w1x)*(w1))*(b.y~m + (b.w2m)*(w2))
+#> 
 #> Computation:
 #>   ((-0.66304) + (0.20389)*(6.17316))*((-0.15271) + (0.20376)*(4.04049))
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 500 bootstrap samples.
@@ -778,8 +780,10 @@ out_med
 #> 
 #> Computation Formula:
 #>   (b.m1~x)*(b.m2~m1)*(b.y~m2)
+#> 
 #> Computation:
 #>   (0.82244)*(0.42078)*(0.52077)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 500 bootstrap samples.
@@ -834,8 +838,10 @@ out_med_stdxy
 #> 
 #> Computation Formula:
 #>   (b.m1~x)*(b.m2~m1)*(b.y~m2)*sd_x/sd_y
+#> 
 #> Computation:
 #>   (0.82244)*(0.42078)*(0.52077)*(0.95010)/(1.99960)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 500 bootstrap samples.
@@ -886,8 +892,10 @@ out_x_m2_y
 #> 
 #> Computation Formula:
 #>   (b.m2~x)*(b.y~m2)
+#> 
 #> Computation:
 #>   (-0.11610)*(0.52077)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 500 bootstrap samples.
@@ -941,8 +949,10 @@ out_x_m1_y
 #> 
 #> Computation Formula:
 #>   (b.m1~x)*(b.y~m1)
+#> 
 #> Computation:
 #>   (0.82244)*(-0.43534)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 500 bootstrap samples.
@@ -1019,8 +1029,10 @@ out_x_direct
 #> 
 #> Computation Formula:
 #>   (b.y~x)
+#> 
 #> Computation:
 #>   (0.49285)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 500 bootstrap samples.
@@ -1114,7 +1126,8 @@ The package `manymome` supports "many" models ... but
 certainly not all.
 There are models that it does not yet support. For example,
 it does not support a path that starts with a nominal
-categorical variable.
+categorical variable (except for
+a dichotomous variable).
 Other tools
 need to be used for these cases. See
 [this section](https://sfcheung.github.io/manymome/index.html#limitations)

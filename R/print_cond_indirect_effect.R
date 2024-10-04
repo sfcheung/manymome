@@ -390,9 +390,13 @@ print.cond_indirect_effects <- function(x, digits = 3,
       i <- which(names(out) == "ind")
       j <- length(out)
       out <- c(out[1:i], out_original, out[(i + 1):j])
-      # Drop the component column
+    }
+  # Drop the component column if the model has no mediator
+  if (!has_m) {
       i <- which(names(out) %in% names(x_i$components))
-      out <- out[-i]
+      if (length(i) > 0) {
+          out <- out[-i]
+        }
     }
   out1 <- data.frame(out, check.names = FALSE)
   if (has_wlevels) {
@@ -557,7 +561,7 @@ print.cond_indirect_effects <- function(x, digits = 3,
                 ifelse(has_wlevels,
                        "the moderator(s).",
                        "the group(s)."))
-      if (!print_original_se) {
+      if (has_m) {
           cat(strwrap(paste("\n -", paste(sQuote(mcond), collapse = ","),
               "is/are the path coefficient(s) along the path",
               "conditional on",

@@ -1,7 +1,7 @@
 ---
 title: "Generate Bootstrap Estimates"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2024-09-25"
+date: "2024-10-04"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -86,7 +86,7 @@ fit_lavaan <- sem(model = mod, data = dat,
            fixed.x = FALSE,
            estimator = "MLR")
 summary(fit_lavaan)
-#> lavaan 0.6-18 ended normally after 1 iteration
+#> lavaan 0.6-19 ended normally after 1 iteration
 #> 
 #>   Estimator                                         ML
 #>   Optimization method                           NLMINB
@@ -244,8 +244,10 @@ out_lavaan
 #> 
 #> Computation Formula:
 #>   (b.m~x)*(b.y~m)
+#> 
 #> Computation:
 #>   (0.93469)*(0.78469)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 500 bootstrap samples.
@@ -344,7 +346,7 @@ regression outputs to one object using
 fit_lm <- lm2list(lm_m, lm_y)
 fit_lm
 #> 
-#> The models:
+#> The model(s):
 #> m ~ x + c1 + c2
 #> y ~ m + x + c1 + c2
 ```
@@ -402,8 +404,10 @@ out_lm
 #> 
 #> Computation Formula:
 #>   (b.m~x)*(b.y~m)
+#> 
 #> Computation:
 #>   (0.93469)*(0.78469)
+#> 
 #> 
 #> Percentile confidence interval formed by nonparametric bootstrapping
 #> with 500 bootstrap samples.

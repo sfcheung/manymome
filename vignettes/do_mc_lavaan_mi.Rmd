@@ -1,7 +1,7 @@
 ---
 title: "Monte Carlo Confidence Intervals with Multiple Imputation"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2024-09-25"
+date: "2024-10-04"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -246,8 +246,10 @@ out_lavaan
 #> 
 #> Computation Formula:
 #>   (b.m~x)*(b.y~m)
+#> 
 #> Computation:
 #>   (0.89141)*(0.73569)
+#> 
 #> 
 #> Monte Carlo confidence interval with 10000 replications.
 #> 

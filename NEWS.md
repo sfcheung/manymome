@@ -1,4 +1,4 @@
-# manymome 0.2.3.14
+# manymome 0.2.4
 
 ## New Features
 
@@ -54,8 +54,18 @@
 
 - Added `wrap_computation` to the argument
   of `print.indirect()` to wrap the printout
-  of long computational formulas.
+  of long computational formulas. Default
+  set to `TRUE`.
   (0.2.3.14)
+
+- Updated `plot_effect_vs_w()` to check
+  whether a moderator is numeric.
+  (0.2.3.15)
+
+- Updated `print.cond_indirect_effects()`.
+  Disabled the printing of the (only)
+  component path when a path has no
+  mediator. (0.2.3.16)
 
 ## Documentation and Notes
 
