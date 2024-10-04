@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.14</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,7 +92,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2024-09-25</h4>
+            <h4 data-toc-skip class="date">2024-10-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/med_lm.Rmd" class="external-link"><code>vignettes/med_lm.Rmd</code></a></small>
       <div class="d-none name"><code>med_lm.Rmd</code></div>
@@ -156,7 +156,7 @@ models into one object (a system of regression models) using
 <code class="sourceCode R"><span><span class="va">fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lm2list.html">lm2list</a></span><span class="op">(</span><span class="va">lm_m11</span>, <span class="va">lm_m12</span>, <span class="va">lm_m2</span>, <span class="va">lm_y1</span>, <span class="va">lm_y2</span><span class="op">)</span></span>
 <span><span class="va">fit_lm</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; The models:</span></span>
+<span><span class="co">#&gt; The model(s):</span></span>
 <span><span class="co">#&gt; m11 ~ x1 + x2 + c1 + c2</span></span>
 <span><span class="co">#&gt; m12 ~ m11 + x1 + x2 + c1 + c2</span></span>
 <span><span class="co">#&gt; m2 ~ x1 + x2 + c1 + c2</span></span>
@@ -219,8 +219,10 @@ to <code>y1</code> through <code>m11</code> and <code>m12</code>:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m11~x1)*(b.m12~m11)*(b.y1~m12)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   (0.35204)*(0.45408)*(0.23402)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span>
@@ -251,8 +253,10 @@ to <code>y2</code> through <code>m2</code>:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m2~x2)*(b.y2~m2)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   (0.28901)*(-0.43598)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span>
@@ -284,8 +288,10 @@ indirect effect from <code>x2</code> to <code>m12</code> through
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m11~x2)*(b.m12~m11)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   (-0.04471)*(0.45408)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span>
@@ -329,8 +335,10 @@ estimated by setting <code>standardized_x</code> and
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m11~x1)*(b.m12~m11)*(b.y1~m12)*sd_x1/sd_y1</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   (0.35204)*(0.45408)*(0.23402)*(1.11605)/(1.06579)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span>
@@ -367,8 +375,10 @@ interval [0.004,0.085].</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m2~x1)*(b.y1~m2)*sd_x1/sd_y1</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   (0.02233)*(-0.43300)*(1.11605)/(1.06579)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span>
@@ -426,8 +436,10 @@ compute the indirect effects along Paths b, c, and d below:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m11~x1)*(b.y1~m11)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   (0.35204)*(0.14694)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span>
@@ -453,8 +465,10 @@ compute the indirect effects along Paths b, c, and d below:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m12~x1)*(b.y1~m12)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   (-0.21182)*(0.23402)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span>
@@ -480,8 +494,10 @@ compute the indirect effects along Paths b, c, and d below:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m2~x1)*(b.y1~m2)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   (0.02233)*(-0.43300)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span>
@@ -694,8 +710,10 @@ effects can be extracted using either the indices or the path names</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m11~x1)*(b.m12~m11)*(b.y1~m12)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   (0.35204)*(0.45408)*(0.23402)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span>
@@ -719,8 +737,10 @@ is usually long):</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m2~x2)*(b.y2~m2)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   (0.28901)*(-0.43598)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span>

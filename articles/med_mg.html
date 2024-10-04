@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.14</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,7 +92,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2024-09-25</h4>
+            <h4 data-toc-skip class="date">2024-10-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/articles/med_mg.Rmd" class="external-link"><code>vignettes/articles/med_mg.Rmd</code></a></small>
       <div class="d-none name"><code>med_mg.Rmd</code></div>
@@ -156,7 +156,7 @@ usual. There is no need to label any parameters because
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit</span>,</span>
 <span>        estimates <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; lavaan 0.6-18 ended normally after 1 iteration</span></span>
+<span><span class="co">#&gt; lavaan 0.6-19 ended normally after 1 iteration</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Estimator                                         ML</span></span>
 <span><span class="co">#&gt;   Optimization method                           NLMINB</span></span>
@@ -272,7 +272,7 @@ acceptable.</p>
 <span>                        seed <span class="op">=</span> <span class="fl">53253</span>,</span>
 <span>                        ncores <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 8 processes started to run bootstrapping.</span></span>
-<span><span class="co">#&gt; The expected CPU time is about 22.5 second(s).</span></span></code></pre></div>
+<span><span class="co">#&gt; The expected CPU time is about 15 second(s).</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="estimate-indirect-effects">Estimate Indirect Effects<a class="anchor" aria-label="anchor" href="#estimate-indirect-effects"></a>
@@ -311,8 +311,10 @@ the group number used in <code>lavaan</code></p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m~x)*(b.y~m)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   (0.87989)*(0.46481)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 5000 bootstrap samples.</span></span>
@@ -352,8 +354,10 @@ interval of [0.096, 0.753], significantly different from zero
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m~x)*(b.y~m)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   (0.59716)*(1.11040)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 5000 bootstrap samples.</span></span>
@@ -534,8 +538,10 @@ by setting <code>standardized_x</code> and/or
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m~x)*(b.y~m)*sd_x/sd_y</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   (0.87989)*(0.46481)*(1.10557)/(2.21581)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 5000 bootstrap samples.</span></span>
@@ -572,8 +578,10 @@ by setting <code>standardized_x</code> and/or
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m~x)*(b.y~m)*sd_x/sd_y</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   (0.59716)*(1.11040)*(1.00943)/(2.58386)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 5000 bootstrap samples.</span></span>
@@ -801,15 +809,14 @@ setting the mediator:</p>
 <span><span class="co">#&gt;  Path: m -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on group(s): Group A[1], Group B[2]</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     Group Group_ID   ind CI.lo CI.hi Sig   y~m</span></span>
-<span><span class="co">#&gt; 1 Group A        1 0.465 0.110 0.819 Sig 0.465</span></span>
-<span><span class="co">#&gt; 2 Group B        2 1.110 0.765 1.475 Sig 1.110</span></span>
+<span><span class="co">#&gt;     Group Group_ID   ind CI.lo CI.hi Sig</span></span>
+<span><span class="co">#&gt; 1 Group A        1 0.465 0.110 0.819 Sig</span></span>
+<span><span class="co">#&gt; 2 Group B        2 1.110 0.765 1.475 Sig</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span></span>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - The 'ind' column shows the direct effects.</span></span>
-<span><span class="co">#&gt;  - 'y~m' is/are the path coefficient(s) along the path conditional on</span></span>
-<span><span class="co">#&gt;    the group(s).</span></span></code></pre></div>
+<span><span class="co">#&gt; </span></span></code></pre></div>
 <p>The difference between the two paths can be tested using
 bootstrapping confidence interval using
 <code><a href="../reference/cond_indirect_diff.html">cond_indirect_diff()</a></code>:</p>
@@ -824,9 +831,9 @@ bootstrapping confidence interval using
 <span><span class="co">#&gt;  Path: m -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on group(s): Group B[2], Group A[1]</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     Group Group_ID   ind CI.lo CI.hi Sig   y~m</span></span>
-<span><span class="co">#&gt; 1 Group B        2 1.110 0.765 1.475 Sig 1.110</span></span>
-<span><span class="co">#&gt; 2 Group A        1 0.465 0.110 0.819 Sig 0.465</span></span>
+<span><span class="co">#&gt;     Group Group_ID   ind CI.lo CI.hi Sig</span></span>
+<span><span class="co">#&gt; 1 Group B        2 1.110 0.765 1.475 Sig</span></span>
+<span><span class="co">#&gt; 2 Group A        1 0.465 0.110 0.819 Sig</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; == Difference in Conditional Indirect Effect ==</span></span>
 <span><span class="co">#&gt; </span></span>

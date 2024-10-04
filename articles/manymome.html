@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.14</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,7 +92,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2024-09-25</h4>
+            <h4 data-toc-skip class="date">2024-10-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/manymome.Rmd" class="external-link"><code>vignettes/manymome.Rmd</code></a></small>
       <div class="d-none name"><code>manymome.Rmd</code></div>
@@ -439,8 +439,10 @@ above their means (row 1):</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m~x + (b.w1x)*(w1))*(b.y~m + (b.w2m)*(w2))</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   ((-0.66304) + (0.20389)*(6.17316))*((-0.15271) + (0.20376)*(4.04049))</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 500 bootstrap samples.</span></span>
@@ -794,8 +796,10 @@ number of processes (cores) is the same.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m1~x)*(b.m2~m1)*(b.y~m2)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   (0.82244)*(0.42078)*(0.52077)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 500 bootstrap samples.</span></span>
@@ -845,8 +849,10 @@ effect:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m1~x)*(b.m2~m1)*(b.y~m2)*sd_x/sd_y</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   (0.82244)*(0.42078)*(0.52077)*(0.95010)/(1.99960)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 500 bootstrap samples.</span></span>
@@ -894,8 +900,10 @@ increase in SD of <code>y</code> through <code>m1</code> and
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m2~x)*(b.y~m2)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   (-0.11610)*(0.52077)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 500 bootstrap samples.</span></span>
@@ -945,8 +953,10 @@ is the sum of these indirect effects:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m1~x)*(b.y~m1)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   (0.82244)*(-0.43534)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 500 bootstrap samples.</span></span>
@@ -1009,8 +1019,10 @@ effect can be computed with <code>m</code> not set:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.y~x)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation:</span></span>
 <span><span class="co">#&gt;   (0.49285)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 500 bootstrap samples.</span></span></code></pre></div>
@@ -1088,8 +1100,8 @@ section</a> for other advantages.</p>
 <p>The package <code>manymome</code> supports “many” models … but
 certainly not all. There are models that it does not yet support. For
 example, it does not support a path that starts with a nominal
-categorical variable. Other tools need to be used for these cases. See
-<a href="https://sfcheung.github.io/manymome/index.html#limitations">this
+categorical variable (except for a dichotomous variable). Other tools
+need to be used for these cases. See <a href="https://sfcheung.github.io/manymome/index.html#limitations">this
 section</a> for other limitations.</p>
 </div>
 <div class="section level3">
