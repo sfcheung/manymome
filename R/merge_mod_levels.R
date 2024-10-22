@@ -116,11 +116,17 @@ merge_mod_levels <- function(...) {
       }
     wnames1 <- mapply(tmpfct3,
                       z1 = names(wnames0),
-                      z2 = wnames0)
+                      z2 = wnames0,
+                      SIMPLIFY = FALSE)
     colnames(out2levels) <- wnames1
     tmp <- mapply(function(a, b) {paste0(a, ": ", b)},
                   a = colnames(out2levels),
                   b = out2levels)
+    if (is.null(dim(tmp))) {
+        tmp0 <- names(tmp)
+        dim(tmp) <- c(1, length(tmp))
+        colnames(tmp) <- tmp0
+      }
     wlevels <- apply(tmp, 1, paste, collapse = "; ")
     rownames(out2) <- wlevels
     attr(out2, "wlevels") <- out2levels
