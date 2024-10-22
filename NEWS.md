@@ -1,3 +1,13 @@
+# manymome 0.2.4.1
+
+## Improvement
+
+- Though rare in real studies,
+  `merge_mod_levels()` was revised to
+  support merging `wlevel` objects
+  that have only one level in each of
+  them. (0.2.4.1)
+
 # manymome 0.2.4
 
 ## New Features
