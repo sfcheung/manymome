@@ -328,6 +328,10 @@ boot2est <- function(fit) {
         stop("'se' not set to 'bootstrap' when fitting the model.")
       }
     boot_est0 <- lavaan::lavInspect(fit, "boot")
+    tmp <- attr(boot_est0, "error.idx")
+    if (length(tmp) > 0) {
+        boot_est0 <- boot_est0[-tmp, ]
+      }
     ptable <- lavaan::parameterTable(fit)
     p_free <- ptable$free > 0
     boot_est <- split(boot_est0, row(boot_est0))
@@ -349,6 +353,10 @@ boot2implied <- function(fit) {
     #     stop("'fixed.x' set to TRUE is not supported.")
     #   }
     boot_est0 <- lavaan::lavInspect(fit, "boot")
+    tmp <- attr(boot_est0, "error.idx")
+    if (length(tmp) > 0) {
+        boot_est0 <- boot_est0[-tmp, ]
+      }
     boot_est <- split(boot_est0, row(boot_est0))
     out_all <- lapply(boot_est, get_implied_i,
                         fit = fit)
@@ -489,10 +497,21 @@ get_implied_i_lavaan <- function(est0, fit, fit_tmp = NULL) {
           if (!is.null(implied[[x]][[1]])) {
               if (ngroups > 1) {
                   for (j in seq_len(ngroups)) {
-                      out1[[x]][[j]][] <- implied[[x]][[j]]
+                      if (is.null(dim(out1[[x]][[j]]))) {
+                          tmp <- names(implied[[x]][[j]])
+                          out1[[x]][[j]][tmp] <- implied[[x]][[j]]
+                        } else {
+                          out1[[x]][[j]][] <- implied[[x]][[j]]
+                        }
                     }
                 } else {
-                  out1[[x]][] <- implied[[x]][[1]]
+                  if (is.null(dim(implied[[x]][[1]])) &&
+                      !is.null(names(implied[[x]][[1]]))) {
+                      tmp <- names(implied[[x]][[1]])
+                      out1[[x]][tmp] <- implied[[x]][[1]]
+                    } else {
+                      out1[[x]][] <- implied[[x]][[1]]
+                    }
                 }
             } else {
               if (ngroups > 1) {
@@ -590,7 +609,13 @@ get_implied_i_lavaan_mi <- function(est0, fit, fit_tmp = NULL) {
     for (x in out_names) {
         if (x %in% implied_names) {
           if (!is.null(implied[[x]][[1]])) {
-              out1[[x]][] <- implied[[x]][[1]]
+              if (is.null(dim(implied[[x]][[1]])) &&
+                      !is.null(names(implied[[x]][[1]]))) {
+                  tmp <- names(implied[[x]][[1]])
+                  out1[[x]][tmp] <- implied[[x]][[1]]
+                } else {
+                  out1[[x]][] <- implied[[x]][[1]]
+                }
             } else {
               out1[[x]][] <- NA
             }
