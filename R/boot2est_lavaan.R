@@ -328,6 +328,10 @@ boot2est <- function(fit) {
         stop("'se' not set to 'bootstrap' when fitting the model.")
       }
     boot_est0 <- lavaan::lavInspect(fit, "boot")
+    tmp <- attr(boot_est0, "error.idx")
+    if (length(tmp) > 0) {
+        boot_est0 <- boot_est0[-tmp, ]
+      }
     ptable <- lavaan::parameterTable(fit)
     p_free <- ptable$free > 0
     boot_est <- split(boot_est0, row(boot_est0))
@@ -349,6 +353,10 @@ boot2implied <- function(fit) {
     #     stop("'fixed.x' set to TRUE is not supported.")
     #   }
     boot_est0 <- lavaan::lavInspect(fit, "boot")
+    tmp <- attr(boot_est0, "error.idx")
+    if (length(tmp) > 0) {
+        boot_est0 <- boot_est0[-tmp, ]
+      }
     boot_est <- split(boot_est0, row(boot_est0))
     out_all <- lapply(boot_est, get_implied_i,
                         fit = fit)
