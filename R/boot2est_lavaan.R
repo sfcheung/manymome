@@ -489,10 +489,21 @@ get_implied_i_lavaan <- function(est0, fit, fit_tmp = NULL) {
           if (!is.null(implied[[x]][[1]])) {
               if (ngroups > 1) {
                   for (j in seq_len(ngroups)) {
-                      out1[[x]][[j]][] <- implied[[x]][[j]]
+                      if (is.null(dim(out1[[x]][[j]]))) {
+                          tmp <- names(implied[[x]][[j]])
+                          out1[[x]][[j]][tmp] <- implied[[x]][[j]]
+                        } else {
+                          out1[[x]][[j]][] <- implied[[x]][[j]]
+                        }
                     }
                 } else {
-                  out1[[x]][] <- implied[[x]][[1]]
+                  if (is.null(dim(implied[[x]][[1]])) &&
+                      !is.null(names(implied[[x]][[1]]))) {
+                      tmp <- names(implied[[x]][[1]])
+                      out1[[x]][tmp] <- implied[[x]][[1]]
+                    } else {
+                      out1[[x]][] <- implied[[x]][[1]]
+                    }
                 }
             } else {
               if (ngroups > 1) {
@@ -590,7 +601,13 @@ get_implied_i_lavaan_mi <- function(est0, fit, fit_tmp = NULL) {
     for (x in out_names) {
         if (x %in% implied_names) {
           if (!is.null(implied[[x]][[1]])) {
-              out1[[x]][] <- implied[[x]][[1]]
+              if (is.null(dim(implied[[x]][[1]])) &&
+                      !is.null(names(implied[[x]][[1]]))) {
+                  tmp <- names(implied[[x]][[1]])
+                  out1[[x]][tmp] <- implied[[x]][[1]]
+                } else {
+                  out1[[x]][] <- implied[[x]][[1]]
+                }
             } else {
               out1[[x]][] <- NA
             }
