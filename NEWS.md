@@ -1,4 +1,4 @@
-# manymome 0.2.4.1
+# manymome 0.2.4.2
 
 ## Improvement
 
@@ -7,6 +7,20 @@
   support merging `wlevel` objects
   that have only one level in each of
   them. (0.2.4.1)
+
+- When bootstrapping is done by `lavaan`,
+  only bootstrap estimates with no
+  errors will be kept (previously, they
+  will be set to `NA`). This also makes
+  the number of bootstrap samples reported
+  consistent with the number of successful
+  bootstrap replications. (0.2.4.2)
+
+## Bugs
+
+- Remove a warning that may occur when
+  retrieving `lavaan` bootstrap estimates.
+  (0.2.4.2)
 
 # manymome 0.2.4
 
