@@ -1,4 +1,4 @@
-# manymome 0.2.4.2
+# manymome 0.2.4.3
 
 ## Improvement
 
@@ -21,6 +21,14 @@
 - Remove a warning that may occur when
   retrieving `lavaan` bootstrap estimates.
   (0.2.4.2)
+
+# Miscellaneous
+
+- Corrected the help page of
+  `indirect_effects_from_list()`. It
+  works on an object of the class
+  `indirect_list`, not of the class
+  `cond_indirect_effects`. (0.2.4.3)
 
 # manymome 0.2.4
 
