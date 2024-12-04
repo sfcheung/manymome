@@ -151,6 +151,7 @@ reference:
   - confint.cond_indirect_effects
   - print.cond_indirect_effects
   - subsetting_cond_indirect_effects
+  - as.data.frame.cond_indirect_effects
   - get_one_cond_indirect_effect
   - coef.cond_indirect_diff
   - confint.cond_indirect_diff

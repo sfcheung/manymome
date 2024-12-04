@@ -1,7 +1,9 @@
-skip("WIP")
+skip_on_cran()
 
 library(manymome)
 suppressMessages(library(lavaan))
+
+# lm
 
 dat <- modmed_x1m3w4y1
 n <- nrow(dat)
@@ -19,6 +21,16 @@ lm_y_mm <- model.matrix(lm_y)[, 6]
 dat2 <- cbind(dat, lm_m1_mm, lm_m2_mm, lm_m3_mm, lm_y_mm)
 fit <- list(lm_m1, lm_m2, lm_m3, lm_y)
 
+# Moderated mediation
+
+out_mm_1 <- mod_levels_list("w4", c("gpgp2", "gpgp3"), fit = fit, merge = TRUE)
+
+out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit)
+fit_boot_out <- lm2boot_out(fit, R = 40, seed = 87415, progress = FALSE)
+out_6 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
+                               standardized_x = TRUE,
+                               boot_ci = TRUE, boot_out = fit_boot_out)
+
 # Moderation only
 
 outmo_mm_1 <- mod_levels(c("gpgp2", "gpgp3"), fit = fit)
@@ -30,7 +42,7 @@ outmo_1_std <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fi
 
 outmo_1_boot <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
                                       boot_ci = TRUE,
-                                      R = 100,
+                                      R = 40,
                                       progress = FALSE,
                                       parallel = FALSE,
                                       seed = 1234)
@@ -40,12 +52,51 @@ outmo_1_std <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fi
 
 outmo_1_std_boot <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
                                  boot_ci = TRUE,
-                                 R = 100,
+                                 R = 40,
                                  progress = FALSE,
                                  parallel = FALSE,
                                  standardized_x = TRUE)
 
+# lavaan
 
+dat <- modmed_x1m3w4y1
+n <- nrow(dat)
+set.seed(860314)
+dat$gp <- sample(c("gp1", "gp2", "gp3"), n, replace = TRUE)
+dat$city <- sample(c("alpha", "beta", "gamma", "sigma"), n, replace = TRUE)
+lm_m1 <- lm(m1 ~ x * w1, dat)
+lm_m2 <- lm(m2 ~ m1 + gp + city, dat)
+lm_m3 <- lm(m3 ~ m1 + x * gp, dat)
+lm_y <- lm(y ~ m2 + m3 + x * w4, dat)
+
+dat <- cbind(dat, factor2var(dat$gp, prefix = "gp", add_rownames = FALSE))
+dat <- cbind(dat, factor2var(dat$city, prefix = "city", add_rownames = FALSE))
+
+mod <-
+"
+m3 ~ m1 + x + gpgp2 + gpgp3 + x:gpgp2 + x:gpgp3
+y ~ m2 + m3 + x + w4 + x:w4
+"
+fit_lav <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
+fit_boot <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "boot", bootstrap = 5,
+                warn = FALSE)
+
+outmo_mm_1 <- mod_levels(c("gpgp2", "gpgp3"), fit = fit)
+
+# Suppress warnings due to small number of bootstrap samples.
+
+suppressWarnings(out_lav_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit))
+suppressWarnings(out_lav_2 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
+                               standardized_x = TRUE))
+suppressWarnings(out_lav_5 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_boot,
+                               boot_ci = TRUE))
+suppressWarnings(out_lav_6 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit_boot,
+                               standardized_x = TRUE,
+                               boot_ci = TRUE))
+
+suppressWarnings(outmo_lav_1 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit))
+suppressWarnings(outmo_lav_1_std <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+                                                           standardized_x = TRUE))
 
 # Target output
 #        ind      CI.lo    CI.hi pvalue        SE
@@ -58,148 +109,31 @@ outmo_1_std_boot <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3
 # 2 0.12925647 -0.06795164 0.3469891   0.30 0.1058540
 # 3 0.01399145 -0.19169346 0.2860562   0.76 0.1300183
 
-cond_indirect_effects_to_data_frame <- function(x,
-                                                pvalue = NULL,
-                                                se = NULL,
-                                                level = .95,
-                                                se_ci = TRUE) {
-    out <- as.data.frame(x)
-    full_output <- attr(x, "full_output")
-    x_i <- full_output[[1]]
-    has_ci <- FALSE
-    ci_type <- NULL
-    boot_type <- NULL
-    has_groups <- ("group" %in% tolower(colnames(x)))
-    if (has_groups) {
-        group_labels <- unique(x$Group)
-        group_numbers <- unique(x$Group_ID)
-      } else {
-        group_labels <- NULL
-        group_numbers <- NULL
-      }
-    has_wlevels <- !is.null(attr(x, "wlevels"))
-    if (!is.null(x_i$boot_ci)) {
-        has_ci <- TRUE
-        ci_type <- "boot"
-        ind_name <- "boot_indirect"
-        se_name <- "boot_se"
-        boot_type <- x_i$boot_type
-        if (is.null(boot_type)) boot_type <- "perc"
-      }
-    if (!is.null(x_i$mc_ci)) {
-        has_ci <- TRUE
-        ci_type <- "mc"
-        ind_name <- "mc_indirect"
-        se_name <- "mc_se"
-      }
-    standardized_x <- x_i$standardized_x
-    standardized_y <- x_i$standardized_y
-    has_m <- isTRUE(!is.null(x_i$m))
+test_that("lm", {
+  expect_equal(class(as.data.frame(out_1))[1], "data.frame")
+  expect_false("SE" %in% colnames(as.data.frame(out_1, pvalue = TRUE, se = TRUE)))
+  expect_false("SE" %in% colnames(as.data.frame(out_6)))
+  expect_true(all(match(c("pvalue", "SE"), colnames(as.data.frame(out_6, pvalue = TRUE, se = TRUE))) > 0))
 
-    # Default to OLS or Wald SE
-    se_out <- cond_effects_original_se(x,
-                                      level = level,
-                                      append = FALSE)
-    has_original_se <- !is.null(se_out)
-    print_original_se <- FALSE
-    if (!has_ci &&
-        !has_m &&
-        !has_groups &&
-        has_wlevels &&
-        !standardized_x &&
-        !standardized_y &&
-        has_original_se) {
-        print_original_se <- TRUE
-        if (is.null(pvalue)) {
-            pvalue <- TRUE
-          }
-        if (is.null(se)) {
-            se <- TRUE
-          }
-      } else {
-        if (is.null(pvalue)) {
-            pvalue <- FALSE
-          }
-        if (is.null(se)) {
-            se <- FALSE
-          }
-        level <- x_i$level
-      }
+  expect_equal(class(as.data.frame(outmo_1))[1], "data.frame")
+  expect_equal(class(as.data.frame(outmo_1_std))[1], "data.frame")
+  expect_true("pvalue" %in% colnames(as.data.frame(outmo_1_boot, pvalue = TRUE)))
+  expect_true(is.character(as.data.frame(outmo_1_boot, to_string = TRUE, pvalue = TRUE)$ind))
+  expect_true(all(match(c("pvalue", "SE"), colnames(as.data.frame(outmo_1_boot, pvalue = TRUE, se = TRUE)))))
+  expect_true("pvalue" %in% colnames(as.data.frame(outmo_1_std_boot, pvalue = TRUE)))
+  expect_true(all(match(c("pvalue", "SE"), colnames(as.data.frame(outmo_1_std_boot, pvalue = TRUE, se = TRUE)))))
+})
 
-    out <- as.data.frame(x)
-    if (has_ci) {
-        j <- length(out)
-        if ((ci_type == "boot") && pvalue) {
-            boot_p <- sapply(attr(x, "full_output"), function(x) x$boot_p)
-            boot_p <- unname(boot_p)
-            i <- which(names(out) == "CI.hi")
-            j <- length(out)
-            out <- c(out[1:i], list(pvalue = boot_p), out[(i + 1):j])
-          }
-        if (se) {
-            ind_se <- sapply(attr(x, "full_output"), function(x) x[[se_name]])
-            ind_se <- unname(ind_se)
-            i <- which(names(out) == "pvalue")
-            if (length(i) == 0) i <- which(names(out) == "CI.hi")
-            j <- length(out)
-            out <- c(out[1:i], list(SE = ind_se), out[(i + 1):j])
-          }
-      }
+test_that("lavaan", {
+  expect_equal(class(as.data.frame(outmo_lav_1))[1], "data.frame")
+  expect_equal(class(as.data.frame(outmo_lav_1_std))[1], "data.frame")
+  expect_true("SE" %in% colnames(as.data.frame(outmo_lav_1, pvalue = FALSE)))
+  expect_false("SE" %in% colnames(as.data.frame(outmo_lav_1_std, pvalue = TRUE)))
 
-    if (!has_ci &&
-        !has_m &&
-        !has_groups &&
-        has_wlevels &&
-        !standardized_x &&
-        !standardized_y &&
-        has_original_se) {
-        # OLS or Wald SE
-        # Moderation only
-        print_original_se <- TRUE
-        # t or Wald SE, CI, and p-values
-        # TODO: Support multiple-group models
-        out_original <- list()
-        if (se_ci) {
-            out_cilo <- unname(se_out$cilo)
-            out_cihi <- unname(se_out$cihi)
-
-            out_original <- c(out_original,
-                              list(`CI.lo` = out_cilo,
-                                  `CI.hi` = out_cihi))
-          }
-        if (pvalue) {
-            # out_stat <- unname(se_out$stat)
-            # out_original <- c(out_original,
-            #                   list(Stat = unname(out_stat),
-            #                        pvalue = unname(out_p)))
-            out_p <- unname(se_out$p)
-            out_original <- c(out_original,
-                              list(pvalue = unname(out_p)))
-          }
-        if (se) {
-            out_se <- unname(se_out$se)
-            out_original <- c(out_original,
-                              list(SE = out_se))
-          }
-        rownames(out_original) <- NULL
-        i <- which(names(out) == "ind")
-        j <- length(out)
-        out <- c(out[1:i], out_original, out[(i + 1):j])
-      }
-
-    if (!has_m) {
-        i <- which(names(out) %in% names(x_i$components))
-        if (length(i) > 0) {
-            out <- out[-i]
-          }
-      }
-    out1 <- data.frame(out, check.names = FALSE)
-    return(out1)
-  }
-
-cond_indirect_effects_to_data_frame(outmo_1)
-cond_indirect_effects_to_data_frame(outmo_1_std)
-cond_indirect_effects_to_data_frame(outmo_1_boot, pvalue = TRUE)
-cond_indirect_effects_to_data_frame(outmo_1_boot, pvalue = TRUE, se = TRUE)
-cond_indirect_effects_to_data_frame(outmo_1_std_boot, pvalue = TRUE)
-cond_indirect_effects_to_data_frame(outmo_1_std_boot, pvalue = TRUE, se = TRUE)
+  expect_equal(class(as.data.frame(out_lav_1))[1], "data.frame")
+  expect_equal(class(as.data.frame(out_lav_2))[1], "data.frame")
+  expect_equal(class(as.data.frame(out_lav_5))[1], "data.frame")
+  expect_equal(class(as.data.frame(out_lav_6))[1], "data.frame")
+  expect_true(all(match(c("pvalue", "SE"), colnames(as.data.frame(out_lav_5, pvalue = TRUE, se = TRUE)))))
+  expect_true(all(match(c("SE"), colnames(as.data.frame(out_lav_6, pvalue = FALSE, se = TRUE)))))
+})
