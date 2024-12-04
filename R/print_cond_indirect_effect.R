@@ -79,7 +79,8 @@
 #' that the model is not invariant to
 #' linear transformation of the variables.
 #'
-#' @return `x` is returned invisibly.
+#' @return The `print`-method
+#' returns `x` invisibly.
 #'  Called for its side effect.
 #'
 #' @param x The output of
@@ -153,7 +154,8 @@
 #' Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap%20-%20Pvalue.pdf
 #'
 #'
-#' @seealso [cond_indirect_effects()]
+#' @seealso [cond_indirect_effects()] and
+#' [cond_effects()]
 #'
 #' @examples
 #'
@@ -277,128 +279,139 @@ print.cond_indirect_effects <- function(x, digits = 3,
     } else {
       path <- paste(x0, "->", y0)
     }
-  out <- lapply(x, format_numeric, digits = digits)
-  if (has_ci) {
-      Sig <- ifelse((x$CI.lo > 0) | (x$CI.hi < 0), "Sig", "")
-      i <- which(names(out) == "CI.hi")
-      j <- length(out)
-      out <- c(out[1:i], list(Sig = Sig), out[(i + 1):j])
-      if ((ci_type == "boot") && pvalue) {
-          boot_p <- sapply(attr(x, "full_output"), function(x) x$boot_p)
-          boot_p <- unname(boot_p)
-          boot_p1 <- sapply(boot_p, function(xx) {
-              if (!is.na(xx)) {
-                  return(formatC(xx, digits = pvalue_digits, format = "f"))
-                } else {
-                  return("NA")
-                }
-            })
-          i <- which(names(out) == "Sig")
-          j <- length(out)
-          out <- c(out[1:i], list(pvalue = boot_p1), out[(i + 1):j])
-        }
-      if (se) {
-          ind_se <- sapply(attr(x, "full_output"), function(x) x[[se_name]])
-          ind_se <- unname(ind_se)
-          ind_se <- sapply(ind_se, function(xx) {
-              if (!is.na(xx)) {
-                  return(formatC(xx, digits = digits, format = "f"))
-                } else {
-                  return("NA")
-                }
-            })
-          i <- which(names(out) == "Sig")
-          j <- length(out)
-          out <- c(out[1:i], list(SE = ind_se), out[(i + 1):j])
-        }
-    }
-  if (!has_ci &&
-      !has_m &&
-      !has_groups &&
-      has_wlevels &&
-      !standardized_x &&
-      !standardized_y &&
-      has_original_se) {
-      # OLS or Wald SE
-      # Moderation only
-      print_original_se <- TRUE
-      # t or Wald SE, CI, and p-values
-      # TODO: Support multiple-group models
-      out_original <- list()
-      if (se) {
-          out_se <- unname(se_out$se)
-          out_se <- sapply(out_se, function(xx) {
-              if (!is.na(xx)) {
-                  return(formatC(xx, digits = digits, format = "f"))
-                } else {
-                  return("NA")
-                }
-            })
-          out_original <- c(out_original,
-                            list(SE = out_se))
-        }
-      if (pvalue) {
-          out_stat <- unname(se_out$stat)
-          out_stat <- sapply(out_stat, function(xx) {
-              if (!is.na(xx)) {
-                  return(formatC(xx, digits = digits, format = "f"))
-                } else {
-                  return("NA")
-                }
-            })
-          out_p <- unname(se_out$p)
-          out_p <- sapply(out_p, function(xx) {
-                        if (!is.na(xx)) {
-                            return(formatC(xx, digits = pvalue_digits, format = "f"))
-                          } else {
-                            return("NA")
-                          }
-                      })
-          out_sig0 <- as.character(unname(se_out$sig))
-          out_sig <- tryCatch(format_stars(out_sig0),
-                              error = function(e) e)
-          if (inherits(out_sig, "error")) {
-              out_sig <- out_sig0
-            }
-          out_original <- c(out_original,
-                            list(Stat = unname(out_stat),
-                                 pvalue = unname(out_p),
-                                 Sig = unname(out_sig)))
-        }
-      if (se_ci) {
-          out_cilo <- unname(se_out$cilo)
-          out_cihi <- unname(se_out$cihi)
-          out_cilo <- sapply(out_cilo, function(xx) {
-              if (!is.na(xx)) {
-                  return(formatC(xx, digits = digits, format = "f"))
-                } else {
-                  return("NA")
-                }
-            })
-          out_cihi <- sapply(out_cihi, function(xx) {
-              if (!is.na(xx)) {
-                  return(formatC(xx, digits = digits, format = "f"))
-                } else {
-                  return("NA")
-                }
-            })
-          out_original <- c(out_original,
-                            list(`CI.lo` = out_cilo,
-                                 `CI.hi` = out_cihi))
-        }
-      rownames(out_original) <- NULL
-      i <- which(names(out) == "ind")
-      j <- length(out)
-      out <- c(out[1:i], out_original, out[(i + 1):j])
-    }
-  # Drop the component column if the model has no mediator
-  if (!has_m) {
-      i <- which(names(out) %in% names(x_i$components))
-      if (length(i) > 0) {
-          out <- out[-i]
-        }
-    }
-  out1 <- data.frame(out, check.names = FALSE)
+  # # TODO:
+  # # - The following lines will be removed in the future
+  # out <- lapply(x, format_numeric, digits = digits)
+  # if (has_ci) {
+  #     Sig <- ifelse((x$CI.lo > 0) | (x$CI.hi < 0), "Sig", "")
+  #     i <- which(names(out) == "CI.hi")
+  #     j <- length(out)
+  #     out <- c(out[1:i], list(Sig = Sig), out[(i + 1):j])
+  #     if ((ci_type == "boot") && pvalue) {
+  #         boot_p <- sapply(attr(x, "full_output"), function(x) x$boot_p)
+  #         boot_p <- unname(boot_p)
+  #         boot_p1 <- sapply(boot_p, function(xx) {
+  #             if (!is.na(xx)) {
+  #                 return(formatC(xx, digits = pvalue_digits, format = "f"))
+  #               } else {
+  #                 return("NA")
+  #               }
+  #           })
+  #         i <- which(names(out) == "Sig")
+  #         j <- length(out)
+  #         out <- c(out[1:i], list(pvalue = boot_p1), out[(i + 1):j])
+  #       }
+  #     if (se) {
+  #         ind_se <- sapply(attr(x, "full_output"), function(x) x[[se_name]])
+  #         ind_se <- unname(ind_se)
+  #         ind_se <- sapply(ind_se, function(xx) {
+  #             if (!is.na(xx)) {
+  #                 return(formatC(xx, digits = digits, format = "f"))
+  #               } else {
+  #                 return("NA")
+  #               }
+  #           })
+  #         i <- which(names(out) == "Sig")
+  #         j <- length(out)
+  #         out <- c(out[1:i], list(SE = ind_se), out[(i + 1):j])
+  #       }
+  #   }
+  # if (!has_ci &&
+  #     !has_m &&
+  #     !has_groups &&
+  #     has_wlevels &&
+  #     !standardized_x &&
+  #     !standardized_y &&
+  #     has_original_se) {
+  #     # OLS or Wald SE
+  #     # Moderation only
+  #     print_original_se <- TRUE
+  #     # t or Wald SE, CI, and p-values
+  #     # TODO: Support multiple-group models
+  #     out_original <- list()
+  #     if (se) {
+  #         out_se <- unname(se_out$se)
+  #         out_se <- sapply(out_se, function(xx) {
+  #             if (!is.na(xx)) {
+  #                 return(formatC(xx, digits = digits, format = "f"))
+  #               } else {
+  #                 return("NA")
+  #               }
+  #           })
+  #         out_original <- c(out_original,
+  #                           list(SE = out_se))
+  #       }
+  #     if (pvalue) {
+  #         out_stat <- unname(se_out$stat)
+  #         out_stat <- sapply(out_stat, function(xx) {
+  #             if (!is.na(xx)) {
+  #                 return(formatC(xx, digits = digits, format = "f"))
+  #               } else {
+  #                 return("NA")
+  #               }
+  #           })
+  #         out_p <- unname(se_out$p)
+  #         out_p <- sapply(out_p, function(xx) {
+  #                       if (!is.na(xx)) {
+  #                           return(formatC(xx, digits = pvalue_digits, format = "f"))
+  #                         } else {
+  #                           return("NA")
+  #                         }
+  #                     })
+  #         out_sig0 <- as.character(unname(se_out$sig))
+  #         out_sig <- tryCatch(format_stars(out_sig0),
+  #                             error = function(e) e)
+  #         if (inherits(out_sig, "error")) {
+  #             out_sig <- out_sig0
+  #           }
+  #         out_original <- c(out_original,
+  #                           list(Stat = unname(out_stat),
+  #                                pvalue = unname(out_p),
+  #                                Sig = unname(out_sig)))
+  #       }
+  #     if (se_ci) {
+  #         out_cilo <- unname(se_out$cilo)
+  #         out_cihi <- unname(se_out$cihi)
+  #         out_cilo <- sapply(out_cilo, function(xx) {
+  #             if (!is.na(xx)) {
+  #                 return(formatC(xx, digits = digits, format = "f"))
+  #               } else {
+  #                 return("NA")
+  #               }
+  #           })
+  #         out_cihi <- sapply(out_cihi, function(xx) {
+  #             if (!is.na(xx)) {
+  #                 return(formatC(xx, digits = digits, format = "f"))
+  #               } else {
+  #                 return("NA")
+  #               }
+  #           })
+  #         out_original <- c(out_original,
+  #                           list(`CI.lo` = out_cilo,
+  #                                `CI.hi` = out_cihi))
+  #       }
+  #     rownames(out_original) <- NULL
+  #     i <- which(names(out) == "ind")
+  #     j <- length(out)
+  #     out <- c(out[1:i], out_original, out[(i + 1):j])
+  #   }
+  # # Drop the component column if the model has no mediator
+  # if (!has_m) {
+  #     i <- which(names(out) %in% names(x_i$components))
+  #     if (length(i) > 0) {
+  #         out <- out[-i]
+  #       }
+  #   }
+  out1 <- as.data.frame(x,
+                        digits = digits,
+                        add_sig = TRUE,
+                        pvalue = pvalue,
+                        pvalue_digits = pvalue_digits,
+                        se = se,
+                        level = level,
+                        se_ci = se_ci,
+                        to_string = TRUE,
+                        ...)
   if (has_wlevels) {
       wlevels <- attr(x, "wlevels")
       w0 <- colnames(attr(wlevels, "wlevels"))
@@ -570,6 +583,290 @@ print.cond_indirect_effects <- function(x, digits = 3,
       cat("\n")
     }
   invisible(x)
+}
+
+#' @details
+#' The method `as.data.frame()` for
+#' `cond_indirect_effects` objects is
+#' used to convert this class of objects
+#' to data frames. Used internally by the
+#' print method but can also be used for
+#' getting a data frame with columns such
+#' as *p*-values and standard errors added.
+#'
+#' @param row.names Not used. Included
+#' to be compatible with the generic
+#' method.
+#'
+#' @param optional Not used. Included
+#' to be compatible with the generic
+#' method.
+#'
+#' @param add_sig Whether a column
+#' of significance test results
+#' will be added. Default is `TRUE`.
+#'
+#' @param to_string If `TRUE`, numeric
+#' columns will be converted to string
+#' columns, formatted based on `digits`
+#' and `pvalue_digits`. For printing.
+#' Default is `FALSE`.
+#'
+#' @return The `as.data.frame`-method
+#' returns a data frame with
+#' the conditional effects and
+#' confidence intervals (if available),
+#' as well as other columns requested.
+#'
+#' @examples
+#'
+#' # Convert to data frames
+#'
+#' as.data.frame(out)
+#'
+#' as.data.frame(out, to_string = TRUE)
+#'
+#' @describeIn print.cond_indirect_effects
+#' The `as.data.frame`-method
+#' for `cond_indirect_effects` objects.
+#' Used internally by the `print`-method
+#' but can also be used directly.
+#'
+#' @export
+
+as.data.frame.cond_indirect_effects <- function(x,
+                                                row.names = NULL,
+                                                optional = NULL,
+                                                digits = 3,
+                                                add_sig = TRUE,
+                                                pvalue = NULL,
+                                                pvalue_digits = 3,
+                                                se = NULL,
+                                                level = .95,
+                                                se_ci = TRUE,
+                                                to_string = FALSE,
+                                                ...) {
+  full_output <- attr(x, "full_output")
+  x_i <- full_output[[1]]
+  my_call <- attr(x, "call")
+  cc_call <- x_i$cond_indirect_call
+  boot_ci <- !is.null(x_i$boot_ci)
+  has_ci <- FALSE
+  ci_type <- NULL
+  boot_type <- NULL
+  has_groups <- ("group" %in% tolower(colnames(x)))
+  if (has_groups) {
+      group_labels <- unique(x$Group)
+      group_numbers <- unique(x$Group_ID)
+    } else {
+      group_labels <- NULL
+      group_numbers <- NULL
+    }
+  has_wlevels <- !is.null(attr(x, "wlevels"))
+  if (!is.null(x_i$boot_ci)) {
+      has_ci <- TRUE
+      ci_type <- "boot"
+      ind_name <- "boot_indirect"
+      se_name <- "boot_se"
+      boot_type <- x_i$boot_type
+      if (is.null(boot_type)) boot_type <- "perc"
+    }
+  if (!is.null(x_i$mc_ci)) {
+      has_ci <- TRUE
+      ci_type <- "mc"
+      ind_name <- "mc_indirect"
+      se_name <- "mc_se"
+    }
+  standardized_x <- x_i$standardized_x
+  standardized_y <- x_i$standardized_y
+  has_m <- isTRUE(!is.null(x_i$m))
+
+  # Default to OLS or Wald SE
+  se_out <- cond_effects_original_se(x,
+                                     level = level,
+                                     append = FALSE)
+  has_original_se <- !is.null(se_out)
+  print_original_se <- FALSE
+  if (!has_ci &&
+      !has_m &&
+      !has_groups &&
+      has_wlevels &&
+      !standardized_x &&
+      !standardized_y &&
+      has_original_se) {
+      print_original_se <- TRUE
+      if (is.null(pvalue)) {
+          pvalue <- TRUE
+        }
+      if (is.null(se)) {
+          se <- TRUE
+        }
+    } else {
+      if (is.null(pvalue)) {
+          pvalue <- FALSE
+        }
+      if (is.null(se)) {
+          se <- FALSE
+        }
+      level <- x_i$level
+    }
+
+  # R <- ifelse(has_ci, length(x_i[[ind_name]]),
+  #                      NA)
+  # x0 <- attr(x, "x")
+  # y0 <- attr(x, "y")
+  # m0 <- attr(x, "m")
+  # if (has_m) {
+  #     path <- path <- paste0(x0, " -> ",
+  #                            paste0(eval(m0), collapse = " -> "),
+  #                            " -> ", y0)
+  #   } else {
+  #     path <- paste(x0, "->", y0)
+  #   }
+  if (to_string) {
+      out <- lapply(x, format_numeric, digits = digits)
+    } else {
+      out <- lapply(x, function(x) x)
+    }
+  if (has_ci) {
+      Sig <- ifelse((x$CI.lo > 0) | (x$CI.hi < 0), "Sig", "")
+      i <- which(names(out) == "CI.hi")
+      j <- length(out)
+      out <- c(out[1:i], list(Sig = Sig), out[(i + 1):j])
+      if ((ci_type == "boot") && pvalue) {
+          boot_p <- sapply(attr(x, "full_output"), function(x) x$boot_p)
+          boot_p <- unname(boot_p)
+          if (to_string) {
+              boot_p1 <- sapply(boot_p, function(xx) {
+                  if (!is.na(xx)) {
+                      return(formatC(xx, digits = pvalue_digits, format = "f"))
+                    } else {
+                      return("NA")
+                    }
+                })
+            } else {
+              boot_p1 <- boot_p
+            }
+          i <- which(names(out) == "Sig")
+          j <- length(out)
+          out <- c(out[1:i], list(pvalue = boot_p1), out[(i + 1):j])
+        }
+      if (se) {
+          ind_se <- sapply(attr(x, "full_output"), function(x) x[[se_name]])
+          ind_se <- unname(ind_se)
+          if (to_string) {
+              ind_se <- sapply(ind_se, function(xx) {
+                  if (!is.na(xx)) {
+                      return(formatC(xx, digits = digits, format = "f"))
+                    } else {
+                      return("NA")
+                    }
+                })
+            }
+          i <- which(names(out) == "Sig")
+          j <- length(out)
+          out <- c(out[1:i], list(SE = ind_se), out[(i + 1):j])
+        }
+    }
+  if (!has_ci &&
+      !has_m &&
+      !has_groups &&
+      has_wlevels &&
+      !standardized_x &&
+      !standardized_y &&
+      has_original_se) {
+      # OLS or Wald SE
+      # Moderation only
+      print_original_se <- TRUE
+      # t or Wald SE, CI, and p-values
+      # TODO: Support multiple-group models
+      out_original <- list()
+      if (se) {
+          out_se <- unname(se_out$se)
+          if (to_string) {
+              out_se <- sapply(out_se, function(xx) {
+                  if (!is.na(xx)) {
+                      return(formatC(xx, digits = digits, format = "f"))
+                    } else {
+                      return("NA")
+                    }
+                })
+            }
+          out_original <- c(out_original,
+                            list(SE = out_se))
+        }
+      if (pvalue) {
+          out_stat <- unname(se_out$stat)
+          if (to_string) {
+              out_stat <- sapply(out_stat, function(xx) {
+                  if (!is.na(xx)) {
+                      return(formatC(xx, digits = digits, format = "f"))
+                    } else {
+                      return("NA")
+                    }
+                })
+            }
+          out_p <- unname(se_out$p)
+          if (to_string) {
+              out_p <- sapply(out_p, function(xx) {
+                            if (!is.na(xx)) {
+                                return(formatC(xx, digits = pvalue_digits, format = "f"))
+                              } else {
+                                return("NA")
+                              }
+                          })
+            }
+          out_sig0 <- as.character(unname(se_out$sig))
+          out_sig <- tryCatch(format_stars(out_sig0),
+                              error = function(e) e)
+          if (inherits(out_sig, "error")) {
+              out_sig <- out_sig0
+            }
+          out_original <- c(out_original,
+                            list(Stat = unname(out_stat),
+                                 pvalue = unname(out_p),
+                                 Sig = unname(out_sig)))
+        }
+      if (se_ci) {
+          out_cilo <- unname(se_out$cilo)
+          out_cihi <- unname(se_out$cihi)
+          if (to_string) {
+              out_cilo <- sapply(out_cilo, function(xx) {
+                  if (!is.na(xx)) {
+                      return(formatC(xx, digits = digits, format = "f"))
+                    } else {
+                      return("NA")
+                    }
+                })
+              out_cihi <- sapply(out_cihi, function(xx) {
+                  if (!is.na(xx)) {
+                      return(formatC(xx, digits = digits, format = "f"))
+                    } else {
+                      return("NA")
+                    }
+                })
+            }
+          out_original <- c(out_original,
+                            list(`CI.lo` = out_cilo,
+                                 `CI.hi` = out_cihi))
+        }
+      rownames(out_original) <- NULL
+      i <- which(names(out) == "ind")
+      j <- length(out)
+      out <- c(out[1:i], out_original, out[(i + 1):j])
+    }
+  # Drop the component column if the model has no mediator
+  if (!has_m) {
+      i <- which(names(out) %in% names(x_i$components))
+      if (length(i) > 0) {
+          out <- out[-i]
+        }
+    }
+  if (!add_sig && isTRUE("Sig" %in% names(out))) {
+      out <- out[-which(names(out) == "Sig")]
+    }
+  out1 <- data.frame(out, check.names = FALSE)
+  return(out1)
 }
 
 format_numeric <- function(xi, digits = 3, check_integer = TRUE) {
