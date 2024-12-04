@@ -316,8 +316,9 @@ print.indirect_list <- function(x, digits = 3,
 #' confidence intervals are available.
 #'
 #' @param object The output of
-#' [indirect_effect()] or
-#' [cond_indirect()].
+#' [many_indirect_effects()] or other
+#' functions that return an object
+#' of the class `indirect_list`.
 #'
 #' @param add_sig Whether a column
 #' of significance test results
