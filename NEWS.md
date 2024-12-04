@@ -22,7 +22,7 @@
   retrieving `lavaan` bootstrap estimates.
   (0.2.4.2)
 
-# Miscellaneous
+## Miscellaneous
 
 - Corrected the help page of
   `indirect_effects_from_list()`. It
