@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,15 +60,24 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.4.2" id="manymome-0242">manymome 0.2.4.2<a class="anchor" aria-label="anchor" href="#manymome-0242"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.2.4.5" id="manymome-0245">manymome 0.2.4.5<a class="anchor" aria-label="anchor" href="#manymome-0245"></a></h2>
 <div class="section level3">
-<h3 id="improvement-0-2-4-2">Improvement<a class="anchor" aria-label="anchor" href="#improvement-0-2-4-2"></a></h3>
+<h3 id="new-features-0-2-4-5">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-4-5"></a></h3>
+<ul><li>Added the <code>as.data.frame</code> method (<code><a href="../reference/print.cond_indirect_effects.html">as.data.frame.cond_indirect_effects()</a></code>) for <code>cond_indirect_effects</code> objects. The <code>print</code> method (<code><a href="../reference/print.cond_indirect_effects.html">print.cond_indirect_effects()</a></code>) now calls this method internally. (0.2.4.4)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="improvement-0-2-4-5">Improvement<a class="anchor" aria-label="anchor" href="#improvement-0-2-4-5"></a></h3>
 <ul><li><p>Though rare in real studies, <code><a href="../reference/merge_mod_levels.html">merge_mod_levels()</a></code> was revised to support merging <code>wlevel</code> objects that have only one level in each of them. (0.2.4.1)</p></li>
 <li><p>When bootstrapping is done by <code>lavaan</code>, only bootstrap estimates with no errors will be kept (previously, they will be set to <code>NA</code>). This also makes the number of bootstrap samples reported consistent with the number of successful bootstrap replications. (0.2.4.2)</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="bugs-0-2-4-2">Bugs<a class="anchor" aria-label="anchor" href="#bugs-0-2-4-2"></a></h3>
+<h3 id="bugs-0-2-4-5">Bugs<a class="anchor" aria-label="anchor" href="#bugs-0-2-4-5"></a></h3>
 <ul><li>Remove a warning that may occur when retrieving <code>lavaan</code> bootstrap estimates. (0.2.4.2)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="miscellaneous-0-2-4-5">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-2-4-5"></a></h3>
+<ul><li><p>Corrected the help page of <code><a href="../reference/indirect_effects_from_list.html">indirect_effects_from_list()</a></code>. It works on an object of the class <code>indirect_list</code>, not of the class <code>cond_indirect_effects</code>. (0.2.4.3)</p></li>
+<li><p>Updated the vignettes (0.2.4.5).</p></li>
 </ul></div>
 </div>
     <div class="section level2">

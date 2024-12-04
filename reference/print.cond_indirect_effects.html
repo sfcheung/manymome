@@ -9,7 +9,7 @@ output of cond_indirect_effects()"><meta property="og:image" content="https://sf
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,6 +79,22 @@ output of <code><a href="cond_indirect.html">cond_indirect_effects()</a></code><
 <span>  se <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span>
 <span>  se_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'cond_indirect_effects'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  row.names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  optional <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  digits <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  add_sig <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  pvalue <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pvalue_digits <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  se <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  se_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  to_string <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -169,11 +185,43 @@ to <code>TRUE</code>.</p></dd>
 <dd><p>Other arguments. Not
 used.</p></dd>
 
+
+<dt id="arg-row-names">row.names<a class="anchor" aria-label="anchor" href="#arg-row-names"></a></dt>
+<dd><p>Not used. Included
+to be compatible with the generic
+method.</p></dd>
+
+
+<dt id="arg-optional">optional<a class="anchor" aria-label="anchor" href="#arg-optional"></a></dt>
+<dd><p>Not used. Included
+to be compatible with the generic
+method.</p></dd>
+
+
+<dt id="arg-add-sig">add_sig<a class="anchor" aria-label="anchor" href="#arg-add-sig"></a></dt>
+<dd><p>Whether a column
+of significance test results
+will be added. Default is <code>TRUE</code>.</p></dd>
+
+
+<dt id="arg-to-string">to_string<a class="anchor" aria-label="anchor" href="#arg-to-string"></a></dt>
+<dd><p>If <code>TRUE</code>, numeric
+columns will be converted to string
+columns, formatted based on <code>digits</code>
+and <code>pvalue_digits</code>. For printing.
+Default is <code>FALSE</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p><code>x</code> is returned invisibly.
+    <p>The <code>print</code>-method
+returns <code>x</code> invisibly.
 Called for its side effect.</p>
+<p>The <code>as.data.frame</code>-method
+returns a data frame with
+the conditional effects and
+confidence intervals (if available),
+as well as other columns requested.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -246,7 +294,22 @@ that the model is not invariant to
 linear transformation of the variables.</p>
 </div>
 
+<p>The method <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> for
+<code>cond_indirect_effects</code> objects is
+used to convert this class of objects
+to data frames. Used internally by the
+print method but can also be used for
+getting a data frame with columns such
+as <em>p</em>-values and standard errors added.</p>
     </div>
+    <div class="section level2">
+    <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
+
+<ul><li><p><code>as.data.frame(cond_indirect_effects)</code>: The <code>as.data.frame</code>-method
+for <code>cond_indirect_effects</code> objects.
+Used internally by the <code>print</code>-method
+but can also be used directly.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Asparouhov, A., &amp; Muthén, B. (2021). Bootstrap p-value computation.
@@ -254,7 +317,8 @@ Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap%20-%20Pvalue.pdf
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="cond_indirect.html">cond_indirect_effects()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="cond_indirect.html">cond_indirect_effects()</a></code> and
+<code><a href="cond_indirect.html">cond_effects()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -342,6 +406,21 @@ Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap%20-%20Pvalue.pdf
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 Mean     0.259 -0.022 0.523 -0.042</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 M-1.0SD -0.710 -0.012 0.297 -0.042</span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Convert to data frames</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [w1]       (w1)         ind      m1~x        y~m1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD  1.2280576 -0.03147387 0.7498826 -0.04197173</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    Mean  0.2589999 -0.02196465 0.5233201 -0.04197173</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M-1.0SD -0.7100578 -0.01245543 0.2967576 -0.04197173</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">out</span>, to_string <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [w1]   (w1)    ind  m1~x   y~m1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD  1.228 -0.031 0.750 -0.042</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Mean     0.259 -0.022 0.523 -0.042</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M-1.0SD -0.710 -0.012 0.297 -0.042</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
