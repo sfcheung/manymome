@@ -1,4 +1,12 @@
-# manymome 0.2.4.3
+# manymome 0.2.4.4
+
+## New Features
+
+- Added the `as.data.frame` method
+  (`as.data.frame.cond_indirect_effects()`)
+  for `cond_indirect_effects` objects.
+  The `print` method (`print.cond_indirect_effects()`)
+  now calls this method internally. (0.2.4.4)
 
 ## Improvement
 
