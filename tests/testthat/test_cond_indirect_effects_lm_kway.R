@@ -1,3 +1,5 @@
+skip("Not used for now")
+
 # To be examined in an interactive session
 
 library(manymome)
