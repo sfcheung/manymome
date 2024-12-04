@@ -1,4 +1,4 @@
-# manymome 0.2.4.4
+# manymome 0.2.4.5
 
 ## New Features
 
@@ -37,6 +37,8 @@
   works on an object of the class
   `indirect_list`, not of the class
   `cond_indirect_effects`. (0.2.4.3)
+
+- Updated the vignettes (0.2.4.5).
 
 # manymome 0.2.4
 
