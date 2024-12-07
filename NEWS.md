@@ -1,4 +1,4 @@
-# manymome 0.2.4.8
+# manymome 0.2.4.9
 
 ## New Features
 
@@ -53,6 +53,11 @@
   created will be cleared if a function
   is aborted (e.g., terminated by users).
   (0.2.4.8)
+
+- Updated the way the expected CPU time
+  for bootstrapping, and the time is
+  displayed only if `progress` is
+  `FALSE`. (0.2.4.9)
 
 # manymome 0.2.4
 
