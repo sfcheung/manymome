@@ -1,4 +1,4 @@
-# manymome 0.2.4.7
+# manymome 0.2.4.8
 
 ## New Features
 
@@ -48,6 +48,11 @@
 
 - Updated the internal `lavaan.mi` objects
   used for tests. (0.2.4.7)
+
+- Add `on.exit()` to ensure that the clusters
+  created will be cleared if a function
+  is aborted (e.g., terminated by users).
+  (0.2.4.8)
 
 # manymome 0.2.4
 
