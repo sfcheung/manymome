@@ -1,4 +1,4 @@
-# manymome 0.2.4.6
+# manymome 0.2.4.7
 
 ## New Features
 
@@ -45,6 +45,9 @@
   `cond_indirect_effects`. (0.2.4.3)
 
 - Updated the vignettes (0.2.4.5).
+
+- Updated the internal `lavaan.mi` objects
+  used for tests. (0.2.4.7)
 
 # manymome 0.2.4
 
