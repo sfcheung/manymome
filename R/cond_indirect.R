@@ -181,7 +181,10 @@
 #'
 #' @param y Character. The name of the
 #' outcome variable at the end of the
-#' path.
+#' path. If the model has only one
+#' outcome variable (e.g., moderation
+#' only and no mediator), then this
+#' argument can be omitted.
 #'
 #' @param m A vector of the variable
 #' names of the mediator(s). The path
@@ -532,6 +535,13 @@ cond_indirect <- function(x,
                      group = NULL,
                      boot_type = c("perc", "bc")) {
     fit <- auto_lm2list(fit)
+    if (missing(y)) {
+        y <- tryCatch(get_one_response(fit),
+                      error = function(e) e)
+        if (inherits(y, "error")) {
+            stop("y cannot be omitted because the fit object has more than one response variable.")
+          }
+      }
     boot_type <- match.arg(boot_type)
     fit_type <- cond_indirect_check_fit(fit)
     chkpath <- check_path(x = x, y = y, m = m, fit = fit, est = est)
@@ -832,6 +842,13 @@ indirect_effect <- function(x,
                      boot_type = c("perc", "bc"),
                      group = NULL) {
     fit <- auto_lm2list(fit)
+    if (missing(y)) {
+        y <- tryCatch(get_one_response(fit),
+                      error = function(e) e)
+        if (inherits(y, "error")) {
+            stop("y cannot be omitted because the fit object has more than one response variable.")
+          }
+      }
     boot_type <- match.arg(boot_type)
     cond_indirect(x = x,
                   y = y,
@@ -981,6 +998,13 @@ cond_indirect_effects <- function(wlevels,
                                   groups = NULL,
                                   ...) {
     fit <- auto_lm2list(fit)
+    if (missing(y)) {
+        y <- tryCatch(get_one_response(fit),
+                      error = function(e) e)
+        if (inherits(y, "error")) {
+            stop("y cannot be omitted because the fit object has more than one response variable.")
+          }
+      }
     boot_type <- match.arg(boot_type)
     # Check the number of groups and handle multiple-group models
     has_group <- FALSE

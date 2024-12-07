@@ -224,6 +224,9 @@ lm2boot_out_parallel <- function(outputs,
                                       make_cluster_args)},
                         error = function(e) e)
         has_cl <- !inherits(tmp, "error")
+        if (has_cl) {
+            on.exit(try(parallel::stopCluster(cl), silent = TRUE))
+          }
       } else {
         has_cl <- FALSE
       }
@@ -267,7 +270,7 @@ lm2boot_out_parallel <- function(outputs,
             try(parallel::stopCluster(cl), silent = TRUE)
             stop("Running in parallel failed. Please set 'parallel' to FALSE.")
           }
-        parallel::stopCluster(cl)
+        try(parallel::stopCluster(cl), silent = TRUE)
       } else {
         if (progress) {
             rt <- system.time(out <- suppressWarnings(pbapply::pblapply(ids,
