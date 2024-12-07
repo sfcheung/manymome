@@ -1,4 +1,4 @@
-# manymome 0.2.4.5
+# manymome 0.2.4.6
 
 ## New Features
 
@@ -23,6 +23,12 @@
   the number of bootstrap samples reported
   consistent with the number of successful
   bootstrap replications. (0.2.4.2)
+
+- For functions such as `cond_effects()`,
+  if the model has only one outcome
+  variable (e.g., moderation only and
+  has no mediator), then the `y` argument
+  can be omitted. (0.2.4.6)
 
 ## Bugs
 
