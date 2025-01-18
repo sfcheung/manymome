@@ -730,7 +730,7 @@ form_models_parallel <- function(x,
 #' the standard errors of the estimates
 #' are also printed. They are simply the
 #' standard deviations of the bootstrap
-#' estimates.
+#' estimates. Default is `TRUE`.
 #'
 #' @param for_each_path Logical. If
 #' `TRUE`, each of the paths will be
@@ -769,7 +769,7 @@ print.q_mediation <- function(x,
                               annotation = TRUE,
                               pvalue = TRUE,
                               pvalue_digits = 4,
-                              se = FALSE,
+                              se = TRUE,
                               for_each_path = FALSE,
                               se_ci = TRUE,
                               wrap_computation = TRUE,

@@ -39,6 +39,10 @@ navbar:
       - text: Moderated Mediation
         href: articles/mome_lm.html
       - text: -------
+      - text: "<Quick Functions>"
+      - text: All-In-One Functions For Common Mediation Models
+        href: articles/q_mediation.html
+      - text: -------
       - text: "<Multigroup Models>"
       - text: Mediation in Multigroup Models
         href: articles/med_mg.html
