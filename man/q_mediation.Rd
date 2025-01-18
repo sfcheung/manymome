@@ -14,12 +14,15 @@ q_mediation(
   m = NULL,
   cov = NULL,
   data = NULL,
-  ci_type = "boot",
+  boot_ci = TRUE,
   level = 0.95,
   R = 100,
   seed = NULL,
   boot_type = c("perc", "bc"),
-  model = NULL
+  model = NULL,
+  parallel = TRUE,
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  progress = TRUE
 )
 
 q_simple_mediation(
@@ -28,11 +31,14 @@ q_simple_mediation(
   m = NULL,
   cov = NULL,
   data = NULL,
-  ci_type = "boot",
+  boot_ci = TRUE,
   level = 0.95,
   R = 100,
   seed = NULL,
-  boot_type = c("perc", "bc")
+  boot_type = c("perc", "bc"),
+  parallel = TRUE,
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  progress = TRUE
 )
 
 q_serial_mediation(
@@ -41,11 +47,14 @@ q_serial_mediation(
   m = NULL,
   cov = NULL,
   data = NULL,
-  ci_type = "boot",
+  boot_ci = TRUE,
   level = 0.95,
   R = 100,
   seed = NULL,
-  boot_type = c("perc", "bc")
+  boot_type = c("perc", "bc"),
+  parallel = TRUE,
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  progress = TRUE
 )
 
 q_parallel_mediation(
@@ -54,11 +63,14 @@ q_parallel_mediation(
   m = NULL,
   cov = NULL,
   data = NULL,
-  ci_type = "boot",
+  boot_ci = TRUE,
   level = 0.95,
   R = 100,
   seed = NULL,
-  boot_type = c("perc", "bc")
+  boot_type = c("perc", "bc"),
+  parallel = TRUE,
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  progress = TRUE
 )
 
 \method{print}{q_mediation}(
@@ -67,7 +79,7 @@ q_parallel_mediation(
   annotation = TRUE,
   pvalue = TRUE,
   pvalue_digits = 4,
-  se = FALSE,
+  se = TRUE,
   for_each_path = FALSE,
   se_ci = TRUE,
   wrap_computation = TRUE,
@@ -118,14 +130,9 @@ all variables in the model (e.g.,
 \code{x}, \code{m}, \code{y} and \code{cov}) will be
 retained.}
 
-\item{ci_type}{The type of the
-confidence interval. Only \code{"boot"},
-the default, is supported and
-recommended for models fitted by
-regression. Therefore, this argument
-can be omitted for now. Set it to
-\code{NULL} and confidence intervals are
-not formed.}
+\item{boot_ci}{Logical. Whether
+bootstrap confidence interval will be
+formed. Default is \code{TRUE}.}
 
 \item{level}{The level of confidence
 of the confidence interval. Default
@@ -159,6 +166,25 @@ the corresponding wrappers directly
 \code{\link[=q_parallel_mediation]{q_parallel_mediation()}}) instead of
 call \code{\link[=q_mediation]{q_mediation()}}.}
 
+\item{parallel}{If \code{TRUE}, default,
+parallel processing will be used when
+doing bootstrapping.}
+
+\item{ncores}{Integer. The number of
+CPU cores to use when \code{parallel} is
+\code{TRUE}. Default is the number of
+non-logical cores minus one (one
+minimum). Will raise an error if
+greater than the number of cores
+detected by
+\code{\link[parallel:detectCores]{parallel::detectCores()}}. If
+\code{ncores} is set, it will override
+\code{make_cluster_args} in \code{\link[=do_boot]{do_boot()}}.}
+
+\item{progress}{Logical. Display
+bootstrapping progress or not.
+Default is \code{TRUE}.}
+
 \item{digits}{Number of digits to
 display. Default is 4.}
 
@@ -181,7 +207,7 @@ confidence intervals are available,
 the standard errors of the estimates
 are also printed. They are simply the
 standard deviations of the bootstrap
-estimates.}
+estimates. Default is \code{TRUE}.}
 
 \item{for_each_path}{Logical. If
 \code{TRUE}, each of the paths will be
@@ -386,13 +412,18 @@ parallel mediation models.
 # ===== Simple mediation
 
 # Set R to 5000 or 10000 in real studies
+# Remove 'parallel' or set it to TRUE for faster bootstrapping
+# Remove 'progress' or set it to TRUE to see a progress bar
+
 out <- q_simple_mediation(x = "x",
                           y = "y",
                           m = "m",
                           cov = c("c2", "c1"),
                           data = data_med,
                           R = 100,
-                          seed = 1234)
+                          seed = 1234,
+                          parallel = FALSE,
+                          progress = FALSE)
 out
 
 # Different control variables for m and y
@@ -403,20 +434,27 @@ out
 #                                      y = c("c1", "c2")),
 #                           data = data_med,
 #                           R = 100,
-#                           seed = 1234)
+#                           seed = 1234,
+#                           parallel = FALSE,
+#                           progress = FALSE)
 # out
 
 
 # ===== Serial mediation
 
 # Set R to 5000 or 10000 in real studies
+# Remove 'parallel' or set it to TRUE for faster bootstrapping
+# Remove 'progress' or set it to TRUE to see a progress bar
+
 out <- q_serial_mediation(x = "x",
                           y = "y",
                           m = c("m1", "m2"),
                           cov = c("c2", "c1"),
                           data = data_serial,
                           R = 100,
-                          seed = 1234)
+                          seed = 1234,
+                          parallel = FALSE,
+                          progress = FALSE)
 out
 
 # Different control variables for m and y
@@ -428,11 +466,17 @@ out
 #                                      y = "c2"),
 #                           data = data_serial,
 #                           R = 100,
-#                           seed = 1234)
+#                           seed = 1234,
+#                           parallel = FALSE,
+#                           progress = FALSE)
 # out
 
 
 # ===== Parallel mediation
+
+# Set R to 5000 or 10000 in real studies
+# Remove 'parallel' or set it to TRUE for faster bootstrapping
+# Remove 'progress' or set it to TRUE to see a progress bar
 
 out <- q_parallel_mediation(x = "x",
                             y = "y",
@@ -440,7 +484,9 @@ out <- q_parallel_mediation(x = "x",
                             cov = c("c2", "c1"),
                             data = data_parallel,
                             R = 100,
-                            seed = 1234)
+                            seed = 1234,
+                            parallel = FALSE,
+                            progress = FALSE)
 out
 # Different control variables for m and y
 # out <- q_parallel_mediation(x = "x",
@@ -451,7 +497,9 @@ out
 #                                        y = "c2"),
 #                             data = data_parallel,
 #                             R = 100,
-#                             seed = 1234)
+#                             seed = 1234,
+#                             parallel = FALSE,
+#                             progress = FALSE)
 # out
 
 }

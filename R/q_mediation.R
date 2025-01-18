@@ -173,14 +173,9 @@
 #' `x`, `m`, `y` and `cov`) will be
 #' retained.
 #'
-#' @param ci_type The type of the
-#' confidence interval. Only `"boot"`,
-#' the default, is supported and
-#' recommended for models fitted by
-#' regression. Therefore, this argument
-#' can be omitted for now. Set it to
-#' `NULL` and confidence intervals are
-#' not formed.
+#' @param boot_ci Logical. Whether
+#' bootstrap confidence interval will be
+#' formed. Default is `TRUE`.
 #'
 #' @param level The level of confidence
 #' of the confidence interval. Default
@@ -214,6 +209,25 @@
 #' [q_parallel_mediation()]) instead of
 #' call [q_mediation()].
 #'
+#' @param parallel If `TRUE`, default,
+#' parallel processing will be used when
+#' doing bootstrapping.
+#'
+#' @param ncores Integer. The number of
+#' CPU cores to use when `parallel` is
+#' `TRUE`. Default is the number of
+#' non-logical cores minus one (one
+#' minimum). Will raise an error if
+#' greater than the number of cores
+#' detected by
+#' [parallel::detectCores()]. If
+#' `ncores` is set, it will override
+#' `make_cluster_args` in [do_boot()].
+#'
+#' @param progress Logical. Display
+#' bootstrapping progress or not.
+#' Default is `TRUE`.
+#'
 #' @seealso [lmhelprs::many_lm()] for
 #' fitting several regression models
 #' using model syntax,
@@ -246,12 +260,15 @@ q_mediation <- function(x,
                         m = NULL,
                         cov = NULL,
                         data = NULL,
-                        ci_type = "boot",
+                        boot_ci = TRUE,
                         level = .95,
                         R = 100,
                         seed = NULL,
                         boot_type = c("perc", "bc"),
-                        model = NULL) {
+                        model = NULL,
+                        parallel = TRUE,
+                        ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                        progress = TRUE) {
   if (is.null(model)) {
     stop("Must specify the model by setting the argument 'model'.")
   }
@@ -296,48 +313,52 @@ q_mediation <- function(x,
   ind_ustd <- many_indirect_effects(paths = paths,
                                     fit = lm_all,
                                     R = R,
-                                    ci_type = ci_type,
+                                    boot_ci = TRUE,
                                     boot_type = boot_type,
                                     level = level,
                                     seed = seed,
-                                    progress = FALSE,
-                                    parallel = FALSE)
+                                    progress = progress,
+                                    ncores = ncores,
+                                    parallel = parallel)
   # Store the bootstrap estimates
   ind_with_boot_out <- ind_ustd[[1]]
   ind_stdy <- many_indirect_effects(paths = paths,
                                     fit = lm_all,
                                     R = R,
-                                    ci_type = ci_type,
+                                    boot_ci = TRUE,
                                     boot_type = boot_type,
                                     level = level,
                                     seed = seed,
-                                    progress = FALSE,
+                                    progress = progress,
+                                    ncores = ncores,
                                     parallel = FALSE,
                                     standardized_y = TRUE,
-                                    ci_out = ind_with_boot_out)
+                                    boot_out = ind_with_boot_out)
   ind_stdx <- many_indirect_effects(paths = paths,
                                     fit = lm_all,
                                     R = R,
-                                    ci_type = ci_type,
+                                    boot_ci = TRUE,
                                     boot_type = boot_type,
                                     level = level,
                                     seed = seed,
-                                    progress = FALSE,
+                                    progress = progress,
+                                    ncores = ncores,
                                     parallel = FALSE,
                                     standardized_x = TRUE,
-                                    ci_out = ind_with_boot_out)
+                                    boot_out = ind_with_boot_out)
   ind_std0 <- many_indirect_effects(paths = paths,
                                     fit = lm_all,
                                     R = R,
-                                    ci_type = ci_type,
+                                    boot_ci = TRUE,
                                     boot_type = boot_type,
                                     level = level,
                                     seed = seed,
-                                    progress = FALSE,
+                                    progress = progress,
+                                    ncores = ncores,
                                     parallel = FALSE,
                                     standardized_y = TRUE,
                                     standardized_x = TRUE,
-                                    ci_out = ind_with_boot_out)
+                                    boot_out = ind_with_boot_out)
 
   # Total indirect effects
 
@@ -382,13 +403,18 @@ q_mediation <- function(x,
 #' # ===== Simple mediation
 #'
 #' # Set R to 5000 or 10000 in real studies
+#' # Remove 'parallel' or set it to TRUE for faster bootstrapping
+#' # Remove 'progress' or set it to TRUE to see a progress bar
+#'
 #' out <- q_simple_mediation(x = "x",
 #'                           y = "y",
 #'                           m = "m",
 #'                           cov = c("c2", "c1"),
 #'                           data = data_med,
 #'                           R = 100,
-#'                           seed = 1234)
+#'                           seed = 1234,
+#'                           parallel = FALSE,
+#'                           progress = FALSE)
 #' out
 #'
 #' # Different control variables for m and y
@@ -399,7 +425,9 @@ q_mediation <- function(x,
 #' #                                      y = c("c1", "c2")),
 #' #                           data = data_med,
 #' #                           R = 100,
-#' #                           seed = 1234)
+#' #                           seed = 1234,
+#' #                           parallel = FALSE,
+#' #                           progress = FALSE)
 #' # out
 #'
 #' @describeIn q_mediation A wrapper of [q_mediation()] for
@@ -411,26 +439,27 @@ q_simple_mediation <- function(x,
                                m = NULL,
                                cov = NULL,
                                data = NULL,
-                               ci_type = "boot",
+                               boot_ci = TRUE,
                                level = .95,
                                R = 100,
                                seed = NULL,
-                               boot_type = c("perc", "bc")) {
-  if (ci_type != "boot") {
-    stop("Monte Carlo confidence interval is not recommended",
-         " for models fitted by regression.")
-  }
+                               boot_type = c("perc", "bc"),
+                               parallel = TRUE,
+                               ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                               progress = TRUE) {
   out <- q_mediation(x = x,
                      y = y,
                      m = m,
                      cov = cov,
                      data = data,
-                     ci_type = ci_type,
+                     boot_ci = boot_ci,
                      level = level,
                      R = R,
                      seed = seed,
                      boot_type = boot_type,
-                     model = "simple")
+                     model = "simple",
+                     parallel = parallel,
+                     progress = progress)
   out$call <- match.call()
   return(out)
 }
@@ -445,13 +474,18 @@ q_simple_mediation <- function(x,
 #' # ===== Serial mediation
 #'
 #' # Set R to 5000 or 10000 in real studies
+#' # Remove 'parallel' or set it to TRUE for faster bootstrapping
+#' # Remove 'progress' or set it to TRUE to see a progress bar
+#'
 #' out <- q_serial_mediation(x = "x",
 #'                           y = "y",
 #'                           m = c("m1", "m2"),
 #'                           cov = c("c2", "c1"),
 #'                           data = data_serial,
 #'                           R = 100,
-#'                           seed = 1234)
+#'                           seed = 1234,
+#'                           parallel = FALSE,
+#'                           progress = FALSE)
 #' out
 #'
 #' # Different control variables for m and y
@@ -463,7 +497,9 @@ q_simple_mediation <- function(x,
 #' #                                      y = "c2"),
 #' #                           data = data_serial,
 #' #                           R = 100,
-#' #                           seed = 1234)
+#' #                           seed = 1234,
+#' #                           parallel = FALSE,
+#' #                           progress = FALSE)
 #' # out
 #'
 #' @describeIn q_mediation A wrapper of [q_mediation()] for
@@ -475,26 +511,27 @@ q_serial_mediation <- function(x,
                                m = NULL,
                                cov = NULL,
                                data = NULL,
-                               ci_type = "boot",
+                               boot_ci = TRUE,
                                level = .95,
                                R = 100,
                                seed = NULL,
-                               boot_type = c("perc", "bc")) {
-  if (ci_type != "boot") {
-    stop("Monte Carlo confidence interval is not recommended",
-         " for models fitted by regression.")
-  }
+                               boot_type = c("perc", "bc"),
+                               parallel = TRUE,
+                               ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                               progress = TRUE) {
   out <- q_mediation(x = x,
                      y = y,
                      m = m,
                      cov = cov,
                      data = data,
-                     ci_type = ci_type,
+                     boot_ci = boot_ci,
                      level = level,
                      R = R,
                      seed = seed,
                      boot_type = boot_type,
-                     model = "serial")
+                     model = "serial",
+                     parallel = parallel,
+                     progress = progress)
   out$call <- match.call()
   return(out)
 }
@@ -508,14 +545,19 @@ q_serial_mediation <- function(x,
 #'
 #' # ===== Parallel mediation
 #'
-# Set R to 5000 or 10000 in real studies
+#' # Set R to 5000 or 10000 in real studies
+#' # Remove 'parallel' or set it to TRUE for faster bootstrapping
+#' # Remove 'progress' or set it to TRUE to see a progress bar
+#'
 #' out <- q_parallel_mediation(x = "x",
 #'                             y = "y",
 #'                             m = c("m1", "m2"),
 #'                             cov = c("c2", "c1"),
 #'                             data = data_parallel,
 #'                             R = 100,
-#'                             seed = 1234)
+#'                             seed = 1234,
+#'                             parallel = FALSE,
+#'                             progress = FALSE)
 #' out
 #' # Different control variables for m and y
 #' # out <- q_parallel_mediation(x = "x",
@@ -526,7 +568,9 @@ q_serial_mediation <- function(x,
 #' #                                        y = "c2"),
 #' #                             data = data_parallel,
 #' #                             R = 100,
-#' #                             seed = 1234)
+#' #                             seed = 1234,
+#' #                             parallel = FALSE,
+#' #                             progress = FALSE)
 #' # out
 #'
 #' @describeIn q_mediation A wrapper of [q_mediation()] for
@@ -538,26 +582,27 @@ q_parallel_mediation <- function(x,
                                  m = NULL,
                                  cov = NULL,
                                  data = NULL,
-                                 ci_type = "boot",
+                                 boot_ci = TRUE,
                                  level = .95,
                                  R = 100,
                                  seed = NULL,
-                                 boot_type = c("perc", "bc")) {
-  if (ci_type != "boot") {
-    stop("Monte Carlo confidence interval is not recommended",
-         " for models fitted by regression.")
-  }
+                                 boot_type = c("perc", "bc"),
+                                 parallel = TRUE,
+                                 ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                                 progress = TRUE) {
   out <- q_mediation(x = x,
                      y = y,
                      m = m,
                      cov = cov,
                      data = data,
-                     ci_type = ci_type,
+                     boot_ci = boot_ci,
                      level = level,
                      R = R,
                      seed = seed,
                      boot_type = boot_type,
-                     model = "parallel")
+                     model = "parallel",
+                     parallel = parallel,
+                     progress = progress)
   out$call <- match.call()
   return(out)
 }
@@ -730,7 +775,7 @@ form_models_parallel <- function(x,
 #' the standard errors of the estimates
 #' are also printed. They are simply the
 #' standard deviations of the bootstrap
-#' estimates.
+#' estimates. Default is `TRUE`.
 #'
 #' @param for_each_path Logical. If
 #' `TRUE`, each of the paths will be
@@ -769,7 +814,7 @@ print.q_mediation <- function(x,
                               annotation = TRUE,
                               pvalue = TRUE,
                               pvalue_digits = 4,
-                              se = FALSE,
+                              se = TRUE,
                               for_each_path = FALSE,
                               se_ci = TRUE,
                               wrap_computation = TRUE,
@@ -894,17 +939,19 @@ print.q_mediation <- function(x,
 
   # Print total effects
 
-  if (!is.null(x$ind_total$ustd) ||
-      !is.null(x$ind_total$stdx) ||
-      !is.null(x$ind_total$stdy) ||
-      !is.null(x$ind_total$stdxy)) {
+  print_total <- (x$model != "simple")
+
+  if ((!is.null(x$ind_total$ustd) ||
+       !is.null(x$ind_total$stdx) ||
+       !is.null(x$ind_total$stdy) ||
+       !is.null(x$ind_total$stdxy)) && print_total) {
     cat("\n")
     cat("===================================================\n")
     cat("|          Total Indirect Effect Results          |\n")
     cat("===================================================\n")
   }
 
-  if (!is.null(x$ind_total$ustd)) {
+  if (!is.null(x$ind_total$ustd) && print_total) {
     print(x$ind_total$ustd,
           digits = digits,
           annotation = annotation,
@@ -916,7 +963,7 @@ print.q_mediation <- function(x,
           ...)
   }
 
-  if (!is.null(x$ind_total$stdx)) {
+  if (!is.null(x$ind_total$stdx) && print_total) {
     print(x$ind_total$stdx,
           digits = digits,
           annotation = annotation,
@@ -928,7 +975,7 @@ print.q_mediation <- function(x,
           ...)
   }
 
-  if (!is.null(x$ind_total$stdy)) {
+  if (!is.null(x$ind_total$stdy) && print_total) {
     print(x$ind_total$stdy,
           digits = digits,
           annotation = annotation,
@@ -940,7 +987,7 @@ print.q_mediation <- function(x,
           ...)
   }
 
-  if (!is.null(x$ind_total$stdxy)) {
+  if (!is.null(x$ind_total$stdxy) && print_total) {
     print(x$ind_total$stdxy,
           digits = digits,
           annotation = annotation,
@@ -961,6 +1008,7 @@ print.q_mediation <- function(x,
                 exdent = 2,))
   }
   if (length(str_note) > 0) {
+    cat("\n")
     cat("===================================================\n")
     cat("|                      Notes                      |\n")
     cat("===================================================\n")

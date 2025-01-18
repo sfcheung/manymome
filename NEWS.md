@@ -1,4 +1,4 @@
-# manymome 0.2.5.1
+# manymome 0.2.5.2
 
 ## New Features
 
@@ -10,7 +10,9 @@
   `q_parallel_mediation()` for
   simple, serial, and parallel
   mediation models, respectively.
-  (0.2.5.1)
+  (0.2.5.1, 0.2.5.2). Also added an
+  article to the website to introduce
+  these functions.
 
 # manymome 0.2.5
 
