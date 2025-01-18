@@ -1,7 +1,7 @@
 ---
 title: "All-In-One Functions for Common Mediation Models"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2025-01-18"
+date: "2025-01-19"
 output:
   html_document:
     fig.align: "center"
@@ -213,9 +213,63 @@ out_simple
 #>  - std: The standardized indirect effects.
 #>  
 #> ===================================================
+#> |              Direct Effect Results              |
+#> ===================================================
+#> 
+#> ==   Effect(s)   ==
+#>           ind   CI.lo  CI.hi Sig pvalue     SE
+#> x -> y 0.5077 -0.1436 1.1418     0.1292 0.3297
+#> 
+#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
+#>    nonparametric bootstrapping with 5000 samples.
+#>  - [pvalue] are asymmetric bootstrap p-values.
+#>  - [SE] are standard errors.
+#>  - The 'ind' column shows the  effects.
+#>  
+#> ==   Effect(s) (x-variable(s) Standardized)  ==
+#>           std   CI.lo  CI.hi Sig pvalue     SE
+#> x -> y 0.5357 -0.1571 1.2035     0.1292 0.3426
+#> 
+#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
+#>    nonparametric bootstrapping with 5000 samples.
+#>  - [pvalue] are asymmetric bootstrap p-values.
+#>  - [SE] are standard errors.
+#>  - std: The partially standardized  effects. 
+#>  - x-variable(s) standardized.
+#>  
+#> ==   Effect(s) (y-variable(s) Standardized)  ==
+#>           std   CI.lo  CI.hi Sig pvalue     SE
+#> x -> y 0.2017 -0.0571 0.4590     0.1292 0.1319
+#> 
+#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
+#>    nonparametric bootstrapping with 5000 samples.
+#>  - [pvalue] are asymmetric bootstrap p-values.
+#>  - [SE] are standard errors.
+#>  - std: The partially standardized  effects. 
+#>  - y-variable(s) standardized.
+#>  
+#> ==   Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==
+#>           std   CI.lo  CI.hi Sig pvalue     SE
+#> x -> y 0.2128 -0.0612 0.4754     0.1292 0.1365
+#> 
+#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
+#>    nonparametric bootstrapping with 5000 samples.
+#>  - [pvalue] are asymmetric bootstrap p-values.
+#>  - [SE] are standard errors.
+#>  - std: The standardized  effects.
+#>  
+#> ===================================================
 #> |                      Notes                      |
 #> ===================================================
 #> 
+#> - For reference, the bootstrap confidence interval (and bootstrap
+#>   p-value, if requested) of the (unstandardize) direct effect is also
+#>   reported. The bootstrap p-value and the OLS t-statistic p-value can
+#>   be different.
+#> - For the direct effects with either 'x'-variable or 'y'-variable, or
+#>   both, standardized, it is recommended to use the bootstrap confidence
+#>   intervals, which take into account the sampling error of the sample
+#>   standard deviations.
 #> - The asymmetric bootstrap value for an effect is the same whether x
 #>   and/or y is/are standardized.
 ```
@@ -265,11 +319,26 @@ printed by default such that users can
 select and interpret sections as they
 see fit.
 
+### Direct Effect Results
+
+By default, this section prints the estimated
+direct effect (from the predictor "x" to
+the outcome "y", not mediated), confidence interval,
+and asymmetric bootstrap *p*-value.
+
+The OLS *t*-test of the direct effect is
+already available in section *Regression Results*.
+The bootstrap results are printed in
+case users prefer using the same
+confidence interval method for all
+the effects.
+
 # Serial Mediation Model
 
 (Some sections are copied from the
 previous section to make this section
-self-contained.)
+self-contained and readers do not need
+to refer to the sections on other models.)
 
 This is the sample data set that comes
 with the package for this example:
@@ -581,9 +650,63 @@ out_serial
 #> 
 #> 
 #> ===================================================
+#> |              Direct Effect Results              |
+#> ===================================================
+#> 
+#> ==   Effect(s)   ==
+#>           ind   CI.lo  CI.hi Sig pvalue     SE
+#> x -> y 0.4929 -0.0698 1.0292     0.0884 0.2817
+#> 
+#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
+#>    nonparametric bootstrapping with 5000 samples.
+#>  - [pvalue] are asymmetric bootstrap p-values.
+#>  - [SE] are standard errors.
+#>  - The 'ind' column shows the  effects.
+#>  
+#> ==   Effect(s) (x-variable(s) Standardized)  ==
+#>           std   CI.lo  CI.hi Sig pvalue     SE
+#> x -> y 0.4706 -0.0610 0.9876     0.0884 0.2698
+#> 
+#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
+#>    nonparametric bootstrapping with 5000 samples.
+#>  - [pvalue] are asymmetric bootstrap p-values.
+#>  - [SE] are standard errors.
+#>  - std: The partially standardized  effects. 
+#>  - x-variable(s) standardized.
+#>  
+#> ==   Effect(s) (y-variable(s) Standardized)  ==
+#>           std   CI.lo  CI.hi Sig pvalue     SE
+#> x -> y 0.2452 -0.0364 0.5009     0.0884 0.1373
+#> 
+#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
+#>    nonparametric bootstrapping with 5000 samples.
+#>  - [pvalue] are asymmetric bootstrap p-values.
+#>  - [SE] are standard errors.
+#>  - std: The partially standardized  effects. 
+#>  - y-variable(s) standardized.
+#>  
+#> ==   Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==
+#>           std   CI.lo  CI.hi Sig pvalue     SE
+#> x -> y 0.2342 -0.0318 0.4772     0.0884 0.1310
+#> 
+#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
+#>    nonparametric bootstrapping with 5000 samples.
+#>  - [pvalue] are asymmetric bootstrap p-values.
+#>  - [SE] are standard errors.
+#>  - std: The standardized  effects.
+#>  
+#> ===================================================
 #> |                      Notes                      |
 #> ===================================================
 #> 
+#> - For reference, the bootstrap confidence interval (and bootstrap
+#>   p-value, if requested) of the (unstandardize) direct effect is also
+#>   reported. The bootstrap p-value and the OLS t-statistic p-value can
+#>   be different.
+#> - For the direct effects with either 'x'-variable or 'y'-variable, or
+#>   both, standardized, it is recommended to use the bootstrap confidence
+#>   intervals, which take into account the sampling error of the sample
+#>   standard deviations.
 #> - The asymmetric bootstrap value for an effect is the same whether x
 #>   and/or y is/are standardized.
 ```
@@ -666,12 +789,26 @@ printed by default such that users can
 select and interpret sections as they
 see fit.
 
+### Direct Effect Results
+
+By default, this section prints the estimated
+direct effect (from the predictor "x" to
+the outcome "y", not mediated), confidence interval,
+and asymmetric bootstrap *p*-value.
+
+The OLS *t*-test of the direct effect is
+already available in section *Regression Results*.
+The bootstrap results are printed in
+case users prefer using the same
+confidence interval method for all
+the effects.
 
 # Parallel Mediation Model
 
 (Some sections are copied from the
 previous sections to make this section
-self-contained.)
+self-contained and readers do not need
+to refer to the sections on other models.)
 
 This is the sample data set that comes
 with the package for this example:
@@ -966,9 +1103,63 @@ out_parallel
 #> 
 #> 
 #> ===================================================
+#> |              Direct Effect Results              |
+#> ===================================================
+#> 
+#> ==   Effect(s)   ==
+#>           ind   CI.lo  CI.hi Sig pvalue     SE
+#> x -> y 0.2911 -0.1886 0.7405     0.2264 0.2346
+#> 
+#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
+#>    nonparametric bootstrapping with 5000 samples.
+#>  - [pvalue] are asymmetric bootstrap p-values.
+#>  - [SE] are standard errors.
+#>  - The 'ind' column shows the  effects.
+#>  
+#> ==   Effect(s) (x-variable(s) Standardized)  ==
+#>           std   CI.lo  CI.hi Sig pvalue     SE
+#> x -> y 0.2920 -0.1918 0.7122     0.2264 0.2309
+#> 
+#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
+#>    nonparametric bootstrapping with 5000 samples.
+#>  - [pvalue] are asymmetric bootstrap p-values.
+#>  - [SE] are standard errors.
+#>  - std: The partially standardized  effects. 
+#>  - x-variable(s) standardized.
+#>  
+#> ==   Effect(s) (y-variable(s) Standardized)  ==
+#>           std   CI.lo  CI.hi Sig pvalue     SE
+#> x -> y 0.1241 -0.0810 0.3190     0.2264 0.1017
+#> 
+#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
+#>    nonparametric bootstrapping with 5000 samples.
+#>  - [pvalue] are asymmetric bootstrap p-values.
+#>  - [SE] are standard errors.
+#>  - std: The partially standardized  effects. 
+#>  - y-variable(s) standardized.
+#>  
+#> ==   Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==
+#>           std   CI.lo  CI.hi Sig pvalue     SE
+#> x -> y 0.1245 -0.0816 0.3121     0.2264 0.1002
+#> 
+#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
+#>    nonparametric bootstrapping with 5000 samples.
+#>  - [pvalue] are asymmetric bootstrap p-values.
+#>  - [SE] are standard errors.
+#>  - std: The standardized  effects.
+#>  
+#> ===================================================
 #> |                      Notes                      |
 #> ===================================================
 #> 
+#> - For reference, the bootstrap confidence interval (and bootstrap
+#>   p-value, if requested) of the (unstandardize) direct effect is also
+#>   reported. The bootstrap p-value and the OLS t-statistic p-value can
+#>   be different.
+#> - For the direct effects with either 'x'-variable or 'y'-variable, or
+#>   both, standardized, it is recommended to use the bootstrap confidence
+#>   intervals, which take into account the sampling error of the sample
+#>   standard deviations.
 #> - The asymmetric bootstrap value for an effect is the same whether x
 #>   and/or y is/are standardized.
 ```
@@ -1050,6 +1241,20 @@ These four versions of the results are
 printed by default such that users can
 select and interpret sections as they
 see fit.
+
+### Direct Effect Results
+
+By default, this section prints the estimated
+direct effect (from the predictor "x" to
+the outcome "y", not mediated), confidence interval,
+and asymmetric bootstrap *p*-value.
+
+The OLS *t*-test of the direct effect is
+already available in section *Regression Results*.
+The bootstrap results are printed in
+case users prefer using the same
+confidence interval method for all
+the effects.
 
 # Additional Issues
 

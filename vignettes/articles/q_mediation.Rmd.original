@@ -182,11 +182,26 @@ printed by default such that users can
 select and interpret sections as they
 see fit.
 
+### Direct Effect Results
+
+By default, this section prints the estimated
+direct effect (from the predictor "x" to
+the outcome "y", not mediated), confidence interval,
+and asymmetric bootstrap *p*-value.
+
+The OLS *t*-test of the direct effect is
+already available in section *Regression Results*.
+The bootstrap results are printed in
+case users prefer using the same
+confidence interval method for all
+the effects.
+
 # Serial Mediation Model
 
 (Some sections are copied from the
 previous section to make this section
-self-contained.)
+self-contained and readers do not need
+to refer to the sections on other models.)
 
 This is the sample data set that comes
 with the package for this example:
@@ -381,12 +396,26 @@ printed by default such that users can
 select and interpret sections as they
 see fit.
 
+### Direct Effect Results
+
+By default, this section prints the estimated
+direct effect (from the predictor "x" to
+the outcome "y", not mediated), confidence interval,
+and asymmetric bootstrap *p*-value.
+
+The OLS *t*-test of the direct effect is
+already available in section *Regression Results*.
+The bootstrap results are printed in
+case users prefer using the same
+confidence interval method for all
+the effects.
 
 # Parallel Mediation Model
 
 (Some sections are copied from the
 previous sections to make this section
-self-contained.)
+self-contained and readers do not need
+to refer to the sections on other models.)
 
 This is the sample data set that comes
 with the package for this example:
@@ -577,6 +606,20 @@ These four versions of the results are
 printed by default such that users can
 select and interpret sections as they
 see fit.
+
+### Direct Effect Results
+
+By default, this section prints the estimated
+direct effect (from the predictor "x" to
+the outcome "y", not mediated), confidence interval,
+and asymmetric bootstrap *p*-value.
+
+The OLS *t*-test of the direct effect is
+already available in section *Regression Results*.
+The bootstrap results are printed in
+case users prefer using the same
+confidence interval method for all
+the effects.
 
 # Additional Issues
 
