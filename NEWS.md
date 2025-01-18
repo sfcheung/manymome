@@ -1,3 +1,17 @@
+# manymome 0.2.5.1
+
+## New Features
+
+- Added several "quick" functions for
+  fitting regression models and testing
+  indirect effects in one call:
+  `q_simple_mediation()`,
+  `q_serial_mediation()`, and
+  `q_parallel_mediation()` for
+  simple, serial, and parallel
+  mediation models, respectively.
+  (0.2.5.1)
+
 # manymome 0.2.5
 
 ## New Features
