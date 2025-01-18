@@ -393,7 +393,7 @@ indirect_effects_from_list <- function(object,
     standardized_y <- object[[1]]$standardized_y
     standardized <- (standardized_x && standardized_y)
     coef0 <- sapply(object, stats::coef)
-    if (standardized_x || standardized_x) {
+    if (standardized_x || standardized_y) {
         out <- data.frame(std = coef0)
       } else {
         out <- data.frame(ind = coef0)
