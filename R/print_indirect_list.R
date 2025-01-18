@@ -169,6 +169,9 @@ print.indirect_list <- function(x, digits = 3,
       }
     # Should always have mediators
     has_m <- TRUE
+    all_m_null <- sapply(x,
+                         function(xx) {is.null(xx$m)})
+    if (all(all_m_null)) has_m <- FALSE
     coef0 <- indirect_effects_from_list(xold,
                                         add_sig = TRUE,
                                         pvalue = pvalue,
