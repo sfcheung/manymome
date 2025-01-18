@@ -13,7 +13,8 @@ out <- q_simple_mediation(x = "x",
                           data = data_med,
                           R = 200,
                           seed = 1234,
-                          parallel = FALSE)
+                          parallel = FALSE,
+                          progress = FALSE)
 out1 <- q_simple_mediation(x = "x",
                            y = "y",
                            m = "m",
@@ -23,7 +24,8 @@ out1 <- q_simple_mediation(x = "x",
                            R = 200,
                            seed = 1234,
                            boot_type = "bc",
-                           parallel = FALSE)
+                           parallel = FALSE,
+                           progress = FALSE)
 lm_m <- lm(m ~ x + c2 + c1, data = data_med)
 lm_m_c2 <- lm(m ~ x + c2, data = data_med)
 lm_y <- lm(y ~ m + x + c2 + c1, data = data_med)
@@ -61,6 +63,25 @@ chk2 <- indirect_effect(x = "x",
                         standardized_y = TRUE,
                         parallel = FALSE,
                         progress = FALSE)
+chk_dir0 <- indirect_effect(x = "x",
+                            y = "y",
+                            fit = lm_all,
+                            boot_ci = TRUE,
+                            boot_out = chk0,
+                            R = 200,
+                            seed = 1234,
+                            parallel = FALSE,
+                            progress = FALSE)
+chk_dir1 <- indirect_effect(x = "x",
+                            y = "y",
+                            fit = lm_all,
+                            boot_ci = TRUE,
+                            boot_out = chk0,
+                            R = 200,
+                            seed = 1234,
+                            standardized_y = TRUE,
+                            parallel = FALSE,
+                            progress = FALSE)
 expect_equal(coef(out$ind_out$ustd),
              coef(chk0),
              ignore_attr = TRUE)
@@ -75,6 +96,12 @@ expect_equal(confint(out$ind_out$stdxy),
              ignore_attr = TRUE)
 expect_equal(confint(out1$ind_out$stdy),
              confint(chk2),
+             ignore_attr = TRUE)
+expect_equal(confint(out$dir_out$ustd),
+             confint(chk_dir0),
+             ignore_attr = TRUE)
+expect_equal(confint(out$dir_out$stdy),
+             confint(chk_dir1),
              ignore_attr = TRUE)
 expect_error(q_simple_mediation(x = "x",
                                 y = "y",
@@ -96,7 +123,8 @@ out0 <- q_serial_mediation(x = "x",
                            data = data_serial,
                            R = 100,
                            seed = 1234,
-                           parallel = FALSE)
+                           parallel = FALSE,
+                           progress = FALSE)
 out1 <- q_serial_mediation(x = "x",
                            y = "y",
                            m = c("m1", "m2"),
@@ -106,7 +134,8 @@ out1 <- q_serial_mediation(x = "x",
                            data = data_serial,
                            R = 100,
                            seed = 1234,
-                           parallel = FALSE)
+                           parallel = FALSE,
+                           progress = FALSE)
 lm_m1 <- lm(m1 ~ x + c2 + c1, data = data_serial)
 lm_m2 <- lm(m2 ~ m1 + x + c1 + c2, data = data_serial)
 lm_m1_v1 <- lm(m1 ~ x + c2, data = data_serial)
@@ -145,6 +174,26 @@ chk2 <- indirect_effect(x = "x",
                         standardized_y = TRUE,
                         parallel = FALSE,
                         progress = FALSE)
+chk_dir0 <- indirect_effect(x = "x",
+                            y = "y",
+                            fit = lm_all0,
+                            boot_ci = TRUE,
+                            boot_out = chk0,
+                            R = 200,
+                            seed = 1234,
+                            parallel = FALSE,
+                            progress = FALSE)
+chk_dir1 <- indirect_effect(x = "x",
+                            y = "y",
+                            fit = lm_all0,
+                            boot_ci = TRUE,
+                            boot_out = chk0,
+                            R = 200,
+                            seed = 1234,
+                            standardized_x = TRUE,
+                            standardized_y = TRUE,
+                            parallel = FALSE,
+                            progress = FALSE)
 expect_equal(coef(out0$ind_out$ustd[[1]]),
              coef(chk0),
              ignore_attr = TRUE)
@@ -159,6 +208,12 @@ expect_equal(confint(out0$ind_out$stdxy[[1]]),
              ignore_attr = TRUE)
 expect_equal(confint(out1$ind_out$stdy[[1]]),
              confint(chk2),
+             ignore_attr = TRUE)
+expect_equal(confint(out0$dir_out$ustd),
+             confint(chk_dir0),
+             ignore_attr = TRUE)
+expect_equal(confint(out0$dir_out$stdxy),
+             confint(chk_dir1),
              ignore_attr = TRUE)
 expect_error(q_serial_mediation(x = "x",
                                 y = "y",
@@ -180,7 +235,8 @@ out0 <- q_parallel_mediation(x = "x",
                               data = data_parallel,
                               R = 100,
                               seed = 1234,
-                              parallel = FALSE)
+                              parallel = FALSE,
+                              progress = FALSE)
 out1 <- q_parallel_mediation(x = "x",
                              y = "y",
                              m = c("m1", "m2"),
@@ -190,7 +246,8 @@ out1 <- q_parallel_mediation(x = "x",
                              data = data_parallel,
                              R = 100,
                              seed = 1234,
-                             parallel = FALSE)
+                             parallel = FALSE,
+                             progress = FALSE)
 lm_m1 <- lm(m1 ~ x + c2 + c1, data = data_parallel)
 lm_m2 <- lm(m2 ~ x + c1 + c2, data = data_parallel)
 lm_m1_v1 <- lm(m1 ~ x + c2, data = data_parallel)
@@ -262,7 +319,25 @@ chk2b <- indirect_effect(x = "x",
                          standardized_y = TRUE,
                          parallel = FALSE,
                          progress = FALSE)
-
+chk_dir0 <- indirect_effect(x = "x",
+                            y = "y",
+                            fit = lm_all0,
+                            boot_ci = TRUE,
+                            boot_out = chk0a,
+                            R = 200,
+                            seed = 1234,
+                            parallel = FALSE,
+                            progress = FALSE)
+chk_dir1 <- indirect_effect(x = "x",
+                            y = "y",
+                            fit = lm_all0,
+                            boot_ci = TRUE,
+                            boot_out = chk0a,
+                            R = 200,
+                            seed = 1234,
+                            standardized_x = TRUE,
+                            parallel = FALSE,
+                            progress = FALSE)
 expect_equal(coef(out0$ind_out$ustd[[1]]),
              coef(chk0a),
              ignore_attr = TRUE)
@@ -305,6 +380,14 @@ expect_equal(confint(out1$ind_out$stdy[[2]]),
 expect_equal(confint(out1$ind_total$stdy),
              confint(chk2a + chk2b),
              ignore_attr = TRUE)
+
+expect_equal(confint(out0$dir_out$ustd),
+             confint(chk_dir0),
+             ignore_attr = TRUE)
+expect_equal(confint(out0$dir_out$stdx),
+             confint(chk_dir1),
+             ignore_attr = TRUE)
+
 expect_error(q_parallel_mediation(x = "x",
                                 y = "y",
                                 m = "m",

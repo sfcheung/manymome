@@ -367,6 +367,61 @@ q_mediation <- function(x,
   ind_total_stdy <- total_indirect_effect(ind_stdy, x = x, y = y)
   ind_total_std0 <- total_indirect_effect(ind_std0, x = x, y = y)
 
+  # Direct effects
+
+  direct_path <- list(path = list(x = x,
+                                  y = y,
+                                  m = NULL))
+  names(direct_path) <- paste(x, "->", y)
+  dir_ustd <- many_indirect_effects(paths = direct_path,
+                                    fit = lm_all,
+                                    R = R,
+                                    boot_ci = TRUE,
+                                    boot_type = boot_type,
+                                    level = level,
+                                    seed = seed,
+                                    progress = progress,
+                                    ncores = ncores,
+                                    parallel = parallel,
+                                    boot_out = ind_with_boot_out)
+  dir_stdy <- many_indirect_effects(paths = direct_path,
+                                    fit = lm_all,
+                                    R = R,
+                                    boot_ci = TRUE,
+                                    boot_type = boot_type,
+                                    level = level,
+                                    seed = seed,
+                                    progress = progress,
+                                    ncores = ncores,
+                                    parallel = FALSE,
+                                    standardized_y = TRUE,
+                                    boot_out = ind_with_boot_out)
+  dir_stdx <- many_indirect_effects(paths = direct_path,
+                                    fit = lm_all,
+                                    R = R,
+                                    boot_ci = TRUE,
+                                    boot_type = boot_type,
+                                    level = level,
+                                    seed = seed,
+                                    progress = progress,
+                                    ncores = ncores,
+                                    parallel = FALSE,
+                                    standardized_x = TRUE,
+                                    boot_out = ind_with_boot_out)
+  dir_std0 <- many_indirect_effects(paths = direct_path,
+                                    fit = lm_all,
+                                    R = R,
+                                    boot_ci = TRUE,
+                                    boot_type = boot_type,
+                                    level = level,
+                                    seed = seed,
+                                    progress = progress,
+                                    ncores = ncores,
+                                    parallel = FALSE,
+                                    standardized_y = TRUE,
+                                    standardized_x = TRUE,
+                                    boot_out = ind_with_boot_out)
+
   # Combine the output
   out <- list(lm_out = lm_all,
               lm_form = lm_forms,
@@ -378,6 +433,10 @@ q_mediation <- function(x,
                                stdx = ind_total_stdx,
                                stdy = ind_total_stdy,
                                stdxy = ind_total_std0),
+              dir_out = list(ustd = dir_ustd,
+                             stdx = dir_stdx,
+                             stdy = dir_stdy,
+                             stdxy = dir_std0),
               call = match.call(),
               model = model,
               x = x,
@@ -999,13 +1058,96 @@ print.q_mediation <- function(x,
           ...)
   }
 
+  # Print indirect effects
+
+  print_direct <- !is.null(x$dir_out$ustd) ||
+                  !is.null(x$dir_out$stdx) ||
+                  !is.null(x$dir_out$stdy) ||
+                  !is.null(x$dir_out$stdxy)
+
+  print_direct_std <- !is.null(x$dir_out$stdx) ||
+                      !is.null(x$dir_out$stdy) ||
+                      !is.null(x$dir_out$stdxy)
+
+  if (print_direct) {
+    cat("\n")
+    cat("===================================================\n")
+    cat("|              Direct Effect Results              |\n")
+    cat("===================================================\n")
+  }
+
+  if (!is.null(x$dir_out$ustd)) {
+    print(x$dir_out$ustd,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          for_each_path = for_each_path,
+          ...)
+  }
+
+  if (!is.null(x$dir_out$stdx)) {
+    print(x$dir_out$stdx,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          for_each_path = for_each_path,
+          ...)
+  }
+
+  if (!is.null(x$dir_out$stdy)) {
+    print(x$dir_out$stdy,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          for_each_path = for_each_path,
+          ...)
+  }
+
+  if (!is.null(x$dir_out$stdxy)) {
+    print(x$dir_out$stdxy,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          for_each_path = for_each_path,
+          ...)
+  }
+
   str_note <- character(0)
+
+  if (print_direct) {
+    str_note <- c(str_note,
+             strwrap(paste("- For reference, the bootstrap confidence interval",
+                           "(and bootstrap p-value, if requested) of the",
+                           "(unstandardize) direct effect is also reported.",
+                           "The bootstrap p-value and the OLS t-statistic p-value",
+                           "can be different."),
+                exdent = 2))
+  }
+
+  if (print_direct_std) {
+    str_note <- c(str_note,
+             strwrap(paste("- For the direct effects with either 'x'-variable or",
+                           "'y'-variable, or both, standardized, it is",
+                           "recommended to use the bootstrap confidence intervals,",
+                           "which take into account the sampling error of",
+                           "the sample standard deviations."),
+                exdent = 2))
+  }
+
   if (pvalue) {
     str_note <- c(str_note,
              strwrap(paste("- The asymmetric bootstrap value for an effect",
                       "is the same whether x and/or y is/are",
                       "standardized."),
-                exdent = 2,))
+                exdent = 2))
   }
   if (length(str_note) > 0) {
     cat("\n")
