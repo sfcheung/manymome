@@ -95,6 +95,9 @@ reference:
   - all_indirect_paths
   - indirect_effects_from_list
   - total_indirect_effect
+- title: Quick Functions for Common Models
+- contents:
+  - q_mediation
 - title: Presenting and Exploring the Effects
 - contents:
   - index_of_mome
