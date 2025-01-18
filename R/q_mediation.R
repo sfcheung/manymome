@@ -130,7 +130,14 @@
 #' structural equation modeling using
 #' [lavaan::sem()].
 #'
-#' @param x The name of the predictor.
+#' @param x For [q_mediation()],
+#' [q_simple_mediation()],
+#' [q_serial_mediation()], and
+#' [q_parallel_mediation()], it is the
+#' name of the predictor. For the
+#' `print` method of these
+#' functions, `x` is the output of these
+#' functions.
 #'
 #' @param y The name of the outcome.
 #'
@@ -349,7 +356,12 @@ q_mediation <- function(x,
               ind_total = list(ustd = ind_total_ustd,
                                stdx = ind_total_stdx,
                                stdy = ind_total_stdy,
-                               stdxy = ind_total_std0))
+                               stdxy = ind_total_std0),
+              call = match.call(),
+              model = model,
+              x = x,
+              y = y,
+              m = m)
   model_class <- switch(model,
                         simple = "q_simple_mediation",
                         serial = "q_serial_mediation",
@@ -388,6 +400,7 @@ q_mediation <- function(x,
 #' #                           data = data_med,
 #' #                           R = 100,
 #' #                           seed = 1234)
+#' # out
 #'
 #' @describeIn q_mediation A wrapper of [q_mediation()] for
 #'  simple mediation models (a model with only one mediator).
@@ -418,6 +431,7 @@ q_simple_mediation <- function(x,
                      seed = seed,
                      boot_type = boot_type,
                      model = "simple")
+  out$call <- match.call()
   return(out)
 }
 
@@ -450,6 +464,7 @@ q_simple_mediation <- function(x,
 #' #                           data = data_serial,
 #' #                           R = 100,
 #' #                           seed = 1234)
+#' # out
 #'
 #' @describeIn q_mediation A wrapper of [q_mediation()] for
 #'  serial mediation models.
@@ -480,6 +495,7 @@ q_serial_mediation <- function(x,
                      seed = seed,
                      boot_type = boot_type,
                      model = "serial")
+  out$call <- match.call()
   return(out)
 }
 
@@ -542,6 +558,7 @@ q_parallel_mediation <- function(x,
                      seed = seed,
                      boot_type = boot_type,
                      model = "parallel")
+  out$call <- match.call()
   return(out)
 }
 
@@ -686,3 +703,271 @@ form_models_parallel <- function(x,
 # form_models_parallel("iv", "dv", c("m1", "m3"), c("c1", "w"))
 # form_models_parallel("iv", "dv", c("m1", "m3"), list(dv = c("c1", "w"), m3 = "c2"))
 # form_models_parallel(c("iv", "iv2"), "dv", c("m1", "m3"), list(dv = c("c1", "w"), m3 = "c2"))
+
+#' @describeIn q_mediation The `print` method of the outputs
+#' of [q_mediation()], [q_simple_mediation()],
+#' [q_serial_mediation()], and [q_parallel_mediation()].
+#'
+#' @param digits Number of digits to
+#' display. Default is 4.
+#'
+#' @param annotation Logical. Whether
+#' the annotation after the table of
+#' effects is to be printed. Default is
+#' `TRUE.`
+#'
+#' @param pvalue Logical. If `TRUE`,
+#' asymmetric *p*-values based on
+#' bootstrapping will be printed if
+#' available. Default is `TRUE`.
+#'
+#' @param pvalue_digits Number of decimal
+#' places to display for the *p*-values.
+#' Default is 4.
+#'
+#' @param se Logical. If `TRUE` and
+#' confidence intervals are available,
+#' the standard errors of the estimates
+#' are also printed. They are simply the
+#' standard deviations of the bootstrap
+#' estimates.
+#'
+#' @param for_each_path Logical. If
+#' `TRUE`, each of the paths will be
+#' printed individually, using the
+#' `print`-method of the output of
+#' [indirect_effect()]. Default is
+#' `FALSE`.
+#'
+#' @param se_ci Logical. If `TRUE` and
+#' confidence interval has not been
+#' computed, the function will try
+#' to compute them from stored
+#' standard error if the original
+#' standard error is to be used.
+#' Ignored
+#' if confidence interval has already
+#' been computed. Default
+#' is `TRUE`.
+#'
+#' @param wrap_computation Logical.
+#' If `TRUE`, the default, long
+#' computational symbols and values
+#' will be wrapped to fit to the screen
+#' width.
+#'
+#' @param ... Other arguments. If
+#' `for_each_path` is `TRUE`, they
+#' will be passed to the print method
+#' of the output of [indirect_effect()].
+#' Ignored otherwise.
+#'
+#' @export
+
+print.q_mediation <- function(x,
+                              digits = 4,
+                              annotation = TRUE,
+                              pvalue = TRUE,
+                              pvalue_digits = 4,
+                              se = FALSE,
+                              for_each_path = FALSE,
+                              se_ci = TRUE,
+                              wrap_computation = TRUE,
+                              ...) {
+  # Print basic information
+  model_name <- switch(x$model,
+                       simple = "Simple Mediation Model",
+                       serial = "Serial Mediation Model",
+                       parallel = "Parallel Mediation Model")
+  cat("\n", "=============== ", model_name, " ===============", "\n", sep = "")
+  cat("\nCall:\n")
+  cat("\n")
+  print(x$call)
+
+  cat("\n")
+  cat("===================================================\n")
+  cat("|                Basic Information                |\n")
+  cat("===================================================\n")
+  cat("\nPredictor(x):", x$x)
+  cat("\nOutcome(y):", x$y)
+  cat("\nMediator(s)(m):", paste0(x$m, collapse = ", "))
+  cat("\nModel:", model_name)
+  cat("\n")
+
+  cat("\n")
+  cat("The regression models fitted:")
+  cat("\n")
+  cat("\n")
+  cat(x$lm_form,
+      sep = "\n")
+
+  n <- stats::nobs(x$lm_out[[1]])
+  cat("\n")
+  cat("The number of cases included:", n, "\n")
+
+  # Print the regression results
+
+  cat("\n")
+  cat("===================================================\n")
+  cat("|               Regression Results                |\n")
+  cat("===================================================\n")
+
+  tmp <- utils::capture.output(print(summary(x$lm_out),
+                                     digits = digits))
+  i <- grepl("^<environment:", tmp)
+  tmp <- tmp[!i]
+
+  cat(tmp,
+      sep = "\n")
+
+  # Print indirect effects
+
+  if (!is.null(x$ind_out$ustd) ||
+      !is.null(x$ind_out$stdx) ||
+      !is.null(x$ind_out$stdy) ||
+      !is.null(x$ind_out$stdxy)) {
+    cat("\n")
+    cat("===================================================\n")
+    cat("|             Indirect Effect Results             |\n")
+    cat("===================================================\n")
+  }
+
+  if (!is.null(x$ind_out$ustd)) {
+    # cat("\n")
+    # cat("===== Indirect Effect(s) =====")
+    # cat("\n")
+    print(x$ind_out$ustd,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          for_each_path = for_each_path,
+          ...)
+  }
+
+  if (!is.null(x$ind_out$stdx)) {
+    # cat("\n")
+    # cat("===== Indirect Effect(s): Predictor (", x$x, ") Standardized =====",
+    #     sep = "")
+    # cat("\n")
+    print(x$ind_out$stdx,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          for_each_path = for_each_path,
+          ...)
+  }
+
+  if (!is.null(x$ind_out$stdy)) {
+    # cat("\n")
+    # cat("===== Indirect Effect(s): Outcome (", x$y, ") Standardized =====",
+    #     sep = "")
+    # cat("\n")
+    print(x$ind_out$stdy,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          for_each_path = for_each_path,
+          ...)
+  }
+
+  if (!is.null(x$ind_out$stdxy)) {
+    # cat("\n")
+    # cat("===== Indirect Effect(s): Both Predictor (", x$x,
+    #     ") and Outcome (", x$y, ") Standardized =====",
+    #     sep = "")
+    # cat("\n")
+    print(x$ind_out$stdxy,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          for_each_path = for_each_path,
+          ...)
+  }
+
+  # Print total effects
+
+  if (!is.null(x$ind_total$ustd) ||
+      !is.null(x$ind_total$stdx) ||
+      !is.null(x$ind_total$stdy) ||
+      !is.null(x$ind_total$stdxy)) {
+    cat("\n")
+    cat("===================================================\n")
+    cat("|          Total Indirect Effect Results          |\n")
+    cat("===================================================\n")
+  }
+
+  if (!is.null(x$ind_total$ustd)) {
+    print(x$ind_total$ustd,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          se_ci = se_ci,
+          wrap_computation = wrap_computation,
+          ...)
+  }
+
+  if (!is.null(x$ind_total$stdx)) {
+    print(x$ind_total$stdx,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          se_ci = se_ci,
+          wrap_computation = wrap_computation,
+          ...)
+  }
+
+  if (!is.null(x$ind_total$stdy)) {
+    print(x$ind_total$stdy,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          se_ci = se_ci,
+          wrap_computation = wrap_computation,
+          ...)
+  }
+
+  if (!is.null(x$ind_total$stdxy)) {
+    print(x$ind_total$stdxy,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          se_ci = se_ci,
+          wrap_computation = wrap_computation,
+          ...)
+  }
+
+  str_note <- character(0)
+  if (pvalue) {
+    str_note <- c(str_note,
+             strwrap(paste("- The asymmetric bootstrap value for an effect",
+                      "is the same whether x and/or y is/are",
+                      "standardized."),
+                exdent = 2,))
+  }
+  if (length(str_note) > 0) {
+    cat("===================================================\n")
+    cat("|                      Notes                      |\n")
+    cat("===================================================\n")
+    cat("\n")
+    cat(str_note,
+        sep = "\n")
+  }
+
+  invisible(x)
+}

@@ -5,6 +5,7 @@
 \alias{q_simple_mediation}
 \alias{q_serial_mediation}
 \alias{q_parallel_mediation}
+\alias{print.q_mediation}
 \title{Mediation Models By Regression}
 \usage{
 q_mediation(
@@ -59,9 +60,29 @@ q_parallel_mediation(
   seed = NULL,
   boot_type = c("perc", "bc")
 )
+
+\method{print}{q_mediation}(
+  x,
+  digits = 4,
+  annotation = TRUE,
+  pvalue = TRUE,
+  pvalue_digits = 4,
+  se = FALSE,
+  for_each_path = FALSE,
+  se_ci = TRUE,
+  wrap_computation = TRUE,
+  ...
+)
 }
 \arguments{
-\item{x}{The name of the predictor.}
+\item{x}{For \code{\link[=q_mediation]{q_mediation()}},
+\code{\link[=q_simple_mediation]{q_simple_mediation()}},
+\code{\link[=q_serial_mediation]{q_serial_mediation()}}, and
+\code{\link[=q_parallel_mediation]{q_parallel_mediation()}}, it is the
+name of the predictor. For the
+\code{print} method of these
+functions, \code{x} is the output of these
+functions.}
 
 \item{y}{The name of the outcome.}
 
@@ -137,6 +158,60 @@ the corresponding wrappers directly
 \code{\link[=q_serial_mediation]{q_serial_mediation()}}, and
 \code{\link[=q_parallel_mediation]{q_parallel_mediation()}}) instead of
 call \code{\link[=q_mediation]{q_mediation()}}.}
+
+\item{digits}{Number of digits to
+display. Default is 4.}
+
+\item{annotation}{Logical. Whether
+the annotation after the table of
+effects is to be printed. Default is
+\code{TRUE.}}
+
+\item{pvalue}{Logical. If \code{TRUE},
+asymmetric \emph{p}-values based on
+bootstrapping will be printed if
+available. Default is \code{TRUE}.}
+
+\item{pvalue_digits}{Number of decimal
+places to display for the \emph{p}-values.
+Default is 4.}
+
+\item{se}{Logical. If \code{TRUE} and
+confidence intervals are available,
+the standard errors of the estimates
+are also printed. They are simply the
+standard deviations of the bootstrap
+estimates.}
+
+\item{for_each_path}{Logical. If
+\code{TRUE}, each of the paths will be
+printed individually, using the
+\code{print}-method of the output of
+\code{\link[=indirect_effect]{indirect_effect()}}. Default is
+\code{FALSE}.}
+
+\item{se_ci}{Logical. If \code{TRUE} and
+confidence interval has not been
+computed, the function will try
+to compute them from stored
+standard error if the original
+standard error is to be used.
+Ignored
+if confidence interval has already
+been computed. Default
+is \code{TRUE}.}
+
+\item{wrap_computation}{Logical.
+If \code{TRUE}, the default, long
+computational symbols and values
+will be wrapped to fit to the screen
+width.}
+
+\item{...}{Other arguments. If
+\code{for_each_path} is \code{TRUE}, they
+will be passed to the print method
+of the output of \code{\link[=indirect_effect]{indirect_effect()}}.
+Ignored otherwise.}
 }
 \value{
 The function \code{\link[=q_mediation]{q_mediation()}} returns
@@ -283,6 +358,13 @@ structural equation modeling using
 
 }
 }
+\section{Methods (by generic)}{
+\itemize{
+\item \code{print(q_mediation)}: The \code{print} method of the outputs
+of \code{\link[=q_mediation]{q_mediation()}}, \code{\link[=q_simple_mediation]{q_simple_mediation()}},
+\code{\link[=q_serial_mediation]{q_serial_mediation()}}, and \code{\link[=q_parallel_mediation]{q_parallel_mediation()}}.
+
+}}
 \section{Functions}{
 \itemize{
 \item \code{q_mediation()}: The general
@@ -322,6 +404,7 @@ out
 #                           data = data_med,
 #                           R = 100,
 #                           seed = 1234)
+# out
 
 
 # ===== Serial mediation
@@ -346,6 +429,7 @@ out
 #                           data = data_serial,
 #                           R = 100,
 #                           seed = 1234)
+# out
 
 
 # ===== Parallel mediation
