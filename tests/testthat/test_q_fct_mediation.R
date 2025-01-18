@@ -68,6 +68,15 @@ q_simple_mediation <- function(x,
                      "~",
                      paste(c(m, x, cov_y),
                            collapse = " + "))
+
+  # Do listwise deletion
+  to_delete <- lm_listwise(formulas = c(lm_m_form,
+                                   lm_y_form),
+                           data = data)
+  if (length(to_delete) > 0) {
+    data <- data[-to_delete, , drop = FALSE]
+  }
+
   # Do the analysis
   lm_m <- eval(bquote(lm(.(as.formula(lm_m_form)),
                          data = data)))
@@ -188,6 +197,15 @@ q_serial_mediation <- function(x,
                      "~",
                      paste(c(m, x, cov_y),
                            collapse = " + "))
+
+  # Do listwise deletion
+  to_delete <- lm_listwise(formulas = c(lm_m_form,
+                                   lm_y_form),
+                           data = data)
+  if (length(to_delete) > 0) {
+    data <- data[-to_delete, , drop = FALSE]
+  }
+
   # Do the analysis
   lm_m <- sapply(m,
                  function(xx) {NA},
@@ -306,6 +324,15 @@ q_parallel_mediation <- function(x,
                      "~",
                      paste(c(m, x, cov_y),
                            collapse = " + "))
+
+  # Do listwise deletion
+  to_delete <- lm_listwise(formulas = c(lm_m_form,
+                                   lm_y_form),
+                           data = data)
+  if (length(to_delete) > 0) {
+    data <- data[-to_delete, , drop = FALSE]
+  }
+
   # Do the analysis
   lm_m <- sapply(m,
                  function(xx) {NA},
@@ -389,6 +416,7 @@ q_parallel_mediation <- function(x,
   return(out)
 }
 
+# Test: Simple mediation
 
 out <- q_simple_mediation(x = "x",
                           y = "y",
