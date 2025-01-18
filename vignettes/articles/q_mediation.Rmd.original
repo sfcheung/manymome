@@ -93,7 +93,7 @@ using nonparametric bootstrapping.
 We can do that in one single step using
 `q_simple_mediation()`:
 
-```{r}
+```{r results = "hide", message = FALSE}
 out_simple <- q_simple_mediation(x = "x",
                                  y = "y",
                                  m = "m",
@@ -254,7 +254,7 @@ using nonparametric bootstrapping.
 We can do that in one single step using
 `q_serial_mediation()`:
 
-```{r}
+```{r results = "hide", message = FALSE}
 out_serial <- q_serial_mediation(x = "x",
                                  y = "y",
                                  m = c("m1", "m2"),
@@ -453,7 +453,7 @@ using nonparametric bootstrapping.
 We can do that in one single step using
 `q_parallel_mediation()`:
 
-```{r}
+```{r results = "hide", message = FALSE}
 out_parallel <- q_parallel_mediation(x = "x",
                                      y = "y",
                                      m = c("m1", "m2"),
@@ -649,6 +649,20 @@ used:
 
 See the help page of `print.q_mediation()`
 for other arguments.
+
+## Speed and Parallel Processing
+
+By default, parallel processing is used.
+If this failed for some reasons,
+add `parallel` to `FALSE`. It will take
+longer to run but should still be just
+one to two minutes in typical models.
+
+## Progress Bar
+
+BY default, a progress bar will be displayed
+when doing bootstrapping. This can be
+disabled by adding `progress = FALSE`.
 
 ## Workflow
 
