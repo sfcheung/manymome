@@ -13,7 +13,7 @@ just one function."><meta property="og:image" content="https://sfcheung.github.i
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -646,9 +646,63 @@ indirect effects.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The standardized indirect effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |              Direct Effect Results              |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s)   ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           ind   CI.lo  CI.hi Sig pvalue     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.5077 -0.3369 1.1325     0.1400 0.3290</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the  effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (x-variable(s) Standardized)  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig pvalue     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.5357 -0.3446 1.0575     0.1400 0.3361</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized  effects. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - x-variable(s) standardized.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (y-variable(s) Standardized)  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig pvalue     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.2017 -0.1252 0.4404     0.1400 0.1317</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized  effects. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - y-variable(s) standardized.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig pvalue     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.2128 -0.1277 0.4291     0.1400 0.1344</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The standardized  effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> |                      Notes                      |</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - For reference, the bootstrap confidence interval (and bootstrap</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   p-value, if requested) of the (unstandardize) direct effect is also</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   reported. The bootstrap p-value and the OLS t-statistic p-value can</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   be different.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - For the direct effects with either 'x'-variable or 'y'-variable, or</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   both, standardized, it is recommended to use the bootstrap confidence</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   intervals, which take into account the sampling error of the sample</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   standard deviations.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> - The asymmetric bootstrap value for an effect is the same whether x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   and/or y is/are standardized.</span>
 <span class="r-in"><span></span></span>
@@ -896,9 +950,63 @@ indirect effects.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |              Direct Effect Results              |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s)   ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           ind   CI.lo  CI.hi Sig pvalue     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.4929 -0.1774 0.9963     0.1200 0.2959</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the  effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (x-variable(s) Standardized)  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig pvalue     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.4706 -0.1746 0.9343     0.1200 0.2779</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized  effects. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - x-variable(s) standardized.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (y-variable(s) Standardized)  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig pvalue     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.2452 -0.0899 0.4899     0.1200 0.1470</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized  effects. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - y-variable(s) standardized.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig pvalue     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.2342 -0.0861 0.4555     0.1200 0.1375</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The standardized  effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> |                      Notes                      |</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - For reference, the bootstrap confidence interval (and bootstrap</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   p-value, if requested) of the (unstandardize) direct effect is also</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   reported. The bootstrap p-value and the OLS t-statistic p-value can</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   be different.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - For the direct effects with either 'x'-variable or 'y'-variable, or</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   both, standardized, it is recommended to use the bootstrap confidence</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   intervals, which take into account the sampling error of the sample</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   standard deviations.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> - The asymmetric bootstrap value for an effect is the same whether x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   and/or y is/are standardized.</span>
 <span class="r-in"><span></span></span>
@@ -1134,9 +1242,63 @@ indirect effects.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |              Direct Effect Results              |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s)   ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           ind   CI.lo  CI.hi Sig pvalue     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.2911 -0.1761 0.6467     0.1800 0.1995</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the  effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (x-variable(s) Standardized)  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig pvalue     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.2920 -0.1878 0.6656     0.1800 0.2017</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized  effects. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - x-variable(s) standardized.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (y-variable(s) Standardized)  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig pvalue     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.1241 -0.0726 0.2685     0.1800 0.0860</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized  effects. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - y-variable(s) standardized.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig pvalue     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.1245 -0.0762 0.2816     0.1800 0.0874</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The standardized  effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> |                      Notes                      |</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - For reference, the bootstrap confidence interval (and bootstrap</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   p-value, if requested) of the (unstandardize) direct effect is also</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   reported. The bootstrap p-value and the OLS t-statistic p-value can</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   be different.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - For the direct effects with either 'x'-variable or 'y'-variable, or</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   both, standardized, it is recommended to use the bootstrap confidence</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   intervals, which take into account the sampling error of the sample</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   standard deviations.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> - The asymmetric bootstrap value for an effect is the same whether x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   and/or y is/are standardized.</span>
 <span class="r-in"><span><span class="co"># Different control variables for m and y</span></span></span>
