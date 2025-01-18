@@ -894,17 +894,19 @@ print.q_mediation <- function(x,
 
   # Print total effects
 
-  if (!is.null(x$ind_total$ustd) ||
-      !is.null(x$ind_total$stdx) ||
-      !is.null(x$ind_total$stdy) ||
-      !is.null(x$ind_total$stdxy)) {
+  print_total <- (x$model != "simple")
+
+  if ((!is.null(x$ind_total$ustd) ||
+       !is.null(x$ind_total$stdx) ||
+       !is.null(x$ind_total$stdy) ||
+       !is.null(x$ind_total$stdxy)) && print_total) {
     cat("\n")
     cat("===================================================\n")
     cat("|          Total Indirect Effect Results          |\n")
     cat("===================================================\n")
   }
 
-  if (!is.null(x$ind_total$ustd)) {
+  if (!is.null(x$ind_total$ustd) && print_total) {
     print(x$ind_total$ustd,
           digits = digits,
           annotation = annotation,
@@ -916,7 +918,7 @@ print.q_mediation <- function(x,
           ...)
   }
 
-  if (!is.null(x$ind_total$stdx)) {
+  if (!is.null(x$ind_total$stdx) && print_total) {
     print(x$ind_total$stdx,
           digits = digits,
           annotation = annotation,
@@ -928,7 +930,7 @@ print.q_mediation <- function(x,
           ...)
   }
 
-  if (!is.null(x$ind_total$stdy)) {
+  if (!is.null(x$ind_total$stdy) && print_total) {
     print(x$ind_total$stdy,
           digits = digits,
           annotation = annotation,
@@ -940,7 +942,7 @@ print.q_mediation <- function(x,
           ...)
   }
 
-  if (!is.null(x$ind_total$stdxy)) {
+  if (!is.null(x$ind_total$stdxy) && print_total) {
     print(x$ind_total$stdxy,
           digits = digits,
           annotation = annotation,
@@ -961,6 +963,7 @@ print.q_mediation <- function(x,
                 exdent = 2,))
   }
   if (length(str_note) > 0) {
+    cat("\n")
     cat("===================================================\n")
     cat("|                      Notes                      |\n")
     cat("===================================================\n")
