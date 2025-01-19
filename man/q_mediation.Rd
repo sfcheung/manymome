@@ -83,6 +83,9 @@ q_parallel_mediation(
   for_each_path = FALSE,
   se_ci = TRUE,
   wrap_computation = TRUE,
+  lm_ci = TRUE,
+  lm_beta = TRUE,
+  lm_ci_level = 0.95,
   ...
 )
 }
@@ -232,6 +235,30 @@ If \code{TRUE}, the default, long
 computational symbols and values
 will be wrapped to fit to the screen
 width.}
+
+\item{lm_ci}{If \code{TRUE},
+when printing the regression results
+of \code{\link[stats:lm]{stats::lm()}},
+confidence
+interval based on \emph{t} statistic
+and standard error will be computed
+and added to the output. Default is
+\code{TRUE}.}
+
+\item{lm_beta}{If \code{TRUE},
+when printing the regression results
+of \code{\link[stats:lm]{stats::lm()}},
+standardized coefficients are
+computed and included in the
+printout. Only numeric variables will
+be computed, and any derived terms,
+such as product terms, will be formed
+\emph{after} standardization. Default
+is \code{TRUE}.}
+
+\item{lm_ci_level}{The level of confidence
+of the confidence interval. Ignored
+if \code{lm_ci} is not \code{TRUE}.}
 
 \item{...}{Other arguments. If
 \code{for_each_path} is \code{TRUE}, they
