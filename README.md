@@ -72,7 +72,7 @@ by multiple regression. The package was introduced in:
   outcome variables, other than those by `lavaan::sem()` and `lm()`.
   For multigroup models fitted by `lavaan::sem()`,
   there is no inherent limit on the number of groups,
-  other than the limit due to `lavaan::sem(), if any
+  other than the limit due to `lavaan::sem()`, if any
   (supported in 0.1.14.2 and later versions).
 
 - **Supports Standardized Effects**
