@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -212,26 +212,36 @@ or two minutes for contemporary computers.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Model:</span></span>
 <span><span class="co">#&gt; m ~ x + c2 + c1</span></span>
-<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept)  9.68941    0.91979  10.534   &lt;2e-16 ***</span></span>
-<span><span class="co">#&gt; x            0.93469    0.08083  11.563   &lt;2e-16 ***</span></span>
-<span><span class="co">#&gt; c2          -0.16841    0.10305  -1.634   0.1055    </span></span>
-<span><span class="co">#&gt; c1           0.19778    0.07678   2.576   0.0115 *  </span></span>
-<span><span class="co">#&gt; ---</span></span>
-<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
-<span><span class="co">#&gt; R-square = 0.5981. Adjusted R-square = 0.5855. F(3, 96) = 47.6223, p &lt; .001</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;             Estimate   CI.lo   CI.hi   betaS Std. Error t value Pr(&gt;|t|) Sig</span></span>
+<span><span class="co">#&gt; (Intercept)   9.6894  7.8636 11.5152  0.0000     0.9198 10.5344   0.0000 ***</span></span>
+<span><span class="co">#&gt; x             0.9347  0.7742  1.0951  0.7536     0.0808 11.5632   0.0000 ***</span></span>
+<span><span class="co">#&gt; c2           -0.1684 -0.3730  0.0361 -0.1070     0.1030 -1.6343   0.1055    </span></span>
+<span><span class="co">#&gt; c1            0.1978  0.0454  0.3502  0.1676     0.0768  2.5759   0.0115   *</span></span>
+<span><span class="co">#&gt; Signif. codes:   0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 </span></span>
+<span><span class="co">#&gt; - BetaS are standardized coefficients with (a) only numeric variables</span></span>
+<span><span class="co">#&gt;   standardized and (b) product terms formed after standardization.</span></span>
+<span><span class="co">#&gt;   Variable(s) standardized is/are: m, x, c2, c1</span></span>
+<span><span class="co">#&gt; - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'</span></span>
+<span><span class="co">#&gt;   computed from the t values and standard errors.</span></span>
+<span><span class="co">#&gt; R-square = 0.598. Adjusted R-square = 0.586. F(3, 96) = 47.622, p &lt; .001</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Model:</span></span>
 <span><span class="co">#&gt; y ~ m + x + c2 + c1</span></span>
-<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)   </span></span>
-<span><span class="co">#&gt; (Intercept)   4.4152     3.3016   1.337  0.18432   </span></span>
-<span><span class="co">#&gt; m             0.7847     0.2495   3.145  0.00222 **</span></span>
-<span><span class="co">#&gt; x             0.5077     0.3057   1.661  0.10004   </span></span>
-<span><span class="co">#&gt; c2           -0.1544     0.2554  -0.604  0.54695   </span></span>
-<span><span class="co">#&gt; c1            0.1405     0.1941   0.724  0.47093   </span></span>
-<span><span class="co">#&gt; ---</span></span>
-<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
-<span><span class="co">#&gt; R-square = 0.3576. Adjusted R-square = 0.3305. F(4, 95) = 13.2204, p &lt; .001</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;             Estimate   CI.lo   CI.hi   betaS Std. Error t value Pr(&gt;|t|) Sig</span></span>
+<span><span class="co">#&gt; (Intercept)   4.4152 -2.1393 10.9698  0.0000     3.3016  1.3373   0.1843    </span></span>
+<span><span class="co">#&gt; m             0.7847  0.2894  1.2800  0.4079     0.2495  3.1450   0.0022  **</span></span>
+<span><span class="co">#&gt; x             0.5077 -0.0992  1.1145  0.2128     0.3057  1.6608   0.1000    </span></span>
+<span><span class="co">#&gt; c2           -0.1544 -0.6614  0.3526 -0.0510     0.2554 -0.6045   0.5470    </span></span>
+<span><span class="co">#&gt; c1            0.1405 -0.2448  0.5258  0.0619     0.1941  0.7239   0.4709    </span></span>
+<span><span class="co">#&gt; Signif. codes:   0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 </span></span>
+<span><span class="co">#&gt; - BetaS are standardized coefficients with (a) only numeric variables</span></span>
+<span><span class="co">#&gt;   standardized and (b) product terms formed after standardization.</span></span>
+<span><span class="co">#&gt;   Variable(s) standardized is/are: y, m, x, c2, c1</span></span>
+<span><span class="co">#&gt; - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'</span></span>
+<span><span class="co">#&gt;   computed from the t values and standard errors.</span></span>
+<span><span class="co">#&gt; R-square = 0.358. Adjusted R-square = 0.331. F(4, 95) = 13.220, p &lt; .001</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
 <span><span class="co">#&gt; |             Indirect Effect Results             |</span></span>
@@ -497,39 +507,54 @@ and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Model:</span></span>
 <span><span class="co">#&gt; m1 ~ x + c2 + c1</span></span>
-<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept) 10.81566    1.14379   9.456 2.20e-15 ***</span></span>
-<span><span class="co">#&gt; x            0.82244    0.09424   8.727 8.03e-14 ***</span></span>
-<span><span class="co">#&gt; c2          -0.18886    0.09278  -2.036   0.0446 *  </span></span>
-<span><span class="co">#&gt; c1           0.17148    0.09070   1.891   0.0617 .  </span></span>
-<span><span class="co">#&gt; ---</span></span>
-<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
-<span><span class="co">#&gt; R-square = 0.4774. Adjusted R-square = 0.4611. F(3, 96) = 29.2349, p &lt; .001</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;             Estimate   CI.lo   CI.hi   betaS Std. Error t value Pr(&gt;|t|) Sig</span></span>
+<span><span class="co">#&gt; (Intercept)  10.8157  8.5453 13.0861 -0.0000     1.1438  9.4560   0.0000 ***</span></span>
+<span><span class="co">#&gt; x             0.8224  0.6354  1.0095  0.6493     0.0942  8.7274   0.0000 ***</span></span>
+<span><span class="co">#&gt; c2           -0.1889 -0.3730 -0.0047 -0.1534     0.0928 -2.0355   0.0446   *</span></span>
+<span><span class="co">#&gt; c1            0.1715 -0.0086  0.3515  0.1423     0.0907  1.8906   0.0617   .</span></span>
+<span><span class="co">#&gt; Signif. codes:   0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 </span></span>
+<span><span class="co">#&gt; - BetaS are standardized coefficients with (a) only numeric variables</span></span>
+<span><span class="co">#&gt;   standardized and (b) product terms formed after standardization.</span></span>
+<span><span class="co">#&gt;   Variable(s) standardized is/are: m1, x, c2, c1</span></span>
+<span><span class="co">#&gt; - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'</span></span>
+<span><span class="co">#&gt;   computed from the t values and standard errors.</span></span>
+<span><span class="co">#&gt; R-square = 0.477. Adjusted R-square = 0.461. F(3, 96) = 29.235, p &lt; .001</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Model:</span></span>
 <span><span class="co">#&gt; m2 ~ x + m1 + c2 + c1</span></span>
-<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept)  3.51937    1.58681   2.218  0.02895 *  </span></span>
-<span><span class="co">#&gt; x           -0.11610    0.12598  -0.922  0.35909    </span></span>
-<span><span class="co">#&gt; m1           0.42078    0.10188   4.130  7.8e-05 ***</span></span>
-<span><span class="co">#&gt; c2          -0.16195    0.09460  -1.712  0.09017 .  </span></span>
-<span><span class="co">#&gt; c1           0.27753    0.09221   3.010  0.00335 ** </span></span>
-<span><span class="co">#&gt; ---</span></span>
-<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
-<span><span class="co">#&gt; R-square = 0.3410. Adjusted R-square = 0.3133. F(4, 95) = 12.2904, p &lt; .001</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;             Estimate   CI.lo  CI.hi   betaS Std. Error t value Pr(&gt;|t|) Sig</span></span>
+<span><span class="co">#&gt; (Intercept)   3.5194  0.3692 6.6696 -0.0000     1.5868  2.2179   0.0289   *</span></span>
+<span><span class="co">#&gt; x            -0.1161 -0.3662 0.1340 -0.1036     0.1260 -0.9216   0.3591    </span></span>
+<span><span class="co">#&gt; m1            0.4208  0.2185 0.6230  0.4758     0.1019  4.1300   0.0001 ***</span></span>
+<span><span class="co">#&gt; c2           -0.1619 -0.3497 0.0259 -0.1487     0.0946 -1.7120   0.0902   .</span></span>
+<span><span class="co">#&gt; c1            0.2775  0.0945 0.4606  0.2603     0.0922  3.0096   0.0033  **</span></span>
+<span><span class="co">#&gt; Signif. codes:   0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 </span></span>
+<span><span class="co">#&gt; - BetaS are standardized coefficients with (a) only numeric variables</span></span>
+<span><span class="co">#&gt;   standardized and (b) product terms formed after standardization.</span></span>
+<span><span class="co">#&gt;   Variable(s) standardized is/are: m2, x, m1, c2, c1</span></span>
+<span><span class="co">#&gt; - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'</span></span>
+<span><span class="co">#&gt;   computed from the t values and standard errors.</span></span>
+<span><span class="co">#&gt; R-square = 0.341. Adjusted R-square = 0.313. F(4, 95) = 12.290, p &lt; .001</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Model:</span></span>
 <span><span class="co">#&gt; y ~ m1 + m2 + x + c2 + c1</span></span>
-<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)  </span></span>
-<span><span class="co">#&gt; (Intercept)  9.46788    3.60900   2.623   0.0102 *</span></span>
-<span><span class="co">#&gt; m1          -0.43534    0.24539  -1.774   0.0793 .</span></span>
-<span><span class="co">#&gt; m2           0.52077    0.22753   2.289   0.0243 *</span></span>
-<span><span class="co">#&gt; x            0.49285    0.28063   1.756   0.0823 .</span></span>
-<span><span class="co">#&gt; c2          -0.09604    0.21300  -0.451   0.6531  </span></span>
-<span><span class="co">#&gt; c1           0.09884    0.21403   0.462   0.6453  </span></span>
-<span><span class="co">#&gt; ---</span></span>
-<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
-<span><span class="co">#&gt; R-square = 0.0915. Adjusted R-square = 0.0432. F(5, 94) = 1.8934, p = 0.1028</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;             Estimate   CI.lo   CI.hi   betaS Std. Error t value Pr(&gt;|t|) Sig</span></span>
+<span><span class="co">#&gt; (Intercept)   9.4679  2.3021 16.6336  0.0000     3.6090  2.6234   0.0102   *</span></span>
+<span><span class="co">#&gt; m1           -0.4353 -0.9226  0.0519 -0.2620     0.2454 -1.7740   0.0793   .</span></span>
+<span><span class="co">#&gt; m2            0.5208  0.0690  0.9725  0.2772     0.2275  2.2888   0.0243   *</span></span>
+<span><span class="co">#&gt; x             0.4929 -0.0643  1.0500  0.2342     0.2806  1.7562   0.0823   .</span></span>
+<span><span class="co">#&gt; c2           -0.0960 -0.5190  0.3269 -0.0469     0.2130 -0.4509   0.6531    </span></span>
+<span><span class="co">#&gt; c1            0.0988 -0.3261  0.5238  0.0493     0.2140  0.4618   0.6453    </span></span>
+<span><span class="co">#&gt; Signif. codes:   0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 </span></span>
+<span><span class="co">#&gt; - BetaS are standardized coefficients with (a) only numeric variables</span></span>
+<span><span class="co">#&gt;   standardized and (b) product terms formed after standardization.</span></span>
+<span><span class="co">#&gt;   Variable(s) standardized is/are: y, m1, m2, x, c2, c1</span></span>
+<span><span class="co">#&gt; - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'</span></span>
+<span><span class="co">#&gt;   computed from the t values and standard errors.</span></span>
+<span><span class="co">#&gt; R-square = 0.091. Adjusted R-square = 0.043. F(5, 94) = 1.893, p = 0.103</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
 <span><span class="co">#&gt; |             Indirect Effect Results             |</span></span>
@@ -917,38 +942,53 @@ model, and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Model:</span></span>
 <span><span class="co">#&gt; m1 ~ x + c2 + c1</span></span>
-<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept)  9.39260    1.40019   6.708 1.37e-09 ***</span></span>
-<span><span class="co">#&gt; x            0.87694    0.11441   7.665 1.45e-11 ***</span></span>
-<span><span class="co">#&gt; c2          -0.09293    0.12255  -0.758   0.4501    </span></span>
-<span><span class="co">#&gt; c1           0.25189    0.11131   2.263   0.0259 *  </span></span>
-<span><span class="co">#&gt; ---</span></span>
-<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
-<span><span class="co">#&gt; R-square = 0.4394. Adjusted R-square = 0.4219. F(3, 96) = 25.0816, p &lt; .001</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;             Estimate   CI.lo   CI.hi   betaS Std. Error t value Pr(&gt;|t|) Sig</span></span>
+<span><span class="co">#&gt; (Intercept)   9.3926  6.6132 12.1720 -0.0000     1.4002  6.7081   0.0000 ***</span></span>
+<span><span class="co">#&gt; x             0.8769  0.6498  1.1040  0.6049     0.1144  7.6647   0.0000 ***</span></span>
+<span><span class="co">#&gt; c2           -0.0929 -0.3362  0.1503 -0.0595     0.1225 -0.7584   0.4501    </span></span>
+<span><span class="co">#&gt; c1            0.2519  0.0309  0.4728  0.1742     0.1113  2.2630   0.0259   *</span></span>
+<span><span class="co">#&gt; Signif. codes:   0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 </span></span>
+<span><span class="co">#&gt; - BetaS are standardized coefficients with (a) only numeric variables</span></span>
+<span><span class="co">#&gt;   standardized and (b) product terms formed after standardization.</span></span>
+<span><span class="co">#&gt;   Variable(s) standardized is/are: m1, x, c2, c1</span></span>
+<span><span class="co">#&gt; - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'</span></span>
+<span><span class="co">#&gt;   computed from the t values and standard errors.</span></span>
+<span><span class="co">#&gt; R-square = 0.439. Adjusted R-square = 0.422. F(3, 96) = 25.082, p &lt; .001</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Model:</span></span>
 <span><span class="co">#&gt; m2 ~ x + c2 + c1</span></span>
-<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)   </span></span>
-<span><span class="co">#&gt; (Intercept)   4.3796     1.3463   3.253  0.00158 **</span></span>
-<span><span class="co">#&gt; x             0.2968     0.1100   2.698  0.00825 **</span></span>
-<span><span class="co">#&gt; c2           -0.3125     0.1178  -2.652  0.00937 **</span></span>
-<span><span class="co">#&gt; c1            0.2746     0.1070   2.566  0.01185 * </span></span>
-<span><span class="co">#&gt; ---</span></span>
-<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
-<span><span class="co">#&gt; R-square = 0.2171. Adjusted R-square = 0.1927. F(3, 96) = 8.8753, p &lt; .001</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;             Estimate   CI.lo   CI.hi   betaS Std. Error t value Pr(&gt;|t|) Sig</span></span>
+<span><span class="co">#&gt; (Intercept)   4.3796  1.7071  7.0520  0.0000     1.3463  3.2530   0.0016  **</span></span>
+<span><span class="co">#&gt; x             0.2968  0.0784  0.5151  0.2516     0.1100  2.6977   0.0082  **</span></span>
+<span><span class="co">#&gt; c2           -0.3125 -0.5464 -0.0786 -0.2457     0.1178 -2.6517   0.0094  **</span></span>
+<span><span class="co">#&gt; c1            0.2746  0.0621  0.4870  0.2334     0.1070  2.5655   0.0118   *</span></span>
+<span><span class="co">#&gt; Signif. codes:   0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 </span></span>
+<span><span class="co">#&gt; - BetaS are standardized coefficients with (a) only numeric variables</span></span>
+<span><span class="co">#&gt;   standardized and (b) product terms formed after standardization.</span></span>
+<span><span class="co">#&gt;   Variable(s) standardized is/are: m2, x, c2, c1</span></span>
+<span><span class="co">#&gt; - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'</span></span>
+<span><span class="co">#&gt;   computed from the t values and standard errors.</span></span>
+<span><span class="co">#&gt; R-square = 0.217. Adjusted R-square = 0.193. F(3, 96) = 8.875, p &lt; .001</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Model:</span></span>
 <span><span class="co">#&gt; y ~ m1 + m2 + x + c2 + c1</span></span>
-<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)  </span></span>
-<span><span class="co">#&gt; (Intercept)  2.65618    3.17697   0.836   0.4052  </span></span>
-<span><span class="co">#&gt; m1           0.48642    0.19106   2.546   0.0125 *</span></span>
-<span><span class="co">#&gt; m2           0.47128    0.19871   2.372   0.0197 *</span></span>
-<span><span class="co">#&gt; x            0.29112    0.26939   1.081   0.2826  </span></span>
-<span><span class="co">#&gt; c2          -0.03212    0.23411  -0.137   0.8912  </span></span>
-<span><span class="co">#&gt; c1          -0.05256    0.21557  -0.244   0.8079  </span></span>
-<span><span class="co">#&gt; ---</span></span>
-<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
-<span><span class="co">#&gt; R-square = 0.2830. Adjusted R-square = 0.2449. F(5, 94) = 7.4201, p &lt; .001</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;             Estimate   CI.lo  CI.hi   betaS Std. Error t value Pr(&gt;|t|) Sig</span></span>
+<span><span class="co">#&gt; (Intercept)   2.6562 -3.6518 8.9641  0.0000     3.1770  0.8361   0.4052    </span></span>
+<span><span class="co">#&gt; m1            0.4864  0.1071 0.8658  0.3016     0.1911  2.5459   0.0125   *</span></span>
+<span><span class="co">#&gt; m2            0.4713  0.0767 0.8658  0.2378     0.1987  2.3718   0.0197   *</span></span>
+<span><span class="co">#&gt; x             0.2911 -0.2438 0.8260  0.1245     0.2694  1.0807   0.2826    </span></span>
+<span><span class="co">#&gt; c2           -0.0321 -0.4970 0.4327 -0.0127     0.2341 -0.1372   0.8912    </span></span>
+<span><span class="co">#&gt; c1           -0.0526 -0.4806 0.3755 -0.0225     0.2156 -0.2438   0.8079    </span></span>
+<span><span class="co">#&gt; Signif. codes:   0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 </span></span>
+<span><span class="co">#&gt; - BetaS are standardized coefficients with (a) only numeric variables</span></span>
+<span><span class="co">#&gt;   standardized and (b) product terms formed after standardization.</span></span>
+<span><span class="co">#&gt;   Variable(s) standardized is/are: y, m1, m2, x, c2, c1</span></span>
+<span><span class="co">#&gt; - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'</span></span>
+<span><span class="co">#&gt;   computed from the t values and standard errors.</span></span>
+<span><span class="co">#&gt; R-square = 0.283. Adjusted R-square = 0.245. F(5, 94) = 7.420, p &lt; .001</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
 <span><span class="co">#&gt; |             Indirect Effect Results             |</span></span>
