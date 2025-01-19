@@ -6,13 +6,32 @@
 \title{Summary of an \code{lm_list}-Class
 Object}
 \usage{
-\method{summary}{lm_list}(object, ...)
+\method{summary}{lm_list}(object, betaselect = FALSE, ci = FALSE, level = 0.95, ...)
 
 \method{print}{summary_lm_list}(x, digits = 3, ...)
 }
 \arguments{
 \item{object}{The output of
 \code{\link[=lm2list]{lm2list()}}.}
+
+\item{betaselect}{If \code{TRUE},
+standardized coefficients are
+computed and included in the
+printout. Only numeric variables will
+be computed, and any derived terms,
+such as product terms, will be formed
+\emph{after} standardization. Default
+is \code{FALSE}.}
+
+\item{ci}{If \code{TRUE}, confidence
+interval based on \emph{t} statistic
+and standard error will be computed
+and added to the output. Default is
+\code{FALSE}.}
+
+\item{level}{The level of confidence
+of the confidence interval. Ignored
+if \code{ci} is not \code{TRUE}.}
 
 \item{...}{Other arguments. Not
 used.}
