@@ -58,13 +58,13 @@ datzy$x <- scale(datzy$x)[, 1]
 datzy$w4 <- scale(datzy$w4)[, 1]
 lm_y_std <- lm(y ~ m2 + m3 + x * w4, datzy)
 
-expect_equal(out_sum[[2]]$coefficients$betaS,
+expect_equal(out_sum[[2]]$coefficients[, "betaS"],
              coef(lm_m2_std),
              ignore_attr = TRUE)
-expect_equal(out_sum[[3]]$coefficients$betaS,
+expect_equal(out_sum[[3]]$coefficients[, "betaS"],
              coef(lm_m3_std),
              ignore_attr = TRUE)
-expect_equal(out_sum[[4]]$coefficients$betaS,
+expect_equal(out_sum[[4]]$coefficients[, "betaS"],
              coef(lm_y_std),
              ignore_attr = TRUE)
 })

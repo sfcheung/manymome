@@ -42,6 +42,14 @@
 #' significant digits in printing
 #' numerical results.
 #'
+#' @param digits_decimal The number of
+#' digits after the decimal in printing
+#' numerical results. Default is `NULL`.
+#' If set to an integer, numerical
+#' results in the coefficient table
+#' will be printed according this setting,
+#' and `digits` will be ignored.
+#'
 #' @param ...  Other arguments. Not
 #' used.
 #'
@@ -104,13 +112,35 @@ summary.lm_list <- function(object,
 #'
 #' @export
 
-print.summary_lm_list <- function(x, digits = 3, ...) {
+print.summary_lm_list <- function(x,
+                                  digits = 3,
+                                  digits_decimal = NULL,
+                                  ...) {
     for (xi in x) {
         cat("\n\nModel:\n")
         print(xi$call$formula)
-        stats::printCoefmat(xi$coefficients,
-                            digits = digits,
-                            ...)
+        if (is.null(digits_decimal)) {
+          stats::printCoefmat(xi$coefficients,
+                              digits = digits,
+                              ...)
+        } else {
+          # Adapted from stats::printCoefmat
+          sig <- stats::symnum(xi$coefficients[, "Pr(>|t|)", drop = TRUE],
+                              corr = FALSE,
+                              na = FALSE,
+                              cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1),
+                              symbols = c("***", "**", "*", ".", " "))
+          coef_tmp <- lapply(as.data.frame(xi$coefficients),
+                            format_numeric,
+                            digits = digits_decimal)
+          coef_tmp <- data.frame(coef_tmp,
+                                 Sig = sig,
+                                 check.names = FALSE)
+          rownames(coef_tmp) <- rownames(xi$coefficients)
+          print(coef_tmp)
+          cat("Signif. codes:  ",
+              attr(sig, "legend"), "\n")
+        }
         if (!is.null(xi$betaselect)) {
           vars_std <- attr(xi$betaselect, "standardized")
           tmp <- strwrap(paste0("- BetaS are standardized coefficients with (a) ",
@@ -182,13 +212,13 @@ summary_lm_add_ci <- function(object,
     cnames <- paste(c("CI.lo", "CI.hi"),
                     cnames)
     cnames <- c("CI.lo", "CI.hi")
-    ci_df <- data.frame(cilo, cihi)
+    ci_df <- cbind(cilo, cihi)
     colnames(ci_df) <- cnames
     i <- match("Estimate", colnames(coef_mat))
-    out <- data.frame(coef_mat[, i, drop = FALSE],
-                      ci_df,
-                      coef_mat[, seq(i + 1, ncol(coef_mat))],
-                      check.names = FALSE)
+    out <- cbind(coef_mat[, i, drop = FALSE],
+                 ci_df,
+                 coef_mat[, seq(i + 1, ncol(coef_mat))])
+    rownames(out) <- rownames(coef_mat)
     return(out)
   } else {
     return(out)
@@ -213,11 +243,11 @@ summary_lm_add_beta <- function(object) {
       return(object)
     }
   }
-  betas_df <- data.frame(betaS = betas)
-  out <- data.frame(coef_mat[, i - 1, drop = FALSE],
-                    betas_df,
-                    coef_mat[, seq(i, ncol(coef_mat))],
-                    check.names = FALSE)
+  # betas_df <- data.frame(betaS = betas)
+  out <- cbind(coef_mat[, i - 1, drop = FALSE],
+               betaS = betas,
+               coef_mat[, seq(i, ncol(coef_mat))])
+  rownames(out) <- rownames(coef_mat)
   return(out)
 }
 

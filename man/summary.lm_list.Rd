@@ -8,7 +8,7 @@ Object}
 \usage{
 \method{summary}{lm_list}(object, betaselect = FALSE, ci = FALSE, level = 0.95, ...)
 
-\method{print}{summary_lm_list}(x, digits = 3, ...)
+\method{print}{summary_lm_list}(x, digits = 3, digits_decimal = NULL, ...)
 }
 \arguments{
 \item{object}{The output of
@@ -42,6 +42,14 @@ used.}
 \item{digits}{The number of
 significant digits in printing
 numerical results.}
+
+\item{digits_decimal}{The number of
+digits after the decimal in printing
+numerical results. Default is \code{NULL}.
+If set to an integer, numerical
+results in the coefficient table
+will be printed according this setting,
+and \code{digits} will be ignored.}
 }
 \value{
 \code{\link[=summary.lm_list]{summary.lm_list()}} returns a
