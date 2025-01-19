@@ -6,13 +6,32 @@
 \title{Summary of an \code{lm_list}-Class
 Object}
 \usage{
-\method{summary}{lm_list}(object, ...)
+\method{summary}{lm_list}(object, betaselect = FALSE, ci = FALSE, level = 0.95, ...)
 
-\method{print}{summary_lm_list}(x, digits = 3, ...)
+\method{print}{summary_lm_list}(x, digits = 3, digits_decimal = NULL, ...)
 }
 \arguments{
 \item{object}{The output of
 \code{\link[=lm2list]{lm2list()}}.}
+
+\item{betaselect}{If \code{TRUE},
+standardized coefficients are
+computed and included in the
+printout. Only numeric variables will
+be computed, and any derived terms,
+such as product terms, will be formed
+\emph{after} standardization. Default
+is \code{FALSE}.}
+
+\item{ci}{If \code{TRUE}, confidence
+interval based on \emph{t} statistic
+and standard error will be computed
+and added to the output. Default is
+\code{FALSE}.}
+
+\item{level}{The level of confidence
+of the confidence interval. Ignored
+if \code{ci} is not \code{TRUE}.}
 
 \item{...}{Other arguments. Not
 used.}
@@ -23,6 +42,14 @@ used.}
 \item{digits}{The number of
 significant digits in printing
 numerical results.}
+
+\item{digits_decimal}{The number of
+digits after the decimal in printing
+numerical results. Default is \code{NULL}.
+If set to an integer, numerical
+results in the coefficient table
+will be printed according this setting,
+and \code{digits} will be ignored.}
 }
 \value{
 \code{\link[=summary.lm_list]{summary.lm_list()}} returns a

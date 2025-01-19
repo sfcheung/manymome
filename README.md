@@ -9,7 +9,7 @@
 [![R-CMD-check](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-(Version 0.2.5.3, updated on 2025-01-19, [release history](https://sfcheung.github.io/manymome/news/index.html))
+(Version 0.2.5.4, updated on 2025-01-19, [release history](https://sfcheung.github.io/manymome/news/index.html))
 
 # manymome  <img src="man/figures/logo.png" align="right" height="150" />
 
@@ -72,7 +72,7 @@ by multiple regression. The package was introduced in:
   outcome variables, other than those by `lavaan::sem()` and `lm()`.
   For multigroup models fitted by `lavaan::sem()`,
   there is no inherent limit on the number of groups,
-  other than the limit due to `lavaan::sem(), if any
+  other than the limit due to `lavaan::sem()`, if any
   (supported in 0.1.14.2 and later versions).
 
 - **Supports Standardized Effects**

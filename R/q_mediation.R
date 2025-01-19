@@ -860,6 +860,30 @@ form_models_parallel <- function(x,
 #' will be wrapped to fit to the screen
 #' width.
 #'
+#' @param lm_beta  If `TRUE`,
+#' when printing the regression results
+#' of [stats::lm()],
+#' standardized coefficients are
+#' computed and included in the
+#' printout. Only numeric variables will
+#' be computed, and any derived terms,
+#' such as product terms, will be formed
+#' *after* standardization. Default
+#' is `TRUE`.
+#'
+#' @param lm_ci If `TRUE`,
+#' when printing the regression results
+#' of [stats::lm()],
+#' confidence
+#' interval based on *t* statistic
+#' and standard error will be computed
+#' and added to the output. Default is
+#' `TRUE`.
+#'
+#' @param lm_ci_level The level of confidence
+#' of the confidence interval. Ignored
+#' if `lm_ci` is not `TRUE`.
+#'
 #' @param ... Other arguments. If
 #' `for_each_path` is `TRUE`, they
 #' will be passed to the print method
@@ -877,6 +901,9 @@ print.q_mediation <- function(x,
                               for_each_path = FALSE,
                               se_ci = TRUE,
                               wrap_computation = TRUE,
+                              lm_ci = TRUE,
+                              lm_beta = TRUE,
+                              lm_ci_level = .95,
                               ...) {
   # Print basic information
   model_name <- switch(x$model,
@@ -916,10 +943,19 @@ print.q_mediation <- function(x,
   cat("|               Regression Results                |\n")
   cat("===================================================\n")
 
-  tmp <- utils::capture.output(print(summary(x$lm_out),
-                                     digits = digits))
+  tmp <- tryCatch(utils::capture.output(print(summary(x$lm_out,
+                                                      betaselect = lm_beta,
+                                                      ci = lm_ci,
+                                                      level = lm_ci_level),
+                                              digits_decimal = digits)),
+                  error = function(e) e)
+  if (inherits(tmp, "error")) {
+    tmp <- utils::capture.output(print(summary(x$lm_out),
+                                      digits = digits))
+  }
   i <- grepl("^<environment:", tmp)
-  tmp <- tmp[!i]
+  # tmp <- tmp[!i]
+  tmp[i] <- ""
 
   cat(tmp,
       sep = "\n")
