@@ -169,6 +169,9 @@ print.indirect_list <- function(x, digits = 3,
       }
     # Should always have mediators
     has_m <- TRUE
+    all_m_null <- sapply(x,
+                         function(xx) {is.null(xx$m)})
+    if (all(all_m_null)) has_m <- FALSE
     coef0 <- indirect_effects_from_list(xold,
                                         add_sig = TRUE,
                                         pvalue = pvalue,
@@ -316,8 +319,9 @@ print.indirect_list <- function(x, digits = 3,
 #' confidence intervals are available.
 #'
 #' @param object The output of
-#' [indirect_effect()] or
-#' [cond_indirect()].
+#' [many_indirect_effects()] or other
+#' functions that return an object
+#' of the class `indirect_list`.
 #'
 #' @param add_sig Whether a column
 #' of significance test results
@@ -392,7 +396,7 @@ indirect_effects_from_list <- function(object,
     standardized_y <- object[[1]]$standardized_y
     standardized <- (standardized_x && standardized_y)
     coef0 <- sapply(object, stats::coef)
-    if (standardized_x || standardized_x) {
+    if (standardized_x || standardized_y) {
         out <- data.frame(std = coef0)
       } else {
         out <- data.frame(ind = coef0)

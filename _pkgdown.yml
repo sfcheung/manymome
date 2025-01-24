@@ -39,6 +39,10 @@ navbar:
       - text: Moderated Mediation
         href: articles/mome_lm.html
       - text: -------
+      - text: "<Quick Functions>"
+      - text: All-In-One Functions For Common Mediation Models
+        href: articles/q_mediation.html
+      - text: -------
       - text: "<Multigroup Models>"
       - text: Mediation in Multigroup Models
         href: articles/med_mg.html
@@ -95,6 +99,9 @@ reference:
   - all_indirect_paths
   - indirect_effects_from_list
   - total_indirect_effect
+- title: Quick Functions for Common Models
+- contents:
+  - q_mediation
 - title: Presenting and Exploring the Effects
 - contents:
   - index_of_mome

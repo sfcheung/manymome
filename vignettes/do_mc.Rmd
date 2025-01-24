@@ -1,7 +1,7 @@
 ---
 title: "Generate Monte Carlo Estimates"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2024-10-04"
+date: "2025-01-25"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -18,7 +18,7 @@ vignette: >
 This article is a brief illustration of how
 to use `do_mc()` from the package
 [manymome](https://sfcheung.github.io/manymome/index.html)
-([Cheung & Cheung, 2023](https://doi.org/10.3758/s13428-023-02224-z))
+([Cheung & Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z))
 to generate Monte Carlo estimates for
 `indirect_effect()` and `cond_indirect_effects()` to
 form Monte Carlo confidence intervals.
@@ -340,9 +340,13 @@ please refer to its help page.
 
 # Reference
 
-Cheung, S. F., & Cheung, S.-H. (2023). *manymome*: An R
-package for computing the indirect effects, conditional
-effects, and conditional indirect effects, standardized or
-unstandardized, and their bootstrap confidence intervals,
-in many (though not all) models. *Behavior Research Methods*.
+Cheung, S. F., & Cheung, S.-H. (2024).
+*manymome*: An R package for computing
+the indirect effects, conditional
+effects, and conditional indirect
+effects, standardized or unstandardized,
+and their bootstrap confidence intervals,
+in many (though not all) models.
+*Behavior Research Methods, 56*(5),
+4862--4882.
 https://doi.org/10.3758/s13428-023-02224-z

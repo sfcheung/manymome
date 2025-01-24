@@ -1,0 +1,744 @@
+---
+title: "All-In-One Functions for Common Mediation Models"
+author: "Shu Fai Cheung & Sing-Hang Cheung"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig.align: "center"
+    toc: true
+    number_sections: false
+bibliography: references.bib
+csl: apa.csl
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = ""
+)
+```
+
+# Introduction
+
+This article is a brief illustration of how to use
+the new all-in-one "quick" functions from
+[manymome](https://sfcheung.github.io/manymome/index.html)
+([Cheung & Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z))
+to fit the regression models and
+compute and test indirect effects in
+one step.
+
+The following sections on the three
+models, simple mediation model,
+serial mediation model, and parallel
+mediation model has sections duplicated,
+to make each section self-contained.
+
+# Simple Mediation Model
+
+This is the sample data set that comes
+with the package for this example:
+
+```{r dataset_med}
+library(manymome)
+dat <- data_med
+print(head(dat), digits = 3)
+```
+
+Suppose we would like to fit a simple
+mediation model with only one mediator,
+with `c1` and `c2` as the control
+variables.
+
+```{r manymome_draw_q_simple, echo = FALSE, fig.cap = "Simple Mediation Model"}
+library(semPlot)
+suppressMessages(library(lavaan))
+mod <-
+"
+m ~ x + c1 + c2
+y ~ m + x + c1 + c2
+"
+fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c(NA, "m", NA,
+                     "x", NA, "y",
+                     "c1", NA, NA,
+                     "c2", NA, NA), 4, 3, byrow = TRUE)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 10,
+              asize = 5,
+              DoNotPlot = TRUE)
+plot(p)
+text(label = "(Covariances excluded for readability)",
+     x = .25, y = -1,
+     adj = c(.5, .5))
+```
+
+We would to fit the two regression models
+
+- `m ~ x + c1 + c2`
+
+- `y ~ m + x + c1 + c2`
+
+and the compute and test the indirect
+effect along the path `x -> m -> y`
+using nonparametric bootstrapping.
+
+## Analysis
+
+We can do that in one single step using
+`q_simple_mediation()`:
+
+```{r results = "hide", message = FALSE}
+out_simple <- q_simple_mediation(x = "x",
+                                 y = "y",
+                                 m = "m",
+                                 cov = c("c2", "c1"),
+                                 data = data_med,
+                                 R = 5000,
+                                 seed = 1234)
+```
+
+These are the arguments:
+
+- `x`: The name of the predictor ("x" variable).
+
+- `y`: The name of the outcome ("y" variable).
+
+- `m`: The name of the mediator ("m" variable).
+
+- `cov`: The name(s) of the control variable(s)
+  (covariate(s)). By default, they predict both
+  the mediator and the outcome.
+
+- `data`: The data frame for the model.
+
+- `R`: The number of bootstrap samples.
+  Should be at least 5000 but can be
+  larger for stable results.
+
+- `seed`: The seed for the random number
+  generator. Should always be set to an
+  integer to make the results reproducible.
+
+The computation may take some time to run but should
+be at most one or two minutes for contemporary
+computers.
+
+## Results
+
+We can then just print the output:
+
+```{r}
+out_simple
+```
+
+These are the main sections of the
+default results:
+
+### Basic Information
+
+The variables, the models, and the
+number of cases. Listwise deletion is
+used and only cases without missing data
+on all variables in the models are
+used.
+
+### Regression Results
+
+This part is simply the usual outputs
+of regression analysis conducted by
+`lm()`.
+
+### Indirect Effect Results
+
+By default, this section prints the estimated
+indirect effect, confidence interval,
+and asymmetric bootstrap *p*-value.
+
+Four sections will be printed:
+
+- The original indirect effect.
+
+- The indirect effect with the predictor
+  ("x") standardized.
+
+- The indirect effect with the outcome
+  ("y") standardized.
+
+- The indirect effect with both the predictor
+  ("x") and the outcome ("y") standardized,
+  also called the *completely*
+  *standardized* *indirect* *effect* or
+  simply the *standardized* *indirect*
+  *effect*.
+
+These four versions of the results are
+printed by default such that users can
+select and interpret sections as they
+see fit.
+
+### Direct Effect Results
+
+By default, this section prints the estimated
+direct effect (from the predictor "x" to
+the outcome "y", not mediated), confidence interval,
+and asymmetric bootstrap *p*-value.
+
+The OLS *t*-test of the direct effect is
+already available in section *Regression Results*.
+The bootstrap results are printed in
+case users prefer using the same
+confidence interval method for all
+the effects.
+
+# Serial Mediation Model
+
+(Some sections are copied from the
+previous section to make this section
+self-contained and readers do not need
+to refer to the sections on other models.)
+
+This is the sample data set that comes
+with the package for this example:
+
+```{r dataset_serial}
+library(manymome)
+dat <- data_serial
+print(head(dat), digits = 3)
+```
+
+Suppose we would like to fit a serial
+mediation model with two mediators,
+with `c1` and `c2` as the control
+variables.
+
+```{r manymome_draw_q_serial, echo = FALSE, fig.cap = "Serial Mediation Model"}
+library(semPlot)
+suppressMessages(library(lavaan))
+mod <-
+"
+m1 ~ x + c1 + c2
+m2 ~ m1 + x + c1 + c2
+y ~ m2 + m1 + x + c1 + c2
+"
+fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c(NA, "m1", "m2", NA,
+                     "x", NA,  NA,"y",
+                     "c1", NA, NA, NA,
+                     "c2", NA, NA, NA), 4, 4, byrow = TRUE)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 8,
+              asize = 3,
+              DoNotPlot = TRUE)
+plot(p)
+text(label = "(Covariances excluded for readability)",
+     x = .25, y = -1,
+     adj = c(.5, .5))
+```
+
+We would to fit three regression models:
+
+- `m1 ~ x + c1 + c2`
+
+- `m2 ~ m1 + x + c1 + c2`
+
+- `y ~ m1 + m2 + x + c1 + c2`
+
+and the compute and test the following
+indirect effects:
+
+- `x -> m1 -> m2 -> y`
+
+- `x -> m1 -> y`
+
+- `x -> m2 -> y`
+
+using nonparametric bootstrapping.
+
+## Analysis
+
+We can do that in one single step using
+`q_serial_mediation()`:
+
+```{r results = "hide", message = FALSE}
+out_serial <- q_serial_mediation(x = "x",
+                                 y = "y",
+                                 m = c("m1", "m2"),
+                                 cov = c("c2", "c1"),
+                                 data = data_serial,
+                                 R = 5000,
+                                 seed = 1234)
+```
+
+These are the arguments:
+
+- `x`: The name of the predictor ("x" variable).
+
+- `y`: The name of the outcome ("y" variable).
+
+- `m`: A vector of the names of the mediators
+  ("m" variables). The order of the names represents
+  the order of the mediators, from the
+  first name to the last name. Therefore,
+  if the path is `x -> m1 -> m2 -> y`,
+  set this to `c("m1", "m2")`.
+
+- `cov`: The name(s) of the control variable(s)
+  (covariate(s)). By default, they predict all
+  the mediators and the outcome.
+
+- `data`: The data frame for the model.
+
+- `R`: The number of bootstrap samples.
+  Should be at least 5000 but can be
+  larger for stable results.
+
+- `seed`: The seed for the random number
+  generator. Should always be set to an
+  integer to make the results reproducible.
+
+The computation will take longer to run
+for a serial mediation model, and can
+be a few minutes if `R` is large.
+
+## Results
+
+We can then just print the output:
+
+```{r}
+out_serial
+```
+
+These are the main sections of the
+default results:
+
+### Basic Information
+
+The variables, the models, and the
+number of cases. Listwise deletion is
+used and only cases without missing data
+on all variables in the models are
+used.
+
+### Regression Results
+
+This part is simply the usual outputs
+of regression analysis conducted by
+`lm()`.
+
+### Indirect Effect Results
+
+By default, this section prints the estimated
+indirect effects, confidence intervals,
+and asymmetric bootstrap *p*-values.
+
+Four sections will be printed:
+
+- The original indirect effects.
+
+- The indirect effects with the predictor
+  ("x") standardized.
+
+- The indirect effects with the outcome
+  ("y") standardized.
+
+- The indirect effects with both the predictor
+  ("x") and the outcome ("y") standardized,
+  also called the *completely*
+  *standardized* *indirect* *effects* or
+  simply the *standardized* *indirect*
+  *effects*.
+
+These four versions of the results are
+printed by default such that users can
+select and interpret sections as they
+see fit.
+
+### Total Indirect Effect Results
+
+By default, this section prints the estimated
+*total* indirect effects, confidence intervals,
+and asymmetric bootstrap *p*-values.
+
+The total indirect effect in a serial
+mediation model is the sum of all
+indirect effects from the predictor
+("x") to the outcome ("y").
+
+Four sections will be printed:
+
+- The original total indirect effect.
+
+- The total indirect effects with the predictor
+  ("x") standardized.
+
+- The total indirect effects with the outcome
+  ("y") standardized.
+
+- The total indirect effects with both the predictor
+  ("x") and the outcome ("y") standardized,
+  also called the *completely*
+  *standardized* *total* *indirect* *effects* or
+  simply the *standardized* *total* *indirect*
+  *effects*.
+
+These four versions of the results are
+printed by default such that users can
+select and interpret sections as they
+see fit.
+
+### Direct Effect Results
+
+By default, this section prints the estimated
+direct effect (from the predictor "x" to
+the outcome "y", not mediated), confidence interval,
+and asymmetric bootstrap *p*-value.
+
+The OLS *t*-test of the direct effect is
+already available in section *Regression Results*.
+The bootstrap results are printed in
+case users prefer using the same
+confidence interval method for all
+the effects.
+
+# Parallel Mediation Model
+
+(Some sections are copied from the
+previous sections to make this section
+self-contained and readers do not need
+to refer to the sections on other models.)
+
+This is the sample data set that comes
+with the package for this example:
+
+```{r dataset_parallel}
+library(manymome)
+dat <- data_parallel
+print(head(dat), digits = 3)
+```
+
+Suppose we would like to fit a parallel
+mediation model with two mediators,
+with `c1` and `c2` as the control
+variables.
+
+```{r manymome_draw_q_parallel, echo = FALSE, fig.cap = "Parallel Mediation Model"}
+library(semPlot)
+suppressMessages(library(lavaan))
+mod <-
+"
+m1 ~ x + c1 + c2
+m2 ~ x + c1 + c2
+y ~ m2 + m1 + x + c1 + c2
+"
+fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c(NA, "m1", NA,
+                     "x", NA, "y",
+                      NA, "m2", NA,
+                     "c1", NA, NA,
+                     "c2", NA, NA), 5, 3, byrow = TRUE)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 8,
+              asize = 3,
+              DoNotPlot = TRUE)
+plot(p)
+text(label = "(Covariances excluded for readability)",
+     x = .25, y = -1,
+     adj = c(.5, .5))
+```
+
+We would to fit three regression models:
+
+- `m1 ~ x + c1 + c2`
+
+- `m2 ~ x + c1 + c2`
+
+- `y ~ m1 + m2 + x + c1 + c2`
+
+and the compute and test the following
+indirect effects:
+
+- `x -> m1 -> y`
+
+- `x -> m2 -> y`
+
+using nonparametric bootstrapping.
+
+## Analysis
+
+We can do that in one single step using
+`q_parallel_mediation()`:
+
+```{r results = "hide", message = FALSE}
+out_parallel <- q_parallel_mediation(x = "x",
+                                     y = "y",
+                                     m = c("m1", "m2"),
+                                     cov = c("c2", "c1"),
+                                     data = data_parallel,
+                                     R = 5000,
+                                     seed = 1234)
+```
+
+These are the arguments:
+
+- `x`: The name of the predictor ("x" variable).
+
+- `y`: The name of the outcome ("y" variable).
+
+- `m`: A vector of the names of the mediators
+  ("m" variables). For a parallel mediation
+  model, the order of the mediators does not
+  matter.
+
+- `cov`: The name(s) of the control variable(s)
+  (covariate(s)). By default, they predict all
+  the mediators and the outcome.
+
+- `data`: The data frame for the model.
+
+- `R`: The number of bootstrap samples.
+  Should be at least 5000 but can be
+  larger for stable results.
+
+- `seed`: The seed for the random number
+  generator. Should always be set to an
+  integer to make the results reproducible.
+
+The computation will take longer to run
+for a parallel mediation model, and can
+be a few minutes if `R` is large.
+
+## Results
+
+We can then just print the output:
+
+```{r}
+out_parallel
+```
+
+These are the main sections of the
+default results:
+
+### Basic Information
+
+The variables, the models, and the
+number of cases. Listwise deletion is
+used and only cases without missing data
+on all variables in the models are
+used.
+
+### Regression Results
+
+This part is simply the usual outputs
+of regression analysis conducted by
+`lm()`.
+
+### Indirect Effect Results
+
+By default, this section prints the estimated
+indirect effects, confidence intervals,
+and asymmetric bootstrap *p*-values.
+
+Four sections will be printed:
+
+- The original indirect effects.
+
+- The indirect effects with the predictor
+  ("x") standardized.
+
+- The indirect effects with the outcome
+  ("y") standardized.
+
+- The indirect effects with both the predictor
+  ("x") and the outcome ("y") standardized,
+  also called the *completely*
+  *standardized* *indirect* *effects* or
+  simply the *standardized* *indirect*
+  *effects*.
+
+These four versions of the results are
+printed by default such that users can
+select and interpret sections as they
+see fit.
+
+### Total Indirect Effect Results
+
+By default, this section prints the estimated
+*total* indirect effects, confidence intervals,
+and asymmetric bootstrap *p*-values.
+
+The total indirect effect in a parallel
+mediation model is the sum of all
+indirect effects from the predictor
+("x") to the outcome ("y").
+
+Four sections will be printed:
+
+- The original total indirect effect.
+
+- The total indirect effects with the predictor
+  ("x") standardized.
+
+- The total indirect effects with the outcome
+  ("y") standardized.
+
+- The total indirect effects with both the predictor
+  ("x") and the outcome ("y") standardized,
+  also called the *completely*
+  *standardized* *total* *indirect* *effects* or
+  simply the *standardized* *total* *indirect*
+  *effects*.
+
+These four versions of the results are
+printed by default such that users can
+select and interpret sections as they
+see fit.
+
+### Direct Effect Results
+
+By default, this section prints the estimated
+direct effect (from the predictor "x" to
+the outcome "y", not mediated), confidence interval,
+and asymmetric bootstrap *p*-value.
+
+The OLS *t*-test of the direct effect is
+already available in section *Regression Results*.
+The bootstrap results are printed in
+case users prefer using the same
+confidence interval method for all
+the effects.
+
+# Additional Issues
+
+## Number of Mediators
+
+Both `q_serial_mediation()` and
+`q_parallel_mediation()` have no inherent
+limitation on the number of mediators,
+other than that of `stats::lm()`.
+
+## Customize Control Variables
+
+If the control variables for the
+regress models are different, we can
+set `cov` to a named list. The names are
+the variables with control variables,
+and the element under each name is
+a character vector of the control variables.
+
+For example,
+
+- If we set `cov` to `list(m1 = "c1", m2 = "c2", y = c("c1", "c2"))`,
+  then only `c1` is included in predicting `m1`,
+  only `c2` is included in predicting `m2`,
+  while both `c1` and `c2` are included
+  in predicting `y`.
+
+If this is a serial mediation model,
+then the three models are:
+
+- `m1 ~ x + c1`
+
+- `m2 ~ m1 + x + c2`
+
+- `y ~ m1 + m2 + c1 + c2`
+
+A variable that does not appear in the
+list does not have control variables.
+
+This is how the call to `q_serial_mediation()`
+should be:
+
+```r
+out_serial_v2 <- q_serial_mediation(x = "x",
+                                    y = "y",
+                                    m = c("m1", "m2"),
+                                    cov = list(m1 = "c1",
+                                               m2 = "c2",
+                                               y = c("c1", "c2")),
+                                    data = data_serial,
+                                    R = 5000,
+                                    seed = 1234)
+```
+
+## Customize The Printout
+
+The `print` method of the output of
+the quick mediation functions have
+arguments for customizing the output.
+These are arguments that likely may be
+used:
+
+- `digits`: The number of digits after
+  the decimal place for most reults.
+  Default is 4.
+
+- `pvalue_digits`: The number of digits
+  after the decimal place for *p*-values.
+  Default is 4.
+
+See the help page of `print.q_mediation()`
+for other arguments.
+
+## Speed and Parallel Processing
+
+By default, parallel processing is used.
+If this failed for some reasons,
+add `parallel` to `FALSE`. It will take
+longer to run but should still be just
+one to two minutes in typical models.
+
+## Progress Bar
+
+BY default, a progress bar will be displayed
+when doing bootstrapping. This can be
+disabled by adding `progress = FALSE`.
+
+## Workflow
+
+The quick functions are simply functions
+to do the following tasks internally:
+
+- Fit all the models by OLS regression
+  using [stats::lm()].
+
+- Call `all_indirect_paths()` to
+  identify all indirect paths.
+
+- Call `many_indirect_effects()` to
+ compute all indirect effects and
+ form their confidence intervals.
+
+- Call `total_indirect_effect()` to
+ compute the total indirect effect.
+
+Therefore, all the tasks they do can be
+done manually by the functions above.
+These quick functions are developed just
+as convenient functions to do all these
+tasks in one call.
+
+See this
+[article](https://sfcheung.github.io/manymome/articles/med_lm.html)
+for computing and testing indirect effects
+for more complicated models.
+
+# Final Remarks
+
+For details on the quick functions,
+pleaes refer to the help page of
+`q_mediation()`.
+

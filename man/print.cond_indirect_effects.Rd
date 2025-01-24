@@ -2,6 +2,7 @@
 % Please edit documentation in R/print_cond_indirect_effect.R
 \name{print.cond_indirect_effects}
 \alias{print.cond_indirect_effects}
+\alias{as.data.frame.cond_indirect_effects}
 \title{Print a
 'cond_indirect_effects' Class Object}
 \usage{
@@ -14,6 +15,21 @@
   se = NULL,
   level = 0.95,
   se_ci = TRUE,
+  ...
+)
+
+\method{as.data.frame}{cond_indirect_effects}(
+  x,
+  row.names = NULL,
+  optional = NULL,
+  digits = 3,
+  add_sig = TRUE,
+  pvalue = NULL,
+  pvalue_digits = 3,
+  se = NULL,
+  level = 0.95,
+  se_ci = TRUE,
+  to_string = FALSE,
   ...
 )
 }
@@ -82,10 +98,35 @@ to \code{TRUE}.}
 
 \item{...}{Other arguments. Not
 used.}
+
+\item{row.names}{Not used. Included
+to be compatible with the generic
+method.}
+
+\item{optional}{Not used. Included
+to be compatible with the generic
+method.}
+
+\item{add_sig}{Whether a column
+of significance test results
+will be added. Default is \code{TRUE}.}
+
+\item{to_string}{If \code{TRUE}, numeric
+columns will be converted to string
+columns, formatted based on \code{digits}
+and \code{pvalue_digits}. For printing.
+Default is \code{FALSE}.}
 }
 \value{
-\code{x} is returned invisibly.
+The \code{print}-method
+returns \code{x} invisibly.
 Called for its side effect.
+
+The \code{as.data.frame}-method
+returns a data frame with
+the conditional effects and
+confidence intervals (if available),
+as well as other columns requested.
 }
 \description{
 Print the content of the
@@ -164,7 +205,23 @@ fixed to zero, it is possible
 that the model is not invariant to
 linear transformation of the variables.
 }
+
+The method \code{as.data.frame()} for
+\code{cond_indirect_effects} objects is
+used to convert this class of objects
+to data frames. Used internally by the
+print method but can also be used for
+getting a data frame with columns such
+as \emph{p}-values and standard errors added.
 }
+\section{Functions}{
+\itemize{
+\item \code{as.data.frame(cond_indirect_effects)}: The \code{as.data.frame}-method
+for \code{cond_indirect_effects} objects.
+Used internally by the \code{print}-method
+but can also be used directly.
+
+}}
 \examples{
 
 library(lavaan)
@@ -193,11 +250,19 @@ print(out, digits = 5)
 print(out, annotation = FALSE)
 
 
+
+# Convert to data frames
+
+as.data.frame(out)
+
+as.data.frame(out, to_string = TRUE)
+
 }
 \references{
 Asparouhov, A., & Muthén, B. (2021). Bootstrap p-value computation.
 Retrieved from https://www.statmodel.com/download/FAQ-Bootstrap\%20-\%20Pvalue.pdf
 }
 \seealso{
-\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} and
+\code{\link[=cond_effects]{cond_effects()}}
 }

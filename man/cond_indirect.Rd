@@ -146,7 +146,10 @@ predictor at the start of the path.}
 
 \item{y}{Character. The name of the
 outcome variable at the end of the
-path.}
+path. If the model has only one
+outcome variable (e.g., moderation
+only and no mediator), then this
+argument can be omitted.}
 
 \item{m}{A vector of the variable
 names of the mediator(s). The path

@@ -9,8 +9,9 @@ indirect_effects_from_list(object, add_sig = TRUE, pvalue = FALSE, se = FALSE)
 }
 \arguments{
 \item{object}{The output of
-\code{\link[=indirect_effect]{indirect_effect()}} or
-\code{\link[=cond_indirect]{cond_indirect()}}.}
+\code{\link[=many_indirect_effects]{many_indirect_effects()}} or other
+functions that return an object
+of the class \code{indirect_list}.}
 
 \item{add_sig}{Whether a column
 of significance test results

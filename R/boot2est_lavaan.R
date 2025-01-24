@@ -214,7 +214,11 @@ fit2boot_out_do_boot <- function(fit,
                         "Please fit the model with se = 'boot'"))
           }
       }
-    ft <- lavaan::lavInspect(boot_test, "timing")$total
+    ft <- tryCatch(lavaan::lavInspect(fit, "timing")$total,
+                   error = function(e) e)
+    if (inherits(ft, "error")) {
+        ft <- lavaan::lavInspect(boot_test, "timing")$total
+      }
     requireNamespace("parallel", quietly = TRUE)
     if (!is.null(seed)) set.seed(seed)
     if (ngp == 1) {
@@ -249,15 +253,21 @@ fit2boot_out_do_boot <- function(fit,
                                       make_cluster_args)},
                         error = function(e) e)
         has_cl <- !inherits(tmp, "error")
+        if (has_cl) {
+            on.exit(try(parallel::stopCluster(cl), silent = TRUE))
+          }
       } else {
         has_cl <- FALSE
       }
     if (has_cl) {
-        texp <-  1.2 * R * ft[[1]] / length(cl)
+        texp <-  2 * R * ft[[1]] / length(cl)
         message(paste0(length(cl), " processes started to run bootstrapping."))
-        message(paste0("The expected CPU time is about ",
-                        round(texp, 2),
-                        " second(s)."))
+        # No longer display the expected time if pbapply is used
+        if (!progress) {
+            message(paste0("The expected CPU time is at least ",
+                            round(texp, 2),
+                            " second(s) (can be much longer for some models)"))
+          }
         utils::flush.console()
         pkgs <- .packages()
         pkgs <- rev(pkgs)
@@ -286,7 +296,7 @@ fit2boot_out_do_boot <- function(fit,
             try(parallel::stopCluster(cl), silent = TRUE)
             stop("Running in parallel failed. Please set 'parallel' to FALSE.")
           }
-        parallel::stopCluster(cl)
+         try(parallel::stopCluster(cl), silent = TRUE)
       } else {
         if (progress) {
             rt <- system.time(out <- suppressWarnings(pbapply::pblapply(ids, boot_i,
@@ -328,6 +338,10 @@ boot2est <- function(fit) {
         stop("'se' not set to 'bootstrap' when fitting the model.")
       }
     boot_est0 <- lavaan::lavInspect(fit, "boot")
+    tmp <- attr(boot_est0, "error.idx")
+    if (length(tmp) > 0) {
+        boot_est0 <- boot_est0[-tmp, ]
+      }
     ptable <- lavaan::parameterTable(fit)
     p_free <- ptable$free > 0
     boot_est <- split(boot_est0, row(boot_est0))
@@ -349,6 +363,10 @@ boot2implied <- function(fit) {
     #     stop("'fixed.x' set to TRUE is not supported.")
     #   }
     boot_est0 <- lavaan::lavInspect(fit, "boot")
+    tmp <- attr(boot_est0, "error.idx")
+    if (length(tmp) > 0) {
+        boot_est0 <- boot_est0[-tmp, ]
+      }
     boot_est <- split(boot_est0, row(boot_est0))
     out_all <- lapply(boot_est, get_implied_i,
                         fit = fit)
@@ -489,10 +507,21 @@ get_implied_i_lavaan <- function(est0, fit, fit_tmp = NULL) {
           if (!is.null(implied[[x]][[1]])) {
               if (ngroups > 1) {
                   for (j in seq_len(ngroups)) {
-                      out1[[x]][[j]][] <- implied[[x]][[j]]
+                      if (is.null(dim(out1[[x]][[j]]))) {
+                          tmp <- names(implied[[x]][[j]])
+                          out1[[x]][[j]][tmp] <- implied[[x]][[j]]
+                        } else {
+                          out1[[x]][[j]][] <- implied[[x]][[j]]
+                        }
                     }
                 } else {
-                  out1[[x]][] <- implied[[x]][[1]]
+                  if (is.null(dim(implied[[x]][[1]])) &&
+                      !is.null(names(implied[[x]][[1]]))) {
+                      tmp <- names(implied[[x]][[1]])
+                      out1[[x]][tmp] <- implied[[x]][[1]]
+                    } else {
+                      out1[[x]][] <- implied[[x]][[1]]
+                    }
                 }
             } else {
               if (ngroups > 1) {
@@ -590,7 +619,13 @@ get_implied_i_lavaan_mi <- function(est0, fit, fit_tmp = NULL) {
     for (x in out_names) {
         if (x %in% implied_names) {
           if (!is.null(implied[[x]][[1]])) {
-              out1[[x]][] <- implied[[x]][[1]]
+              if (is.null(dim(implied[[x]][[1]])) &&
+                      !is.null(names(implied[[x]][[1]]))) {
+                  tmp <- names(implied[[x]][[1]])
+                  out1[[x]][tmp] <- implied[[x]][[1]]
+                } else {
+                  out1[[x]][] <- implied[[x]][[1]]
+                }
             } else {
               out1[[x]][] <- NA
             }

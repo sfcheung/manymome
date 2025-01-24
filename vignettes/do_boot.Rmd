@@ -1,7 +1,7 @@
 ---
 title: "Generate Bootstrap Estimates"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2024-10-04"
+date: "2025-01-25"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -18,7 +18,7 @@ vignette: >
 This article is a brief illustration of how
 to use `do_boot()` from the package
 [manymome](https://sfcheung.github.io/manymome/index.html)
-([Cheung & Cheung, 2023](https://doi.org/10.3758/s13428-023-02224-z))
+([Cheung & Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z))
 to generate bootstrap estimates for
 `indirect_effect()` and `cond_indirect_effects()` to
 form bootstrap confidence intervals.
@@ -573,12 +573,17 @@ please refer to its help page.
 
 # References
 
-Cheung, S. F., & Cheung, S.-H. (2023). *manymome*: An R
-package for computing the indirect effects, conditional
-effects, and conditional indirect effects, standardized or
-unstandardized, and their bootstrap confidence intervals,
-in many (though not all) models. *Behavior Research Methods*.
+Cheung, S. F., & Cheung, S.-H. (2024).
+*manymome*: An R package for computing
+the indirect effects, conditional
+effects, and conditional indirect
+effects, standardized or unstandardized,
+and their bootstrap confidence intervals,
+in many (though not all) models.
+*Behavior Research Methods, 56*(5),
+4862--4882.
 https://doi.org/10.3758/s13428-023-02224-z
+
 
 Falk, C. F., & Biesanz, J. C. (2015). Inference and interval estimation methods for indirect effects with latent variable models. *Structural Equation Modeling: A Multidisciplinary Journal, 22*(1), 24--38. https://doi.org/10.1080/10705511.2014.935266
 

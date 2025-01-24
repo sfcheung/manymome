@@ -25,7 +25,7 @@ This article is a brief illustration of how
 to use `indirect_effect()`
 from the package
 [manymome](https://sfcheung.github.io/manymome/)
-([Cheung & Cheung, 2023](https://doi.org/10.3758/s13428-023-02224-z))
+([Cheung & Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z))
 to estimate the indirect effects
 when the model parameters are estimated by
 ordinary least squares (OLS) multiple regression
@@ -490,9 +490,13 @@ please refer to their help pages.
 
 # Reference
 
-Cheung, S. F., & Cheung, S.-H. (2023). *manymome*: An R
-package for computing the indirect effects, conditional
-effects, and conditional indirect effects, standardized or
-unstandardized, and their bootstrap confidence intervals,
-in many (though not all) models. *Behavior Research Methods*.
+Cheung, S. F., & Cheung, S.-H. (2024).
+*manymome*: An R package for computing
+the indirect effects, conditional
+effects, and conditional indirect
+effects, standardized or unstandardized,
+and their bootstrap confidence intervals,
+in many (though not all) models.
+*Behavior Research Methods, 56*(5),
+4862--4882.
 https://doi.org/10.3758/s13428-023-02224-z
