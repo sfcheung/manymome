@@ -447,11 +447,14 @@ out <- q_simple_mediation(x = "x",
                           m = "m",
                           cov = c("c2", "c1"),
                           data = data_med,
-                          R = 100,
+                          R = 40,
                           seed = 1234,
                           parallel = FALSE,
                           progress = FALSE)
-out
+# Suppressed printing of p-values due to the small R
+# Remove `pvalue = FALSE` when R is large
+print(out,
+      pvalue = FALSE)
 
 # Different control variables for m and y
 # out <- q_simple_mediation(x = "x",
@@ -478,11 +481,15 @@ out <- q_serial_mediation(x = "x",
                           m = c("m1", "m2"),
                           cov = c("c2", "c1"),
                           data = data_serial,
-                          R = 100,
+                          R = 40,
                           seed = 1234,
                           parallel = FALSE,
                           progress = FALSE)
-out
+
+# Suppressed printing of p-values due to the small R
+# Remove `pvalue = FALSE` when R is large
+print(out,
+      pvalue = FALSE)
 
 # Different control variables for m and y
 # out <- q_serial_mediation(x = "x",
@@ -510,11 +517,15 @@ out <- q_parallel_mediation(x = "x",
                             m = c("m1", "m2"),
                             cov = c("c2", "c1"),
                             data = data_parallel,
-                            R = 100,
+                            R = 40,
                             seed = 1234,
                             parallel = FALSE,
                             progress = FALSE)
-out
+# Suppressed printing of p-values due to the small R
+# Remove `pvalue = FALSE` when R is large
+print(out,
+      pvalue = FALSE)
+
 # Different control variables for m and y
 # out <- q_parallel_mediation(x = "x",
 #                             y = "y",
