@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 
 This article is a brief illustration of how to use
 [manymome](https://sfcheung.github.io/manymome/index.html)
-([Cheung & Cheung, 2023](https://doi.org/10.3758/s13428-023-02224-z))
+([Cheung & Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z))
 to compute and test indirect effects
 in a multigroup model fitted by
 `lavaan`. [^mgver]

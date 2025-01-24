@@ -1,4 +1,4 @@
-# manymome 0.2.5.4
+# manymome 0.2.6
 
 ## New Features
 
@@ -28,7 +28,6 @@
   by default (`betaselect = FALSE` and
   `ci = FALSE`) for backward compatibility.
   (0.2.5.4)
-
 
 # manymome 0.2.5
 
