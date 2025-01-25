@@ -177,12 +177,12 @@ print.indirect_list <- function(x, digits = 3,
                                         pvalue = pvalue,
                                         se = se)
     if (has_ci && (ci_type == "boot") && pvalue) {
-        coef0$pvalue <- formatC(coef0$pvalue,
+        coef0$pvalue <- formatC(as.numeric(coef0$pvalue),
                                 digits = pvalue_digits,
                                 format = "f")
       }
     if (has_ci && se) {
-        coef0$SE <- formatC(coef0$SE,
+        coef0$SE <- formatC(as.numeric(coef0$SE),
                             digits = digits,
                             format = "f")
       }

@@ -1,4 +1,4 @@
-# manymome 0.2.6
+# manymome 0.2.7
 
 ## New Features
 
@@ -28,6 +28,10 @@
   by default (`betaselect = FALSE` and
   `ci = FALSE`) for backward compatibility.
   (0.2.5.4)
+
+- Made some examples faster to run to
+  meet the CRAN requirement on examples.
+  (0.2.7)
 
 # manymome 0.2.5
 

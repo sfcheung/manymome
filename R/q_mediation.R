@@ -470,13 +470,16 @@ q_mediation <- function(x,
 #'                           m = "m",
 #'                           cov = c("c2", "c1"),
 #'                           data = data_med,
-#'                           R = 100,
+#'                           R = 40,
 #'                           seed = 1234,
 #'                           parallel = FALSE,
 #'                           progress = FALSE)
-#' out
+#' # Suppressed printing of p-values due to the small R
+#' # Remove `pvalue = FALSE` when R is large
+#' print(out,
+#'       pvalue = FALSE)
 #'
-#' # Different control variables for m and y
+#' # # Different control variables for m and y
 #' # out <- q_simple_mediation(x = "x",
 #' #                           y = "y",
 #' #                           m = "m",
@@ -536,18 +539,22 @@ q_simple_mediation <- function(x,
 #' # Remove 'parallel' or set it to TRUE for faster bootstrapping
 #' # Remove 'progress' or set it to TRUE to see a progress bar
 #'
-#' out <- q_serial_mediation(x = "x",
-#'                           y = "y",
-#'                           m = c("m1", "m2"),
-#'                           cov = c("c2", "c1"),
-#'                           data = data_serial,
-#'                           R = 100,
-#'                           seed = 1234,
-#'                           parallel = FALSE,
-#'                           progress = FALSE)
-#' out
+#' # out <- q_serial_mediation(x = "x",
+#' #                           y = "y",
+#' #                           m = c("m1", "m2"),
+#' #                           cov = c("c2", "c1"),
+#' #                           data = data_serial,
+#' #                           R = 40,
+#' #                           seed = 1234,
+#' #                           parallel = FALSE,
+#' #                           progress = FALSE)
 #'
-#' # Different control variables for m and y
+#' # # Suppressed printing of p-values due to the small R
+#' # # Remove `pvalue = FALSE` when R is large
+#' # print(out,
+#' #       pvalue = FALSE)
+#'
+#' # # Different control variables for m and y
 #' # out <- q_serial_mediation(x = "x",
 #' #                           y = "y",
 #' #                           m = c("m1", "m2"),
@@ -608,17 +615,21 @@ q_serial_mediation <- function(x,
 #' # Remove 'parallel' or set it to TRUE for faster bootstrapping
 #' # Remove 'progress' or set it to TRUE to see a progress bar
 #'
-#' out <- q_parallel_mediation(x = "x",
-#'                             y = "y",
-#'                             m = c("m1", "m2"),
-#'                             cov = c("c2", "c1"),
-#'                             data = data_parallel,
-#'                             R = 100,
-#'                             seed = 1234,
-#'                             parallel = FALSE,
-#'                             progress = FALSE)
-#' out
-#' # Different control variables for m and y
+#' # out <- q_parallel_mediation(x = "x",
+#' #                             y = "y",
+#' #                             m = c("m1", "m2"),
+#' #                             cov = c("c2", "c1"),
+#' #                             data = data_parallel,
+#' #                             R = 40,
+#' #                             seed = 1234,
+#' #                             parallel = FALSE,
+#' #                             progress = FALSE)
+#' # # Suppressed printing of p-values due to the small R
+#' # # Remove `pvalue = FALSE` when R is large
+#' # print(out,
+#' #       pvalue = FALSE)
+#'
+#' # # Different control variables for m and y
 #' # out <- q_parallel_mediation(x = "x",
 #' #                             y = "y",
 #' #                             m = c("m1", "m2"),

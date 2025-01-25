@@ -261,7 +261,7 @@ fit <- sem(mod, dat)
 # Parallel processing is enabled by default and
 # progress is displayed by default.
 boot_out <- do_boot(fit,
-                    R = 50,
+                    R = 40,
                     seed = 4314,
                     parallel = FALSE,
                     progress = FALSE)
