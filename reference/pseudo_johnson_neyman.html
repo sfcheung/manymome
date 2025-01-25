@@ -15,7 +15,7 @@ effect is not significant."><meta property="og:image" content="https://sfcheung.
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -362,7 +362,7 @@ method for output of <code>pseudo_johnson_neyman()</code>.</p></li>
 <span class="r-in"><span><span class="co"># Parallel processing is enabled by default and</span></span></span>
 <span class="r-in"><span><span class="co"># progress is displayed by default.</span></span></span>
 <span class="r-in"><span><span class="va">boot_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="do_boot.html">do_boot</a></span><span class="op">(</span><span class="va">fit</span>,</span></span>
-<span class="r-in"><span>                    R <span class="op">=</span> <span class="fl">50</span>,</span></span>
+<span class="r-in"><span>                    R <span class="op">=</span> <span class="fl">40</span>,</span></span>
 <span class="r-in"><span>                    seed <span class="op">=</span> <span class="fl">4314</span>,</span></span>
 <span class="r-in"><span>                    parallel <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>                    progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
@@ -381,13 +381,16 @@ method for output of <code>pseudo_johnson_neyman()</code>.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> == Pseudo Johnson-Neyman Probing ==</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> The conditional effect is not significant when w is greater than -6.938</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> and less than 1.114, and is significant when w is outside this range,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> at 0.05 level of significance.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - On 'Sig': A conditional effect at the bound of the range may be</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> marked as significant or not significant. However, it can be treated as</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 'just significant' if its confidence interval practically 'touches'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> zero.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> The conditional effect is not significant when w is greater than -7.669</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> and less than 1.124, at 0.05 level of significance.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -- Note --</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - The lower bound of the range of nonsignificance is below the range</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> being searched (-7.669 to 12.028). Set a lower value for 'w_lower' if</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> necessary.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - The upper bound of the range of nonsignificance is above the range</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> being searched (-7.669 to 12.028). Set a higher value for 'w_upper' if</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> necessary.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> == Conditional indirect effects ==</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -396,11 +399,11 @@ method for output of <code>pseudo_johnson_neyman()</code>.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    [w]    (w)    ind   CI.lo CI.hi Sig    m~x   y~m</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 High  1.114  1.139   0.000 2.179 Sig  1.179 0.966</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Low  -6.938 -6.425 -14.850 0.000     -6.650 0.966</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 High  1.124  1.148  -0.000 2.187      1.188 0.966</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Low  -7.669 -7.112 -17.079 0.116     -7.361 0.966</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 50 samples.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the conditional indirect effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m~x’,‘y~m’ is/are the path coefficient(s) along the path conditional</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    on the moderator(s).</span>

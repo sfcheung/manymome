@@ -13,7 +13,7 @@ just one function."><meta property="og:image" content="https://sfcheung.github.i
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -574,19 +574,21 @@ indirect effects.</p></div>
 <span class="r-in"><span>                          m <span class="op">=</span> <span class="st">"m"</span>,</span></span>
 <span class="r-in"><span>                          cov <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"c2"</span>, <span class="st">"c1"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                          data <span class="op">=</span> <span class="va">data_med</span>,</span></span>
-<span class="r-in"><span>                          R <span class="op">=</span> <span class="fl">100</span>,</span></span>
+<span class="r-in"><span>                          R <span class="op">=</span> <span class="fl">40</span>,</span></span>
 <span class="r-in"><span>                          seed <span class="op">=</span> <span class="fl">1234</span>,</span></span>
 <span class="r-in"><span>                          parallel <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>                          progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">out</span></span></span>
+<span class="r-in"><span><span class="co"># Suppressed printing of p-values due to the small R</span></span></span>
+<span class="r-in"><span><span class="co"># Remove `pvalue = FALSE` when R is large</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">out</span>,</span></span>
+<span class="r-in"><span>      pvalue <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> =============== Simple Mediation Model ===============</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> q_simple_mediation(x = "x", y = "y", m = "m", cov = c("c2", "c1"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     data = data_med, R = 100, seed = 1234, parallel = FALSE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     progress = FALSE)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data = data_med, R = 40, seed = 1234, parallel = FALSE, progress = FALSE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> |                Basic Information                |</span>
@@ -647,44 +649,40 @@ indirect effects.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s)   ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                ind  CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m -&gt; y 0.7334 0.3224 1.3636 Sig 0.0000 0.2450</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                ind  CI.lo  CI.hi Sig     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m -&gt; y 0.7334 0.3239 1.4906 Sig 0.3025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s) (x-variable(s) Standardized)  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                std  CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m -&gt; y 0.7739 0.3287 1.4360 Sig 0.0000 0.2591</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                std  CI.lo  CI.hi Sig     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m -&gt; y 0.7739 0.3221 1.5004 Sig 0.3159</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized indirect effects. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - x-variable(s) standardized.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s) (y-variable(s) Standardized)  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                std  CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m -&gt; y 0.2914 0.1351 0.5292 Sig 0.0000 0.0896</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                std  CI.lo  CI.hi Sig     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m -&gt; y 0.2914 0.1382 0.5426 Sig 0.1107</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized indirect effects. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - y-variable(s) standardized.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                std  CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m -&gt; y 0.3074 0.1352 0.5396 Sig 0.0000 0.0949</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                std  CI.lo  CI.hi Sig     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m -&gt; y 0.3074 0.1372 0.5846 Sig 0.1160</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The standardized indirect effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
@@ -693,44 +691,40 @@ indirect effects.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s)   ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           ind   CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.5077 -0.3369 1.1325     0.1400 0.3290</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           ind   CI.lo  CI.hi Sig     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.5077 -0.4633 1.0643     0.4065</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the  effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (x-variable(s) Standardized)  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.5357 -0.3446 1.0575     0.1400 0.3361</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.5357 -0.4732 1.0294     0.4140</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized  effects. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - x-variable(s) standardized.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (y-variable(s) Standardized)  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.2017 -0.1252 0.4404     0.1400 0.1317</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.2017 -0.1787 0.4199     0.1637</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized  effects. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - y-variable(s) standardized.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.2128 -0.1277 0.4291     0.1400 0.1344</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.2128 -0.1827 0.4068     0.1666</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The standardized  effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
@@ -746,10 +740,8 @@ indirect effects.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   both, standardized, it is recommended to use the bootstrap confidence</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   intervals, which take into account the sampling error of the sample</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   standard deviations.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - The asymmetric bootstrap value for an effect is the same whether x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   and/or y is/are standardized.</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Different control variables for m and y</span></span></span>
+<span class="r-in"><span><span class="co"># # Different control variables for m and y</span></span></span>
 <span class="r-in"><span><span class="co"># out &lt;- q_simple_mediation(x = "x",</span></span></span>
 <span class="r-in"><span><span class="co">#                           y = "y",</span></span></span>
 <span class="r-in"><span><span class="co">#                           m = "m",</span></span></span>
@@ -769,306 +761,22 @@ indirect effects.</p></div>
 <span class="r-in"><span><span class="co"># Remove 'parallel' or set it to TRUE for faster bootstrapping</span></span></span>
 <span class="r-in"><span><span class="co"># Remove 'progress' or set it to TRUE to see a progress bar</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">q_serial_mediation</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
-<span class="r-in"><span>                          y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
-<span class="r-in"><span>                          m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"m1"</span>, <span class="st">"m2"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                          cov <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"c2"</span>, <span class="st">"c1"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                          data <span class="op">=</span> <span class="va">data_serial</span>,</span></span>
-<span class="r-in"><span>                          R <span class="op">=</span> <span class="fl">100</span>,</span></span>
-<span class="r-in"><span>                          seed <span class="op">=</span> <span class="fl">1234</span>,</span></span>
-<span class="r-in"><span>                          parallel <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
-<span class="r-in"><span>                          progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">out</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =============== Serial Mediation Model ===============</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> q_serial_mediation(x = "x", y = "y", m = c("m1", "m2"), cov = c("c2", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "c1"), data = data_serial, R = 100, seed = 1234, parallel = FALSE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     progress = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |                Basic Information                |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Predictor(x): x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome(y): y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mediator(s)(m): m1, m2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Model: Serial Mediation Model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> The regression models fitted:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> m1 ~ x + c2 + c1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> m2 ~ x + m1 + c2 + c1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> y ~ m1 + m2 + x + c2 + c1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> The number of cases included: 100 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |               Regression Results                |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Model:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> m1 ~ x + c2 + c1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate   CI.lo   CI.hi   betaS Std. Error t value Pr(&gt;|t|) Sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  10.8157  8.5453 13.0861 -0.0000     1.1438  9.4560   0.0000 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x             0.8224  0.6354  1.0095  0.6493     0.0942  8.7274   0.0000 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> c2           -0.1889 -0.3730 -0.0047 -0.1534     0.0928 -2.0355   0.0446   *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> c1            0.1715 -0.0086  0.3515  0.1423     0.0907  1.8906   0.0617   .</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:   0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - BetaS are standardized coefficients with (a) only numeric variables</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   standardized and (b) product terms formed after standardization.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Variable(s) standardized is/are: m1, x, c2, c1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   computed from the t values and standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> R-square = 0.477. Adjusted R-square = 0.461. F(3, 96) = 29.235, p &lt; .001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Model:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> m2 ~ x + m1 + c2 + c1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate   CI.lo  CI.hi   betaS Std. Error t value Pr(&gt;|t|) Sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)   3.5194  0.3692 6.6696 -0.0000     1.5868  2.2179   0.0289   *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x            -0.1161 -0.3662 0.1340 -0.1036     0.1260 -0.9216   0.3591    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> m1            0.4208  0.2185 0.6230  0.4758     0.1019  4.1300   0.0001 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> c2           -0.1619 -0.3497 0.0259 -0.1487     0.0946 -1.7120   0.0902   .</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> c1            0.2775  0.0945 0.4606  0.2603     0.0922  3.0096   0.0033  **</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:   0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - BetaS are standardized coefficients with (a) only numeric variables</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   standardized and (b) product terms formed after standardization.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Variable(s) standardized is/are: m2, x, m1, c2, c1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   computed from the t values and standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> R-square = 0.341. Adjusted R-square = 0.313. F(4, 95) = 12.290, p &lt; .001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Model:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> y ~ m1 + m2 + x + c2 + c1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate   CI.lo   CI.hi   betaS Std. Error t value Pr(&gt;|t|) Sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)   9.4679  2.3021 16.6336 -0.0000     3.6090  2.6234   0.0102   *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> m1           -0.4353 -0.9226  0.0519 -0.2620     0.2454 -1.7740   0.0793   .</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> m2            0.5208  0.0690  0.9725  0.2772     0.2275  2.2888   0.0243   *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x             0.4929 -0.0643  1.0500  0.2342     0.2806  1.7562   0.0823   .</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> c2           -0.0960 -0.5190  0.3269 -0.0469     0.2130 -0.4509   0.6531    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> c1            0.0988 -0.3261  0.5238  0.0493     0.2140  0.4618   0.6453    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:   0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - BetaS are standardized coefficients with (a) only numeric variables</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   standardized and (b) product terms formed after standardization.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Variable(s) standardized is/are: y, m1, m2, x, c2, c1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   computed from the t values and standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> R-square = 0.091. Adjusted R-square = 0.043. F(5, 94) = 1.893, p = 0.103</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |             Indirect Effect Results             |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s)   ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                        ind   CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m1 -&gt; m2 -&gt; y  0.1802  0.0376 0.3518 Sig 0.0000 0.0749</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m1 -&gt; y       -0.3580 -0.7488 0.0285     0.0600 0.1751</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m2 -&gt; y       -0.0605 -0.1963 0.1371     0.4800 0.0740</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s) (x-variable(s) Standardized)  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                        std   CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m1 -&gt; m2 -&gt; y  0.1721  0.0331 0.3249 Sig 0.0000 0.0718</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m1 -&gt; y       -0.3419 -0.7121 0.0258     0.0600 0.1649</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m2 -&gt; y       -0.0577 -0.1864 0.1164     0.4800 0.0689</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized indirect effects. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - x-variable(s) standardized.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s) (y-variable(s) Standardized)  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                        std   CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m1 -&gt; m2 -&gt; y  0.0897  0.0197 0.1758 Sig 0.0000 0.0380</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m1 -&gt; y       -0.1782 -0.3599 0.0138     0.0600 0.0883</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m2 -&gt; y       -0.0301 -0.1045 0.0644     0.4800 0.0373</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized indirect effects. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - y-variable(s) standardized.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                        std   CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m1 -&gt; m2 -&gt; y  0.0856  0.0166 0.1610 Sig 0.0000 0.0364</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m1 -&gt; y       -0.1701 -0.3414 0.0125     0.0600 0.0831</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m2 -&gt; y       -0.0287 -0.0974 0.0562     0.4800 0.0347</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The standardized indirect effects.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |          Total Indirect Effect Results          |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m1 -&gt; m2 -&gt; y </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m1 -&gt; y       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m2 -&gt; y       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Function of Effects: -0.2383            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  95.0% Bootstrap CI:  [-0.5488 to 0.1154]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Bootstrap p-value:   0.1400             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Bootstrap SE:        0.1544             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Computation of the Function of Effects:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ((x-&gt;m1-&gt;m2-&gt;y)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +(x-&gt;m1-&gt;y))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +(x-&gt;m2-&gt;y) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Percentile confidence interval formed by nonparametric bootstrapping</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> with 100 bootstrap samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Standard error (SE) based on nonparametric bootstrapping with 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> bootstrap samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect (‘x’ Standardized) ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m1 -&gt; m2 -&gt; y </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m1 -&gt; y       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m2 -&gt; y       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Function of Effects: -0.2275            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  95.0% Bootstrap CI:  [-0.5008 to 0.1069]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Bootstrap p-value:   0.1400             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Bootstrap SE:        0.1448             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Computation of the Function of Effects:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ((x-&gt;m1-&gt;m2-&gt;y)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +(x-&gt;m1-&gt;y))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +(x-&gt;m2-&gt;y) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Percentile confidence interval formed by nonparametric bootstrapping</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> with 100 bootstrap samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Standard error (SE) based on nonparametric bootstrapping with 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> bootstrap samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect (‘y’ Standardized) ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m1 -&gt; m2 -&gt; y </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m1 -&gt; y       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m2 -&gt; y       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Function of Effects: -0.1186            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  95.0% Bootstrap CI:  [-0.2845 to 0.0568]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Bootstrap p-value:   0.1400             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Bootstrap SE:        0.0792             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Computation of the Function of Effects:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ((x-&gt;m1-&gt;m2-&gt;y)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +(x-&gt;m1-&gt;y))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +(x-&gt;m2-&gt;y) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Percentile confidence interval formed by nonparametric bootstrapping</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> with 100 bootstrap samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Standard error (SE) based on nonparametric bootstrapping with 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> bootstrap samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect (Both ‘x’ and ‘y’ Standardized) ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m1 -&gt; m2 -&gt; y </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m1 -&gt; y       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m2 -&gt; y       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Function of Effects: -0.1132            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  95.0% Bootstrap CI:  [-0.2680 to 0.0527]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Bootstrap p-value:   0.1400             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Bootstrap SE:        0.0741             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Computation of the Function of Effects:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ((x-&gt;m1-&gt;m2-&gt;y)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +(x-&gt;m1-&gt;y))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +(x-&gt;m2-&gt;y) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Percentile confidence interval formed by nonparametric bootstrapping</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> with 100 bootstrap samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Standard error (SE) based on nonparametric bootstrapping with 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> bootstrap samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |              Direct Effect Results              |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s)   ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           ind   CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.4929 -0.1774 0.9963     0.1200 0.2959</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the  effects.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (x-variable(s) Standardized)  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.4706 -0.1746 0.9343     0.1200 0.2779</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized  effects. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - x-variable(s) standardized.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (y-variable(s) Standardized)  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.2452 -0.0899 0.4899     0.1200 0.1470</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized  effects. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - y-variable(s) standardized.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.2342 -0.0861 0.4555     0.1200 0.1375</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The standardized  effects.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |                      Notes                      |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - For reference, the bootstrap confidence interval (and bootstrap</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   p-value, if requested) of the (unstandardize) direct effect is also</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   reported. The bootstrap p-value and the OLS t-statistic p-value can</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   be different.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - For the direct effects with either 'x'-variable or 'y'-variable, or</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   both, standardized, it is recommended to use the bootstrap confidence</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   intervals, which take into account the sampling error of the sample</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   standard deviations.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - The asymmetric bootstrap value for an effect is the same whether x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   and/or y is/are standardized.</span>
+<span class="r-in"><span><span class="co"># out &lt;- q_serial_mediation(x = "x",</span></span></span>
+<span class="r-in"><span><span class="co">#                           y = "y",</span></span></span>
+<span class="r-in"><span><span class="co">#                           m = c("m1", "m2"),</span></span></span>
+<span class="r-in"><span><span class="co">#                           cov = c("c2", "c1"),</span></span></span>
+<span class="r-in"><span><span class="co">#                           data = data_serial,</span></span></span>
+<span class="r-in"><span><span class="co">#                           R = 40,</span></span></span>
+<span class="r-in"><span><span class="co">#                           seed = 1234,</span></span></span>
+<span class="r-in"><span><span class="co">#                           parallel = FALSE,</span></span></span>
+<span class="r-in"><span><span class="co">#                           progress = FALSE)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Different control variables for m and y</span></span></span>
+<span class="r-in"><span><span class="co"># # Suppressed printing of p-values due to the small R</span></span></span>
+<span class="r-in"><span><span class="co"># # Remove `pvalue = FALSE` when R is large</span></span></span>
+<span class="r-in"><span><span class="co"># print(out,</span></span></span>
+<span class="r-in"><span><span class="co">#       pvalue = FALSE)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># # Different control variables for m and y</span></span></span>
 <span class="r-in"><span><span class="co"># out &lt;- q_serial_mediation(x = "x",</span></span></span>
 <span class="r-in"><span><span class="co">#                           y = "y",</span></span></span>
 <span class="r-in"><span><span class="co">#                           m = c("m1", "m2"),</span></span></span>
@@ -1089,292 +797,21 @@ indirect effects.</p></div>
 <span class="r-in"><span><span class="co"># Remove 'parallel' or set it to TRUE for faster bootstrapping</span></span></span>
 <span class="r-in"><span><span class="co"># Remove 'progress' or set it to TRUE to see a progress bar</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">q_parallel_mediation</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
-<span class="r-in"><span>                            y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
-<span class="r-in"><span>                            m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"m1"</span>, <span class="st">"m2"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                            cov <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"c2"</span>, <span class="st">"c1"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                            data <span class="op">=</span> <span class="va">data_parallel</span>,</span></span>
-<span class="r-in"><span>                            R <span class="op">=</span> <span class="fl">100</span>,</span></span>
-<span class="r-in"><span>                            seed <span class="op">=</span> <span class="fl">1234</span>,</span></span>
-<span class="r-in"><span>                            parallel <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
-<span class="r-in"><span>                            progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">out</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =============== Parallel Mediation Model ===============</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> q_parallel_mediation(x = "x", y = "y", m = c("m1", "m2"), cov = c("c2", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "c1"), data = data_parallel, R = 100, seed = 1234, parallel = FALSE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     progress = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |                Basic Information                |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Predictor(x): x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome(y): y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mediator(s)(m): m1, m2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Model: Parallel Mediation Model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> The regression models fitted:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> m1 ~ x + c2 + c1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> m2 ~ x + c2 + c1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> y ~ m1 + m2 + x + c2 + c1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> The number of cases included: 100 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |               Regression Results                |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Model:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> m1 ~ x + c2 + c1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate   CI.lo   CI.hi   betaS Std. Error t value Pr(&gt;|t|) Sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)   9.3926  6.6132 12.1720 -0.0000     1.4002  6.7081   0.0000 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x             0.8769  0.6498  1.1040  0.6049     0.1144  7.6647   0.0000 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> c2           -0.0929 -0.3362  0.1503 -0.0595     0.1225 -0.7584   0.4501    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> c1            0.2519  0.0309  0.4728  0.1742     0.1113  2.2630   0.0259   *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:   0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - BetaS are standardized coefficients with (a) only numeric variables</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   standardized and (b) product terms formed after standardization.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Variable(s) standardized is/are: m1, x, c2, c1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   computed from the t values and standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> R-square = 0.439. Adjusted R-square = 0.422. F(3, 96) = 25.082, p &lt; .001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Model:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> m2 ~ x + c2 + c1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate   CI.lo   CI.hi   betaS Std. Error t value Pr(&gt;|t|) Sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)   4.3796  1.7071  7.0520  0.0000     1.3463  3.2530   0.0016  **</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x             0.2968  0.0784  0.5151  0.2516     0.1100  2.6977   0.0082  **</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> c2           -0.3125 -0.5464 -0.0786 -0.2457     0.1178 -2.6517   0.0094  **</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> c1            0.2746  0.0621  0.4870  0.2334     0.1070  2.5655   0.0118   *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:   0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - BetaS are standardized coefficients with (a) only numeric variables</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   standardized and (b) product terms formed after standardization.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Variable(s) standardized is/are: m2, x, c2, c1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   computed from the t values and standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> R-square = 0.217. Adjusted R-square = 0.193. F(3, 96) = 8.875, p &lt; .001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Model:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> y ~ m1 + m2 + x + c2 + c1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate   CI.lo  CI.hi   betaS Std. Error t value Pr(&gt;|t|) Sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)   2.6562 -3.6518 8.9641  0.0000     3.1770  0.8361   0.4052    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> m1            0.4864  0.1071 0.8658  0.3016     0.1911  2.5459   0.0125   *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> m2            0.4713  0.0767 0.8658  0.2378     0.1987  2.3718   0.0197   *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x             0.2911 -0.2438 0.8260  0.1245     0.2694  1.0807   0.2826    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> c2           -0.0321 -0.4970 0.4327 -0.0127     0.2341 -0.1372   0.8912    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> c1           -0.0526 -0.4806 0.3755 -0.0225     0.2156 -0.2438   0.8079    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:   0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - BetaS are standardized coefficients with (a) only numeric variables</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   standardized and (b) product terms formed after standardization.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Variable(s) standardized is/are: y, m1, m2, x, c2, c1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   computed from the t values and standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> R-square = 0.283. Adjusted R-square = 0.245. F(5, 94) = 7.420, p &lt; .001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |             Indirect Effect Results             |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s)   ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 ind  CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m1 -&gt; y 0.4266 0.1859 0.7997 Sig 0.0000 0.1624</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m2 -&gt; y 0.1399 0.0109 0.3563 Sig 0.0000 0.0909</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s) (x-variable(s) Standardized)  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 std  CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m1 -&gt; y 0.4279 0.1818 0.8064 Sig 0.0000 0.1632</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m2 -&gt; y 0.1403 0.0109 0.3644 Sig 0.0000 0.0927</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized indirect effects. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - x-variable(s) standardized.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s) (y-variable(s) Standardized)  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 std  CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m1 -&gt; y 0.1819 0.0786 0.3289 Sig 0.0000 0.0638</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m2 -&gt; y 0.0596 0.0048 0.1505 Sig 0.0000 0.0371</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized indirect effects. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - y-variable(s) standardized.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 std  CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m1 -&gt; y 0.1825 0.0772 0.3245 Sig 0.0000 0.0646</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m2 -&gt; y 0.0598 0.0048 0.1510 Sig 0.0000 0.0379</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The standardized indirect effects.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |          Total Indirect Effect Results          |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m1 -&gt; y      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m2 -&gt; y      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Function of Effects: 0.5664            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  95.0% Bootstrap CI:  [0.2585 to 1.0374]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Bootstrap p-value:   0.0000            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Bootstrap SE:        0.1865            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Computation of the Function of Effects:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  (x-&gt;m1-&gt;y)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +(x-&gt;m2-&gt;y) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Percentile confidence interval formed by nonparametric bootstrapping</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> with 100 bootstrap samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Standard error (SE) based on nonparametric bootstrapping with 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> bootstrap samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect (‘x’ Standardized) ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m1 -&gt; y      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m2 -&gt; y      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Function of Effects: 0.5682            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  95.0% Bootstrap CI:  [0.2569 to 1.0270]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Bootstrap p-value:   0.0000            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Bootstrap SE:        0.1896            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Computation of the Function of Effects:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  (x-&gt;m1-&gt;y)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +(x-&gt;m2-&gt;y) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Percentile confidence interval formed by nonparametric bootstrapping</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> with 100 bootstrap samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Standard error (SE) based on nonparametric bootstrapping with 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> bootstrap samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect (‘y’ Standardized) ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m1 -&gt; y      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m2 -&gt; y      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Function of Effects: 0.2415            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  95.0% Bootstrap CI:  [0.1084 to 0.3976]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Bootstrap p-value:   0.0000            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Bootstrap SE:        0.0691            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Computation of the Function of Effects:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  (x-&gt;m1-&gt;y)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +(x-&gt;m2-&gt;y) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Percentile confidence interval formed by nonparametric bootstrapping</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> with 100 bootstrap samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Standard error (SE) based on nonparametric bootstrapping with 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> bootstrap samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect (Both ‘x’ and ‘y’ Standardized) ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m1 -&gt; y      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Path:                x -&gt; m2 -&gt; y      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Function of Effects: 0.2423            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  95.0% Bootstrap CI:  [0.1082 to 0.3971]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Bootstrap p-value:   0.0000            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Bootstrap SE:        0.0711            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Computation of the Function of Effects:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  (x-&gt;m1-&gt;y)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> +(x-&gt;m2-&gt;y) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Percentile confidence interval formed by nonparametric bootstrapping</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> with 100 bootstrap samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Standard error (SE) based on nonparametric bootstrapping with 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> bootstrap samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |              Direct Effect Results              |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s)   ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           ind   CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.2911 -0.1761 0.6467     0.1800 0.1995</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the  effects.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (x-variable(s) Standardized)  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.2920 -0.1878 0.6656     0.1800 0.2017</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized  effects. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - x-variable(s) standardized.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (y-variable(s) Standardized)  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.1241 -0.0726 0.2685     0.1800 0.0860</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized  effects. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - y-variable(s) standardized.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig pvalue     SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.1245 -0.0762 0.2816     0.1800 0.0874</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 100 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [pvalue] are asymmetric bootstrap p-values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The standardized  effects.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |                      Notes                      |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - For reference, the bootstrap confidence interval (and bootstrap</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   p-value, if requested) of the (unstandardize) direct effect is also</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   reported. The bootstrap p-value and the OLS t-statistic p-value can</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   be different.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - For the direct effects with either 'x'-variable or 'y'-variable, or</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   both, standardized, it is recommended to use the bootstrap confidence</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   intervals, which take into account the sampling error of the sample</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   standard deviations.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - The asymmetric bootstrap value for an effect is the same whether x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   and/or y is/are standardized.</span>
-<span class="r-in"><span><span class="co"># Different control variables for m and y</span></span></span>
+<span class="r-in"><span><span class="co"># out &lt;- q_parallel_mediation(x = "x",</span></span></span>
+<span class="r-in"><span><span class="co">#                             y = "y",</span></span></span>
+<span class="r-in"><span><span class="co">#                             m = c("m1", "m2"),</span></span></span>
+<span class="r-in"><span><span class="co">#                             cov = c("c2", "c1"),</span></span></span>
+<span class="r-in"><span><span class="co">#                             data = data_parallel,</span></span></span>
+<span class="r-in"><span><span class="co">#                             R = 40,</span></span></span>
+<span class="r-in"><span><span class="co">#                             seed = 1234,</span></span></span>
+<span class="r-in"><span><span class="co">#                             parallel = FALSE,</span></span></span>
+<span class="r-in"><span><span class="co">#                             progress = FALSE)</span></span></span>
+<span class="r-in"><span><span class="co"># # Suppressed printing of p-values due to the small R</span></span></span>
+<span class="r-in"><span><span class="co"># # Remove `pvalue = FALSE` when R is large</span></span></span>
+<span class="r-in"><span><span class="co"># print(out,</span></span></span>
+<span class="r-in"><span><span class="co">#       pvalue = FALSE)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># # Different control variables for m and y</span></span></span>
 <span class="r-in"><span><span class="co"># out &lt;- q_parallel_mediation(x = "x",</span></span></span>
 <span class="r-in"><span><span class="co">#                             y = "y",</span></span></span>
 <span class="r-in"><span><span class="co">#                             m = c("m1", "m2"),</span></span></span>
