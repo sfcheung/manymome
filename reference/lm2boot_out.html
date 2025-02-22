@@ -11,7 +11,7 @@ estimates for models in a list of
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.7.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,7 +63,7 @@ estimates for models in a list of
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Bootstrap Estimates for <code>lm</code> Outputs</h1>
-      <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/v0.2.7/R/boot2est_lm.R" class="external-link"><code>R/boot2est_lm.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/R/boot2est_lm.R" class="external-link"><code>R/boot2est_lm.R</code></a></small>
       <div class="d-none name"><code>lm2boot_out.Rd</code></div>
     </div>
 
@@ -75,12 +75,19 @@ estimates for models in a list of
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">lm2boot_out</span><span class="op">(</span><span class="va">outputs</span>, R <span class="op">=</span> <span class="fl">100</span>, seed <span class="op">=</span> <span class="cn">NULL</span>, progress <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">lm2boot_out</span><span class="op">(</span></span>
+<span>  <span class="va">outputs</span>,</span>
+<span>  R <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  compute_implied_stats <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  progress <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">lm2boot_out_parallel</span><span class="op">(</span></span>
 <span>  <span class="va">outputs</span>,</span>
 <span>  R <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  compute_implied_stats <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  parallel <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  make_cluster_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -101,6 +108,15 @@ objects, or the output of <code><a href="lm2list.html">lm2list()</a></code>
 <dt id="arg-r">R<a class="anchor" aria-label="anchor" href="#arg-r"></a></dt>
 <dd><p>The number of bootstrap
 samples. Default is 100.</p></dd>
+
+
+<dt id="arg-compute-implied-stats">compute_implied_stats<a class="anchor" aria-label="anchor" href="#arg-compute-implied-stats"></a></dt>
+<dd><p>If
+<code>TRUE</code>, default, implied statistics
+will be computed for each bootstrap
+sample. Letting users to disable this
+is an experimental features to let
+the process run faster.</p></dd>
 
 
 <dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>

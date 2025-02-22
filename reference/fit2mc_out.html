@@ -11,7 +11,7 @@ lavaan::sem()."><meta property="og:image" content="https://sfcheung.github.io/ma
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.7.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,7 +63,7 @@ lavaan::sem()."><meta property="og:image" content="https://sfcheung.github.io/ma
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Monte Carlo Estimates for a <code>lavaan</code> Output</h1>
-      <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/v0.2.7/R/mc2est_lavaan.R" class="external-link"><code>R/mc2est_lavaan.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/R/mc2est_lavaan.R" class="external-link"><code>R/mc2est_lavaan.R</code></a></small>
       <div class="d-none name"><code>fit2mc_out.Rd</code></div>
     </div>
 
@@ -75,7 +75,7 @@ estimates from the output of
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fit2mc_out</span><span class="op">(</span><span class="va">fit</span>, progress <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fit2mc_out</span><span class="op">(</span><span class="va">fit</span>, compute_implied_stats <span class="op">=</span> <span class="cn">TRUE</span>, progress <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -91,6 +91,15 @@ a <code>lavaan.mi</code> object
 returned by
 <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::runMI()</a></code> or
 its wrapper, such as <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::sem.mi()</a></code>.</p></dd>
+
+
+<dt id="arg-compute-implied-stats">compute_implied_stats<a class="anchor" aria-label="anchor" href="#arg-compute-implied-stats"></a></dt>
+<dd><p>If
+<code>TRUE</code>, default, implied statistics
+will be computed for each replication.
+Letting users to disable this
+is an experimental features to let
+the process run faster.</p></dd>
 
 
 <dt id="arg-progress">progress<a class="anchor" aria-label="anchor" href="#arg-progress"></a></dt>
