@@ -77,6 +77,13 @@
 #' generating Monte Carlo estimates.
 #' Default is `NULL` and seed is not set.
 #'
+#' @param compute_implied_stats If
+#' `TRUE`, default, implied statistics
+#' will be computed for each replication.
+#' Letting users to disable this
+#' is an experimental features to let
+#' the process run faster.
+#'
 #' @param parallel Not used. Kept
 #' for compatibility with [do_boot()].
 #'
@@ -129,6 +136,7 @@
 
 do_mc <- function(fit,
                     R = 100,
+                    compute_implied_stats = TRUE,
                     seed = NULL,
                     parallel = TRUE,
                     ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
@@ -142,7 +150,9 @@ do_mc <- function(fit,
         fit0 <- gen_mc_est(fit = fit,
                           seed = seed,
                           R = R)
-        out <- fit2mc_out(fit0, progress = progress)
+        out <- fit2mc_out(fit0,
+                          compute_implied_stats = compute_implied_stats,
+                          progress = progress)
       }
     if (fit_type == "lm") {
         stop("Monte Carlo method does not support lm outputs.")

@@ -10,6 +10,7 @@
 do_mc(
   fit,
   R = 100,
+  compute_implied_stats = TRUE,
   seed = NULL,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
@@ -32,6 +33,13 @@ The output of
 
 \item{R}{The number of replications.
 Default is 100.}
+
+\item{compute_implied_stats}{If
+\code{TRUE}, default, implied statistics
+will be computed for each replication.
+Letting users to disable this
+is an experimental features to let
+the process run faster.}
 
 \item{seed}{The seed for the
 generating Monte Carlo estimates.
