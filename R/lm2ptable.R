@@ -51,7 +51,8 @@
 #'
 #'
 
-lm2ptable <- function(outputs) {
+lm2ptable <- function(outputs,
+                      compute_implied_stats = TRUE) {
     if (!missing(outputs)) {
         outputs <- auto_lm2list(outputs)
       }
@@ -59,9 +60,14 @@ lm2ptable <- function(outputs) {
     coefs <- lapply(outputs, coef2lor)
     out <- do.call(rbind, coefs)
     row.names(out) <- NULL
+    if (compute_implied_stats) {
+      i_s <- data2implied(mm)
+    } else {
+      i_s <- NULL
+    }
     list(est = out,
          data = mm,
-         implied_stats = data2implied(mm),
+         implied_stats = i_s,
          vcov = lm_list_vcov(outputs),
          df_residual = lm_df_residual(outputs))
   }

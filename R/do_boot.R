@@ -74,6 +74,13 @@
 #' bootstrapping. Default is `NULL` and
 #' seed is not set.
 #'
+#' @param compute_implied_stats If
+#' `TRUE`, default, implied statistics
+#' will be computed for each bootstrap
+#' sample. Letting users to disable this
+#' is an experimental features to let
+#' the process run faster.
+#'
 #' @param parallel Logical. Whether
 #' parallel processing will be used.
 #' Default is `TRUE`.
@@ -135,6 +142,7 @@
 
 do_boot <- function(fit,
                     R = 100,
+                    compute_implied_stats = TRUE,
                     seed = NULL,
                     parallel = TRUE,
                     ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
@@ -161,6 +169,7 @@ do_boot <- function(fit,
             out <- fit2boot_out_do_boot(fit = fit,
                                         R = R,
                                         seed = seed,
+                                        compute_implied_stats = compute_implied_stats,
                                         parallel = parallel,
                                         ncores = ncores,
                                         make_cluster_args = make_cluster_args,
@@ -172,6 +181,7 @@ do_boot <- function(fit,
             out <- lm2boot_out_parallel(outputs = fit,
                                         R = R,
                                         seed = seed,
+                                        compute_implied_stats = compute_implied_stats,
                                         parallel = parallel,
                                         ncores = ncores,
                                         make_cluster_args = make_cluster_args,
@@ -180,6 +190,7 @@ do_boot <- function(fit,
             out <- lm2boot_out(outputs = fit,
                               R = R,
                               seed = seed,
+                              compute_implied_stats = compute_implied_stats,
                               progress = progress)
           }
       }

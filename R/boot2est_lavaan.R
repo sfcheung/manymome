@@ -64,6 +64,13 @@
 #' function only supports a
 #' [lavaan::lavaan-class] object.
 #'
+#' @param compute_implied_stats If
+#' `TRUE`, default, implied statistics
+#' will be computed for each bootstrap
+#' sample. Letting users to disable this
+#' is an experimental features to let
+#' the process run faster.
+#'
 #' @seealso [do_boot()], the general
 #' purpose function that users should
 #' try first before using this function.
@@ -107,9 +114,15 @@
 #' @order 1
 #'
 
-fit2boot_out <- function(fit) {
+fit2boot_out <- function(fit,
+                         compute_implied_stats = TRUE) {
     boot_est <- boot2est(fit)
-    boot_implied <- boot2implied(fit)
+    if (compute_implied_stats) {
+      boot_implied <- boot2implied(fit)
+    } else {
+      boot_implied <- rep(list(NULL),
+                          length(boot_est))
+    }
     out <- mapply(function(x, y) list(est = x,
                                       implied_stats = y),
                   x = boot_est,
@@ -169,6 +182,7 @@ fit2boot_out <- function(fit) {
 fit2boot_out_do_boot <- function(fit,
                                  R = 100,
                                  seed = NULL,
+                                 compute_implied_stats = TRUE,
                                  parallel = FALSE,
                                  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                                  make_cluster_args = list(),
@@ -179,7 +193,8 @@ fit2boot_out_do_boot <- function(fit,
         boot_i <- gen_boot_i_update(fit)
       } else {
         # environment(gen_boot_i_lavaan) <- parent.frame()
-        boot_i <- gen_boot_i_lavaan(fit)
+        boot_i <- gen_boot_i_lavaan(fit,
+                                    compute_implied_stats = compute_implied_stats)
       }
     dat_org <- lav_data_used(fit,
                              drop_list_single_group = TRUE)
@@ -643,7 +658,8 @@ get_implied_i_lavaan_mi <- function(est0, fit, fit_tmp = NULL) {
 # Modelled after lavaan::lav_bootstrap_internal().
 #' @noRd
 
-gen_boot_i_lavaan <- function(fit) {
+gen_boot_i_lavaan <- function(fit,
+                              compute_implied_stats = TRUE) {
   fit_org <- eval(fit)
   # data_full <- lavaan::lavInspect(fit_org, "data")
   fit_data <- fit_org@Data
@@ -668,6 +684,7 @@ gen_boot_i_lavaan <- function(fit) {
       force(fit_opts)
       force(fit_pt)
       force(fit)
+      force(compute_implied_stats)
       fit_pt1 <- fit_pt
       if (!is.null(start)) {
           fit_pt1$start <- start
@@ -738,9 +755,13 @@ gen_boot_i_lavaan <- function(fit) {
                 }
               # If ngroups > 1,
               #   cov, mean, and mean_lv are lists.
-              implied <- list(cov = lavaan::lavInspect(out, "cov.all"),
-                              mean = lavaan::lavInspect(out, "mean.ov"),
-                              mean_lv = lavaan::lavInspect(out, "mean.lv"))
+              if (compute_implied_stats) {
+                implied <- list(cov = lavaan::lavInspect(out, "cov.all"),
+                                mean = lavaan::lavInspect(out, "mean.ov"),
+                                mean_lv = lavaan::lavInspect(out, "mean.lv"))
+              } else {
+                implied <- NULL
+              }
               out1 <- list(est = lavaan::parameterEstimates(
                                   out,
                                   se = FALSE,
