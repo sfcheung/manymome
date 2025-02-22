@@ -56,6 +56,13 @@
 #' @param R The number of bootstrap
 #' samples. Default is 100.
 #'
+#' @param compute_implied_stats If
+#' `TRUE`, default, implied statistics
+#' will be computed for each bootstrap
+#' sample. Letting users to disable this
+#' is an experimental features to let
+#' the process run faster.
+#'
 #' @param seed The seed for the
 #' bootstrapping. Default is `NULL` and
 #' seed is not set.
@@ -99,7 +106,9 @@
 #'
 #'
 
-lm2boot_out <- function(outputs, R = 100, seed = NULL,
+lm2boot_out <- function(outputs, R = 100,
+                        compute_implied_stats = TRUE,
+                        seed = NULL,
                         progress = TRUE) {
     if (!missing(outputs)) {
          outputs <- auto_lm2list(outputs)
@@ -114,11 +123,13 @@ lm2boot_out <- function(outputs, R = 100, seed = NULL,
     if (progress) {
         out0 <- pbapply::pbreplicate(R, lm_boot2est_i(d = dat,
                                           i = sample.int(n, replace = TRUE),
-                                          outputs = outputs), simplify = FALSE)
+                                          outputs = outputs,
+                                          compute_implied_stats = compute_implied_stats), simplify = FALSE)
       } else {
         out0 <- replicate(R, lm_boot2est_i(d = dat,
                                           i = sample.int(n, replace = TRUE),
-                                          outputs = outputs), simplify = FALSE)
+                                          outputs = outputs,
+                                          compute_implied_stats = compute_implied_stats), simplify = FALSE)
       }
     class(out0) <- "boot_out"
     out0
@@ -128,14 +139,16 @@ lm2boot_out <- function(outputs, R = 100, seed = NULL,
 # Return a parameter estimates tables.
 #' @noRd
 
-lm_boot2est_i <- function(d, i = NULL, outputs) {
+lm_boot2est_i <- function(d, i = NULL, outputs,
+                          compute_implied_stats = TRUE) {
     if (!is.null(i)) {
         d_i <- d[i, ]
       } else {
         d_i <- d
       }
     out_i <- lapply(outputs, stats::update, data = d_i)
-    lm2ptable(out_i)
+    lm2ptable(out_i,
+              compute_implied_stats = compute_implied_stats)
   }
 
 #' @param R The number of bootstrap
@@ -180,6 +193,7 @@ lm_boot2est_i <- function(d, i = NULL, outputs) {
 lm2boot_out_parallel <- function(outputs,
                                  R = 100,
                                  seed = NULL,
+                                 compute_implied_stats = TRUE,
                                  parallel = FALSE,
                                  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                                  make_cluster_args = list(),
@@ -254,6 +268,7 @@ lm2boot_out_parallel <- function(outputs,
                                                 lm_boot2est_i,
                                                 d = dat_org,
                                                 outputs = outputs,
+                                                compute_implied_stats = compute_implied_stats,
                                                 cl = cl)))},
                               error = function(e) e)
             pbapply::pboptions(op_old)
@@ -262,6 +277,7 @@ lm2boot_out_parallel <- function(outputs,
                               parallel::parLapplyLB(cl,
                                                     ids,
                                                     lm_boot2est_i,
+                                                    compute_implied_stats = compute_implied_stats,
                                                     d = dat_org,
                                                     outputs = outputs)))},
                               error = function(e) e)
@@ -275,11 +291,13 @@ lm2boot_out_parallel <- function(outputs,
         if (progress) {
             rt <- system.time(out <- suppressWarnings(pbapply::pblapply(ids,
                                                             lm_boot2est_i,
+                                                            compute_implied_stats = compute_implied_stats,
                                                             d = dat_org,
                                                             outputs = outputs)))
           } else {
             rt <- system.time(out <- suppressWarnings(lapply(ids,
                                                             lm_boot2est_i,
+                                                            compute_implied_stats = compute_implied_stats,
                                                             d = dat_org,
                                                             outputs = outputs)))
           }

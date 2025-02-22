@@ -1,3 +1,17 @@
+# manymome 0.2.7.1
+
+## New Features
+
+- Added the option to disable the
+  computation of implied statistics
+  in `do_boot()` and `do_mc()`. This
+  experimental feature allow faster
+  computation of Monte Carlo estimates,
+  and does not affect the computation of
+  unstandardized effects. Should be used
+  only by developers and advanced users.
+  (0.2.7.1)
+
 # manymome 0.2.7
 
 ## New Features

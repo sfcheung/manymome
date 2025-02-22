@@ -57,6 +57,13 @@
 #' [semTools::runMI()] or
 #' its wrapper, such as [semTools::sem.mi()].
 #'
+#' @param compute_implied_stats If
+#' `TRUE`, default, implied statistics
+#' will be computed for each replication.
+#' Letting users to disable this
+#' is an experimental features to let
+#' the process run faster.
+#'
 #' @param progress Logical. Display
 #' progress or not. Default is `TRUE`.
 #'
@@ -94,17 +101,23 @@
 #' @export
 
 fit2mc_out <- function(fit,
+                       compute_implied_stats = TRUE,
                        progress = TRUE) {
     if (progress) {
         cat("Stage 1: Simulate estimates\n")
       }
     mc_est <- mc2est(fit,
                      progress = progress)
-    if (progress) {
+    if (compute_implied_stats) {
+      if (progress) {
         cat("Stage 2: Compute implied statistics\n")
       }
-    mc_implied <- mc2implied(fit,
-                             progress = progress)
+      mc_implied <- mc2implied(fit,
+                              progress = progress)
+    } else {
+      mc_implied <- rep(list(NULL),
+                        length(mc_est))
+    }
     out <- mapply(function(x, y) list(est = x,
                                       implied_stats = y),
                   x = mc_est,

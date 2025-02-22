@@ -5,7 +5,7 @@
 \title{Monte Carlo Estimates for a
 \code{lavaan} Output}
 \usage{
-fit2mc_out(fit, progress = TRUE)
+fit2mc_out(fit, compute_implied_stats = TRUE, progress = TRUE)
 }
 \arguments{
 \item{fit}{The fit object. This
@@ -16,6 +16,13 @@ a \code{lavaan.mi} object
 returned by
 \code{\link[semTools:runMI]{semTools::runMI()}} or
 its wrapper, such as \code{\link[semTools:runMI]{semTools::sem.mi()}}.}
+
+\item{compute_implied_stats}{If
+\code{TRUE}, default, implied statistics
+will be computed for each replication.
+Letting users to disable this
+is an experimental features to let
+the process run faster.}
 
 \item{progress}{Logical. Display
 progress or not. Default is \code{TRUE}.}
