@@ -14,8 +14,8 @@ function only supports a
 It can also be
 a \code{lavaan.mi} object
 returned by
-\code{\link[semTools:runMI]{semTools::runMI()}} or
-its wrapper, such as \code{\link[semTools:runMI]{semTools::sem.mi()}}.}
+\code{\link[semTools:semTools-deprecated]{semTools::runMI()}} or
+its wrapper, such as \code{\link[semTools:semTools-deprecated]{semTools::sem.mi()}}.}
 
 \item{compute_implied_stats}{If
 \code{TRUE}, default, implied statistics

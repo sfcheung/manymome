@@ -50,7 +50,7 @@ lav_implied_all_lavaan_mi <- function(fit,
                                       group_number = NULL) {
     est0 <- methods::getMethod("coef",
               signature = "lavaan.mi",
-              where = asNamespace("semTools"))(fit)
+              where = asNamespace("lavaan.mi"))(fit)
     out <- get_implied_i_lavaan_mi(est0 = est0,
                                    fit = fit)
     out
@@ -90,7 +90,7 @@ get_vcov_lavaan <- function(object) {
 get_vcov_lavaan_mi <- function(object) {
     methods::getMethod("vcov",
         signature = "lavaan.mi",
-        where = asNamespace("semTools"))(object,
+        where = asNamespace("lavaan.mi"))(object,
                                         type = "pooled",
                                         scale.W = TRUE,
                                         omit.imps = c("no.conv", "no.se"))
@@ -141,7 +141,7 @@ lav_est_lavaan_mi <- function(fit,
     if (is.null(est_df)) {
         est_df <- methods::getMethod("summary",
                 signature = "lavaan.mi",
-                where = asNamespace("semTools"))(fit,
+                where = asNamespace("lavaan.mi"))(fit,
                                                 output = "data.frame",
                                                 ...)
       }
@@ -187,7 +187,7 @@ lav_ptable_lavaan_mi <- function(fit, ...) {
     out <- lavaan::parameterTable(fit)
     coef_mi <- methods::getMethod("coef",
           signature = "lavaan.mi",
-          where = asNamespace("semTools"))(fit)
+          where = asNamespace("lavaan.mi"))(fit)
     se_mi <- sqrt(diag(get_vcov(fit)))
     id_free <- out$free > 0
     out$est <- NA

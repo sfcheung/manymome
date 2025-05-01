@@ -164,8 +164,8 @@ list of \code{\link[=lm]{lm()}} outputs.
 It can also be
 a \code{lavaan.mi} object
 returned by
-\code{\link[semTools:runMI]{semTools::runMI()}} or
-its wrapper, such as \code{\link[semTools:runMI]{semTools::sem.mi()}}.
+\code{\link[semTools:semTools-deprecated]{semTools::runMI()}} or
+its wrapper, such as \code{\link[semTools:semTools-deprecated]{semTools::sem.mi()}}.
 If it is a single model fitted by
 \code{\link[=lm]{lm()}}, it will be automatically converted
 to a list by \code{\link[=lm2list]{lm2list()}}.}
@@ -500,7 +500,7 @@ Compute the conditional
 effects, indirect effects, or
 conditional indirect effects in a
 structural model fitted by \code{\link[=lm]{lm()}},
-\code{\link[lavaan:sem]{lavaan::sem()}}, or \code{\link[semTools:runMI]{semTools::sem.mi()}}.
+\code{\link[lavaan:sem]{lavaan::sem()}}, or \code{\link[semTools:semTools-deprecated]{semTools::sem.mi()}}.
 }
 \details{
 For a model with a mediation path

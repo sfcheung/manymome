@@ -162,7 +162,7 @@ it does in this special case.
 
 This function supports models fitted
 by \code{\link[=lm]{lm()}}, \code{\link[lavaan:sem]{lavaan::sem()}},
-and \code{\link[semTools:runMI]{semTools::sem.mi()}}. This function
+and \code{\link[semTools:semTools-deprecated]{semTools::sem.mi()}}. This function
 also supports both bootstrapping
 and Monte Carlo confidence intervals.
 It also supports conditional

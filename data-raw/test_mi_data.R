@@ -1,7 +1,7 @@
 #' #Create MI datasets for testing
 
 suppressMessages(library(lavaan))
-suppressMessages(library(semTools))
+suppressMessages(library(lavaan.mi))
 suppressMessages(library(Amelia))
 
 # Categorical IVs in lavaan
