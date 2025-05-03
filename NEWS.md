@@ -1,4 +1,4 @@
-# manymome 0.2.7.4
+# manymome 0.2.7.5
 
 ## New Features
 
@@ -21,6 +21,10 @@
   end of the argument list to avoid
   conflicting with calls that do not
   name the arguments. (0.2.7.4)
+
+- Revised `mod_levels()` to prepare
+  for latent variable moderation.
+  (0.2.7.5)
 
 # manymome 0.2.7
 

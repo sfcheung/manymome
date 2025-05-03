@@ -394,7 +394,9 @@ mod_levels_i_lavaan_numerical <- mod_levels_i_lm_numerical <- function(fit,
         rownames(out) <- vnames
         colnames(out) <- w
       }
-    w_dat <- mm[, w]
+    if (w_method %in% c("sd", "percentile")) {
+      w_dat <- mm[, w]
+    }
     if (w_method == "sd") {
         w_mean <- mean(w_dat, na.rm = TRUE)
         w_sd <- stats::sd(w_dat, na.rm = TRUE)
