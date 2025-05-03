@@ -31,8 +31,8 @@ to `vignette("do_mc")`. This article assumes that readers
 know how to use `do_mc()` and will focus on using it
 with a model estimated by multiple imputation.
 
-It only supports a model fitted by `semTools::sem.mi()`
-or `semTools::runMI()`.
+It only supports a model fitted by `lavaan.mi::sem.mi()`
+or `lavaan.mi::lavaan.mi()`.
 
 # How It Works
 
@@ -110,13 +110,13 @@ do the imputation:
 
 ``` r
 library(mice)
-#> 
+#>
 #> Attaching package: 'mice'
 #> The following object is masked from 'package:stats':
-#> 
+#>
 #>     filter
 #> The following objects are masked from 'package:base':
-#> 
+#>
 #>     cbind, rbind
 set.seed(26245)
 out_mice <- mice(dat, m = 5, printFlag = FALSE)
@@ -148,7 +148,7 @@ We then fit the model by `semTools::sem.mi()`:
 
 ``` r
 library(semTools)
-#> 
+#>
 #> ###############################################################################
 #> This is semTools 0.5-6
 #> All users of R (or SEM) are invited to submit functions or ideas for functions.
@@ -161,14 +161,14 @@ y ~ m + x + c1 + c2
 fit_lavaan <- sem.mi(model = mod,
                      data = dat_mi)
 summary(fit_lavaan)
-#> lavaan.mi object based on 5 imputed data sets. 
-#> See class?lavaan.mi help page for available methods. 
-#> 
+#> lavaan.mi object based on 5 imputed data sets.
+#> See class?lavaan.mi help page for available methods.
+#>
 #> Convergence information:
-#> The model converged on 5 imputed data sets 
-#> 
+#> The model converged on 5 imputed data sets
+#>
 #> Rubin's (1987) rules were used to pool point and SE estimates across 5 imputed data sets, and to calculate degrees of freedom for each parameter's t test and CI.
-#> 
+#>
 #> Parameter Estimates:
 #> Error in if (categorical.flag) {: argument is of length zero
 ```
@@ -237,22 +237,22 @@ out_lavaan <- indirect_effect(x = "x",
                               mc_ci = TRUE,
                               mc_out = mc_out_lavaan)
 out_lavaan
-#> 
+#>
 #> == Indirect Effect  ==
-#>                                        
-#>  Path:                 x -> m -> y     
-#>  Indirect Effect:      0.656           
+#>
+#>  Path:                 x -> m -> y
+#>  Indirect Effect:      0.656
 #>  95.0% Monte Carlo CI: [0.213 to 1.124]
-#> 
+#>
 #> Computation Formula:
 #>   (b.m~x)*(b.y~m)
-#> 
+#>
 #> Computation:
 #>   (0.89141)*(0.73569)
-#> 
-#> 
+#>
+#>
 #> Monte Carlo confidence interval with 10000 replications.
-#> 
+#>
 #> Coefficients of Component Paths:
 #>  Path Coefficient
 #>   m~x       0.891

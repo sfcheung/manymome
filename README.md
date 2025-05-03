@@ -98,8 +98,8 @@ by multiple regression. The package was introduced in:
   through `lavaan::sem()` with full information maximum likelihood (`fiml`).
 
   In version 0.1.9.8 or later, it also supports missing data handled
-  by multiple imputation if the models are fitted by `semTools::sem.mi()`
-  or `semTools::runMI()` (see `vignette("do_mc_lavaan_mi")`).
+  by multiple imputation if the models are fitted by `lavaan.mi::sem.mi()`
+  or `lavaan.mi::lavaan.mi()` (see `vignette("do_mc_lavaan_mi")`).
 
 - **Supports Numeric and Categorical Moderators**
 

@@ -52,7 +52,7 @@
 #'
 #' This function supports models fitted
 #' by [lm()], [lavaan::sem()],
-#' and [semTools::sem.mi()]. This function
+#' and [lavaan.mi::sem.mi()]. This function
 #' also supports both bootstrapping
 #' and Monte Carlo confidence intervals.
 #' It also supports conditional

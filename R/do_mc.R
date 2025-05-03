@@ -22,8 +22,8 @@
 #'
 #' It also supports a model estimated
 #' by multiple imputation using
-#' [semTools::runMI()] or its wrapper,
-#' such as [semTools::sem.mi()].
+#' [lavaan.mi::lavaan.mi()] or its wrapper,
+#' such as [lavaan.mi::sem.mi()].
 #' The pooled estimates and their
 #' variance-covariance matrix will be used
 #' to generate the Monte Carlo estimates.
@@ -65,8 +65,8 @@
 #' It can also be
 #' a `lavaan.mi` object
 #' returned by
-#' [semTools::runMI()] or
-#' its wrapper, such as [semTools::sem.mi()].
+#' [lavaan.mi::lavaan.mi()] or
+#' its wrapper, such as [lavaan.mi::sem.mi()].
 #' The output of
 #' [stats::lm()] is not supported.
 #'

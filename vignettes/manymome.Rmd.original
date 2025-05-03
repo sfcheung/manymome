@@ -854,8 +854,8 @@ and subtraction for the output of `indirect_effect()`.
 
 - Missing data handled by multiple imputation
   is also supported since version 0.1.9.8. Models fitted
-  by `semTools::sem.mi()`
-  or `semTools::runMI()` to multiple imputation datasets
+  by `lavaan.mi::sem.mi()`
+  or `lavaan.mi::lavaan.mi()` to multiple imputation datasets
   can be used just like the output of `lavaan::sem()`.
   Monte Carlo confidence intervals cna be formed for
   effects computed for these models

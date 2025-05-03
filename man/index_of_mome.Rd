@@ -73,8 +73,8 @@ created by \code{\link[=lm2list]{lm2list()}}.
 It can also be
 a \code{lavaan.mi} object
 returned by
-\code{\link[semTools:semTools-deprecated]{semTools::runMI()}} or
-its wrapper, such as \code{\link[semTools:semTools-deprecated]{semTools::sem.mi()}}.}
+\code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::lavaan.mi()}} or
+its wrapper, such as \code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::sem.mi()}}.}
 
 \item{boot_ci}{Logical. Whether
 bootstrap confidence interval will be

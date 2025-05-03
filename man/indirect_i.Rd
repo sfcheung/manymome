@@ -51,8 +51,8 @@ and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 It can also be
 a \code{lavaan.mi} object
 returned by
-\code{\link[semTools:semTools-deprecated]{semTools::runMI()}} or
-its wrapper, such as \code{\link[semTools:semTools-deprecated]{semTools::sem.mi()}}.}
+\code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::lavaan.mi()}} or
+its wrapper, such as \code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::sem.mi()}}.}
 
 \item{est}{The output of
 \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}. If

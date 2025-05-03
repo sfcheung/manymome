@@ -26,8 +26,8 @@ gen_mc_est(fit, R = 100, seed = NULL)
 It can also be
 a \code{lavaan.mi} object
 returned by
-\code{\link[semTools:semTools-deprecated]{semTools::runMI()}} or
-its wrapper, such as \code{\link[semTools:semTools-deprecated]{semTools::sem.mi()}}.
+\code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::lavaan.mi()}} or
+its wrapper, such as \code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::sem.mi()}}.
 The output of
 \code{\link[stats:lm]{stats::lm()}} is not supported.}
 
@@ -96,8 +96,8 @@ Monte Carlo confidence intervals.
 
 It also supports a model estimated
 by multiple imputation using
-\code{\link[semTools:semTools-deprecated]{semTools::runMI()}} or its wrapper,
-such as \code{\link[semTools:semTools-deprecated]{semTools::sem.mi()}}.
+\code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::lavaan.mi()}} or its wrapper,
+such as \code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::sem.mi()}}.
 The pooled estimates and their
 variance-covariance matrix will be used
 to generate the Monte Carlo estimates.

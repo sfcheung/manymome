@@ -37,8 +37,8 @@ to `vignette("do_mc")`. This article assumes that readers
 know how to use `do_mc()` and will focus on using it
 with a model estimated by multiple imputation.
 
-It only supports a model fitted by `semTools::sem.mi()`
-or `semTools::runMI()`.
+It only supports a model fitted by `lavaan.mi::sem.mi()`
+or `lavaan.mi::lavaan.mi()`.
 
 # How It Works
 
@@ -64,10 +64,10 @@ The following workflow will be demonstrated;
 1. Generate datasets using multiple imputation,
   not covered here (please refer to guides on
   `mice` or `Amelia`, the two packages supported by
-  `semTools::sem.mi()` and `semTools::runMI()`).
+  `lavaan.mi::sem.mi()` and `lavaan.mi::lavaan.mi()`).
 
-2. Fit the model using `semTools::sem.mi()` or
-  `semTools::runMI()`.
+2. Fit the model using `lavaan.mi::sem.mi()` or
+  `lavaan.mi::lavaan.mi()`.
 
 3. Use `do_mc()` to generate the Monte Carlo estimates.
 
@@ -141,12 +141,12 @@ head(dat_mi[[1]])
 head(dat_mi[[5]])
 ```
 
-## Fit a Model by `semTools::sem.mi()`
+## Fit a Model by `lavaan.mi::sem.mi()`
 
-We then fit the model by `semTools::sem.mi()`:
+We then fit the model by `lavaan.mi::sem.mi()`:
 
 ```{r fit_by_sem_mi}
-library(semTools)
+library(lavaan.mi)
 mod <-
 "
 m ~ x + c1 + c2
@@ -163,11 +163,11 @@ The other steps are identical to those illustrated
 in `vignette("do_mc")`. It and related functions will
 use the pooled point estimates and variance-covariance
 matrix when they detect that the model is fitted
-by `semTools::sem.mi()` or `semTools::runMI()`
+by `lavaan.mi::sem.mi()` or `lavaan.mi::lavaan.mi()`
 (i.e., the fit object is of the class `lavaan.mi`).
 
 We call `do_mc()` on the output of
-`semTools::sem.mi()` to generate the Monte Carlo
+`lavaan.mi::sem.mi()` to generate the Monte Carlo
 estimates of all free parameters *and*
 the implied statistics, such as the variances
 of `m` and `y`, which are not free parameters
@@ -228,8 +228,8 @@ are based on the same set of simulated estimates.
 Monte Carlo confidence intervals require
 the variance-covariance matrix of all free parameters.
 Therefore, only models fitted by `lavaan::sem()`
-and (since 0.1.9.8) `semTools::sem.mi()` or
-`semTools::runMI()`
+and (since 0.1.9.8) `lavaan.mi::sem.mi()` or
+`lavaan.mi::lavaan.mi()`
 are supported. Models fitted by `stats::lm()`
 do not have a variance-covariance matrix for the
 regression coefficients from two or more
