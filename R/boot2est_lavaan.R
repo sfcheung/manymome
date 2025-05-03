@@ -182,11 +182,11 @@ fit2boot_out <- function(fit,
 fit2boot_out_do_boot <- function(fit,
                                  R = 100,
                                  seed = NULL,
-                                 compute_implied_stats = TRUE,
                                  parallel = FALSE,
                                  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                                  make_cluster_args = list(),
                                  progress = TRUE,
+                                 compute_implied_stats = TRUE,
                                  internal = list()) {
     if (identical(internal$gen_boot, "update")) {
         environment(gen_boot_i_update) <- parent.frame()

@@ -57,16 +57,16 @@ test_that("lm", {
 })
 
 # skip_on_cran()
-# skip_if_not_installed("semTools")
+# skip_if_not_installed("lavaan.mi")
 # skip_if_not_installed("Amelia")
 # skip("To be examined in an interactive session")
 # # It works if run in an interactive mode.
-# # Something's about the methods in semTools
-# # Require semTools
+# # Something's about the methods in lavaan.mi
+# # Require lavaan.mi
 # library(testthat)
 # library(manymome)
 # suppressMessages(library(lavaan))
-# suppressMessages(library(semTools))
+# suppressMessages(library(lavaan.mi))
 
 # fn <- system.file("extdata", "mi_test_data.RData", package = "manymome")
 # load(fn)

@@ -263,7 +263,7 @@ total_effect_mc
 
 # MI
 
-suppressMessages(library(semTools))
+suppressMessages(library(lavaan.mi))
 suppressMessages(library(Amelia))
 
 dat_miss <- data_med_mod_ab

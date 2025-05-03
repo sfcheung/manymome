@@ -5,7 +5,7 @@
 #' effects, indirect effects, or
 #' conditional indirect effects in a
 #' structural model fitted by [lm()],
-#' [lavaan::sem()], or [semTools::sem.mi()].
+#' [lavaan::sem()], or [lavaan.mi::sem.mi()].
 #'
 #' @details
 #'
@@ -199,8 +199,8 @@
 #' It can also be
 #' a `lavaan.mi` object
 #' returned by
-#' [semTools::runMI()] or
-#' its wrapper, such as [semTools::sem.mi()].
+#' [lavaan.mi::lavaan.mi()] or
+#' its wrapper, such as [lavaan.mi::sem.mi()].
 #' If it is a single model fitted by
 #' [lm()], it will be automatically converted
 #' to a list by [lm2list()].

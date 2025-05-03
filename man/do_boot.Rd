@@ -9,12 +9,12 @@
 do_boot(
   fit,
   R = 100,
-  compute_implied_stats = TRUE,
   seed = NULL,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   make_cluster_args = list(),
-  progress = TRUE
+  progress = TRUE,
+  compute_implied_stats = TRUE
 )
 }
 \arguments{
@@ -29,13 +29,6 @@ to a list by \code{\link[=lm2list]{lm2list()}}.}
 
 \item{R}{The number of bootstrap
 samples. Default is 100.}
-
-\item{compute_implied_stats}{If
-\code{TRUE}, default, implied statistics
-will be computed for each bootstrap
-sample. Letting users to disable this
-is an experimental features to let
-the process run faster.}
 
 \item{seed}{The seed for the
 bootstrapping. Default is \code{NULL} and
@@ -66,6 +59,13 @@ additional arguments.}
 
 \item{progress}{Logical. Display
 progress or not. Default is \code{TRUE}.}
+
+\item{compute_implied_stats}{If
+\code{TRUE}, default, implied statistics
+will be computed for each bootstrap
+sample. Letting users to disable this
+is an experimental features to let
+the process run faster.}
 }
 \value{
 A \code{boot_out}-class object

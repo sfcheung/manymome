@@ -3,7 +3,7 @@ skip("To be examined in an interactive session")
 library(testthat)
 library(manymome)
 library(lavaan)
-suppressMessages(library(semTools))
+suppressMessages(library(lavaan.mi))
 suppressMessages(library(Amelia))
 
 # Categorical IVs in lavaan

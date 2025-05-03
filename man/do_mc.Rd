@@ -10,12 +10,12 @@
 do_mc(
   fit,
   R = 100,
-  compute_implied_stats = TRUE,
   seed = NULL,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   make_cluster_args = list(),
-  progress = TRUE
+  progress = TRUE,
+  compute_implied_stats = TRUE
 )
 
 gen_mc_est(fit, R = 100, seed = NULL)
@@ -26,20 +26,13 @@ gen_mc_est(fit, R = 100, seed = NULL)
 It can also be
 a \code{lavaan.mi} object
 returned by
-\code{\link[semTools:runMI]{semTools::runMI()}} or
-its wrapper, such as \code{\link[semTools:runMI]{semTools::sem.mi()}}.
+\code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::lavaan.mi()}} or
+its wrapper, such as \code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::sem.mi()}}.
 The output of
 \code{\link[stats:lm]{stats::lm()}} is not supported.}
 
 \item{R}{The number of replications.
 Default is 100.}
-
-\item{compute_implied_stats}{If
-\code{TRUE}, default, implied statistics
-will be computed for each replication.
-Letting users to disable this
-is an experimental features to let
-the process run faster.}
 
 \item{seed}{The seed for the
 generating Monte Carlo estimates.
@@ -56,6 +49,13 @@ for compatibility with \code{\link[=do_boot]{do_boot()}}.}
 
 \item{progress}{Logical. Display
 progress or not. Default is \code{TRUE}.}
+
+\item{compute_implied_stats}{If
+\code{TRUE}, default, implied statistics
+will be computed for each replication.
+Letting users to disable this
+is an experimental features to let
+the process run faster.}
 }
 \value{
 A \code{mc_out}-class object
@@ -96,8 +96,8 @@ Monte Carlo confidence intervals.
 
 It also supports a model estimated
 by multiple imputation using
-\code{\link[semTools:runMI]{semTools::runMI()}} or its wrapper,
-such as \code{\link[semTools:runMI]{semTools::sem.mi()}}.
+\code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::lavaan.mi()}} or its wrapper,
+such as \code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::sem.mi()}}.
 The pooled estimates and their
 variance-covariance matrix will be used
 to generate the Monte Carlo estimates.

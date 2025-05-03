@@ -2,7 +2,7 @@ skip("To be run in an interactive section")
 library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
-suppressMessages(library(semTools))
+suppressMessages(library(lavaan.mi))
 suppressMessages(library(mice))
 
 dat <- data_med

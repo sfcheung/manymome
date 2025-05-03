@@ -107,9 +107,9 @@
 #'
 
 lm2boot_out <- function(outputs, R = 100,
-                        compute_implied_stats = TRUE,
                         seed = NULL,
-                        progress = TRUE) {
+                        progress = TRUE,
+                        compute_implied_stats = TRUE) {
     if (!missing(outputs)) {
          outputs <- auto_lm2list(outputs)
       }
@@ -193,11 +193,11 @@ lm_boot2est_i <- function(d, i = NULL, outputs,
 lm2boot_out_parallel <- function(outputs,
                                  R = 100,
                                  seed = NULL,
-                                 compute_implied_stats = TRUE,
                                  parallel = FALSE,
                                  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                                  make_cluster_args = list(),
-                                 progress = TRUE) {
+                                 progress = TRUE,
+                                 compute_implied_stats = TRUE) {
     if (!missing(outputs)) {
          outputs <- auto_lm2list(outputs)
       }

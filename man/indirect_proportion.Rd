@@ -25,8 +25,8 @@ list of \code{\link[=lm]{lm()}} outputs.
 It can also be
 a \code{lavaan.mi} object
 returned by
-\code{\link[semTools:runMI]{semTools::runMI()}} or
-its wrapper, such as \code{\link[semTools:runMI]{semTools::sem.mi()}}.}
+\code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::lavaan.mi()}} or
+its wrapper, such as \code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::sem.mi()}}.}
 }
 \value{
 An \code{indirect_proportion} class object.
