@@ -32,8 +32,11 @@ and `cond_indirect_effects()`. `do_mc()` is for
 this purpose.
 
 Monte Carlo confidence intervals only support models
-fitted by `lavaan::sem()` and (since version 0.1.9.8)
+fitted by `lavaan::sem()` and (since version 0.2.7.3)
 `lavaan.mi::sem.mi()` or `lavaan.mi::lavaan.mi()`.
+(Support for `semTools::runMI()` and its wrappers was removed in
+version 0.2.7.3 because this and related functions were deprecated
+in `semTools`.)
 
 # How It Works
 
@@ -252,7 +255,7 @@ parameter estimates can be retrieved. Therefore,
 handled by full information maximum likelihood
 in `lavaan` using `missing = "fiml"`. It also
 supports multiple imputation if `lavaan.mi::sem.mi()`
-or `lavaan.mi::lavaan.mi()` (since version 0.1.9.8).
+or `lavaan.mi::lavaan.mi()` (since version 0.2.7.3).
 See `vignette("do_mc_lavaan_mi")` for an
 illustration.
 
@@ -325,7 +328,7 @@ not in the fitted model.
 Monte Carlo confidence intervals require
 the variance-covariance matrix of all free parameters.
 Therefore, only models fitted by `lavaan::sem()`
-and (since 0.1.9.8) `lavaan.mi::sem.mi()` or
+and (since 0.2.7.3) `lavaan.mi::sem.mi()` or
 `lavaan.mi::lavaan.mi()`
 are supported. Models fitted by `stats::lm()`
 do not have a variance-covariance matrix for the

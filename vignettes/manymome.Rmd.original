@@ -853,13 +853,16 @@ and subtraction for the output of `indirect_effect()`.
   `lavaan`, in the presence of missing data.
 
 - Missing data handled by multiple imputation
-  is also supported since version 0.1.9.8. Models fitted
+  is also supported since version 0.2.7.3. Models fitted
   by `lavaan.mi::sem.mi()`
   or `lavaan.mi::lavaan.mi()` to multiple imputation datasets
   can be used just like the output of `lavaan::sem()`.
   Monte Carlo confidence intervals cna be formed for
   effects computed for these models
   (see `vignette("do_mc_lavaan_mi")`).
+  (Support for `semTools::runMI()` and its wrappers was removed in
+  version 0.2.7.3 because this and related functions were deprecated
+  in `semTools`.)
 
 - Bootstrapping only needs to be done once. The bootstrap
   estimates can be reused in computing indirect effects
