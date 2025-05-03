@@ -1,6 +1,11 @@
-# manymome 0.2.7.5
+# manymome 0.2.8
 
 ## New Features
+
+- Updated to use `lavaan.mi` instead of
+  `semTools`. (0.2.7.2, 0.2.7.3)
+
+## Miscellaneous
 
 - Added the option to disable the
   computation of implied statistics
@@ -11,11 +16,6 @@
   unstandardized effects. Should be used
   only by developers and advanced users.
   (0.2.7.1)
-
-- Updated to use `lavaan.mi` instead of
-  `semTools`. (0.2.7.2, 0.2.7.3)
-
-## Miscellaneous
 
 - Moved `compute_implied_stats` to the
   end of the argument list to avoid
