@@ -6,16 +6,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Generate Monte Carlo Estimates • manymome</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Hind-0.4.9/font.css" rel="stylesheet">
-<link href="../deps/Oxygen_Mono-0.4.9/font.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Hind-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/Oxygen_Mono-0.4.10/font.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Generate Monte Carlo Estimates">
@@ -29,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.8</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,7 +94,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2025-01-25</h4>
+            <h4 data-toc-skip class="date">2025-05-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/do_mc.Rmd" class="external-link"><code>vignettes/do_mc.Rmd</code></a></small>
       <div class="d-none name"><code>do_mc.Rmd</code></div>
@@ -119,8 +118,11 @@ users prefer generating the Monte Carlo estimates first before calling
 <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> and <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>.
 <code><a href="../reference/do_mc.html">do_mc()</a></code> is for this purpose.</p>
 <p>Monte Carlo confidence intervals only support models fitted by
-<code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> and (since version 0.1.9.8)
-<code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::sem.mi()</a></code> or <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::runMI()</a></code>.</p>
+<code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> and (since version 0.2.7.3)
+<code><a href="https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html" class="external-link">lavaan.mi::sem.mi()</a></code> or <code><a href="https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html" class="external-link">lavaan.mi::lavaan.mi()</a></code>.
+(Support for <code>semTools::runMI()</code> and its wrappers was removed
+in version 0.2.7.3 because this and related functions were deprecated in
+<code>semTools</code>.)</p>
 </div>
 <div class="section level2">
 <h2 id="how-it-works">How It Works<a class="anchor" aria-label="anchor" href="#how-it-works"></a>
@@ -292,7 +294,7 @@ confidence intervals, if requested.</p>
 <span><span class="co">#&gt;                                        </span></span>
 <span><span class="co">#&gt;  Path:                 x -&gt; m -&gt; y     </span></span>
 <span><span class="co">#&gt;  Indirect Effect:      0.733           </span></span>
-<span><span class="co">#&gt;  95.0% Monte Carlo CI: [0.301 to 1.180]</span></span>
+<span><span class="co">#&gt;  95.0% Monte Carlo CI: [0.306 to 1.174]</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computation Formula:</span></span>
 <span><span class="co">#&gt;   (b.m~x)*(b.y~m)</span></span>
@@ -320,9 +322,9 @@ variance-covariance matrix of the parameter estimates can be retrieved.
 Therefore, <code><a href="../reference/do_mc.html">do_mc()</a></code> can be used when missing data is handled
 by full information maximum likelihood in <code>lavaan</code> using
 <code>missing = "fiml"</code>. It also supports multiple imputation if
-<code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::sem.mi()</a></code> or <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::runMI()</a></code> (since
-version 0.1.9.8). See <code><a href="../articles/do_mc_lavaan_mi.html">vignette("do_mc_lavaan_mi")</a></code> for an
-illustration.</p>
+<code><a href="https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html" class="external-link">lavaan.mi::sem.mi()</a></code> or <code><a href="https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html" class="external-link">lavaan.mi::lavaan.mi()</a></code>
+(since version 0.2.7.3). See <code><a href="../articles/do_mc_lavaan_mi.html">vignette("do_mc_lavaan_mi")</a></code>
+for an illustration.</p>
 </div>
 <div class="section level2">
 <h2 id="the-structure-of-the-output">The Structure of the Output<a class="anchor" aria-label="anchor" href="#the-structure-of-the-output"></a>
@@ -334,21 +336,21 @@ with two elements: <code>est</code> and <code>implied_stats</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mc_out_lavaan</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">est</span></span>
 <span><span class="co">#&gt;    lhs op rhs    est</span></span>
-<span><span class="co">#&gt; 1    m  ~   x  0.909</span></span>
-<span><span class="co">#&gt; 2    m  ~  c1  0.198</span></span>
-<span><span class="co">#&gt; 3    m  ~  c2 -0.163</span></span>
-<span><span class="co">#&gt; 4    y  ~   m  0.641</span></span>
-<span><span class="co">#&gt; 5    y  ~   x  0.921</span></span>
-<span><span class="co">#&gt; 6    y  ~  c1  0.010</span></span>
-<span><span class="co">#&gt; 7    y  ~  c2  0.141</span></span>
-<span><span class="co">#&gt; 8    m ~~   m  0.641</span></span>
-<span><span class="co">#&gt; 9    y ~~   y  3.432</span></span>
-<span><span class="co">#&gt; 10   x ~~   x  1.023</span></span>
-<span><span class="co">#&gt; 11   x ~~  c1  0.074</span></span>
-<span><span class="co">#&gt; 12   x ~~  c2  0.028</span></span>
-<span><span class="co">#&gt; 13  c1 ~~  c1  1.180</span></span>
-<span><span class="co">#&gt; 14  c1 ~~  c2 -0.261</span></span>
-<span><span class="co">#&gt; 15  c2 ~~  c2  0.718</span></span></code></pre></div>
+<span><span class="co">#&gt; 1    m  ~   x  0.860</span></span>
+<span><span class="co">#&gt; 2    m  ~  c1  0.160</span></span>
+<span><span class="co">#&gt; 3    m  ~  c2 -0.086</span></span>
+<span><span class="co">#&gt; 4    y  ~   m  0.567</span></span>
+<span><span class="co">#&gt; 5    y  ~   x  0.881</span></span>
+<span><span class="co">#&gt; 6    y  ~  c1  0.008</span></span>
+<span><span class="co">#&gt; 7    y  ~  c2  0.117</span></span>
+<span><span class="co">#&gt; 8    m ~~   m  0.619</span></span>
+<span><span class="co">#&gt; 9    y ~~   y  3.431</span></span>
+<span><span class="co">#&gt; 10   x ~~   x  1.061</span></span>
+<span><span class="co">#&gt; 11   x ~~  c1 -0.113</span></span>
+<span><span class="co">#&gt; 12   x ~~  c2  0.099</span></span>
+<span><span class="co">#&gt; 13  c1 ~~  c1  1.190</span></span>
+<span><span class="co">#&gt; 14  c1 ~~  c2 -0.243</span></span>
+<span><span class="co">#&gt; 15  c2 ~~  c2  0.724</span></span></code></pre></div>
 <p>The content is just the first four columns of the output of
 <code><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">lavaan::parameterEstimates()</a></code>. Note that only fixed and free
 parameters are used so other rows, if any, are not used even if
@@ -359,11 +361,11 @@ list:</p>
 <code class="sourceCode R"><span><span class="va">mc_out_lavaan</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">implied_stats</span></span>
 <span><span class="co">#&gt; $cov</span></span>
 <span><span class="co">#&gt;         m      y      x     c1     c2</span></span>
-<span><span class="co">#&gt; m   1.586                            </span></span>
-<span><span class="co">#&gt; y   1.864  6.059                     </span></span>
-<span><span class="co">#&gt; x   0.939  1.548  1.023              </span></span>
-<span><span class="co">#&gt; c1  0.344  0.263  0.074  1.180       </span></span>
-<span><span class="co">#&gt; c2 -0.143  0.033  0.028 -0.261  0.718</span></span>
+<span><span class="co">#&gt; m   1.401                            </span></span>
+<span><span class="co">#&gt; y   1.575  5.619                     </span></span>
+<span><span class="co">#&gt; x   0.886  1.448  1.061              </span></span>
+<span><span class="co">#&gt; c1  0.114 -0.053 -0.113  1.190       </span></span>
+<span><span class="co">#&gt; c2 -0.016  0.161  0.099 -0.243  0.724</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $mean</span></span>
 <span><span class="co">#&gt;  m  y  x c1 c2 </span></span>
@@ -380,9 +382,9 @@ and the latent variables (if any), respectively. The elements are
 </h2>
 <p>Monte Carlo confidence intervals require the variance-covariance
 matrix of all free parameters. Therefore, only models fitted by
-<code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> and (since 0.1.9.8)
-<code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::sem.mi()</a></code> or <code><a href="https://rdrr.io/pkg/semTools/man/runMI.html" class="external-link">semTools::runMI()</a></code> are
-supported. Models fitted by <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">stats::lm()</a></code> do not have a
+<code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> and (since 0.2.7.3)
+<code><a href="https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html" class="external-link">lavaan.mi::sem.mi()</a></code> or <code><a href="https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html" class="external-link">lavaan.mi::lavaan.mi()</a></code>
+are supported. Models fitted by <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">stats::lm()</a></code> do not have a
 variance-covariance matrix for the regression coefficients from two or
 more regression models and so are not supported by
 <code><a href="../reference/do_mc.html">do_mc()</a></code>.</p>
@@ -413,7 +415,7 @@ bootstrap confidence intervals, in many (though not all) models.
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
 </div>
 
     </footer>
