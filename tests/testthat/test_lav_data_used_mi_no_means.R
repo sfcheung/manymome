@@ -1,11 +1,11 @@
 skip_on_cran()
-skip_if_not_installed("semTools")
+skip_if_not_installed("lavaan.mi")
 skip_if_not_installed("Amelia")
 # Require Amelia
 library(testthat)
 library(manymome)
 library(lavaan)
-suppressMessages(library(semTools))
+suppressMessages(library(lavaan.mi))
 suppressMessages(library(Amelia))
 
 dat <- add_na(data_mod,

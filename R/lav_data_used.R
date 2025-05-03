@@ -7,8 +7,8 @@
 #' It can also be
 #' a `lavaan.mi` object
 #' returned by
-#' [semTools::runMI()] or
-#' its wrapper, such as [semTools::sem.mi()].
+#' [lavaan.mi::lavaan.mi()] or
+#' its wrapper, such as [lavaan.mi::sem.mi()].
 #'
 #' @param drop_colon Logical. Whether
 #' product terms (of the form "x:y")

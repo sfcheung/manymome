@@ -1,7 +1,7 @@
 ---
 title: "Monte Carlo Confidence Intervals with Multiple Imputation"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2025-01-25"
+date: "2025-05-03"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -31,8 +31,8 @@ to `vignette("do_mc")`. This article assumes that readers
 know how to use `do_mc()` and will focus on using it
 with a model estimated by multiple imputation.
 
-It only supports a model fitted by `semTools::sem.mi()`
-or `semTools::runMI()`.
+It only supports a model fitted by `lavaan.mi::sem.mi()`
+or `lavaan.mi::lavaan.mi()`.
 
 # How It Works
 
@@ -58,10 +58,10 @@ The following workflow will be demonstrated;
 1. Generate datasets using multiple imputation,
   not covered here (please refer to guides on
   `mice` or `Amelia`, the two packages supported by
-  `semTools::sem.mi()` and `semTools::runMI()`).
+  `lavaan.mi::sem.mi()` and `lavaan.mi::lavaan.mi()`).
 
-2. Fit the model using `semTools::sem.mi()` or
-  `semTools::runMI()`.
+2. Fit the model using `lavaan.mi::sem.mi()` or
+  `lavaan.mi::lavaan.mi()`.
 
 3. Use `do_mc()` to generate the Monte Carlo estimates.
 
@@ -141,18 +141,19 @@ head(dat_mi[[5]])
 #> 6  8.198297 16.95198 20.73549 2.495083 3.763712
 ```
 
-## Fit a Model by `semTools::sem.mi()`
+## Fit a Model by `lavaan.mi::sem.mi()`
 
-We then fit the model by `semTools::sem.mi()`:
+We then fit the model by `lavaan.mi::sem.mi()`:
 
 
 ``` r
-library(semTools)
+library(lavaan.mi)
 #> 
-#> ###############################################################################
-#> This is semTools 0.5-6
-#> All users of R (or SEM) are invited to submit functions or ideas for functions.
-#> ###############################################################################
+#> ###################################################################
+#> This is lavaan.mi 0.1-0
+#> See the README file on github.com/TDJorgensen/lavaan.mi
+#> for a table comparing it with deprecated semTools features.
+#> ###################################################################
 mod <-
 "
 m ~ x + c1 + c2
@@ -161,16 +162,61 @@ y ~ m + x + c1 + c2
 fit_lavaan <- sem.mi(model = mod,
                      data = dat_mi)
 summary(fit_lavaan)
-#> lavaan.mi object based on 5 imputed data sets. 
+#> lavaan.mi object fit to 5 imputed data sets using:
+#>  - lavaan    (0.6-19)
+#>  - lavaan.mi (0.1-0)
 #> See class?lavaan.mi help page for available methods. 
 #> 
 #> Convergence information:
-#> The model converged on 5 imputed data sets 
+#> The model converged on 5 imputed data sets.
+#> Standard errors were available for all imputations.
 #> 
-#> Rubin's (1987) rules were used to pool point and SE estimates across 5 imputed data sets, and to calculate degrees of freedom for each parameter's t test and CI.
+#>   Estimator                                         ML
+#>   Optimization method                           NLMINB
+#>   Number of model parameters                         9
+#> 
+#>   Number of observations                           100
+#> 
+#> Model Test User Model:
+#> 
+#>   Test statistic                                 0.000
+#>   Degrees of freedom                                 0
+#>   P-value                                        1.000
+#>   Pooling method                                    D4
 #> 
 #> Parameter Estimates:
-#> Error in if (categorical.flag) {: argument is of length zero
+#> 
+#>   Standard errors                                    Standard
+#>   Information                                        Expected
+#>   Information saturated (h1) model                 Structured
+#>                                                              
+#>   Pooled across imputations              Rubin's (1987) rules
+#>   Augment within-imputation variance     Scale by average RIV
+#>   Wald test for pooled parameters          t(df) distribution
+#> 
+#>   Pooled t statistics with df >= 1000 are displayed with
+#>   df = Inf(inity) to save space. Although the t distribution
+#>   with large df closely approximates a standard normal
+#>   distribution, exact df for reporting these t tests can be
+#>   obtained from parameterEstimates.mi() 
+#> 
+#> 
+#> Regressions:
+#>                    Estimate  Std.Err  t-value       df  P(>|t|)
+#>   m ~                                                          
+#>     x                 0.891    0.080   11.117      Inf    0.000
+#>     c1                0.162    0.077    2.118      Inf    0.034
+#>     c2               -0.114    0.102   -1.117      Inf    0.264
+#>   y ~                                                          
+#>     m                 0.736    0.251    2.935      Inf    0.003
+#>     x                 0.616    0.298    2.065  383.680    0.040
+#>     c1                0.181    0.193    0.939      Inf    0.348
+#>     c2               -0.156    0.254   -0.616      Inf    0.538
+#> 
+#> Variances:
+#>                    Estimate  Std.Err  t-value       df  P(>|t|)
+#>    .m                 0.682    0.098    6.959      Inf    0.000
+#>    .y                 4.151    0.597    6.958      Inf    0.000
 ```
 
 ## Generate Monte Carlo Estimates
@@ -179,11 +225,11 @@ The other steps are identical to those illustrated
 in `vignette("do_mc")`. It and related functions will
 use the pooled point estimates and variance-covariance
 matrix when they detect that the model is fitted
-by `semTools::sem.mi()` or `semTools::runMI()`
+by `lavaan.mi::sem.mi()` or `lavaan.mi::lavaan.mi()`
 (i.e., the fit object is of the class `lavaan.mi`).
 
 We call `do_mc()` on the output of
-`semTools::sem.mi()` to generate the Monte Carlo
+`lavaan.mi::sem.mi()` to generate the Monte Carlo
 estimates of all free parameters *and*
 the implied statistics, such as the variances
 of `m` and `y`, which are not free parameters
@@ -268,8 +314,8 @@ are based on the same set of simulated estimates.
 Monte Carlo confidence intervals require
 the variance-covariance matrix of all free parameters.
 Therefore, only models fitted by `lavaan::sem()`
-and (since 0.1.9.8) `semTools::sem.mi()` or
-`semTools::runMI()`
+and (since 0.1.9.8) `lavaan.mi::sem.mi()` or
+`lavaan.mi::lavaan.mi()`
 are supported. Models fitted by `stats::lm()`
 do not have a variance-covariance matrix for the
 regression coefficients from two or more

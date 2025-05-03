@@ -1,4 +1,4 @@
-# manymome 0.2.7.1
+# manymome 0.2.7.3
 
 ## New Features
 
@@ -11,6 +11,9 @@
   unstandardized effects. Should be used
   only by developers and advanced users.
   (0.2.7.1)
+
+- Updated to use `lavaan.mi` instead of
+  `semTools`. (0.2.7.2, 0.2.7.3)
 
 # manymome 0.2.7
 

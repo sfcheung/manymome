@@ -1,10 +1,10 @@
 skip_on_cran()
-skip_if_not_installed("semTools")
-# Require semTools
+skip_if_not_installed("lavaan.mi")
+# Require lavaan.mi
 library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
-suppressMessages(library(semTools))
+suppressMessages(library(lavaan.mi))
 
 fn <- system.file("extdata", "mi_test_data.RData", package = "manymome")
 load(fn)
@@ -19,7 +19,7 @@ test_that("lav_implied_all with ov", {
     tmpa2 <- lav_implied_all(fit1_mi)
     tmpa2_chk <- get_implied_i(methods::getMethod("coef",
                                 signature = "lavaan.mi",
-                                where = asNamespace("semTools"))(fit1_mi),
+                                where = asNamespace("lavaan.mi"))(fit1_mi),
                                fit1_mi)
     expect_identical(tmpa2, tmpa2_chk)
   })
@@ -34,7 +34,7 @@ test_that("lav_implied_all with lv", {
     tmpa2 <- lav_implied_all(fit_lv_mi)
     tmpa2_chk <- get_implied_i(methods::getMethod("coef",
                                 signature = "lavaan.mi",
-                                where = asNamespace("semTools"))(fit_lv_mi),
+                                where = asNamespace("lavaan.mi"))(fit_lv_mi),
                                fit_lv_mi)
     expect_identical(tmpa2, tmpa2_chk)
   })
