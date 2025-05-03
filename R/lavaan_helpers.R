@@ -139,11 +139,7 @@ lav_est_lavaan_mi <- function(fit,
                               ...,
                               est_df = NULL) {
     if (is.null(est_df)) {
-        est_df <- methods::getMethod("summary",
-                signature = "lavaan.mi",
-                where = asNamespace("lavaan.mi"))(fit,
-                                                output = "data.frame",
-                                                ...)
+        est_df <- lavaan.mi::parameterEstimates.mi(fit)
       }
     ptable <- as.data.frame(fit@ParTable)
     if (!is.null(ptable$est)) {
