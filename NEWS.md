@@ -1,4 +1,4 @@
-# manymome 0.2.7.2
+# manymome 0.2.7.3
 
 ## New Features
 
@@ -13,7 +13,7 @@
   (0.2.7.1)
 
 - Updated to use `lavaan.mi` instead of
-  `semTools`. Work-In-Progress (0.2.7.2)
+  `semTools`. (0.2.7.2, 0.2.7.3)
 
 # manymome 0.2.7
 

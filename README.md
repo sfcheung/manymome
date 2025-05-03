@@ -9,7 +9,7 @@
 [![R-CMD-check](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-(Version 0.2.7.2, updated on 2025-05-01, [release history](https://sfcheung.github.io/manymome/news/index.html))
+(Version 0.2.7.3, updated on 2025-05-03, [release history](https://sfcheung.github.io/manymome/news/index.html))
 
 # manymome  <img src="man/figures/logo.png" align="right" height="150" />
 
@@ -97,9 +97,12 @@ by multiple regression. The package was introduced in:
   Supports datasets with missing data
   through `lavaan::sem()` with full information maximum likelihood (`fiml`).
 
-  In version 0.1.9.8 or later, it also supports missing data handled
+  In version 0.2.7.3 or later, it also supports missing data handled
   by multiple imputation if the models are fitted by `lavaan.mi::sem.mi()`
   or `lavaan.mi::lavaan.mi()` (see `vignette("do_mc_lavaan_mi")`).
+  (Support for `semTools::runMI()` and its wrappers was removed in
+  version 0.2.7.3 because this and related functions were deprecated
+  in `semTools`.)
 
 - **Supports Numeric and Categorical Moderators**
 
