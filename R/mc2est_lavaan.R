@@ -101,8 +101,8 @@
 #' @export
 
 fit2mc_out <- function(fit,
-                       compute_implied_stats = TRUE,
-                       progress = TRUE) {
+                       progress = TRUE,
+                       compute_implied_stats = TRUE) {
     if (progress) {
         cat("Stage 1: Simulate estimates\n")
       }

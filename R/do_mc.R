@@ -136,12 +136,12 @@
 
 do_mc <- function(fit,
                     R = 100,
-                    compute_implied_stats = TRUE,
                     seed = NULL,
                     parallel = TRUE,
                     ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                     make_cluster_args = list(),
-                    progress = TRUE) {
+                    progress = TRUE,
+                    compute_implied_stats = TRUE) {
     if (!missing(fit)) {
          fit <- auto_lm2list(fit)
       }

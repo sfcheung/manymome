@@ -12,11 +12,11 @@ fit2boot_out_do_boot(
   fit,
   R = 100,
   seed = NULL,
-  compute_implied_stats = TRUE,
   parallel = FALSE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   make_cluster_args = list(),
   progress = TRUE,
+  compute_implied_stats = TRUE,
   internal = list()
 )
 }

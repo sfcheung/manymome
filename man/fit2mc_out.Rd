@@ -5,7 +5,7 @@
 \title{Monte Carlo Estimates for a
 \code{lavaan} Output}
 \usage{
-fit2mc_out(fit, compute_implied_stats = TRUE, progress = TRUE)
+fit2mc_out(fit, progress = TRUE, compute_implied_stats = TRUE)
 }
 \arguments{
 \item{fit}{The fit object. This
@@ -17,15 +17,15 @@ returned by
 \code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::lavaan.mi()}} or
 its wrapper, such as \code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::sem.mi()}}.}
 
+\item{progress}{Logical. Display
+progress or not. Default is \code{TRUE}.}
+
 \item{compute_implied_stats}{If
 \code{TRUE}, default, implied statistics
 will be computed for each replication.
 Letting users to disable this
 is an experimental features to let
 the process run faster.}
-
-\item{progress}{Logical. Display
-progress or not. Default is \code{TRUE}.}
 }
 \value{
 A \code{mc_out}-class object

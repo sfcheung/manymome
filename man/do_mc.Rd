@@ -10,12 +10,12 @@
 do_mc(
   fit,
   R = 100,
-  compute_implied_stats = TRUE,
   seed = NULL,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   make_cluster_args = list(),
-  progress = TRUE
+  progress = TRUE,
+  compute_implied_stats = TRUE
 )
 
 gen_mc_est(fit, R = 100, seed = NULL)
@@ -34,13 +34,6 @@ The output of
 \item{R}{The number of replications.
 Default is 100.}
 
-\item{compute_implied_stats}{If
-\code{TRUE}, default, implied statistics
-will be computed for each replication.
-Letting users to disable this
-is an experimental features to let
-the process run faster.}
-
 \item{seed}{The seed for the
 generating Monte Carlo estimates.
 Default is \code{NULL} and seed is not set.}
@@ -56,6 +49,13 @@ for compatibility with \code{\link[=do_boot]{do_boot()}}.}
 
 \item{progress}{Logical. Display
 progress or not. Default is \code{TRUE}.}
+
+\item{compute_implied_stats}{If
+\code{TRUE}, default, implied statistics
+will be computed for each replication.
+Letting users to disable this
+is an experimental features to let
+the process run faster.}
 }
 \value{
 A \code{mc_out}-class object
