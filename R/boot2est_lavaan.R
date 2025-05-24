@@ -402,11 +402,27 @@ set_est_i <- function(est0, fit, p_free, est_df = NULL) {
     if (isTRUE(is.na(type))) {
         stop("Object is not of a supported type.")
       }
+
+    if (type == "lavaan") {
+      # Precompute the matching index to avoid using merge()
+      est_df$row_id <- seq_len(nrow(est_df))
+      ptable_tmp <- as.data.frame(fit@ParTable)
+      if ("group" %in% colnames(est_df)) {
+        ptable_tmp <- ptable_tmp[, c("lhs", "op", "rhs", "block", "group")]
+      } else {
+        ptable_tmp <- ptable_tmp[, c("lhs", "op", "rhs")]
+      }
+      tmp <- merge(ptable_tmp, est_df, sort = FALSE)
+      match_id <- tmp$row_id
+      est_df$row_id <- NULL
+    }
+
     out <- switch(type,
                   lavaan = set_est_i_lavaan(est0 = est0,
                                             fit = fit,
                                             p_free = p_free,
-                                            est_df = est_df),
+                                            est_df = est_df,
+                                            match_id = match_id),
                   lavaan.mi = set_est_i_lavaan_mi(est0 = est0,
                                                   fit = fit,
                                                   p_free = p_free,
@@ -417,18 +433,28 @@ set_est_i <- function(est0, fit, p_free, est_df = NULL) {
 
 #' @noRd
 
-set_est_i_lavaan <- function(est0, fit, p_free, est_df = NULL) {
+set_est_i_lavaan <- function(est0,
+                             fit,
+                             p_free,
+                             est_df = NULL,
+                             match_id = NULL) {
     fit@ParTable$est[p_free] <- unname(est0)
-    ptable <- as.data.frame(fit@ParTable)
     if (!is.null(est_df)) {
-        est_df$est <- NULL
-        if ("group" %in% colnames(est_df)) {
+        ptable <- as.data.frame(fit@ParTable)
+        if (is.null(match_id)) {
+          est_df$est <- NULL
+          if ("group" %in% colnames(est_df)) {
             est0 <- merge(est_df, ptable[, c("lhs", "op", "rhs", "block", "group", "est")],
                           sort = FALSE)
           } else {
             est0 <- merge(est_df, ptable[, c("lhs", "op", "rhs", "est")],
                           sort = FALSE)
           }
+        } else {
+          # Use precomputed matching index
+          est0 <- est_df
+          est0[match_id, "est"] <- ptable$est
+        }
         class(est0) <- class(est_df)
         return(est0)
       } else {
