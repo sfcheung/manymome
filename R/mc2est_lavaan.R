@@ -165,11 +165,11 @@ mc2est <- function(fit,
     if (type == "lavaan") {
       # Precompute the matching index to avoid using merge()
       est_df0$row_id <- seq_len(nrow(est_df0))
-      ptable_tmp <- as.data.frame(fit@ParTable)
+      ptable_template <- as.data.frame(fit@ParTable)
       if ("group" %in% colnames(est_df0)) {
-        ptable_tmp <- ptable_tmp[, c("lhs", "op", "rhs", "block", "group")]
+        ptable_tmp <- ptable_template[, c("lhs", "op", "rhs", "block", "group")]
       } else {
-        ptable_tmp <- ptable_tmp[, c("lhs", "op", "rhs")]
+        ptable_tmp <- ptable_template[, c("lhs", "op", "rhs")]
       }
       tmp <- merge(ptable_tmp,
                    est_df0,
@@ -178,7 +178,9 @@ mc2est <- function(fit,
       select_id <- which(!is.na(tmp$row_id))
       match_id <- tmp$row_id[select_id]
       est_df0$row_id <- NULL
+
     } else {
+      ptable_template <- NULL
       match_id <- NULL
       select_id <- NULL
     }
@@ -188,6 +190,7 @@ mc2est <- function(fit,
                                                      fit = fit,
                                                      p_free = p_free,
                                                      est_df = est_df0,
+                                                     ptable = ptable_template,
                                                      match_id = match_id,
                                                      select_id = select_id))
       } else {

@@ -395,6 +395,7 @@ set_est_i <- function(est0,
                       fit,
                       p_free,
                       est_df = NULL,
+                      ptable = NULL,
                       match_id = NULL,
                       select_id = NULL) {
     type <- NA
@@ -413,6 +414,7 @@ set_est_i <- function(est0,
                                             fit = fit,
                                             p_free = p_free,
                                             est_df = est_df,
+                                            ptable = ptable,
                                             match_id = match_id,
                                             select_id = select_id),
                   lavaan.mi = set_est_i_lavaan_mi(est0 = est0,
@@ -429,11 +431,16 @@ set_est_i_lavaan <- function(est0,
                              fit,
                              p_free,
                              est_df = NULL,
+                             ptable = NULL,
                              match_id = NULL,
                              select_id = NULL) {
-    fit@ParTable$est[p_free] <- unname(est0)
     if (!is.null(est_df)) {
-        ptable <- as.data.frame(fit@ParTable)
+        if (is.null(ptable)) {
+          fit@ParTable$est[p_free] <- unname(est0)
+          ptable <- as.data.frame(fit@ParTable)
+        } else {
+          ptable$est[p_free] <- unname(est0)
+        }
         if (is.null(match_id)) {
           est_df$est <- NULL
           if ("group" %in% colnames(est_df)) {
@@ -451,6 +458,7 @@ set_est_i_lavaan <- function(est0,
         class(est0) <- class(est_df)
         return(est0)
       } else {
+        fit@ParTable$est[p_free] <- unname(est0)
         est0 <- lavaan::parameterEstimates(fit,
                                           se = FALSE,
                                           zstat = FALSE,
