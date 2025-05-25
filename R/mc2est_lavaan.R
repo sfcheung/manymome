@@ -159,16 +159,44 @@ mc2est <- function(fit,
     #                     fit = fit,
     #                     p_free = p_free,
     #                     est_df = est_df0)
+
+    type <- cond_indirect_check_fit(fit)
+
+    if (type == "lavaan") {
+      # Precompute the matching index to avoid using merge()
+      est_df0$row_id <- seq_len(nrow(est_df0))
+      ptable_tmp <- as.data.frame(fit@ParTable)
+      if ("group" %in% colnames(est_df0)) {
+        ptable_tmp <- ptable_tmp[, c("lhs", "op", "rhs", "block", "group")]
+      } else {
+        ptable_tmp <- ptable_tmp[, c("lhs", "op", "rhs")]
+      }
+      tmp <- merge(ptable_tmp,
+                   est_df0,
+                   all.x = TRUE,
+                   sort = FALSE)
+      select_id <- which(!is.na(tmp$row_id))
+      match_id <- tmp$row_id[select_id]
+      est_df0$row_id <- NULL
+    } else {
+      match_id <- NULL
+      select_id <- NULL
+    }
+
     if (progress) {
         out_all <- suppressWarnings(pbapply::pblapply(mc_est, set_est_i,
                                                      fit = fit,
                                                      p_free = p_free,
-                                                     est_df = est_df0))
+                                                     est_df = est_df0,
+                                                     match_id = match_id,
+                                                     select_id = select_id))
       } else {
         out_all <- suppressWarnings(lapply(mc_est, set_est_i,
                                            fit = fit,
                                            p_free = p_free,
-                                           est_df = est_df0))
+                                           est_df = est_df0,
+                                           match_id = match_id,
+                                           select_id = select_id))
       }
     out_all
   }
