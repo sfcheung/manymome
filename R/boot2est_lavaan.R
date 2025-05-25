@@ -403,7 +403,8 @@ set_est_i <- function(est0, fit, p_free, est_df = NULL) {
         stop("Object is not of a supported type.")
       }
 
-    if (type == "lavaan") {
+    if (type == "lavaan" &&
+        !is.null(est_df)) {
       # Precompute the matching index to avoid using merge()
       est_df$row_id <- seq_len(nrow(est_df))
       ptable_tmp <- as.data.frame(fit@ParTable)
@@ -412,9 +413,15 @@ set_est_i <- function(est0, fit, p_free, est_df = NULL) {
       } else {
         ptable_tmp <- ptable_tmp[, c("lhs", "op", "rhs")]
       }
-      tmp <- merge(ptable_tmp, est_df, sort = FALSE)
-      match_id <- tmp$row_id
+      tmp <- merge(ptable_tmp,
+                   est_df,
+                   all.x = TRUE,
+                   sort = FALSE)
+      select_id <- which(!is.na(tmp$row_id))
+      match_id <- tmp$row_id[select_id]
       est_df$row_id <- NULL
+    } else {
+      match_id <- NULL
     }
 
     out <- switch(type,
@@ -422,7 +429,8 @@ set_est_i <- function(est0, fit, p_free, est_df = NULL) {
                                             fit = fit,
                                             p_free = p_free,
                                             est_df = est_df,
-                                            match_id = match_id),
+                                            match_id = match_id,
+                                            select_id = select_id),
                   lavaan.mi = set_est_i_lavaan_mi(est0 = est0,
                                                   fit = fit,
                                                   p_free = p_free,
@@ -437,7 +445,8 @@ set_est_i_lavaan <- function(est0,
                              fit,
                              p_free,
                              est_df = NULL,
-                             match_id = NULL) {
+                             match_id = NULL,
+                             select_id = NULL) {
     fit@ParTable$est[p_free] <- unname(est0)
     if (!is.null(est_df)) {
         ptable <- as.data.frame(fit@ParTable)
@@ -453,7 +462,7 @@ set_est_i_lavaan <- function(est0,
         } else {
           # Use precomputed matching index
           est0 <- est_df
-          est0[match_id, "est"] <- ptable$est
+          est0[match_id, "est"] <- ptable$est[select_id]
         }
         class(est0) <- class(est_df)
         return(est0)
