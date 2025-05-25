@@ -391,7 +391,13 @@ boot2implied <- function(fit) {
 # Convert set the estimates in a parameter estimates tables.
 #' @noRd
 
-set_est_i <- function(est0, fit, p_free, est_df = NULL) {
+set_est_i <- function(est0,
+                      fit,
+                      p_free,
+                      est_df = NULL,
+                      ptable = NULL,
+                      match_id = NULL,
+                      select_id = NULL) {
     type <- NA
     if (inherits(fit, "lavaan")) {
         type <- "lavaan"
@@ -402,11 +408,15 @@ set_est_i <- function(est0, fit, p_free, est_df = NULL) {
     if (isTRUE(is.na(type))) {
         stop("Object is not of a supported type.")
       }
+
     out <- switch(type,
                   lavaan = set_est_i_lavaan(est0 = est0,
                                             fit = fit,
                                             p_free = p_free,
-                                            est_df = est_df),
+                                            est_df = est_df,
+                                            ptable = ptable,
+                                            match_id = match_id,
+                                            select_id = select_id),
                   lavaan.mi = set_est_i_lavaan_mi(est0 = est0,
                                                   fit = fit,
                                                   p_free = p_free,
@@ -417,21 +427,38 @@ set_est_i <- function(est0, fit, p_free, est_df = NULL) {
 
 #' @noRd
 
-set_est_i_lavaan <- function(est0, fit, p_free, est_df = NULL) {
-    fit@ParTable$est[p_free] <- unname(est0)
-    ptable <- as.data.frame(fit@ParTable)
+set_est_i_lavaan <- function(est0,
+                             fit,
+                             p_free,
+                             est_df = NULL,
+                             ptable = NULL,
+                             match_id = NULL,
+                             select_id = NULL) {
     if (!is.null(est_df)) {
-        est_df$est <- NULL
-        if ("group" %in% colnames(est_df)) {
+        if (is.null(ptable)) {
+          fit@ParTable$est[p_free] <- unname(est0)
+          ptable <- as.data.frame(fit@ParTable)
+        } else {
+          ptable$est[p_free] <- unname(est0)
+        }
+        if (is.null(match_id)) {
+          est_df$est <- NULL
+          if ("group" %in% colnames(est_df)) {
             est0 <- merge(est_df, ptable[, c("lhs", "op", "rhs", "block", "group", "est")],
                           sort = FALSE)
           } else {
             est0 <- merge(est_df, ptable[, c("lhs", "op", "rhs", "est")],
                           sort = FALSE)
           }
+        } else {
+          # Use precomputed matching index
+          est0 <- est_df
+          est0[match_id, "est"] <- ptable$est[select_id]
+        }
         class(est0) <- class(est_df)
         return(est0)
       } else {
+        fit@ParTable$est[p_free] <- unname(est0)
         est0 <- lavaan::parameterEstimates(fit,
                                           se = FALSE,
                                           zstat = FALSE,
