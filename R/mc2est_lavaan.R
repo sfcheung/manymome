@@ -198,6 +198,7 @@ mc2est <- function(fit,
                                            fit = fit,
                                            p_free = p_free,
                                            est_df = est_df0,
+                                           ptable = ptable_template,
                                            match_id = match_id,
                                            select_id = select_id))
       }
