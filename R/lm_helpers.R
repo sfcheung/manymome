@@ -77,8 +77,46 @@ merge_model_frame <- function(outputs) {
     mm2
   }
 
-
 merge_model_matrix <- function(outputs) {
+    mm <- lapply(outputs,
+                 function(x) {
+                    stats::model.matrix(x,
+                      contrasts.arg = x$contrasts)[, -1, drop = FALSE]
+                    # y_data <- get_response_data(x)
+                    # cbind(y_data, out)
+                  })
+    mmy <- lapply(outputs,
+                 function(x) {
+                    as.matrix(get_response_data(x))
+                  })
+    mm <- c(mm, mmy)
+    vnames <- unique(c(unlist(lapply(mm, colnames))))
+    p <- length(vnames)
+    n <- nrow(mm[[1]])
+    mm_out <- matrix(
+                NA,
+                nrow = n,
+                ncol = p
+              )
+    colnames(mm_out) <- vnames
+    # Assume the rows match across models
+    empty_cols <- vnames
+    for (i in seq_along(mm)) {
+      mm_i <- mm[[i]]
+      if (length(empty_cols) == 0) {
+        break
+      }
+      to_add <- intersect(colnames(mm_i),
+                          empty_cols)
+      mm_out[, to_add] <- mm_i[, to_add]
+      empty_cols <- setdiff(empty_cols,
+                            to_add)
+    }
+    data.frame(mm_out,
+               check.names = FALSE)
+  }
+
+merge_model_matrix_old <- function(outputs) {
     mm <- lapply(outputs,
                  function(x) {
                     out <- stats::model.matrix(x,
