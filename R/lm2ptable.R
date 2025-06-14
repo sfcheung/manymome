@@ -68,6 +68,7 @@ lm2ptable <- function(outputs,
     list(est = out,
          data = mm,
          implied_stats = i_s,
-         vcov = lm_list_vcov(outputs),
+         vcov = lm_list_vcov(outputs,
+                             est = out),
          df_residual = lm_df_residual(outputs))
   }
