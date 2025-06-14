@@ -143,7 +143,6 @@ lm2boot_out <- function(outputs, R = 100,
 #' @noRd
 
 lm_boot2est_i <- function(d, i = NULL, outputs,
-                          # compute_implied_stats = TRUE) {
                           compute_implied_stats = TRUE,
                           coefs_template = NULL) {
     if (!is.null(i)) {
@@ -153,7 +152,6 @@ lm_boot2est_i <- function(d, i = NULL, outputs,
       }
     out_i <- lapply(outputs, stats::update, data = d_i)
     lm2ptable(out_i,
-              # compute_implied_stats = compute_implied_stats)
               compute_implied_stats = compute_implied_stats,
               coefs_template = coefs_template)
   }
