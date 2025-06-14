@@ -383,8 +383,13 @@ boot2implied <- function(fit) {
         boot_est0 <- boot_est0[-tmp, ]
       }
     boot_est <- split(boot_est0, row(boot_est0))
-    out_all <- lapply(boot_est, get_implied_i,
-                        fit = fit)
+    ovnames <- lavaan::lavNames(fit, "ov")
+    lvnames <- lavaan::lavNames(fit, "lv")
+    out_all <- lapply(boot_est,
+                      FUN = get_implied_i,
+                      fit = fit,
+                      ovnames = ovnames,
+                      lvnames = lvnames)
     out_all
   }
 
@@ -489,7 +494,13 @@ set_est_i_lavaan_mi <- function(est0, fit, p_free, est_df = NULL) {
 #' @noRd
 
 
-get_implied_i <- function(est0, fit, fit_tmp = NULL) {
+get_implied_i <- function(est0,
+                          fit,
+                          fit_tmp = NULL,
+                          ovnames = NULL,
+                          lvnames = NULL,
+                          ovnames_tmp = NULL,
+                          lvnames_tmp = NULL) {
     type <- NA
     if (inherits(fit, "lavaan")) {
         type <- "lavaan"
@@ -500,20 +511,50 @@ get_implied_i <- function(est0, fit, fit_tmp = NULL) {
     if (isTRUE(is.na(type))) {
         stop("Fit is not of a supported type.")
       }
+    if (is.null(ovnames)) {
+      ovnames <- lavaan::lavNames(fit, "ov")
+    }
+    if (is.null(lvnames)) {
+      lvnames <- lavaan::lavNames(fit, "lv")
+    }
+    if (!is.null(fit_tmp)) {
+      if (is.null(ovnames_tmp)) {
+        ovnames_tmp <- lavaan::lavNames(fit_tmp, "ov")
+      }
+      if (is.null(lvnames_tmp)) {
+        lvnames_tmp <- lavaan::lavNames(fit_tmp, "lv")
+      }
+    }
     out <- switch(type,
                   lavaan = get_implied_i_lavaan(est0 = est0,
                                                 fit = fit,
-                                                fit_tmp = fit_tmp),
+                                                fit_tmp = fit_tmp,
+                                                ovnames = ovnames,
+                                                lvnames = lvnames),
                   lavaan.mi = get_implied_i_lavaan_mi(est0 = est0,
                                                       fit = fit,
-                                                      fit_tmp = fit_tmp))
+                                                      fit_tmp = fit_tmp,
+                                                      ovnames = ovnames,
+                                                      lvnames = lvnames,
+                                                      ovnames_tmp = ovnames_tmp,
+                                                      lvnames_tmp = lvnames_tmp))
     out
   }
 
 #' @noRd
 
-get_implied_i_lavaan <- function(est0, fit, fit_tmp = NULL) {
-    has_lv <- length(lavaan::lavNames(fit, "lv")) != 0
+get_implied_i_lavaan <- function(est0,
+                                 fit,
+                                 fit_tmp = NULL,
+                                 ovnames = NULL,
+                                 lvnames = NULL) {
+    if (is.null(ovnames)) {
+      ovnames <- lavaan::lavNames(fit, "ov")
+    }
+    if (is.null(lvnames)) {
+      lvnames <- lavaan::lavNames(fit, "lv")
+    }
+    has_lv <- length(lvnames) != 0
     if (has_lv) {
         p_free <- fit@ParTable$free > 0
         fit@ParTable$est[p_free] <- unname(est0)
@@ -537,7 +578,9 @@ get_implied_i_lavaan <- function(est0, fit, fit_tmp = NULL) {
                                              GLIST = NULL,
                                              delta = TRUE)
       }
-    out <- lav_implied_all(fit)
+    out <- lav_implied_all(fit,
+                           ovnames = ovnames,
+                           lvnames = lvnames)
     ngroups <- lavaan::lavTech(fit, "ngroups")
     out_names <- names(out)
     implied_names <- names(implied)
@@ -598,7 +641,19 @@ get_implied_i_lavaan <- function(est0, fit, fit_tmp = NULL) {
 
 #' @noRd
 
-get_implied_i_lavaan_mi <- function(est0, fit, fit_tmp = NULL) {
+get_implied_i_lavaan_mi <- function(est0,
+                                    fit,
+                                    fit_tmp = NULL,
+                                    ovnames = NULL,
+                                    lvnames = NULL,
+                                    ovnames_tmp = NULL,
+                                    lvnames_tmp = NULL) {
+    if (is.null(ovnames)) {
+      ovnames <- lavaan::lavNames(fit, "ov")
+    }
+    if (is.null(lvnames)) {
+      lvnames <- lavaan::lavNames(fit, "lv")
+    }
     if (is.null(fit_tmp)) {
         fit_tmp <- methods::new("lavaan",
                       version = as.character(utils::packageVersion("lavaan")))
@@ -607,8 +662,18 @@ get_implied_i_lavaan_mi <- function(est0, fit, fit_tmp = NULL) {
         fit_tmp@ParTable <- fit@ParTableList[[1]]
         fit_tmp@pta <- fit@pta
         fit_tmp@Options <- fit@Options
+        # If fit_tmp created here, ovnames_tmp and lvnames_tmp should be overwritten
+        ovnames_tmp <- lavaan::lavNames(fit_tmp, "ov")
+        lvnames_tmp <- lavaan::lavNames(fit_tmp, "lv")
+      } else {
+        if (is.null(ovnames_tmp)) {
+          ovnames_tmp <- lavaan::lavNames(fit_tmp, "ov")
+        }
+        if (is.null(lvnames_tmp)) {
+          lvnames_tmp <- lavaan::lavNames(fit_tmp, "lv")
+        }
       }
-    has_lv <- length(lavaan::lavNames(fit, "lv")) != 0
+    has_lv <- length(lvnames) != 0
     if (has_lv) {
         p_free <- fit_tmp@ParTable$free > 0
         fit_tmp@ParTable$est[p_free] <- unname(est0)
@@ -621,14 +686,14 @@ get_implied_i_lavaan_mi <- function(est0, fit, fit_tmp = NULL) {
                                              GLIST = NULL,
                                              delta = TRUE)$mean[[1]][, 1]
         if (is.numeric(implied_mean_ov)) {
-            names(implied_mean_ov) <- lavaan::lavNames(fit_tmp, "ov")
+            names(implied_mean_ov) <- ovnames_tmp
             class(implied_mean_ov) <- c("lavaan.vector", class(implied_mean_ov))
           }
         # SF: `lavaan` raises an error in some cases for unknown reasons
         implied_mean_lv <- tryCatch(lavaan::lavInspect(fit_tmp, "mean.lv"),
                                     error = function(e) e)
         if (inherits(implied_mean_lv, "error")) {
-            tmp <- lavaan::lavNames(fit_tmp, "lv")
+            tmp <- lvnames_tmp
             implied_mean_lv <- rep(NA, length(tmp))
             names(implied_mean_lv) <- tmp
           }
@@ -643,9 +708,9 @@ get_implied_i_lavaan_mi <- function(est0, fit, fit_tmp = NULL) {
                                              GLIST = NULL,
                                              delta = TRUE)
       }
-    tmpnames1 <- c(lavaan::lavNames(fit_tmp, "ov"),
-                   lavaan::lavNames(fit_tmp, "lv"))
-    tmpnames2 <- lavaan::lavNames(fit_tmp, "lv")
+    tmpnames1 <- c(ovnames_tmp,
+                   lvnames_tmp)
+    tmpnames2 <- lvnames_tmp
     out <- list(cov = lav_implied_all(fit_tmp)$cov,
                 mean = stats::setNames(rep(as.numeric(NA), length(tmpnames1)),
                                 tmpnames1))
