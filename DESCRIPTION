@@ -32,8 +32,6 @@ RoxygenNote: 7.3.2
 Suggests:
     knitr,
     rmarkdown,
-    semPlot,
-    semptools,
     lavaan.mi,
     Amelia,
     mice,
