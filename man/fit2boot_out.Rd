@@ -17,6 +17,7 @@ fit2boot_out_do_boot(
   make_cluster_args = list(),
   progress = TRUE,
   compute_implied_stats = TRUE,
+  compute_rsquare = FALSE,
   internal = list()
 )
 }
@@ -62,6 +63,14 @@ details. Default is \code{list()}.}
 
 \item{progress}{Logical. Display
 progress or not. Default is \code{TRUE}.}
+
+\item{compute_rsquare}{If
+\code{TRUE}, R-squares
+will be computed for each bootstrap
+sample (given by \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}).
+Default is \code{FALSE} because it is
+rarely necessary, and enabling it
+slows down the computation.}
 
 \item{internal}{A list of arguments
 to be used internally for debugging.
