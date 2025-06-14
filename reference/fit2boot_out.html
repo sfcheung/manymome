@@ -11,7 +11,7 @@ lavaan::sem()."><meta property="og:image" content="https://sfcheung.github.io/ma
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.8.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.8.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,6 +86,7 @@ estimates from the output of
 <span>  make_cluster_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  compute_implied_stats <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  compute_rsquare <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  internal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -150,6 +151,16 @@ details. Default is <code><a href="https://rdrr.io/r/base/list.html" class="exte
 <dt id="arg-progress">progress<a class="anchor" aria-label="anchor" href="#arg-progress"></a></dt>
 <dd><p>Logical. Display
 progress or not. Default is <code>TRUE</code>.</p></dd>
+
+
+<dt id="arg-compute-rsquare">compute_rsquare<a class="anchor" aria-label="anchor" href="#arg-compute-rsquare"></a></dt>
+<dd><p>If
+<code>TRUE</code>, R-squares
+will be computed for each bootstrap
+sample (given by <code><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">lavaan::parameterEstimates()</a></code>).
+Default is <code>FALSE</code> because it is
+rarely necessary, and enabling it
+slows down the computation.</p></dd>
 
 
 <dt id="arg-internal">internal<a class="anchor" aria-label="anchor" href="#arg-internal"></a></dt>
