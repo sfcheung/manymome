@@ -1,19 +1,29 @@
 
-coef2lor <- function(x) {
+coef2lor <- function(x,
+                     coefs_template = NULL) {
     y <- get_response(x)
     bs <- stats::coef(x)
     bnames <- names(bs)
     j <- which(bnames == "(Intercept)")
     k <- length(bs) - 1
-    out <- data.frame(lhs = rep(y, k),
-                      op = "~",
-                      rhs = bnames[-j],
-                      est = bs[-j])
-    out <- rbind(out,
-                 data.frame(lhs = y,
-                            op = "~1",
-                            rhs = "",
-                            est = bs[j]))
+    if (is.null(coefs_template)) {
+      out <- data.frame(lhs = rep(y, k),
+                        op = "~",
+                        rhs = bnames[-j],
+                        est = bs[-j])
+      out <- rbind(out,
+                  data.frame(lhs = y,
+                              op = "~1",
+                              rhs = "",
+                              est = bs[j]))
+    } else {
+      i <- match(bnames[-j],
+                 coefs_template$rhs)
+      coefs_template[i, "est"] <- bs[-j]
+      i <- which(coefs_template$op == "~1")
+      coefs_template[i, "est"] <- bs[j]
+      out <- coefs_template
+    }
     out
   }
 
@@ -67,8 +77,46 @@ merge_model_frame <- function(outputs) {
     mm2
   }
 
-
 merge_model_matrix <- function(outputs) {
+    mm <- lapply(outputs,
+                 function(x) {
+                    stats::model.matrix(x,
+                      contrasts.arg = x$contrasts)[, -1, drop = FALSE]
+                    # y_data <- get_response_data(x)
+                    # cbind(y_data, out)
+                  })
+    mmy <- lapply(outputs,
+                 function(x) {
+                    as.matrix(get_response_data(x))
+                  })
+    mm <- c(mm, mmy)
+    vnames <- unique(c(unlist(lapply(mm, colnames))))
+    p <- length(vnames)
+    n <- nrow(mm[[1]])
+    mm_out <- matrix(
+                NA,
+                nrow = n,
+                ncol = p
+              )
+    colnames(mm_out) <- vnames
+    # Assume the rows match across models
+    empty_cols <- vnames
+    for (i in seq_along(mm)) {
+      mm_i <- mm[[i]]
+      if (length(empty_cols) == 0) {
+        break
+      }
+      to_add <- intersect(colnames(mm_i),
+                          empty_cols)
+      mm_out[, to_add] <- mm_i[, to_add]
+      empty_cols <- setdiff(empty_cols,
+                            to_add)
+    }
+    data.frame(mm_out,
+               check.names = FALSE)
+  }
+
+merge_model_matrix_old <- function(outputs) {
     mm <- lapply(outputs,
                  function(x) {
                     out <- stats::model.matrix(x,

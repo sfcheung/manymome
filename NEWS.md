@@ -1,10 +1,14 @@
-# manymome 0.2.8.2
+# manymome 0.2.8.3
 
 ## Miscellaneous
 
 - Optimized the speed of `do_mc()`.
   It now runs much faster than previous
   versions. (0.2.8.1, 0.2.8.2)
+
+- Optimized the speed of `do_boot()`.
+  It now runs faster than previous
+  versions. (0.2.8.3)
 
 - Removed `semTools` and `semptools`
   from `Suggests` because vignettes

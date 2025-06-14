@@ -52,12 +52,21 @@
 #'
 
 lm2ptable <- function(outputs,
-                      compute_implied_stats = TRUE) {
+                      compute_implied_stats = TRUE,
+                      coefs_template = NULL) {
     if (!missing(outputs)) {
         outputs <- auto_lm2list(outputs)
       }
     mm <- merge_model_matrix(outputs)
-    coefs <- lapply(outputs, coef2lor)
+    if (is.null(coefs_template)) {
+      coefs <- lapply(outputs, coef2lor)
+    } else {
+      coefs <- mapply(coef2lor,
+                      x = outputs,
+                      coefs_template = coefs_template,
+                      SIMPLIFY = FALSE,
+                      USE.NAMES = FALSE)
+    }
     out <- do.call(rbind, coefs)
     row.names(out) <- NULL
     if (compute_implied_stats) {
@@ -68,6 +77,7 @@ lm2ptable <- function(outputs,
     list(est = out,
          data = mm,
          implied_stats = i_s,
-         vcov = lm_list_vcov(outputs),
+         vcov = lm_list_vcov(outputs,
+                             est = out),
          df_residual = lm_df_residual(outputs))
   }
