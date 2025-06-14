@@ -1,10 +1,10 @@
-# manymome 0.2.8.1
+# manymome 0.2.8.2
 
 ## Miscellaneous
 
 - Optimized the speed of `do_mc()`.
   It now runs much faster than previous
-  versions. (0.2.8.1)
+  versions. (0.2.8.1, 0.2.8.2)
 
 # manymome 0.2.8
 
