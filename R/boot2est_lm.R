@@ -120,16 +120,19 @@ lm2boot_out <- function(outputs, R = 100,
     dat <- merge_model_frame(outputs)
     n <- nrow(dat)
     if (!is.null(seed)) set.seed(seed)
+    coefs_template <- lapply(outputs, coef2lor)
     if (progress) {
         out0 <- pbapply::pbreplicate(R, lm_boot2est_i(d = dat,
                                           i = sample.int(n, replace = TRUE),
                                           outputs = outputs,
-                                          compute_implied_stats = compute_implied_stats), simplify = FALSE)
+                                          compute_implied_stats = compute_implied_stats,
+                                          coefs_template = coefs_template), simplify = FALSE)
       } else {
         out0 <- replicate(R, lm_boot2est_i(d = dat,
                                           i = sample.int(n, replace = TRUE),
                                           outputs = outputs,
-                                          compute_implied_stats = compute_implied_stats), simplify = FALSE)
+                                          compute_implied_stats = compute_implied_stats,
+                                          coefs_template = coefs_template), simplify = FALSE)
       }
     class(out0) <- "boot_out"
     out0
@@ -140,7 +143,9 @@ lm2boot_out <- function(outputs, R = 100,
 #' @noRd
 
 lm_boot2est_i <- function(d, i = NULL, outputs,
-                          compute_implied_stats = TRUE) {
+                          # compute_implied_stats = TRUE) {
+                          compute_implied_stats = TRUE,
+                          coefs_template = NULL) {
     if (!is.null(i)) {
         d_i <- d[i, ]
       } else {
@@ -148,7 +153,9 @@ lm_boot2est_i <- function(d, i = NULL, outputs,
       }
     out_i <- lapply(outputs, stats::update, data = d_i)
     lm2ptable(out_i,
-              compute_implied_stats = compute_implied_stats)
+              # compute_implied_stats = compute_implied_stats)
+              compute_implied_stats = compute_implied_stats,
+              coefs_template = coefs_template)
   }
 
 #' @param R The number of bootstrap

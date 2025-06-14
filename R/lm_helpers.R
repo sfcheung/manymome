@@ -1,19 +1,29 @@
 
-coef2lor <- function(x) {
+coef2lor <- function(x,
+                     coefs_template = NULL) {
     y <- get_response(x)
     bs <- stats::coef(x)
     bnames <- names(bs)
     j <- which(bnames == "(Intercept)")
     k <- length(bs) - 1
-    out <- data.frame(lhs = rep(y, k),
-                      op = "~",
-                      rhs = bnames[-j],
-                      est = bs[-j])
-    out <- rbind(out,
-                 data.frame(lhs = y,
-                            op = "~1",
-                            rhs = "",
-                            est = bs[j]))
+    if (is.null(coefs_template)) {
+      out <- data.frame(lhs = rep(y, k),
+                        op = "~",
+                        rhs = bnames[-j],
+                        est = bs[-j])
+      out <- rbind(out,
+                  data.frame(lhs = y,
+                              op = "~1",
+                              rhs = "",
+                              est = bs[j]))
+    } else {
+      i <- match(bnames[-j],
+                 coefs_template$rhs)
+      coefs_template[i, "est"] <- bs[-j]
+      i <- which(coefs_template$op == "~1")
+      coefs_template[i, "est"] <- bs[j]
+      out <- coefs_template
+    }
     out
   }
 
