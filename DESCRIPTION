@@ -1,6 +1,6 @@
 Package: manymome
 Title: Mediation, Moderation and Moderated-Mediation After Model Fitting
-Version: 0.2.8.1
+Version: 0.2.8.2
 Authors@R:
     c(person(given = "Shu Fai",
            family = "Cheung",
@@ -32,8 +32,6 @@ RoxygenNote: 7.3.2
 Suggests:
     knitr,
     rmarkdown,
-    semPlot,
-    semptools,
     lavaan.mi,
     Amelia,
     mice,
