@@ -198,6 +198,7 @@ mc2est <- function(fit,
                                            fit = fit,
                                            p_free = p_free,
                                            est_df = est_df0,
+                                           ptable = ptable_template,
                                            match_id = match_id,
                                            select_id = select_id))
       }
@@ -230,16 +231,33 @@ mc2implied <- function(fit,
     # out_all <- lapply(mc_est, get_implied_i,
     #                     fit = fit,
     #                     fit_tmp = fit_tmp)
+    ovnames <- lavaan::lavNames(fit, "ov")
+    lvnames <- lavaan::lavNames(fit, "lv")
+    if (!is.null(fit_tmp)) {
+      ovnames_tmp <- lavaan::lavNames(fit_tmp, "ov")
+      lvnames_tmp <- lavaan::lavNames(fit_tmp, "lv")
+    } else {
+      ovnames_tmp <- NULL
+      lvnames_tmp <- NULL
+    }
     if (progress) {
         out_all <- suppressWarnings(pbapply::pblapply(mc_est,
                                                       get_implied_i,
                                                       fit = fit,
-                                                      fit_tmp = fit_tmp))
+                                                      fit_tmp = fit_tmp,
+                                                      ovnames = ovnames,
+                                                      lvnames = lvnames,
+                                                      ovnames_tmp = ovnames_tmp,
+                                                      lvnames_tmp = lvnames_tmp))
       } else {
         out_all <- suppressWarnings(lapply(mc_est,
                                            get_implied_i,
                                            fit = fit,
-                                           fit_tmp = fit_tmp))
+                                           fit_tmp = fit_tmp,
+                                           ovnames = ovnames,
+                                           lvnames = lvnames,
+                                           ovnames_tmp = ovnames_tmp,
+                                           lvnames_tmp = lvnames_tmp))
       }
     out_all
   }

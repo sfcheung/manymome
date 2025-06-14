@@ -1,7 +1,15 @@
 #' @noRd
 
 lav_implied_all <- function(fit,
-                            group_number = NULL) {
+                            group_number = NULL,
+                            ovnames = NULL,
+                            lvnames = NULL) {
+    if (is.null(ovnames)) {
+      ovnames <- lavaan::lavNames(fit, "ov")
+    }
+    if (is.null(lvnames)) {
+      lvnames <- lavaan::lavNames(fit, "lv")
+    }
     type <- NA
     if (inherits(fit, "lavaan")) {
         type <- "lavaan"
@@ -14,18 +22,28 @@ lav_implied_all <- function(fit,
       }
     out <- switch(type,
                   lavaan = lav_implied_all_lavaan(fit,
-                                                  group_number = group_number),
+                                                  group_number = group_number,
+                                                  ovnames = ovnames,
+                                                  lvnames = lvnames),
                   lavaan.mi = lav_implied_all_lavaan_mi(fit,
-                                                        group_number = group_number))
+                                                        group_number = group_number,
+                                                        ovnames = ovnames,
+                                                        lvnames = lvnames))
     out
   }
 
 #' @noRd
 
 lav_implied_all_lavaan <- function(fit,
-                                   group_number = NULL) {
-    ovnames <- lavaan::lavNames(fit, "ov")
-    lvnames <- lavaan::lavNames(fit, "lv")
+                                   group_number = NULL,
+                                   ovnames = NULL,
+                                   lvnames = NULL) {
+    if (is.null(ovnames)) {
+      ovnames <- lavaan::lavNames(fit, "ov")
+    }
+    if (is.null(lvnames)) {
+      lvnames <- lavaan::lavNames(fit, "lv")
+    }
     allnames <- c(ovnames, lvnames)
     if (lavaan::lavInspect(fit, "meanstructure")) {
         if (length(lvnames) > 0) {
@@ -47,12 +65,22 @@ lav_implied_all_lavaan <- function(fit,
 #' @noRd
 
 lav_implied_all_lavaan_mi <- function(fit,
-                                      group_number = NULL) {
+                                      group_number = NULL,
+                                      ovnames = NULL,
+                                      lvnames = NULL) {
+    if (is.null(ovnames)) {
+      ovnames <- lavaan::lavNames(fit, "ov")
+    }
+    if (is.null(lvnames)) {
+      lvnames <- lavaan::lavNames(fit, "lv")
+    }
     est0 <- methods::getMethod("coef",
               signature = "lavaan.mi",
               where = asNamespace("lavaan.mi"))(fit)
     out <- get_implied_i_lavaan_mi(est0 = est0,
-                                   fit = fit)
+                                   fit = fit,
+                                   ovnames = ovnames,
+                                   lvnames = lvnames)
     out
   }
 
