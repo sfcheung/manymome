@@ -71,6 +71,14 @@
 #' is an experimental features to let
 #' the process run faster.
 #'
+#' @param compute_rsquare If
+#' `TRUE`, R-squares
+#' will be computed for each bootstrap
+#' sample (given by [lavaan::parameterEstimates()]).
+#' Default is `FALSE` because it is
+#' rarely necessary, and enabling it
+#' slows down the computation.
+#'
 #' @seealso [do_boot()], the general
 #' purpose function that users should
 #' try first before using this function.
@@ -187,6 +195,7 @@ fit2boot_out_do_boot <- function(fit,
                                  make_cluster_args = list(),
                                  progress = TRUE,
                                  compute_implied_stats = TRUE,
+                                 compute_rsquare = FALSE,
                                  internal = list()) {
     if (identical(internal$gen_boot, "update")) {
         environment(gen_boot_i_update) <- parent.frame()
@@ -194,7 +203,8 @@ fit2boot_out_do_boot <- function(fit,
       } else {
         # environment(gen_boot_i_lavaan) <- parent.frame()
         boot_i <- gen_boot_i_lavaan(fit,
-                                    compute_implied_stats = compute_implied_stats)
+                                    compute_implied_stats = compute_implied_stats,
+                                    compute_rsquare = compute_rsquare)
       }
     dat_org <- lav_data_used(fit,
                              drop_list_single_group = TRUE)
@@ -213,7 +223,9 @@ fit2boot_out_do_boot <- function(fit,
         if (isFALSE(identical(internal$gen_boot, "update"))) {
             # Try again
             environment(gen_boot_i_lavaan) <- parent.frame()
-            boot_i <- gen_boot_i_lavaan(fit)
+            boot_i <- gen_boot_i_lavaan(fit,
+                                        compute_implied_stats = compute_implied_stats,
+                                        compute_rsquare = compute_rsquare)
             boot_test <- suppressWarnings(boot_i(dat_org,
                                                 start = lavaan::parameterTable(fit)$start))
             if (!isTRUE(all.equal(unclass(lavaan::coef(fit)),
@@ -751,7 +763,8 @@ get_implied_i_lavaan_mi <- function(est0,
 #' @noRd
 
 gen_boot_i_lavaan <- function(fit,
-                              compute_implied_stats = TRUE) {
+                              compute_implied_stats = TRUE,
+                              compute_rsquare = FALSE) {
   fit_org <- eval(fit)
   # data_full <- lavaan::lavInspect(fit_org, "data")
   fit_data <- fit_org@Data
@@ -777,6 +790,7 @@ gen_boot_i_lavaan <- function(fit,
       force(fit_pt)
       force(fit)
       force(compute_implied_stats)
+      force(compute_rsquare)
       fit_pt1 <- fit_pt
       if (!is.null(start)) {
           fit_pt1$start <- start
@@ -860,7 +874,7 @@ gen_boot_i_lavaan <- function(fit,
                                   zstat = FALSE,
                                   pvalue = FALSE,
                                   ci = FALSE,
-                                  rsquare = TRUE,
+                                  rsquare = compute_rsquare,
                                   remove.eq = FALSE,
                                   remove.ineq = FALSE,
                                   remove.def = FALSE,
