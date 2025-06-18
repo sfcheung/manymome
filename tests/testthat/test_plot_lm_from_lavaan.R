@@ -2,7 +2,7 @@ library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
 
-test_that("kway plot" {
+test_that("kway plot", {
 
 dat <- data_med_mod_b_mod
 mod <-
