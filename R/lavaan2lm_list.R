@@ -290,6 +290,13 @@ predict.lm_from_lavaan <- function(object, newdata, ...) {
     dat0 <- stats::model.frame(tivs, newdata)
     mm <- stats::model.matrix(tivs, dat0) # No need for contrasts.arg
     p <- length(bs)
+    chk <- fix_product_term_order(from = names(bs),
+                                  to = colnames(mm))
+    if (!is.null(chk)) {
+      tmp <- names(bs)
+      tmp[chk$i] <- chk$new_names
+      names(bs) <- tmp
+    }
     out <- mm[, names(bs)] %*% matrix(bs, nrow = p, ncol = 1)
     unname(out[, 1])
   }
@@ -478,3 +485,43 @@ lavaan_get_dvs <- function(ptable) {
     out <- unique(ptable$lhs[i])
     out
   }
+
+#' @noRd
+
+fix_product_term_order <- function(
+                            from,
+                            to) {
+  to_change <- setdiff(
+                  from,
+                  to
+                )
+  if (length(to_change) == 0) {
+    return(NULL)
+  }
+  xw <- lapply(to_change,
+               function(x) {
+                  strsplit(x,
+                           split = ":",
+                           fixed = TRUE)[[1]]
+               })
+  to_comps <- sapply(to,
+               function(x) {
+                  strsplit(x,
+                           split = ":",
+                           fixed = TRUE)[[1]]
+               },
+               simplify = FALSE,
+               USE.NAMES = TRUE)
+  tmpfct <- function(xw_i) {
+    for (i in seq_along(to_comps)) {
+      if (setequal(xw_i, to_comps[[i]])) {
+        return(names(to_comps[i]))
+      }
+    }
+  }
+  xw_new <- sapply(xw,
+                   tmpfct)
+  i <- match(to_change, from)
+  list(i = i,
+       new_names = xw_new)
+}
