@@ -209,6 +209,26 @@
 #' [q_parallel_mediation()]) instead of
 #' call [q_mediation()].
 #'
+#' @param fit_method How the model is
+#' to be fitted. If set to `"lm"` or
+#' `"regresson"`,
+#' linear regression will be used
+#' (fitted by [stats::lm()]). If set
+#' to `"sem"` or `"lavaan"`, structural
+#' equation modeling will be used and
+#' the model will be fitted by
+#' [lavaan::sem()]. Default is `"lm"`.
+#'
+#' @param sem_args If `fit_method` is
+#' set to `"sem"` or `"lavaan"`, this
+#' is a named list of arguments to be
+#' passed to [lavaan::sem()]. Default
+#' is `list(missing = "fiml", fixed.x = TRUE)`.
+#' The argument `fixed.x = TRUE` is
+#' used to emulate the same implicit
+#' setting in
+#' regression fitted by [stats::lm()].
+#'
 #' @param parallel If `TRUE`, default,
 #' parallel processing will be used when
 #' doing bootstrapping.
@@ -226,7 +246,6 @@
 #'
 #' @param progress Logical. Display
 #' bootstrapping progress or not.
-#' Default is `TRUE`.
 #'
 #' @seealso [lmhelprs::many_lm()] for
 #' fitting several regression models
@@ -266,6 +285,8 @@ q_mediation <- function(x,
                         seed = NULL,
                         boot_type = c("perc", "bc"),
                         model = NULL,
+                        fit_method = c("lm", "regression", "sem", "lavaan"),
+                        sem_args = list(missing = "fiml", fixed.x = TRUE),
                         parallel = TRUE,
                         ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                         progress = TRUE) {
@@ -273,7 +294,13 @@ q_mediation <- function(x,
     stop("Must specify the model by setting the argument 'model'.")
   }
   boot_type <- match.arg(boot_type)
-
+  fit_method <- match.arg(fit_method)
+  if (fit_method == "sem") {
+    fit_method <- "lavaan"
+  }
+  if (fit_method == "regression") {
+    fit_method <- "lm"
+  }
   # ===== Form the model =====
 
   lm_forms <- switch(model,
@@ -290,24 +317,69 @@ q_mediation <- function(x,
                                                      m = m,
                                                      cov = cov))
 
-  # ==== Do listwise deletion ====
+  # ==== Do listwise deletion (lm only) ====
 
-  to_delete <- lm_listwise(formulas = lm_forms,
-                           data = data)
-  if (length(to_delete) > 0) {
-    data <- data[-to_delete, , drop = FALSE]
+  if (fit_method == "lm") {
+    to_delete <- lm_listwise(formulas = lm_forms,
+                            data = data)
+    if (length(to_delete) > 0) {
+      data <- data[-to_delete, , drop = FALSE]
+    }
   }
 
-  # ==== Regression analysis ====
+  # ==== Fit Model ====
 
-  lm_all <- sapply(c(m, y),
-                   function(xx) {NA},
-                   simplify = FALSE)
-  for (i in c(m, y)) {
-    lm_all[[i]] <- eval(bquote(lm(.(stats::as.formula(lm_forms[[i]])),
-                                  data = data)))
+  sem_model <- NULL
+
+  if (fit_method == "lm") {
+
+    # ==== Regression analysis ====
+
+    lm_all <- sapply(c(m, y),
+                    function(xx) {NA},
+                    simplify = FALSE)
+    for (i in c(m, y)) {
+      lm_all[[i]] <- eval(bquote(lm(.(stats::as.formula(lm_forms[[i]])),
+                                    data = data)))
+    }
+    lm_all <- lm2list(lm_all)
+
+  } else if (fit_method == "lavaan") {
+
+    # ==== SEM by lavaan ====
+
+    # Keep the name `lm_all` for backward compatibility
+
+    # TODO:
+    # - Need to handle categorical variables by writing a conversion function
+    sem_model <- paste0(lm_forms, collapse = "\n")
+
+    sem_args1 <- utils::modifyList(
+                    sem_args,
+                    list(model = sem_model,
+                         data = data)
+                  )
+    lm_all <- do.call(lavaan::sem,
+                      sem_args1)
+
+  } else {
+    # This block should not be reached
+    stop("Something's wrong. The fit method is not valid.")
   }
-  lm_all <- lm2list(lm_all)
+
+  # ==== do_* for lavaan ====
+
+  if (fit_method == "lavaan") {
+    # TODO:
+    # - Add mc_ci
+    boot_out <- do_boot(fit = lm_all,
+                        R = R,
+                        seed = seed,
+                        parallel = parallel,
+                        progress = progress)
+  } else {
+    boot_out <- NULL
+  }
 
   # ==== Indirect effect ====
 
@@ -315,11 +387,13 @@ q_mediation <- function(x,
                               x = x,
                               y = y,
                               exclude = unique(unlist(cov)))
+
   ind_ustd <- many_indirect_effects(paths = paths,
                                     fit = lm_all,
                                     R = R,
                                     boot_ci = TRUE,
                                     boot_type = boot_type,
+                                    boot_out = boot_out,
                                     level = level,
                                     seed = seed,
                                     progress = progress,
@@ -449,7 +523,10 @@ q_mediation <- function(x,
               model = model,
               x = x,
               y = y,
-              m = m)
+              m = m,
+              fit_method = fit_method,
+              sem_args = sem_args,
+              sem_model = sem_model)
   model_class <- switch(model,
                         simple = "q_simple_mediation",
                         serial = "q_serial_mediation",
@@ -514,9 +591,19 @@ q_simple_mediation <- function(x,
                                R = 100,
                                seed = NULL,
                                boot_type = c("perc", "bc"),
+                               fit_method = c("lm", "sem", "lavaan"),
+                               sem_args = list(missing = "fiml", fixed.x = TRUE),
                                parallel = TRUE,
                                ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                                progress = TRUE) {
+  boot_type <- match.arg(boot_type)
+  fit_method <- match.arg(fit_method)
+  if (fit_method == "sem") {
+    fit_method <- "lavaan"
+  }
+  if (fit_method == "regression") {
+    fit_method <- "lm"
+  }
   out <- q_mediation(x = x,
                      y = y,
                      m = m,
@@ -528,6 +615,8 @@ q_simple_mediation <- function(x,
                      seed = seed,
                      boot_type = boot_type,
                      model = "simple",
+                     fit_method = fit_method,
+                     sem_args = sem_args,
                      parallel = parallel,
                      progress = progress)
   out$call <- match.call()
@@ -590,9 +679,19 @@ q_serial_mediation <- function(x,
                                R = 100,
                                seed = NULL,
                                boot_type = c("perc", "bc"),
+                               fit_method = c("lm", "sem", "lavaan"),
+                               sem_args = list(missing = "fiml", fixed.x = TRUE),
                                parallel = TRUE,
                                ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                                progress = TRUE) {
+  boot_type <- match.arg(boot_type)
+  fit_method <- match.arg(fit_method)
+  if (fit_method == "sem") {
+    fit_method <- "lavaan"
+  }
+  if (fit_method == "regression") {
+    fit_method <- "lm"
+  }
   out <- q_mediation(x = x,
                      y = y,
                      m = m,
@@ -604,6 +703,8 @@ q_serial_mediation <- function(x,
                      seed = seed,
                      boot_type = boot_type,
                      model = "serial",
+                     fit_method = fit_method,
+                     sem_args = sem_args,
                      parallel = parallel,
                      progress = progress)
   out$call <- match.call()
@@ -665,9 +766,19 @@ q_parallel_mediation <- function(x,
                                  R = 100,
                                  seed = NULL,
                                  boot_type = c("perc", "bc"),
+                                 fit_method = c("lm", "sem", "lavaan"),
+                                 sem_args = list(missing = "fiml", fixed.x = TRUE),
                                  parallel = TRUE,
                                  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                                  progress = TRUE) {
+  boot_type <- match.arg(boot_type)
+  fit_method <- match.arg(fit_method)
+  if (fit_method == "sem") {
+    fit_method <- "lavaan"
+  }
+  if (fit_method == "regression") {
+    fit_method <- "lm"
+  }
   out <- q_mediation(x = x,
                      y = y,
                      m = m,
@@ -679,6 +790,8 @@ q_parallel_mediation <- function(x,
                      seed = seed,
                      boot_type = boot_type,
                      model = "parallel",
+                     fit_method = fit_method,
+                     sem_args = sem_args,
                      parallel = parallel,
                      progress = progress)
   out$call <- match.call()
@@ -925,6 +1038,8 @@ print.q_mediation <- function(x,
                               lm_ci_level = .95,
                               ...) {
 
+  fit_method <- x$fit_method
+
   # ==== Print basic information ====
 
   model_name <- switch(x$model,
@@ -946,40 +1061,116 @@ print.q_mediation <- function(x,
   cat("\nModel:", model_name)
   cat("\n")
 
-  cat("\n")
-  cat("The regression models fitted:")
-  cat("\n")
-  cat("\n")
-  cat(x$lm_form,
-      sep = "\n")
+  if (fit_method == "lm") {
+    cat("\n")
+    cat("The regression models fitted:")
+    cat("\n")
+    cat("\n")
+    cat(x$lm_form,
+        sep = "\n")
 
-  n <- stats::nobs(x$lm_out[[1]])
-  cat("\n")
-  cat("The number of cases included:", n, "\n")
-
-  # ==== Print the regression results ====
-
-  cat("\n")
-  cat("===================================================\n")
-  cat("|               Regression Results                |\n")
-  cat("===================================================\n")
-
-  tmp <- tryCatch(utils::capture.output(print(summary(x$lm_out,
-                                                      betaselect = lm_beta,
-                                                      ci = lm_ci,
-                                                      level = lm_ci_level),
-                                              digits_decimal = digits)),
-                  error = function(e) e)
-  if (inherits(tmp, "error")) {
-    tmp <- utils::capture.output(print(summary(x$lm_out),
-                                      digits = digits))
+    n <- stats::nobs(x$lm_out[[1]])
+    cat("\n")
+    cat("The number of cases included:", n, "\n")
   }
-  i <- grepl("^<environment:", tmp)
-  # tmp <- tmp[!i]
-  tmp[i] <- ""
 
-  cat(tmp,
-      sep = "\n")
+  if (fit_method == "lavaan") {
+    cat("\n")
+    cat("The path model fitted:")
+    cat("\n")
+    cat("\n")
+    cat(x$sem_model,
+        "\n")
+    fit_missing <- x$lm_out@Options$missing
+    missing_str <- switch(
+        fit_missing,
+        ml = "FIML (full information maximum likelihood)",
+        fiml = "FIML (full information maximum likelihood)",
+        listwise = "Listwise deletion",
+        ml.x = "FIML (full information maximum likelihood) (cases with missing x kept)",
+        paste(fit_missing, "(See the help page of lavaan on this optoin)")
+      )
+    ntotal <- lavaan::lavInspect(
+                x$lm_out,
+                "ntotal"
+              )
+    norig <- lavaan::lavInspect(
+                x$lm_out,
+                "norig"
+              )
+    cat("\n")
+    cat("The original number of cases:", norig, "\n")
+    cat("The number of cases in the analysis:", ntotal, "\n")
+    cat("Missing data handling:",
+        missing_str,
+        "\n")
+    if (ntotal == norig) {
+      cat("No missing data in this analysis.\n")
+    }
+
+  }
+
+  # ==== Print path coefficients ====
+
+  if (fit_method == "lm") {
+
+    # ==== Print the regression results ====
+
+    cat("\n")
+    cat("===================================================\n")
+    cat("|               Regression Results                |\n")
+    cat("===================================================\n")
+
+    tmp <- tryCatch(utils::capture.output(print(summary(x$lm_out,
+                                                        betaselect = lm_beta,
+                                                        ci = lm_ci,
+                                                        level = lm_ci_level),
+                                                digits_decimal = digits)),
+                    error = function(e) e)
+    if (inherits(tmp, "error")) {
+      tmp <- utils::capture.output(print(summary(x$lm_out),
+                                        digits = digits))
+    }
+    i <- grepl("^<environment:", tmp)
+    # tmp <- tmp[!i]
+    tmp[i] <- ""
+
+    cat(tmp,
+        sep = "\n")
+  }
+
+  if (fit_method == "lavaan") {
+
+    # ==== Print path analysis results ====
+
+    cat("\n")
+    cat("===================================================\n")
+    cat("|             Path Analysis Results               |\n")
+    cat("===================================================\n")
+    cat("\n")
+
+    print(x$lm_out)
+
+    # TODO:
+    # - Need to improve the printout for users
+    #   not familiar with lavaan.
+
+    est <- lavaan::parameterEstimates(
+            x$lm_out,
+            rsquare = TRUE,
+            output = "text"
+          )
+
+    i_var <- (est$op == "~~") &
+             (est$lhs == est$rhs)
+
+    est <- est[!i_var, ]
+
+    cat("\nParameter Estimates:\n")
+
+    print(est)
+
+  }
 
   # ==== Print indirect effects ====
 

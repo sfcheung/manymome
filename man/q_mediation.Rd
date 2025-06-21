@@ -20,6 +20,8 @@ q_mediation(
   seed = NULL,
   boot_type = c("perc", "bc"),
   model = NULL,
+  fit_method = c("lm", "regression", "sem", "lavaan"),
+  sem_args = list(missing = "fiml", fixed.x = TRUE),
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -36,6 +38,8 @@ q_simple_mediation(
   R = 100,
   seed = NULL,
   boot_type = c("perc", "bc"),
+  fit_method = c("lm", "sem", "lavaan"),
+  sem_args = list(missing = "fiml", fixed.x = TRUE),
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -52,6 +56,8 @@ q_serial_mediation(
   R = 100,
   seed = NULL,
   boot_type = c("perc", "bc"),
+  fit_method = c("lm", "sem", "lavaan"),
+  sem_args = list(missing = "fiml", fixed.x = TRUE),
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -68,6 +74,8 @@ q_parallel_mediation(
   R = 100,
   seed = NULL,
   boot_type = c("perc", "bc"),
+  fit_method = c("lm", "sem", "lavaan"),
+  sem_args = list(missing = "fiml", fixed.x = TRUE),
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -169,6 +177,26 @@ the corresponding wrappers directly
 \code{\link[=q_parallel_mediation]{q_parallel_mediation()}}) instead of
 call \code{\link[=q_mediation]{q_mediation()}}.}
 
+\item{fit_method}{How the model is
+to be fitted. If set to \code{"lm"} or
+\code{"regresson"},
+linear regression will be used
+(fitted by \code{\link[stats:lm]{stats::lm()}}). If set
+to \code{"sem"} or \code{"lavaan"}, structural
+equation modeling will be used and
+the model will be fitted by
+\code{\link[lavaan:sem]{lavaan::sem()}}. Default is \code{"lm"}.}
+
+\item{sem_args}{If \code{fit_method} is
+set to \code{"sem"} or \code{"lavaan"}, this
+is a named list of arguments to be
+passed to \code{\link[lavaan:sem]{lavaan::sem()}}. Default
+is \code{list(missing = "fiml", fixed.x = TRUE)}.
+The argument \code{fixed.x = TRUE} is
+used to emulate the same implicit
+setting in
+regression fitted by \code{\link[stats:lm]{stats::lm()}}.}
+
 \item{parallel}{If \code{TRUE}, default,
 parallel processing will be used when
 doing bootstrapping.}
@@ -185,8 +213,7 @@ detected by
 \code{make_cluster_args} in \code{\link[=do_boot]{do_boot()}}.}
 
 \item{progress}{Logical. Display
-bootstrapping progress or not.
-Default is \code{TRUE}.}
+bootstrapping progress or not.}
 
 \item{digits}{Number of digits to
 display. Default is 4.}
