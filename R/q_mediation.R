@@ -273,7 +273,9 @@ q_mediation <- function(x,
     stop("Must specify the model by setting the argument 'model'.")
   }
   boot_type <- match.arg(boot_type)
-  # Form the model
+
+  # ===== Form the model =====
+
   lm_forms <- switch(model,
                      simple = form_models_simple(x = x,
                                                  y = y,
@@ -288,14 +290,16 @@ q_mediation <- function(x,
                                                      m = m,
                                                      cov = cov))
 
-  # Do listwise deletion
+  # ==== Do listwise deletion ====
+
   to_delete <- lm_listwise(formulas = lm_forms,
                            data = data)
   if (length(to_delete) > 0) {
     data <- data[-to_delete, , drop = FALSE]
   }
 
-  # Regression analysis
+  # ==== Regression analysis ====
+
   lm_all <- sapply(c(m, y),
                    function(xx) {NA},
                    simplify = FALSE)
@@ -305,7 +309,8 @@ q_mediation <- function(x,
   }
   lm_all <- lm2list(lm_all)
 
-  # Indirect effect
+  # ==== Indirect effect ====
+
   paths <- all_indirect_paths(lm_all,
                               x = x,
                               y = y,
@@ -320,7 +325,9 @@ q_mediation <- function(x,
                                     progress = progress,
                                     ncores = ncores,
                                     parallel = parallel)
-  # Store the bootstrap estimates
+
+  # ==== Store the bootstrap estimates ====
+
   ind_with_boot_out <- ind_ustd[[1]]
   ind_stdy <- many_indirect_effects(paths = paths,
                                     fit = lm_all,
@@ -360,14 +367,14 @@ q_mediation <- function(x,
                                     standardized_x = TRUE,
                                     boot_out = ind_with_boot_out)
 
-  # Total indirect effects
+  # ==== Total indirect effects ====
 
   ind_total_ustd <- total_indirect_effect(ind_ustd, x = x, y = y)
   ind_total_stdx <- total_indirect_effect(ind_stdx, x = x, y = y)
   ind_total_stdy <- total_indirect_effect(ind_stdy, x = x, y = y)
   ind_total_std0 <- total_indirect_effect(ind_std0, x = x, y = y)
 
-  # Direct effects
+  # ==== Direct effects ====
 
   direct_path <- list(path = list(x = x,
                                   y = y,
@@ -422,7 +429,8 @@ q_mediation <- function(x,
                                     standardized_x = TRUE,
                                     boot_out = ind_with_boot_out)
 
-  # Combine the output
+  # ==== Combine the output ====
+
   out <- list(lm_out = lm_all,
               lm_form = lm_forms,
               ind_out = list(ustd = ind_ustd,
@@ -916,7 +924,9 @@ print.q_mediation <- function(x,
                               lm_beta = TRUE,
                               lm_ci_level = .95,
                               ...) {
-  # Print basic information
+
+  # ==== Print basic information ====
+
   model_name <- switch(x$model,
                        simple = "Simple Mediation Model",
                        serial = "Serial Mediation Model",
@@ -947,7 +957,7 @@ print.q_mediation <- function(x,
   cat("\n")
   cat("The number of cases included:", n, "\n")
 
-  # Print the regression results
+  # ==== Print the regression results ====
 
   cat("\n")
   cat("===================================================\n")
@@ -971,7 +981,7 @@ print.q_mediation <- function(x,
   cat(tmp,
       sep = "\n")
 
-  # Print indirect effects
+  # ==== Print indirect effects ====
 
   if (!is.null(x$ind_out$ustd) ||
       !is.null(x$ind_out$stdx) ||
@@ -1043,7 +1053,7 @@ print.q_mediation <- function(x,
           ...)
   }
 
-  # Print total effects
+  # ==== Print total effects ====
 
   print_total <- (x$model != "simple")
 
@@ -1105,7 +1115,7 @@ print.q_mediation <- function(x,
           ...)
   }
 
-  # Print indirect effects
+  # ==== Print direct effects ====
 
   print_direct <- !is.null(x$dir_out$ustd) ||
                   !is.null(x$dir_out$stdx) ||
@@ -1166,6 +1176,8 @@ print.q_mediation <- function(x,
           for_each_path = for_each_path,
           ...)
   }
+
+  # ==== Print Notes ====
 
   str_note <- character(0)
 
