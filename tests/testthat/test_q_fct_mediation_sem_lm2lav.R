@@ -153,7 +153,7 @@ parameterEstimates(fit,
 
 tmp$coefficients
 
-lm_from_lavaan_list_i(fit)
+lm_from_lavaan_list(fit)
 
 })
 
