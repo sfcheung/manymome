@@ -1260,6 +1260,12 @@ print.q_mediation <- function(x,
                 x$lm_out,
                 "norig"
               )
+    miss_patterns <- lavaan::lavInspect(
+                x$lm_out,
+                "patterns"
+              )
+    n_patterns <- nrow(miss_patterns)
+    has_no_na <- (max(rowSums(miss_patterns)) == ncol(miss_patterns))
     cat("\n")
     cat("The original number of cases:", norig, "\n")
     cat("The number of cases in the analysis:", ntotal, "\n")
@@ -1279,7 +1285,9 @@ print.q_mediation <- function(x,
     cat("Missing data handling:",
         missing_str,
         "\n")
-    if (ntotal == norig) {
+
+    if ((n_patterns == 1) &&
+        has_no_na) {
       cat("No missing data in this analysis.\n")
     }
 
