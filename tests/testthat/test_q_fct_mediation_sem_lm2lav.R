@@ -59,7 +59,6 @@ mf_from_lm <- function(
 }
 
 #' @noRd
-# TODO: Fix names that will be incompatable with lavaan
 fix_names_for_lavaan <- function(data) {
   for (i in seq_len(ncol(data))) {
     data[, i] <- fix_names_for_lavaan_i(data[, i, drop = TRUE])
@@ -161,18 +160,26 @@ mm_from_lm_forms <- function(
 # - A lavaan model syntax
 b_names_to_lavaan_model <- function(
                               x,
-                              merge = TRUE) {
-  tmpfct <- function(x_i, y_i) {
+                              merge = TRUE,
+                              null_y = character(0)) {
+  tmpfct <- function(x_i, y_i, null_y = y_i) {
     x_i <- x_i[-which(x_i == "(Intercept)")]
+    if (y_i %in% null_y) {
+      tmp <- "0*"
+    } else {
+      tmp <- character(0)
+    }
     paste0(y_i,
            " ~ ",
-           paste0(x_i,
+           paste0(tmp,
+                  x_i,
                   collapse = " + "))
   }
   out0 <- mapply(
               tmpfct,
               x_i = x,
               y_i = names(x),
+              MoreArgs = list(null_y = null_y),
               SIMPLIFY = FALSE
             )
   if (merge) {
@@ -281,15 +288,18 @@ lm_from_lavaan_list_for_q <- function(
   rsq_list <- sapply(dvs, lavaan_get_rsq,
                       ptable = ptable,
                       simplify = FALSE)
+  # Null models
+  fit_null <- fit_null(
+                mm = mm,
+                fit = fit
+              )
+  rsq_test <- rsquare_test(fit = fit,
+                           fit_null = fit_null)
   # Combine them
   coefs_list <- mapply(function(x, y) {rbind(x, y)},
                       x = int_list,
                       y = bs_list,
                       SIMPLIFY = FALSE)
-
-  # TODO:
-  # - Add CIs
-  # - Add betas
 
   # lm_version
   term_types <- sapply(dvs,
@@ -310,14 +320,25 @@ lm_from_lavaan_list_for_q <- function(
   # Generate lm_like_object
   mods <- mapply(to_formula, dv = dvs, ivs = ivs_list)
   # Return an lm_list object
-  out <- mapply(function(dv, model, ivs, coefs, coefs_lm, rsq) {
+  out <- mapply(function(dv,
+                         model,
+                         ivs,
+                         coefs,
+                         coefs_lm,
+                         rsq,
+                         rsq_test,
+                         fit_null_lrt,
+                         fit_null) {
                   list(
                         dv = dv,
                         model = model,
                         ivs = ivs,
                         coefs = coefs,
                         coefs_lm = coefs_lm,
-                        rsquare = rsq
+                        rsquare = rsq,
+                        rsq_test = rsq_test,
+                        fit_null_lrt = fit_null_lrt,
+                        fit_null = fit_null
                       )
                 },
                 dv = dvs,
@@ -325,6 +346,9 @@ lm_from_lavaan_list_for_q <- function(
                 ivs = ivs_list,
                 coefs = coefs_list,
                 rsq = rsq_list,
+                rsq_test = rsq_test$pvalues,
+                fit_null_lrt = rsq_test$lrt_out,
+                fit_null = fit_null,
                 coefs_lm = coefs_lm_list,
                 SIMPLIFY = FALSE,
                 USE.NAMES = TRUE)
@@ -406,6 +430,84 @@ numeric_ivs <- function(mm, y) {
   b_types
 }
 
+#' @noRd
+# Fit a null model for each dv
+# Input:
+# - mm: Output of mm_from_lm_forms
+# - ift: lavaan output
+# Output:
+# - A list of lavaan output
+fit_null <- function(
+                mm,
+                fit
+              ) {
+  dvs <- names(mm$model_matrices)
+  mod_null <- sapply(
+                  dvs,
+                  function(y) {
+                    b_names_to_lavaan_model(
+                      x = mm$b_names,
+                      null_y = y)
+                  },
+                  simplify = FALSE,
+                  USE.NAMES = TRUE)
+  fit_data <- fit@Data
+  fit_model <- fit@Model
+  fit_sampstats <- fit@SampleStats
+  fit_opts <- fit@Options
+  fit_pt <- fit@ParTable
+
+  out0 <- sapply(mod_null,
+                 function(x) {
+                    out <- lavaan::lavaan(
+                          model = x,
+                          slotData = fit_data,
+                          slotSampleStats = fit_sampstats,
+                          slotOptions = fit_opts
+                        )
+                 },
+                 simplify = FALSE,
+                 USE.NAMES = TRUE)
+  out0
+}
+
+#' @noRd
+# Test R-squares
+# Input:
+# - The original model
+# - A named list of null models
+# Output:
+# - A named list of lavTestLRT() output
+rsquare_test <- function(
+                  fit,
+                  fit_null,
+                  ...
+                ) {
+  dvs <- names(fit_null)
+  tmpfct <- function(fit0, fit1, ...) {
+    outi <- lavaan::lavTestLRT(
+                  fit0,
+                  fit1,
+                  ...
+                )
+    outi
+  }
+  out0 <- sapply(fit_null,
+                 tmpfct,
+                 fit1 = fit,
+                 simplify = FALSE,
+                 USE.NAMES = TRUE)
+  pvalues <- sapply(out0,
+                    function(x) {
+                      x["fit0", "Pr(>Chisq)"]
+                    },
+                    simplify = TRUE,
+                    USE.NAMES = TRUE)
+  out0 <- list(lrt_out = out0,
+               pvalues = pvalues)
+}
+
+
 # Test
 
 mm <- mm_from_lm_forms(
@@ -413,12 +515,36 @@ mm <- mm_from_lm_forms(
             data = dat
           )
 mod <- b_names_to_lavaan_model(mm$b_names)
+mod_null_y <- b_names_to_lavaan_model(mm$b_names, null_y = "y")
+mod_null_m1 <- b_names_to_lavaan_model(mm$b_names, null_y = "m1")
 fit <- lavaan::sem(
           model = mod,
           data = mm$model_matrix,
           missing = "fiml.x",
           meanstructure = TRUE
         )
+fit_null_y <- lavaan::sem(
+          model = mod_null_y,
+          data = mm$model_matrix,
+          missing = "fiml.x",
+          meanstructure = TRUE
+        )
+fit_null_m1 <- lavaan::sem(
+          model = mod_null_m1,
+          data = mm$model_matrix,
+          missing = "fiml.x",
+          meanstructure = TRUE
+        )
+lavTestLRT(fit_null_y, fit)
+lavTestLRT(fit_null_m1, fit)
+
+fit_null <- fit_null(
+                mm = mm,
+                fit = fit
+              )
+fit_rsq <- rsquare_test(fit = fit,
+                        fit_null = fit_null)
+
 lm_from_lavaan <- lm_from_lavaan_list_for_q(
                     fit = fit,
                     mm = mm
