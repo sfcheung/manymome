@@ -211,7 +211,7 @@
 #'
 #' @param fit_method How the model is
 #' to be fitted. If set to `"lm"` or
-#' `"regresson"`,
+#' `"regression"`,
 #' linear regression will be used
 #' (fitted by [stats::lm()]). If set
 #' to `"sem"` or `"lavaan"`, structural
@@ -228,6 +228,16 @@
 #' used to emulate the same implicit
 #' setting in
 #' regression fitted by [stats::lm()].
+#'
+#' @param na.action How missing data is
+#' handled. Used only when `fit_method`
+#' is set to `"sem"` or `"lavaan"`. If
+#' `"na.pass"`, the default, then all
+#' data will be passed to `lavaan`, and
+#' full information maximum likelihood
+#' (`fiml`) will be used to handle
+#' missing data. If `"na.omit"`, then
+#' listwise deletion will be used.
 #'
 #' @param parallel If `TRUE`, default,
 #' parallel processing will be used when
@@ -287,6 +297,7 @@ q_mediation <- function(x,
                         model = NULL,
                         fit_method = c("lm", "regression", "sem", "lavaan"),
                         sem_args = list(missing = "fiml", fixed.x = TRUE),
+                        na.action = "na.pass",
                         parallel = TRUE,
                         ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                         progress = TRUE) {
@@ -330,6 +341,8 @@ q_mediation <- function(x,
   # ==== Fit Model ====
 
   sem_model <- NULL
+  mm <- NULL
+  lm_out_lav <- NULL
 
   if (fit_method == "lm") {
 
@@ -352,15 +365,27 @@ q_mediation <- function(x,
 
     # TODO:
     # - Need to handle categorical variables by writing a conversion function
-    sem_model <- paste0(lm_forms, collapse = "\n")
+    mm <- mm_from_lm_forms(
+            lm_forms,
+            data = data,
+            na.action = na.action
+          )
+    sem_model <- b_names_to_lavaan_model(mm$b_names)
 
     sem_args1 <- utils::modifyList(
                     sem_args,
                     list(model = sem_model,
-                         data = data)
+                         data = mm$model_matrix,
+                         meanstructure = TRUE)
                   )
+
     lm_all <- do.call(lavaan::sem,
                       sem_args1)
+
+    lm_out_lav <- lm_from_lavaan_list_for_q(
+                    fit = lm_all,
+                    mm = mm
+                  )
 
   } else {
     # This block should not be reached
@@ -526,7 +551,9 @@ q_mediation <- function(x,
               m = m,
               fit_method = fit_method,
               sem_args = sem_args,
-              sem_model = sem_model)
+              sem_model = sem_model,
+              lm_out_lav = lm_out_lav,
+              model_matrices = mm)
   model_class <- switch(model,
                         simple = "q_simple_mediation",
                         serial = "q_serial_mediation",
