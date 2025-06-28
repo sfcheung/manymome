@@ -352,6 +352,9 @@ q_mediation <- function(x,
   sem_model <- NULL
   mm <- NULL
   lm_out_lav <- NULL
+  fixed.x <- NULL
+  lm_all_x <- character(0)
+  x_miss <- integer(0)
 
   if (fit_method == "lm") {
 
@@ -383,12 +386,20 @@ q_mediation <- function(x,
                     sem_args,
                     list(model = sem_model,
                          data = mm$model_matrix,
-                         meanstructure = TRUE)
+                         meanstructure = TRUE,
+                         warn = FALSE)
                   )
 
     lm_all <- do.call(lavaan::sem,
                       sem_args1)
 
+    fixed.x <- lavaan::lavTech(lm_all, "fixed.x")
+    lm_all_x <- lavaan::lavNames(lm_all, "ov.x")
+    x_miss <- sum(
+                !stats::complete.cases(
+                  mm$model_matrix[, lm_all_x, drop = FALSE]
+                )
+              )
     lm_out_lav <- lm_from_lavaan_list_for_q(
                     fit = lm_all,
                     mm = mm
@@ -442,11 +453,11 @@ q_mediation <- function(x,
 
   # ==== Store the bootstrap estimates ====
 
-  ind_with_boot_out <- ind_ustd[[1]]
+  ind_with_ci_out <- ind_ustd[[1]]
   ind_stdy <- many_indirect_effects(paths = paths,
                                     fit = lm_all,
                                     R = R,
-                                    boot_ci = TRUE,
+                                    ci_type = ci_type,
                                     boot_type = boot_type,
                                     level = level,
                                     seed = seed,
@@ -454,11 +465,11 @@ q_mediation <- function(x,
                                     ncores = ncores,
                                     parallel = FALSE,
                                     standardized_y = TRUE,
-                                    boot_out = ind_with_boot_out)
+                                    ci_out = ind_with_ci_out)
   ind_stdx <- many_indirect_effects(paths = paths,
                                     fit = lm_all,
                                     R = R,
-                                    boot_ci = TRUE,
+                                    ci_type = ci_type,
                                     boot_type = boot_type,
                                     level = level,
                                     seed = seed,
@@ -466,11 +477,11 @@ q_mediation <- function(x,
                                     ncores = ncores,
                                     parallel = FALSE,
                                     standardized_x = TRUE,
-                                    boot_out = ind_with_boot_out)
+                                    ci_out = ind_with_ci_out)
   ind_std0 <- many_indirect_effects(paths = paths,
                                     fit = lm_all,
                                     R = R,
-                                    boot_ci = TRUE,
+                                    ci_type = ci_type,
                                     boot_type = boot_type,
                                     level = level,
                                     seed = seed,
@@ -479,7 +490,7 @@ q_mediation <- function(x,
                                     parallel = FALSE,
                                     standardized_y = TRUE,
                                     standardized_x = TRUE,
-                                    boot_out = ind_with_boot_out)
+                                    ci_out = ind_with_ci_out)
 
   # ==== Total indirect effects ====
 
@@ -497,18 +508,18 @@ q_mediation <- function(x,
   dir_ustd <- many_indirect_effects(paths = direct_path,
                                     fit = lm_all,
                                     R = R,
-                                    boot_ci = TRUE,
+                                    ci_type = ci_type,
                                     boot_type = boot_type,
                                     level = level,
                                     seed = seed,
                                     progress = progress,
                                     ncores = ncores,
                                     parallel = parallel,
-                                    boot_out = ind_with_boot_out)
+                                    ci_out = ind_with_ci_out)
   dir_stdy <- many_indirect_effects(paths = direct_path,
                                     fit = lm_all,
                                     R = R,
-                                    boot_ci = TRUE,
+                                    ci_type = ci_type,
                                     boot_type = boot_type,
                                     level = level,
                                     seed = seed,
@@ -516,11 +527,11 @@ q_mediation <- function(x,
                                     ncores = ncores,
                                     parallel = FALSE,
                                     standardized_y = TRUE,
-                                    boot_out = ind_with_boot_out)
+                                    ci_out = ind_with_ci_out)
   dir_stdx <- many_indirect_effects(paths = direct_path,
                                     fit = lm_all,
                                     R = R,
-                                    boot_ci = TRUE,
+                                    ci_type = ci_type,
                                     boot_type = boot_type,
                                     level = level,
                                     seed = seed,
@@ -528,11 +539,11 @@ q_mediation <- function(x,
                                     ncores = ncores,
                                     parallel = FALSE,
                                     standardized_x = TRUE,
-                                    boot_out = ind_with_boot_out)
+                                    ci_out = ind_with_ci_out)
   dir_std0 <- many_indirect_effects(paths = direct_path,
                                     fit = lm_all,
                                     R = R,
-                                    boot_ci = TRUE,
+                                    ci_type = ci_type,
                                     boot_type = boot_type,
                                     level = level,
                                     seed = seed,
@@ -541,7 +552,7 @@ q_mediation <- function(x,
                                     parallel = FALSE,
                                     standardized_y = TRUE,
                                     standardized_x = TRUE,
-                                    boot_out = ind_with_boot_out)
+                                    ci_out = ind_with_ci_out)
 
   # ==== Combine the output ====
 
@@ -568,7 +579,10 @@ q_mediation <- function(x,
               sem_args = sem_args,
               sem_model = sem_model,
               lm_out_lav = lm_out_lav,
-              model_matrices = mm)
+              model_matrices = mm,
+              fixed.x = fixed.x,
+              x_miss = x_miss,
+              lm_all_x = lm_all_x)
   model_class <- switch(model,
                         simple = "q_simple_mediation",
                         serial = "q_serial_mediation",
@@ -1171,6 +1185,19 @@ print.q_mediation <- function(x,
     cat("\n")
     cat("The original number of cases:", norig, "\n")
     cat("The number of cases in the analysis:", ntotal, "\n")
+
+    if ((x$x_miss > 0) &&
+        x$fixed.x &&
+        (fit_missing %in% c("ml", "fiml"))) {
+      cat(x$x_miss, "case(s) deleted due to missing data on 'x' variable(s).\n")
+      cat("The x-variable(s) in the lavaan model:",
+          paste0(x$lm_all_x, collapse = ", "),
+          "\n")
+      cat("To include these cases, set these arguments in 'sem_args':\n",
+          "missing = 'fiml.x'\n",
+          "fixed.x = FALSE\n")
+    }
+
     cat("Missing data handling:",
         missing_str,
         "\n")
