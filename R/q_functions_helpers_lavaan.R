@@ -225,10 +225,45 @@ lm_from_lavaan_list_for_q <- function(
                                   rsq_test = TRUE
                                 ) {
   # Assume it has only one group
-  ptable <- lavaan::parameterEstimates(fit,
-                                       standardized = TRUE,
-                                       level = ci_level,
-                                       rsquare = TRUE)
+  fixed.x <- lavaan::lavTech(fit, "fixed.x")
+  if (fixed.x) {
+    ptable <- lavaan::parameterEstimates(fit,
+                                        standardized = TRUE,
+                                        level = ci_level,
+                                        rsquare = TRUE)
+  } else {
+    # Need to refit the model to get std.nox
+    # lavaan does not compute std.nox if fixed.x is FALSE
+    fit_data <- fit@Data
+    fit_model <- fit@Model
+    fit_sampstats <- fit@SampleStats
+    fit_opts <- fit@Options
+    fit_pt <- fit@ParTable
+    fit_opts$se <- "none"
+    fit_opts$test <- "none"
+    fit_opts$baseline <- FALSE
+    fit_opts$fixed.x <- TRUE
+    fit_pt$start <- fit_pt$est
+    fit_random_x <- lavaan::lavaan(
+                        slotModel = fit_model,
+                        slotSampleStats = fit_sampstats,
+                        slotOptions = fit_opts,
+                        slotParTable = fit_pt,
+                        slotData = fit_data
+                      )
+    ptable <- lavaan::parameterEstimates(fit,
+                                        standardized = TRUE,
+                                        level = ci_level,
+                                        rsquare = TRUE)
+    tmp <- lavaan::parameterEstimates(fit_random_x,
+                                      standardized = "std.nox",
+                                      se = FALSE,
+                                      zstat = FALSE,
+                                      pvalue = FALSE,
+                                      ci = FALSE,
+                                      rsquare = TRUE)
+    ptable$std.nox <- tmp$std.nox
+  }
   b_names <- mm$b_names
   # ==== Get all dvs (ov.nox, lv.ox) ====
   dvs <- names(b_names)
