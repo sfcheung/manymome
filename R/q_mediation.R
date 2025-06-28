@@ -226,15 +226,31 @@
 #' the model will be fitted by
 #' [lavaan::sem()]. Default is `"lm"`.
 #'
+#' @param missing If `fit_method` is
+#' set to `"sem"` or `"lavaan"`, this
+#' argument determine how missing data
+#' is handled. The default value is
+#' `"fiml"` and full information maximum
+#' likelihood will be used to handle
+#' missing data. Please refer to
+#' [lavaan::lavOptions] for other options.
+#'
+#' @param fixed.x If `fit_method` is
+#' set to `"sem"` or `"lavaan"`, this
+#' determines whether the observed
+#' predictors ("x" variables, including
+#' control variables) are treated as
+#' fixed variables or random variables.
+#' Default is `TRUE`, to mimic the
+#' same implicit setting in
+#' regression fitted by [stats::lm()].
+#'
 #' @param sem_args If `fit_method` is
 #' set to `"sem"` or `"lavaan"`, this
 #' is a named list of arguments to be
-#' passed to [lavaan::sem()]. Default
-#' is `list(missing = "fiml", fixed.x = TRUE)`.
-#' The argument `fixed.x = TRUE` is
-#' used to emulate the same implicit
-#' setting in
-#' regression fitted by [stats::lm()].
+#' passed to [lavaan::sem()]. Arguments
+#' listed here will not override
+#' `missing` and `fixed.x`.
 #'
 #' @param na.action How missing data is
 #' handled. Used only when `fit_method`
@@ -304,7 +320,9 @@ q_mediation <- function(x,
                         boot_type = c("perc", "bc"),
                         model = NULL,
                         fit_method = c("lm", "regression", "sem", "lavaan"),
-                        sem_args = list(missing = "fiml", fixed.x = TRUE),
+                        missing = "fiml",
+                        fixed.x = TRUE,
+                        sem_args = list(),
                         na.action = "na.pass",
                         parallel = TRUE,
                         ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
@@ -352,7 +370,6 @@ q_mediation <- function(x,
   sem_model <- NULL
   mm <- NULL
   lm_out_lav <- NULL
-  fixed.x <- NULL
   lm_all_x <- character(0)
   x_miss <- integer(0)
 
@@ -387,7 +404,9 @@ q_mediation <- function(x,
                     list(model = sem_model,
                          data = mm$model_matrix,
                          meanstructure = TRUE,
-                         warn = FALSE)
+                         warn = FALSE,
+                         fixed.x = fixed.x,
+                         missing = missing)
                   )
 
     lm_all <- do.call(lavaan::sem,
@@ -440,6 +459,10 @@ q_mediation <- function(x,
                               y = y,
                               exclude = unique(unlist(cov)))
 
+  if (progress) {
+    cat("- Compute unstandardized indirect effect(s) ....\n")
+  }
+
   ind_ustd <- many_indirect_effects(paths = paths,
                                     fit = lm_all,
                                     R = R,
@@ -454,6 +477,11 @@ q_mediation <- function(x,
   # ==== Store the bootstrap estimates ====
 
   ind_with_ci_out <- ind_ustd[[1]]
+
+  if (progress) {
+    cat("- Compute standardized-y indirect effect(s) ....\n")
+  }
+
   ind_stdy <- many_indirect_effects(paths = paths,
                                     fit = lm_all,
                                     R = R,
@@ -466,6 +494,10 @@ q_mediation <- function(x,
                                     parallel = FALSE,
                                     standardized_y = TRUE,
                                     ci_out = ind_with_ci_out)
+  if (progress) {
+    cat("- Compute standardized-x indirect effect(s) ....\n")
+  }
+
   ind_stdx <- many_indirect_effects(paths = paths,
                                     fit = lm_all,
                                     R = R,
@@ -478,6 +510,11 @@ q_mediation <- function(x,
                                     parallel = FALSE,
                                     standardized_x = TRUE,
                                     ci_out = ind_with_ci_out)
+
+  if (progress) {
+    cat("- Compute standardized-x-and-y indirect effect(s) ....\n")
+  }
+
   ind_std0 <- many_indirect_effects(paths = paths,
                                     fit = lm_all,
                                     R = R,
@@ -494,6 +531,10 @@ q_mediation <- function(x,
 
   # ==== Total indirect effects ====
 
+  if (progress) {
+    cat("- Compute total indirect effect(s) ....\n")
+  }
+
   ind_total_ustd <- total_indirect_effect(ind_ustd, x = x, y = y)
   ind_total_stdx <- total_indirect_effect(ind_stdx, x = x, y = y)
   ind_total_stdy <- total_indirect_effect(ind_stdy, x = x, y = y)
@@ -505,6 +546,11 @@ q_mediation <- function(x,
                                   y = y,
                                   m = NULL))
   names(direct_path) <- paste(x, "->", y)
+
+  if (progress) {
+    cat("- Compute direct indirect effect(s) ....\n")
+  }
+
   dir_ustd <- many_indirect_effects(paths = direct_path,
                                     fit = lm_all,
                                     R = R,
@@ -516,6 +562,11 @@ q_mediation <- function(x,
                                     ncores = ncores,
                                     parallel = parallel,
                                     ci_out = ind_with_ci_out)
+
+  if (progress) {
+    cat("- Compute standardized-y direct indirect effect(s) ....\n")
+  }
+
   dir_stdy <- many_indirect_effects(paths = direct_path,
                                     fit = lm_all,
                                     R = R,
@@ -528,6 +579,11 @@ q_mediation <- function(x,
                                     parallel = FALSE,
                                     standardized_y = TRUE,
                                     ci_out = ind_with_ci_out)
+
+  if (progress) {
+    cat("- Compute standardized-x direct indirect effect(s) ....\n")
+  }
+
   dir_stdx <- many_indirect_effects(paths = direct_path,
                                     fit = lm_all,
                                     R = R,
@@ -540,6 +596,11 @@ q_mediation <- function(x,
                                     parallel = FALSE,
                                     standardized_x = TRUE,
                                     ci_out = ind_with_ci_out)
+
+  if (progress) {
+    cat("- Compute standardized-x-and-y direct indirect effect(s) ....\n")
+  }
+
   dir_std0 <- many_indirect_effects(paths = direct_path,
                                     fit = lm_all,
                                     R = R,
@@ -555,6 +616,10 @@ q_mediation <- function(x,
                                     ci_out = ind_with_ci_out)
 
   # ==== Combine the output ====
+
+  if (progress) {
+    cat("Computation completed.\n")
+  }
 
   out <- list(lm_out = lm_all,
               lm_form = lm_forms,
@@ -581,6 +646,7 @@ q_mediation <- function(x,
               lm_out_lav = lm_out_lav,
               model_matrices = mm,
               fixed.x = fixed.x,
+              missing = missing,
               x_miss = x_miss,
               lm_all_x = lm_all_x)
   model_class <- switch(model,
@@ -649,7 +715,9 @@ q_simple_mediation <- function(x,
                                ci_type = c("boot", "mc"),
                                boot_type = c("perc", "bc"),
                                fit_method = c("lm", "regression", "sem", "lavaan"),
-                               sem_args = list(missing = "fiml", fixed.x = TRUE),
+                               missing = "fiml",
+                               fixed.x = TRUE,
+                               sem_args = list(),
                                na.action = "na.pass",
                                parallel = TRUE,
                                ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
@@ -675,6 +743,8 @@ q_simple_mediation <- function(x,
                      boot_type = boot_type,
                      model = "simple",
                      fit_method = fit_method,
+                     missing = missing,
+                     fixed.x = fixed.x,
                      sem_args = sem_args,
                      na.action = na.action,
                      parallel = parallel,
@@ -742,7 +812,9 @@ q_serial_mediation <- function(x,
                                ci_type = c("boot", "mc"),
                                boot_type = c("perc", "bc"),
                                fit_method = c("lm", "regression", "sem", "lavaan"),
-                               sem_args = list(missing = "fiml", fixed.x = TRUE),
+                               missing = "fiml",
+                               fixed.x = TRUE,
+                               sem_args = list(),
                                na.action = "na.pass",
                                parallel = TRUE,
                                ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
@@ -768,6 +840,8 @@ q_serial_mediation <- function(x,
                      boot_type = boot_type,
                      model = "serial",
                      fit_method = fit_method,
+                     missing = missing,
+                     fixed.x = fixed.x,
                      sem_args = sem_args,
                      na.action = na.action,
                      parallel = parallel,
@@ -834,7 +908,9 @@ q_parallel_mediation <- function(x,
                                  ci_type = c("boot", "mc"),
                                  boot_type = c("perc", "bc"),
                                  fit_method = c("lm", "regression", "sem", "lavaan"),
-                                 sem_args = list(missing = "fiml", fixed.x = TRUE),
+                                 missing = "fiml",
+                                 fixed.x = TRUE,
+                                 sem_args = list(),
                                  na.action = "na.pass",
                                  parallel = TRUE,
                                  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
@@ -860,6 +936,8 @@ q_parallel_mediation <- function(x,
                      boot_type = boot_type,
                      model = "parallel",
                      fit_method = fit_method,
+                     missing = missing,
+                     fixed.x = fixed.x,
                      sem_args = sem_args,
                      na.action = na.action,
                      parallel = parallel,
@@ -1193,7 +1271,7 @@ print.q_mediation <- function(x,
       cat("The x-variable(s) in the lavaan model:",
           paste0(x$lm_all_x, collapse = ", "),
           "\n")
-      cat("To include these cases, set these arguments in 'sem_args':\n",
+      cat("To include these cases, set the following arguments:\n",
           "missing = 'fiml.x'\n",
           "fixed.x = FALSE\n")
     }
@@ -1291,6 +1369,8 @@ print.q_mediation <- function(x,
 
   # ==== Print indirect effects ====
 
+  opt_width <- getOption("width")
+
   if (!is.null(x$ind_out$ustd) ||
       !is.null(x$ind_out$stdx) ||
       !is.null(x$ind_out$stdy) ||
@@ -1305,6 +1385,7 @@ print.q_mediation <- function(x,
     # cat("\n")
     # cat("===== Indirect Effect(s) =====")
     # cat("\n")
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$ind_out$ustd,
           digits = digits,
           annotation = annotation,
@@ -1320,6 +1401,7 @@ print.q_mediation <- function(x,
     # cat("===== Indirect Effect(s): Predictor (", x$x, ") Standardized =====",
     #     sep = "")
     # cat("\n")
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$ind_out$stdx,
           digits = digits,
           annotation = annotation,
@@ -1335,6 +1417,7 @@ print.q_mediation <- function(x,
     # cat("===== Indirect Effect(s): Outcome (", x$y, ") Standardized =====",
     #     sep = "")
     # cat("\n")
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$ind_out$stdy,
           digits = digits,
           annotation = annotation,
@@ -1351,6 +1434,7 @@ print.q_mediation <- function(x,
     #     ") and Outcome (", x$y, ") Standardized =====",
     #     sep = "")
     # cat("\n")
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$ind_out$stdxy,
           digits = digits,
           annotation = annotation,
@@ -1376,6 +1460,7 @@ print.q_mediation <- function(x,
   }
 
   if (!is.null(x$ind_total$ustd) && print_total) {
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$ind_total$ustd,
           digits = digits,
           annotation = annotation,
@@ -1388,6 +1473,7 @@ print.q_mediation <- function(x,
   }
 
   if (!is.null(x$ind_total$stdx) && print_total) {
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$ind_total$stdx,
           digits = digits,
           annotation = annotation,
@@ -1400,6 +1486,7 @@ print.q_mediation <- function(x,
   }
 
   if (!is.null(x$ind_total$stdy) && print_total) {
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$ind_total$stdy,
           digits = digits,
           annotation = annotation,
@@ -1412,6 +1499,7 @@ print.q_mediation <- function(x,
   }
 
   if (!is.null(x$ind_total$stdxy) && print_total) {
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$ind_total$stdxy,
           digits = digits,
           annotation = annotation,
@@ -1442,6 +1530,7 @@ print.q_mediation <- function(x,
   }
 
   if (!is.null(x$dir_out$ustd)) {
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$dir_out$ustd,
           digits = digits,
           annotation = annotation,
@@ -1453,6 +1542,7 @@ print.q_mediation <- function(x,
   }
 
   if (!is.null(x$dir_out$stdx)) {
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$dir_out$stdx,
           digits = digits,
           annotation = annotation,
@@ -1464,6 +1554,7 @@ print.q_mediation <- function(x,
   }
 
   if (!is.null(x$dir_out$stdy)) {
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$dir_out$stdy,
           digits = digits,
           annotation = annotation,
@@ -1475,6 +1566,7 @@ print.q_mediation <- function(x,
   }
 
   if (!is.null(x$dir_out$stdxy)) {
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$dir_out$stdxy,
           digits = digits,
           annotation = annotation,
