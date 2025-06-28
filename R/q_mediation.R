@@ -191,11 +191,18 @@
 #' integer to make the results
 #' reproducible.
 #'
+#' @param ci_type Can be `"boot"` for
+#' nonparametric bootstrapping or `"mc"`
+#' for Monte Carlo. If `fit_method` is
+#' `"regression"` or `"lm"`, then only
+#' `"boot"` is supported.
+#'
 #' @param boot_type The type of the
 #' bootstrap confidence intervals.
 #' Default is `"perc"`, percentile
 #' confidence interval. Set `"bc"` for
 #' bias-corrected confidence interval.
+#' Ignored if `ci_type` is not `"boot"`.
 #'
 #' @param model The type of model. For
 #' [q_mediation()], it can be
@@ -255,7 +262,7 @@
 #' `make_cluster_args` in [do_boot()].
 #'
 #' @param progress Logical. Display
-#' bootstrapping progress or not.
+#' progress or not.
 #'
 #' @seealso [lmhelprs::many_lm()] for
 #' fitting several regression models
@@ -293,6 +300,7 @@ q_mediation <- function(x,
                         level = .95,
                         R = 100,
                         seed = NULL,
+                        ci_type = c("boot", "mc"),
                         boot_type = c("perc", "bc"),
                         model = NULL,
                         fit_method = c("lm", "regression", "sem", "lavaan"),
@@ -304,6 +312,7 @@ q_mediation <- function(x,
   if (is.null(model)) {
     stop("Must specify the model by setting the argument 'model'.")
   }
+  ci_type <- match.arg(ci_type)
   boot_type <- match.arg(boot_type)
   fit_method <- match.arg(fit_method)
   if (fit_method == "sem") {
@@ -363,8 +372,6 @@ q_mediation <- function(x,
 
     # Keep the name `lm_all` for backward compatibility
 
-    # TODO:
-    # - Need to handle categorical variables by writing a conversion function
     mm <- mm_from_lm_forms(
             lm_forms,
             data = data,
@@ -395,15 +402,24 @@ q_mediation <- function(x,
   # ==== do_* for lavaan ====
 
   if (fit_method == "lavaan") {
-    # TODO:
-    # - Add mc_ci
-    boot_out <- do_boot(fit = lm_all,
-                        R = R,
-                        seed = seed,
-                        parallel = parallel,
-                        progress = progress)
+    ci_out <- switch(ci_type,
+                     boot = do_boot(
+                                fit = lm_all,
+                                R = R,
+                                seed = seed,
+                                parallel = parallel,
+                                progress = progress
+                              ),
+                     mc = do_mc(
+                                fit = lm_all,
+                                R = R,
+                                seed = seed,
+                                parallel = parallel,
+                                progress = progress
+                              )
+                  )
   } else {
-    boot_out <- NULL
+    ci_out <- NULL
   }
 
   # ==== Indirect effect ====
@@ -416,9 +432,8 @@ q_mediation <- function(x,
   ind_ustd <- many_indirect_effects(paths = paths,
                                     fit = lm_all,
                                     R = R,
-                                    boot_ci = TRUE,
-                                    boot_type = boot_type,
-                                    boot_out = boot_out,
+                                    ci_type = ci_type,
+                                    ci_out = ci_out,
                                     level = level,
                                     seed = seed,
                                     progress = progress,
@@ -617,9 +632,11 @@ q_simple_mediation <- function(x,
                                level = .95,
                                R = 100,
                                seed = NULL,
+                               ci_type = c("boot", "mc"),
                                boot_type = c("perc", "bc"),
                                fit_method = c("lm", "regression", "sem", "lavaan"),
                                sem_args = list(missing = "fiml", fixed.x = TRUE),
+                               na.action = "na.pass",
                                parallel = TRUE,
                                ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                                progress = TRUE) {
@@ -640,11 +657,14 @@ q_simple_mediation <- function(x,
                      level = level,
                      R = R,
                      seed = seed,
+                     ci_type = ci_type,
                      boot_type = boot_type,
                      model = "simple",
                      fit_method = fit_method,
                      sem_args = sem_args,
+                     na.action = na.action,
                      parallel = parallel,
+                     ncores = ncores,
                      progress = progress)
   out$call <- match.call()
   return(out)
@@ -705,9 +725,11 @@ q_serial_mediation <- function(x,
                                level = .95,
                                R = 100,
                                seed = NULL,
+                               ci_type = c("boot", "mc"),
                                boot_type = c("perc", "bc"),
                                fit_method = c("lm", "regression", "sem", "lavaan"),
                                sem_args = list(missing = "fiml", fixed.x = TRUE),
+                               na.action = "na.pass",
                                parallel = TRUE,
                                ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                                progress = TRUE) {
@@ -728,11 +750,14 @@ q_serial_mediation <- function(x,
                      level = level,
                      R = R,
                      seed = seed,
+                     ci_type = ci_type,
                      boot_type = boot_type,
                      model = "serial",
                      fit_method = fit_method,
                      sem_args = sem_args,
+                     na.action = na.action,
                      parallel = parallel,
+                     ncores = ncores,
                      progress = progress)
   out$call <- match.call()
   return(out)
@@ -792,9 +817,11 @@ q_parallel_mediation <- function(x,
                                  level = .95,
                                  R = 100,
                                  seed = NULL,
+                                 ci_type = c("boot", "mc"),
                                  boot_type = c("perc", "bc"),
                                  fit_method = c("lm", "regression", "sem", "lavaan"),
                                  sem_args = list(missing = "fiml", fixed.x = TRUE),
+                                 na.action = "na.pass",
                                  parallel = TRUE,
                                  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                                  progress = TRUE) {
@@ -815,11 +842,14 @@ q_parallel_mediation <- function(x,
                      level = level,
                      R = R,
                      seed = seed,
+                     ci_type = ci_type,
                      boot_type = boot_type,
                      model = "parallel",
                      fit_method = fit_method,
                      sem_args = sem_args,
+                     na.action = na.action,
                      parallel = parallel,
+                     ncores = ncores,
                      progress = progress)
   out$call <- match.call()
   return(out)
@@ -1043,6 +1073,16 @@ form_models_parallel <- function(x,
 #' of the confidence interval. Ignored
 #' if `lm_ci` is not `TRUE`.
 #'
+#' @param sem_style How the for the
+#' model is to be printed if the model
+#' is fitted by structural equation
+#' modeling (using `lavaan`). Default
+#' is `"lm"` and the results will be
+#' printed in a style similar to that
+#' of [summary()] output of [stats::lm()].
+#' If `"lavaan"`, the results will be
+#' printed in usual `lavaan` style.
+#'
 #' @param ... Other arguments. If
 #' `for_each_path` is `TRUE`, they
 #' will be passed to the print method
@@ -1063,9 +1103,12 @@ print.q_mediation <- function(x,
                               lm_ci = TRUE,
                               lm_beta = TRUE,
                               lm_ci_level = .95,
+                              sem_style = c("lm", "lavaan"),
                               ...) {
 
   fit_method <- x$fit_method
+
+  sem_style <- match.arg(sem_style)
 
   # ==== Print basic information ====
 
@@ -1182,20 +1225,40 @@ print.q_mediation <- function(x,
     # - Need to improve the printout for users
     #   not familiar with lavaan.
 
-    est <- lavaan::parameterEstimates(
-            x$lm_out,
-            rsquare = TRUE,
-            output = "text"
-          )
+    if (sem_style == "lm") {
 
-    i_var <- (est$op == "~~") &
-             (est$lhs == est$rhs)
+      # ==== Print lm style ====
 
-    est <- est[!i_var, ]
+      print_lavaan_as_lm(mm = x$model_matrices,
+                         fit = x$lm_out,
+                         lm_out_lav = x$lm_out_lav,
+                         digits = digits,
+                         pvalue_digits = pvalue_digits,
+                         lm_ci = lm_ci,
+                         lm_beta = lm_beta,
+                         lm_ci_level = lm_ci_level)
 
-    cat("\nParameter Estimates:\n")
+    } else {
 
-    print(est)
+      # ==== Print lavaan style ====
+
+      est <- lavaan::parameterEstimates(
+              x$lm_out,
+              level = lm_ci_level,
+              rsquare = TRUE,
+              output = "text",
+              standardized = lm_beta
+            )
+
+      i_var <- (est$op == "~~") &
+              (est$lhs == est$rhs)
+
+      est <- est[!i_var, ]
+
+      cat("\nParameter Estimates:\n")
+
+      print(est)
+    }
 
   }
 
@@ -1399,12 +1462,37 @@ print.q_mediation <- function(x,
 
   str_note <- character(0)
 
+  ci_type <- ifelse(is.null(x$call$ci_type),
+                    yes =  eval(formals(q_mediation)$ci_type)[1],
+                    no = x$call$ci_type)
+
+  ci_name_lower <- switch(
+                    ci_type,
+                    boot = "bootstrap",
+                    mc = "Monte Carlo")
+  ci_name_upper <- switch(
+                      ci_type,
+                      boot = "Bootstrap",
+                      mc = "Monte Carlo")
+
+  t_stat_name <- switch(fit_method,
+                        lm = "OLS t-statistc",
+                        lavaan = "z-statistc")
+
   if (print_direct) {
     str_note <- c(str_note,
-             strwrap(paste("- For reference, the bootstrap confidence interval",
-                           "(and bootstrap p-value, if requested) of the",
-                           "(unstandardize) direct effect is also reported.",
-                           "The bootstrap p-value and the OLS t-statistic p-value",
+             strwrap(paste("- For reference, the",
+                           ci_name_lower,
+                           "confidence interval",
+                           "(and",
+                           ci_name_lower,
+                           "p-value, if requested) of the",
+                           "(unstandardized) direct effect is also reported.",
+                           "The",
+                           ci_name_lower,
+                           "p-value and the",
+                           t_stat_name,
+                           "p-value",
                            "can be different."),
                 exdent = 2))
   }
@@ -1413,13 +1501,15 @@ print.q_mediation <- function(x,
     str_note <- c(str_note,
              strwrap(paste("- For the direct effects with either 'x'-variable or",
                            "'y'-variable, or both, standardized, it is",
-                           "recommended to use the bootstrap confidence intervals,",
+                           "recommended to use the",
+                           ci_name_lower,
+                           "confidence intervals,",
                            "which take into account the sampling error of",
                            "the sample standard deviations."),
                 exdent = 2))
   }
 
-  if (pvalue) {
+  if (pvalue && (ci_type == "boot")) {
     str_note <- c(str_note,
              strwrap(paste("- The asymmetric bootstrap value for an effect",
                       "is the same whether x and/or y is/are",
@@ -1437,4 +1527,110 @@ print.q_mediation <- function(x,
   }
 
   invisible(x)
+}
+
+#' @noRd
+print_lavaan_as_lm <- function(
+                         mm,
+                         fit,
+                         lm_out_lav,
+                         digits = 4,
+                         pvalue_digits = 4,
+                         lm_ci,
+                         lm_beta,
+                         lm_ci_level) {
+  out0 <- lm_from_lavaan_list_for_q(
+                    fit = fit,
+                    mm = mm,
+                    ci_level = lm_ci_level,
+                    rsq_test = FALSE
+                  )
+  dvs <- names(out0)
+  for (i in seq_along(out0)) {
+    tmp <- paste0("Predicting ", dvs[i], " :")
+    a <- nchar(tmp)
+    cat("\n",
+        strrep("-", a), "\n",
+        tmp, "\n",
+        strrep("-", a), "\n")
+
+    # ==== Print model =====
+
+    tmp <- capture.output(print(lm_out_lav[[i]]$model))
+    j <- grepl("<environment", tmp, fixed = TRUE)
+    tmp <- tmp[!j]
+    cat("\nModel:\n", tmp, "\n")
+
+    # ==== Print coefficients =====
+
+    out_i <- out0[[i]]$coefs_lm
+    if (!lm_beta) {
+      b <- which(colnames(out0[[i]]$coefs_lm) == "betaS")
+      if (length(b) > 0) {
+        out_i <- out_i[, -b]
+      }
+    }
+    if (!lm_ci) {
+      b <- match(c("CI.lo", "CI.hi"), colnames(out0[[i]]$coefs_lm))
+      b <- b[!is.na(b)]
+      if (length(b) > 0) {
+        out_i <- out_i[, -b]
+      }
+    }
+    i_p <- grepl("Pr(>", colnames(out_i), fixed = TRUE)
+    out_i[, !i_p] <- round(out_i[, !i_p], digits)
+    out_i[, i_p] <- round(out_i[, i_p], pvalue_digits)
+    printCoefmat(out_i,
+                 digits = digits,
+                 na.print = strrep("-", digits))
+
+    # ==== R-squared =====
+
+    names(lm_out_lav[[i]])
+    rsq <- unname(lm_out_lav[[i]]$rsquare)
+    cat("\nR-square: ",
+        formatC(rsq,
+                digits = digits,
+                format = "f"),
+        "\n")
+
+    # ==== LRT for R-squared =====
+
+    rsq_lrt <- lm_out_lav[[i]]$fit_null_lrt
+    tmp <- capture.output(print(rsq_lrt))
+    j <- grepl("Chi-Squared", tmp, fixed = TRUE)
+    tmp[j] <- paste(tmp[j], "for the R-square")
+    cat(tmp,
+        sep = "\n")
+
+    # ==== Notes =====
+
+    cat("\n")
+
+    if (lm_beta) {
+      term_types <- lm_out_lav[[i]]$term_types
+      vars_std <- c(dvs[i], names(term_types)[term_types == "numeric"])
+      tmp <- strwrap(paste0("- BetaS are standardized coefficients with (a) ",
+                            "only numeric variables standardized and (b) ",
+                            "product terms formed after standardization. ",
+                            "Variable(s) standardized is/are: ",
+                            paste0(vars_std, collapse = ", ")),
+                      exdent = 2)
+      cat(tmp,
+          sep = "\n")
+    }
+    if (lm_ci) {
+      tmp0 <- paste0(formatC(lm_ci_level * 100,
+                             digits = 1,
+                             format = "f"),
+                      "%")
+      tmp <- strwrap(paste0("- CI.lo and CI.hi are the ", tmp0,
+                            " confidence levels of 'Estimate' ",
+                            "computed from the z values and ",
+                            "standard errors."),
+                      exdent = 2)
+      cat(tmp,
+          sep = "\n")
+    }
+  }
 }

@@ -221,7 +221,8 @@ lm_from_lavaan_list_for_q <- function(
                                   fit,
                                   mm,
                                   ci_level = .95,
-                                  group_number = NULL
+                                  group_number = NULL,
+                                  rsq_test = TRUE
                                 ) {
   # Assume it has only one group
   ptable <- lavaan::parameterEstimates(fit,
@@ -251,14 +252,29 @@ lm_from_lavaan_list_for_q <- function(
   rsq_list <- sapply(dvs, lavaan_get_rsq,
                       ptable = ptable,
                       simplify = FALSE)
-  # ==== Null models ====
-  fit_null <- fit_null(
+
+  if (rsq_test) {
+    # ==== Null models ====
+    fit_null <- fit_null(
                 mm = mm,
                 fit = fit
               )
-  # ==== Tests of R-squares ====
-  rsq_test <- rsquare_test(fit = fit,
-                           fit_null = fit_null)
+    # ==== Tests of R-squares ====
+    rsq_test <- rsquare_test(
+                  fit = fit,
+                  fit_null = fit_null
+                )
+  } else {
+    fit_null <- vector("list", length(dvs))
+    names(fit_null) <- dvs
+    tmp1 <- vector("numeric", length(dvs))
+    tmp1[] <- NA
+    names(tmp1) <- dvs
+    tmp2 <- vector("list", length(dvs))
+    names(tmp2) <- dvs
+    rsq_test <- list(pvalues = tmp1,
+                     lrt_out = tmp2)
+  }
   # ==== Combine them ====
   coefs_list <- mapply(function(x, y) {rbind(x, y)},
                       x = int_list,
@@ -291,7 +307,8 @@ lm_from_lavaan_list_for_q <- function(
                          rsq,
                          rsq_test,
                          fit_null_lrt,
-                         fit_null) {
+                         fit_null,
+                         term_types) {
                   list(
                         dv = dv,
                         model = model,
@@ -301,7 +318,8 @@ lm_from_lavaan_list_for_q <- function(
                         rsquare = rsq,
                         rsq_test = rsq_test,
                         fit_null_lrt = fit_null_lrt,
-                        fit_null = fit_null
+                        fit_null = fit_null,
+                        term_types = term_types
                       )
                 },
                 dv = dvs,
@@ -313,6 +331,7 @@ lm_from_lavaan_list_for_q <- function(
                 fit_null_lrt = rsq_test$lrt_out,
                 fit_null = fit_null,
                 coefs_lm = coefs_lm_list,
+                term_types = term_types_list,
                 SIMPLIFY = FALSE,
                 USE.NAMES = TRUE)
   out
