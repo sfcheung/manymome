@@ -229,44 +229,45 @@ lm_from_lavaan_list_for_q <- function(
                                        level = ci_level,
                                        rsquare = TRUE)
   b_names <- mm$b_names
-  # Get all dvs (ov.nox, lv.ox)
+  # ==== Get all dvs (ov.nox, lv.ox) ====
   dvs <- names(b_names)
-  # Get all ivs
+  # ==== Get all ivs ====
   ivs_list <- sapply(b_names,
                      function(x) {
                       x[-which(x == "(Intercept)")]
                      },
                      USE.NAMES = TRUE,
                      simplify = FALSE)
-  # Get estimates and other statistics
+  # ==== Get estimates and other statistics ====
   bs_list <- sapply(dvs, lavaan_get_betas_etc,
                     ivs_list = ivs_list,
                     ptable = ptable,
                     simplify = FALSE)
-  # Get all intercepts
+  # ==== Get all intercepts ====
   int_list <- sapply(dvs, lavaan_get_intercepts_etc,
                       ptable = ptable,
                       simplify = FALSE)
-  # Get all R-squares
+  # ==== Get all R-squares ====
   rsq_list <- sapply(dvs, lavaan_get_rsq,
                       ptable = ptable,
                       simplify = FALSE)
-  # Null models
+  # ==== Null models ====
   fit_null <- fit_null(
                 mm = mm,
                 fit = fit
               )
+  # ==== Tests of R-squares ====
   rsq_test <- rsquare_test(fit = fit,
                            fit_null = fit_null)
-  # Combine them
+  # ==== Combine them ====
   coefs_list <- mapply(function(x, y) {rbind(x, y)},
                       x = int_list,
                       y = bs_list,
                       SIMPLIFY = FALSE)
 
-  # lm_version
-  term_types <- sapply(dvs,
-                       numeric_ivs,
+  # ==== lm_version of the coefficients table ====
+  term_types_list <- sapply(dvs,
+                       terms_types,
                        mm = mm,
                        simplify = FALSE,
                        USE.NAMES = TRUE)
@@ -274,15 +275,14 @@ lm_from_lavaan_list_for_q <- function(
   coefs_lm_list <- mapply(lm_coef_from_lavaan_i,
                           lav_coefs = coefs_list,
                           lm_coefs = mm$coefficients,
-                          term_types = term_types,
+                          term_types = term_types_list,
                           USE.NAMES = TRUE,
                           SIMPLIFY = FALSE)
 
-  # Get all product terms
-  # NOTE: No need because they are formed from lm()
-  # Generate lm_like_object
+  # ==== Generate lm_like formula ====
   mods <- mapply(to_formula, dv = dvs, ivs = ivs_list)
-  # Return an lm_list object
+
+  # ==== Return the output ====
   out <- mapply(function(dv,
                          model,
                          ivs,
@@ -319,8 +319,7 @@ lm_from_lavaan_list_for_q <- function(
 }
 
 #' @noRd
-# Create a lm-style coefficient table
-# with lavaan results
+# Populate a list of lm-style coefficient tables
 lm_coef_from_lavaan <- function(
                         coef_template,
                         lm_from_lavaan
@@ -337,6 +336,7 @@ lm_coef_from_lavaan <- function(
   out
 }
 #' @noRd
+# Populate a lm-style coefficient table
 lm_coef_from_lavaan_i <- function(
                         lav_coefs,
                         lm_coefs,
@@ -376,7 +376,7 @@ lm_coef_from_lavaan_i <- function(
 # - y: The name of the dv
 # Output:
 # - A character vector of the type of each term
-numeric_ivs <- function(mm, y) {
+terms_types <- function(mm, y) {
   # TODO:
   # - Need to handle special terms, such as product terms
   #   But not urgent as we do not yet support moderation.
