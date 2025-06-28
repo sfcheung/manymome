@@ -805,7 +805,7 @@ q_parallel_mediation <- function(x,
 form_models_simple <- function(x,
                                y,
                                m,
-                               cov) {
+                               cov = NULL) {
   if ((length(x) != 1) ||
       (length(y) != 1) ||
       (length(m) != 1)) {
@@ -840,7 +840,7 @@ form_models_simple <- function(x,
 form_models_serial <- function(x,
                                y,
                                m,
-                               cov) {
+                               cov = NULL) {
   if ((length(x) != 1) ||
       (length(y) != 1)) {
     stop("The model must have exactly one 'x' and one 'y'.")
@@ -895,7 +895,7 @@ form_models_serial <- function(x,
 form_models_parallel <- function(x,
                                  y,
                                  m,
-                                 cov) {
+                                 cov = NULL) {
   if ((length(x) != 1) ||
       (length(y) != 1)) {
     stop("The model must have exactly one 'x' and one 'y'.")
