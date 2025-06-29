@@ -350,19 +350,27 @@ q_mediation <- function(x,
 
   # ===== Form the model =====
 
-  lm_forms <- switch(model,
-                     simple = form_models_simple(x = x,
-                                                 y = y,
-                                                 m = m,
-                                                 cov = cov),
-                     serial = form_models_serial(x = x,
-                                                 y = y,
-                                                 m = m,
-                                                 cov = cov),
-                     parallel = form_models_parallel(x = x,
-                                                     y = y,
-                                                     m = m,
-                                                     cov = cov))
+  if (isTRUE(model %in% c("simple", "serial", "parallel"))) {
+    model_type <- "standard"
+    lm_forms <- switch(model,
+                      simple = form_models_simple(x = x,
+                                                  y = y,
+                                                  m = m,
+                                                  cov = cov),
+                      serial = form_models_serial(x = x,
+                                                  y = y,
+                                                  m = m,
+                                                  cov = cov),
+                      parallel = form_models_parallel(x = x,
+                                                      y = y,
+                                                      m = m,
+                                                      cov = cov))
+  } else {
+    model_type <- "user"
+    tmp1 <- paths_to_models(model)
+    lm_forms <- form_models_paths(tmp1,
+                              cov = cov)
+  }
 
   # ==== Do listwise deletion (lm only) ====
 
@@ -386,10 +394,11 @@ q_mediation <- function(x,
 
     # ==== Regression analysis ====
 
-    lm_all <- sapply(c(m, y),
+    dvs <- names(lm_forms)
+    lm_all <- sapply(dvs,
                     function(xx) {NA},
                     simplify = FALSE)
-    for (i in c(m, y)) {
+    for (i in dvs) {
       lm_all[[i]] <- eval(bquote(lm(.(stats::as.formula(lm_forms[[i]])),
                                     data = data)))
     }
@@ -551,78 +560,101 @@ q_mediation <- function(x,
 
   # ==== Direct effects ====
 
-  direct_path <- list(path = list(x = x,
-                                  y = y,
-                                  m = NULL))
-  names(direct_path) <- paste(x, "->", y)
+  has_direct_path <- check_path(
+                        x = x,
+                        y = y,
+                        fit = lm_all
+                      )
 
-  if (progress) {
-    cat("- Compute direct indirect effect(s) ....\n")
+  if (has_direct_path) {
+    direct_path <- list(path = list(x = x,
+                                    y = y,
+                                    m = NULL))
+    names(direct_path) <- paste(x, "->", y)
+
+    if (progress) {
+      cat("- Compute the direct effect ....\n")
+    }
+
+    dir_ustd <- many_indirect_effects(paths = direct_path,
+                                      fit = lm_all,
+                                      R = R,
+                                      ci_type = ci_type,
+                                      boot_type = boot_type,
+                                      level = level,
+                                      seed = seed,
+                                      progress = progress,
+                                      ncores = ncores,
+                                      parallel = parallel,
+                                      ci_out = ind_with_ci_out)
+
+    if (progress) {
+      cat("- Compute the standardized-y direct effect ....\n")
+    }
+
+    dir_stdy <- many_indirect_effects(paths = direct_path,
+                                      fit = lm_all,
+                                      R = R,
+                                      ci_type = ci_type,
+                                      boot_type = boot_type,
+                                      level = level,
+                                      seed = seed,
+                                      progress = progress,
+                                      ncores = ncores,
+                                      parallel = FALSE,
+                                      standardized_y = TRUE,
+                                      ci_out = ind_with_ci_out)
+
+    if (progress) {
+      cat("- Compute the standardized-x direct effect ....\n")
+    }
+
+    dir_stdx <- many_indirect_effects(paths = direct_path,
+                                      fit = lm_all,
+                                      R = R,
+                                      ci_type = ci_type,
+                                      boot_type = boot_type,
+                                      level = level,
+                                      seed = seed,
+                                      progress = progress,
+                                      ncores = ncores,
+                                      parallel = FALSE,
+                                      standardized_x = TRUE,
+                                      ci_out = ind_with_ci_out)
+
+    if (progress) {
+      cat("- Compute the standardized-x-and-y direct effect ....\n")
+    }
+
+    dir_std0 <- many_indirect_effects(paths = direct_path,
+                                      fit = lm_all,
+                                      R = R,
+                                      ci_type = ci_type,
+                                      boot_type = boot_type,
+                                      level = level,
+                                      seed = seed,
+                                      progress = progress,
+                                      ncores = ncores,
+                                      parallel = FALSE,
+                                      standardized_y = TRUE,
+                                      standardized_x = TRUE,
+                                      ci_out = ind_with_ci_out)
+  } else {
+
+    if (progress) {
+      cat("- No direct path from ",
+          x,
+          " to ",
+          y,
+          " in the model. Skip the computation of direct effect ...\n",
+          sep = "")
+    }
+
+    dir_ustd <- NULL
+    dir_stdy <- NULL
+    dir_stdx <- NULL
+    dir_std0 <- NULL
   }
-
-  dir_ustd <- many_indirect_effects(paths = direct_path,
-                                    fit = lm_all,
-                                    R = R,
-                                    ci_type = ci_type,
-                                    boot_type = boot_type,
-                                    level = level,
-                                    seed = seed,
-                                    progress = progress,
-                                    ncores = ncores,
-                                    parallel = parallel,
-                                    ci_out = ind_with_ci_out)
-
-  if (progress) {
-    cat("- Compute standardized-y direct indirect effect(s) ....\n")
-  }
-
-  dir_stdy <- many_indirect_effects(paths = direct_path,
-                                    fit = lm_all,
-                                    R = R,
-                                    ci_type = ci_type,
-                                    boot_type = boot_type,
-                                    level = level,
-                                    seed = seed,
-                                    progress = progress,
-                                    ncores = ncores,
-                                    parallel = FALSE,
-                                    standardized_y = TRUE,
-                                    ci_out = ind_with_ci_out)
-
-  if (progress) {
-    cat("- Compute standardized-x direct indirect effect(s) ....\n")
-  }
-
-  dir_stdx <- many_indirect_effects(paths = direct_path,
-                                    fit = lm_all,
-                                    R = R,
-                                    ci_type = ci_type,
-                                    boot_type = boot_type,
-                                    level = level,
-                                    seed = seed,
-                                    progress = progress,
-                                    ncores = ncores,
-                                    parallel = FALSE,
-                                    standardized_x = TRUE,
-                                    ci_out = ind_with_ci_out)
-
-  if (progress) {
-    cat("- Compute standardized-x-and-y direct indirect effect(s) ....\n")
-  }
-
-  dir_std0 <- many_indirect_effects(paths = direct_path,
-                                    fit = lm_all,
-                                    R = R,
-                                    ci_type = ci_type,
-                                    boot_type = boot_type,
-                                    level = level,
-                                    seed = seed,
-                                    progress = progress,
-                                    ncores = ncores,
-                                    parallel = FALSE,
-                                    standardized_y = TRUE,
-                                    standardized_x = TRUE,
-                                    ci_out = ind_with_ci_out)
 
   # ==== Combine the output ====
 
@@ -657,11 +689,16 @@ q_mediation <- function(x,
               fixed.x = fixed.x,
               missing = missing,
               x_miss = x_miss,
-              lm_all_x = lm_all_x)
-  model_class <- switch(model,
-                        simple = "q_simple_mediation",
-                        serial = "q_serial_mediation",
-                        parallel = "q_parallel_mediation")
+              lm_all_x = lm_all_x,
+              model_type = model_type)
+  if (model_type == "standard") {
+    model_class <- switch(model,
+                          simple = "q_simple_mediation",
+                          serial = "q_serial_mediation",
+                          parallel = "q_parallel_mediation")
+  } else {
+    model_class <- "q_user_mediation"
+  }
   class(out) <- c(model_class,
                   "q_mediation",
                   class(out))
@@ -1213,10 +1250,14 @@ print.q_mediation <- function(x,
 
   # ==== Print basic information ====
 
-  model_name <- switch(x$model,
-                       simple = "Simple Mediation Model",
-                       serial = "Serial Mediation Model",
-                       parallel = "Parallel Mediation Model")
+  if (x$model_type == "standard") {
+    model_name <- switch(x$model,
+                        simple = "Simple Mediation Model",
+                        serial = "Serial Mediation Model",
+                        parallel = "Parallel Mediation Model")
+  } else {
+    model_name <- "User-Specified Model"
+  }
   cat("\n", "=============== ", model_name, " ===============", "\n", sep = "")
   cat("\nCall:\n")
   cat("\n")
@@ -1464,7 +1505,7 @@ print.q_mediation <- function(x,
 
   # ==== Print total effects ====
 
-  print_total <- (x$model != "simple")
+  print_total <- (isTRUE(x$model != "simple"))
 
   if ((!is.null(x$ind_total$ustd) ||
        !is.null(x$ind_total$stdx) ||

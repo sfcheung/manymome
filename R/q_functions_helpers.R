@@ -73,3 +73,117 @@ lm_listwise <- function(formulas,
     }
   return(omitted_listwise)
 }
+
+
+#' @noRd
+# Input:
+# - paths: Of one of the following forms
+# c("x1 -> m11 -> m12 -> y1",
+#   "x1 -> m2 -> y1")
+# OR
+# list(
+#   c("x1", "m11"),
+#   c("m11", "m12", "y1"),
+#   c("m11", "m2", "y1")
+# )
+# Output:
+# A named list of predictors
+paths_to_models <- function(paths) {
+  if (!is.list(paths)) {
+    paths <- parse_paths(paths)
+  }
+  all_vars <- unique(unlist(paths))
+  from_to_all <- lapply(paths,
+                        to_direct)
+  from_to_all <- do.call(rbind,
+                         from_to_all)
+  from_to_all <- unique(from_to_all)
+  to_vars <- unique(from_to_all[, "to"])
+  out0 <- sapply(to_vars,
+                 function(x) {
+                  i <- (from_to_all[, "to"] == x)
+                  out <- from_to_all[i, "from", drop = TRUE]
+                  unname(out)
+                 },
+                 simplify = FALSE)
+  out0
+}
+
+#' @noRd
+# Input:
+# - x: One character vector of this form
+# "x1 -> m11 -> m12 -> y1"
+# - Output:
+# - A character vector of this form:
+# c("x1", "m11", "m12", "y1"),
+parse_paths <- function(x) {
+  out0 <- strsplit(x,
+                   "->",
+                   fixed = TRUE)
+  out0 <- lapply(out0,
+                 function(x) trimws(x))
+  out0
+}
+
+#' @noRd
+# Input:
+# - A character vector of this form:
+# c("x1", "m11", "m12", "y1")
+# Output:
+# A matrix of this form:
+# "x1" "m11"
+# "m11" "m12"
+# "m12" "y1"
+to_direct <- function(x) {
+  if (length(x) == 2) {
+    out <- matrix(x,
+                  nrow = 1,
+                  ncol = 2)
+    colnames(out) <- c("from", "to")
+    return(out)
+  }
+  x_from <- x[-length(x)]
+  x_to <- x[-1]
+  out <- cbind(from = x_from,
+               to = x_to)
+  out
+}
+
+#' @noRd
+# Input:
+# - from_to: A named list of iv names
+# - cov: A character vector or a named list of vectors
+# # Output:
+# - A named vector of lm formulas
+form_models_paths <- function(from_to,
+                              cov = NULL) {
+  from_to_new <- from_to
+  dvs <- names(from_to_new)
+  if (!is.null(cov)) {
+    if (is.list(cov)) {
+      for (xx in names(cov)) {
+        if (xx %in% dvs) {
+          from_to_new[[xx]] <- c(from_to_new[[xx]], cov[[xx]])
+        }
+      }
+    } else {
+      for (xx in dvs) {
+        from_to_new[[xx]] <- c(from_to_new[[xx]], cov)
+      }
+    }
+  }
+  f0 <- function(y, x) {
+          out0 <- paste0(x,
+                         collapse = " + ")
+          out1 <- paste0(y,
+                         " ~ ",
+                         out0)
+          out1
+        }
+  out0 <- mapply(f0,
+                 y = dvs,
+                 x = from_to_new,
+                 SIMPLIFY = TRUE,
+                 USE.NAMES = TRUE)
+  out0
+}
