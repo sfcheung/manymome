@@ -447,28 +447,35 @@ q_mediation <- function(x,
     stop("Something's wrong. The fit method is not valid.")
   }
 
-  # ==== do_* for lavaan ====
+  # ==== do_* ====
 
-  if (fit_method == "lavaan") {
-    ci_out <- switch(ci_type,
-                     boot = do_boot(
-                                fit = lm_all,
-                                R = R,
-                                seed = seed,
-                                parallel = parallel,
-                                progress = progress
-                              ),
-                     mc = do_mc(
-                                fit = lm_all,
-                                R = R,
-                                seed = seed,
-                                parallel = parallel,
-                                progress = progress
-                              )
-                  )
-  } else {
-    ci_out <- NULL
+  if (progress) {
+    cat("- Generate ",
+        switch(ci_type,
+               mc = "Monte Carlo",
+               boot = "bootstrap"),
+        " estimates ....\n",
+        sep = "")
   }
+
+  ci_out <- switch(ci_type,
+                    boot = do_boot(
+                              fit = lm_all,
+                              R = R,
+                              seed = seed,
+                              parallel = parallel,
+                              progress = progress,
+                              ncores = ncores
+                            ),
+                    mc = do_mc(
+                              fit = lm_all,
+                              R = R,
+                              seed = seed,
+                              parallel = parallel,
+                              progress = progress,
+                              ncores = ncores
+                            )
+                )
 
   # ==== Indirect effect ====
 
@@ -477,86 +484,120 @@ q_mediation <- function(x,
                               y = y,
                               exclude = unique(unlist(cov)))
 
-  if (progress) {
-    cat("- Compute unstandardized indirect effect(s) ....\n")
+  has_indirect_path <- (length(paths) > 0)
+
+  if (has_indirect_path) {
+
+    if (progress) {
+      cat("- Compute unstandardized indirect effect(s) ....\n")
+    }
+
+    ind_ustd <- many_indirect_effects(paths = paths,
+                                      fit = lm_all,
+                                      R = R,
+                                      ci_type = ci_type,
+                                      boot_type = boot_type,
+                                      level = level,
+                                      seed = seed,
+                                      progress = progress,
+                                      ncores = ncores,
+                                      parallel = parallel,
+                                      ci_out = ci_out)
+
+    # ==== Store the bootstrap estimates ====
+
+    # ind_with_ci_out <- ind_ustd[[1]]
+
+    if (progress) {
+      cat("- Compute standardized-y indirect effect(s) ....\n")
+    }
+
+    ind_stdy <- many_indirect_effects(paths = paths,
+                                      fit = lm_all,
+                                      R = R,
+                                      ci_type = ci_type,
+                                      boot_type = boot_type,
+                                      level = level,
+                                      seed = seed,
+                                      progress = progress,
+                                      ncores = ncores,
+                                      parallel = parallel,
+                                      standardized_y = TRUE,
+                                      ci_out = ci_out)
+    if (progress) {
+      cat("- Compute standardized-x indirect effect(s) ....\n")
+    }
+
+    ind_stdx <- many_indirect_effects(paths = paths,
+                                      fit = lm_all,
+                                      R = R,
+                                      ci_type = ci_type,
+                                      boot_type = boot_type,
+                                      level = level,
+                                      seed = seed,
+                                      progress = progress,
+                                      ncores = ncores,
+                                      parallel = parallel,
+                                      standardized_x = TRUE,
+                                      ci_out = ci_out)
+
+    if (progress) {
+      cat("- Compute standardized-x-and-y indirect effect(s) ....\n")
+    }
+
+    ind_std0 <- many_indirect_effects(paths = paths,
+                                      fit = lm_all,
+                                      R = R,
+                                      ci_type = ci_type,
+                                      boot_type = boot_type,
+                                      level = level,
+                                      seed = seed,
+                                      progress = progress,
+                                      ncores = ncores,
+                                      parallel = parallel,
+                                      standardized_y = TRUE,
+                                      standardized_x = TRUE,
+                                      ci_out = ci_out)
+
+  } else {
+
+    if (progress) {
+      cat("- No indirect path from ",
+          x,
+          " to ",
+          y,
+          " in the model. Skip the computation of indirect effects ...\n",
+          sep = "")
+    }
+
+    ind_ustd <- NULL
+    ind_stdy <- NULL
+    ind_stdx <- NULL
+    ind_std0 <- NULL
+
   }
-
-  ind_ustd <- many_indirect_effects(paths = paths,
-                                    fit = lm_all,
-                                    R = R,
-                                    ci_type = ci_type,
-                                    ci_out = ci_out,
-                                    level = level,
-                                    seed = seed,
-                                    progress = progress,
-                                    ncores = ncores,
-                                    parallel = parallel)
-
-  # ==== Store the bootstrap estimates ====
-
-  ind_with_ci_out <- ind_ustd[[1]]
-
-  if (progress) {
-    cat("- Compute standardized-y indirect effect(s) ....\n")
-  }
-
-  ind_stdy <- many_indirect_effects(paths = paths,
-                                    fit = lm_all,
-                                    R = R,
-                                    ci_type = ci_type,
-                                    boot_type = boot_type,
-                                    level = level,
-                                    seed = seed,
-                                    progress = progress,
-                                    ncores = ncores,
-                                    parallel = FALSE,
-                                    standardized_y = TRUE,
-                                    ci_out = ind_with_ci_out)
-  if (progress) {
-    cat("- Compute standardized-x indirect effect(s) ....\n")
-  }
-
-  ind_stdx <- many_indirect_effects(paths = paths,
-                                    fit = lm_all,
-                                    R = R,
-                                    ci_type = ci_type,
-                                    boot_type = boot_type,
-                                    level = level,
-                                    seed = seed,
-                                    progress = progress,
-                                    ncores = ncores,
-                                    parallel = FALSE,
-                                    standardized_x = TRUE,
-                                    ci_out = ind_with_ci_out)
-
-  if (progress) {
-    cat("- Compute standardized-x-and-y indirect effect(s) ....\n")
-  }
-
-  ind_std0 <- many_indirect_effects(paths = paths,
-                                    fit = lm_all,
-                                    R = R,
-                                    ci_type = ci_type,
-                                    boot_type = boot_type,
-                                    level = level,
-                                    seed = seed,
-                                    progress = progress,
-                                    ncores = ncores,
-                                    parallel = FALSE,
-                                    standardized_y = TRUE,
-                                    standardized_x = TRUE,
-                                    ci_out = ind_with_ci_out)
 
   # ==== Total indirect effects ====
 
-  if (progress) {
-    cat("- Compute total indirect effect(s) ....\n")
-  }
+  if (has_indirect_path) {
 
-  ind_total_ustd <- total_indirect_effect(ind_ustd, x = x, y = y)
-  ind_total_stdx <- total_indirect_effect(ind_stdx, x = x, y = y)
-  ind_total_stdy <- total_indirect_effect(ind_stdy, x = x, y = y)
-  ind_total_std0 <- total_indirect_effect(ind_std0, x = x, y = y)
+    if (progress) {
+      cat("- Compute total indirect effect(s) ....\n")
+    }
+
+    ind_total_ustd <- total_indirect_effect(ind_ustd, x = x, y = y)
+    ind_total_stdx <- total_indirect_effect(ind_stdx, x = x, y = y)
+    ind_total_stdy <- total_indirect_effect(ind_stdy, x = x, y = y)
+    ind_total_std0 <- total_indirect_effect(ind_std0, x = x, y = y)
+
+  } else {
+
+    ind_total_ustd <- NULL
+    ind_total_stdx <- NULL
+    ind_total_stdy <- NULL
+    ind_total_std0 <- NULL
+
+  }
 
   # ==== Direct effects ====
 
@@ -586,7 +627,7 @@ q_mediation <- function(x,
                                       progress = progress,
                                       ncores = ncores,
                                       parallel = parallel,
-                                      ci_out = ind_with_ci_out)
+                                      ci_out = ci_out)
 
     if (progress) {
       cat("- Compute the standardized-y direct effect ....\n")
@@ -601,9 +642,9 @@ q_mediation <- function(x,
                                       seed = seed,
                                       progress = progress,
                                       ncores = ncores,
-                                      parallel = FALSE,
+                                      parallel = parallel,
                                       standardized_y = TRUE,
-                                      ci_out = ind_with_ci_out)
+                                      ci_out = ci_out)
 
     if (progress) {
       cat("- Compute the standardized-x direct effect ....\n")
@@ -618,9 +659,9 @@ q_mediation <- function(x,
                                       seed = seed,
                                       progress = progress,
                                       ncores = ncores,
-                                      parallel = FALSE,
+                                      parallel = parallel,
                                       standardized_x = TRUE,
-                                      ci_out = ind_with_ci_out)
+                                      ci_out = ci_out)
 
     if (progress) {
       cat("- Compute the standardized-x-and-y direct effect ....\n")
@@ -635,10 +676,10 @@ q_mediation <- function(x,
                                       seed = seed,
                                       progress = progress,
                                       ncores = ncores,
-                                      parallel = FALSE,
+                                      parallel = parallel,
                                       standardized_y = TRUE,
                                       standardized_x = TRUE,
-                                      ci_out = ind_with_ci_out)
+                                      ci_out = ci_out)
   } else {
 
     if (progress) {
