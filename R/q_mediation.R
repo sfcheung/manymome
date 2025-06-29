@@ -339,6 +339,15 @@ q_mediation <- function(x,
   if (fit_method == "regression") {
     fit_method <- "lm"
   }
+
+  # ==== Sanity checks ====
+
+  if ((fit_method == "lm") &&
+      (ci_type == "mc")) {
+    stop("Models fitted by regression does not support",
+         "Monte Carlo confidence intervals.")
+  }
+
   # ===== Form the model =====
 
   lm_forms <- switch(model,
