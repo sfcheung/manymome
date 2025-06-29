@@ -1733,7 +1733,7 @@ print_lavaan_as_lm <- function(
 
     # ==== Print model =====
 
-    tmp <- capture.output(print(lm_out_lav[[i]]$model))
+    tmp <- utils::capture.output(print(lm_out_lav[[i]]$model))
     j <- grepl("<environment", tmp, fixed = TRUE)
     tmp <- tmp[!j]
     cat("\nModel:\n", tmp, "\n")
@@ -1757,7 +1757,7 @@ print_lavaan_as_lm <- function(
     i_p <- grepl("Pr(>", colnames(out_i), fixed = TRUE)
     out_i[, !i_p] <- round(out_i[, !i_p], digits)
     out_i[, i_p] <- round(out_i[, i_p], pvalue_digits)
-    printCoefmat(out_i,
+    stats::printCoefmat(out_i,
                  digits = digits,
                  na.print = strrep("-", digits))
 
@@ -1774,7 +1774,7 @@ print_lavaan_as_lm <- function(
     # ==== LRT for R-squared =====
 
     rsq_lrt <- lm_out_lav[[i]]$fit_null_lrt
-    tmp <- capture.output(print(rsq_lrt))
+    tmp <- utils::capture.output(print(rsq_lrt))
     j <- grepl("Chi-Squared", tmp, fixed = TRUE)
     tmp[j] <- paste(tmp[j], "for the R-square")
     cat(tmp,

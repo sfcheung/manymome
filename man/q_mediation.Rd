@@ -18,10 +18,14 @@ q_mediation(
   level = 0.95,
   R = 100,
   seed = NULL,
+  ci_type = c("boot", "mc"),
   boot_type = c("perc", "bc"),
   model = NULL,
   fit_method = c("lm", "regression", "sem", "lavaan"),
-  sem_args = list(missing = "fiml", fixed.x = TRUE),
+  missing = "fiml",
+  fixed.x = TRUE,
+  sem_args = list(),
+  na.action = "na.pass",
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -37,9 +41,13 @@ q_simple_mediation(
   level = 0.95,
   R = 100,
   seed = NULL,
+  ci_type = c("boot", "mc"),
   boot_type = c("perc", "bc"),
   fit_method = c("lm", "regression", "sem", "lavaan"),
-  sem_args = list(missing = "fiml", fixed.x = TRUE),
+  missing = "fiml",
+  fixed.x = TRUE,
+  sem_args = list(),
+  na.action = "na.pass",
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -55,9 +63,13 @@ q_serial_mediation(
   level = 0.95,
   R = 100,
   seed = NULL,
+  ci_type = c("boot", "mc"),
   boot_type = c("perc", "bc"),
   fit_method = c("lm", "regression", "sem", "lavaan"),
-  sem_args = list(missing = "fiml", fixed.x = TRUE),
+  missing = "fiml",
+  fixed.x = TRUE,
+  sem_args = list(),
+  na.action = "na.pass",
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -73,9 +85,13 @@ q_parallel_mediation(
   level = 0.95,
   R = 100,
   seed = NULL,
+  ci_type = c("boot", "mc"),
   boot_type = c("perc", "bc"),
   fit_method = c("lm", "regression", "sem", "lavaan"),
-  sem_args = list(missing = "fiml", fixed.x = TRUE),
+  missing = "fiml",
+  fixed.x = TRUE,
+  sem_args = list(),
+  na.action = "na.pass",
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -94,6 +110,7 @@ q_parallel_mediation(
   lm_ci = TRUE,
   lm_beta = TRUE,
   lm_ci_level = 0.95,
+  sem_style = c("lm", "lavaan"),
   ...
 )
 }
@@ -159,11 +176,18 @@ Should nearly always be set to an
 integer to make the results
 reproducible.}
 
+\item{ci_type}{Can be \code{"boot"} for
+nonparametric bootstrapping or \code{"mc"}
+for Monte Carlo. If \code{fit_method} is
+\code{"regression"} or \code{"lm"}, then only
+\code{"boot"} is supported.}
+
 \item{boot_type}{The type of the
 bootstrap confidence intervals.
 Default is \code{"perc"}, percentile
 confidence interval. Set \code{"bc"} for
-bias-corrected confidence interval.}
+bias-corrected confidence interval.
+Ignored if \code{ci_type} is not \code{"boot"}.}
 
 \item{model}{The type of model. For
 \code{\link[=q_mediation]{q_mediation()}}, it can be
@@ -179,7 +203,7 @@ call \code{\link[=q_mediation]{q_mediation()}}.}
 
 \item{fit_method}{How the model is
 to be fitted. If set to \code{"lm"} or
-\code{"regresson"},
+\code{"regression"},
 linear regression will be used
 (fitted by \code{\link[stats:lm]{stats::lm()}}). If set
 to \code{"sem"} or \code{"lavaan"}, structural
@@ -187,15 +211,41 @@ equation modeling will be used and
 the model will be fitted by
 \code{\link[lavaan:sem]{lavaan::sem()}}. Default is \code{"lm"}.}
 
+\item{missing}{If \code{fit_method} is
+set to \code{"sem"} or \code{"lavaan"}, this
+argument determine how missing data
+is handled. The default value is
+\code{"fiml"} and full information maximum
+likelihood will be used to handle
+missing data. Please refer to
+\link[lavaan:lavOptions]{lavaan::lavOptions} for other options.}
+
+\item{fixed.x}{If \code{fit_method} is
+set to \code{"sem"} or \code{"lavaan"}, this
+determines whether the observed
+predictors ("x" variables, including
+control variables) are treated as
+fixed variables or random variables.
+Default is \code{TRUE}, to mimic the
+same implicit setting in
+regression fitted by \code{\link[stats:lm]{stats::lm()}}.}
+
 \item{sem_args}{If \code{fit_method} is
 set to \code{"sem"} or \code{"lavaan"}, this
 is a named list of arguments to be
-passed to \code{\link[lavaan:sem]{lavaan::sem()}}. Default
-is \code{list(missing = "fiml", fixed.x = TRUE)}.
-The argument \code{fixed.x = TRUE} is
-used to emulate the same implicit
-setting in
-regression fitted by \code{\link[stats:lm]{stats::lm()}}.}
+passed to \code{\link[lavaan:sem]{lavaan::sem()}}. Arguments
+listed here will not override
+\code{missing} and \code{fixed.x}.}
+
+\item{na.action}{How missing data is
+handled. Used only when \code{fit_method}
+is set to \code{"sem"} or \code{"lavaan"}. If
+\code{"na.pass"}, the default, then all
+data will be passed to \code{lavaan}, and
+full information maximum likelihood
+(\code{fiml}) will be used to handle
+missing data. If \code{"na.omit"}, then
+listwise deletion will be used.}
 
 \item{parallel}{If \code{TRUE}, default,
 parallel processing will be used when
@@ -213,7 +263,7 @@ detected by
 \code{make_cluster_args} in \code{\link[=do_boot]{do_boot()}}.}
 
 \item{progress}{Logical. Display
-bootstrapping progress or not.}
+progress or not.}
 
 \item{digits}{Number of digits to
 display. Default is 4.}
@@ -286,6 +336,16 @@ is \code{TRUE}.}
 \item{lm_ci_level}{The level of confidence
 of the confidence interval. Ignored
 if \code{lm_ci} is not \code{TRUE}.}
+
+\item{sem_style}{How the for the
+model is to be printed if the model
+is fitted by structural equation
+modeling (using \code{lavaan}). Default
+is \code{"lm"} and the results will be
+printed in a style similar to that
+of \code{\link[=summary]{summary()}} output of \code{\link[stats:lm]{stats::lm()}}.
+If \code{"lavaan"}, the results will be
+printed in usual \code{lavaan} style.}
 
 \item{...}{Other arguments. If
 \code{for_each_path} is \code{TRUE}, they

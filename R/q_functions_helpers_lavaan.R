@@ -12,7 +12,7 @@ mf_from_lm <- function(
         data = data,
         na.action = na.action
       )
-  mm <- model.matrix(
+  mm <- stats::model.matrix(
           attr(mf, "terms"),
           mf
         )
