@@ -21,7 +21,7 @@ out1 <- q_simple_mediation(
           m = "m1",
           cov = c("w1", "c1"),
           data = dat,
-          R = 2001,
+          R = 101,
           seed = 1234,
           ci_type = "mc",
           fit_method = "sem",
@@ -31,6 +31,9 @@ out1 <- q_simple_mediation(
 out1
 expect_equal(lavaan::lavTech(out1$lm_out, "nobs"),
              295)
+
+expect_true(inherits(out1$ind_out$ustd[[1]]$mc_out, "mc_out"))
+expect_equal(length(out1$ind_out$ustd[[1]]$mc_indirect), 101)
 
 })
 
