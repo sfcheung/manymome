@@ -188,30 +188,30 @@ print.indirect_list <- function(x, digits = 3,
       }
     std_str <- ""
     if (standardized) {
-        std_str <- paste0("(Both ", "x-variable(s)",
+        std_str <- paste0(" (Both ", "x-variable(s)",
                           " and ", "y-variable(s)", " Standardized)")
       } else {
         if (standardized_x) {
-            std_str <- paste0("(", "x-variable(s)", " Standardized)")
+            std_str <- paste0(" (", "x-variable(s)", " Standardized)")
           }
         if (standardized_y) {
-            std_str <- paste0("(", "y-variable(s)", " Standardized)")
+            std_str <- paste0(" (", "y-variable(s)", " Standardized)")
           }
       }
-    cond_str <- ""
-    cond_str2 <- ""
+    cond_str <- "effect(s)"
+    cond_str2 <- "Effect(s)"
     if (has_m) {
-        cond_str <- "indirect"
-        cond_str2 <- "Indirect"
+        cond_str <- "indirect effect(s)"
+        cond_str2 <- "Indirect Effect(s)"
       }
     if (has_w) {
-        cat("\n== Conditional", cond_str2, "Effect(s)",
-            std_str, " ==")
+        cat("\n== Conditional ", cond_str2,
+            std_str, " ==", sep = "")
       } else {
-        cat("\n== ", cond_str2, "Effect(s)",
-            std_str, " ==")
+        cat("\n== ", cond_str2,
+            std_str, " ==", sep = "")
       }
-    cat("\n")
+    cat("\n\n")
 
     coef1 <- data.frame(lapply(coef0, format_numeric, digits = digits))
     rownames(coef1) <- rownames(coef0)
@@ -257,21 +257,21 @@ print.indirect_list <- function(x, digits = 3,
             cat("\n")
           }
         if (standardized_x && standardized_y) {
-            cat(" - std: The standardized", cond_str, "effects.",
-                sep = " ")
+            cat(" - std: The standardized ", cond_str, ".",
+                sep = "")
           }
         if (standardized_x && !standardized_y) {
-            cat(" - std: The partially standardized", cond_str, "effects.",
-                "\n -", "x-variable(s)", "standardized.",
-                sep = " ")
+            cat(" - std: The partially standardized ", cond_str, ".",
+                "\n - x-variable(s) standardized.",
+                sep = "")
           }
         if (!standardized_x && standardized_y) {
-            cat(" - std: The partially standardized", cond_str, "effects.",
-                "\n -", "y-variable(s)", "standardized.",
-                sep = " ")
+            cat(" - std: The partially standardized ", cond_str, ".",
+                "\n - y-variable(s) standardized.",
+                sep = "")
           }
         if (!standardized_x && !standardized_y) {
-            cat(" - The 'ind' column shows the", cond_str, "effects.", sep = " ")
+            cat(" - The 'ind' column shows the", cond_str, ".", sep = "")
           }
         cat("\n ")
       }
