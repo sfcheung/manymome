@@ -271,7 +271,7 @@ print.indirect_list <- function(x, digits = 3,
                 sep = "")
           }
         if (!standardized_x && !standardized_y) {
-            cat(" - The 'ind' column shows the", cond_str, ".", sep = "")
+            cat(" - The 'ind' column shows the ", cond_str, ".", sep = "")
           }
         cat("\n ")
       }
