@@ -6,7 +6,8 @@
 \alias{q_serial_mediation}
 \alias{q_parallel_mediation}
 \alias{print.q_mediation}
-\title{Mediation Models By Regression}
+\title{Mediation Models By Regression
+or SEM}
 \usage{
 q_mediation(
   x,
@@ -18,8 +19,14 @@ q_mediation(
   level = 0.95,
   R = 100,
   seed = NULL,
+  ci_type = c("boot", "mc"),
   boot_type = c("perc", "bc"),
   model = NULL,
+  fit_method = c("lm", "regression", "sem", "lavaan"),
+  missing = "fiml",
+  fixed.x = TRUE,
+  sem_args = list(),
+  na.action = "na.pass",
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -35,7 +42,13 @@ q_simple_mediation(
   level = 0.95,
   R = 100,
   seed = NULL,
+  ci_type = c("boot", "mc"),
   boot_type = c("perc", "bc"),
+  fit_method = c("lm", "regression", "sem", "lavaan"),
+  missing = "fiml",
+  fixed.x = TRUE,
+  sem_args = list(),
+  na.action = "na.pass",
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -51,7 +64,13 @@ q_serial_mediation(
   level = 0.95,
   R = 100,
   seed = NULL,
+  ci_type = c("boot", "mc"),
   boot_type = c("perc", "bc"),
+  fit_method = c("lm", "regression", "sem", "lavaan"),
+  missing = "fiml",
+  fixed.x = TRUE,
+  sem_args = list(),
+  na.action = "na.pass",
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -67,7 +86,13 @@ q_parallel_mediation(
   level = 0.95,
   R = 100,
   seed = NULL,
+  ci_type = c("boot", "mc"),
   boot_type = c("perc", "bc"),
+  fit_method = c("lm", "regression", "sem", "lavaan"),
+  missing = "fiml",
+  fixed.x = TRUE,
+  sem_args = list(),
+  na.action = "na.pass",
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -86,6 +111,7 @@ q_parallel_mediation(
   lm_ci = TRUE,
   lm_beta = TRUE,
   lm_ci_level = 0.95,
+  sem_style = c("lm", "lavaan"),
   ...
 )
 }
@@ -151,11 +177,18 @@ Should nearly always be set to an
 integer to make the results
 reproducible.}
 
+\item{ci_type}{Can be \code{"boot"} for
+nonparametric bootstrapping or \code{"mc"}
+for Monte Carlo. If \code{fit_method} is
+\code{"regression"} or \code{"lm"}, then only
+\code{"boot"} is supported.}
+
 \item{boot_type}{The type of the
 bootstrap confidence intervals.
 Default is \code{"perc"}, percentile
 confidence interval. Set \code{"bc"} for
-bias-corrected confidence interval.}
+bias-corrected confidence interval.
+Ignored if \code{ci_type} is not \code{"boot"}.}
 
 \item{model}{The type of model. For
 \code{\link[=q_mediation]{q_mediation()}}, it can be
@@ -168,6 +201,52 @@ the corresponding wrappers directly
 \code{\link[=q_serial_mediation]{q_serial_mediation()}}, and
 \code{\link[=q_parallel_mediation]{q_parallel_mediation()}}) instead of
 call \code{\link[=q_mediation]{q_mediation()}}.}
+
+\item{fit_method}{How the model is
+to be fitted. If set to \code{"lm"} or
+\code{"regression"},
+linear regression will be used
+(fitted by \code{\link[stats:lm]{stats::lm()}}). If set
+to \code{"sem"} or \code{"lavaan"}, structural
+equation modeling will be used and
+the model will be fitted by
+\code{\link[lavaan:sem]{lavaan::sem()}}. Default is \code{"lm"}.}
+
+\item{missing}{If \code{fit_method} is
+set to \code{"sem"} or \code{"lavaan"}, this
+argument determine how missing data
+is handled. The default value is
+\code{"fiml"} and full information maximum
+likelihood will be used to handle
+missing data. Please refer to
+\link[lavaan:lavOptions]{lavaan::lavOptions} for other options.}
+
+\item{fixed.x}{If \code{fit_method} is
+set to \code{"sem"} or \code{"lavaan"}, this
+determines whether the observed
+predictors ("x" variables, including
+control variables) are treated as
+fixed variables or random variables.
+Default is \code{TRUE}, to mimic the
+same implicit setting in
+regression fitted by \code{\link[stats:lm]{stats::lm()}}.}
+
+\item{sem_args}{If \code{fit_method} is
+set to \code{"sem"} or \code{"lavaan"}, this
+is a named list of arguments to be
+passed to \code{\link[lavaan:sem]{lavaan::sem()}}. Arguments
+listed here will not override
+\code{missing} and \code{fixed.x}.}
+
+\item{na.action}{How missing data is
+handled. Used only when \code{fit_method}
+is set to \code{"sem"} or \code{"lavaan"}. If
+\code{"na.pass"}, the default, then all
+data will be passed to \code{lavaan}, and
+full information maximum likelihood
+(\code{fiml}) will be used to handle
+missing data. If \code{"na.omit"}, then
+listwise deletion will be used.}
 
 \item{parallel}{If \code{TRUE}, default,
 parallel processing will be used when
@@ -185,8 +264,7 @@ detected by
 \code{make_cluster_args} in \code{\link[=do_boot]{do_boot()}}.}
 
 \item{progress}{Logical. Display
-bootstrapping progress or not.
-Default is \code{TRUE}.}
+progress or not.}
 
 \item{digits}{Number of digits to
 display. Default is 4.}
@@ -260,6 +338,16 @@ is \code{TRUE}.}
 of the confidence interval. Ignored
 if \code{lm_ci} is not \code{TRUE}.}
 
+\item{sem_style}{How the for the
+model is to be printed if the model
+is fitted by structural equation
+modeling (using \code{lavaan}). Default
+is \code{"lm"} and the results will be
+printed in a style similar to that
+of \code{\link[=summary]{summary()}} output of \code{\link[stats:lm]{stats::lm()}}.
+If \code{"lavaan"}, the results will be
+printed in usual \code{lavaan} style.}
+
 \item{...}{Other arguments. If
 \code{for_each_path} is \code{TRUE}, they
 will be passed to the print method
@@ -285,8 +373,9 @@ is a subclass of \code{q_mediation}.
 }
 \description{
 Simple-to-use functions
-for fitting regression models and
-testing indirect effects using
+for fitting linear models by regression
+or structural equation modeling and
+testing indirect effects, using
 just one function.
 }
 \details{
@@ -295,14 +384,14 @@ are for testing mediation effects in
 common models. These functions do the
 following in one single call:
 \itemize{
-\item Fit the regression models.
+\item Fit the linear models.
 \item Compute and test all the indirect
 effects.
 }
 
 They are easy-to-use and are suitable
-for common models which are not too
-complicated. For now, there are
+for common models with mediators.
+For now, there are
 "q" functions for these models:
 \itemize{
 \item A simple mediation: One predictor
@@ -332,6 +421,22 @@ and \code{y} (\code{\link[=q_parallel_mediation]{q_parallel_mediation()}}):
 \item \code{x -> m2 -> y}
 \item ...
 }
+\item An arbitrary mediation model: One
+predictor (\code{x}), one or more
+mediators (\code{m}), one outcome (\code{y}),
+and optionally some control variables
+(\code{cov}ariates). The mediators
+positioned in an arbitrary form
+between \code{x}
+and \code{y}, as long as there are no
+feedback loops (\code{\link[=q_mediation]{q_mediation()}}).
+For example:
+\itemize{
+\item \code{x -> m1}
+\item \code{m1 -> m21 -> y}
+\item \code{m1 -> m22 -> y}
+\item ...
+}
 }
 
 Users only need to specify the \code{x},
@@ -342,8 +447,7 @@ identify all indirect effects and
 total effects.
 
 Note that they are \emph{not} intended to
-be flexible. For models that are
-different from these common models,
+be flexible. For more complex models,
 it is recommended to fit the models
 manually, either by structural
 equation modelling (e.g.,
@@ -354,10 +458,62 @@ analysis using \code{\link[stats:lm]{stats::lm()}} or
 for an illustration on how to compute
 and test indirect effects for an
 arbitrary mediation model.
+\subsection{Specifying a Model of an Arbitrary Form}{
+
+If a custom model is to be estimated,
+instead of setting \code{model} to a name
+of the form (\code{"simple"},\code{"serial"},
+or \code{"parallel"}), set \verb{model to the paths between }x\code{and}y`. It can
+take one of the following two forms:
+
+A character vector, each element a
+string of a path, with variable names
+connected by \code{"->"} (the spaces are
+optional):
+
+\preformatted{c("x -> m11 -> m12 -> y",
+  "x -> m2 -> y")}
+
+A list of character vectors, each
+vector is a vector of names representing
+a path, going from the first element
+to the last element:
+
+\preformatted{list(c("x", "m11, "m12", "y"),
+     c("x", "m2", "y")}
+
+The two forms above specify the same
+model.
+
+Paths not included are fixed to zero
+(i.e., does not "exist" in the model).
+A path can be specified more than once
+if this can enhance readability.
+For example:
+
+\preformatted{c("x1 -> m1 -> m21 -> y1",
+  "x1 -> m1 -> m22 -> y1")}
+
+The path \code{"x1 -> m1"} appears twice,
+to indicate two different pathways from
+\code{x1} to \code{y1}.
+}
+
 \subsection{Workflow}{
 
+The coefficients of the model can be
+estimated by one of these two
+methods: OLS (ordinary least squares)
+regression (setting \code{fit_method} to
+\code{"regression"} or \code{"lm"}), or path
+analysis (SEM, structural equation
+modeling, by setting \code{fit_method} to
+\code{"sem"} or \code{"lavaan"}).
+\subsection{Regression}{
+
 This is the workflow of the "q"
-functions:
+functions when estimating the
+coefficients by regression:
 \itemize{
 \item Do listwise deletion based on all
 the variables used in the models.
@@ -374,6 +530,63 @@ form their confidence intervals.
 compute the total indirect effect.
 \item Return all the results for printing.
 }
+
+The output of the "q" functions have
+a \code{print} method for
+printing all the major results.
+}
+
+\subsection{Path Analysis}{
+
+This is the workflow of the "q"
+functions when estimating the
+coefficients by path analysis (SEM):
+\itemize{
+\item By default, cases with missing
+data only on the mediators and the
+outcome variable will be retained,
+and full information maximum
+likelihood (FIML) will be used to
+estimate the coefficients.
+(Controlled by \code{missing}, default
+to \code{"fiml"}) using \code{\link[lavaan:sem]{lavaan::sem()}}.
+\item Generate the SEM (\code{lavaan}) model
+syntax based on the model specified.
+\item Fit the model by path analysis
+using \code{\link[lavaan:sem]{lavaan::sem()}}.
+\item Call \code{\link[=all_indirect_paths]{all_indirect_paths()}} to
+identify all indirect paths.
+\item Call \code{\link[=many_indirect_effects]{many_indirect_effects()}} to
+compute all indirect effects and
+form their confidence intervals.
+\item Call \code{\link[=total_indirect_effect]{total_indirect_effect()}} to
+compute the total indirect effect.
+\item Return all the results for printing.
+}
+}
+
+}
+
+\subsection{Testing the Indirect Effects}{
+
+Two methods are available for testing
+the indirect effects: nonparametric
+bootstrap confidence intervals
+(\code{ci_type} set to \code{"boot"}) and
+Monte Carlo confidence intervals
+(\code{ci_type} set to \code{"mc"}).
+
+If the coefficients are estimated by
+OLS regression, only nonparametric
+bootstrap confidence intervals are
+supported.
+
+If the coefficients are estimated by
+path analysis (SEM), then both methods
+are supported.
+}
+
+\subsection{Printing the Results}{
 
 The output of the "q" functions have
 a \code{print} method for
@@ -403,10 +616,7 @@ estimates are assumed to be zero,
 which may not be the case in some
 models. Therefore, the "q" functions
 do not support Monte Carlo confidence
-intervals. If Monte Carlo intervals
-are desired, please fit the model by
-structural equation modeling using
-\code{\link[lavaan:sem]{lavaan::sem()}}.
+intervals if OLS regression is used.
 }
 
 }
@@ -435,6 +645,28 @@ parallel mediation models.
 
 }}
 \examples{
+
+# ===== A user-specified mediation model
+
+# Set R to 5000 or 10000 in real studies
+# Remove 'parallel' or set it to TRUE for faster bootstrapping
+# Remove 'progress' or set it to TRUE to see a progress bar
+
+out <- q_mediation(x = "x1",
+                   y = "y1",
+                   model = c("x1 -> m11 -> m2 -> y1",
+                             "x1 -> m12 -> m2 -> y1"),
+                   cov = c("c2", "c1"),
+                   data = data_med_complicated,
+                   R = 40,
+                   seed = 1234,
+                   parallel = FALSE,
+                   progress = FALSE)
+# Suppressed printing of p-values due to the small R
+# Remove `pvalue = FALSE` when R is large
+print(out,
+      pvalue = FALSE)
+
 
 # ===== Simple mediation
 
