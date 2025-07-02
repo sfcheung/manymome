@@ -15,7 +15,7 @@ lavaan::sem(), or lavaan.mi::sem.mi()."><meta property="og:image" content="https
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,7 @@ lavaan::sem(), or lavaan.mi::sem.mi()."><meta property="og:image" content="https
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Conditional, Indirect, and Conditional Indirect Effects</h1>
-      <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/v0.2.9/R/cond_indirect.R" class="external-link"><code>R/cond_indirect.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/R/cond_indirect.R" class="external-link"><code>R/cond_indirect.R</code></a></small>
       <div class="d-none name"><code>cond_indirect.Rd</code></div>
     </div>
 
@@ -1082,14 +1082,15 @@ these functions.</p></div>
 <span class="r-in"><span>                             fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">out</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s)   ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect(s) ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                        ind</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m11 -&gt; m12 -&gt; y 0.193</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m11 -&gt; y        0.163</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m12 -&gt; y        0.059</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m2 -&gt; y         0.364</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows theindirect effect(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Multigroup models for many_indirect_effects()</span></span></span>
@@ -1256,14 +1257,15 @@ these functions.</p></div>
 <span class="r-in"><span>                             fit <span class="op">=</span> <span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">out</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s)   ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect(s) ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                  ind</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Group A.x1 -&gt; m11 -&gt; m12 -&gt; y1 0.075</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Group A.x1 -&gt; m11 -&gt; y1        0.134</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Group B.x1 -&gt; m11 -&gt; m12 -&gt; y1 0.002</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Group B.x1 -&gt; m11 -&gt; y1        0.037</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows theindirect effect(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

@@ -15,7 +15,7 @@ many_indirect_effects()."><meta property="og:image" content="https://sfcheung.gi
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,7 @@ many_indirect_effects()."><meta property="og:image" content="https://sfcheung.gi
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Confidence Intervals of Indirect Effects in an 'indirect_list' Object</h1>
-      <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/v0.2.9/R/confint_indirect_list.R" class="external-link"><code>R/confint_indirect_list.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/R/confint_indirect_list.R" class="external-link"><code>R/confint_indirect_list.R</code></a></small>
       <div class="d-none name"><code>confint.indirect_list.Rd</code></div>
     </div>
 
@@ -175,7 +175,8 @@ percentile confidence interval.</p>
 <span class="r-in"><span>                             boot_out <span class="op">=</span> <span class="va">fit_boot</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">out</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s)   ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect(s) ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                        ind  CI.lo CI.hi Sig</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m11 -&gt; m12 -&gt; y 0.193  0.029 0.550 Sig</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m11 -&gt; y        0.163 -0.346 0.570    </span>
@@ -184,7 +185,7 @@ percentile confidence interval.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 45 samples.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows theindirect effect(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      Percentile: 2.5 % Percentile: 97.5 %</span>

@@ -13,7 +13,7 @@ just one function."><meta property="og:image" content="https://sfcheung.github.i
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,7 +65,7 @@ just one function."><meta property="og:image" content="https://sfcheung.github.i
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Mediation Models By Regression</h1>
-      <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/v0.2.9/R/q_mediation.R" class="external-link"><code>R/q_mediation.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/R/q_mediation.R" class="external-link"><code>R/q_mediation.R</code></a></small>
       <div class="d-none name"><code>q_mediation.Rd</code></div>
     </div>
 
@@ -648,85 +648,93 @@ indirect effects.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> |             Indirect Effect Results             |</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s)   ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect(s) ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                ind  CI.lo  CI.hi Sig     SE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m -&gt; y 0.7334 0.3239 1.4906 Sig 0.3025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows theindirect effect(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s) (x-variable(s) Standardized)  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect(s) (x-variable(s) Standardized) ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                std  CI.lo  CI.hi Sig     SE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m -&gt; y 0.7739 0.3221 1.5004 Sig 0.3159</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized indirect effects. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized indirect effect(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - x-variable(s) standardized.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s) (y-variable(s) Standardized)  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect(s) (y-variable(s) Standardized) ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                std  CI.lo  CI.hi Sig     SE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m -&gt; y 0.2914 0.1382 0.5426 Sig 0.1107</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized indirect effects. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized indirect effect(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - y-variable(s) standardized.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==  Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized) ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                std  CI.lo  CI.hi Sig     SE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m -&gt; y 0.3074 0.1372 0.5846 Sig 0.1160</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The standardized indirect effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The standardized indirect effect(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> |              Direct Effect Results              |</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s)   ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Effect(s) ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           ind   CI.lo  CI.hi Sig     SE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.5077 -0.4633 1.0643     0.4065</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the  effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows theeffect(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (x-variable(s) Standardized)  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Effect(s) (x-variable(s) Standardized) ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig     SE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.5357 -0.4732 1.0294     0.4140</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized  effects. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized effect(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - x-variable(s) standardized.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (y-variable(s) Standardized)  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Effect(s) (y-variable(s) Standardized) ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig     SE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.2017 -0.1787 0.4199     0.1637</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized  effects. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The partially standardized effect(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - y-variable(s) standardized.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ==   Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> == Effect(s) (Both x-variable(s) and y-variable(s) Standardized) ==</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           std   CI.lo  CI.hi Sig     SE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; y 0.2128 -0.1827 0.4068     0.1666</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [SE] are standard errors.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The standardized  effects.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - std: The standardized effect(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ===================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> |                      Notes                      |</span>
