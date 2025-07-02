@@ -1,8 +1,10 @@
 #' @title Mediation Models By Regression
+#' or SEM
 #'
 #' @description Simple-to-use functions
-#' for fitting regression models and
-#' testing indirect effects using
+#' for fitting linear models by regression
+#' or structural equation modeling and
+#' testing indirect effects, using
 #' just one function.
 #'
 #' @details
@@ -11,14 +13,14 @@
 #' common models. These functions do the
 #' following in one single call:
 #'
-#' - Fit the regression models.
+#' - Fit the linear models.
 #'
 #' - Compute and test all the indirect
 #'  effects.
 #'
 #' They are easy-to-use and are suitable
-#' for common models which are not too
-#' complicated. For now, there are
+#' for common models with mediators.
+#' For now, there are
 #' "q" functions for these models:
 #'
 #' - A simple mediation: One predictor
@@ -51,6 +53,25 @@
 #'
 #'    - ...
 #'
+#' - An arbitrary mediation model: One
+#' predictor (`x`), one or more
+#' mediators (`m`), one outcome (`y`),
+#' and optionally some control variables
+#' (`cov`ariates). The mediators
+#' positioned in an arbitrary form
+#' between `x`
+#' and `y`, as long as there are no
+#' feedback loops ([q_mediation()]).
+#' For example:
+#'
+#'    - `x -> m1`
+#'
+#'    - `m1 -> m21 -> y`
+#'
+#'    - `m1 -> m22 -> y`
+#'
+#'    - ...
+#'
 #' Users only need to specify the `x`,
 #' `m`, and `y` variables, and covariates
 #' or control variables, if any (by `cov`),
@@ -59,8 +80,7 @@
 #' total effects.
 #'
 #' Note that they are *not* intended to
-#' be flexible. For models that are
-#' different from these common models,
+#' be flexible. For more complex models,
 #' it is recommended to fit the models
 #' manually, either by structural
 #' equation modelling (e.g.,
@@ -72,10 +92,63 @@
 #' and test indirect effects for an
 #' arbitrary mediation model.
 #'
+#' ## Specifying a Model of an Arbitrary Form
+#'
+#' If a custom model is to be estimated,
+#' instead of setting `model` to a name
+#' of the form (`"simple"`,`"serial"`,
+#' or `"parallel"`), set `model to the
+#' paths between `x` and `y`. It can
+#' take one of the following two forms:
+#'
+#' A character vector, each element a
+#' string of a path, with variable names
+#' connected by `"->"` (the spaces are
+#' optional):
+#'
+#' \preformatted{c("x -> m11 -> m12 -> y",
+#'   "x -> m2 -> y")}
+#'
+#' A list of character vectors, each
+#' vector is a vector of names representing
+#' a path, going from the first element
+#' to the last element:
+#'
+#' \preformatted{list(c("x", "m11, "m12", "y"),
+#'      c("x", "m2", "y")}
+#'
+#' The two forms above specify the same
+#' model.
+#'
+#' Paths not included are fixed to zero
+#' (i.e., does not "exist" in the model).
+#' A path can be specified more than once
+#' if this can enhance readability.
+#' For example:
+#'
+#' \preformatted{c("x1 -> m1 -> m21 -> y1",
+#'   "x1 -> m1 -> m22 -> y1")}
+#'
+#' The path `"x1 -> m1"` appears twice,
+#' to indicate two different pathways from
+#' `x1` to `y1`.
+#'
 #' ## Workflow
 #'
+#' The coefficients of the model can be
+#' estimated by one of these two
+#' methods: OLS (ordinary least squares)
+#' regression (setting `fit_method` to
+#' `"regression"` or `"lm"`), or path
+#' analysis (SEM, structural equation
+#' modeling, by setting `fit_method` to
+#' `"sem"` or `"lavaan"`).
+#'
+#' ### Regression
+#'
 #' This is the workflow of the "q"
-#' functions:
+#' functions when estimating the
+#' coefficients by regression:
 #'
 #' - Do listwise deletion based on all
 #' the variables used in the models.
@@ -97,6 +170,63 @@
 #'  compute the total indirect effect.
 #'
 #' - Return all the results for printing.
+#'
+#' The output of the "q" functions have
+#' a `print` method for
+#' printing all the major results.
+#'
+#' ### Path Analysis
+#'
+#' This is the workflow of the "q"
+#' functions when estimating the
+#' coefficients by path analysis (SEM):
+#'
+#' - By default, cases with missing
+#' data only on the mediators and the
+#' outcome variable will be retained,
+#' and full information maximum
+#' likelihood (FIML) will be used to
+#' estimate the coefficients.
+#' (Controlled by `missing`, default
+#' to `"fiml"`) using [lavaan::sem()].
+#'
+#' - Generate the SEM (`lavaan`) model
+#' syntax based on the model specified.
+#'
+#' - Fit the model by path analysis
+#' using [lavaan::sem()].
+#'
+#' - Call [all_indirect_paths()] to
+#'  identify all indirect paths.
+#'
+#' - Call [many_indirect_effects()] to
+#'  compute all indirect effects and
+#'  form their confidence intervals.
+#'
+#' - Call [total_indirect_effect()] to
+#'  compute the total indirect effect.
+#'
+#' - Return all the results for printing.
+#'
+#' ## Testing the Indirect Effects
+#'
+#' Two methods are available for testing
+#' the indirect effects: nonparametric
+#' bootstrap confidence intervals
+#' (`ci_type` set to `"boot"`) and
+#' Monte Carlo confidence intervals
+#' (`ci_type` set to `"mc"`).
+#'
+#' If the coefficients are estimated by
+#' OLS regression, only nonparametric
+#' bootstrap confidence intervals are
+#' supported.
+#'
+#' If the coefficients are estimated by
+#' path analysis (SEM), then both methods
+#' are supported.
+#'
+#' ## Printing the Results
 #'
 #' The output of the "q" functions have
 #' a `print` method for
@@ -125,10 +255,7 @@
 #' which may not be the case in some
 #' models. Therefore, the "q" functions
 #' do not support Monte Carlo confidence
-#' intervals. If Monte Carlo intervals
-#' are desired, please fit the model by
-#' structural equation modeling using
-#' [lavaan::sem()].
+#' intervals if OLS regression is used.
 #'
 #' @param x For [q_mediation()],
 #' [q_simple_mediation()],
@@ -301,6 +428,29 @@ NULL
 #' The function [q_mediation()] returns
 #' a `q_mediation` class object, with
 #' its `print` method.
+#'
+#' @examples
+#'
+#' # ===== A user-specified mediation model
+#'
+#' # Set R to 5000 or 10000 in real studies
+#' # Remove 'parallel' or set it to TRUE for faster bootstrapping
+#' # Remove 'progress' or set it to TRUE to see a progress bar
+#'
+#' out <- q_mediation(x = "x1",
+#'                    y = "y1",
+#'                    model = c("x1 -> m11 -> m2 -> y1",
+#'                              "x1 -> m12 -> m2 -> y1"),
+#'                    cov = c("c2", "c1"),
+#'                    data = data_med_complicated,
+#'                    R = 40,
+#'                    seed = 1234,
+#'                    parallel = FALSE,
+#'                    progress = FALSE)
+#' # Suppressed printing of p-values due to the small R
+#' # Remove `pvalue = FALSE` when R is large
+#' print(out,
+#'       pvalue = FALSE)
 #'
 #' @describeIn q_mediation The general
 #' "q" function for common mediation
