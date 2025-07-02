@@ -1,3 +1,10 @@
+# manymome 0.2.9.1
+
+## Miscellaneous
+
+- Improve the printout of a list of
+  indirect effects. (0.2.9.1)
+
 # manymome 0.2.9
 
 ## Miscellaneous
