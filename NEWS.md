@@ -1,4 +1,19 @@
-# manymome 0.2.9.2
+# manymome 0.2.9.3
+
+## New Features
+
+- Updated the `q_*` functions
+  (`q_mediation()`, `q_simple_mediation()`,
+  `q_serial_mediation()` and `q_parallel_mediation()`)
+  to support fitting a model by
+  path analysis using `lavaan::sem()`,
+  with the option to handle missing data
+  using full information maximum likelihood.
+  (0.2.9.3)
+
+- Updated `q_mediation()` to support
+  a user-specified mediation model.
+  (0.2.9.3)
 
 ## Miscellaneous
 
