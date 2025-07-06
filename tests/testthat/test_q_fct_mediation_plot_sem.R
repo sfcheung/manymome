@@ -151,10 +151,12 @@ plot_q(outm2)
 
 outm3 <- q_mediation(
             x = "x2",
-            y = "y1",
+            y = "c1",
             model = c("x2 -> m2 -> m11 -> y1",
-                      "x2 -> m2 -> m12 -> y1"),
-            cov = c("c1", "c2"),
+                      "x2 -> m2 -> m12 -> y1",
+                      "m2 -> y1",
+                      "y1 -> c1"),
+            cov = c("c2"),
             fit_method = "sem",
             data = data_med_complicated,
             R = 200,
