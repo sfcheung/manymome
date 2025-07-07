@@ -57,12 +57,12 @@ plot_q <- function(
   # ==== Standardized Solution ====
 
   if (standardized) {
-    if (object_type == "lm") {
+    if (fit_type == "lm") {
       est <- add_betaselect_lm_list(
                   fit = fit,
                   ptable = est
                 )
-    } else if (object_type == "lavaan") {
+    } else if (fit_type == "lavaan") {
       est <- add_betaselect_lav(
                   lm_out_lav = x$lm_out_lav,
                   ptable = est
@@ -71,12 +71,29 @@ plot_q <- function(
   }
 
   # ==== semPlotModel ====
-
-  pm <- switch(
-            fit_type,
-            lm = semPlot::semPlotModel(est),
-            lavaan = semPlot::semPlotModel(fit)
-          )
+  if (!standardized) {
+    pm <- switch(
+              fit_type,
+              lm = semPlot::semPlotModel(est),
+              lavaan = semPlot::semPlotModel(fit)
+            )
+  } else {
+    if (fit_type == "lavaan") {
+      est$ustart <- est$est
+      tmp <- !is.na(est$z)
+      est$free <- 0
+      est$free[tmp] <- seq_along(which(tmp))
+      est$plabel <- paste0(".p", seq_len(nrow(est)), ".")
+    }
+    est$est_org <- est$est
+    est$est <- est$est.std
+    est$ustart <- est$est
+    pm <- switch(
+              fit_type,
+              lm = semPlot::semPlotModel(est),
+              lavaan = semPlot::semPlotModel(est)
+            )
+  }
   fit_x <- x$x
   fit_y <- x$y
   fit_m <- x$m
@@ -446,6 +463,8 @@ out0 <- q_simple_mediation(
             progress = FALSE
           )
 plot_q(out0)
+plot_q(out0,
+       standardized = TRUE)
 
 outs <- q_serial_mediation(
             x = "x",
@@ -463,6 +482,9 @@ outs <- q_serial_mediation(
 plot_q(outs)
 plot_q(outs,
        rsquares = FALSE)
+plot_q(outs,
+       standardized = TRUE)
+
 
 
 outp <- q_parallel_mediation(
@@ -479,6 +501,8 @@ outp <- q_parallel_mediation(
             progress = FALSE
           )
 plot_q(outp)
+plot_q(outp,
+       standardized = TRUE)
 
 outm1 <- q_mediation(
             x = "x1",
@@ -512,6 +536,9 @@ outm2 <- q_mediation(
             progress = FALSE
           )
 plot_q(outm2)
+plot_q(outm2,
+       standardized = TRUE)
+
 
 outm3 <- q_mediation(
             x = "x2",
@@ -530,6 +557,8 @@ outm3 <- q_mediation(
             progress = FALSE
           )
 plot_q(outm3)
+plot_q(outm3,
+       standardized = TRUE)
 
 # lm
 
@@ -545,6 +574,9 @@ out0 <- q_simple_mediation(
             progress = FALSE
           )
 plot_q(out0)
+plot_q(out0,
+       standardized = TRUE)
+
 
 outs <- q_serial_mediation(
             x = "x",
@@ -558,6 +590,8 @@ outs <- q_serial_mediation(
             progress = FALSE
           )
 plot_q(outs)
+plot_q(outs,
+       standardized = TRUE)
 
 outp <- q_parallel_mediation(
             x = "x",
@@ -571,6 +605,8 @@ outp <- q_parallel_mediation(
             progress = FALSE
           )
 plot_q(outp)
+plot_q(outp,
+       standardized = TRUE)
 
 outm1 <- q_mediation(
             x = "x1",
@@ -585,7 +621,8 @@ outm1 <- q_mediation(
             progress = FALSE
           )
 plot_q(outm1)
-
+plot_q(outm1,
+       standardized = TRUE)
 
 outm2 <- q_mediation(
             x = "x1",
@@ -600,6 +637,8 @@ outm2 <- q_mediation(
             progress = FALSE
           )
 plot_q(outm2)
+plot_q(outm2,
+       standardized = TRUE)
 
 outm3 <- q_mediation(
             x = "x2",
@@ -616,7 +655,8 @@ outm3 <- q_mediation(
             progress = FALSE
           )
 plot_q(outm3)
-
+plot_q(outm3,
+       standardized = TRUE)
 
 })
 
