@@ -153,6 +153,7 @@
 #'
 #' @examples
 #'
+#' # CI disabled in these examples.
 #' # Please see the help page of these functions on forming
 #' # confidence intervals for the indirect effects.
 #'
@@ -162,6 +163,7 @@
 #'                           y = "y",
 #'                           m = "m",
 #'                           cov = c("c2", "c1"),
+#'                           boot_ci = FALSE,
 #'                           data = data_med)
 #' plot(out)
 #'
@@ -171,6 +173,7 @@
 #'                           y = "y",
 #'                           m = c("m1", "m2"),
 #'                           cov = c("c2", "c1"),
+#'                           boot_ci = FALSE,
 #'                           data = data_serial)
 #' plot(out)
 #'
@@ -180,6 +183,7 @@
 #'                             y = "y",
 #'                             m = c("m1", "m2"),
 #'                             cov = c("c2", "c1"),
+#'                             boot_ci = FALSE,
 #'                             data = data_parallel)
 #'
 #' plot(out)
@@ -191,6 +195,7 @@
 #'                    model = c("x1 -> m11 -> m2 -> y1",
 #'                              "x1 -> m12 -> m2 -> y1"),
 #'                    cov = c("c2", "c1"),
+#'                    boot_ci = FALSE,
 #'                    data = data_med_complicated)
 #' plot(out)
 #'
