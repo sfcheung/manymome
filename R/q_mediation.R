@@ -304,6 +304,12 @@
 #' bootstrap confidence interval will be
 #' formed. Default is `TRUE`.
 #'
+#' @param mc_ci Logical. Whether
+#' Monte Carlo confidence interval will be
+#' formed. Default is `FALSE`. Only
+#' supported if `fit_method` is
+#' `"sem"` or `"lavaan"`.
+#'
 #' @param level The level of confidence
 #' of the confidence interval. Default
 #' is .95 (for 95% confidence intervals).
@@ -318,9 +324,15 @@
 #' integer to make the results
 #' reproducible.
 #'
-#' @param ci_type Can be `"boot"` for
-#' nonparametric bootstrapping or `"mc"`
-#' for Monte Carlo. If `fit_method` is
+#' @param ci_type The type of
+#' confidence intervals to be formed.
+#' Can be either `"boot"` (bootstrapping)
+#' or `"mc"` (Monte Carlo). If not
+#' supplied or is `NULL`, will check
+#' other arguments
+#' (e.g, `boot_ci` and `mc_ci`). If
+#' supplied, will override `boot_ci`
+#' and `mc_ci`. If `fit_method` is
 #' `"regression"` or `"lm"`, then only
 #' `"boot"` is supported.
 #'
@@ -463,10 +475,11 @@ q_mediation <- function(x,
                         cov = NULL,
                         data = NULL,
                         boot_ci = TRUE,
+                        mc_ci = FALSE,
                         level = .95,
                         R = 100,
                         seed = NULL,
-                        ci_type = c("boot", "mc"),
+                        ci_type = NULL,
                         boot_type = c("perc", "bc"),
                         model = NULL,
                         fit_method = c("lm", "regression", "sem", "lavaan"),
@@ -480,7 +493,31 @@ q_mediation <- function(x,
   if (is.null(model)) {
     stop("Must specify the model by setting the argument 'model'.")
   }
-  ci_type <- match.arg(ci_type)
+  if (!is.null(ci_type)) {
+    ci_type <- match.arg(ci_type, c("boot", "mc"))
+    if (ci_type == "boot") {
+      boot_ci <- TRUE
+      mc_ci <- FALSE
+    } else {
+      boot_ci <- FALSE
+      mc_ci <- TRUE
+    }
+  } else {
+    if (boot_ci && mc_ci) {
+      stop("boot_ci and mc_ci cannot be both TRUE.")
+    }
+    if (boot_ci) {
+      mc_ci <- FALSE
+      ci_type <- "boot"
+    } else if (mc_ci) {
+      boot_ci <- FALSE
+      ci_type <- "mc"
+    } else {
+      ci_type <- NULL
+      boot_ci <- FALSE
+      mc_ci <- FALSE
+    }
+  }
   boot_type <- match.arg(boot_type)
   fit_method <- match.arg(fit_method)
   if (fit_method == "sem") {
@@ -493,7 +530,7 @@ q_mediation <- function(x,
   # ==== Sanity checks ====
 
   if ((fit_method == "lm") &&
-      (ci_type == "mc")) {
+      isTRUE(ci_type == "mc")) {
     stop("Models fitted by regression does not support",
          "Monte Carlo confidence intervals.")
   }
@@ -599,7 +636,9 @@ q_mediation <- function(x,
 
   # ==== do_* ====
 
-  if (progress) {
+  do_ci <- (boot_ci || mc_ci)
+
+  if (progress && do_ci) {
     cat("- Generate ",
         switch(ci_type,
                mc = "Monte Carlo",
@@ -608,24 +647,29 @@ q_mediation <- function(x,
         sep = "")
   }
 
-  ci_out <- switch(ci_type,
-                    boot = do_boot(
-                              fit = lm_all,
-                              R = R,
-                              seed = seed,
-                              parallel = parallel,
-                              progress = progress,
-                              ncores = ncores
-                            ),
-                    mc = do_mc(
-                              fit = lm_all,
-                              R = R,
-                              seed = seed,
-                              parallel = parallel,
-                              progress = progress,
-                              ncores = ncores
-                            )
-                )
+  if (do_ci) {
+    ci_out <- switch(ci_type,
+                      boot = do_boot(
+                                fit = lm_all,
+                                R = R,
+                                seed = seed,
+                                parallel = parallel,
+                                progress = progress,
+                                ncores = ncores
+                              ),
+                      mc = do_mc(
+                                fit = lm_all,
+                                R = R,
+                                seed = seed,
+                                parallel = parallel,
+                                progress = progress,
+                                ncores = ncores
+                              ),
+                      NULL
+                  )
+  } else {
+    ci_out <- NULL
+  }
 
   # ==== Indirect effect ====
 
@@ -881,7 +925,8 @@ q_mediation <- function(x,
               missing = missing,
               x_miss = x_miss,
               lm_all_x = lm_all_x,
-              model_type = model_type)
+              model_type = model_type,
+              ci_type = ci_type)
   if (model_type == "standard") {
     model_class <- switch(model,
                           simple = "q_simple_mediation",
@@ -914,7 +959,7 @@ q_mediation <- function(x,
 #'                           m = "m",
 #'                           cov = c("c2", "c1"),
 #'                           data = data_med,
-#'                           R = 40,
+#'                           R = 20,
 #'                           seed = 1234,
 #'                           parallel = FALSE,
 #'                           progress = FALSE)
@@ -946,10 +991,11 @@ q_simple_mediation <- function(x,
                                cov = NULL,
                                data = NULL,
                                boot_ci = TRUE,
+                               mc_ci = FALSE,
                                level = .95,
                                R = 100,
                                seed = NULL,
-                               ci_type = c("boot", "mc"),
+                               ci_type = NULL,
                                boot_type = c("perc", "bc"),
                                fit_method = c("lm", "regression", "sem", "lavaan"),
                                missing = "fiml",
@@ -973,6 +1019,7 @@ q_simple_mediation <- function(x,
                      cov = cov,
                      data = data,
                      boot_ci = boot_ci,
+                     mc_ci = mc_ci,
                      level = level,
                      R = R,
                      seed = seed,
@@ -1043,10 +1090,11 @@ q_serial_mediation <- function(x,
                                cov = NULL,
                                data = NULL,
                                boot_ci = TRUE,
+                               mc_ci = FALSE,
                                level = .95,
                                R = 100,
                                seed = NULL,
-                               ci_type = c("boot", "mc"),
+                               ci_type = NULL,
                                boot_type = c("perc", "bc"),
                                fit_method = c("lm", "regression", "sem", "lavaan"),
                                missing = "fiml",
@@ -1070,6 +1118,7 @@ q_serial_mediation <- function(x,
                      cov = cov,
                      data = data,
                      boot_ci = boot_ci,
+                     mc_ci = mc_ci,
                      level = level,
                      R = R,
                      seed = seed,
@@ -1139,10 +1188,11 @@ q_parallel_mediation <- function(x,
                                  cov = NULL,
                                  data = NULL,
                                  boot_ci = TRUE,
+                                 mc_ci = FALSE,
                                  level = .95,
                                  R = 100,
                                  seed = NULL,
-                                 ci_type = c("boot", "mc"),
+                                 ci_type = NULL,
                                  boot_type = c("perc", "bc"),
                                  fit_method = c("lm", "regression", "sem", "lavaan"),
                                  missing = "fiml",
@@ -1166,6 +1216,7 @@ q_parallel_mediation <- function(x,
                      cov = cov,
                      data = data,
                      boot_ci = boot_ci,
+                     mc_ci = mc_ci,
                      level = level,
                      R = R,
                      seed = seed,
@@ -1830,24 +1881,29 @@ print.q_mediation <- function(x,
 
   str_note <- character(0)
 
-  ci_type <- ifelse(is.null(x$call$ci_type),
-                    yes =  eval(formals(q_mediation)$ci_type)[1],
-                    no = x$call$ci_type)
+  ci_type <- x$ci_type
+
+  if (is.null(ci_type)) {
+    ci_type <- "none"
+  }
 
   ci_name_lower <- switch(
                     ci_type,
                     boot = "bootstrap",
-                    mc = "Monte Carlo")
+                    mc = "Monte Carlo",
+                    "")
   ci_name_upper <- switch(
                       ci_type,
                       boot = "Bootstrap",
-                      mc = "Monte Carlo")
+                      mc = "Monte Carlo",
+                      "")
 
   t_stat_name <- switch(fit_method,
                         lm = "OLS t-statistc",
                         lavaan = "z-statistc")
 
-  if (print_direct) {
+  if (print_direct &&
+      (ci_type != "none")) {
     str_note <- c(str_note,
              strwrap(paste("- For reference, the",
                            ci_name_lower,
