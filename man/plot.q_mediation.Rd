@@ -5,7 +5,21 @@
 \title{Plot Method for the Output
 of 'q_mediation' Family}
 \usage{
-\method{plot}{q_mediation}(x, ...)
+\method{plot}{q_mediation}(
+  x,
+  standardized = FALSE,
+  size_variables = NULL,
+  size_path_labels = NULL,
+  nchar_variables = NULL,
+  nchar_path_labels = NULL,
+  rsquares = TRUE,
+  sigs = TRUE,
+  margins = c(5, 5, 5, 5),
+  v_pos = c("middle", "lower", "upper"),
+  v_preference = c("upper", "lower"),
+  plot_now = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{The output of
@@ -17,12 +31,115 @@ of 'q_mediation' Family}
 because it is required in the naming
 of arguments of the \code{plot} generic
 function.)}
+
+\item{standardized}{Logical. If
+\code{TRUE}, \code{betaS} in the printout of
+\code{\link[=q_mediation]{q_mediation()}} family will be used
+in the figure, with only numerical
+variables standardized. If \code{FALSE},
+the default, then the original
+(unstandardized) coefficients will
+be used.}
+
+\item{size_variables}{The size of
+the observed variables, to be passed
+to \code{sizeMan} of
+\code{\link[semPlot:semPaths]{semPlot::semPaths()}}. Default is
+\code{NULL} and the size is determined
+internally based on the number of
+variables.}
+
+\item{size_path_labels}{The size of
+the edge labels (parameter
+estimates), to be passed to
+\code{edge.label.cex} of
+\code{\link[semPlot:semPaths]{semPlot::semPaths()}}. Default is
+\code{NULL} and the size is determined
+internally based on the number of
+variables.}
+
+\item{nchar_variables}{The number of
+characters to be displayed for each
+variable. To be passed to
+\code{nCharNodes} of
+\code{\link[semPlot:semPaths]{semPlot::semPaths()}}. Default is
+\code{NULL}, equivalent to \code{0} for
+\code{nCharNodes}, to disable abbreviation
+of the variable names.}
+
+\item{nchar_path_labels}{The number
+of characters to be displayed for
+each label for a path. To be passed
+to \code{nCharEdges} of
+\code{\link[semPlot:semPaths]{semPlot::semPaths()}}. Default is
+\code{NULL}, equivalent to \code{0} for
+\code{nCharEdges}e, to disable
+abbreviation of the labels.}
+
+\item{rsquares}{Logical. If \code{TRUE},
+the default, R-squares will be
+drawn instead of error variances for
+mediators and outcome (\code{y}) variables.}
+
+\item{sigs}{Logical. If \code{TRUE}, the
+default, significance test results
+will be marked by asterisks, based on
+the same \emph{p}-values for R-squares
+displayed when printing the output of
+the \code{\link[=q_mediation]{q_mediation()}} family.}
+
+\item{margins}{The margins of the plot.
+A numeric vector of four values:
+bottom, left, top, and right. Passed
+to the \code{mar} argument of
+\code{\link[semPlot:semPaths]{semPlot::semPaths()}}.}
+
+\item{v_pos}{How the mediators are to
+be positioned vertically. If set to
+\verb{"middle}, with one \code{x} variable and
+one \code{y} variable, the mediators will
+tend to be placed around the
+horizontal line joining \code{x} and \code{y}.
+If set to \code{"upper"}, they will be
+placed along or above this line. If
+set to \code{"lower"}, they will be placed
+along or below this line. Note that
+this only affects the initial positions.
+The positions will be further adjusted
+based on the free paths in the model.
+This argument is to be passed to
+\code{\link[semptools:auto_layout_mediation]{semptools::auto_layout_mediation()}}.}
+
+\item{v_preference}{The preference in
+shifting the mediators upward
+(\code{"upper"}) or downward (\code{"lower"})
+to avoid blocking or overlapping with
+any paths in the models. It is used
+only when\code{v_pos} is \code{"middle"}. If
+\code{v_pos} is \code{"lower"}, then
+\code{v_preference} will be forced to be
+\verb{"lower". If }v_pos\code{is}"upper"\verb{, then }v_preference\verb{will be forced to be}"upper". This argument is to be
+passed to
+\code{\link[semptools:auto_layout_mediation]{semptools::auto_layout_mediation()}}.}
+
+\item{plot_now}{If \code{TRUE}, the default,
+the plot will be plotted when calling
+this method.}
+
+\item{...}{Optional arguments to be
+passed to \code{\link[semPlot:semPaths]{semPlot::semPaths()}} to
+generate the initial plot, before
+being adjusted by
+\code{\link[semptools:auto_layout_mediation]{semptools::auto_layout_mediation()}}.}
 }
 \value{
-A \code{ggplot2} graph. Plotted if
-not assigned to a name. It can be
-further modified like a usual
-\code{ggplot2} graph.
+A \code{qgraph} object generated
+by \code{\link[semPlot:semPaths]{semPlot::semPaths()}}, which is
+plotted by default unless \code{plot_now}
+is set to \code{FALSE}. It can be further
+modified by other functions that
+work on a \code{qgraph} object, such as
+those from \code{semptools}.
 }
 \description{
 Plot the path model
@@ -30,5 +147,72 @@ fitted by the family of 'q_mediation'
 functions.
 }
 \details{
-(TODO)
+This method requires the
+\code{semptools} and `semPlot`` packages.
+They are not installed by default.
+Install them first before using the
+plot method.
+
+This method draws the path models
+fitted by \code{\link[=q_mediation]{q_mediation()}},
+\code{\link[=q_simple_mediation]{q_simple_mediation()}},
+\code{\link[=q_serial_mediation]{q_serial_mediation()}}, and
+\code{\link[=q_parallel_mediation]{q_parallel_mediation()}}, with
+path coefficients and R-squares.
+
+It will try to set positions of the
+variables automatically, following
+the left-to-right convention: \code{x}
+variables on the left, \code{y} variables
+on the right, mediators between them,
+and arrows (paths) flow from left to
+right. The figure should usually be
+usable. If not, it can be further
+modified by helper functions such as
+those in \code{semptools} that can
+manipulate a \code{qgraph} object.
+}
+\examples{
+
+# Please see the help page of these functions on forming
+# confidence intervals for the indirect effects.
+
+# ===== Simple mediation
+
+out <- q_simple_mediation(x = "x",
+                          y = "y",
+                          m = "m",
+                          cov = c("c2", "c1"),
+                          data = data_med)
+plot(out)
+
+# ===== Serial mediation
+
+out <- q_serial_mediation(x = "x",
+                          y = "y",
+                          m = c("m1", "m2"),
+                          cov = c("c2", "c1"),
+                          data = data_serial)
+plot(out)
+
+# ==== Parallel mediation
+
+out <- q_parallel_mediation(x = "x",
+                            y = "y",
+                            m = c("m1", "m2"),
+                            cov = c("c2", "c1"),
+                            data = data_parallel)
+
+plot(out)
+
+# ===== A user-specified mediation model
+
+out <- q_mediation(x = "x1",
+                   y = "y1",
+                   model = c("x1 -> m11 -> m2 -> y1",
+                             "x1 -> m12 -> m2 -> y1"),
+                   cov = c("c2", "c1"),
+                   data = data_med_complicated)
+plot(out)
+
 }
