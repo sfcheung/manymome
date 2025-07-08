@@ -244,3 +244,66 @@ quick_scale <- function(
            na.rm = TRUE)
   a
 }
+
+# Input:
+# - indirect_list
+# Output:
+# - A character vector
+# Limitations:
+# - Single-group only
+indirect_list_to_note <- function(
+                      ind_out,
+                      digits = 3,
+                      ci = TRUE,
+                      pvalue = TRUE) {
+  out0 <- indirect_effects_from_list(
+              ind_out,
+              add_sig = TRUE,
+              pvalue = TRUE,
+              se = TRUE)
+  out <- character(0)
+  for (j in seq_len(nrow(out0))) {
+    out_i <- out0[j, , drop = FALSE]
+    s_path <- rownames(out_i)
+    tmp <- stats::coef(ind_out[[j]])
+    s_est <- unname(formatC(
+              tmp,
+              digits = digits,
+              format = "f"
+            ))
+    if (ci) {
+      s_ci <- stats::confint(ind_out[[j]])[1, , drop = TRUE]
+      s_ci <- formatC(
+                  s_ci,
+                  digits = digits,
+                  format = "f"
+                )
+      s_ci <- paste0(unname(s_ci), collapse = ", ")
+      s_ci <- paste0("[", s_ci, "]")
+    } else {
+      s_ci <- NULL
+    }
+    if (pvalue &&
+        ("pvalue" %in% colnames(out_i))) {
+      s_p <- out_i[, "pvalue", drop = TRUE]
+      if (s_p < .001) {
+        s_p <- "p < .001"
+      } else {
+        s_p <- formatC(s_p, digits = digits, format = "f")
+        s_p <- paste0("p = ", s_p)
+      }
+    } else {
+      s_p <- NULL
+    }
+    s_final <- paste0(c(
+                  s_path,
+                  ": ",
+                  s_est,
+                  ifelse(!is.null(s_ci), paste0(" ", s_ci), ""),
+                  ifelse(!is.null(s_p), paste0(" ", s_p), "")
+                  ),
+                  collapse = "")
+    out <- c(out, s_final)
+  }
+  out
+}
