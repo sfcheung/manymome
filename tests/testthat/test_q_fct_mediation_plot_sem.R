@@ -242,6 +242,9 @@ expect_no_error(plot(outm3,
      standardized = TRUE, plot_now = FALSE))
 
 indirect_list_to_note(outm3$ind_out$ustd)
-
+text_indirect_list(indirect_list_to_note(outm3$ind_out$ustd))
+indirect_to_note(outm3$ind_total$ustd)
+text_indirect(indirect_to_note(outm3$ind_total$ustd))
+text_indirect(indirect_to_note(outm3$ind_total$ustd), prefix = NULL)
 })
 
