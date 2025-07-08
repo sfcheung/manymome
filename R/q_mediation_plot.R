@@ -93,6 +93,13 @@
 #' `nCharEdges`e, to disable
 #' abbreviation of the labels.
 #'
+#' @param digits The number
+#' of digits to be printed after the
+#' decimals. To be passed
+#' to `nDigits` of
+#' [semPlot::semPaths()]. Default is
+#' 2.
+#'
 #' @param rsquares Logical. If `TRUE`,
 #' the default, R-squares will be
 #' drawn instead of error variances for
@@ -207,6 +214,7 @@ plot.q_mediation <- function(
                 size_path_labels = NULL,
                 nchar_variables = NULL,
                 nchar_path_labels = NULL,
+                digits = 2,
                 rsquares = TRUE,
                 sigs = TRUE,
                 margins = c(5, 5, 5, 5),
@@ -337,6 +345,7 @@ plot.q_mediation <- function(
                 nCharEdges = ifelse(is.null(nchar_path_labels), 0, nchar_path_labels),
                 sizeMan = sizeMan,
                 edge.label.cex = edge.label.cex,
+                nDigits = digits,
                 mar = margins,
                 ...,
                 DoNotPlot = TRUE
@@ -354,10 +363,12 @@ plot.q_mediation <- function(
             fit_type,
             lm = semptools::add_rsq(
                       p,
+                      digits = digits,
                       ests = rsq_est
                     ),
             lavaan = semptools::add_rsq(
                       p,
+                      digits = digits,
                       object = fit
                     )
           )

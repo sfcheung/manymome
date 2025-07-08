@@ -26,6 +26,8 @@ out0 <- q_simple_mediation(
 expect_no_error(plot(out0, plot_now = FALSE))
 expect_no_error(plot(out0,
      standardized = TRUE, plot_now = FALSE))
+expect_no_error(plot(out0,
+     digits = 3, plot_now = FALSE))
 
 indirect_list_to_note(out0$ind_out$ustd)
 

@@ -12,6 +12,7 @@ of 'q_mediation' Family}
   size_path_labels = NULL,
   nchar_variables = NULL,
   nchar_path_labels = NULL,
+  digits = 2,
   rsquares = TRUE,
   sigs = TRUE,
   margins = c(5, 5, 5, 5),
@@ -75,6 +76,13 @@ to \code{nCharEdges} of
 \code{NULL}, equivalent to \code{0} for
 \code{nCharEdges}e, to disable
 abbreviation of the labels.}
+
+\item{digits}{The number
+of digits to be printed after the
+decimals. To be passed
+to \code{nDigits} of
+\code{\link[semPlot:semPaths]{semPlot::semPaths()}}. Default is
+2.}
 
 \item{rsquares}{Logical. If \code{TRUE},
 the default, R-squares will be
