@@ -29,7 +29,9 @@ expect_no_error(plot(out0,
 expect_no_error(plot(out0,
      digits = 3, plot_now = FALSE))
 
-indirect_list_to_note(out0$ind_out$ustd)
+expect_no_error(text_indirect_list(indirect_list_to_note(out0$ind_out$ustd)))
+expect_no_error(text_total_indirect(total_indirect_to_note(out0$ind_total$ustd), line = 2))
+
 
 outs <- q_serial_mediation(
             x = "x",
@@ -50,7 +52,8 @@ expect_no_error(plot(outs,
 expect_no_error(plot(outs,
      standardized = TRUE, plot_now = FALSE))
 
-indirect_list_to_note(outs$ind_out$ustd)
+expect_no_error(text_indirect_list(indirect_list_to_note(outs$ind_out$ustd)))
+expect_no_error(text_total_indirect(total_indirect_to_note(outs$ind_total$ustd), line = 2))
 
 
 outp <- q_parallel_mediation(
@@ -70,7 +73,8 @@ expect_no_error(plot(outp, plot_now = FALSE))
 expect_no_error(plot(outp,
      standardized = TRUE, plot_now = FALSE))
 
-indirect_list_to_note(outp$ind_out$ustd)
+expect_no_error(text_indirect_list(indirect_list_to_note(outp$ind_out$ustd)))
+expect_no_error(text_total_indirect(total_indirect_to_note(outp$ind_total$ustd), line = 2))
 
 outm1 <- q_mediation(
             x = "x1",
@@ -90,7 +94,8 @@ expect_no_error(plot(outm1, plot_now = FALSE))
 expect_no_error(plot(outm1,
      standardized = TRUE, plot_now = FALSE))
 
-indirect_list_to_note(outm1$ind_out$ustd)
+expect_no_error(text_indirect_list(indirect_list_to_note(outm1$ind_out$ustd)))
+expect_no_error(text_total_indirect(total_indirect_to_note(outm1$ind_total$ustd), line = 2))
 
 
 outm2 <- q_mediation(
@@ -111,7 +116,8 @@ expect_no_error(plot(outm2, plot_now = FALSE))
 expect_no_error(plot(outm2,
        standardized = TRUE, plot_now = FALSE))
 
-indirect_list_to_note(outm2$ind_out$ustd)
+expect_no_error(text_indirect_list(indirect_list_to_note(outm2$ind_out$ustd)))
+expect_no_error(text_total_indirect(total_indirect_to_note(outm2$ind_total$ustd), line = 2))
 
 
 outm3 <- q_mediation(
@@ -134,7 +140,8 @@ expect_no_error(plot(outm3, plot_now = FALSE))
 expect_no_error(plot(outm3,
        standardized = TRUE, plot_now = FALSE))
 
-indirect_list_to_note(outm3$ind_out$ustd)
+expect_no_error(text_indirect_list(indirect_list_to_note(outm3$ind_out$ustd)))
+expect_no_error(text_total_indirect(total_indirect_to_note(outm3$ind_total$ustd), line = 2))
 
 # lm
 
@@ -153,7 +160,8 @@ expect_no_error(plot(out0, plot_now = FALSE))
 expect_no_error(plot(out0,
      standardized = TRUE, plot_now = FALSE))
 
-indirect_list_to_note(out0$ind_out$ustd)
+expect_no_error(text_indirect_list(indirect_list_to_note(out0$ind_out$ustd)))
+expect_no_error(text_total_indirect(total_indirect_to_note(out0$ind_total$ustd), line = 2))
 
 outs <- q_serial_mediation(
             x = "x",
@@ -170,7 +178,8 @@ expect_no_error(plot(outs, plot_now = FALSE))
 expect_no_error(plot(outs,
      standardized = TRUE, plot_now = FALSE))
 
-indirect_list_to_note(outs$ind_out$ustd)
+expect_no_error(text_indirect_list(indirect_list_to_note(outs$ind_out$ustd)))
+expect_no_error(text_total_indirect(total_indirect_to_note(outs$ind_total$ustd), line = 2))
 
 outp <- q_parallel_mediation(
             x = "x",
@@ -187,7 +196,8 @@ expect_no_error(plot(outp, plot_now = FALSE))
 expect_no_error(plot(outp,
      standardized = TRUE, plot_now = FALSE))
 
-indirect_list_to_note(outp$ind_out$ustd)
+expect_no_error(text_indirect_list(indirect_list_to_note(outp$ind_out$ustd)))
+expect_no_error(text_total_indirect(total_indirect_to_note(outp$ind_total$ustd), line = 2))
 
 outm1 <- q_mediation(
             x = "x1",
@@ -205,7 +215,8 @@ expect_no_error(plot(outm1, plot_now = FALSE))
 expect_no_error(plot(outm1,
      standardized = TRUE, plot_now = FALSE))
 
-indirect_list_to_note(outm1$ind_out$ustd)
+expect_no_error(text_indirect_list(indirect_list_to_note(outm1$ind_out$ustd)))
+expect_no_error(text_total_indirect(total_indirect_to_note(outm1$ind_total$ustd), line = 2))
 
 outm2 <- q_mediation(
             x = "x1",
@@ -223,7 +234,8 @@ expect_no_error(plot(outm2, plot_now = FALSE))
 expect_no_error(plot(outm2,
      standardized = TRUE, plot_now = FALSE))
 
-indirect_list_to_note(outm2$ind_out$ustd)
+expect_no_error(text_indirect_list(indirect_list_to_note(outm2$ind_out$ustd)))
+expect_no_error(text_total_indirect(total_indirect_to_note(outm2$ind_total$ustd), line = 2))
 
 outm3 <- q_mediation(
             x = "x2",
@@ -243,10 +255,8 @@ expect_no_error(plot(outm3, plot_now = FALSE))
 expect_no_error(plot(outm3,
      standardized = TRUE, plot_now = FALSE))
 
-indirect_list_to_note(outm3$ind_out$ustd)
-text_indirect_list(indirect_list_to_note(outm3$ind_out$ustd))
-indirect_to_note(outm3$ind_total$ustd)
-text_indirect(indirect_to_note(outm3$ind_total$ustd))
-text_indirect(indirect_to_note(outm3$ind_total$ustd), prefix = NULL)
+expect_no_error(text_indirect_list(indirect_list_to_note(outm3$ind_out$ustd)))
+expect_no_error(text_total_indirect(total_indirect_to_note(outm3$ind_total$ustd), line = 4))
+
 })
 
