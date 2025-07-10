@@ -32,7 +32,6 @@ expect_no_error(plot(out0,
 expect_no_error(text_indirect_list(indirect_list_to_note(out0$ind_out$ustd)))
 expect_no_error(text_total_indirect(total_indirect_to_note(out0$ind_total$ustd), line = 2))
 
-
 outs <- q_serial_mediation(
             x = "x",
             y = "y",

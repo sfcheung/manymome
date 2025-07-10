@@ -270,7 +270,9 @@ total_indirect_to_note <- function(
             format = "f"
           ))
   if (ci) {
-    s_ci <- try(stats::confint(ind_out)[1, , drop = TRUE], silent = TRUE)
+    s_ci <- suppressWarnings(
+                try(stats::confint(ind_out)[1, , drop = TRUE], silent = TRUE)
+              )
     if (inherits(s_ci, "try-error") ||
         all(is.na(s_ci))) {
       ci <- FALSE
@@ -345,7 +347,9 @@ indirect_list_to_note <- function(
               format = "f"
             ))
     if (ci) {
-      s_ci <- try(stats::confint(ind_out[[j]])[1, , drop = TRUE], silent = TRUE)
+      s_ci <- suppressWarnings(
+                  try(stats::confint(ind_out[[j]])[1, , drop = TRUE], silent = TRUE)
+                )
       if (inherits(s_ci, "try-error") ||
           all(is.na(s_ci))) {
         ci <- FALSE
