@@ -148,6 +148,31 @@
 #' passed to
 #' [semptools::auto_layout_mediation()].
 #'
+#' @param print_indirect Logical.
+#' Whether the indirect effect(s), and
+#' total indirect effect if applicable,
+#' will be printed on the plot. Default
+#' is `TRUE`. Used only if `plot_now`
+#' is `TRUE`. Confidence intervals,
+#' if stored, will be printed, at
+#' the level of confidence used when
+#' doing the analysis.
+#'
+#' @param indirect_standardized If
+#' `print_indirect` is `TRUE`, which
+#' effects are to be printed: `"none"`
+#' for the unstandardized (raw) indirect
+#' effects, `"stdx"` for the effects with
+#' `x` standardized, `"stdy"` for the
+#' effects with `y` standardized, and
+#' `"stdxy"` for the effects with both
+#' `x` and `y` standardized.
+#'
+#' @param size_indirect The size used
+#' when printing the indirect effects.
+#' Note that
+#'
+#'
 #' @param ... Optional arguments to be
 #' passed to [semPlot::semPaths()] to
 #' generate the initial plot, before
@@ -207,6 +232,7 @@
 #' plot(out)
 #'
 #' @export
+#' @importFrom graphics mtext
 plot.q_mediation <- function(
                 x,
                 standardized = FALSE,
@@ -220,12 +246,17 @@ plot.q_mediation <- function(
                 margins = c(5, 5, 5, 5),
                 v_pos = c("middle", "lower", "upper"),
                 v_preference = c("upper", "lower"),
+                print_indirect = TRUE,
+                indirect_standardized = c("none", "stdx", "stdy", "stdxy"),
+                size_indirect = 1,
                 plot_now = TRUE,
                 ...
               ) {
 
   v_pos <- match.arg(v_pos)
   v_preference <- match.arg(v_preference)
+
+  indirect_standardized <- match.arg(indirect_standardized)
 
   # ==== Check package requirements ====
 
@@ -334,6 +365,20 @@ plot.q_mediation <- function(
 
   # ==== Base Plot ====
 
+  if (print_indirect) {
+    k_ind <- length(x$ind_out$ustd)
+    if (k_ind > 1) {
+      add_total <- TRUE
+      mar_add <- k_ind + 1
+    } else {
+      add_total <- FALSE
+      mar_add <- 1
+    }
+    if (margins[1] < k_ind) {
+      margins[1] <- k_ind
+    }
+  }
+
   p <- semPlot::semPaths(
                 object = pm,
                 what = "paths",
@@ -407,9 +452,42 @@ plot.q_mediation <- function(
   # ==== Plot? ====
 
   if (plot_now) {
-    plot(p)
-  } else {
-    return(p)
+
+    if (print_indirect) {
+
+      # ==== Print indirect effects ====
+
+      node_too_close <- node_below(p)
+
+      if (node_too_close) {
+        p <- semptools::rescale_layout(
+                      p,
+                      y_min = -.9
+                    )
+      }
+      plot(p)
+
+      which_ind <- switch(indirect_standardized,
+                          none = "ustd",
+                          stdx = "stdx",
+                          stdy = "stdy",
+                          stdxy = "stdxy")
+
+      tmp <- indirect_list_to_note(x$ind_out[[which_ind]],
+                                   digits = digits)
+      text_indirect_list(tmp,
+                        cex = edge.label.cex * size_indirect)
+      if (add_total) {
+        tmp <- total_indirect_to_note(x$ind_total[[which_ind]],
+                                      digits = digits)
+        text_total_indirect(tmp,
+                            line = k_ind + 1,
+                            cex = edge.label.cex * size_indirect)
+      }
+    } else {
+      plot(p)
+    }
   }
+  invisible(p)
 }
 

@@ -18,6 +18,9 @@ of 'q_mediation' Family}
   margins = c(5, 5, 5, 5),
   v_pos = c("middle", "lower", "upper"),
   v_preference = c("upper", "lower"),
+  print_indirect = TRUE,
+  indirect_standardized = c("none", "stdx", "stdy", "stdxy"),
+  size_indirect = 1,
   plot_now = TRUE,
   ...
 )
@@ -129,6 +132,30 @@ only when\code{v_pos} is \code{"middle"}. If
 \verb{"lower". If }v_pos\code{is}"upper"\verb{, then }v_preference\verb{will be forced to be}"upper". This argument is to be
 passed to
 \code{\link[semptools:auto_layout_mediation]{semptools::auto_layout_mediation()}}.}
+
+\item{print_indirect}{Logical.
+Whether the indirect effect(s), and
+total indirect effect if applicable,
+will be printed on the plot. Default
+is \code{TRUE}. Used only if \code{plot_now}
+is \code{TRUE}. Confidence intervals,
+if stored, will be printed, at
+the level of confidence used when
+doing the analysis.}
+
+\item{indirect_standardized}{If
+\code{print_indirect} is \code{TRUE}, which
+effects are to be printed: \code{"none"}
+for the unstandardized (raw) indirect
+effects, \code{"stdx"} for the effects with
+\code{x} standardized, \code{"stdy"} for the
+effects with \code{y} standardized, and
+\code{"stdxy"} for the effects with both
+\code{x} and \code{y} standardized.}
+
+\item{size_indirect}{The size used
+when printing the indirect effects.
+Note that}
 
 \item{plot_now}{If \code{TRUE}, the default,
 the plot will be plotted when calling

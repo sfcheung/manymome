@@ -91,6 +91,7 @@ outm1 <- q_mediation(
             progress = FALSE
           )
 expect_no_error(plot(outm1, plot_now = FALSE))
+expect_no_error(plot(outm1, size_indirect = 2, plot_now = FALSE))
 expect_no_error(plot(outm1,
      standardized = TRUE, plot_now = FALSE))
 

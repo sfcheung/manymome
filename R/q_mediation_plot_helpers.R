@@ -270,14 +270,20 @@ total_indirect_to_note <- function(
             format = "f"
           ))
   if (ci) {
-    s_ci <- stats::confint(ind_out)[1, , drop = TRUE]
-    s_ci <- formatC(
-                s_ci,
-                digits = digits,
-                format = "f"
-              )
-    s_ci <- paste0(unname(s_ci), collapse = ", ")
-    s_ci <- paste0("[", s_ci, "]")
+    s_ci <- try(stats::confint(ind_out)[1, , drop = TRUE], silent = TRUE)
+    if (inherits(s_ci, "try-error") ||
+        all(is.na(s_ci))) {
+      ci <- FALSE
+      s_ci <- NULL
+    } else {
+      s_ci <- formatC(
+                  s_ci,
+                  digits = digits,
+                  format = "f"
+                )
+      s_ci <- paste0(unname(s_ci), collapse = ", ")
+      s_ci <- paste0("[", s_ci, "]")
+    }
   } else {
     s_ci <- NULL
   }
@@ -339,14 +345,20 @@ indirect_list_to_note <- function(
               format = "f"
             ))
     if (ci) {
-      s_ci <- stats::confint(ind_out[[j]])[1, , drop = TRUE]
-      s_ci <- formatC(
-                  s_ci,
-                  digits = digits,
-                  format = "f"
-                )
-      s_ci <- paste0(unname(s_ci), collapse = ", ")
-      s_ci <- paste0("[", s_ci, "]")
+      s_ci <- try(stats::confint(ind_out[[j]])[1, , drop = TRUE], silent = TRUE)
+      if (inherits(s_ci, "try-error") ||
+          all(is.na(s_ci))) {
+        ci <- FALSE
+        s_ci <- NULL
+      } else {
+        s_ci <- formatC(
+                    s_ci,
+                    digits = digits,
+                    format = "f"
+                  )
+        s_ci <- paste0(unname(s_ci), collapse = ", ")
+        s_ci <- paste0("[", s_ci, "]")
+      }
     } else {
       s_ci <- NULL
     }
@@ -417,4 +429,29 @@ text_total_indirect <- function(
   mtext(object_e,
         side = side,
         ...)
+}
+
+# Input:
+# - A qgraph
+# Output:
+# - Are there nodes close to the center
+#   bottom with residuals below them?
+node_below <- function(object,
+                       y_margin = -.9,
+                       x_margin = .5,
+                       angle_margin = .5) {
+  layout <- object$layout
+  nodes <- object$graphAttributes$Nodes
+  lr <- nodes$loopRotation
+  iy <- layout[, 2, drop =  TRUE] <= y_margin
+  ix <- abs(layout[, 1, drop =  TRUE]) <= x_margin
+  i <- iy & ix
+  if (!any(i)) {
+    return(FALSE)
+  }
+  j <- (abs(lr[i]) / pi) >= angle_margin
+  if (any(j)) {
+    return(TRUE)
+  }
+  return(FALSE)
 }
