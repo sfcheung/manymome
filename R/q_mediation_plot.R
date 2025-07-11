@@ -250,7 +250,7 @@
 #' plot(out)
 #'
 #' @export
-#' @importFrom graphics mtext
+#' @importFrom graphics mtext par
 plot.q_mediation <- function(
                 x,
                 standardized = FALSE,
@@ -392,10 +392,10 @@ plot.q_mediation <- function(
       add_total <- FALSE
       mar_add <- 1
     }
-    mar_add <- mar_add + .5
-    if (margins[1] < mar_add) {
-      margins[1] <- mar_add
-    }
+    # mar_add <- mar_add + .5
+    # if (margins[1] < mar_add) {
+    #   margins[1] <- mar_add
+    # }
   }
 
   p <- semPlot::semPaths(
@@ -476,21 +476,23 @@ plot.q_mediation <- function(
 
       # ==== Print indirect effects ====
 
-      node_too_close <- node_below(p)
+      # No need for these lines because oma is used
+      # node_too_close <- node_below(p)
 
-      if (node_too_close) {
-        p <- semptools::rescale_layout(
-                      p,
-                      y_min = -.9
-                    )
-      }
-      plot(p)
+      # if (node_too_close) {
+      #   p <- semptools::rescale_layout(
+      #                 p,
+      #                 y_min = -.9
+      #               )
+      # }
+      # plot(p)
 
       indirect_on_plot(q_mediation_output = x,
                        digits = digits,
                        size_indirect = size_indirect,
                        indirect_standardized = indirect_standardized,
-                       margins = margins)
+                       margins = margins,
+                       original_plot = p)
 
       # which_ind <- switch(indirect_standardized,
       #                     none = "ustd",
@@ -530,8 +532,8 @@ plot.q_mediation <- function(
 #' effects will be printed on this new
 #' plot. If `NULL`, the default, the
 #' indirect effects will be printed on
-#' the existing plot. The plot will be
-#' rescaled to make room for the
+#' the existing plot. Space will be
+#' added to make room for the
 #' indirect effects only if this
 #' argument is set.
 #'
@@ -561,21 +563,29 @@ indirect_on_plot <- function(
     mar_add <- 1
   }
   mar_add <- mar_add + .5
-  if (margins[1] < mar_add) {
-    margins[1] <- mar_add
-  }
+  # if (margins[1] < mar_add) {
+  #   margins[1] <- mar_add
+  # }
+
+  parold <- par(no.readonly = TRUE)
 
   if (!is.null(original_plot)) {
-    node_too_close <- node_below(original_plot)
+    on.exit(par(parold))
+    use_outer <- TRUE
+    par(oma = c(mar_add, 0, 0, 0))
+    # No need for these lines if we use oma
+    # node_too_close <- node_below(original_plot)
 
-    if (node_too_close) {
-      original_plot <- semptools::rescale_layout(
-                    original_plot,
-                    y_min = -.8
-                  )
-    }
-    original_plot$plotOptions$mar <- margins / 10
+    # if (node_too_close) {
+    #   original_plot <- semptools::rescale_layout(
+    #                 original_plot,
+    #                 y_min = -.8
+    #               )
+    # }
+    original_plot$plotOptions$mar[1] <- .5
     plot(original_plot)
+  } else {
+    use_outer <- FALSE
   }
 
   which_ind <- switch(indirect_standardized,
@@ -588,13 +598,16 @@ indirect_on_plot <- function(
                                 digits = digits)
   text_indirect_list(tmp,
                     cex = edge.label.cex * size_indirect,
-                    start_at = 0)
+                    start_at = 0,
+                    outer = use_outer)
   if (add_total) {
     tmp <- total_indirect_to_note(q_mediation_output$ind_total[[which_ind]],
                                   digits = digits)
     text_total_indirect(tmp,
                         line = k_ind,
-                        cex = edge.label.cex * size_indirect)
+                        cex = edge.label.cex * size_indirect,
+                        outer = use_outer)
   }
+  par(parold)
   invisible(q_mediation_output)
 }

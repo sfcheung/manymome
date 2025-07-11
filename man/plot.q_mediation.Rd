@@ -190,8 +190,8 @@ generated and then the indirect
 effects will be printed on this new
 plot. If \code{NULL}, the default, the
 indirect effects will be printed on
-the existing plot. The plot will be
-rescaled to make room for the
+the existing plot. Space will be
+added to make room for the
 indirect effects only if this
 argument is set.}
 }
