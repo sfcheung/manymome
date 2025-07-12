@@ -56,7 +56,8 @@ the default, then the original
 be used.}
 
 \item{size_variables}{The size of
-the observed variables, to be passed
+the observed variables (the
+"rectangles"), to be passed
 to \code{sizeMan} of
 \code{\link[semPlot:semPaths]{semPlot::semPaths()}}. Default is
 \code{NULL} and the size is determined
@@ -70,7 +71,7 @@ estimates), to be passed to
 \code{\link[semPlot:semPaths]{semPlot::semPaths()}}. Default is
 \code{NULL} and the size is determined
 internally based on the number of
-variables.}
+variables in the plot.}
 
 \item{nchar_variables}{The number of
 characters to be displayed for each
@@ -78,8 +79,8 @@ variable. To be passed to
 \code{nCharNodes} of
 \code{\link[semPlot:semPaths]{semPlot::semPaths()}}. Default is
 \code{NULL}, equivalent to \code{0} for
-\code{nCharNodes}, to disable abbreviation
-of the variable names.}
+\code{nCharNodes}, to disable abbreviating
+the variable names.}
 
 \item{nchar_path_labels}{The number
 of characters to be displayed for
@@ -87,8 +88,8 @@ each label for a path. To be passed
 to \code{nCharEdges} of
 \code{\link[semPlot:semPaths]{semPlot::semPaths()}}. Default is
 \code{NULL}, equivalent to \code{0} for
-\code{nCharEdges}e, to disable
-abbreviation of the labels.}
+\code{nCharEdges}, to disable
+abbreviating the labels.}
 
 \item{digits}{The number
 of digits to be printed after the
@@ -100,7 +101,8 @@ to \code{nDigits} of
 \item{rsquares}{Logical. If \code{TRUE},
 the default, R-squares will be
 drawn instead of error variances for
-mediators and outcome (\code{y}) variables.}
+mediators and outcome variables
+(the \code{y} variables).}
 
 \item{sigs}{Logical. If \code{TRUE}, the
 default, significance test results
@@ -117,7 +119,7 @@ to the \code{mar} argument of
 
 \item{v_pos}{How the mediators are to
 be positioned vertically. If set to
-\verb{"middle}, with one \code{x} variable and
+\code{"middle"}, with one \code{x} variable and
 one \code{y} variable, the mediators will
 tend to be placed around the
 horizontal line joining \code{x} and \code{y}.
@@ -139,7 +141,9 @@ any paths in the models. It is used
 only when\code{v_pos} is \code{"middle"}. If
 \code{v_pos} is \code{"lower"}, then
 \code{v_preference} will be forced to be
-\verb{"lower". If }v_pos\code{is}"upper"\verb{, then }v_preference\verb{will be forced to be}"upper". This argument is to be
+\code{"lower"}. If \code{v_pos} is \code{"upper"},
+then \code{v_preference} will be forced to
+be \code{"upper"}. This argument is to be
 passed to
 \code{\link[semptools:auto_layout_mediation]{semptools::auto_layout_mediation()}}.}
 
@@ -155,6 +159,7 @@ doing the analysis.}
 
 \item{indirect_standardized}{If
 \code{print_indirect} is \code{TRUE}, which
+type of
 effects are to be printed: \code{"none"}
 for the unstandardized (raw) indirect
 effects, \code{"stdx"} for the effects with
@@ -165,7 +170,14 @@ effects with \code{y} standardized, and
 
 \item{size_indirect}{The size used
 when printing the indirect effects.
-Note that}
+The final size is determined by
+multiplying the final
+value \code{size_path_labels} (determined
+internally if it is set to \code{NULL})
+by this value. If equal to 1, then
+the size used in printing the
+indirect effects should be "close"
+to the size of numbers on the paths.}
 
 \item{plot_now}{If \code{TRUE}, the default,
 the plot will be plotted when calling
@@ -179,7 +191,9 @@ being adjusted by
 \code{\link[semptools:auto_layout_mediation]{semptools::auto_layout_mediation()}}.}
 
 \item{q_mediation_output}{The original
-output used to generate the plot.
+object used to generate the plot
+(the output of the \code{\link[=q_mediation]{q_mediation()}}
+family).
 Indirect effects will be retrieved
 from this output.}
 
@@ -193,7 +207,10 @@ indirect effects will be printed on
 the existing plot. Space will be
 added to make room for the
 indirect effects only if this
-argument is set.}
+argument is set. If \code{original_plot}
+is not used, make sure there is
+enough room at the bottom for the
+indirect effects.}
 }
 \value{
 The \code{plot} method returns a \code{qgraph}
@@ -206,7 +223,8 @@ work on a \code{qgraph} object, such as
 those from \code{semptools}.
 
 The function \code{\link[=indirect_on_plot]{indirect_on_plot()}}
-returns \code{q_mediation_output}
+returns the object set to
+\code{q_mediation_output}
 invisibly. It is called for its
 side-effect.
 }
@@ -217,7 +235,7 @@ functions.
 }
 \details{
 This method requires the
-\code{semptools} and `semPlot`` packages.
+\code{semptools} and \code{semPlot} packages.
 They are not installed by default.
 Install them first before using the
 plot method.
@@ -239,7 +257,10 @@ right. The figure should usually be
 usable. If not, it can be further
 modified by helper functions such as
 those in \code{semptools} that can
-manipulate a \code{qgraph} object.
+manipulate a \code{qgraph} object. For
+example, \code{\link[semptools:move_node]{semptools::move_node()}}
+can be used to adjust the position
+of a variable in the plot.
 
 The helper function \code{\link[=indirect_on_plot]{indirect_on_plot()}}
 adds the indirect effect
@@ -247,12 +268,17 @@ estimates (as well as confidence
 intervals and \emph{p}-values, if
 available) to a plot. The \code{plot} method
 will add these effects by default,
-but if the plot needs to be modified
+and so users usually do not need to
+use this function.
+However, if the plot needs to be modified
 before being drawn, this function
 can be used to add the effects
 after drawing the modified plot.
 }
 \examples{
+
+# These examples require the package
+# semptools (version 0.3.2 or above).
 
 # CI disabled in these examples.
 # Please see the help page of these functions on forming
@@ -277,6 +303,10 @@ out <- q_serial_mediation(x = "x",
                           boot_ci = FALSE,
                           data = data_serial)
 plot(out)
+# Standardized effects
+plot(out,
+     standardized = TRUE,
+     indirect_standardized = "stdxy")
 
 # ==== Parallel mediation
 
@@ -288,6 +318,10 @@ out <- q_parallel_mediation(x = "x",
                             data = data_parallel)
 
 plot(out)
+plot(out,
+     v_pos = "lower")
+plot(out,
+     v_pos = "upper")
 
 # ===== A user-specified mediation model
 

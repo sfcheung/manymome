@@ -7,7 +7,7 @@
 #'
 #' @details
 #' This method requires the
-#' `semptools` and `semPlot`` packages.
+#' `semptools` and `semPlot` packages.
 #' They are not installed by default.
 #' Install them first before using the
 #' plot method.
@@ -29,7 +29,10 @@
 #' usable. If not, it can be further
 #' modified by helper functions such as
 #' those in `semptools` that can
-#' manipulate a `qgraph` object.
+#' manipulate a `qgraph` object. For
+#' example, [semptools::move_node()]
+#' can be used to adjust the position
+#' of a variable in the plot.
 #'
 #' The helper function [indirect_on_plot()]
 #' adds the indirect effect
@@ -37,7 +40,9 @@
 #' intervals and *p*-values, if
 #' available) to a plot. The `plot` method
 #' will add these effects by default,
-#' but if the plot needs to be modified
+#' and so users usually do not need to
+#' use this function.
+#' However, if the plot needs to be modified
 #' before being drawn, this function
 #' can be used to add the effects
 #' after drawing the modified plot.
@@ -53,7 +58,8 @@
 #' those from `semptools`.
 #'
 #' The function [indirect_on_plot()]
-#' returns `q_mediation_output`
+#' returns the object set to
+#' `q_mediation_output`
 #' invisibly. It is called for its
 #' side-effect.
 #'
@@ -77,7 +83,8 @@
 #' be used.
 #'
 #' @param size_variables  The size of
-#' the observed variables, to be passed
+#' the observed variables (the
+#' "rectangles"), to be passed
 #' to `sizeMan` of
 #' [semPlot::semPaths()]. Default is
 #' `NULL` and the size is determined
@@ -91,7 +98,7 @@
 #' [semPlot::semPaths()]. Default is
 #' `NULL` and the size is determined
 #' internally based on the number of
-#' variables.
+#' variables in the plot.
 #'
 #' @param nchar_variables The number of
 #' characters to be displayed for each
@@ -99,8 +106,8 @@
 #' `nCharNodes` of
 #' [semPlot::semPaths()]. Default is
 #' `NULL`, equivalent to `0` for
-#' `nCharNodes`, to disable abbreviation
-#' of the variable names.
+#' `nCharNodes`, to disable abbreviating
+#' the variable names.
 #'
 #' @param nchar_path_labels The number
 #' of characters to be displayed for
@@ -108,8 +115,8 @@
 #' to `nCharEdges` of
 #' [semPlot::semPaths()]. Default is
 #' `NULL`, equivalent to `0` for
-#' `nCharEdges`e, to disable
-#' abbreviation of the labels.
+#' `nCharEdges`, to disable
+#' abbreviating the labels.
 #'
 #' @param digits The number
 #' of digits to be printed after the
@@ -121,7 +128,8 @@
 #' @param rsquares Logical. If `TRUE`,
 #' the default, R-squares will be
 #' drawn instead of error variances for
-#' mediators and outcome (`y`) variables.
+#' mediators and outcome variables
+#' (the `y` variables).
 #'
 #' @param sigs Logical. If `TRUE`, the
 #' default, significance test results
@@ -138,7 +146,7 @@
 #'
 #' @param v_pos How the mediators are to
 #' be positioned vertically. If set to
-#' `"middle`, with one `x` variable and
+#' `"middle"`, with one `x` variable and
 #' one `y` variable, the mediators will
 #' tend to be placed around the
 #' horizontal line joining `x` and `y`.
@@ -160,9 +168,9 @@
 #' only when`v_pos` is `"middle"`. If
 #' `v_pos` is `"lower"`, then
 #' `v_preference` will be forced to be
-#' `"lower". If `v_pos` is `"upper"`,
+#' `"lower"`. If `v_pos` is `"upper"`,
 #' then `v_preference` will be forced to
-#' be `"upper". This argument is to be
+#' be `"upper"`. This argument is to be
 #' passed to
 #' [semptools::auto_layout_mediation()].
 #'
@@ -178,6 +186,7 @@
 #'
 #' @param indirect_standardized If
 #' `print_indirect` is `TRUE`, which
+#' type of
 #' effects are to be printed: `"none"`
 #' for the unstandardized (raw) indirect
 #' effects, `"stdx"` for the effects with
@@ -188,7 +197,14 @@
 #'
 #' @param size_indirect The size used
 #' when printing the indirect effects.
-#' Note that
+#' The final size is determined by
+#' multiplying the final
+#' value `size_path_labels` (determined
+#' internally if it is set to `NULL`)
+#' by this value. If equal to 1, then
+#' the size used in printing the
+#' indirect effects should be "close"
+#' to the size of numbers on the paths.
 #'
 #' @param ... For the `plot` method,
 #' these are optional arguments to be
@@ -202,6 +218,9 @@
 #' this method.
 #'
 #' @examples
+#'
+#' # These examples require the package
+#' # semptools (version 0.3.2 or above).
 #'
 #' # CI disabled in these examples.
 #' # Please see the help page of these functions on forming
@@ -226,6 +245,10 @@
 #'                           boot_ci = FALSE,
 #'                           data = data_serial)
 #' plot(out)
+#' # Standardized effects
+#' plot(out,
+#'      standardized = TRUE,
+#'      indirect_standardized = "stdxy")
 #'
 #' # ==== Parallel mediation
 #'
@@ -237,6 +260,10 @@
 #'                             data = data_parallel)
 #'
 #' plot(out)
+#' plot(out,
+#'      v_pos = "lower")
+#' plot(out,
+#'      v_pos = "upper")
 #'
 #' # ===== A user-specified mediation model
 #'
@@ -521,7 +548,9 @@ plot.q_mediation <- function(
 #' @rdname plot.q_mediation
 #'
 #' @param q_mediation_output The original
-#' output used to generate the plot.
+#' object used to generate the plot
+#' (the output of the [q_mediation()]
+#' family).
 #' Indirect effects will be retrieved
 #' from this output.
 #'
@@ -535,7 +564,10 @@ plot.q_mediation <- function(
 #' the existing plot. Space will be
 #' added to make room for the
 #' indirect effects only if this
-#' argument is set.
+#' argument is set. If `original_plot`
+#' is not used, make sure there is
+#' enough room at the bottom for the
+#' indirect effects.
 #'
 #' @export
 indirect_on_plot <- function(
@@ -548,11 +580,15 @@ indirect_on_plot <- function(
                           ) {
   indirect_standardized <- match.arg(indirect_standardized)
 
+  # ==== Retrieve edge.label.cex, if possible ====
+
   if (!is.null(original_plot)) {
     edge.label.cex <- original_plot$graphAttributes$Edges$label.cex
   } else {
     edge.label.cex <- 1
   }
+
+  # ==== Determine the lines required ====
 
   k_ind <- length(q_mediation_output$ind_out$ustd)
   if (k_ind > 1) {
@@ -563,9 +599,8 @@ indirect_on_plot <- function(
     mar_add <- 1
   }
   mar_add <- mar_add + .5
-  # if (margins[1] < mar_add) {
-  #   margins[1] <- mar_add
-  # }
+
+  # ==== Set the outer margin, if necessary ====
 
   parold <- par(no.readonly = TRUE)
 
@@ -573,20 +608,13 @@ indirect_on_plot <- function(
     on.exit(par(parold))
     use_outer <- TRUE
     par(oma = c(mar_add, 0, 0, 0))
-    # No need for these lines if we use oma
-    # node_too_close <- node_below(original_plot)
-
-    # if (node_too_close) {
-    #   original_plot <- semptools::rescale_layout(
-    #                 original_plot,
-    #                 y_min = -.8
-    #               )
-    # }
     original_plot$plotOptions$mar[1] <- .5
     plot(original_plot)
   } else {
     use_outer <- FALSE
   }
+
+  # ==== Standardized indirect effects? ====
 
   which_ind <- switch(indirect_standardized,
                       none = "ustd",
@@ -594,13 +622,19 @@ indirect_on_plot <- function(
                       stdy = "stdy",
                       stdxy = "stdxy")
 
+  # ==== Print the indirect effect(s) ====
+
   tmp <- indirect_list_to_note(q_mediation_output$ind_out[[which_ind]],
                                 digits = digits)
   text_indirect_list(tmp,
                     cex = edge.label.cex * size_indirect,
                     start_at = 0,
                     outer = use_outer)
+
   if (add_total) {
+
+    # ==== Print the total indirect effects ====
+
     tmp <- total_indirect_to_note(q_mediation_output$ind_total[[which_ind]],
                                   digits = digits)
     text_total_indirect(tmp,
@@ -608,6 +642,10 @@ indirect_on_plot <- function(
                         cex = edge.label.cex * size_indirect,
                         outer = use_outer)
   }
+
+  # ==== Reset par() ====
+
   par(parold)
+
   invisible(q_mediation_output)
 }
