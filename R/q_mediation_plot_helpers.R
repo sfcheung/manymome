@@ -459,3 +459,14 @@ node_below <- function(object,
   }
   return(FALSE)
 }
+
+# Input:
+# A q_mediation object
+# Output:
+# All m variables
+get_all_m_indirect_list <- function(object) {
+  m <- sapply(object,
+              function(x) x$m)
+  out <- unique(unlist(m))
+  out
+}

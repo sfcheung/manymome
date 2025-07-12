@@ -372,14 +372,17 @@ plot.q_mediation <- function(
   }
   fit_x <- x$x
   fit_y <- x$y
-  fit_m <- x$m
+  fit_m <- get_all_m_indirect_list(x$ind_out$ustd)
   fit_cov <- eval(x$call$cov)
   fit_ov <- switch(
               fit_type,
               lm = lavaan::lavNames(est, "ov"),
               lavaan = lavaan::lavNames(fit, "ov")
             )
-  fit_ov <- setdiff(fit_ov, fit_cov)
+  # fit_ov <- setdiff(fit_ov, fit_cov)
+  # TODO:
+  # - Handle dummy variables
+  fit_ov <- c(fit_x, fit_m, fit_y)
   pm <- semptools::keep_nodes(pm, c(fit_ov))
 
   # ==== Graphic Settings ====
