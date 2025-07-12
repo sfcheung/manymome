@@ -102,6 +102,7 @@ reference:
 - title: Quick Functions for Common Models
 - contents:
   - q_mediation
+  - plot.q_mediation
 - title: Presenting and Exploring the Effects
 - contents:
   - index_of_mome

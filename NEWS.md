@@ -1,4 +1,4 @@
-# manymome 0.2.9.3
+# manymome 0.2.9.5
 
 ## New Features
 
@@ -10,6 +10,13 @@
   with the option to handle missing data
   using full information maximum likelihood.
   (0.2.9.3)
+
+- Added a plot method for the output
+  of `q_mediation()`
+  and its friends. Requires `semptools`
+  (0.3.2 or above), which needs to be
+  installed separately.
+  (0.2.9.4, 0.2.9.5)
 
 - Updated `q_mediation()` to support
   a user-specified mediation model.

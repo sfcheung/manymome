@@ -16,10 +16,11 @@ q_mediation(
   cov = NULL,
   data = NULL,
   boot_ci = TRUE,
+  mc_ci = FALSE,
   level = 0.95,
   R = 100,
   seed = NULL,
-  ci_type = c("boot", "mc"),
+  ci_type = NULL,
   boot_type = c("perc", "bc"),
   model = NULL,
   fit_method = c("lm", "regression", "sem", "lavaan"),
@@ -39,10 +40,11 @@ q_simple_mediation(
   cov = NULL,
   data = NULL,
   boot_ci = TRUE,
+  mc_ci = FALSE,
   level = 0.95,
   R = 100,
   seed = NULL,
-  ci_type = c("boot", "mc"),
+  ci_type = NULL,
   boot_type = c("perc", "bc"),
   fit_method = c("lm", "regression", "sem", "lavaan"),
   missing = "fiml",
@@ -61,10 +63,11 @@ q_serial_mediation(
   cov = NULL,
   data = NULL,
   boot_ci = TRUE,
+  mc_ci = FALSE,
   level = 0.95,
   R = 100,
   seed = NULL,
-  ci_type = c("boot", "mc"),
+  ci_type = NULL,
   boot_type = c("perc", "bc"),
   fit_method = c("lm", "regression", "sem", "lavaan"),
   missing = "fiml",
@@ -83,10 +86,11 @@ q_parallel_mediation(
   cov = NULL,
   data = NULL,
   boot_ci = TRUE,
+  mc_ci = FALSE,
   level = 0.95,
   R = 100,
   seed = NULL,
-  ci_type = c("boot", "mc"),
+  ci_type = NULL,
   boot_type = c("perc", "bc"),
   fit_method = c("lm", "regression", "sem", "lavaan"),
   missing = "fiml",
@@ -163,6 +167,12 @@ retained.}
 bootstrap confidence interval will be
 formed. Default is \code{TRUE}.}
 
+\item{mc_ci}{Logical. Whether
+Monte Carlo confidence interval will be
+formed. Default is \code{FALSE}. Only
+supported if \code{fit_method} is
+\code{"sem"} or \code{"lavaan"}.}
+
 \item{level}{The level of confidence
 of the confidence interval. Default
 is .95 (for 95\% confidence intervals).}
@@ -177,9 +187,15 @@ Should nearly always be set to an
 integer to make the results
 reproducible.}
 
-\item{ci_type}{Can be \code{"boot"} for
-nonparametric bootstrapping or \code{"mc"}
-for Monte Carlo. If \code{fit_method} is
+\item{ci_type}{The type of
+confidence intervals to be formed.
+Can be either \code{"boot"} (bootstrapping)
+or \code{"mc"} (Monte Carlo). If not
+supplied or is \code{NULL}, will check
+other arguments
+(e.g, \code{boot_ci} and \code{mc_ci}). If
+supplied, will override \code{boot_ci}
+and \code{mc_ci}. If \code{fit_method} is
 \code{"regression"} or \code{"lm"}, then only
 \code{"boot"} is supported.}
 
@@ -679,7 +695,7 @@ out <- q_simple_mediation(x = "x",
                           m = "m",
                           cov = c("c2", "c1"),
                           data = data_med,
-                          R = 40,
+                          R = 20,
                           seed = 1234,
                           parallel = FALSE,
                           progress = FALSE)
