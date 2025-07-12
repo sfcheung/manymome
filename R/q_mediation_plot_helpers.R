@@ -291,27 +291,44 @@ total_indirect_to_note <- function(
   }
   if (pvalue &&
       (!is.null(ind_out$boot_p))) {
-    s_p <- ind_out$boot_p
-    if (s_p < .001) {
+    s_p0 <- ind_out$boot_p
+    if (s_p0 < .001) {
       s_p <- "italic(p), '< .001'"
+      s_p_plain <- "p < .001"
     } else {
-      s_p <- formatC(s_p, digits = digits, format = "f")
-      s_p <- paste0("italic(p), ' = ", s_p, "'")
+      s_p1 <- formatC(s_p0, digits = digits, format = "f")
+      s_p <- paste0("italic(p), ' = ", s_p1, "'")
+      s_p_plain <- paste0("p = ", s_p1)
     }
   } else {
     s_p <- NULL
   }
+  tmp0 <- paste0(
+            s_path,
+            ": ",
+            s_est,
+            ifelse(!is.null(s_ci), paste0(" ", s_ci, " "), "")
+          )
+  tmp <- paste0("'", tmp0, "'")
+  if (!is.null(s_p)) {
+    tmp2 <- paste0(", ', ',", s_p)
+    tmp2_plain <- s_p_plain
+  } else {
+    tmp2 <- NULL
+    tmp2_plain <- NULL
+  }
   s_final <- paste0(c(
-                "paste('",
-                s_path,
-                ": ",
-                s_est,
-                ifelse(!is.null(s_ci), paste0(" ", s_ci, " "), ""),
-                "'",
-                ifelse(!is.null(s_p), paste0(", ', ',", s_p), ""),
+                "paste(",
+                paste(tmp,
+                      tmp2,
+                      collapse = ","),
                 ")"),
                 collapse = "")
-  names(s_final) <- s_path
+  s_plain <- paste0(c(trimws(tmp0),
+                      tmp2_plain),
+                    collapse = ", ")
+  names(s_final) <- tmp0
+  attr(s_final, "plain") <- s_plain
   s_final
 }
 
@@ -332,7 +349,7 @@ indirect_list_to_note <- function(
               add_sig = TRUE,
               pvalue = TRUE,
               se = TRUE)
-  out <- character(0)
+  out <- list()
   for (j in seq_len(nrow(out0))) {
     out_i <- out0[j, , drop = FALSE]
     s_path <- rownames(out_i)
@@ -340,6 +357,7 @@ indirect_list_to_note <- function(
     s_path0 <- sapply(s_path0, trimws, USE.NAMES = FALSE)
     s_path1 <- sapply(s_path0, sQuote, USE.NAMES = FALSE)
     s_path1 <- paste0(s_path1, collapse = " %->% ")
+    s_path1_plain <- s_path
     tmp <- stats::coef(ind_out[[j]])
     s_est <- unname(formatC(
               tmp,
@@ -368,15 +386,18 @@ indirect_list_to_note <- function(
     }
     if (pvalue &&
         ("pvalue" %in% colnames(out_i))) {
-      s_p <- out_i[, "pvalue", drop = TRUE]
-      if (s_p < .001) {
+      s_p0 <- out_i[, "pvalue", drop = TRUE]
+      if (s_p0 < .001) {
         s_p <- "italic(p), '< .001'"
+        s_p_plain <- "p < .001"
       } else {
-        s_p <- formatC(s_p, digits = digits, format = "f")
-        s_p <- paste0("italic(p), ' = ", s_p, "'")
+        s_p1 <- formatC(s_p0, digits = digits, format = "f")
+        s_p <- paste0("italic(p), ' = ", s_p1, "'")
+        s_p_plain <- paste0("p = ", s_p1)
       }
     } else {
       s_p <- NULL
+      s_p_plain <- NULL
     }
     # s_final <- paste0(c(
     #               s_est,
@@ -394,8 +415,17 @@ indirect_list_to_note <- function(
                   ifelse(!is.null(s_p), paste0(", ', ',", s_p), ""),
                   ")"),
                   collapse = "")
+    tmp1 <- paste(
+              paste0(s_path1_plain, ":"),
+              s_est,
+              s_ci
+            )
+    s_final_plain <- paste(c(tmp1,
+                             s_p_plain),
+                           collapse = ", ")
     names(s_final) <- s_path
-    out <- c(out, s_final)
+    attr(s_final, "plain") <- s_final_plain
+    out <- c(out, list(s_final))
   }
   out
 }
@@ -411,7 +441,11 @@ text_indirect_list <- function(
                         ...) {
   line_i <- start_at
   for (i in seq_along(object)) {
-    object_e <- parse(text = object[i])
+    object_e <- try(parse(text = object[[i]]),
+                    silent = TRUE)
+    if (inherits(object_e, "try-error")) {
+      object_e <- attr(object[[i]], "plain")
+    }
     mtext(object_e,
           side = side,
           line = line_i,
@@ -429,7 +463,12 @@ text_total_indirect <- function(
                     side = 1,
                     ...
                   ) {
-  object_e <- parse(text = object)
+  object_e <- try(parse(text = object),
+                  silent = TRUE)
+  if (inherits(object_e, "try-error")) {
+    object_e <- attr(object,
+                     "plain")
+  }
   mtext(object_e,
         side = side,
         ...)
