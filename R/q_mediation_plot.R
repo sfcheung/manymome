@@ -279,13 +279,8 @@ plot.q_mediation <- function(
   # ==== Check package requirements ====
 
   if (!requireNamespace("semptools", quietly = TRUE)) {
-    warning("Please install 'semptools' first.")
+    warning("Please install 'semptools' (0.3.2 or above) first.")
     return(NULL)
-  } else {
-    if (utils::packageVersion("semptools") < "0.3.1.13") {
-      warning("Please install 'semptools' 0.3.1.13 or above.")
-      return(NULL)
-    }
   }
   if (!requireNamespace("semPlot", quietly = TRUE)) {
     warning("Please install 'semPlot' first.")
