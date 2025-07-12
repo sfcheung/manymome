@@ -1,6 +1,6 @@
 Package: manymome
 Title: Mediation, Moderation and Moderated-Mediation After Model Fitting
-Version: 0.2.9.3
+Version: 0.2.9.4
 Authors@R:
     c(person(given = "Shu Fai",
            family = "Cheung",
@@ -35,6 +35,8 @@ Suggests:
     lavaan.mi,
     Amelia,
     mice,
+    semPlot,
+    semptools (>= 0.3.2),
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Config/testthat/parallel: true
@@ -48,7 +50,8 @@ Imports:
     ggplot2,
     igraph,
     MASS,
-    methods
+    methods,
+    lmhelprs
 Depends:
     R (>= 3.5.0)
 LazyData: true
