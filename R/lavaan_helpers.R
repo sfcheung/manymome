@@ -45,21 +45,41 @@ lav_implied_all_lavaan <- function(fit,
       lvnames <- lavaan::lavNames(fit, "lv")
     }
     allnames <- c(ovnames, lvnames)
+    ngroups <- lavaan::lavTech(fit, "ngroups")
     if (lavaan::lavInspect(fit, "meanstructure")) {
         if (length(lvnames) > 0) {
+            implied_ov <- lavaan::lavInspect(fit, "mean.ov")
+            implied_lv <- lavaan::lavInspect(fit, "mean.lv")
+            if (ngroups > 1) {
+              implied_means <- mapply(c,
+                                      implied_ov,
+                                      implied_lv,
+                                      SIMPLIFY = FALSE)
+            } else {
+              implied_means <- c(implied_ov, implied_lv)
+            }
             out <- list(cov = lavaan::lavInspect(fit, "cov.all"),
-                        mean = c(lavaan::lavInspect(fit, "mean.ov"),
-                                  lavaan::lavInspect(fit, "mean.lv")))
+                        mean = implied_means,
+                        mean_lv = implied_lv)
           } else {
             out <- list(cov = lavaan::lavInspect(fit, "cov.all"),
-                        mean = c(lavaan::lavInspect(fit, "mean.ov")))
+                        mean = unclass(lavaan::lavInspect(fit, "mean.ov")))
           }
       } else {
+        if (ngroups > 1) {
+          tmp <- replicate(ngroups,
+                          stats::setNames(rep(NA, length(allnames)),
+                                            allnames),
+                          simplify = FALSE)
+          names(tmp) <- lavaan::lavTech(fit, "group.label")
+        } else {
+          tmp <- stats::setNames(rep(NA, length(allnames)),
+                                            allnames)
+        }
         out <- list(cov = lavaan::lavInspect(fit, "cov.all"),
-                    mean = stats::setNames(rep(NA, length(allnames)),
-                                           allnames))
+                    mean = tmp)
       }
-    out
+    return(out)
   }
 
 #' @noRd

@@ -1,4 +1,4 @@
-# manymome 0.2.9.6
+# manymome 0.2.9.7
 
 ## New Features
 
@@ -26,6 +26,14 @@
 
 - Improve the printout of a list of
   indirect effects. (0.2.9.1, 0.2.9.2)
+
+## Bug Fixes
+
+- Fixed the error raised when `do_mc()`
+  is used for some multigroup models with
+  latent variables. No impact on results
+  because latent means are not
+  used for now. (0.2.9.7)
 
 # manymome 0.2.9
 
