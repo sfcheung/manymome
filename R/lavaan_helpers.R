@@ -79,6 +79,7 @@ lav_implied_all_lavaan <- function(fit,
         out <- list(cov = lavaan::lavInspect(fit, "cov.all"),
                     mean = tmp)
       }
+    return(out)
   }
 
 #' @noRd
