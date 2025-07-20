@@ -567,6 +567,7 @@ get_implied_i_lavaan <- function(est0,
       lvnames <- lavaan::lavNames(fit, "lv")
     }
     has_lv <- length(lvnames) != 0
+    ngroups <- lavaan::lavTech(fit, "ngroups")
     if (has_lv) {
         p_free <- fit@ParTable$free > 0
         fit@ParTable$est[p_free] <- unname(est0)
@@ -575,15 +576,37 @@ get_implied_i_lavaan <- function(est0,
         implied_cov_all <- lavaan::lavInspect(fit, "cov.all")
         mod0 <- lavaan::lav_model_set_parameters(fit@Model, est0)
         implied_mean_ov <- lavaan::lavInspect(fit, "mean.ov")
-        implied_mean_ov[] <- lavaan::lav_model_implied(mod0,
-                                             GLIST = NULL,
-                                             delta = TRUE)$mean[[1]][, 1]
         implied_mean_lv <- lavaan::lavInspect(fit, "mean.lv")
-        implied_mean_lv[] <- NA
-        implied <- list(cov = list(implied_cov_all),
-                        mean = list(c(implied_mean_ov,
-                                      implied_mean_lv)),
-                        mean_lv = list(implied_mean_lv))
+        if (ngroups > 1) {
+          k_lv <- length(implied_mean_lv[[1]])
+          for (tmp in seq_len(ngroups)) {
+            implied_mean_ov[[tmp]] <- lavaan::lav_model_implied(mod0,
+                                                GLIST = NULL,
+                                                delta = TRUE)$mean[[tmp]][, 1]
+            # TODO:
+            # - Support latent variable implied means
+            implied_mean_lv[[tmp]] <- rep(NA, k_lv)
+          }
+          implied_means <- mapply(c,
+                                  implied_mean_ov,
+                                  implied_mean_lv,
+                                  SIMPLIFY = FALSE)
+          implied <- list(cov = implied_cov_all,
+                          mean = implied_means,
+                          mean_lv = implied_mean_lv)
+        } else {
+          implied_mean_ov[] <- lavaan::lav_model_implied(mod0,
+                                              GLIST = NULL,
+                                              delta = TRUE)$mean[[1]][, 1]
+          # TODO:
+          # - Support latent variable implied means
+          implied_mean_lv <- lavaan::lavInspect(fit, "mean.lv")
+          implied_mean_lv[] <- NA
+          implied <- list(cov = list(implied_cov_all),
+                          mean = list(c(implied_mean_ov,
+                                        implied_mean_lv)),
+                          mean_lv = list(implied_mean_lv))
+        }
       } else {
         mod0 <- lavaan::lav_model_set_parameters(fit@Model, est0)
         implied <- lavaan::lav_model_implied(mod0,
@@ -593,7 +616,6 @@ get_implied_i_lavaan <- function(est0,
     out <- lav_implied_all(fit,
                            ovnames = ovnames,
                            lvnames = lvnames)
-    ngroups <- lavaan::lavTech(fit, "ngroups")
     out_names <- names(out)
     implied_names <- names(implied)
     out1 <- out
