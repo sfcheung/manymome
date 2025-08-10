@@ -81,7 +81,8 @@ lav_data_used_lavaan <- function(fit,
 #' @noRd
 
 lav_data_used_lavaan_mi <- function(fit,
-                                    drop_colon = TRUE) {
+                                    drop_colon = TRUE,
+                                    skip_indicators = TRUE) {
     # TODOs: Return a named list of N matrices if ngroups > 1
     dat_list <- fit@DataList
     ovnames <- lavaan::lavNames(fit, "ov")
@@ -92,8 +93,12 @@ lav_data_used_lavaan_mi <- function(fit,
                               data = dat_list[[1]],
                               do.fit = FALSE)
     dat_tmp <- lavaan::lavInspect(fit_tmp, "data")
-    all_prods <- find_all_products(dat_tmp, expand = TRUE)
-    dat_tmp <- clear_prods(dat_tmp)
+    all_prods <- find_all_products(dat_tmp,
+                                   expand = TRUE,
+                                   skip_indicators = skip_indicators,
+                                   fit = fit_tmp)
+    dat_tmp <- clear_prods(dat_tmp,
+                           all_prods = all_prods)
     vused <- intersect(colnames(dat_tmp), colnames(dat_common))
     for (i in vused) {
         dat_tmp[, i] <- dat_common[, i]
@@ -153,8 +158,11 @@ lavaan_from_lavaam_mi <- function(fit_mi, data = TRUE) {
 
 #' @noRd
 
-clear_prods <- function(x) {
-    all_prods <- find_all_products(x, expand = TRUE)
+clear_prods <- function(x,
+                        all_prods = NULL) {
+    if (is.null(all_prods)) {
+      all_prods <- find_all_products(x, expand = TRUE)
+    }
     if (isTRUE(all(is.na(all_prods)))) {
         return(x)
       } else {

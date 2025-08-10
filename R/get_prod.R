@@ -63,6 +63,11 @@
 #' more than two terms will be searched.
 #' `FALSE` by default.
 #'
+#' @param skip_indicators Whether
+#' observed indicators are skipped from
+#' the search for product terms. Default
+#' is `TRUE`.
+#'
 #' @return
 #' If at least one product term is found,
 #' it returns a list with these elements:
@@ -116,7 +121,8 @@ get_prod <- function(x,
                      fit = NULL,
                      est = NULL,
                      data = NULL,
-                     expand = FALSE) {
+                     expand = FALSE,
+                     skip_indicators = TRUE) {
     fit <- auto_lm2list(fit)
     if (is.null(est)) {
       est <- lav_est(fit, se = FALSE, ci = FALSE)
@@ -124,7 +130,9 @@ get_prod <- function(x,
     all_prods <- NA
     if (inherits(fit, "lavaan") || inherits(fit, "lavaan.mi")) {
         all_prods <- find_all_products(lav_data_used(fit, drop_colon = FALSE),
-                                       expand = expand)
+                                       expand = expand,
+                                       skip_indicators = skip_indicators,
+                                       fit = fit)
         all_prods_names <- names(all_prods)
       }
     if (!is.null(data)) {

@@ -67,7 +67,8 @@ lm_from_lavaan_list <- function(fit) {
 #' @noRd
 
 lm_from_lavaan_list_i <- function(fit,
-                                  group_number = NULL) {
+                                  group_number = NULL,
+                                  skip_indicators = TRUE) {
     ptable <- lav_ptable(fit)
     if ("group" %in% colnames(ptable)) {
         tmp <- unique(ptable$group)
@@ -100,7 +101,10 @@ lm_from_lavaan_list_i <- function(fit,
                        ptable = ptable,
                        simplify = FALSE)
     # Get all product terms
-    prods <- find_all_products(dat, expand = TRUE)
+    prods <- find_all_products(dat,
+                               expand = TRUE,
+                               skip_indicators = skip_indicators,
+                               fit = fit)
     # Update product terms
     ivs_list1 <- sapply(ivs_list, to_product,
                         prods = prods,

@@ -155,6 +155,11 @@
 #' and both `x` and `y` are not
 #' standardized.
 #'
+#' @param skip_indicators Whether
+#' observed indicators are skipped from
+#' the search for product terms. Default
+#' is `TRUE`.
+#'
 #' @seealso [indirect_effect()],
 #' [cond_indirect_effects()], and
 #' [cond_indirect()], the high level
@@ -217,7 +222,8 @@ indirect_i <- function(x,
                      allow_mixing_lav_and_obs = TRUE,
                      group = NULL,
                      est_vcov = NULL,
-                     df_residual = NULL) {
+                     df_residual = NULL,
+                     skip_indicators = TRUE) {
     # If called by cond_indirect() with boot_ci or mc_ci,
     # only these arguments are used:
     # - est
@@ -319,7 +325,8 @@ indirect_i <- function(x,
                                x = xs,
                                y = ys,
                                operator = "_x_",
-                               MoreArgs = list(est = est),
+                               MoreArgs = list(est = est,
+                                               skip_indicators = skip_indicators),
                                SIMPLIFY = FALSE)
           }
         if (isFALSE(all(chk_lv))) {
@@ -339,7 +346,8 @@ indirect_i <- function(x,
                                     y = ys,
                                     MoreArgs = list(fit = fit,
                                                     data = data,
-                                                    expand = expand),
+                                                    expand = expand,
+                                                    skip_indicators = skip_indicators),
                                     SIMPLIFY = FALSE)
               } else {
                 prods_obs <- mapply(get_prod,
@@ -347,7 +355,8 @@ indirect_i <- function(x,
                                     y = ys,
                                     MoreArgs = list(est = est,
                                                     data = data,
-                                                    expand = expand),
+                                                    expand = expand,
+                                                    skip_indicators = skip_indicators),
                                     SIMPLIFY = FALSE)
               }
           }

@@ -24,6 +24,7 @@ index_of_mome(
   ci_type = NULL,
   ci_out = NULL,
   boot_type = c("perc", "bc"),
+  skip_indicators = TRUE,
   ...
 )
 
@@ -45,6 +46,7 @@ index_of_momome(
   ci_type = NULL,
   ci_out = NULL,
   boot_type = c("perc", "bc"),
+  skip_indicators = TRUE,
   ...
 )
 }
@@ -171,6 +173,11 @@ confidence interval, the default and
 recommended type) and \code{"bc"}
 (bias-corrected, or BC, bootstrap
 confidence interval).}
+
+\item{skip_indicators}{Whether
+observed indicators are skipped from
+the search for product terms. Default
+is \code{TRUE}.}
 
 \item{...}{Arguments to be passed to
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}}
