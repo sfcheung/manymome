@@ -1,7 +1,7 @@
 ---
 title: "All-In-One Functions for Common Mediation Models"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2025-05-03"
+date: "2025-08-10"
 output:
   html_document:
     fig.align: "center"
@@ -180,7 +180,10 @@ out_simple
 #> |             Indirect Effect Results             |
 #> ===================================================
 #> 
-#> ==  Indirect Effect(s)   ==
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect(s) ==
+#> 
 #>                ind  CI.lo  CI.hi Sig pvalue     SE
 #> x -> m -> y 0.7334 0.3051 1.1965 Sig 0.0012 0.2273
 #> 
@@ -188,9 +191,12 @@ out_simple
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - The 'ind' column shows the indirect effects.
+#>  - The 'ind' column shows the indirect effect(s).
 #>  
-#> ==  Indirect Effect(s) (x-variable(s) Standardized)  ==
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect(s) (x-variable(s) Standardized) ==
+#> 
 #>                std  CI.lo  CI.hi Sig pvalue     SE
 #> x -> m -> y 0.7739 0.3223 1.2653 Sig 0.0012 0.2429
 #> 
@@ -198,10 +204,13 @@ out_simple
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - std: The partially standardized indirect effects. 
+#>  - std: The partially standardized indirect effect(s).
 #>  - x-variable(s) standardized.
 #>  
-#> ==  Indirect Effect(s) (y-variable(s) Standardized)  ==
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect(s) (y-variable(s) Standardized) ==
+#> 
 #>                std  CI.lo  CI.hi Sig pvalue     SE
 #> x -> m -> y 0.2914 0.1262 0.4686 Sig 0.0012 0.0864
 #> 
@@ -209,10 +218,13 @@ out_simple
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - std: The partially standardized indirect effects. 
+#>  - std: The partially standardized indirect effect(s).
 #>  - y-variable(s) standardized.
 #>  
-#> ==  Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized) ==
+#> 
 #>                std  CI.lo  CI.hi Sig pvalue     SE
 #> x -> m -> y 0.3074 0.1313 0.4876 Sig 0.0012 0.0912
 #> 
@@ -220,13 +232,16 @@ out_simple
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - std: The standardized indirect effects.
+#>  - std: The standardized indirect effect(s).
 #>  
 #> ===================================================
 #> |              Direct Effect Results              |
 #> ===================================================
 #> 
-#> ==   Effect(s)   ==
+#> ----------------------------------------------------------------
+#> 
+#> == Effect(s) ==
+#> 
 #>           ind   CI.lo  CI.hi Sig pvalue     SE
 #> x -> y 0.5077 -0.1436 1.1418     0.1292 0.3297
 #> 
@@ -234,9 +249,12 @@ out_simple
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - The 'ind' column shows the  effects.
+#>  - The 'ind' column shows the effect(s).
 #>  
-#> ==   Effect(s) (x-variable(s) Standardized)  ==
+#> ----------------------------------------------------------------
+#> 
+#> == Effect(s) (x-variable(s) Standardized) ==
+#> 
 #>           std   CI.lo  CI.hi Sig pvalue     SE
 #> x -> y 0.5357 -0.1571 1.2035     0.1292 0.3426
 #> 
@@ -244,10 +262,13 @@ out_simple
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - std: The partially standardized  effects. 
+#>  - std: The partially standardized effect(s).
 #>  - x-variable(s) standardized.
 #>  
-#> ==   Effect(s) (y-variable(s) Standardized)  ==
+#> ----------------------------------------------------------------
+#> 
+#> == Effect(s) (y-variable(s) Standardized) ==
+#> 
 #>           std   CI.lo  CI.hi Sig pvalue     SE
 #> x -> y 0.2017 -0.0571 0.4590     0.1292 0.1319
 #> 
@@ -255,10 +276,13 @@ out_simple
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - std: The partially standardized  effects. 
+#>  - std: The partially standardized effect(s).
 #>  - y-variable(s) standardized.
 #>  
-#> ==   Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==
+#> ----------------------------------------------------------------
+#> 
+#> == Effect(s) (Both x-variable(s) and y-variable(s) Standardized) ==
+#> 
 #>           std   CI.lo  CI.hi Sig pvalue     SE
 #> x -> y 0.2128 -0.0612 0.4754     0.1292 0.1365
 #> 
@@ -266,16 +290,16 @@ out_simple
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - std: The standardized  effects.
+#>  - std: The standardized effect(s).
 #>  
 #> ===================================================
 #> |                      Notes                      |
 #> ===================================================
 #> 
 #> - For reference, the bootstrap confidence interval (and bootstrap
-#>   p-value, if requested) of the (unstandardize) direct effect is also
-#>   reported. The bootstrap p-value and the OLS t-statistic p-value can
-#>   be different.
+#>   p-value, if requested) of the (unstandardized) direct effect is also
+#>   reported. The bootstrap p-value and the OLS t-statistc p-value can be
+#>   different.
 #> - For the direct effects with either 'x'-variable or 'y'-variable, or
 #>   both, standardized, it is recommended to use the bootstrap confidence
 #>   intervals, which take into account the sampling error of the sample
@@ -532,7 +556,10 @@ out_serial
 #> |             Indirect Effect Results             |
 #> ===================================================
 #> 
-#> ==  Indirect Effect(s)   ==
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect(s) ==
+#> 
 #>                        ind   CI.lo   CI.hi Sig pvalue     SE
 #> x -> m1 -> m2 -> y  0.1802  0.0260  0.3838 Sig 0.0172 0.0922
 #> x -> m1 -> y       -0.3580 -0.7063 -0.0010 Sig 0.0488 0.1768
@@ -542,9 +569,12 @@ out_serial
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - The 'ind' column shows the indirect effects.
+#>  - The 'ind' column shows the indirect effect(s).
 #>  
-#> ==  Indirect Effect(s) (x-variable(s) Standardized)  ==
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect(s) (x-variable(s) Standardized) ==
+#> 
 #>                        std   CI.lo   CI.hi Sig pvalue     SE
 #> x -> m1 -> m2 -> y  0.1721  0.0236  0.3697 Sig 0.0172 0.0889
 #> x -> m1 -> y       -0.3419 -0.6865 -0.0010 Sig 0.0488 0.1714
@@ -554,10 +584,13 @@ out_serial
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - std: The partially standardized indirect effects. 
+#>  - std: The partially standardized indirect effect(s).
 #>  - x-variable(s) standardized.
 #>  
-#> ==  Indirect Effect(s) (y-variable(s) Standardized)  ==
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect(s) (y-variable(s) Standardized) ==
+#> 
 #>                        std   CI.lo   CI.hi Sig pvalue     SE
 #> x -> m1 -> m2 -> y  0.0897  0.0134  0.1874 Sig 0.0172 0.0448
 #> x -> m1 -> y       -0.1782 -0.3446 -0.0005 Sig 0.0488 0.0861
@@ -567,10 +600,13 @@ out_serial
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - std: The partially standardized indirect effects. 
+#>  - std: The partially standardized indirect effect(s).
 #>  - y-variable(s) standardized.
 #>  
-#> ==  Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized) ==
+#> 
 #>                        std   CI.lo   CI.hi Sig pvalue     SE
 #> x -> m1 -> m2 -> y  0.0856  0.0124  0.1805 Sig 0.0172 0.0431
 #> x -> m1 -> y       -0.1701 -0.3286 -0.0005 Sig 0.0488 0.0832
@@ -580,11 +616,13 @@ out_serial
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - std: The standardized indirect effects.
+#>  - std: The standardized indirect effect(s).
 #>  
 #> ===================================================
 #> |          Total Indirect Effect Results          |
 #> ===================================================
+#> 
+#> ----------------------------------------------------------------
 #> 
 #> == Indirect Effect  ==
 #>                                          
@@ -608,6 +646,8 @@ out_serial
 #> bootstrap samples.
 #> 
 #> 
+#> ----------------------------------------------------------------
+#> 
 #> == Indirect Effect ('x' Standardized) ==
 #>                                          
 #>  Path:                x -> m1 -> m2 -> y 
@@ -630,6 +670,8 @@ out_serial
 #> bootstrap samples.
 #> 
 #> 
+#> ----------------------------------------------------------------
+#> 
 #> == Indirect Effect ('y' Standardized) ==
 #>                                          
 #>  Path:                x -> m1 -> m2 -> y 
@@ -651,6 +693,8 @@ out_serial
 #> Standard error (SE) based on nonparametric bootstrapping with 5000
 #> bootstrap samples.
 #> 
+#> 
+#> ----------------------------------------------------------------
 #> 
 #> == Indirect Effect (Both 'x' and 'y' Standardized) ==
 #>                                          
@@ -678,7 +722,10 @@ out_serial
 #> |              Direct Effect Results              |
 #> ===================================================
 #> 
-#> ==   Effect(s)   ==
+#> ----------------------------------------------------------------
+#> 
+#> == Effect(s) ==
+#> 
 #>           ind   CI.lo  CI.hi Sig pvalue     SE
 #> x -> y 0.4929 -0.0698 1.0292     0.0884 0.2817
 #> 
@@ -686,9 +733,12 @@ out_serial
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - The 'ind' column shows the  effects.
+#>  - The 'ind' column shows the effect(s).
 #>  
-#> ==   Effect(s) (x-variable(s) Standardized)  ==
+#> ----------------------------------------------------------------
+#> 
+#> == Effect(s) (x-variable(s) Standardized) ==
+#> 
 #>           std   CI.lo  CI.hi Sig pvalue     SE
 #> x -> y 0.4706 -0.0610 0.9876     0.0884 0.2698
 #> 
@@ -696,10 +746,13 @@ out_serial
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - std: The partially standardized  effects. 
+#>  - std: The partially standardized effect(s).
 #>  - x-variable(s) standardized.
 #>  
-#> ==   Effect(s) (y-variable(s) Standardized)  ==
+#> ----------------------------------------------------------------
+#> 
+#> == Effect(s) (y-variable(s) Standardized) ==
+#> 
 #>           std   CI.lo  CI.hi Sig pvalue     SE
 #> x -> y 0.2452 -0.0364 0.5009     0.0884 0.1373
 #> 
@@ -707,10 +760,13 @@ out_serial
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - std: The partially standardized  effects. 
+#>  - std: The partially standardized effect(s).
 #>  - y-variable(s) standardized.
 #>  
-#> ==   Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==
+#> ----------------------------------------------------------------
+#> 
+#> == Effect(s) (Both x-variable(s) and y-variable(s) Standardized) ==
+#> 
 #>           std   CI.lo  CI.hi Sig pvalue     SE
 #> x -> y 0.2342 -0.0318 0.4772     0.0884 0.1310
 #> 
@@ -718,16 +774,16 @@ out_serial
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - std: The standardized  effects.
+#>  - std: The standardized effect(s).
 #>  
 #> ===================================================
 #> |                      Notes                      |
 #> ===================================================
 #> 
 #> - For reference, the bootstrap confidence interval (and bootstrap
-#>   p-value, if requested) of the (unstandardize) direct effect is also
-#>   reported. The bootstrap p-value and the OLS t-statistic p-value can
-#>   be different.
+#>   p-value, if requested) of the (unstandardized) direct effect is also
+#>   reported. The bootstrap p-value and the OLS t-statistc p-value can be
+#>   different.
 #> - For the direct effects with either 'x'-variable or 'y'-variable, or
 #>   both, standardized, it is recommended to use the bootstrap confidence
 #>   intervals, which take into account the sampling error of the sample
@@ -1012,7 +1068,10 @@ out_parallel
 #> |             Indirect Effect Results             |
 #> ===================================================
 #> 
-#> ==  Indirect Effect(s)   ==
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect(s) ==
+#> 
 #>                 ind  CI.lo  CI.hi Sig pvalue     SE
 #> x -> m1 -> y 0.4266 0.1106 0.8068 Sig 0.0112 0.1778
 #> x -> m2 -> y 0.1399 0.0066 0.3488 Sig 0.0332 0.0907
@@ -1021,9 +1080,12 @@ out_parallel
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - The 'ind' column shows the indirect effects.
+#>  - The 'ind' column shows the indirect effect(s).
 #>  
-#> ==  Indirect Effect(s) (x-variable(s) Standardized)  ==
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect(s) (x-variable(s) Standardized) ==
+#> 
 #>                 std  CI.lo  CI.hi Sig pvalue     SE
 #> x -> m1 -> y 0.4279 0.1066 0.8273 Sig 0.0112 0.1823
 #> x -> m2 -> y 0.1403 0.0060 0.3500 Sig 0.0332 0.0914
@@ -1032,10 +1094,13 @@ out_parallel
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - std: The partially standardized indirect effects. 
+#>  - std: The partially standardized indirect effect(s).
 #>  - x-variable(s) standardized.
 #>  
-#> ==  Indirect Effect(s) (y-variable(s) Standardized)  ==
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect(s) (y-variable(s) Standardized) ==
+#> 
 #>                 std  CI.lo  CI.hi Sig pvalue     SE
 #> x -> m1 -> y 0.1819 0.0501 0.3390 Sig 0.0112 0.0726
 #> x -> m2 -> y 0.0596 0.0030 0.1427 Sig 0.0332 0.0368
@@ -1044,10 +1109,13 @@ out_parallel
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - std: The partially standardized indirect effects. 
+#>  - std: The partially standardized indirect effect(s).
 #>  - y-variable(s) standardized.
 #>  
-#> ==  Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized) ==
+#> 
 #>                 std  CI.lo  CI.hi Sig pvalue     SE
 #> x -> m1 -> y 0.1825 0.0479 0.3389 Sig 0.0112 0.0746
 #> x -> m2 -> y 0.0598 0.0028 0.1436 Sig 0.0332 0.0371
@@ -1056,11 +1124,13 @@ out_parallel
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - std: The standardized indirect effects.
+#>  - std: The standardized indirect effect(s).
 #>  
 #> ===================================================
 #> |          Total Indirect Effect Results          |
 #> ===================================================
+#> 
+#> ----------------------------------------------------------------
 #> 
 #> == Indirect Effect  ==
 #>                                         
@@ -1082,6 +1152,8 @@ out_parallel
 #> bootstrap samples.
 #> 
 #> 
+#> ----------------------------------------------------------------
+#> 
 #> == Indirect Effect ('x' Standardized) ==
 #>                                         
 #>  Path:                x -> m1 -> y      
@@ -1102,6 +1174,8 @@ out_parallel
 #> bootstrap samples.
 #> 
 #> 
+#> ----------------------------------------------------------------
+#> 
 #> == Indirect Effect ('y' Standardized) ==
 #>                                         
 #>  Path:                x -> m1 -> y      
@@ -1121,6 +1195,8 @@ out_parallel
 #> Standard error (SE) based on nonparametric bootstrapping with 5000
 #> bootstrap samples.
 #> 
+#> 
+#> ----------------------------------------------------------------
 #> 
 #> == Indirect Effect (Both 'x' and 'y' Standardized) ==
 #>                                         
@@ -1146,7 +1222,10 @@ out_parallel
 #> |              Direct Effect Results              |
 #> ===================================================
 #> 
-#> ==   Effect(s)   ==
+#> ----------------------------------------------------------------
+#> 
+#> == Effect(s) ==
+#> 
 #>           ind   CI.lo  CI.hi Sig pvalue     SE
 #> x -> y 0.2911 -0.1886 0.7405     0.2264 0.2346
 #> 
@@ -1154,9 +1233,12 @@ out_parallel
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - The 'ind' column shows the  effects.
+#>  - The 'ind' column shows the effect(s).
 #>  
-#> ==   Effect(s) (x-variable(s) Standardized)  ==
+#> ----------------------------------------------------------------
+#> 
+#> == Effect(s) (x-variable(s) Standardized) ==
+#> 
 #>           std   CI.lo  CI.hi Sig pvalue     SE
 #> x -> y 0.2920 -0.1918 0.7122     0.2264 0.2309
 #> 
@@ -1164,10 +1246,13 @@ out_parallel
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - std: The partially standardized  effects. 
+#>  - std: The partially standardized effect(s).
 #>  - x-variable(s) standardized.
 #>  
-#> ==   Effect(s) (y-variable(s) Standardized)  ==
+#> ----------------------------------------------------------------
+#> 
+#> == Effect(s) (y-variable(s) Standardized) ==
+#> 
 #>           std   CI.lo  CI.hi Sig pvalue     SE
 #> x -> y 0.1241 -0.0810 0.3190     0.2264 0.1017
 #> 
@@ -1175,10 +1260,13 @@ out_parallel
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - std: The partially standardized  effects. 
+#>  - std: The partially standardized effect(s).
 #>  - y-variable(s) standardized.
 #>  
-#> ==   Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==
+#> ----------------------------------------------------------------
+#> 
+#> == Effect(s) (Both x-variable(s) and y-variable(s) Standardized) ==
+#> 
 #>           std   CI.lo  CI.hi Sig pvalue     SE
 #> x -> y 0.1245 -0.0816 0.3121     0.2264 0.1002
 #> 
@@ -1186,16 +1274,16 @@ out_parallel
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
-#>  - std: The standardized  effects.
+#>  - std: The standardized effect(s).
 #>  
 #> ===================================================
 #> |                      Notes                      |
 #> ===================================================
 #> 
 #> - For reference, the bootstrap confidence interval (and bootstrap
-#>   p-value, if requested) of the (unstandardize) direct effect is also
-#>   reported. The bootstrap p-value and the OLS t-statistic p-value can
-#>   be different.
+#>   p-value, if requested) of the (unstandardized) direct effect is also
+#>   reported. The bootstrap p-value and the OLS t-statistc p-value can be
+#>   different.
 #> - For the direct effects with either 'x'-variable or 'y'-variable, or
 #>   both, standardized, it is recommended to use the bootstrap confidence
 #>   intervals, which take into account the sampling error of the sample
