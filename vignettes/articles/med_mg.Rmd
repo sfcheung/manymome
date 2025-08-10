@@ -1,7 +1,7 @@
 ---
 title: "Multigroup Models With Mediation Effects"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2025-05-03"
+date: "2025-08-10"
 output:
   html_document:
     fig.align: "center"
@@ -784,7 +784,8 @@ all_ind_x1_y1 <- many_indirect_effects(paths_x1_y1,
                                        fit = fit2)
 all_ind_x1_y1
 #> 
-#> ==  Indirect Effect(s)   ==
+#> == Indirect Effect(s) ==
+#> 
 #>                                   ind
 #> Group A.x1 -> m11 -> m12 -> y1  0.079
 #> Group A.x1 -> m11 -> y1         0.106
@@ -795,7 +796,7 @@ all_ind_x1_y1
 #> Group B.x1 -> m12 -> y1        -0.000
 #> Group B.x1 -> m2 -> y1          0.004
 #> 
-#>  - The 'ind' column shows the indirect effects.
+#>  - The 'ind' column shows the indirect effect(s).
 #> 
 ```
 

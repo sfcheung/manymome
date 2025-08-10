@@ -1,7 +1,7 @@
 ---
 title: "Mediation Models with Latent Variables"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2025-05-03"
+date: "2025-08-10"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -453,14 +453,15 @@ be printed:
 ``` r
 out_all
 #> 
-#> ==  Indirect Effect(s)   ==
+#> == Indirect Effect(s) ==
+#> 
 #>                  ind  CI.lo CI.hi Sig
 #> f1 -> f3 -> f4 0.098 -0.007 0.216    
 #> f2 -> f3 -> f4 0.131  0.049 0.254 Sig
 #> 
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
 #>    nonparametric bootstrapping with 100 samples.
-#>  - The 'ind' column shows the indirect effects.
+#>  - The 'ind' column shows the indirect effect(s).
 #> 
 ```
 

@@ -1,7 +1,7 @@
 ---
 title: "Mediation Analysis by Multiple Regression"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2025-05-03"
+date: "2025-08-10"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -691,7 +691,8 @@ be printed:
 ``` r
 out_all
 #> 
-#> ==  Indirect Effect(s)   ==
+#> == Indirect Effect(s) ==
+#> 
 #>                           ind  CI.lo  CI.hi Sig
 #> x1 -> m11 -> m12 -> y1  0.037  0.003  0.077 Sig
 #> x1 -> m11 -> y1         0.052 -0.036  0.103    
@@ -712,7 +713,7 @@ out_all
 #> 
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
 #>    nonparametric bootstrapping with 100 samples.
-#>  - The 'ind' column shows the indirect effects.
+#>  - The 'ind' column shows the indirect effect(s).
 #> 
 ```
 
