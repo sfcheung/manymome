@@ -24,7 +24,8 @@ indirect_i(
   allow_mixing_lav_and_obs = TRUE,
   group = NULL,
   est_vcov = NULL,
-  df_residual = NULL
+  df_residual = NULL,
+  skip_indicators = TRUE
 )
 }
 \arguments{
@@ -156,6 +157,11 @@ compute the \emph{p}-value and confidence
 interval for a path with no mediator
 and both \code{x} and \code{y} are not
 standardized.}
+
+\item{skip_indicators}{Whether
+observed indicators are skipped from
+the search for product terms. Default
+is \code{TRUE}.}
 }
 \value{
 It returns an

@@ -12,7 +12,8 @@ get_prod(
   fit = NULL,
   est = NULL,
   data = NULL,
-  expand = FALSE
+  expand = FALSE,
+  skip_indicators = TRUE
 )
 }
 \arguments{
@@ -48,6 +49,11 @@ the product terms.}
 \item{expand}{Whether products of
 more than two terms will be searched.
 \code{FALSE} by default.}
+
+\item{skip_indicators}{Whether
+observed indicators are skipped from
+the search for product terms. Default
+is \code{TRUE}.}
 }
 \value{
 If at least one product term is found,

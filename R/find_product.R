@@ -75,13 +75,29 @@ find_product <- function(data, target) {
 
 #'@noRd
 
-find_all_products <- function(data, expand = TRUE) {
+find_all_products <- function(
+                      data,
+                      expand = TRUE,
+                      skip_indicators = TRUE,
+                      fit = NULL) {
     if (is.list(data) && !is.data.frame(data)) {
         ngroups <- length(data)
         data <- do.call(rbind, data)
       } else {
         ngroups <- 1
       }
+    if (skip_indicators &&
+        (inherits(fit, "lavaan") ||
+         inherits(fit, "lavaan.mi"))) {
+      ov_ind <- lavaan::lavNames(
+                    fit,
+                    type = "ov.ind")
+      tmp <- setdiff(colnames(data), ov_ind)
+      data <- data[, tmp, drop = FALSE]
+      if (ncol(data) < 2) {
+        return(list())
+      }
+    }
     out <- sapply(colnames(data),
                   find_product, data = data,
                   USE.NAMES = TRUE,

@@ -1,4 +1,4 @@
-# manymome 0.2.9.7
+# manymome 0.2.9.8
 
 ## New Features
 
@@ -24,8 +24,17 @@
 
 ## Miscellaneous
 
-- Improve the printout of a list of
+- Improved the printout of a list of
   indirect effects. (0.2.9.1, 0.2.9.2)
+
+- Added the `skip_indicators` argument to
+  `get_prod()` and related functions
+  for skipping observed indicators when
+  identifying product terms. Set to
+  `TRUE` by default. Models using the
+  product-of-indicator approach is not
+  supported anyway and so they can be
+  skipped. (0.2.9.8)
 
 ## Bug Fixes
 
