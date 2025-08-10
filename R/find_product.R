@@ -93,7 +93,7 @@ find_all_products <- function(
                     fit,
                     type = "ov.ind")
       tmp <- setdiff(colnames(data), ov_ind)
-      data <- data[, tmp]
+      data <- data[, tmp, drop = FALSE]
       if (ncol(data) < 2) {
         return(list())
       }
