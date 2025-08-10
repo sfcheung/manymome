@@ -458,6 +458,11 @@
 #' (bias-corrected, or BC, bootstrap
 #' confidence interval).
 #'
+#' @param skip_indicators Whether
+#' observed indicators are skipped from
+#' the search for product terms. Default
+#' is `TRUE`.
+#'
 #' @seealso [mod_levels()] and
 #' [merge_mod_levels()] for generating
 #' levels of moderators. [do_boot] for
@@ -533,7 +538,8 @@ cond_indirect <- function(x,
                      save_ci_out = TRUE,
                      ci_type = NULL,
                      group = NULL,
-                     boot_type = c("perc", "bc")) {
+                     boot_type = c("perc", "bc"),
+                     skip_indicators = TRUE) {
     fit <- auto_lm2list(fit)
     if (missing(y)) {
         y <- tryCatch(get_one_response(fit),
@@ -685,7 +691,8 @@ cond_indirect <- function(x,
                         get_prods_only = TRUE,
                         data = fit_data,
                         expand = TRUE,
-                        group = group)
+                        group = group,
+                        skip_indicators = skip_indicators)
       }
     if (get_prods_only) return(prods)
     out0 <- indirect_i(x = x,
@@ -840,7 +847,8 @@ indirect_effect <- function(x,
                      save_ci_out = TRUE,
                      ci_type = NULL,
                      boot_type = c("perc", "bc"),
-                     group = NULL) {
+                     group = NULL,
+                     skip_indicators = TRUE) {
     fit <- auto_lm2list(fit)
     if (missing(y)) {
         y <- tryCatch(get_one_response(fit),
@@ -878,7 +886,8 @@ indirect_effect <- function(x,
                   save_ci_out = save_ci_out,
                   ci_type = ci_type,
                   boot_type = boot_type,
-                  group = group)
+                  group = group,
+                  skip_indicators = skip_indicators)
   }
 
 #' @param w_type Character. Whether the

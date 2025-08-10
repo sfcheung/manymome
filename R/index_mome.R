@@ -172,6 +172,11 @@
 #' (bias-corrected, or BC, bootstrap
 #' confidence interval).
 #'
+#' @param skip_indicators Whether
+#' observed indicators are skipped from
+#' the search for product terms. Default
+#' is `TRUE`.
+#'
 #' @param ... Arguments to be passed to
 #' [cond_indirect_effects()]
 #'
@@ -244,6 +249,7 @@ index_of_mome <- function(x,
                           ci_type = NULL,
                           ci_out = NULL,
                           boot_type = c("perc", "bc"),
+                          skip_indicators = TRUE,
                           ...) {
     fit <- auto_lm2list(fit)
     boot_type <- match.arg(boot_type)
@@ -256,7 +262,8 @@ index_of_mome <- function(x,
                             y = y,
                             m = m,
                             fit = fit,
-                            get_prods_only = TRUE)
+                            get_prods_only = TRUE,
+                            skip_indicators = skip_indicators)
     if (length(n_prods(prods)) != 1) {
         stop("The index cannot be computed when there are more than one moderators")
       }
@@ -329,6 +336,7 @@ index_of_momome <- function(x,
                             ci_type = NULL,
                             ci_out = NULL,
                             boot_type = c("perc", "bc"),
+                            skip_indicators = TRUE,
                             ...) {
     fit <- auto_lm2list(fit)
     boot_type <- match.arg(boot_type)
@@ -344,7 +352,8 @@ index_of_momome <- function(x,
                             y = y,
                             m = m,
                             fit = fit,
-                            get_prods_only = TRUE)
+                            get_prods_only = TRUE,
+                            skip_indicators = skip_indicators)
     if (!all.equal(n_prods(prods), c(1, 1), check.attributes = FALSE)) {
         stop("The index can be computed only when there are exactly two moderators.")
       }
