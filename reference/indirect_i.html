@@ -11,7 +11,7 @@ value(s) of moderator(s) if present."><meta property="og:image" content="https:/
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.8</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,7 +94,8 @@ value(s) of moderator(s) if present.</p>
 <span>  allow_mixing_lav_and_obs <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  group <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  est_vcov <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  df_residual <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  df_residual <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  skip_indicators <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -267,6 +268,13 @@ compute the <em>p</em>-value and confidence
 interval for a path with no mediator
 and both <code>x</code> and <code>y</code> are not
 standardized.</p></dd>
+
+
+<dt id="arg-skip-indicators">skip_indicators<a class="anchor" aria-label="anchor" href="#arg-skip-indicators"></a></dt>
+<dd><p>Whether
+observed indicators are skipped from
+the search for product terms. Default
+is <code>TRUE</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
