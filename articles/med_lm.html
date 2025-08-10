@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,7 +94,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2025-05-03</h4>
+            <h4 data-toc-skip class="date">2025-08-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/med_lm.Rmd" class="external-link"><code>vignettes/med_lm.Rmd</code></a></small>
       <div class="d-none name"><code>med_lm.Rmd</code></div>
@@ -673,7 +673,8 @@ summary of the indirect effects will be printed:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_all</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ==  Indirect Effect(s)   ==</span></span>
+<span><span class="co">#&gt; == Indirect Effect(s) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                           ind  CI.lo  CI.hi Sig</span></span>
 <span><span class="co">#&gt; x1 -&gt; m11 -&gt; m12 -&gt; y1  0.037  0.003  0.077 Sig</span></span>
 <span><span class="co">#&gt; x1 -&gt; m11 -&gt; y1         0.052 -0.036  0.103    </span></span>
@@ -694,7 +695,7 @@ summary of the indirect effects will be printed:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span></span>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 100 samples.</span></span>
-<span><span class="co">#&gt;  - The 'ind' column shows the indirect effects.</span></span>
+<span><span class="co">#&gt;  - The 'ind' column shows the indirect effect(s).</span></span>
 <span><span class="co">#&gt; </span></span></code></pre></div>
 <p>The output of <code><a href="../reference/cond_indirect.html">many_indirect_effects()</a></code> is a named list,
 names being the path name as appeared in the output. Individual indirect

@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.9.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,7 +94,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2025-05-03</h4>
+            <h4 data-toc-skip class="date">2025-08-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/articles/q_mediation.Rmd" class="external-link"><code>vignettes/articles/q_mediation.Rmd</code></a></small>
       <div class="d-none name"><code>q_mediation.Rmd</code></div>
@@ -246,7 +246,10 @@ or two minutes for contemporary computers.</p>
 <span><span class="co">#&gt; |             Indirect Effect Results             |</span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ==  Indirect Effect(s)   ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Indirect Effect(s) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                ind  CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; m -&gt; y 0.7334 0.3051 1.1965 Sig 0.0012 0.2273</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -254,9 +257,12 @@ or two minutes for contemporary computers.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - The 'ind' column shows the indirect effects.</span></span>
+<span><span class="co">#&gt;  - The 'ind' column shows the indirect effect(s).</span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; ==  Indirect Effect(s) (x-variable(s) Standardized)  ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Indirect Effect(s) (x-variable(s) Standardized) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                std  CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; m -&gt; y 0.7739 0.3223 1.2653 Sig 0.0012 0.2429</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -264,10 +270,13 @@ or two minutes for contemporary computers.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - std: The partially standardized indirect effects. </span></span>
+<span><span class="co">#&gt;  - std: The partially standardized indirect effect(s).</span></span>
 <span><span class="co">#&gt;  - x-variable(s) standardized.</span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; ==  Indirect Effect(s) (y-variable(s) Standardized)  ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Indirect Effect(s) (y-variable(s) Standardized) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                std  CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; m -&gt; y 0.2914 0.1262 0.4686 Sig 0.0012 0.0864</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -275,10 +284,13 @@ or two minutes for contemporary computers.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - std: The partially standardized indirect effects. </span></span>
+<span><span class="co">#&gt;  - std: The partially standardized indirect effect(s).</span></span>
 <span><span class="co">#&gt;  - y-variable(s) standardized.</span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; ==  Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                std  CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; m -&gt; y 0.3074 0.1313 0.4876 Sig 0.0012 0.0912</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -286,13 +298,16 @@ or two minutes for contemporary computers.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - std: The standardized indirect effects.</span></span>
+<span><span class="co">#&gt;  - std: The standardized indirect effect(s).</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
 <span><span class="co">#&gt; |              Direct Effect Results              |</span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ==   Effect(s)   ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Effect(s) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;           ind   CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; y 0.5077 -0.1436 1.1418     0.1292 0.3297</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -300,9 +315,12 @@ or two minutes for contemporary computers.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - The 'ind' column shows the  effects.</span></span>
+<span><span class="co">#&gt;  - The 'ind' column shows the effect(s).</span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; ==   Effect(s) (x-variable(s) Standardized)  ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Effect(s) (x-variable(s) Standardized) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;           std   CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; y 0.5357 -0.1571 1.2035     0.1292 0.3426</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -310,10 +328,13 @@ or two minutes for contemporary computers.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - std: The partially standardized  effects. </span></span>
+<span><span class="co">#&gt;  - std: The partially standardized effect(s).</span></span>
 <span><span class="co">#&gt;  - x-variable(s) standardized.</span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; ==   Effect(s) (y-variable(s) Standardized)  ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Effect(s) (y-variable(s) Standardized) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;           std   CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; y 0.2017 -0.0571 0.4590     0.1292 0.1319</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -321,10 +342,13 @@ or two minutes for contemporary computers.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - std: The partially standardized  effects. </span></span>
+<span><span class="co">#&gt;  - std: The partially standardized effect(s).</span></span>
 <span><span class="co">#&gt;  - y-variable(s) standardized.</span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; ==   Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Effect(s) (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;           std   CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; y 0.2128 -0.0612 0.4754     0.1292 0.1365</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -332,16 +356,16 @@ or two minutes for contemporary computers.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - std: The standardized  effects.</span></span>
+<span><span class="co">#&gt;  - std: The standardized effect(s).</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
 <span><span class="co">#&gt; |                      Notes                      |</span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; - For reference, the bootstrap confidence interval (and bootstrap</span></span>
-<span><span class="co">#&gt;   p-value, if requested) of the (unstandardize) direct effect is also</span></span>
-<span><span class="co">#&gt;   reported. The bootstrap p-value and the OLS t-statistic p-value can</span></span>
-<span><span class="co">#&gt;   be different.</span></span>
+<span><span class="co">#&gt;   p-value, if requested) of the (unstandardized) direct effect is also</span></span>
+<span><span class="co">#&gt;   reported. The bootstrap p-value and the OLS t-statistc p-value can be</span></span>
+<span><span class="co">#&gt;   different.</span></span>
 <span><span class="co">#&gt; - For the direct effects with either 'x'-variable or 'y'-variable, or</span></span>
 <span><span class="co">#&gt;   both, standardized, it is recommended to use the bootstrap confidence</span></span>
 <span><span class="co">#&gt;   intervals, which take into account the sampling error of the sample</span></span>
@@ -559,7 +583,10 @@ and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt; |             Indirect Effect Results             |</span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ==  Indirect Effect(s)   ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Indirect Effect(s) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                        ind   CI.lo   CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; m1 -&gt; m2 -&gt; y  0.1802  0.0260  0.3838 Sig 0.0172 0.0922</span></span>
 <span><span class="co">#&gt; x -&gt; m1 -&gt; y       -0.3580 -0.7063 -0.0010 Sig 0.0488 0.1768</span></span>
@@ -569,9 +596,12 @@ and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - The 'ind' column shows the indirect effects.</span></span>
+<span><span class="co">#&gt;  - The 'ind' column shows the indirect effect(s).</span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; ==  Indirect Effect(s) (x-variable(s) Standardized)  ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Indirect Effect(s) (x-variable(s) Standardized) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                        std   CI.lo   CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; m1 -&gt; m2 -&gt; y  0.1721  0.0236  0.3697 Sig 0.0172 0.0889</span></span>
 <span><span class="co">#&gt; x -&gt; m1 -&gt; y       -0.3419 -0.6865 -0.0010 Sig 0.0488 0.1714</span></span>
@@ -581,10 +611,13 @@ and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - std: The partially standardized indirect effects. </span></span>
+<span><span class="co">#&gt;  - std: The partially standardized indirect effect(s).</span></span>
 <span><span class="co">#&gt;  - x-variable(s) standardized.</span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; ==  Indirect Effect(s) (y-variable(s) Standardized)  ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Indirect Effect(s) (y-variable(s) Standardized) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                        std   CI.lo   CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; m1 -&gt; m2 -&gt; y  0.0897  0.0134  0.1874 Sig 0.0172 0.0448</span></span>
 <span><span class="co">#&gt; x -&gt; m1 -&gt; y       -0.1782 -0.3446 -0.0005 Sig 0.0488 0.0861</span></span>
@@ -594,10 +627,13 @@ and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - std: The partially standardized indirect effects. </span></span>
+<span><span class="co">#&gt;  - std: The partially standardized indirect effect(s).</span></span>
 <span><span class="co">#&gt;  - y-variable(s) standardized.</span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; ==  Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                        std   CI.lo   CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; m1 -&gt; m2 -&gt; y  0.0856  0.0124  0.1805 Sig 0.0172 0.0431</span></span>
 <span><span class="co">#&gt; x -&gt; m1 -&gt; y       -0.1701 -0.3286 -0.0005 Sig 0.0488 0.0832</span></span>
@@ -607,11 +643,13 @@ and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - std: The standardized indirect effects.</span></span>
+<span><span class="co">#&gt;  - std: The standardized indirect effect(s).</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
 <span><span class="co">#&gt; |          Total Indirect Effect Results          |</span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; == Indirect Effect  ==</span></span>
 <span><span class="co">#&gt;                                          </span></span>
@@ -635,6 +673,8 @@ and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt; bootstrap samples.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; == Indirect Effect ('x' Standardized) ==</span></span>
 <span><span class="co">#&gt;                                          </span></span>
 <span><span class="co">#&gt;  Path:                x -&gt; m1 -&gt; m2 -&gt; y </span></span>
@@ -657,6 +697,8 @@ and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt; bootstrap samples.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; == Indirect Effect ('y' Standardized) ==</span></span>
 <span><span class="co">#&gt;                                          </span></span>
 <span><span class="co">#&gt;  Path:                x -&gt; m1 -&gt; m2 -&gt; y </span></span>
@@ -678,6 +720,8 @@ and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt; Standard error (SE) based on nonparametric bootstrapping with 5000</span></span>
 <span><span class="co">#&gt; bootstrap samples.</span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; == Indirect Effect (Both 'x' and 'y' Standardized) ==</span></span>
 <span><span class="co">#&gt;                                          </span></span>
@@ -705,7 +749,10 @@ and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt; |              Direct Effect Results              |</span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ==   Effect(s)   ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Effect(s) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;           ind   CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; y 0.4929 -0.0698 1.0292     0.0884 0.2817</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -713,9 +760,12 @@ and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - The 'ind' column shows the  effects.</span></span>
+<span><span class="co">#&gt;  - The 'ind' column shows the effect(s).</span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; ==   Effect(s) (x-variable(s) Standardized)  ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Effect(s) (x-variable(s) Standardized) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;           std   CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; y 0.4706 -0.0610 0.9876     0.0884 0.2698</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -723,10 +773,13 @@ and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - std: The partially standardized  effects. </span></span>
+<span><span class="co">#&gt;  - std: The partially standardized effect(s).</span></span>
 <span><span class="co">#&gt;  - x-variable(s) standardized.</span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; ==   Effect(s) (y-variable(s) Standardized)  ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Effect(s) (y-variable(s) Standardized) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;           std   CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; y 0.2452 -0.0364 0.5009     0.0884 0.1373</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -734,10 +787,13 @@ and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - std: The partially standardized  effects. </span></span>
+<span><span class="co">#&gt;  - std: The partially standardized effect(s).</span></span>
 <span><span class="co">#&gt;  - y-variable(s) standardized.</span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; ==   Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Effect(s) (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;           std   CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; y 0.2342 -0.0318 0.4772     0.0884 0.1310</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -745,16 +801,16 @@ and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - std: The standardized  effects.</span></span>
+<span><span class="co">#&gt;  - std: The standardized effect(s).</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
 <span><span class="co">#&gt; |                      Notes                      |</span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; - For reference, the bootstrap confidence interval (and bootstrap</span></span>
-<span><span class="co">#&gt;   p-value, if requested) of the (unstandardize) direct effect is also</span></span>
-<span><span class="co">#&gt;   reported. The bootstrap p-value and the OLS t-statistic p-value can</span></span>
-<span><span class="co">#&gt;   be different.</span></span>
+<span><span class="co">#&gt;   p-value, if requested) of the (unstandardized) direct effect is also</span></span>
+<span><span class="co">#&gt;   reported. The bootstrap p-value and the OLS t-statistc p-value can be</span></span>
+<span><span class="co">#&gt;   different.</span></span>
 <span><span class="co">#&gt; - For the direct effects with either 'x'-variable or 'y'-variable, or</span></span>
 <span><span class="co">#&gt;   both, standardized, it is recommended to use the bootstrap confidence</span></span>
 <span><span class="co">#&gt;   intervals, which take into account the sampling error of the sample</span></span>
@@ -993,7 +1049,10 @@ model, and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt; |             Indirect Effect Results             |</span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ==  Indirect Effect(s)   ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Indirect Effect(s) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                 ind  CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; m1 -&gt; y 0.4266 0.1106 0.8068 Sig 0.0112 0.1778</span></span>
 <span><span class="co">#&gt; x -&gt; m2 -&gt; y 0.1399 0.0066 0.3488 Sig 0.0332 0.0907</span></span>
@@ -1002,9 +1061,12 @@ model, and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - The 'ind' column shows the indirect effects.</span></span>
+<span><span class="co">#&gt;  - The 'ind' column shows the indirect effect(s).</span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; ==  Indirect Effect(s) (x-variable(s) Standardized)  ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Indirect Effect(s) (x-variable(s) Standardized) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                 std  CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; m1 -&gt; y 0.4279 0.1066 0.8273 Sig 0.0112 0.1823</span></span>
 <span><span class="co">#&gt; x -&gt; m2 -&gt; y 0.1403 0.0060 0.3500 Sig 0.0332 0.0914</span></span>
@@ -1013,10 +1075,13 @@ model, and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - std: The partially standardized indirect effects. </span></span>
+<span><span class="co">#&gt;  - std: The partially standardized indirect effect(s).</span></span>
 <span><span class="co">#&gt;  - x-variable(s) standardized.</span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; ==  Indirect Effect(s) (y-variable(s) Standardized)  ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Indirect Effect(s) (y-variable(s) Standardized) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                 std  CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; m1 -&gt; y 0.1819 0.0501 0.3390 Sig 0.0112 0.0726</span></span>
 <span><span class="co">#&gt; x -&gt; m2 -&gt; y 0.0596 0.0030 0.1427 Sig 0.0332 0.0368</span></span>
@@ -1025,10 +1090,13 @@ model, and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - std: The partially standardized indirect effects. </span></span>
+<span><span class="co">#&gt;  - std: The partially standardized indirect effect(s).</span></span>
 <span><span class="co">#&gt;  - y-variable(s) standardized.</span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; ==  Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                 std  CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; m1 -&gt; y 0.1825 0.0479 0.3389 Sig 0.0112 0.0746</span></span>
 <span><span class="co">#&gt; x -&gt; m2 -&gt; y 0.0598 0.0028 0.1436 Sig 0.0332 0.0371</span></span>
@@ -1037,11 +1105,13 @@ model, and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - std: The standardized indirect effects.</span></span>
+<span><span class="co">#&gt;  - std: The standardized indirect effect(s).</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
 <span><span class="co">#&gt; |          Total Indirect Effect Results          |</span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; == Indirect Effect  ==</span></span>
 <span><span class="co">#&gt;                                         </span></span>
@@ -1063,6 +1133,8 @@ model, and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt; bootstrap samples.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; == Indirect Effect ('x' Standardized) ==</span></span>
 <span><span class="co">#&gt;                                         </span></span>
 <span><span class="co">#&gt;  Path:                x -&gt; m1 -&gt; y      </span></span>
@@ -1083,6 +1155,8 @@ model, and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt; bootstrap samples.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; == Indirect Effect ('y' Standardized) ==</span></span>
 <span><span class="co">#&gt;                                         </span></span>
 <span><span class="co">#&gt;  Path:                x -&gt; m1 -&gt; y      </span></span>
@@ -1102,6 +1176,8 @@ model, and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt; Standard error (SE) based on nonparametric bootstrapping with 5000</span></span>
 <span><span class="co">#&gt; bootstrap samples.</span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; == Indirect Effect (Both 'x' and 'y' Standardized) ==</span></span>
 <span><span class="co">#&gt;                                         </span></span>
@@ -1127,7 +1203,10 @@ model, and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt; |              Direct Effect Results              |</span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ==   Effect(s)   ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Effect(s) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;           ind   CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; y 0.2911 -0.1886 0.7405     0.2264 0.2346</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -1135,9 +1214,12 @@ model, and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - The 'ind' column shows the  effects.</span></span>
+<span><span class="co">#&gt;  - The 'ind' column shows the effect(s).</span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; ==   Effect(s) (x-variable(s) Standardized)  ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Effect(s) (x-variable(s) Standardized) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;           std   CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; y 0.2920 -0.1918 0.7122     0.2264 0.2309</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -1145,10 +1227,13 @@ model, and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - std: The partially standardized  effects. </span></span>
+<span><span class="co">#&gt;  - std: The partially standardized effect(s).</span></span>
 <span><span class="co">#&gt;  - x-variable(s) standardized.</span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; ==   Effect(s) (y-variable(s) Standardized)  ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Effect(s) (y-variable(s) Standardized) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;           std   CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; y 0.1241 -0.0810 0.3190     0.2264 0.1017</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -1156,10 +1241,13 @@ model, and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - std: The partially standardized  effects. </span></span>
+<span><span class="co">#&gt;  - std: The partially standardized effect(s).</span></span>
 <span><span class="co">#&gt;  - y-variable(s) standardized.</span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; ==   Effect(s) (Both x-variable(s) and y-variable(s) Standardized)  ==</span></span>
+<span><span class="co">#&gt; ----------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; == Effect(s) (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;           std   CI.lo  CI.hi Sig pvalue     SE</span></span>
 <span><span class="co">#&gt; x -&gt; y 0.1245 -0.0816 0.3121     0.2264 0.1002</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -1167,16 +1255,16 @@ model, and can be a few minutes if <code>R</code> is large.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - [pvalue] are asymmetric bootstrap p-values.</span></span>
 <span><span class="co">#&gt;  - [SE] are standard errors.</span></span>
-<span><span class="co">#&gt;  - std: The standardized  effects.</span></span>
+<span><span class="co">#&gt;  - std: The standardized effect(s).</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
 <span><span class="co">#&gt; |                      Notes                      |</span></span>
 <span><span class="co">#&gt; ===================================================</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; - For reference, the bootstrap confidence interval (and bootstrap</span></span>
-<span><span class="co">#&gt;   p-value, if requested) of the (unstandardize) direct effect is also</span></span>
-<span><span class="co">#&gt;   reported. The bootstrap p-value and the OLS t-statistic p-value can</span></span>
-<span><span class="co">#&gt;   be different.</span></span>
+<span><span class="co">#&gt;   p-value, if requested) of the (unstandardized) direct effect is also</span></span>
+<span><span class="co">#&gt;   reported. The bootstrap p-value and the OLS t-statistc p-value can be</span></span>
+<span><span class="co">#&gt;   different.</span></span>
 <span><span class="co">#&gt; - For the direct effects with either 'x'-variable or 'y'-variable, or</span></span>
 <span><span class="co">#&gt;   both, standardized, it is recommended to use the bootstrap confidence</span></span>
 <span><span class="co">#&gt;   intervals, which take into account the sampling error of the sample</span></span>
