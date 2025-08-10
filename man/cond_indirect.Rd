@@ -41,7 +41,8 @@ cond_indirect(
   save_ci_out = TRUE,
   ci_type = NULL,
   group = NULL,
-  boot_type = c("perc", "bc")
+  boot_type = c("perc", "bc"),
+  skip_indicators = TRUE
 )
 
 cond_indirect_effects(
@@ -104,7 +105,8 @@ indirect_effect(
   save_ci_out = TRUE,
   ci_type = NULL,
   boot_type = c("perc", "bc"),
-  group = NULL
+  group = NULL,
+  skip_indicators = TRUE
 )
 
 cond_effects(
@@ -374,6 +376,11 @@ confidence interval, the default and
 recommended type) and \code{"bc"}
 (bias-corrected, or BC, bootstrap
 confidence interval).}
+
+\item{skip_indicators}{Whether
+observed indicators are skipped from
+the search for product terms. Default
+is \code{TRUE}.}
 
 \item{wlevels}{The output of
 \code{\link[=merge_mod_levels]{merge_mod_levels()}}, or the
