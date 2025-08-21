@@ -433,6 +433,12 @@
 #' computing and testing the total
 #' indirect effects.
 #'
+#' @author Idea to fit a model by
+#' structural equation modeling by
+#' Rong wei Sun <https://orcid.org/0000-0003-0034-1422>,
+#' implemented by
+#' Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>.
+#'
 #' @name q_mediation
 NULL
 
