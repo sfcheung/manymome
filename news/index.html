@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,20 +63,20 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.0" id="manymome-030">manymome 0.3.0<a class="anchor" aria-label="anchor" href="#manymome-030"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.3.1" id="manymome-031">manymome 0.3.1<a class="anchor" aria-label="anchor" href="#manymome-031"></a></h2>
 <div class="section level3">
-<h3 id="new-features-0-3-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-3-0"></a></h3>
+<h3 id="new-features-0-3-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-3-1"></a></h3>
 <ul><li><p>Updated the <code>q_*</code> functions (<code><a href="../reference/q_mediation.html">q_mediation()</a></code>, <code><a href="../reference/q_mediation.html">q_simple_mediation()</a></code>, <code><a href="../reference/q_mediation.html">q_serial_mediation()</a></code> and <code><a href="../reference/q_mediation.html">q_parallel_mediation()</a></code>) to support fitting a model by path analysis using <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>, with the option to handle missing data using full information maximum likelihood. (0.2.9.3)</p></li>
 <li><p>Added a plot method for the output of <code><a href="../reference/q_mediation.html">q_mediation()</a></code> and its friends. Requires <code>semptools</code> (0.3.2 or above), which needs to be installed separately. (0.2.9.4, 0.2.9.5, 0.2.9.6)</p></li>
 <li><p>Updated <code><a href="../reference/q_mediation.html">q_mediation()</a></code> to support a user-specified mediation model. (0.2.9.3)</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="miscellaneous-0-3-0">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-3-0"></a></h3>
+<h3 id="miscellaneous-0-3-1">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-3-1"></a></h3>
 <ul><li><p>Improved the printout of a list of indirect effects. (0.2.9.1, 0.2.9.2)</p></li>
 <li><p>Added the <code>skip_indicators</code> argument to <code><a href="../reference/get_prod.html">get_prod()</a></code> and related functions for skipping observed indicators when identifying product terms. Set to <code>TRUE</code> by default. Models using the product-of-indicator approach is not supported anyway and so they can be skipped. (0.2.9.8)</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-0-3-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-3-0"></a></h3>
+<h3 id="bug-fixes-0-3-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-3-1"></a></h3>
 <ul><li>Fixed the error raised when <code><a href="../reference/do_mc.html">do_mc()</a></code> is used for some multigroup models with latent variables. No impact on results because latent means are not used for now. (0.2.9.7)</li>
 </ul></div>
 </div>
