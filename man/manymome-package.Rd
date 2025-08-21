@@ -26,5 +26,10 @@ Authors:
   \item Sing-Hang Cheung (\href{https://orcid.org/0000-0001-5182-0752}{ORCID})
 }
 
+Other contributors:
+\itemize{
+  \item Rong Wei Sun (\href{https://orcid.org/0000-0003-0034-1422}{ORCID}) [contributor]
+}
+
 }
 \keyword{internal}
