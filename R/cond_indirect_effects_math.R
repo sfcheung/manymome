@@ -241,10 +241,16 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
         bind0 <- NULL
       }
     if (!is.null(bind0)) {
-        boot_ci1 <- boot_ci_internal(t0 = est0,
-                            t = bind0,
-                            level = level0,
-                            boot_type = "perc")
+        if (isTRUE(all(e1$boot_ci >= -Inf)) &&
+            isTRUE(all(e2$boot_ci >= -Inf))) {
+          # CI not skipped
+          boot_ci1 <- boot_ci_internal(t0 = est0,
+                              t = bind0,
+                              level = level0,
+                              boot_type = "perc")
+        } else {
+          boot_ci1 <- c(NA, NA)
+        }
         bci0 <- boot_ci1
         if (isTRUE(e1$boot_p >= 0) &&
             isTRUE(e2$boot_p >= 0)) {

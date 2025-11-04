@@ -2,7 +2,7 @@ library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
 
-test_that("Test pvalue_min_size", {
+test_that("skip_ci", {
 
 # cond_effects_math
 
@@ -32,7 +32,7 @@ out2_boot <- cond_indirect(x = "x", y = "y",
                      boot_ci = TRUE,
                      boot_out = boot_out)
 out12boot <- out1_boot + out2_boot
-expect_true(is.na(out12boot$boot_p))
+expect_false(all(is.na(out12boot$boot_ci)))
 
 out1b_boot <- cond_indirect(x = "x", y = "y",
                      m = c("m1", "m2", "m3"),
@@ -40,14 +40,17 @@ out1b_boot <- cond_indirect(x = "x", y = "y",
                      wvalues = wv,
                      boot_ci = TRUE,
                      boot_out = boot_out,
-                     internal_options = list(pvalue_min_size = 39))
+                     internal_options = list(skip_ci = TRUE))
 out2b_boot <- cond_indirect(x = "x", y = "y",
                      fit = fit,
                      wvalues = wv,
                      boot_ci = TRUE,
                      boot_out = boot_out,
-                     internal_options = list(pvalue_min_size = 39))
+                     internal_options = list(skip_ci = TRUE))
 out12bboot <- out1b_boot + out2b_boot
-expect_true(!is.na(out12bboot$boot_p))
+expect_true(all(is.na(out12bboot$boot_ci)))
+
+out12cboot <- out1b_boot + out2_boot
+expect_true(all(is.na(out12cboot$boot_ci)))
 
 })

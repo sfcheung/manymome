@@ -2,7 +2,7 @@ library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
 
-test_that("Test pvalue_min_size", {
+test_that("skip_ci", {
 
 # Mediation only
 
@@ -24,15 +24,15 @@ outm_boot <- cond_indirect(x = "x", y = "y",
                      fit = fitm,
                      boot_ci = TRUE,
                      boot_out = boot_outm)
-expect_true(is.na(outm_boot$boot_p))
+expect_false(all(is.na(outm_boot$boot_ci)))
 
 outm_boot2 <- cond_indirect(x = "x", y = "y",
                      m = c("m1", "m2", "m3"),
                      fit = fitm,
                      boot_ci = TRUE,
                      boot_out = boot_outm,
-                     internal_options = list(pvalue_min_size = 39))
-expect_false(is.na(outm_boot2$boot_p))
+                     internal_options = list(skip_ci = TRUE))
+expect_true(all(is.na(outm_boot2$boot_ci)))
 
 # Moderated mediation
 
@@ -59,21 +59,21 @@ out_6 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", f
                                standardized_x = TRUE,
                                boot_ci = TRUE, boot_out = fit_boot_out)
 out_6_full <- attr(out_6, "full_output")
-tmp <- sapply(out_6_full, function(x) x$boot_p)
-expect_true(all(is.na(tmp)))
+tmp <- sapply(out_6_full, function(x) x$boot_ci)
+expect_false(all(is.na(tmp)))
 
 out_6b <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                standardized_x = TRUE,
                                boot_ci = TRUE, boot_out = fit_boot_out,
-                               internal_options = list(pvalue_min_size = 39))
+                               internal_options = list(skip_ci = TRUE))
 out_6b_full <- attr(out_6b, "full_output")
-tmp <- sapply(out_6b_full, function(x) x$boot_p)
-expect_true(all(!is.na(tmp)))
+tmp <- sapply(out_6b_full, function(x) x$boot_ci)
+expect_true(all(is.na(tmp)))
 
 diff_6 <- cond_indirect_diff(out_6, from = 1, to = 2)
-expect_true(is.na(diff_6$pvalue))
+expect_false(all(is.na(diff_6$ci)))
 
 diff_6b <- cond_indirect_diff(out_6b, from = 1, to = 2)
-expect_true(!is.na(diff_6b$pvalue))
+expect_true(all(is.na(diff_6b$ci)))
 
 })

@@ -399,10 +399,14 @@ index_of_momome <- function(x,
       }
     if (has_boot) {
         ind_boot <- i1$boot_diff - i0$boot_diff
-        ind_boot_ci <- boot_ci_internal(t0 = ind,
-                               t = ind_boot,
-                               level = level,
-                               boot_type = boot_type)
+        if (isTRUE(dotdotdot$internal_options$skip_ci)) {
+          ind_boot_ci <- c(NA, NA)
+        } else {
+          ind_boot_ci <- boot_ci_internal(t0 = ind,
+                                t = ind_boot,
+                                level = level,
+                                boot_type = boot_type)
+        }
         # Do not use %||% for now. Too new.
         if (is.null(dotdotdot$internal_options$pvalue_min_size)) {
           tmp <- formals(est2p)$min_size
