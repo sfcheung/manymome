@@ -1,3 +1,18 @@
+# manymome 0.3.1.1
+
+## Miscellaneous
+
+- Added the `internal_options` argument to
+  `cond_effect()` for adding advanced
+  options in the future. For now, it
+  can be used to set `pvalue_min_size`
+  to override the default minimum number
+  of bootstrap samples for computing
+  asymmetric bootstrap *p*-value. Several
+  other functions are also updated to
+  work according to this argument.
+  (0.3.1.1)
+
 # manymome 0.3.1
 
 ## New Features
