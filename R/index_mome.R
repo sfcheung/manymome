@@ -338,6 +338,7 @@ index_of_momome <- function(x,
                             boot_type = c("perc", "bc"),
                             skip_indicators = TRUE,
                             ...) {
+    dotdotdot <- list(...)
     fit <- auto_lm2list(fit)
     boot_type <- match.arg(boot_type)
     if (is.null(w) || is.null(z) ||
@@ -402,7 +403,14 @@ index_of_momome <- function(x,
                                t = ind_boot,
                                level = level,
                                boot_type = boot_type)
-        ind_boot_p <- est2p(ind_boot)
+        # Do not use %||% for now. Too new.
+        if (is.null(dotdotdot$internal_options$pvalue_min_size)) {
+          tmp <- formals(est2p)$min_size
+        } else {
+          tmp <- dotdotdot$internal_options$pvalue_min_size
+        }
+        ind_boot_p <- est2p(ind_boot,
+                            min_size = tmp)
         ind_boot_se <- stats::sd(ind_boot, na.rm = TRUE)
       } else {
         ind_boot <- NA

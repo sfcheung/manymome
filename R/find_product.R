@@ -15,7 +15,7 @@
 #' more columns but there is no
 #' guarantee.
 #'
-#' @return [find_all_products()] returns
+#' @return `find_all_products()` returns
 #' a named list. For each element, the
 #' name is the column name of a product
 #' term, and the content is a vector of
@@ -24,7 +24,7 @@
 #' is a product of other column, it
 #' returns a names list of zero length.
 #'
-#' [find_product()] returns a vector of
+#' `find_product()` returns a vector of
 #' two elements. If the target column is
 #' a product of two other columns, this
 #' vector contains the names of these

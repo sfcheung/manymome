@@ -42,7 +42,8 @@ cond_indirect(
   ci_type = NULL,
   group = NULL,
   boot_type = c("perc", "bc"),
-  skip_indicators = TRUE
+  skip_indicators = TRUE,
+  internal_options = list()
 )
 
 cond_indirect_effects(
@@ -106,7 +107,8 @@ indirect_effect(
   ci_type = NULL,
   boot_type = c("perc", "bc"),
   group = NULL,
-  skip_indicators = TRUE
+  skip_indicators = TRUE,
+  internal_options = list()
 )
 
 cond_effects(
@@ -381,6 +383,10 @@ confidence interval).}
 observed indicators are skipped from
 the search for product terms. Default
 is \code{TRUE}.}
+
+\item{internal_options}{A named list
+of internal options. For advanced
+options.}
 
 \item{wlevels}{The output of
 \code{\link[=merge_mod_levels]{merge_mod_levels()}}, or the
