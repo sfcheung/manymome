@@ -222,10 +222,16 @@ cond_indirect_diff <- function(output,
             boot_type <- "perc"
           }
         boot_diff <- boot_i_to - boot_i_from
-        boot_diff_ci <- boot_ci_internal(t0 = effect_diff,
-                                t = boot_diff,
-                                level = level,
-                                boot_type = boot_type)
+        if (isTRUE(all(output_full_from$boot_ci >= -Inf)) &&
+            isTRUE(all(output_full_to$boot_ci >= -Inf))) {
+          # CI not skipped
+          boot_diff_ci <- boot_ci_internal(t0 = effect_diff,
+                                  t = boot_diff,
+                                  level = level,
+                                  boot_type = boot_type)
+        } else {
+          boot_diff_ci <- c(NA, NA)
+        }
         if (isTRUE(output_full_from$boot_p >= 0) &&
             isTRUE(output_full_to$boot_p >= 0)) {
           # P-values exists. Ignore min_size

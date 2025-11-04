@@ -481,10 +481,14 @@ form_boot_ci <- function(est,
     out <- list()
     out$est <- est
     out$boot_est <- boot_est
-    boot_ci1 <- boot_ci_internal(t0 = est,
-                        t = boot_est,
-                        level = level,
-                        boot_type = boot_type)
+    if (isTRUE(internal_options$skip_ci)) {
+      boot_ci1 <- c(NA, NA)
+    } else {
+      boot_ci1 <- boot_ci_internal(t0 = est,
+                          t = boot_est,
+                          level = level,
+                          boot_type = boot_type)
+    }
     out$boot_ci <- boot_ci1
     out$level <- level
     # Do not use %||% for now. Too new.
