@@ -1,4 +1,4 @@
-# manymome 0.3.1.1
+# manymome 0.3.1.2
 
 ## Miscellaneous
 
@@ -12,6 +12,12 @@
   other functions are also updated to
   work according to this argument.
   (0.3.1.1)
+
+- Add `skip_ci` to `internal_options` to
+  skip the computation of bootstrap CIs.
+  For functions that only need the
+  bootstrap estimates but not the
+  bootstrap CIs. (0.3.1.2)
 
 # manymome 0.3.1
 
