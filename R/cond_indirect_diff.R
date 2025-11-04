@@ -226,7 +226,15 @@ cond_indirect_diff <- function(output,
                                 t = boot_diff,
                                 level = level,
                                 boot_type = boot_type)
-        boot_diff_p <- est2p(boot_diff)
+        if (isTRUE(output_full_from$boot_p >= 0) &&
+            isTRUE(output_full_to$boot_p >= 0)) {
+          # P-values exists. Ignore min_size
+          tmp <- -Inf
+        } else {
+          tmp <- formals(est2p)$min_size
+        }
+        boot_diff_p <- est2p(boot_diff,
+                             min_size = tmp)
         boot_diff_se <- stats::sd(boot_diff, na.rm = TRUE)
       } else {
         boot_diff <- NA

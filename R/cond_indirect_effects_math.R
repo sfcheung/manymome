@@ -246,7 +246,15 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
                             level = level0,
                             boot_type = "perc")
         bci0 <- boot_ci1
-        bp0 <- est2p(bind0)
+        if (isTRUE(e1$boot_p >= 0) &&
+            isTRUE(e2$boot_p >= 0)) {
+          # P-values exists. Ignore min_size
+          tmp <- -Inf
+        } else {
+          tmp <- formals(est2p)$min_size
+        }
+        bp0 <- est2p(bind0,
+                     min_size = tmp)
         bse0 <- stats::sd(bind0, na.rm = TRUE)
       } else {
         bci0 <- NULL
