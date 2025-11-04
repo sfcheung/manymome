@@ -1,5 +1,3 @@
-skip("WIP")
-
 library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
