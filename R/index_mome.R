@@ -389,7 +389,7 @@ index_of_momome <- function(x,
         ind_mc <- i1$mc_diff - i0$mc_diff
         ind_boot <- i1$boot_diff - i0$boot_diff
         if (isTRUE(dotdotdot$internal_options$skip_ci)) {
-          ind_boot_ci <- c(NA, NA)
+          ind_boot_ci <- as.numeric(c(NA, NA))
         } else {
           ind_mc_ci <- boot_ci_internal(t0 = ind,
                                         t = ind_mc,
@@ -414,7 +414,7 @@ index_of_momome <- function(x,
     if (has_boot) {
         ind_boot <- i1$boot_diff - i0$boot_diff
         if (isTRUE(dotdotdot$internal_options$skip_ci)) {
-          ind_boot_ci <- c(NA, NA)
+          ind_boot_ci <- as.numeric(c(NA, NA))
         } else {
           ind_boot_ci <- boot_ci_internal(t0 = ind,
                                 t = ind_boot,

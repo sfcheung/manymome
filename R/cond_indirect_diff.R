@@ -212,7 +212,7 @@ cond_indirect_diff <- function(output,
                                         level = level,
                                         boot_type = "perc")
         } else {
-          mc_diff_ci <- c(NA, NA)
+          mc_diff_ci <- as.numeric(c(NA, NA))
         }
         if (isTRUE(output_full_from$mc_p >= 0) &&
             isTRUE(output_full_to$mc_p >= 0)) {
@@ -227,7 +227,7 @@ cond_indirect_diff <- function(output,
         mc_diff_se <- stats::sd(mc_diff, na.rm = TRUE)
       } else {
         mc_diff <- NA
-        mc_diff_ci <- c(NA, NA)
+        mc_diff_ci <- as.numeric(c(NA, NA))
         mc_diff_p <- NA
         mc_diff_se <- NA
       }
@@ -247,7 +247,7 @@ cond_indirect_diff <- function(output,
                                   level = level,
                                   boot_type = boot_type)
         } else {
-          boot_diff_ci <- c(NA, NA)
+          boot_diff_ci <- as.numeric(c(NA, NA))
         }
         if (isTRUE(output_full_from$boot_p >= 0) &&
             isTRUE(output_full_to$boot_p >= 0)) {
@@ -261,7 +261,7 @@ cond_indirect_diff <- function(output,
         boot_diff_se <- stats::sd(boot_diff, na.rm = TRUE)
       } else {
         boot_diff <- NA
-        boot_diff_ci <- c(NA, NA)
+        boot_diff_ci <- as.numeric(c(NA, NA))
         boot_diff_p <- NA
         boot_diff_se <- NA
       }
@@ -288,7 +288,7 @@ cond_indirect_diff <- function(output,
         # TODO:
         # - Add support for objects with both wlevels and groups.
       }
-    out_diff_ci <- c(NA, NA)
+    out_diff_ci <- as.numeric(c(NA, NA))
     out_diff_se <- NA
     out_diff_p <- NA
     if (has_mc) out_diff_ci <- mc_diff_ci

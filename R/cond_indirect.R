@@ -735,7 +735,7 @@ cond_indirect <- function(x,
         out0$mc_scale_x <- unname(sapply(out_mc, function(x) x$scale_x))
         out0$mc_scale_y <- unname(sapply(out_mc, function(x) x$scale_y))
         if (isTRUE(internal_options$skip_ci)) {
-          boot_ci1 <- c(NA, NA)
+          boot_ci1 <- as.numeric(c(NA, NA))
         } else {
           boot_ci1 <- boot_ci_internal(t0 = out0$indirect,
                               t = out0$mc_indirect,
@@ -781,7 +781,7 @@ cond_indirect <- function(x,
         out0$boot_scale_x <- unname(sapply(out_boot, function(x) x$scale_x))
         out0$boot_scale_y <- unname(sapply(out_boot, function(x) x$scale_y))
         if (isTRUE(internal_options$skip_ci)) {
-          boot_ci1 <- c(NA, NA)
+          boot_ci1 <- as.numeric(c(NA, NA))
         } else {
           boot_ci1 <- boot_ci_internal(t0 = out0$indirect,
                               t = out0$boot_indirect,

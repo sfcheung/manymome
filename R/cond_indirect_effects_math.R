@@ -255,7 +255,7 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
                               level = level0,
                               boot_type = "perc")
         } else {
-          boot_ci1 <- c(NA, NA)
+          boot_ci1 <- as.numeric(c(NA, NA))
         }
         bci0 <- boot_ci1
         if ((isTRUE(e1$boot_p >= 0) &&
