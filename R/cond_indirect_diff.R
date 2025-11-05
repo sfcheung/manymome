@@ -204,10 +204,16 @@ cond_indirect_diff <- function(output,
     if (all(has_mc, has_boot)) stop("Cannot form both Monte Carlo and bootstrapping confidence intervals.")
     if (has_mc) {
         mc_diff <- mc_i_to - mc_i_from
-        mc_diff_ci <- boot_ci_internal(t0 = effect_diff,
-                                       t = mc_diff,
-                                       level = level,
-                                       boot_type = "perc")
+        if (isTRUE(all(output_full_to$mc_ci >= -Inf)) &&
+            isTRUE(all(output_full_to$mc_ci >= -Inf))) {
+          # CI not skipped
+          mc_diff_ci <- boot_ci_internal(t0 = effect_diff,
+                                        t = mc_diff,
+                                        level = level,
+                                        boot_type = "perc")
+        } else {
+          mc_diff_ci <- c(NA, NA)
+        }
         if (isTRUE(output_full_from$mc_p >= 0) &&
             isTRUE(output_full_to$mc_p >= 0)) {
           # P-values exists. Ignore min_size

@@ -387,10 +387,15 @@ index_of_momome <- function(x,
     if (all(has_mc, has_boot)) stop("Cannot for both Monte Carlo and bootstrap confidence intervals.")
     if (has_mc) {
         ind_mc <- i1$mc_diff - i0$mc_diff
-        ind_mc_ci <- boot_ci_internal(t0 = ind,
-                                      t = ind_mc,
-                                      level = level,
-                                      boot_type = "perc")
+        ind_boot <- i1$boot_diff - i0$boot_diff
+        if (isTRUE(dotdotdot$internal_options$skip_ci)) {
+          ind_boot_ci <- c(NA, NA)
+        } else {
+          ind_mc_ci <- boot_ci_internal(t0 = ind,
+                                        t = ind_mc,
+                                        level = level,
+                                        boot_type = "perc")
+        }
         # Do not use %||% for now. Too new.
         if (is.null(dotdotdot$internal_options$pvalue_min_size)) {
           tmp <- formals(est2p)$min_size

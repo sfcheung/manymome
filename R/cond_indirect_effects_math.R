@@ -241,8 +241,14 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
         bind0 <- NULL
       }
     if (!is.null(bind0)) {
-        if (isTRUE(all(e1$boot_ci >= -Inf)) &&
-            isTRUE(all(e2$boot_ci >= -Inf))) {
+        if ((isTRUE(all(e1$boot_ci >= -Inf)) &&
+             isTRUE(all(e2$boot_ci >= -Inf)) &&
+             isFALSE(is.null(e1$boot_ci)) &&
+             isFALSE(is.null(e2$boot_ci))) ||
+            (isTRUE(all(e1$mc_ci >= -Inf)) &&
+             isTRUE(all(e2$mc_ci >= -Inf)) &&
+             isFALSE(is.null(e1$mc_ci)) &&
+             isFALSE(is.null(e2$mc_ci)))) {
           # CI not skipped
           boot_ci1 <- boot_ci_internal(t0 = est0,
                               t = bind0,
