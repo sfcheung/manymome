@@ -1,4 +1,4 @@
-# manymome 0.3.1.2
+# manymome 0.3.1.3
 
 ## Miscellaneous
 
@@ -13,11 +13,18 @@
   work according to this argument.
   (0.3.1.1)
 
-- Add `skip_ci` to `internal_options` to
-  skip the computation of bootstrap CIs.
+- Added `skip_ci` to `internal_options` to
+  skip the computation of bootstrap
+  and Monte Carlo CIs.
   For functions that only need the
-  bootstrap estimates but not the
-  bootstrap CIs. (0.3.1.2)
+  bootstrap or Monte Carlo estimates but
+  not the CIs. (0.3.1.2, 0.3.1.3)
+
+- Added Monte Carlo asymmetric *p*-values.
+  They will not be printed for now. They
+  are used by external functions that only
+  need to test the null hypothesis.
+  (0.3.1.3)
 
 # manymome 0.3.1
 
