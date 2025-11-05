@@ -442,8 +442,6 @@ index_of_momome <- function(x,
     if (has_boot) ind_se <- ind_boot_se
     if (has_mc) ci_type <- "mc"
     if (has_boot) ci_type <- "boot"
-    # TODO:
-    # - Document Monte Carlo p-value
     out <- list(index = ind,
                 ci = ind_ci,
                 pvalue = ind_p,

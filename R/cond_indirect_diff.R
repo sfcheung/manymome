@@ -296,7 +296,7 @@ cond_indirect_diff <- function(output,
     if (has_boot) ci_type <- "boot"
     # TODO:
     # - Update the doc and printout on p-value
-    #   for Monte Carlo.
+    #   for Monte Carlo when we decide to print it.
     out <- list(index = effect_diff,
                 ci = out_diff_ci,
                 pvalue = out_diff_p,
@@ -448,6 +448,10 @@ print.cond_indirect_diff <- function(x,
                            Change = formatC(x$index, digits = digits, format = "f"))
     has_ci <- !all(is.na(x$ci))
     ci_type <- x$ci_type
+    # Disable printing of Monte Carlo p-value for now
+    if (isTRUE(ci_type == "mc")) {
+      x$pvalue <- NA
+    }
     if (has_ci) {
         index_df$CI.lo <- formatC(x$ci[1], digits = digits, format = "f")
         index_df$CI.hi <- formatC(x$ci[2], digits = digits, format = "f")

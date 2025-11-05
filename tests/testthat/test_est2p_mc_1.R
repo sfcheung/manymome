@@ -1,5 +1,3 @@
-skip("WIP")
-
 library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
@@ -126,5 +124,10 @@ expect_true(is.na(diff$pvalue))
 
 diffb <- cond_indirect_diff(outb, from = 1, to = 2)
 expect_true(!is.na(diffb$pvalue))
+
+tmp <- capture.output(print(diffb))
+
+# Should not print Monte Carlo asymmetric p-value for now
+expect_true(all(!grepl("asymmetric", tmp)))
 
 })
