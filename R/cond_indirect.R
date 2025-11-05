@@ -740,6 +740,14 @@ cond_indirect <- function(x,
                             boot_type = "perc")
         out0$mc_ci <- boot_ci1
         out0$level <- level
+        # Do not use %||% for now. Too new.
+        if (is.null(internal_options$pvalue_min_size)) {
+          tmp <- formals(est2p)$min_size
+        } else {
+          tmp <- internal_options$pvalue_min_size
+        }
+        out0$mc_p <- est2p(out0$mc_indirect,
+                             min_size = tmp)
         out0$mc_se <- stats::sd(out0$mc_indirect, na.rm = TRUE)
         if (save_mc_out) {
             out0$mc_out <- mc_out

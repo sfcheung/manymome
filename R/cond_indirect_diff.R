@@ -208,10 +208,21 @@ cond_indirect_diff <- function(output,
                                        t = mc_diff,
                                        level = level,
                                        boot_type = "perc")
+        if (isTRUE(output_full_from$mc_p >= 0) &&
+            isTRUE(output_full_to$mc_p >= 0)) {
+          # P-values exists. Ignore min_size
+          tmp <- -Inf
+        } else {
+          tmp <- formals(est2p)$min_size
+        }
+        mc_diff_p <- est2p(mc_diff,
+                             min_size = tmp)
+
         mc_diff_se <- stats::sd(mc_diff, na.rm = TRUE)
       } else {
         mc_diff <- NA
         mc_diff_ci <- c(NA, NA)
+        mc_diff_p <- NA
         mc_diff_se <- NA
       }
     if (has_boot) {
@@ -273,16 +284,22 @@ cond_indirect_diff <- function(output,
       }
     out_diff_ci <- c(NA, NA)
     out_diff_se <- NA
+    out_diff_p <- NA
     if (has_mc) out_diff_ci <- mc_diff_ci
     if (has_boot) out_diff_ci <- boot_diff_ci
+    if (has_mc) out_diff_p <- mc_diff_p
+    if (has_boot) out_diff_p <- boot_diff_p
     if (has_mc) out_diff_se <- mc_diff_se
     if (has_boot) out_diff_se <- boot_diff_se
     ci_type <- NA
     if (has_mc) ci_type <- "mc"
     if (has_boot) ci_type <- "boot"
+    # TODO:
+    # - Update the doc and printout on p-value
+    #   for Monte Carlo.
     out <- list(index = effect_diff,
                 ci = out_diff_ci,
-                pvalue = boot_diff_p,
+                pvalue = out_diff_p,
                 se = out_diff_se,
                 level = level,
                 from = final_from,

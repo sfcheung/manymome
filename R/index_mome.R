@@ -391,10 +391,19 @@ index_of_momome <- function(x,
                                       t = ind_mc,
                                       level = level,
                                       boot_type = "perc")
+        # Do not use %||% for now. Too new.
+        if (is.null(dotdotdot$internal_options$pvalue_min_size)) {
+          tmp <- formals(est2p)$min_size
+        } else {
+          tmp <- dotdotdot$internal_options$pvalue_min_size
+        }
+        ind_mc_p <- est2p(ind_mc,
+                          min_size = tmp)
         ind_mc_se <- stats::sd(ind_mc, na.rm = TRUE)
       } else {
         ind_mc <- NA
         ind_mc_ci <- NA
+        ind_mc_p <- NA
         ind_mc_se <- NA
       }
     if (has_boot) {
@@ -423,16 +432,21 @@ index_of_momome <- function(x,
         ind_boot_se <- NA
       }
     ind_ci <- NA
+    ind_p <- NA
     ind_se <- NA
     if (has_mc) ind_ci <- ind_mc_ci
     if (has_boot) ind_ci <- ind_boot_ci
+    if (has_mc) ind_p <- ind_mc_p
+    if (has_boot) ind_p <- ind_boot_p
     if (has_mc) ind_se <- ind_mc_se
     if (has_boot) ind_se <- ind_boot_se
     if (has_mc) ci_type <- "mc"
     if (has_boot) ci_type <- "boot"
+    # TODO:
+    # - Document Monte Carlo p-value
     out <- list(index = ind,
                 ci = ind_ci,
-                pvalue = ind_boot_p,
+                pvalue = ind_p,
                 se = ind_se,
                 level = level,
                 from = i0$from,
