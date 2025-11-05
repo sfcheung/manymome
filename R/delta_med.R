@@ -482,7 +482,7 @@ form_boot_ci <- function(est,
     out$est <- est
     out$boot_est <- boot_est
     if (isTRUE(internal_options$skip_ci)) {
-      boot_ci1 <- c(NA, NA)
+      boot_ci1 <- as.numeric(c(NA, NA))
     } else {
       boot_ci1 <- boot_ci_internal(t0 = est,
                           t = boot_est,

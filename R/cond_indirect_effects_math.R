@@ -241,19 +241,27 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
         bind0 <- NULL
       }
     if (!is.null(bind0)) {
-        if (isTRUE(all(e1$boot_ci >= -Inf)) &&
-            isTRUE(all(e2$boot_ci >= -Inf))) {
+        if ((isTRUE(all(e1$boot_ci >= -Inf)) &&
+             isTRUE(all(e2$boot_ci >= -Inf)) &&
+             isFALSE(is.null(e1$boot_ci)) &&
+             isFALSE(is.null(e2$boot_ci))) ||
+            (isTRUE(all(e1$mc_ci >= -Inf)) &&
+             isTRUE(all(e2$mc_ci >= -Inf)) &&
+             isFALSE(is.null(e1$mc_ci)) &&
+             isFALSE(is.null(e2$mc_ci)))) {
           # CI not skipped
           boot_ci1 <- boot_ci_internal(t0 = est0,
                               t = bind0,
                               level = level0,
                               boot_type = "perc")
         } else {
-          boot_ci1 <- c(NA, NA)
+          boot_ci1 <- as.numeric(c(NA, NA))
         }
         bci0 <- boot_ci1
-        if (isTRUE(e1$boot_p >= 0) &&
-            isTRUE(e2$boot_p >= 0)) {
+        if ((isTRUE(e1$boot_p >= 0) &&
+             isTRUE(e2$boot_p >= 0)) ||
+            (isTRUE(e1$mc_p >= 0) &&
+             isTRUE(e2$mc_p >= 0))) {
           # P-values exists. Ignore min_size
           tmp <- -Inf
         } else {
@@ -302,6 +310,7 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
     bp0_boot <- NULL
     bind0_mc <- NULL
     bci0_mc <- NULL
+    bp0_mc <- NULL
     bse0_boot <- NULL
     bse0_mc <- NULL
     if (has_ci) {
@@ -314,6 +323,7 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
         if (ci_type == "mc") {
             bind0_mc <- bind0
             bci0_mc <- bci0
+            bp0_mc <- bp0
             bse0_mc <- bse0
           }
       }
@@ -371,6 +381,7 @@ plusminus <- function(e1, e2, op = c("+", "-")) {
                 boot_scale_y = out_boot_scale_y,
                 mc_indirect = bind0_mc,
                 mc_ci = bci0_mc,
+                mc_p = bp0_mc,
                 mc_se = bse0_mc,
                 mc_scale_x = out_mc_scale_x,
                 mc_scale_y = out_mc_scale_y,
