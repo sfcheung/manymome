@@ -42,6 +42,34 @@ out_mc2 <- indirect_effect(x = "x", y = "y",
                      internal_options = list(pvalue_min_size = 39))
 expect_false(is.na(out_mc2$mc_p))
 
+mod <-
+"
+m1 ~ x
+m2 ~ m1
+m3 ~ x
+y ~ m2 + m3
+"
+fit <- sem(mod,
+           dat)
+mc_out <- do_mc(fit = fit,
+                R = 40,
+                parallel = FALSE,
+                progress = FALSE,
+                seed = 53253)
+
+paths <- all_indirect_paths(fit,
+                            x = "x",
+                            y = "y")
+outs <- manymome::many_indirect_effects(paths = paths,
+                                        fit = fit,
+                                        mc_ci = TRUE,
+                                        mc_out = mc_out,
+                                        internal_options = list(pvalue_min_size = -Inf),
+                                        progress = FALSE)
+outs2 <- indirect_effects_from_list(outs,
+                                    pvalue = TRUE)
+expect_true(all(!is.na(outs2$pvalue)))
+
 # Moderated mediation
 
 dat <- modmed_x1m3w4y1

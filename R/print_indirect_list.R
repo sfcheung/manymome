@@ -422,8 +422,10 @@ indirect_effects_from_list <- function(object,
             Sig <- ifelse((out$CI.lo > 0) | (out$CI.hi < 0), "Sig", "")
             out$Sig <- Sig
           }
-        if (pvalue && (ci_type == "boot")) {
-            boot_p <- sapply(object, function(x) x$boot_p)
+        if (pvalue && (ci_type %in% c("boot", "mc"))) {
+            boot_p <- sapply(object, function(x) x[[switch(ci_type,
+                                                           boot = "boot_p",
+                                                           mc = "mc_p")]])
             boot_p <- unname(boot_p)
             out$pvalue <- boot_p
           }

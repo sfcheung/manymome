@@ -1,4 +1,4 @@
-# manymome 0.3.1.3
+# manymome 0.3.1.4
 
 ## Miscellaneous
 
@@ -24,7 +24,7 @@
   They will not be printed for now. They
   are used by external functions that only
   need to test the null hypothesis.
-  (0.3.1.3)
+  (0.3.1.3, 0.3.1.4)
 
 # manymome 0.3.1
 
