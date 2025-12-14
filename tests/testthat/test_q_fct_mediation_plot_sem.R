@@ -1,4 +1,4 @@
-skip("WIP")
+skip("To be examined in an interactive session")
 
 skip_on_cran()
 skip_if_not_installed("semptools")
