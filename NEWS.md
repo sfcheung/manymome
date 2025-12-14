@@ -1,4 +1,4 @@
-# manymome 0.3.1.4
+# manymome 0.3.2
 
 ## Miscellaneous
 
@@ -25,6 +25,9 @@
   are used by external functions that only
   need to test the null hypothesis.
   (0.3.1.3, 0.3.1.4)
+
+- Update the internal test data created
+  from `lavaan.mi` objects. (0.3.1.5)
 
 # manymome 0.3.1
 
