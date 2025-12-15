@@ -1,0 +1,215 @@
+# manymome
+
+(Version 0.3.2, updated on 2025-12-14, [release
+history](https://sfcheung.github.io/manymome/news/index.html))
+
+Functions for estimating indirect effects, conditional indirect effects,
+and conditional effects in a model with moderation, mediation, and/or
+moderated mediation fitted by structural equation modelling (SEM) or
+estimated by multiple regression. The package was introduced in:
+
+- Cheung, S. F., & Cheung, S.-H. (2024). *manymome*: An R package for
+  computing the indirect effects, conditional effects, and conditional
+  indirect effects, standardized or unstandardized, and their bootstrap
+  confidence intervals, in many (though not all) models. *Behavior
+  Research Methods, 56*(5), 4862–4882.
+  <https://doi.org/10.3758/s13428-023-02224-z>
+
+# What Can It Do?
+
+- Compute an unstandardized or *standardized* *indirect* *effect* or
+  *conditional* *indirect* *effect* in a path model.
+
+- Form the *confidence* *interval* for this effect. Nonparametric
+  bootstrapping is fully supported, while Monte Carlo is supported for
+  models fitted by
+  [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html).
+
+- Multigroup models fitted by
+  [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html) are also
+  supported in 0.1.14.2 and later versions. Details can be found in this
+  [article](https://sfcheung.github.io/manymome/articles/med_mg.html).
+
+# Advantages
+
+- **A Simpler Workflow**
+
+  No need to define any parameters or similar code when fitting a model
+  in [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html). Just
+  focus on fitting the model first. After a model has been selected,
+  users can compute the effect for nearly any path, from nearly any
+  variable, to nearly any other variables, conditional on nearly any
+  moderators, and at any levels of the moderators. (See
+  [`vignette("manymome")`](https://sfcheung.github.io/manymome/articles/manymome.md)
+  for details.) This is particularly convenient for multigroup models
+  fitted by [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html),
+  which are supported in 0.1.14.2 and later versions (see [this
+  guide](https://sfcheung.github.io/manymome/articles/med_mg.html), for
+  an illustration).
+
+- **Supports Both SEM-Based and Regression-Based Analysis**
+
+  Supports structural equation models fitted by
+  [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html) or by path
+  models fitted by regression using
+  [`lm()`](https://rdrr.io/r/stats/lm.html), although the focus of this
+  package is on structural equation models. The interface of the main
+  functions are nearly the same for both approaches.
+
+- **Flexible in the Form of Models**
+
+  No limit on the number of predictors, mediators, and outcome
+  variables, other than those by
+  [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html) and
+  [`lm()`](https://rdrr.io/r/stats/lm.html). For multigroup models
+  fitted by [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html),
+  there is no inherent limit on the number of groups, other than the
+  limit due to
+  [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html), if any
+  (supported in 0.1.14.2 and later versions).
+
+- **Supports Standardized Effects**
+
+  Can estimate standardized indirect effects and standardized
+  conditional indirect effects without the need to standardize the
+  variables. The bootstrap and Monte Carlo confidence intervals for
+  standardized effects correctly take into account the sampling
+  variation of the standardizers (the standard deviations of the
+  predictor and the outcome variable) by recomputing them in each
+  bootstrap sample or replication.
+
+- **Supports Missing Data**
+
+  Supports datasets with missing data through
+  [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html) with full
+  information maximum likelihood (`fiml`).
+
+  In version 0.2.7.3 or later, it also supports missing data handled by
+  multiple imputation if the models are fitted by
+  [`lavaan.mi::sem.mi()`](https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html)
+  or
+  [`lavaan.mi::lavaan.mi()`](https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html)
+  (see
+  [`vignette("do_mc_lavaan_mi")`](https://sfcheung.github.io/manymome/articles/do_mc_lavaan_mi.md)).
+  (Support for `semTools::runMI()` and its wrappers was removed in
+  version 0.2.7.3 because this and related functions were deprecated in
+  `semTools`.)
+
+- **Supports Numeric and Categorical Moderators**
+
+  Supports numeric and categorical moderators. It has a function
+  ([`factor2var()`](https://sfcheung.github.io/manymome/reference/factor2var.md))
+  for the easy creation of dummy variables in
+  [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html), and can
+  also capitalize on the native support of categorical moderators in
+  [`lm()`](https://rdrr.io/r/stats/lm.html).
+
+- **Less Time for Bootstrapping**
+
+  Bootstrapping, which can be time consuming, can be conducted just
+  once. The main functions for computing indirect effects and
+  conditional indirect effects can be called as many times as needed
+  without redoing bootstrapping because they can reuse pregenerated
+  bootstrap estimates (see
+  [`vignette("manymome")`](https://sfcheung.github.io/manymome/articles/manymome.md)
+  and
+  [`vignette("do_boot")`](https://sfcheung.github.io/manymome/articles/do_boot.md)).
+
+- **Supports Latent Variables Mediation**
+
+  Supports indirect effects among latent variables for models fitted by
+  [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html) (see
+  [`vignette("med_lav")`](https://sfcheung.github.io/manymome/articles/med_lav.md)).
+
+- **Support Treating Group As a Moderator**
+
+  For multigroup models fitted by
+  [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html), it
+  supports comparing the direct or indirect effects along any path
+  between any two groups. That is, it uses the grouping variable as a
+  moderator (illustrated
+  [here](https://sfcheung.github.io/manymome/articles/med_mg.html);
+  supported in 0.1.14.2 and later versions).
+
+# Limitations
+
+Despite the aforementioned advantages, the current version of `manymome`
+has the following limitations:
+
+- Does not (officially) support categorical `x`-variables with more than
+  two categories. Note that most functions will work with dichotomous
+  `x`-variables, and the effect of `x` is simply the difference in
+  predicted `y` between the two levels if coded as 0 and 1 (or any
+  coding with a difference of 1, e.g., 1 and 2).
+
+- Does not support multilevel models (although `lavaan` does).
+
+- For bootstrapping, only supports nonparametric bootstrapping, and
+  supports only percentile and bias-corrected confidence interval. Does
+  not support other bootstrapping methods such parametric bootstrapping.
+
+- Only supports OLS estimation when
+  [`lm()`](https://rdrr.io/r/stats/lm.html) is used.
+
+We would add more to this list (suggestions are welcomed by adding
+[GitHub issues](#issues)) so that users (and we) know when other tools
+should be used instead of `manymome`, or whether we can address these
+limitations in `manymome` in the future.
+
+# How To Use It?
+
+A good starting point is the Get-Started article
+([`vignette("manymome")`](https://sfcheung.github.io/manymome/articles/manymome.md)).
+
+There are also
+[articles](https://sfcheung.github.io/manymome/articles/index.html)
+(vignettes) on special topics, such as how to use
+[`mod_levels()`](https://sfcheung.github.io/manymome/reference/mod_levels.md)
+to set the levels of the moderators. More will be added.
+
+# Homepage
+
+For more information on this package, please visit its GitHub page:
+
+<https://sfcheung.github.io/manymome/>
+
+# Installation
+
+The stable version at CRAN can be installed by
+[`install.packages()`](https://rdrr.io/r/utils/install.packages.html):
+
+``` r
+install.packages("manymome")
+```
+
+The latest developmental-but-stable version at GitHub can be installed
+by `remotes::install_github()`:
+
+``` r
+remotes::install_github("sfcheung/manymome")
+```
+
+# Background
+
+We developed the package [`stdmod`](https://sfcheung.github.io/stdmod/)
+in 2021 for moderated regression. We included a function
+(`stdmod::stdmod_lavaan()`) for standardized moderation effect in path
+models fitted by
+[`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html). However, in
+practice, path models nearly always included indirect effects and so
+moderated mediation is common in path models. Moreover, `stdmod` is
+intended for moderated regression, not for structural equation modeling.
+We thought perhaps we could develop a more general tool for models
+fitted by structural equation modelling based on the interface we used
+in `stdmod::stdmod_lavaan()`. In our own projects, we also need to
+estimate indirect effects in models frequently. Large sample sizes with
+missing data are also common to us, for which bootstrapping is slow even
+with parallel processing. Therefore, we developed `manymome` to address
+these needs.
+
+# Issues
+
+If you have any suggestions and found any bugs or limitations, please
+feel feel to open a GitHub issue. Thanks.
+
+<https://github.com/sfcheung/manymome/issues>

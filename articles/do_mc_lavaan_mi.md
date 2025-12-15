@@ -1,0 +1,343 @@
+# Monte Carlo Confidence Intervals with Multiple Imputation
+
+## Introduction
+
+This article is a brief illustration of how to use
+[`do_mc()`](https://sfcheung.github.io/manymome/reference/do_mc.md) from
+the package [manymome](https://sfcheung.github.io/manymome/) ([Cheung &
+Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z)) for a model
+fitted to multiple imputation datasets to generate Monte Carlo
+estimates, which can be used by
+[`indirect_effect()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
+and
+[`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
+to form Monte Carlo confidence intervals in the presence of missing
+data.
+
+For the details of using
+[`do_mc()`](https://sfcheung.github.io/manymome/reference/do_mc.md),
+please refer to
+[`vignette("do_mc")`](https://sfcheung.github.io/manymome/articles/do_mc.md).
+This article assumes that readers know how to use
+[`do_mc()`](https://sfcheung.github.io/manymome/reference/do_mc.md) and
+will focus on using it with a model estimated by multiple imputation.
+
+It only supports a model fitted by
+[`lavaan.mi::sem.mi()`](https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html)
+or
+[`lavaan.mi::lavaan.mi()`](https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html).
+
+## How It Works
+
+When used with multiple imputation,
+[`do_mc()`](https://sfcheung.github.io/manymome/reference/do_mc.md)
+retrieves the pooled point estimates and variance-covariance matrix of
+free model parameters and then generates a number of sets of simulated
+sample estimates using a multivariate normal distribution. Other
+parameters and implied variances, covariances, and means of variables
+are then generated from these simulated estimates.
+
+When a $(1 - \alpha)$% Monte Carlo confidence interval is requested, the
+$100(\alpha/2)$^(th) percentile and the $100(1 - \alpha/2)$^(th)
+percentile are used to form the confidence interval. For a 95% Monte
+Carlo confidence interval, the 2.5^(th) percentile and 97.5^(th)
+percentile will be used.
+
+## The Workflow
+
+The following workflow will be demonstrated;
+
+1.  Generate datasets using multiple imputation, not covered here
+    (please refer to guides on `mice` or `Amelia`, the two packages
+    supported by
+    [`lavaan.mi::sem.mi()`](https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html)
+    and
+    [`lavaan.mi::lavaan.mi()`](https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html)).
+
+2.  Fit the model using
+    [`lavaan.mi::sem.mi()`](https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html)
+    or
+    [`lavaan.mi::lavaan.mi()`](https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html).
+
+3.  Use
+    [`do_mc()`](https://sfcheung.github.io/manymome/reference/do_mc.md)
+    to generate the Monte Carlo estimates.
+
+4.  Call other functions (e.g,
+    [`indirect_effect()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
+    and
+    [`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md))
+    to compute the desired effects and form Monte Carlo confidence
+    intervals.
+
+## Demonstration
+
+### Multiple Imputation
+
+This data set, with missing data introduced, will be used for
+illustration.
+
+``` r
+library(manymome)
+dat <- data_med
+dat[1, 1] <- dat[2, 3] <- dat[3, 5] <- dat[4, 3] <- dat[5, 2] <- NA
+head(dat)
+#>           x        m        y       c1       c2
+#> 1        NA 17.89644 20.73893 1.426513 6.103290
+#> 2  8.331493 17.92150       NA 2.940388 3.832698
+#> 3 10.327471 17.83178 22.14201 3.012678       NA
+#> 4 11.196969 20.01750       NA 3.120056 4.654931
+#> 5 11.887811       NA 28.47312 4.440018 3.959033
+#> 6  8.198297 16.95198 20.73549 2.495083 3.763712
+```
+
+It has one predictor (`x`), one mediator (`m`), one outcome variable
+(`y`), and two control variables (`c1` and `c2`).
+
+The following simple mediation model with two control variables (`c1`
+and `c2`) will be fitted:
+
+![plot of chunk
+do_mc_lavaan_mi_draw_model](do_mc_lavaan_mi_draw_model-1.png)
+
+plot of chunk do_mc_lavaan_mi_draw_model
+
+In practice, the imputation model needs to be decided and checked (van
+Buuren, 2018). For the sake of illustration, we just use the default of
+[`mice::mice()`](https://amices.org/mice/reference/mice.html) to do the
+imputation:
+
+``` r
+library(mice)
+#> 
+#> Attaching package: 'mice'
+#> The following object is masked from 'package:stats':
+#> 
+#>     filter
+#> The following objects are masked from 'package:base':
+#> 
+#>     cbind, rbind
+set.seed(26245)
+out_mice <- mice(dat, m = 5, printFlag = FALSE)
+dat_mi <- complete(out_mice, action = "all")
+# The first imputed dataset
+head(dat_mi[[1]])
+#>           x        m        y       c1       c2
+#> 1  9.762412 17.89644 20.73893 1.426513 6.103290
+#> 2  8.331493 17.92150 25.68452 2.940388 3.832698
+#> 3 10.327471 17.83178 22.14201 3.012678 3.969419
+#> 4 11.196969 20.01750 24.87107 3.120056 4.654931
+#> 5 11.887811 20.82502 28.47312 4.440018 3.959033
+#> 6  8.198297 16.95198 20.73549 2.495083 3.763712
+# The last imputed dataset
+head(dat_mi[[5]])
+#>           x        m        y       c1       c2
+#> 1  8.301276 17.89644 20.73893 1.426513 6.103290
+#> 2  8.331493 17.92150 22.93143 2.940388 3.832698
+#> 3 10.327471 17.83178 22.14201 3.012678 6.238426
+#> 4 11.196969 20.01750 26.90840 3.120056 4.654931
+#> 5 11.887811 20.82502 28.47312 4.440018 3.959033
+#> 6  8.198297 16.95198 20.73549 2.495083 3.763712
+```
+
+### Fit a Model by `lavaan.mi::sem.mi()`
+
+We then fit the model by
+[`lavaan.mi::sem.mi()`](https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html):
+
+``` r
+library(lavaan.mi)
+#> 
+#> ###################################################################
+#> This is lavaan.mi 0.1-0
+#> See the README file on github.com/TDJorgensen/lavaan.mi
+#> for a table comparing it with deprecated semTools features.
+#> ###################################################################
+mod <-
+"
+m ~ x + c1 + c2
+y ~ m + x + c1 + c2
+"
+fit_lavaan <- sem.mi(model = mod,
+                     data = dat_mi)
+summary(fit_lavaan)
+#> lavaan.mi object fit to 5 imputed data sets using:
+#>  - lavaan    (0.6-19)
+#>  - lavaan.mi (0.1-0)
+#> See class?lavaan.mi help page for available methods. 
+#> 
+#> Convergence information:
+#> The model converged on 5 imputed data sets.
+#> Standard errors were available for all imputations.
+#> 
+#>   Estimator                                         ML
+#>   Optimization method                           NLMINB
+#>   Number of model parameters                         9
+#> 
+#>   Number of observations                           100
+#> 
+#> Model Test User Model:
+#> 
+#>   Test statistic                                 0.000
+#>   Degrees of freedom                                 0
+#>   P-value                                        1.000
+#>   Pooling method                                    D4
+#> 
+#> Parameter Estimates:
+#> 
+#>   Standard errors                                    Standard
+#>   Information                                        Expected
+#>   Information saturated (h1) model                 Structured
+#>                                                              
+#>   Pooled across imputations              Rubin's (1987) rules
+#>   Augment within-imputation variance     Scale by average RIV
+#>   Wald test for pooled parameters          t(df) distribution
+#> 
+#>   Pooled t statistics with df >= 1000 are displayed with
+#>   df = Inf(inity) to save space. Although the t distribution
+#>   with large df closely approximates a standard normal
+#>   distribution, exact df for reporting these t tests can be
+#>   obtained from parameterEstimates.mi() 
+#> 
+#> 
+#> Regressions:
+#>                    Estimate  Std.Err  t-value       df  P(>|t|)
+#>   m ~                                                          
+#>     x                 0.891    0.080   11.117      Inf    0.000
+#>     c1                0.162    0.077    2.118      Inf    0.034
+#>     c2               -0.114    0.102   -1.117      Inf    0.264
+#>   y ~                                                          
+#>     m                 0.736    0.251    2.935      Inf    0.003
+#>     x                 0.616    0.298    2.065  383.680    0.040
+#>     c1                0.181    0.193    0.939      Inf    0.348
+#>     c2               -0.156    0.254   -0.616      Inf    0.538
+#> 
+#> Variances:
+#>                    Estimate  Std.Err  t-value       df  P(>|t|)
+#>    .m                 0.682    0.098    6.959      Inf    0.000
+#>    .y                 4.151    0.597    6.958      Inf    0.000
+```
+
+### Generate Monte Carlo Estimates
+
+The other steps are identical to those illustrated in
+[`vignette("do_mc")`](https://sfcheung.github.io/manymome/articles/do_mc.md).
+It and related functions will use the pooled point estimates and
+variance-covariance matrix when they detect that the model is fitted by
+[`lavaan.mi::sem.mi()`](https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html)
+or
+[`lavaan.mi::lavaan.mi()`](https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html)
+(i.e., the fit object is of the class `lavaan.mi`).
+
+We call
+[`do_mc()`](https://sfcheung.github.io/manymome/reference/do_mc.md) on
+the output of
+[`lavaan.mi::sem.mi()`](https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html)
+to generate the Monte Carlo estimates of all free parameters *and* the
+implied statistics, such as the variances of `m` and `y`, which are not
+free parameters but are needed to form the confidence interval of the
+*standardized* indirect effect.
+
+``` r
+mc_out_lavaan <- do_mc(fit = fit_lavaan,
+                       R = 10000,
+                       seed = 4234)
+#> Stage 1: Simulate estimates
+#> Stage 2: Compute implied statistics
+```
+
+Usually, just three arguments are needed:
+
+- `fit`: The output of
+  [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html).
+
+- `R`: The number of Monte Carlo replications. Should be at least 10000
+  in real research.
+
+- `seed`: The seed for the random number generator. To be used by
+  [`set.seed()`](https://rdrr.io/r/base/Random.html). It is recommended
+  to set this argument such that the results are reproducible.
+
+Parallel processing is not used. However, the time taken is rarely long
+because there is no need to refit the model many times.
+
+For the structure of the output, please refer to
+[`vignette("do_mc")`](https://sfcheung.github.io/manymome/articles/do_mc.md).
+
+### Using the Output of `do_mc()` in Other Functions of `manymome`
+
+When calling
+[`indirect_effect()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
+or
+[`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md),
+the argument `mc_out` can be assigned the output of
+[`do_mc()`](https://sfcheung.github.io/manymome/reference/do_mc.md).
+They will then retrieve the stored simulated estimates to form the Monte
+Carlo confidence intervals, if requested.
+
+``` r
+out_lavaan <- indirect_effect(x = "x",
+                              y = "y",
+                              m = "m",
+                              fit = fit_lavaan,
+                              mc_ci = TRUE,
+                              mc_out = mc_out_lavaan)
+out_lavaan
+#> 
+#> == Indirect Effect  ==
+#>                                        
+#>  Path:                 x -> m -> y     
+#>  Indirect Effect:      0.656           
+#>  95.0% Monte Carlo CI: [0.213 to 1.124]
+#> 
+#> Computation Formula:
+#>   (b.m~x)*(b.y~m)
+#> 
+#> Computation:
+#>   (0.89141)*(0.73569)
+#> 
+#> 
+#> Monte Carlo confidence interval with 10000 replications.
+#> 
+#> Coefficients of Component Paths:
+#>  Path Coefficient
+#>   m~x       0.891
+#>   y~m       0.736
+```
+
+Reusing the simulated estimates can ensure that all analysis with Monte
+Carlo confidence intervals are based on the same set of simulated
+estimates.
+
+## Limitation
+
+Monte Carlo confidence intervals require the variance-covariance matrix
+of all free parameters. Therefore, only models fitted by
+[`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html) and (since
+0.1.9.8)
+[`lavaan.mi::sem.mi()`](https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html)
+or
+[`lavaan.mi::lavaan.mi()`](https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html)
+are supported. Models fitted by
+[`stats::lm()`](https://rdrr.io/r/stats/lm.html) do not have a
+variance-covariance matrix for the regression coefficients from two or
+more regression models and so are not supported by
+[`do_mc()`](https://sfcheung.github.io/manymome/reference/do_mc.md).
+
+## Further Information
+
+For further information on
+[`do_mc()`](https://sfcheung.github.io/manymome/reference/do_mc.md),
+please refer to its help page.
+
+## Reference
+
+Cheung, S. F., & Cheung, S.-H. (2024). *manymome*: An R package for
+computing the indirect effects, conditional effects, and conditional
+indirect effects, standardized or unstandardized, and their bootstrap
+confidence intervals, in many (though not all) models. *Behavior
+Research Methods, 56*(5), 4862–4882.
+<https://doi.org/10.3758/s13428-023-02224-z>
+
+van Buuren, S. (2018). *Flexible imputation of missing data* (2^(nd)
+Ed.). CRC Press, Taylor and Francis Group.
