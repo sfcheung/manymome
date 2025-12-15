@@ -204,14 +204,31 @@ cond_indirect_diff <- function(output,
     if (all(has_mc, has_boot)) stop("Cannot form both Monte Carlo and bootstrapping confidence intervals.")
     if (has_mc) {
         mc_diff <- mc_i_to - mc_i_from
-        mc_diff_ci <- boot_ci_internal(t0 = effect_diff,
-                                       t = mc_diff,
-                                       level = level,
-                                       boot_type = "perc")
+        if (isTRUE(all(output_full_to$mc_ci >= -Inf)) &&
+            isTRUE(all(output_full_to$mc_ci >= -Inf))) {
+          # CI not skipped
+          mc_diff_ci <- boot_ci_internal(t0 = effect_diff,
+                                        t = mc_diff,
+                                        level = level,
+                                        boot_type = "perc")
+        } else {
+          mc_diff_ci <- as.numeric(c(NA, NA))
+        }
+        if (isTRUE(output_full_from$mc_p >= 0) &&
+            isTRUE(output_full_to$mc_p >= 0)) {
+          # P-values exists. Ignore min_size
+          tmp <- -Inf
+        } else {
+          tmp <- formals(est2p)$min_size
+        }
+        mc_diff_p <- est2p(mc_diff,
+                             min_size = tmp)
+
         mc_diff_se <- stats::sd(mc_diff, na.rm = TRUE)
       } else {
         mc_diff <- NA
-        mc_diff_ci <- c(NA, NA)
+        mc_diff_ci <- as.numeric(c(NA, NA))
+        mc_diff_p <- NA
         mc_diff_se <- NA
       }
     if (has_boot) {
@@ -222,15 +239,29 @@ cond_indirect_diff <- function(output,
             boot_type <- "perc"
           }
         boot_diff <- boot_i_to - boot_i_from
-        boot_diff_ci <- boot_ci_internal(t0 = effect_diff,
-                                t = boot_diff,
-                                level = level,
-                                boot_type = boot_type)
-        boot_diff_p <- est2p(boot_diff)
+        if (isTRUE(all(output_full_from$boot_ci >= -Inf)) &&
+            isTRUE(all(output_full_to$boot_ci >= -Inf))) {
+          # CI not skipped
+          boot_diff_ci <- boot_ci_internal(t0 = effect_diff,
+                                  t = boot_diff,
+                                  level = level,
+                                  boot_type = boot_type)
+        } else {
+          boot_diff_ci <- as.numeric(c(NA, NA))
+        }
+        if (isTRUE(output_full_from$boot_p >= 0) &&
+            isTRUE(output_full_to$boot_p >= 0)) {
+          # P-values exists. Ignore min_size
+          tmp <- -Inf
+        } else {
+          tmp <- formals(est2p)$min_size
+        }
+        boot_diff_p <- est2p(boot_diff,
+                             min_size = tmp)
         boot_diff_se <- stats::sd(boot_diff, na.rm = TRUE)
       } else {
         boot_diff <- NA
-        boot_diff_ci <- c(NA, NA)
+        boot_diff_ci <- as.numeric(c(NA, NA))
         boot_diff_p <- NA
         boot_diff_se <- NA
       }
@@ -257,18 +288,24 @@ cond_indirect_diff <- function(output,
         # TODO:
         # - Add support for objects with both wlevels and groups.
       }
-    out_diff_ci <- c(NA, NA)
+    out_diff_ci <- as.numeric(c(NA, NA))
     out_diff_se <- NA
+    out_diff_p <- NA
     if (has_mc) out_diff_ci <- mc_diff_ci
     if (has_boot) out_diff_ci <- boot_diff_ci
+    if (has_mc) out_diff_p <- mc_diff_p
+    if (has_boot) out_diff_p <- boot_diff_p
     if (has_mc) out_diff_se <- mc_diff_se
     if (has_boot) out_diff_se <- boot_diff_se
     ci_type <- NA
     if (has_mc) ci_type <- "mc"
     if (has_boot) ci_type <- "boot"
+    # TODO:
+    # - Update the doc and printout on p-value
+    #   for Monte Carlo when we decide to print it.
     out <- list(index = effect_diff,
                 ci = out_diff_ci,
-                pvalue = boot_diff_p,
+                pvalue = out_diff_p,
                 se = out_diff_se,
                 level = level,
                 from = final_from,
@@ -417,6 +454,10 @@ print.cond_indirect_diff <- function(x,
                            Change = formatC(x$index, digits = digits, format = "f"))
     has_ci <- !all(is.na(x$ci))
     ci_type <- x$ci_type
+    # Disable printing of Monte Carlo p-value for now
+    if (isTRUE(ci_type == "mc")) {
+      x$pvalue <- NA
+    }
     if (has_ci) {
         index_df$CI.lo <- formatC(x$ci[1], digits = digits, format = "f")
         index_df$CI.hi <- formatC(x$ci[2], digits = digits, format = "f")

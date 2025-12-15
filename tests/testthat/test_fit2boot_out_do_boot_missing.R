@@ -92,7 +92,7 @@ if (packageVersion("lavaan") > "0.6.12") {
                 se = "boot",
                 bootstrap = 10,
                 baseline = FALSE,
-                h1 = FALSE,
+  #              h1 = FALSE, # Update for the latest version of lavaan 0.6.21
                 warn = FALSE,
                 missing = "fiml",
                 iseed = 8715)

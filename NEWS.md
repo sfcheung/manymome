@@ -1,3 +1,34 @@
+# manymome 0.3.2
+
+## Miscellaneous
+
+- Added the `internal_options` argument to
+  `cond_effect()` for adding advanced
+  options in the future. For now, it
+  can be used to set `pvalue_min_size`
+  to override the default minimum number
+  of bootstrap samples for computing
+  asymmetric bootstrap *p*-value. Several
+  other functions are also updated to
+  work according to this argument.
+  (0.3.1.1)
+
+- Added `skip_ci` to `internal_options` to
+  skip the computation of bootstrap
+  and Monte Carlo CIs.
+  For functions that only need the
+  bootstrap or Monte Carlo estimates but
+  not the CIs. (0.3.1.2, 0.3.1.3)
+
+- Added Monte Carlo asymmetric *p*-values.
+  They will not be printed for now. They
+  are used by external functions that only
+  need to test the null hypothesis.
+  (0.3.1.3, 0.3.1.4)
+
+- Update the internal test data created
+  from `lavaan.mi` objects. (0.3.1.5)
+
 # manymome 0.3.1
 
 ## New Features

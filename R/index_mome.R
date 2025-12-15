@@ -338,6 +338,7 @@ index_of_momome <- function(x,
                             boot_type = c("perc", "bc"),
                             skip_indicators = TRUE,
                             ...) {
+    dotdotdot <- list(...)
     fit <- auto_lm2list(fit)
     boot_type <- match.arg(boot_type)
     if (is.null(w) || is.null(z) ||
@@ -386,23 +387,48 @@ index_of_momome <- function(x,
     if (all(has_mc, has_boot)) stop("Cannot for both Monte Carlo and bootstrap confidence intervals.")
     if (has_mc) {
         ind_mc <- i1$mc_diff - i0$mc_diff
-        ind_mc_ci <- boot_ci_internal(t0 = ind,
-                                      t = ind_mc,
-                                      level = level,
-                                      boot_type = "perc")
+        ind_boot <- i1$boot_diff - i0$boot_diff
+        if (isTRUE(dotdotdot$internal_options$skip_ci)) {
+          ind_boot_ci <- as.numeric(c(NA, NA))
+        } else {
+          ind_mc_ci <- boot_ci_internal(t0 = ind,
+                                        t = ind_mc,
+                                        level = level,
+                                        boot_type = "perc")
+        }
+        # Do not use %||% for now. Too new.
+        if (is.null(dotdotdot$internal_options$pvalue_min_size)) {
+          tmp <- formals(est2p)$min_size
+        } else {
+          tmp <- dotdotdot$internal_options$pvalue_min_size
+        }
+        ind_mc_p <- est2p(ind_mc,
+                          min_size = tmp)
         ind_mc_se <- stats::sd(ind_mc, na.rm = TRUE)
       } else {
         ind_mc <- NA
         ind_mc_ci <- NA
+        ind_mc_p <- NA
         ind_mc_se <- NA
       }
     if (has_boot) {
         ind_boot <- i1$boot_diff - i0$boot_diff
-        ind_boot_ci <- boot_ci_internal(t0 = ind,
-                               t = ind_boot,
-                               level = level,
-                               boot_type = boot_type)
-        ind_boot_p <- est2p(ind_boot)
+        if (isTRUE(dotdotdot$internal_options$skip_ci)) {
+          ind_boot_ci <- as.numeric(c(NA, NA))
+        } else {
+          ind_boot_ci <- boot_ci_internal(t0 = ind,
+                                t = ind_boot,
+                                level = level,
+                                boot_type = boot_type)
+        }
+        # Do not use %||% for now. Too new.
+        if (is.null(dotdotdot$internal_options$pvalue_min_size)) {
+          tmp <- formals(est2p)$min_size
+        } else {
+          tmp <- dotdotdot$internal_options$pvalue_min_size
+        }
+        ind_boot_p <- est2p(ind_boot,
+                            min_size = tmp)
         ind_boot_se <- stats::sd(ind_boot, na.rm = TRUE)
       } else {
         ind_boot <- NA
@@ -411,16 +437,19 @@ index_of_momome <- function(x,
         ind_boot_se <- NA
       }
     ind_ci <- NA
+    ind_p <- NA
     ind_se <- NA
     if (has_mc) ind_ci <- ind_mc_ci
     if (has_boot) ind_ci <- ind_boot_ci
+    if (has_mc) ind_p <- ind_mc_p
+    if (has_boot) ind_p <- ind_boot_p
     if (has_mc) ind_se <- ind_mc_se
     if (has_boot) ind_se <- ind_boot_se
     if (has_mc) ci_type <- "mc"
     if (has_boot) ci_type <- "boot"
     out <- list(index = ind,
                 ci = ind_ci,
-                pvalue = ind_boot_p,
+                pvalue = ind_p,
                 se = ind_se,
                 level = level,
                 from = i0$from,

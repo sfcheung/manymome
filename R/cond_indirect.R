@@ -463,6 +463,10 @@
 #' the search for product terms. Default
 #' is `TRUE`.
 #'
+#' @param internal_options A named list
+#' of internal options. For advanced
+#' options.
+#'
 #' @seealso [mod_levels()] and
 #' [merge_mod_levels()] for generating
 #' levels of moderators. [do_boot] for
@@ -539,7 +543,8 @@ cond_indirect <- function(x,
                      ci_type = NULL,
                      group = NULL,
                      boot_type = c("perc", "bc"),
-                     skip_indicators = TRUE) {
+                     skip_indicators = TRUE,
+                     internal_options = list()) {
     fit <- auto_lm2list(fit)
     if (missing(y)) {
         y <- tryCatch(get_one_response(fit),
@@ -729,12 +734,24 @@ cond_indirect <- function(x,
         out0$mc_indirect <- sapply(out_mc, function(x) x$indirect)
         out0$mc_scale_x <- unname(sapply(out_mc, function(x) x$scale_x))
         out0$mc_scale_y <- unname(sapply(out_mc, function(x) x$scale_y))
-        boot_ci1 <- boot_ci_internal(t0 = out0$indirect,
-                            t = out0$mc_indirect,
-                            level = level,
-                            boot_type = "perc")
+        if (isTRUE(internal_options$skip_ci)) {
+          boot_ci1 <- as.numeric(c(NA, NA))
+        } else {
+          boot_ci1 <- boot_ci_internal(t0 = out0$indirect,
+                              t = out0$mc_indirect,
+                              level = level,
+                              boot_type = "perc")
+        }
         out0$mc_ci <- boot_ci1
         out0$level <- level
+        # Do not use %||% for now. Too new.
+        if (is.null(internal_options$pvalue_min_size)) {
+          tmp <- formals(est2p)$min_size
+        } else {
+          tmp <- internal_options$pvalue_min_size
+        }
+        out0$mc_p <- est2p(out0$mc_indirect,
+                             min_size = tmp)
         out0$mc_se <- stats::sd(out0$mc_indirect, na.rm = TRUE)
         if (save_mc_out) {
             out0$mc_out <- mc_out
@@ -763,13 +780,24 @@ cond_indirect <- function(x,
         out0$boot_indirect <- sapply(out_boot, function(x) x$indirect)
         out0$boot_scale_x <- unname(sapply(out_boot, function(x) x$scale_x))
         out0$boot_scale_y <- unname(sapply(out_boot, function(x) x$scale_y))
-        boot_ci1 <- boot_ci_internal(t0 = out0$indirect,
-                            t = out0$boot_indirect,
-                            level = level,
-                            boot_type = boot_type)
+        if (isTRUE(internal_options$skip_ci)) {
+          boot_ci1 <- as.numeric(c(NA, NA))
+        } else {
+          boot_ci1 <- boot_ci_internal(t0 = out0$indirect,
+                              t = out0$boot_indirect,
+                              level = level,
+                              boot_type = boot_type)
+        }
         out0$boot_ci <- boot_ci1
         out0$level <- level
-        out0$boot_p <- est2p(out0$boot_indirect)
+        # Do not use %||% for now. Too new.
+        if (is.null(internal_options$pvalue_min_size)) {
+          tmp <- formals(est2p)$min_size
+        } else {
+          tmp <- internal_options$pvalue_min_size
+        }
+        out0$boot_p <- est2p(out0$boot_indirect,
+                             min_size = tmp)
         out0$boot_se <- stats::sd(out0$boot_indirect, na.rm = TRUE)
         out0$boot_type <- boot_type
         if (save_boot_out) {
@@ -848,7 +876,8 @@ indirect_effect <- function(x,
                      ci_type = NULL,
                      boot_type = c("perc", "bc"),
                      group = NULL,
-                     skip_indicators = TRUE) {
+                     skip_indicators = TRUE,
+                     internal_options = list()) {
     fit <- auto_lm2list(fit)
     if (missing(y)) {
         y <- tryCatch(get_one_response(fit),
@@ -887,7 +916,8 @@ indirect_effect <- function(x,
                   ci_type = ci_type,
                   boot_type = boot_type,
                   group = group,
-                  skip_indicators = skip_indicators)
+                  skip_indicators = skip_indicators,
+                  internal_options = internal_options)
   }
 
 #' @param w_type Character. Whether the

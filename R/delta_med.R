@@ -475,18 +475,30 @@ est_2_coef <- function(est,
 form_boot_ci <- function(est,
                          boot_est,
                          level = .95,
-                         boot_type = c("perc", "bc")) {
+                         boot_type = c("perc", "bc"),
+                         internal_options = list()) {
     boot_type <- match.arg(boot_type)
     out <- list()
     out$est <- est
     out$boot_est <- boot_est
-    boot_ci1 <- boot_ci_internal(t0 = est,
-                        t = boot_est,
-                        level = level,
-                        boot_type = boot_type)
+    if (isTRUE(internal_options$skip_ci)) {
+      boot_ci1 <- as.numeric(c(NA, NA))
+    } else {
+      boot_ci1 <- boot_ci_internal(t0 = est,
+                          t = boot_est,
+                          level = level,
+                          boot_type = boot_type)
+    }
     out$boot_ci <- boot_ci1
     out$level <- level
-    out$boot_p <- est2p(out$boot_est)
+    # Do not use %||% for now. Too new.
+    if (is.null(internal_options$pvalue_min_size)) {
+      tmp <- formals(est2p)$min_size
+    } else {
+      tmp <- internal_options$pvalue_min_size
+    }
+    out$boot_p <- est2p(out$boot_est,
+                        min_size = tmp)
     out$boot_se <- stats::sd(out$boot_est, na.rm = TRUE)
     out
   }
