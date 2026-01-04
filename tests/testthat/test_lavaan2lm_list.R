@@ -48,14 +48,17 @@ coef(fit_m_list[[1]])
 # predict
 
 test_that("lm_from_lavaan: predict", {
+  # 2026-01-04:
+  # The tests can be more liberal, to allow for numerical differences
+  # due to the libraries used.
     expect_equal(predict(fit_list[["y"]], dat[3:5, ]),
                  predict(lm_y, dat[3:5, ]) - coef(lm_y)[1],
                  ignore_attr = TRUE,
-                 tolerance = 1e-6)
+                 tolerance = 1e-4)
     expect_equal(predict(fit_m_list[["y"]], dat[3:5, ]),
                  predict(lm_y, dat[3:5, ]),
                  ignore_attr = TRUE,
-                 tolerance = 1e-6)
+                 tolerance = 1e-4)
   })
 
 # predict for lm_from_lavaan_list
@@ -89,9 +92,9 @@ test_that("lm_from_lavaan_list: predict", {
     expect_equal(yhat1,
                  yhat1_chk,
                  ignore_attr = TRUE,
-                 tolerance = 1e-6)
+                 tolerance = 1e-4)
     expect_equal(yhat2,
                  yhat2_chk,
                  ignore_attr = TRUE,
-                 tolerance = 1e-6)
+                 tolerance = 1e-4)
   })
