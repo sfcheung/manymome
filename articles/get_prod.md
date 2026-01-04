@@ -103,7 +103,7 @@ dat$x_o_w1 <- dat$x * dat$w1
 library(lavaan)
 ```
 
-    ## This is lavaan 0.6-20
+    ## This is lavaan 0.6-21
     ## lavaan is FREE software! Please report any bugs.
 
 ``` r

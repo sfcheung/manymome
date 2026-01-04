@@ -121,7 +121,7 @@ Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 
 ``` r
 library(lavaan)
-#> This is lavaan 0.6-20
+#> This is lavaan 0.6-21
 #> lavaan is FREE software! Please report any bugs.
 data(data_serial_parallel)
 mod <-
@@ -213,7 +213,7 @@ y2 ~ m2 + x1 + x2 + c1 + c2
 "
 fit <- sem(mod, data_med_complicated_mg, group = "group")
 summary(fit)
-#> lavaan 0.6-20 ended normally after 13 iterations
+#> lavaan 0.6-21 ended normally after 13 iterations
 #> 
 #>   Estimator                                         ML
 #>   Optimization method                           NLMINB

@@ -40,7 +40,7 @@ Suppose this is the model being fitted:
 
 ``` r
 library(lavaan)
-#> This is lavaan 0.6-20
+#> This is lavaan 0.6-21
 #> lavaan is FREE software! Please report any bugs.
 dat$w1x <- dat$w1 * dat$x
 dat$w2m <- dat$w2 * dat$m

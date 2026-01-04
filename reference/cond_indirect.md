@@ -890,7 +890,7 @@ y2 ~ m2 + x1 + x2 + c1 + c2
 "
 fit <- sem(mod, data_med_complicated_mg, group = "group")
 summary(fit)
-#> lavaan 0.6-20 ended normally after 13 iterations
+#> lavaan 0.6-21 ended normally after 13 iterations
 #> 
 #>   Estimator                                         ML
 #>   Optimization method                           NLMINB

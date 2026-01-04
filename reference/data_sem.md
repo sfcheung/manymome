@@ -86,7 +86,7 @@ mod <-
   '
 fit <- lavaan::sem(model = mod, data = data_sem)
 summary(fit)
-#> lavaan 0.6-20 ended normally after 42 iterations
+#> lavaan 0.6-21 ended normally after 42 iterations
 #> 
 #>   Estimator                                         ML
 #>   Optimization method                           NLMINB

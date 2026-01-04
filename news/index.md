@@ -1,5 +1,12 @@
 # Changelog
 
+## manymome 0.3.2.1
+
+### Miscellaneous
+
+- Updated some tests to tolerate minor differences due to optimization
+  in OpenBLAS platforms. (0.3.2.1)
+
 ## manymome 0.3.2
 
 CRAN release: 2025-12-14
