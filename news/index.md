@@ -1,11 +1,17 @@
 # Changelog
 
-## manymome 0.3.2.1
+## manymome 0.3.3
+
+CRAN release: 2026-01-08
 
 ### Miscellaneous
 
 - Updated some tests to tolerate minor differences due to optimization
   in OpenBLAS platforms. (0.3.2.1)
+
+- Update the reference for
+  [`delta_med()`](https://sfcheung.github.io/manymome/reference/delta_med.md).
+  (0.3.2.2)
 
 ## manymome 0.3.2
 

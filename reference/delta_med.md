@@ -193,9 +193,9 @@ models failed any of the checks not skipped by users.
 
 ## References
 
-Liu, H., Yuan, K.-H., & Li, H. (2023). A systematic framework for
+Liu, H., Yuan, K.-H., & Li, H. (2025). A systematic framework for
 defining R-squared measures in mediation analysis. *Psychological
-Methods*. Advance online publication. https://doi.org/10.1037/met0000571
+Methods*, *30*(2), 306-321. https://doi.org/10.1037/met0000571
 
 ## See also
 
