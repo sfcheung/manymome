@@ -1,10 +1,13 @@
-# manymome 0.3.2.1
+# manymome 0.3.3
 
 ## Miscellaneous
 
 - Updated some tests to tolerate minor
   differences due to optimization in
   OpenBLAS platforms. (0.3.2.1)
+
+- Update the reference for `delta_med()`.
+  (0.3.2.2)
 
 # manymome 0.3.2
 

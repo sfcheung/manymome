@@ -39,3 +39,6 @@ vignettes/*.pdf
 .Renviron
 docs
 inst/doc
+
+# Ignore revdepcheck directory
+revdep/

@@ -213,11 +213,11 @@
 #' confidence interval).
 #'
 #' @references
-#' Liu, H., Yuan, K.-H., & Li, H. (2023).
+#' Liu, H., Yuan, K.-H., & Li, H. (2025).
 #' A systematic framework for defining
 #' R-squared measures in mediation
-#' analysis. *Psychological Methods*.
-#' Advance online publication.
+#' analysis. *Psychological Methods*, *30*(2),
+#' 306-321.
 #' https://doi.org/10.1037/met0000571
 #'
 #' @seealso [print.delta_med()],

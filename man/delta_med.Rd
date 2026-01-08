@@ -262,11 +262,11 @@ confint(dm_boot)
 
 }
 \references{
-Liu, H., Yuan, K.-H., & Li, H. (2023).
+Liu, H., Yuan, K.-H., & Li, H. (2025).
 A systematic framework for defining
 R-squared measures in mediation
-analysis. \emph{Psychological Methods}.
-Advance online publication.
+analysis. \emph{Psychological Methods}, \emph{30}(2),
+306-321.
 https://doi.org/10.1037/met0000571
 }
 \seealso{

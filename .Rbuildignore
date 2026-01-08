@@ -7,3 +7,4 @@
 ^rebuild_vignettes.R$
 ^\.lintr$
 ^\.vscode$
+^revdep$
