@@ -391,15 +391,14 @@
 #' listed here will not override
 #' `missing` and `fixed.x`.
 #'
-#' @param na.action How missing data is
-#' handled. Used only when `fit_method`
+#' @param na.action This argument is
+#' no longer supported because using it
+#' with `missing` is confusing. Use
+#' only `missing` to specify how missing
+#' data is to be handled when `fit_method`
 #' is set to `"sem"` or `"lavaan"`. If
-#' `"na.pass"`, the default, then all
-#' data will be passed to `lavaan`, and
-#' full information maximum likelihood
-#' (`fiml`) will be used to handle
-#' missing data. If `"na.omit"`, then
-#' listwise deletion will be used.
+#' listwise deletion is preferred, set
+#' `missing` to `"listwise"`.
 #'
 #' @param parallel If `TRUE`, default,
 #' parallel processing will be used when
@@ -492,7 +491,7 @@ q_mediation <- function(x,
                         missing = "fiml",
                         fixed.x = TRUE,
                         sem_args = list(),
-                        na.action = "na.pass",
+                        na.action = NA,
                         parallel = TRUE,
                         ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                         progress = TRUE) {
@@ -603,10 +602,12 @@ q_mediation <- function(x,
 
     # Keep the name `lm_all` for backward compatibility
 
+    # Always pass all the cases. Let missing do the listwise,
+    # if na.action is na.omit
     mm <- mm_from_lm_forms(
             lm_forms,
             data = data,
-            na.action = na.action
+            na.action = "na.pass"
           )
     sem_model <- b_names_to_lavaan_model(mm$b_names)
 
@@ -1007,7 +1008,7 @@ q_simple_mediation <- function(x,
                                missing = "fiml",
                                fixed.x = TRUE,
                                sem_args = list(),
-                               na.action = "na.pass",
+                               na.action = NA,
                                parallel = TRUE,
                                ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                                progress = TRUE) {
@@ -1106,7 +1107,7 @@ q_serial_mediation <- function(x,
                                missing = "fiml",
                                fixed.x = TRUE,
                                sem_args = list(),
-                               na.action = "na.pass",
+                               na.action = NA,
                                parallel = TRUE,
                                ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                                progress = TRUE) {
@@ -1204,7 +1205,7 @@ q_parallel_mediation <- function(x,
                                  missing = "fiml",
                                  fixed.x = TRUE,
                                  sem_args = list(),
-                                 na.action = "na.pass",
+                                 na.action = NA,
                                  parallel = TRUE,
                                  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
                                  progress = TRUE) {
@@ -1584,8 +1585,10 @@ print.q_mediation <- function(x,
         missing_str,
         "\n")
 
-    if ((n_patterns == 1) &&
-        has_no_na) {
+    if (((n_patterns == 1) &&
+         has_no_na &&
+         (fit_missing != "listwise")) ||
+        (norig == ntotal)) {
       cat("No missing data in this analysis.\n")
     }
 
