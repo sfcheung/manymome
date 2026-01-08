@@ -14,7 +14,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/sfcheung/manymome/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/sfcheung/manymome/blob/v0.3.3/inst/CITATION)
 
 Cheung SF, Cheung S (2024). “manymome: An R package for computing the
 indirect effects, conditional effects, and conditional indirect effects,
