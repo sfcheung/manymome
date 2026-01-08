@@ -1,3 +1,16 @@
+# manymome 0.3.3.1
+
+## Miscellaneous
+
+- The argument `na.action` in
+  `q_mediation()` and friends is no
+  longer supported because it is
+  unnecessary, and using it can be
+  confusing. For `fit_method = "sem"`,
+  we can just set `missing` to
+  `"listwise"` to request
+  listwise deletion. (0.3.3.1)
+
 # manymome 0.3.3
 
 ## Miscellaneous
