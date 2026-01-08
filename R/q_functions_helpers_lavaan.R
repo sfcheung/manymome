@@ -72,6 +72,13 @@ mm_from_lm_forms <- function(
   lm_all <- sapply(all_y,
                   function(xx) {NA},
                   simplify = FALSE)
+  if (na.action == "na.omit") {
+    i <- lm_listwise(
+                formulas = lm_forms,
+                data = data
+              )
+    data <- data[-i, , drop = FALSE]
+  }
   for (i in all_y) {
     lm_all[[i]] <- eval(bquote(lm(.(stats::as.formula(lm_forms[[i]])),
                                       data = data)))
