@@ -27,7 +27,7 @@ q_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
-  na.action = "na.pass",
+  na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -50,7 +50,7 @@ q_simple_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
-  na.action = "na.pass",
+  na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -73,7 +73,7 @@ q_serial_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
-  na.action = "na.pass",
+  na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -96,7 +96,7 @@ q_parallel_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
-  na.action = "na.pass",
+  na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -254,15 +254,14 @@ passed to \code{\link[lavaan:sem]{lavaan::sem()}}. Arguments
 listed here will not override
 \code{missing} and \code{fixed.x}.}
 
-\item{na.action}{How missing data is
-handled. Used only when \code{fit_method}
+\item{na.action}{This argument is
+no longer supported because using it
+with \code{missing} is confusing. Use
+only \code{missing} to specify how missing
+data is to be handled when \code{fit_method}
 is set to \code{"sem"} or \code{"lavaan"}. If
-\code{"na.pass"}, the default, then all
-data will be passed to \code{lavaan}, and
-full information maximum likelihood
-(\code{fiml}) will be used to handle
-missing data. If \code{"na.omit"}, then
-listwise deletion will be used.}
+listwise deletion is preferred, set
+\code{missing} to \code{"listwise"}.}
 
 \item{parallel}{If \code{TRUE}, default,
 parallel processing will be used when
