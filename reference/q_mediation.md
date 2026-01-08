@@ -25,7 +25,7 @@ q_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
-  na.action = "na.pass",
+  na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -48,7 +48,7 @@ q_simple_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
-  na.action = "na.pass",
+  na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -71,7 +71,7 @@ q_serial_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
-  na.action = "na.pass",
+  na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -94,7 +94,7 @@ q_parallel_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
-  na.action = "na.pass",
+  na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
@@ -242,11 +242,10 @@ print(
 
 - na.action:
 
-  How missing data is handled. Used only when `fit_method` is set to
-  `"sem"` or `"lavaan"`. If `"na.pass"`, the default, then all data will
-  be passed to `lavaan`, and full information maximum likelihood
-  (`fiml`) will be used to handle missing data. If `"na.omit"`, then
-  listwise deletion will be used.
+  This argument is no longer supported because using it with `missing`
+  is confusing. Use only `missing` to specify how missing data is to be
+  handled when `fit_method` is set to `"sem"` or `"lavaan"`. If listwise
+  deletion is preferred, set `missing` to `"listwise"`.
 
 - parallel:
 
