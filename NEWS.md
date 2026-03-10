@@ -1,4 +1,4 @@
-# manymome 0.3.3.1
+# manymome 0.3.3.2
 
 ## Miscellaneous
 
@@ -10,6 +10,9 @@
   we can just set `missing` to
   `"listwise"` to request
   listwise deletion. (0.3.3.1)
+
+- Updated `lavaan.mi` test objects
+  for `lavaan 0.6-21`. (0.3.3.2)
 
 # manymome 0.3.3
 
