@@ -1,6 +1,6 @@
 # Changelog
 
-## manymome 0.3.3.1
+## manymome 0.3.3.2
 
 ### Miscellaneous
 
@@ -9,6 +9,8 @@
   and friends is no longer supported because it is unnecessary, and
   using it can be confusing. For `fit_method = "sem"`, we can just set
   `missing` to `"listwise"` to request listwise deletion. (0.3.3.1)
+
+- Updated `lavaan.mi` test objects for `lavaan 0.6-21`. (0.3.3.2)
 
 ## manymome 0.3.3
 
