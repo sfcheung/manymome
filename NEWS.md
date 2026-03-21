@@ -1,4 +1,14 @@
-# manymome 0.3.3.3
+# manymome 0.3.3.4
+
+## Improvements
+
+- The `plot`-method of `cond_indirect_effects`
+  objects will keep the order of the
+  moderator levels (from bottom to top)
+  as appeared in the object.
+  Set `keep_wlevels_order` to `FALSE` to
+  revert to the old behavior.
+  (0.3.3.4)
 
 ## Miscellaneous
 
