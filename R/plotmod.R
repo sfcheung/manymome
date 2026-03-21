@@ -192,6 +192,13 @@
 #' moderators when `facet_grid` is used.
 #' Default is 4.
 #'
+#' @param keep_wlevels_order If `TRUE`,
+#' the default, the order of the levels
+#' of moderators (from bottom to top)
+#' in the object is retained. Set it
+#' to `FALSE` to revert to the old
+#' behavior (pre 0.3.3.4).
+#'
 #' @param ... Additional arguments.
 #' Ignored.
 #'
@@ -290,6 +297,7 @@ plot.cond_indirect_effects <- function(
                             facet_grid_args = list(as.table = FALSE,
                                                    labeller = "label_both"),
                             digits = 4,
+                            keep_wlevels_order = TRUE,
                             ...
                     ) {
     has_groups <- cond_indirect_effects_has_groups(x)
@@ -320,7 +328,7 @@ plot.cond_indirect_effects <- function(
                           lm = character(0))
     has_latent <- (length(latent_vars) > 0)
     x_method <- match.arg(x_method)
-    if ((x_method == "percentile") && x_latent) {
+    if ((x_method == "percentile") && isTRUE(x_latent)) {
         stop("x_method cannot be 'percentile' if x is a latent variable.")
       }
     graph_type <- match.arg(graph_type)
@@ -592,6 +600,14 @@ plot.cond_indirect_effects <- function(
         plot_df_xend$wlevels <- rownames(wlevels)
       }
     plot_df <- rbind(plot_df_xstart, plot_df_xend)
+    # Fix the order of the levels
+    if (!is.null(plot_df$wlevels) &&
+        keep_wlevels_order) {
+      plot_df$wlevels <- factor(
+        plot_df$wlevels,
+        levels = unique(as.character(rev(plot_df$wlevels)))
+      )
+    }
     if (is.null(facet_grid_cols) &&
         is.null(facet_grid_rows)) {
         p <- ggplot2::ggplot() +

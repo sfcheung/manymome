@@ -2,4 +2,17 @@
   "cSpell.words": [
     "Multigroup"
   ]
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#015877",
+    "titleBar.inactiveBackground": "#7fc8e3",
+    "editor.background": "#002431",
+    "sideBar.background": "#002431",
+    "activityBar.background": "#002431",
+    "statusBar.background": "#002431",
+    // "editor.snippetTabstopHighlightBackground": "#2d2306",
+    // "editor.snippetTabstopHighlightBorder": "#2d2306",
+    // "editor.snippetFinalTabstopHighlightBackground": "#2d2306",
+    // "editor.snippetFinalTabstopHighlightBorder": "#2d2306"
+
+  }
 }
