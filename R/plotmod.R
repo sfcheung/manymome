@@ -320,7 +320,7 @@ plot.cond_indirect_effects <- function(
                           lm = character(0))
     has_latent <- (length(latent_vars) > 0)
     x_method <- match.arg(x_method)
-    if ((x_method == "percentile") && x_latent) {
+    if ((x_method == "percentile") && isTRUE(x_latent)) {
         stop("x_method cannot be 'percentile' if x is a latent variable.")
       }
     graph_type <- match.arg(graph_type)

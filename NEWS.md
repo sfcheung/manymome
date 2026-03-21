@@ -1,4 +1,4 @@
-# manymome 0.3.3.2
+# manymome 0.3.3.3
 
 ## Miscellaneous
 
@@ -13,6 +13,14 @@
 
 - Updated `lavaan.mi` test objects
   for `lavaan 0.6-21`. (0.3.3.2)
+
+## Bug Fixes
+
+- Fixed the error message
+  of `plot.cond_indirect_effects()`
+  when a model has no latent
+  variables but `x_method` is set to
+  `"percentile"`. (0.3.3.3)
 
 # manymome 0.3.3
 
