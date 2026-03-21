@@ -26,6 +26,7 @@ plot(
   facet_grid_rows = NULL,
   facet_grid_args = list(as.table = FALSE, labeller = "label_both"),
   digits = 4,
+  keep_wlevels_order = TRUE,
   ...
 )
 ```
@@ -150,6 +151,12 @@ plot(
 
   The number of decimal places to be printed for numerical moderators
   when `facet_grid` is used. Default is 4.
+
+- keep_wlevels_order:
+
+  If `TRUE`, the default, the order of the levels of moderators (from
+  bottom to top) in the object is retained. Set it to `FALSE` to revert
+  to the old behavior (pre 0.3.3.4).
 
 - ...:
 
