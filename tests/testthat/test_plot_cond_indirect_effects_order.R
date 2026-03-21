@@ -1,5 +1,3 @@
-skip("WIP")
-
 test_that("Two moderators", {
 
 library(testthat)
