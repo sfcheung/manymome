@@ -1,4 +1,4 @@
-# manymome 0.3.3.4
+# manymome 0.3.3.5
 
 ## Improvements
 
@@ -31,6 +31,11 @@
   when a model has no latent
   variables but `x_method` is set to
   `"percentile"`. (0.3.3.3)
+
+- The `print` method of the outputs of
+  `q_mediation()` and friends now prints
+  the total indirect effects for an
+  arbitrary model. (0.3.3.5)
 
 # manymome 0.3.3
 
