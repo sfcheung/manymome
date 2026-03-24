@@ -1,6 +1,6 @@
 # Changelog
 
-## manymome 0.3.3.4
+## manymome 0.3.3.5
 
 ### Improvements
 
@@ -25,6 +25,11 @@
   [`plot.cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/plot.cond_indirect_effects.md)
   when a model has no latent variables but `x_method` is set to
   `"percentile"`. (0.3.3.3)
+
+- The `print` method of the outputs of
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  and friends now prints the total indirect effects for an arbitrary
+  model. (0.3.3.5)
 
 ## manymome 0.3.3
 

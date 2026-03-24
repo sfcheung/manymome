@@ -772,6 +772,93 @@ print(out,
 #>  - [SE] are standard errors.
 #>  - std: The standardized indirect effect(s).
 #>  
+#> ===================================================
+#> |          Total Indirect Effect Results          |
+#> ===================================================
+#> 
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect  ==
+#>                                            
+#>  Path:                x1 -> m11 -> m2 -> y1
+#>  Path:                x1 -> m12 -> m2 -> y1
+#>  Function of Effects: -0.0031              
+#>  95.0% Bootstrap CI:  [-0.0559 to 0.0827]  
+#>  Bootstrap SE:        0.0244               
+#> 
+#> Computation of the Function of Effects:
+#>  (x1->m11->m2->y1)
+#> +(x1->m12->m2->y1) 
+#> 
+#> 
+#> Percentile confidence interval formed by nonparametric bootstrapping
+#> with 40 bootstrap samples.
+#> Standard error (SE) based on nonparametric bootstrapping with 40
+#> bootstrap samples.
+#> 
+#> 
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect (‘x1’ Standardized) ==
+#>                                            
+#>  Path:                x1 -> m11 -> m2 -> y1
+#>  Path:                x1 -> m12 -> m2 -> y1
+#>  Function of Effects: -0.0035              
+#>  95.0% Bootstrap CI:  [-0.0615 to 0.0805]  
+#>  Bootstrap SE:        0.0262               
+#> 
+#> Computation of the Function of Effects:
+#>  (x1->m11->m2->y1)
+#> +(x1->m12->m2->y1) 
+#> 
+#> 
+#> Percentile confidence interval formed by nonparametric bootstrapping
+#> with 40 bootstrap samples.
+#> Standard error (SE) based on nonparametric bootstrapping with 40
+#> bootstrap samples.
+#> 
+#> 
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect (‘y1’ Standardized) ==
+#>                                            
+#>  Path:                x1 -> m11 -> m2 -> y1
+#>  Path:                x1 -> m12 -> m2 -> y1
+#>  Function of Effects: -0.0029              
+#>  95.0% Bootstrap CI:  [-0.0537 to 0.0741]  
+#>  Bootstrap SE:        0.0227               
+#> 
+#> Computation of the Function of Effects:
+#>  (x1->m11->m2->y1)
+#> +(x1->m12->m2->y1) 
+#> 
+#> 
+#> Percentile confidence interval formed by nonparametric bootstrapping
+#> with 40 bootstrap samples.
+#> Standard error (SE) based on nonparametric bootstrapping with 40
+#> bootstrap samples.
+#> 
+#> 
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect (Both ‘x1’ and ‘y1’ Standardized) ==
+#>                                            
+#>  Path:                x1 -> m11 -> m2 -> y1
+#>  Path:                x1 -> m12 -> m2 -> y1
+#>  Function of Effects: -0.0032              
+#>  95.0% Bootstrap CI:  [-0.0591 to 0.0721]  
+#>  Bootstrap SE:        0.0244               
+#> 
+#> Computation of the Function of Effects:
+#>  (x1->m11->m2->y1)
+#> +(x1->m12->m2->y1) 
+#> 
+#> 
+#> Percentile confidence interval formed by nonparametric bootstrapping
+#> with 40 bootstrap samples.
+#> Standard error (SE) based on nonparametric bootstrapping with 40
+#> bootstrap samples.
+#> 
 
 
 # ===== Simple mediation

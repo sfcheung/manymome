@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,19 +63,20 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.3.4" id="manymome-0334">manymome 0.3.3.4<a class="anchor" aria-label="anchor" href="#manymome-0334"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.3.3.5" id="manymome-0335">manymome 0.3.3.5<a class="anchor" aria-label="anchor" href="#manymome-0335"></a></h2>
 <div class="section level3">
-<h3 id="improvements-0-3-3-4">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-3-3-4"></a></h3>
+<h3 id="improvements-0-3-3-5">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-3-3-5"></a></h3>
 <ul><li>The <code>plot</code>-method of <code>cond_indirect_effects</code> objects will keep the order of the moderator levels (from bottom to top) as appeared in the object. Set <code>keep_wlevels_order</code> to <code>FALSE</code> to revert to the old behavior. (0.3.3.4)</li>
 </ul></div>
 <div class="section level3">
-<h3 id="miscellaneous-0-3-3-4">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-3-3-4"></a></h3>
+<h3 id="miscellaneous-0-3-3-5">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-3-3-5"></a></h3>
 <ul><li><p>The argument <code>na.action</code> in <code><a href="../reference/q_mediation.html">q_mediation()</a></code> and friends is no longer supported because it is unnecessary, and using it can be confusing. For <code>fit_method = "sem"</code>, we can just set <code>missing</code> to <code>"listwise"</code> to request listwise deletion. (0.3.3.1)</p></li>
 <li><p>Updated <code>lavaan.mi</code> test objects for <code>lavaan 0.6-21</code>. (0.3.3.2)</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-0-3-3-4">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-3-3-4"></a></h3>
-<ul><li>Fixed the error message of <code><a href="../reference/plot.cond_indirect_effects.html">plot.cond_indirect_effects()</a></code> when a model has no latent variables but <code>x_method</code> is set to <code>"percentile"</code>. (0.3.3.3)</li>
+<h3 id="bug-fixes-0-3-3-5">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-3-3-5"></a></h3>
+<ul><li><p>Fixed the error message of <code><a href="../reference/plot.cond_indirect_effects.html">plot.cond_indirect_effects()</a></code> when a model has no latent variables but <code>x_method</code> is set to <code>"percentile"</code>. (0.3.3.3)</p></li>
+<li><p>The <code>print</code> method of the outputs of <code><a href="../reference/q_mediation.html">q_mediation()</a></code> and friends now prints the total indirect effects for an arbitrary model. (0.3.3.5)</p></li>
 </ul></div>
 </div>
     <div class="section level2">
