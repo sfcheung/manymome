@@ -1756,7 +1756,8 @@ print.q_mediation <- function(x,
 
   # ==== Print total effects ====
 
-  print_total <- (isTRUE(x$model != "simple"))
+  print_total <- (isTRUE(x$model != "simple") ||
+                  all(x$model != "simple"))
 
   if ((!is.null(x$ind_total$ustd) ||
        !is.null(x$ind_total$stdx) ||
