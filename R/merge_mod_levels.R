@@ -86,7 +86,8 @@ merge_mod_levels <- function(...) {
                              SIMPLIFY = FALSE)
                     })
     out1 <- lapply(out, function(x) {
-                data.frame(x, row.names = NULL)
+                data.frame(x, row.names = NULL,
+                           check.names = FALSE)
               })
     out2 <- do.call(rbind, out1)
     out2levels0 <- lapply(out, function(x) {
