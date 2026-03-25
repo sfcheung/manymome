@@ -1,6 +1,6 @@
 # Changelog
 
-## manymome 0.3.3.5
+## manymome 0.3.3.6
 
 ### Improvements
 
@@ -18,6 +18,9 @@
   `missing` to `"listwise"` to request listwise deletion. (0.3.3.1)
 
 - Updated `lavaan.mi` test objects for `lavaan 0.6-21`. (0.3.3.2)
+
+- No more warning (a false alarm) when some category names have one or
+  more white spaces. (0.3.3.6)
 
 ### Bug Fixes
 
