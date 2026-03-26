@@ -1,4 +1,4 @@
-# manymome 0.3.3.7
+# manymome 0.3.4
 
 ## Improvements
 
