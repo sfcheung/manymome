@@ -1,4 +1,4 @@
-# manymome 0.3.3.6
+# manymome 0.3.3.7
 
 ## Improvements
 
@@ -41,6 +41,11 @@
   `q_mediation()` and friends now prints
   the total indirect effects for an
   arbitrary model. (0.3.3.5)
+
+- Fixed a bug in `plot.cond_indirect_effects()`
+  with `facet_grid_*` when the options
+  `useFancyQuotes` is set to `TRUE`.
+  (0.3.3.7)
 
 # manymome 0.3.3
 

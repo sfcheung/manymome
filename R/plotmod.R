@@ -680,7 +680,7 @@ plot.cond_indirect_effects <- function(
           }
         if (!is.null(facet_grid_cols)) {
             cols_tmp <- sapply(facet_grid_cols,
-                               function(xx) paste0(".data[[", sQuote(xx), "]]"))
+                               function(xx) paste0(".data[[", sQuote(xx, q = FALSE), "]]"))
             cols_tmp <- paste0("quote(ggplot2::vars(",
                           paste(cols_tmp, collapse = ","),
                           "))")
@@ -689,7 +689,7 @@ plot.cond_indirect_effects <- function(
           }
         if (!is.null(facet_grid_rows)) {
             rows_tmp <- sapply(facet_grid_rows,
-                              function(xx) paste0(".data[[", sQuote(xx), "]]"))
+                              function(xx) paste0(".data[[", sQuote(xx, q = FALSE), "]]"))
             rows_tmp <- paste0("quote(ggplot2::vars(",
                           paste(rows_tmp, collapse = ","),
                           "))")
