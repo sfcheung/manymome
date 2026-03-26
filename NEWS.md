@@ -7,8 +7,10 @@
   moderator levels (from bottom to top)
   as appeared in the object.
   Set `keep_wlevels_order` to `FALSE` to
-  revert to the old behavior.
-  (0.3.3.4)
+  revert to the old behavior. Default
+  is `NULL`, and the order will be
+  determined internally.
+  (0.3.3.4, 0.3.4)
 
 ## Miscellaneous
 
