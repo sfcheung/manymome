@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.3.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,7 +94,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2025-08-10</h4>
+            <h4 data-toc-skip class="date">2026-03-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/articles/med_mg.Rmd" class="external-link"><code>vignettes/articles/med_mg.Rmd</code></a></small>
       <div class="d-none name"><code>med_mg.Rmd</code></div>
@@ -158,7 +158,7 @@ usual. There is no need to label any parameters because
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit</span>,</span>
 <span>        estimates <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; lavaan 0.6-19 ended normally after 1 iteration</span></span>
+<span><span class="co">#&gt; lavaan 0.6-21 ended normally after 1 iteration</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Estimator                                         ML</span></span>
 <span><span class="co">#&gt;   Optimization method                           NLMINB</span></span>
@@ -864,6 +864,10 @@ models:</p>
 <div class="float">
 <img src="manymome_draw_mod_mg-1.png" alt="Conditional Effects"><div class="figcaption">Conditional Effects</div>
 </div>
+<p>Note: The argument <code>keep_wlevels_order</code> needs to set to
+<code>FALSE</code> for version 0.3.4 or above to keep the order of the
+grouping variable in the plot. It only affects to order of group labels
+in the plot and the default colors.</p>
 <p>Note that, for multigroup models, the <em>tumble</em> graph proposed
 by <span class="citation">Bodner (2016)</span> will always be used. The
 position of a line for a group is determined by the model implied means

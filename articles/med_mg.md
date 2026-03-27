@@ -65,7 +65,7 @@ These are the estimates of the paths:
 ``` r
 summary(fit,
         estimates = TRUE)
-#> lavaan 0.6-19 ended normally after 1 iteration
+#> lavaan 0.6-21 ended normally after 1 iteration
 #> 
 #>   Estimator                                         ML
 #>   Optimization method                           NLMINB
@@ -837,6 +837,11 @@ can also be used for multigroup models:
 ![Conditional Effects](manymome_draw_mod_mg-1.png)
 
 Conditional Effects
+
+Note: The argument `keep_wlevels_order` needs to set to `FALSE` for
+version 0.3.4 or above to keep the order of the grouping variable in the
+plot. It only affects to order of group labels in the plot and the
+default colors.
 
 Note that, for multigroup models, the *tumble* graph proposed by Bodner
 (2016) will always be used. The position of a line for a group is

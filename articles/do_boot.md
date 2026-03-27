@@ -87,7 +87,7 @@ fit_lavaan <- sem(model = mod, data = dat,
            fixed.x = FALSE,
            estimator = "MLR")
 summary(fit_lavaan)
-#> lavaan 0.6-19 ended normally after 1 iteration
+#> lavaan 0.6-21 ended normally after 1 iteration
 #> 
 #>   Estimator                                         ML
 #>   Optimization method                           NLMINB

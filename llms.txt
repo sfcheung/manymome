@@ -1,6 +1,6 @@
 # manymome
 
-(Version 0.3.3.6, updated on 2026-03-25, [release
+(Version 0.3.4, updated on 2026-03-26, [release
 history](https://sfcheung.github.io/manymome/news/index.html))
 
 Functions for estimating indirect effects, conditional indirect effects,
