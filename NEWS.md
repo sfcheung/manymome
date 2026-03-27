@@ -1,3 +1,10 @@
+# manymome 0.3.4.1
+
+- The quick functions now properly handle
+  a data frame which has already been processed
+  by `na.omit()` and so has the attribute
+  `na.action` set. (0.3.4.1)
+
 # manymome 0.3.4
 
 ## Improvements
