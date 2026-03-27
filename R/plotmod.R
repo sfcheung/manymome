@@ -197,7 +197,9 @@
 #' of moderators (from bottom to top)
 #' in the object is retained. Set it
 #' to `FALSE` to revert to the old
-#' behavior (pre 0.3.3.4).
+#' behavior (pre 0.3.3.4). If `NULL`,
+#' the default, it will be determined
+#' internally.
 #'
 #' @param ... Additional arguments.
 #' Ignored.
@@ -297,7 +299,7 @@ plot.cond_indirect_effects <- function(
                             facet_grid_args = list(as.table = FALSE,
                                                    labeller = "label_both"),
                             digits = 4,
-                            keep_wlevels_order = TRUE,
+                            keep_wlevels_order = NULL,
                             ...
                     ) {
     has_groups <- cond_indirect_effects_has_groups(x)
@@ -601,6 +603,14 @@ plot.cond_indirect_effects <- function(
       }
     plot_df <- rbind(plot_df_xstart, plot_df_xend)
     # Fix the order of the levels
+    if (is.null(keep_wlevels_order)) {
+      tmp <- unique(plot_df$wlevels)
+      if (is.unsorted(tmp)) {
+        keep_wlevels_order <- TRUE
+      } else {
+        keep_wlevels_order <- FALSE
+      }
+    }
     if (!is.null(plot_df$wlevels) &&
         keep_wlevels_order) {
       plot_df$wlevels <- factor(
@@ -680,7 +690,7 @@ plot.cond_indirect_effects <- function(
           }
         if (!is.null(facet_grid_cols)) {
             cols_tmp <- sapply(facet_grid_cols,
-                               function(xx) paste0(".data[[", sQuote(xx), "]]"))
+                               function(xx) paste0(".data[[", sQuote(xx, q = FALSE), "]]"))
             cols_tmp <- paste0("quote(ggplot2::vars(",
                           paste(cols_tmp, collapse = ","),
                           "))")
@@ -689,7 +699,7 @@ plot.cond_indirect_effects <- function(
           }
         if (!is.null(facet_grid_rows)) {
             rows_tmp <- sapply(facet_grid_rows,
-                              function(xx) paste0(".data[[", sQuote(xx), "]]"))
+                              function(xx) paste0(".data[[", sQuote(xx, q = FALSE), "]]"))
             rows_tmp <- paste0("quote(ggplot2::vars(",
                           paste(rows_tmp, collapse = ","),
                           "))")

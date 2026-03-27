@@ -24,7 +24,7 @@
   facet_grid_rows = NULL,
   facet_grid_args = list(as.table = FALSE, labeller = "label_both"),
   digits = 4,
-  keep_wlevels_order = TRUE,
+  keep_wlevels_order = NULL,
   ...
 )
 }
@@ -166,7 +166,9 @@ the default, the order of the levels
 of moderators (from bottom to top)
 in the object is retained. Set it
 to \code{FALSE} to revert to the old
-behavior (pre 0.3.3.4).}
+behavior (pre 0.3.3.4). If \code{NULL},
+the default, it will be determined
+internally.}
 
 \item{...}{Additional arguments.
 Ignored.}

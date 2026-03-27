@@ -1,4 +1,4 @@
-# manymome 0.3.3.6
+# manymome 0.3.4
 
 ## Improvements
 
@@ -7,8 +7,10 @@
   moderator levels (from bottom to top)
   as appeared in the object.
   Set `keep_wlevels_order` to `FALSE` to
-  revert to the old behavior.
-  (0.3.3.4)
+  revert to the old behavior. Default
+  is `NULL`, and the order will be
+  determined internally.
+  (0.3.3.4, 0.3.4)
 
 ## Miscellaneous
 
@@ -41,6 +43,11 @@
   `q_mediation()` and friends now prints
   the total indirect effects for an
   arbitrary model. (0.3.3.5)
+
+- Fixed a bug in `plot.cond_indirect_effects()`
+  with `facet_grid_*` when the options
+  `useFancyQuotes` is set to `TRUE`.
+  (0.3.3.7)
 
 # manymome 0.3.3
 

@@ -1,7 +1,7 @@
 ---
 title: "Monte Carlo Confidence Intervals with Multiple Imputation"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2025-08-10"
+date: "2026-03-26"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -110,14 +110,6 @@ do the imputation:
 
 ``` r
 library(mice)
-#> 
-#> Attaching package: 'mice'
-#> The following object is masked from 'package:stats':
-#> 
-#>     filter
-#> The following objects are masked from 'package:base':
-#> 
-#>     cbind, rbind
 set.seed(26245)
 out_mice <- mice(dat, m = 5, printFlag = FALSE)
 dat_mi <- complete(out_mice, action = "all")
@@ -148,12 +140,6 @@ We then fit the model by `lavaan.mi::sem.mi()`:
 
 ``` r
 library(lavaan.mi)
-#> 
-#> ###################################################################
-#> This is lavaan.mi 0.1-0
-#> See the README file on github.com/TDJorgensen/lavaan.mi
-#> for a table comparing it with deprecated semTools features.
-#> ###################################################################
 mod <-
 "
 m ~ x + c1 + c2
@@ -163,7 +149,7 @@ fit_lavaan <- sem.mi(model = mod,
                      data = dat_mi)
 summary(fit_lavaan)
 #> lavaan.mi object fit to 5 imputed data sets using:
-#>  - lavaan    (0.6-19)
+#>  - lavaan    (0.6-21)
 #>  - lavaan.mi (0.1-0)
 #> See class?lavaan.mi help page for available methods. 
 #> 
@@ -186,13 +172,13 @@ summary(fit_lavaan)
 #> 
 #> Parameter Estimates:
 #> 
-#>   Standard errors                                    Standard
-#>   Information                                        Expected
-#>   Information saturated (h1) model                 Structured
-#>                                                              
-#>   Pooled across imputations              Rubin's (1987) rules
-#>   Augment within-imputation variance     Scale by average RIV
-#>   Wald test for pooled parameters          t(df) distribution
+#>   Standard errors                                   Standard
+#>   Information                                       Expected
+#>   Information saturated (h1) model                Structured
+#>                                                             
+#>   Pooled across imputations             Rubin's (1987) rules
+#>   Augment within-imputation variance    Scale by average RIV
+#>   Wald test for pooled parameters         t(df) distribution
 #> 
 #>   Pooled t statistics with df >= 1000 are displayed with
 #>   df = Inf(inity) to save space. Although the t distribution
