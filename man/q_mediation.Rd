@@ -14,6 +14,7 @@ q_mediation(
   y,
   m = NULL,
   cov = NULL,
+  indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
   mc_ci = FALSE,
@@ -38,6 +39,7 @@ q_simple_mediation(
   y,
   m = NULL,
   cov = NULL,
+  indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
   mc_ci = FALSE,
@@ -61,6 +63,7 @@ q_serial_mediation(
   y,
   m = NULL,
   cov = NULL,
+  indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
   mc_ci = FALSE,
@@ -84,6 +87,7 @@ q_parallel_mediation(
   y,
   m = NULL,
   cov = NULL,
+  indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
   mc_ci = FALSE,
@@ -155,6 +159,19 @@ element. For example, \code{list(m1 = "c1", dv = c("c2", "c3"))}
 indicates that \code{c1} predicts \code{"m1"},
 while \code{c2} and \code{c3} predicts \code{"dv"}.
 Default is \code{NULL}, no covariates.}
+
+\item{indicators}{Optional. A named
+vector of indicator names for scales or
+latent variables. If an indicator
+is to be reverse coded, add \code{"-"}
+before its names. For example,
+\code{list(x = c("x1", "x3"), m = c("-m1", "m2"))}
+denotes that \code{"x1"} and \code{"x3"} are
+the indicators of \code{x}, and \code{"m1"}
+and \code{"m2"} are the indicators of \code{m}.
+If named in this list, then these
+variables (\code{x} and \code{m} in this case)
+should not be present in \code{data}.}
 
 \item{data}{The data frame. Note that
 listwise deletion will be used and
@@ -512,6 +529,25 @@ For example:
 The path \code{"x1 -> m1"} appears twice,
 to indicate two different pathways from
 \code{x1} to \code{y1}.
+}
+
+\subsection{Scale Scores or Latent Variables}{
+
+The argument \code{indicators} can be
+used to indicate that one or more
+variables in the model are measured
+by observed indicators
+
+If regression is used to estimate
+the coefficients, then the mean scores
+(for now)
+of the indicators will be used in the model.
+
+(TO BE SUPPORTED) If structural equation
+modeling is used to estimate the
+coefficients, then these indicators
+will be used in teh model to define
+the latent variables.
 }
 
 \subsection{Workflow}{

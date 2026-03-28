@@ -133,6 +133,24 @@
 #' to indicate two different pathways from
 #' `x1` to `y1`.
 #'
+#' ## Scale Scores or Latent Variables
+#'
+#' The argument `indicators` can be
+#' used to indicate that one or more
+#' variables in the model are measured
+#' by observed indicators
+#'
+#' If regression is used to estimate
+#' the coefficients, then the mean scores
+#' (for now)
+#' of the indicators will be used in the model.
+#'
+#' (TO BE SUPPORTED) If structural equation
+#' modeling is used to estimate the
+#' coefficients, then these indicators
+#' will be used in teh model to define
+#' the latent variables.
+#'
 #' ## Workflow
 #'
 #' The coefficients of the model can be
@@ -292,6 +310,19 @@
 #' indicates that `c1` predicts `"m1"`,
 #' while `c2` and `c3` predicts `"dv"`.
 #' Default is `NULL`, no covariates.
+#'
+#' @param indicators Optional. A named
+#' vector of indicator names for scales or
+#' latent variables. If an indicator
+#' is to be reverse coded, add `"-"`
+#' before its names. For example,
+#' `list(x = c("x1", "x3"), m = c("-m1", "m2"))`
+#' denotes that `"x1"` and `"x3"` are
+#' the indicators of `x`, and `"m1"`
+#' and `"m2"` are the indicators of `m`.
+#' If named in this list, then these
+#' variables (`x` and `m` in this case)
+#' should not be present in `data`.
 #'
 #' @param data The data frame. Note that
 #' listwise deletion will be used and
@@ -478,6 +509,7 @@ q_mediation <- function(x,
                         y,
                         m = NULL,
                         cov = NULL,
+                        indicators = NULL,
                         data = NULL,
                         boot_ci = TRUE,
                         mc_ci = FALSE,
@@ -538,6 +570,31 @@ q_mediation <- function(x,
       isTRUE(ci_type == "mc")) {
     stop("Models fitted by regression does not support",
          "Monte Carlo confidence intervals.")
+  }
+
+  if (!is.null(indicators)) {
+    has_indicators <- TRUE
+    check_indicators(indicators = indicators,
+                    data = data)
+  } else {
+    has_indicators <- FALSE
+  }
+
+  # ==== Compute scale scores ====
+
+  if (has_indicators) {
+    if (fit_method == "lm") {
+      # TODO:
+      # - Allow other scoring function
+      data_scale_scores <- scale_scores(
+                indicators = indicators,
+                data = data
+              )
+      data[, colnames(data_scale_scores)] <- data_scale_scores
+    }
+    if (fit_method == "sem") {
+      stop("Do not yet support using indicators with sem/lavaan")
+    }
   }
 
   # ===== Form the model =====
@@ -933,7 +990,8 @@ q_mediation <- function(x,
               x_miss = x_miss,
               lm_all_x = lm_all_x,
               model_type = model_type,
-              ci_type = ci_type)
+              ci_type = ci_type,
+              indicators = indicators)
   if (model_type == "standard") {
     model_class <- switch(model,
                           simple = "q_simple_mediation",
@@ -996,6 +1054,7 @@ q_simple_mediation <- function(x,
                                y,
                                m = NULL,
                                cov = NULL,
+                               indicators = NULL,
                                data = NULL,
                                boot_ci = TRUE,
                                mc_ci = FALSE,
@@ -1024,6 +1083,7 @@ q_simple_mediation <- function(x,
                      y = y,
                      m = m,
                      cov = cov,
+                     indicators = indicators,
                      data = data,
                      boot_ci = boot_ci,
                      mc_ci = mc_ci,
@@ -1095,6 +1155,7 @@ q_serial_mediation <- function(x,
                                y,
                                m = NULL,
                                cov = NULL,
+                               indicators = NULL,
                                data = NULL,
                                boot_ci = TRUE,
                                mc_ci = FALSE,
@@ -1123,6 +1184,7 @@ q_serial_mediation <- function(x,
                      y = y,
                      m = m,
                      cov = cov,
+                     indicators = indicators,
                      data = data,
                      boot_ci = boot_ci,
                      mc_ci = mc_ci,
@@ -1193,6 +1255,7 @@ q_parallel_mediation <- function(x,
                                  y,
                                  m = NULL,
                                  cov = NULL,
+                                 indicators = NULL,
                                  data = NULL,
                                  boot_ci = TRUE,
                                  mc_ci = FALSE,
@@ -1221,6 +1284,7 @@ q_parallel_mediation <- function(x,
                      y = y,
                      m = m,
                      cov = cov,
+                     indicators = indicators,
                      data = data,
                      boot_ci = boot_ci,
                      mc_ci = mc_ci,
