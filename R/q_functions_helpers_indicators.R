@@ -185,8 +185,17 @@ scale_scores <- function(
 #' @noRd
 scale_reliability <- function(
   indicators,
-  data
+  data,
+  method = c("sem", "omega")
 ) {
+  method <- match.arg(method)
+  # TODO:
+  # - Allow additional arguments
+  scale_reliability_i <- switch(
+    method,
+    sem = scale_reliability_i_sem,
+    omega = scale_reliability_i_omega
+  )
   out0 <- sapply(
     indicators,
     FUN = scale_reliability_i,
@@ -200,15 +209,125 @@ scale_reliability <- function(
   out1b <- lapply(out0,
               function(x) x$full_output
             )
+  out1c <- lapply(out0,
+              function(x) x$loadings
+            )
   out1 <- list(
             reliability = out1a,
-            full_output = out1b
+            full_output = out1b,
+            loadings = out1c
           )
   out1
 }
 
 #' @noRd
-scale_reliability_i <- function(
+scale_reliability_i_sem <- function(
+  indicators_i,
+  data,
+  rel_args = list(),
+  cfa_args = list()
+) {
+
+  # ==== Get reverse indicators ====
+
+  ind <- strip_minus(list(indicators_i))[[1]]
+  ind_rev <- reverse_indicators(list(indicators_i))[[1]]
+  ind_key <- vector("integer", length(ind))
+  ind_key[] <- 1
+  names(ind_key) <- ind
+  ind_key[ind_rev] <- -1
+
+  dat_i <- data[, ind, drop = FALSE]
+
+  # ==== Reverse scores ====
+
+  if (length(ind_rev) > 0) {
+    dat_i <- reverse_scores(
+              ind_rev,
+              data = dat_i
+            )
+  }
+
+  # ==== Fit CFA ====
+
+  # TODO:
+  # - Allow additional arguments
+  # - Handle two-item scale
+  # - Handle ordinal variables
+  if (length(ind) == 2) {
+    mod <- paste0("f =~ ",
+                paste0("a*", ind, collapse = " + "))
+  } else {
+    mod <- paste0("f =~ ",
+                paste0(ind, collapse = " + "))
+  }
+  cfa_args0 <- list(
+      std.lv = TRUE,
+      missing = "listwise"
+    )
+  cfa_args1 <- utils::modifyList(
+                  cfa_args0,
+                  cfa_args
+                )
+  fit <- tryCatch(do.call(
+            lavaan::cfa,
+            c(list(model = mod,
+                   data = dat_i),
+              cfa_args1)
+          ), error = function(e) e)
+
+  fit_ok <- inherits(fit, "lavaan")
+  if (fit_ok) {
+    fit_ok <- isTRUE(suppressWarnings(
+                lavaan::lavInspect(fit, "post.check")
+              ))
+  }
+
+  # ==== Store the loadings ====
+
+  if (fit_ok) {
+    loadings <- methods::getMethod("coef",
+                      signature = "lavaan",
+                      where = asNamespace("lavaan"))(fit)
+    i <- grepl("^f=~", names(loadings))
+    loadings <- loadings[i]
+    names(loadings) <- gsub("^f=~", "", names(loadings))
+    loadings <- loadings[ind]
+  } else {
+    loadings <- rep(NA, length(ind))
+    names(loadings) <- ind
+  }
+
+  # ==== Compute reliability ====
+
+  if (fit_ok) {
+    out0 <- tryCatch(do.call(semTools::compRelSEM,
+              c(list(fit,
+                    simplify = TRUE),
+                rel_args)
+            ), error = function(e) e)
+  } else {
+    out0 <- NA
+  }
+
+  # ==== Prepare the output ====
+
+  if (inherits(out0, "error0") ||
+      is.na(out0)) {
+    reliability <- NA
+  } else {
+    reliability <- as.numeric(out0)
+  }
+  out1 <- list(
+      reliability = reliability,
+      full_output = out0,
+      loadings = loadings
+    )
+  out1
+}
+
+#' @noRd
+scale_reliability_i_omega <- function(
   indicators_i,
   data
 ) {

@@ -56,7 +56,8 @@ Imports:
     MASS,
     methods,
     lmhelprs,
-    psych
+    psych,
+    semTools
 Depends:
     R (>= 3.5.0)
 LazyData: true
