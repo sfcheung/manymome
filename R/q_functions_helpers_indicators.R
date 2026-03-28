@@ -43,3 +43,68 @@ measurement_syntax <- function(
   out1
 }
 
+#' @noRd
+# Compute scale scores
+scale_scores <- function(
+  indicators,
+  data,
+  score_fun = mean,
+  score_args = list()
+) {
+  # Repeat score_fun if necessary
+  # Repeat score_args if necessary
+  fnames <- names(indicators)
+  if (!setequal(names(score_args), fnames)) {
+    # score_args is for all factors
+    score_args <- replicate(
+                    length(fnames),
+                    score_args,
+                    simplify = FALSE
+                  )
+    names(score_args) <- fnames
+  } else {
+   # score_args for each factor
+    score_args <- score_args[fnames]
+  }
+  if (!setequal(names(score_fun), fnames)) {
+    # score_args is for all factors
+    score_fun <- replicate(
+                    length(fnames),
+                    score_fun,
+                    simplify = FALSE
+                  )
+    names(score_fun) <- fnames
+  } else {
+   # score_args for each factor
+    score_fun <- score_fun[fnames]
+  }
+  f <- function(
+        xx,
+        score_fun,
+        score_args
+      ) {
+    datxx <- data[, xx, drop = FALSE]
+    out <- apply(
+            datxx,
+            MARGIN = 1,
+            FUN = \(x) {
+                if (all(is.na(x))) {
+                  return(NA)
+                }
+                do.call(
+                  score_fun,
+                  c(list(x), score_args)
+                )
+              }
+            )
+    out
+  }
+  out0 <- mapply(
+            FUN = f,
+            xx = indicators,
+            score_fun = score_fun,
+            score_args = score_args,
+            SIMPLIFY = FALSE
+          )
+  data.frame(out0, check.names = FALSE)
+}
