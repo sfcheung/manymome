@@ -21,8 +21,8 @@ dat <- data.frame(x1 = 1:10,
                   x2 = 1:10 + 3,
                   x3 = 1:10 + 5,
                   y1 = 1:10 + 10,
-                  y2 = 1:10 - 10,
-                  y3 = 1:10 - 5,
+                  y2 = 20 - 1:10,
+                  y3 = 1:10 + 50,
                   m = 1:10 + 1)
 
 expect_no_error(check_indicators(
@@ -42,15 +42,29 @@ inds <- list(
   y = c("y1", "y2", "y3")
 )
 
-dat_scores <- scale_scores(
-  indicators = inds,
+inds_rev <- list(
+  x = c("x1", "-x3", "x2"),
+  y = c("y1", "y2", "y3")
+)
+
+dat_rev <- dat
+dat_rev$x3 <- -1 * dat_rev$x3
+
+expect_no_error(check_indicators(inds_rev, dat))
+
+chk0 <- reverse_indicators(inds_rev)
+expect_identical(chk0$x, "x3")
+expect_identical(chk0$y, character(0))
+
+dat_scores_rev <- scale_scores(
+  indicators = inds_rev,
   data = dat
 )
 
-expect_equal(dat_scores$x,
-             rowMeans(dat[, inds$x]))
-expect_equal(dat_scores$y,
-             rowMeans(dat[, inds$y]))
+expect_equal(dat_scores_rev$x,
+             rowMeans(dat_rev[, inds$x]))
+expect_equal(dat_scores_rev$y,
+             rowMeans(dat_rev[, inds$y]))
 
 dat_scores <- scale_scores(
   indicators = inds,

@@ -6,6 +6,7 @@ check_indicators <- function(
   indicators,
   data
 ) {
+  indicators <- strip_minus(indicators)
   all_vars <- unname(unlist(indicators))
   inds_not_in_dat <- setdiff(all_vars, colnames(data))
   if (length(inds_not_in_dat) > 0) {
@@ -22,15 +23,48 @@ check_indicators <- function(
 }
 
 #' @noRd
+# Remove leading negative signs
+strip_minus <- function(indicators) {
+  out <- sapply(
+    indicators,
+    function(x) {
+        gsub("^-", "", x)
+      },
+    USE.NAMES = TRUE,
+    simplify = FALSE
+  )
+  out
+}
+
+#' @noRd
+# Select reverse items
+reverse_indicators <- function(
+  indicators
+) {
+  out <- sapply(
+    indicators,
+    function(x) {
+        grepv("^-", x)
+      },
+    USE.NAMES = TRUE,
+    simplify = FALSE
+  )
+  out2 <- strip_minus(out)
+  out2
+}
+
+
+#' @noRd
 # Generate the model syntax for measurement part
 
 measurement_syntax <- function(
   indicators,
   collapse = TRUE
 ) {
+  indicators <- strip_minus(indicators)
   out0 <- lapply(
               indicators,
-              \(x) paste0(x, collapse = " + ")
+              function (x) {paste0(x, collapse = " + ")}
             )
   out1 <- paste0(
             names(out0),
@@ -44,6 +78,28 @@ measurement_syntax <- function(
 }
 
 #' @noRd
+# Reverse scores
+reverse_scores <- function(
+  x,
+  data
+) {
+  for (xx in x) {
+    data <- reverse_scores_i(x, data = data)
+  }
+  data
+}
+reverse_scores_i <- function(
+  x,
+  data
+) {
+  # TODO:
+  # - Do reverse coding
+  #   Not urgent: No impact on the coefficients
+  data[, x] <- -data[, x, drop = TRUE]
+  data
+}
+
+#' @noRd
 # Compute scale scores
 scale_scores <- function(
   indicators,
@@ -53,7 +109,24 @@ scale_scores <- function(
 ) {
   # Repeat score_fun if necessary
   # Repeat score_args if necessary
+  indicators_org <- indicators
+  indicators <- strip_minus(indicators)
+  # ==== Process reverse indicators, if any ====
+  indicators_rev <- reverse_indicators(indicators_org)
+  indicators_rev <- unlist(indicators_rev)
+
+  # ==== Reverse scores ====
+  if (length(indicators_rev) > 0) {
+    data <- reverse_scores(
+              indicators_rev,
+              data = data
+            )
+  }
+
+  # ==== Process arguments ====
+
   fnames <- names(indicators)
+
   if (!setequal(names(score_args), fnames)) {
     # score_args is for all factors
     score_args <- replicate(
@@ -87,7 +160,7 @@ scale_scores <- function(
     out <- apply(
             datxx,
             MARGIN = 1,
-            FUN = \(x) {
+            FUN = function (x) {
                 if (all(is.na(x))) {
                   return(NA)
                 }
