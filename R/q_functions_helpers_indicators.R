@@ -181,3 +181,62 @@ scale_scores <- function(
           )
   data.frame(out0, check.names = FALSE)
 }
+
+#' @noRd
+scale_reliability <- function(
+  indicators,
+  data
+) {
+  out0 <- sapply(
+    indicators,
+    FUN = scale_reliability_i,
+    data = data,
+    simplify = FALSE,
+    USE.NAMES = TRUE
+  )
+  out1a <- sapply(out0,
+              function(x) x$reliability
+            )
+  out1b <- lapply(out0,
+              function(x) x$full_output
+            )
+  out1 <- list(
+            reliability = out1a,
+            full_output = out1b
+          )
+  out1
+}
+
+#' @noRd
+scale_reliability_i <- function(
+  indicators_i,
+  data
+) {
+  ind <- strip_minus(list(indicators_i))[[1]]
+  ind_rev <- reverse_indicators(list(indicators_i))[[1]]
+  ind_key <- vector("integer", length(ind))
+  ind_key[] <- 1
+  names(ind_key) <- ind
+  ind_key[ind_rev] <- -1
+  dat_i <- data[, ind, drop = FALSE]
+  # TODO:
+  # - Allow additional arguments
+  out0 <- suppressMessages(suppressWarnings(
+    tryCatch(psych::omega(
+      m = dat_i,
+      nfactors = 1,
+      key = ind_key
+    ), error = function(e) e)
+  ))
+  if (inherits(out0, "error")) {
+    reliability <- NA
+    out0 <- NA
+  } else {
+    reliability <- out0$omega.tot
+  }
+  out1 <- list(
+      reliability = reliability,
+      full_output = out0
+    )
+  out1
+}

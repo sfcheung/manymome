@@ -55,7 +55,8 @@ Imports:
     igraph,
     MASS,
     methods,
-    lmhelprs
+    lmhelprs,
+    psych
 Depends:
     R (>= 3.5.0)
 LazyData: true
