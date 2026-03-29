@@ -3,6 +3,7 @@ skip_on_cran()
 library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
+suppressMessages(library(semTools))
 
 test_that("q function: mediation with indicators: measurement model", {
 
@@ -171,5 +172,30 @@ expect_identical(coef(out_user$ind_out$stdxy),
                  coef(indstdxy),
                  tolerance = 1e-5,
                  ignore_attr = TRUE)
+
+# Reliability
+
+mod_cfa <-
+"
+m =~ x04 + x05 + x09
+c2 =~ x11 + x13 + x14
+y =~ x01 + x02 + x03
+"
+
+fit_cfa <- cfa(
+  mod_cfa,
+  data = data_sem,
+  std.lv = TRUE
+)
+
+fit_rel <- compRelSEM(
+  fit_cfa
+)
+
+expect_equal(out_simple$reliability[names(fit_rel)],
+             fit_rel)
+
+expect_equal(out_simple$loadings[names(fit_rel)],
+             get_loadings(fit_cfa))
 
 })

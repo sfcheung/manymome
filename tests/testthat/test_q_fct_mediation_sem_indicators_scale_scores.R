@@ -135,4 +135,21 @@ expect_identical(out_user$ind_total,
 expect_identical(out_user$ind_out,
                  out_chk$ind_out)
 
+# Reliability
+
+out_rel <- scale_reliability(
+  indicators =  out_user$indicators,
+  data = data_sem
+)
+
+expect_equal(
+  out_simple$reliability[names(out_rel$full_output)],
+  out_rel$full_output
+)
+
+expect_equal(
+  out_simple$loadings[names(out_rel$full_output)],
+  out_rel$loadings
+)
+
 })

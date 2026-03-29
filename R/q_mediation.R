@@ -791,6 +791,75 @@ q_mediation <- function(x,
     ci_out <- NULL
   }
 
+  # ==== Reliability coefficients ====
+
+  if (has_indicators) {
+    reliability <- rep(NA_real_, length(indicators))
+    names(reliability) <- names(indicators)
+    loadings <- vector("list", length(indicators))
+    names(loadings) <- names(indicators)
+  } else {
+    reliability <- NULL
+    loadings <- NULL
+  }
+
+  if ((fit_method == "lm") &&
+      has_indicators) {
+
+    # ==== Reliability in regression ====
+
+    tmp <- scale_reliability(
+      indicators = indicators,
+      data = data,
+      method = "sem"
+    )
+    reliability <- tmp$full_output
+    loadings <- tmp$loadings
+  }
+
+  if ((fit_method == "lavaan") &&
+      has_indicators &&
+      (indicator_method == "measurement_model")) {
+
+    # ==== Reliability in measurement model ====
+
+    cfa_args <- utils::modifyList(
+                    sem_args,
+                    list(model = lm_measurement,
+                         data = mm$model_matrix,
+                         meanstructure = TRUE,
+                         warn = FALSE,
+                         se = "none",
+                         test = "none",
+                         std.lv = TRUE,
+                         missing = missing)
+                  )
+    fit_cfa <- do.call(
+                lavaan::cfa,
+                cfa_args
+              )
+    reliability <- semTools::compRelSEM(
+      fit_cfa
+    )
+    loadings <- get_loadings(fit_cfa)
+  }
+
+  if ((fit_method == "lavaan") &&
+      has_indicators &&
+      (indicator_method == "scale_scores")) {
+
+    # ==== Reliability with scale scores ====
+
+    tmp <- scale_reliability(
+      indicators = indicators,
+      data = data,
+      method = "sem"
+    )
+    reliability <- tmp$full_output
+    loadings <- tmp$loadings
+  }
+
+
   # ==== Indirect effect ====
 
   paths <- all_indirect_paths(lm_all,
@@ -1047,7 +1116,9 @@ q_mediation <- function(x,
               lm_all_x = lm_all_x,
               model_type = model_type,
               ci_type = ci_type,
-              indicators = indicators)
+              indicators = indicators,
+              reliability = reliability,
+              loadings = loadings)
   if (model_type == "standard") {
     model_class <- switch(model,
                           simple = "q_simple_mediation",

@@ -359,3 +359,24 @@ scale_reliability_i_omega <- function(
     )
   out1
 }
+
+#' @noRd
+# Extract loadings from a CFA model
+get_loadings <- function(
+  object
+) {
+  lv <- lavaan::lavNames(object, "lv")
+  pt <- lavaan::parameterTable(object)
+  pt <- pt[pt$op == "=~", ]
+  names(lv) <- lv
+  out0 <- lapply(
+    lv,
+    function(x) {
+      y1 <- pt[pt$lhs == x, "rhs"]
+      y2 <- pt[pt$lhs == x, "est"]
+      names(y2) <- y1
+      y2
+    }
+  )
+  out0
+}
