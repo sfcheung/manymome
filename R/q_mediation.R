@@ -1106,6 +1106,7 @@ q_mediation <- function(x,
               y = y,
               m = m,
               fit_method = fit_method,
+              indicator_method = indicator_method,
               sem_args = sem_args,
               sem_model = sem_model,
               lm_out_lav = lm_out_lav,
@@ -1697,6 +1698,7 @@ print.q_mediation <- function(x,
                               ...) {
 
   fit_method <- x$fit_method
+  indicator_method <- x$indicator_method
 
   sem_style <- match.arg(sem_style)
 
@@ -1723,6 +1725,12 @@ print.q_mediation <- function(x,
   cat("\nOutcome(y):", x$y)
   cat("\nMediator(s)(m):", paste0(x$m, collapse = ", "))
   cat("\nModel:", model_name)
+  if (!is.null(x$indicators)) {
+    cat("\nIndicators used to:",
+        switch(indicator_method,
+               scale_scores = "Compute scale scores",
+               measurement_model = "Fit a measurement model"))
+  }
   cat("\n")
 
   if (fit_method == "lm") {
@@ -1797,6 +1805,92 @@ print.q_mediation <- function(x,
 
   }
 
+  # ==== Indicator-related info ====
+
+
+  if (!is.null(x$indicators)) {
+    cat("\n")
+    cat("===================================================\n")
+    cat("|              Indicator Information              |\n")
+    cat("===================================================\n")
+
+    # ==== Indicators ====
+
+    tmp <- format_indicators(indicators = x$indicators)
+    cat("\n")
+    cat("The indicators for the following variable(s):\n")
+    cat("\n")
+    cat(tmp, sep = "\n")
+    cat("\nNote:\n")
+    tmp <- strwrap(
+      paste0("- '-' denotes revserse-coded items."),
+      exdent = 2
+    )
+    cat(tmp, sep = "\n")
+
+    # ==== Reliability ====
+
+    # if (!is.null(x$reliability)) {
+      # tmp_rel <- format_reliability(
+      #           reliability = x$reliability,
+      #           digits = digits
+      #         )
+      # cat("\n")
+      # cat("The reliability coefficient(s):\n")
+      # cat("\n")
+      # print(tmp,
+      #       right = FALSE,
+      #       row.names = FALSE)
+      # cat("\nNote:\n")
+      # tmp <- strwrap(
+      #   paste0("- Reliability coefficients are",
+      #          " omega coefficients."),
+      #   exdent = 2
+      # )
+      # cat(tmp, sep = "\n")
+
+    # ==== Loadings ====
+
+    if (!is.null(x$loadings)) {
+      tmp <- format_loadings(loadings = x$loadings,
+                            digits = digits)
+      if (!is.null(x$reliability)) {
+        tmp_rel <- unlist(x$reliability)
+        tmp_rel <- formatC(
+                    tmp_rel,
+                    digits = digits,
+                    format = "f"
+                  )
+        tmp2_rel <- paste0("\nReliability: ", tmp_rel)
+      } else {
+        tmp2_rel <- rep("", length(tmp))
+        names(tmp2_rel) <- names(tmp)
+      }
+      cat("\n")
+      cat("The factor loadings for the following variable(s):\n")
+      for (xx in seq_along(tmp)) {
+        cat(paste0("\n", names(tmp)[xx],
+                   ": ",
+                   tmp2_rel[xx],"\n"))
+        print(tmp[[xx]])
+      }
+      cat("\nNote:\n")
+      tmp <- strwrap(
+        paste0("- Revserse-coded items have been",
+               " reverse-coded when estimating the loadings."),
+        exdent = 2
+      )
+      if (!is.null(x$reliability)) {
+        tmp2 <- strwrap(
+          paste0("- Reliability estimated by omage coefficients."),
+          exdent = 2
+        )
+        tmp <- c(tmp, tmp2)
+      }
+      cat(tmp, sep = "\n")
+    }
+  }
+
   # ==== Print path coefficients ====
 
   if (fit_method == "lm") {
@@ -1830,13 +1924,65 @@ print.q_mediation <- function(x,
 
     # ==== Print path analysis results ====
 
+    if (x$call$indicator_method == "measurement_model") {
+      tmp <- "|      Structrual Equation Modeling Results       |\n"
+    } else {
+      tmp <- "|             Path Analysis Results               |\n"
+    }
+
     cat("\n")
     cat("===================================================\n")
-    cat("|             Path Analysis Results               |\n")
+    cat(tmp)
     cat("===================================================\n")
     cat("\n")
 
     print(x$lm_out)
+
+    # ==== Fit Measures ====
+
+    fm_to_print <- c(
+      # "npar",
+      # "fmin",
+      # "chisq",
+      # "df",
+      # "pvalue",
+      "baseline.chisq",
+      "baseline.df",
+      "baseline.pvalue",
+      "cfi",
+      "tli",
+      "aic",
+      "bic",
+      "rmsea",
+      "rmsea.ci.lower",
+      "rmsea.ci.upper",
+      "rmsea.pvalue",
+      "rmsea.close.h0",
+      "rmsea.notclose.pvalue",
+      "rmsea.notclose.h0",
+      "srmr"
+    )
+
+    if (!setequal(lavaan::lavTech(x$lm_out, "options")$test,
+                  "standard")) {
+      fm_to_print <- c(
+        fm_to_print,
+        "cfi.robust",
+        "tli.robust",
+        "rmsea.robust",
+        "rmsea.ci.lower.robust",
+        "rmsea.ci.uppwer.robust",
+        "rmsea.pvalue.robust",
+        "rmsea.notclose.pvalue.robust"
+      )
+    }
+
+    tmp <- lavaan::fitMeasures(
+              x$lm_out,
+              fit.measures = fm_to_print,
+              output = "text")
+
+    print(tmp)
 
     # TODO:
     # - Need to improve the printout for users
@@ -2270,4 +2416,57 @@ print_lavaan_as_lm <- function(
           sep = "\n")
     }
   }
+}
+
+#' @noRd
+format_indicators <- function(
+  indicators
+) {
+  tmp1 <- sapply(
+    indicators,
+    function(x) {
+      out0 <- paste0(x, collapse = ", ")
+      out0
+    }
+  )
+  tmp2 <- paste0(names(indicators),
+                 ": ",
+                 tmp1)
+  tmp2
+}
+
+#' @noRd
+format_loadings <- function(
+  loadings,
+  digits
+) {
+  out0 <- lapply(
+    loadings,
+    function(xx) {
+      out0 <- formatC(
+                xx,
+                digits = digits,
+                format = "f")
+      out1 <- data.frame(Loading = out0)
+    }
+  )
+  out0
+}
+
+#' @noRd
+format_reliability <- function(
+  reliability,
+  digits
+) {
+  out0 <- unlist(reliability)
+  out1 <- formatC(
+    out0,
+    digits = digits,
+    format = "f"
+  )
+  out2 <- data.frame(
+    Variable = names(reliability),
+    Reliability = out1
+  )
+  out2
 }

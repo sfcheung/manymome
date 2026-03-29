@@ -197,6 +197,11 @@ expect_equal(out_simple$reliability[names(fit_rel)],
 expect_equal(out_simple$loadings[names(fit_rel)],
              get_loadings(fit_cfa))
 
+# Print
+
+expect_output(print(out),
+              "indicators")
+
 })
 
 test_that("q function: mediation with indicators: measurement model: boot_ci", {

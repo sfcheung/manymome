@@ -139,5 +139,9 @@ expect_equal(
   out_rel$loadings
 )
 
+# Print
+
+expect_output(print(out),
+              "scale scores")
 
 })
