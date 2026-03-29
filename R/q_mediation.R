@@ -133,6 +133,24 @@
 #' to indicate two different pathways from
 #' `x1` to `y1`.
 #'
+#' ## Scale Scores or Latent Variables
+#'
+#' The argument `indicators` can be
+#' used to indicate that one or more
+#' variables in the model are measured
+#' by observed indicators
+#'
+#' If regression is used to estimate
+#' the coefficients, then the mean scores
+#' (for now)
+#' of the indicators will be used in the model.
+#'
+#' (TO BE SUPPORTED) If structural equation
+#' modeling is used to estimate the
+#' coefficients, then these indicators
+#' will be used in teh model to define
+#' the latent variables.
+#'
 #' ## Workflow
 #'
 #' The coefficients of the model can be
@@ -293,6 +311,19 @@
 #' while `c2` and `c3` predicts `"dv"`.
 #' Default is `NULL`, no covariates.
 #'
+#' @param indicators Optional. A named
+#' vector of indicator names for scales or
+#' latent variables. If an indicator
+#' is to be reverse coded, add `"-"`
+#' before its names. For example,
+#' `list(x = c("x1", "x3"), m = c("-m1", "m2"))`
+#' denotes that `"x1"` and `"x3"` are
+#' the indicators of `x`, and `"m1"`
+#' and `"m2"` are the indicators of `m`.
+#' If named in this list, then these
+#' variables (`x` and `m` in this case)
+#' should not be present in `data`.
+#'
 #' @param data The data frame. Note that
 #' listwise deletion will be used and
 #' only cases with no missing data on
@@ -364,6 +395,19 @@
 #' equation modeling will be used and
 #' the model will be fitted by
 #' [lavaan::sem()]. Default is `"lm"`.
+#'
+#' @param indicator_method How indicators
+#' will be used.
+#' If set to `"scale_scores"`,
+#' the default if `fit_method` is
+#' `"lm"` or `"regression"`,
+#' scale scores will be computed (mean
+#' scores for now) first before fitting
+#' the models.
+#' If set to `"measurement_model"`,
+#' the default if `fit_method` is
+#' `"sem"` or `"lavaan"`,
+#' a measurement model will be added.
 #'
 #' @param missing If `fit_method` is
 #' set to `"sem"` or `"lavaan"`, this
@@ -478,6 +522,7 @@ q_mediation <- function(x,
                         y,
                         m = NULL,
                         cov = NULL,
+                        indicators = NULL,
                         data = NULL,
                         boot_ci = TRUE,
                         mc_ci = FALSE,
@@ -488,6 +533,7 @@ q_mediation <- function(x,
                         boot_type = c("perc", "bc"),
                         model = NULL,
                         fit_method = c("lm", "regression", "sem", "lavaan"),
+                        indicator_method = ifelse(fit_method %in% c("lm", "regression"), "scale_scores", "meaurement_model"),
                         missing = "fiml",
                         fixed.x = TRUE,
                         sem_args = list(),
@@ -540,7 +586,43 @@ q_mediation <- function(x,
          "Monte Carlo confidence intervals.")
   }
 
-  # ===== Form the model =====
+  if (!is.null(indicators)) {
+    has_indicators <- TRUE
+    check_indicators(indicators = indicators,
+                    data = data)
+  } else {
+    has_indicators <- FALSE
+  }
+
+  # ==== Compute scale scores ====
+
+  if (has_indicators) {
+    if (fit_method == "lm") {
+      # TODO:
+      # - Allow other scoring function
+      data_scale_scores <- scale_scores(
+                indicators = indicators,
+                data = data
+              )
+      data[, colnames(data_scale_scores)] <- data_scale_scores
+    }
+    if (fit_method == "lavaan") {
+      if (indicator_method == "measurement_model") {
+        # A placeholder for future code.
+      }
+      if ((indicator_method == "scale_scores")) {
+        # TODO:
+        # - Allow other scoring function
+        data_scale_scores <- scale_scores(
+                  indicators = indicators,
+                  data = data
+                )
+        data[, colnames(data_scale_scores)] <- data_scale_scores
+      }
+    }
+  }
+
+  # ==== Form the model =====
 
   if (isTRUE(model %in% c("simple", "serial", "parallel"))) {
     model_type <- "standard"
@@ -562,6 +644,16 @@ q_mediation <- function(x,
     tmp1 <- paths_to_models(model)
     lm_forms <- form_models_paths(tmp1,
                               cov = cov)
+  }
+
+  # ==== Indicator method ====
+
+  lm_measurement <- character(0)
+  if (has_indicators &&
+      (fit_method == "lavaan")) {
+    if (indicator_method == "measurement_model") {
+      lm_measurement <- measurement_syntax(indicators = indicators)
+    }
   }
 
   # ==== Do listwise deletion (lm only) ====
@@ -604,12 +696,32 @@ q_mediation <- function(x,
 
     # Always pass all the cases. Let missing do the listwise,
     # if na.action is na.omit
-    mm <- mm_from_lm_forms(
-            lm_forms,
-            data = data,
-            na.action = "na.pass"
-          )
+
+    if ((indicator_method == "measurement_model") &&
+        !is.null(indicators)) {
+      mm <- mm_from_lm_forms(
+              lm_forms,
+              indicators = indicators,
+              indicator_method = indicator_method,
+              lm_measurement = lm_measurement,
+              data = data,
+              na.action = "na.pass"
+            )
+    } else {
+      mm <- mm_from_lm_forms(
+              lm_forms,
+              data = data,
+              na.action = "na.pass"
+            )
+    }
+
     sem_model <- b_names_to_lavaan_model(mm$b_names)
+    if (indicator_method == "measurement_model") {
+      sem_model <- paste0(sem_model,
+                          "\n",
+                          lm_measurement,
+                          collapse = "\n")
+    }
 
     sem_args1 <- utils::modifyList(
                     sem_args,
@@ -625,7 +737,8 @@ q_mediation <- function(x,
                       sem_args1)
 
     fixed.x <- lavaan::lavTech(lm_all, "fixed.x")
-    lm_all_x <- lavaan::lavNames(lm_all, "ov.x")
+    lm_all_x <- c(lavaan::lavNames(lm_all, "ov.x"),
+                  lavaan::lavNames(lm_all, "ov.ind"))
     x_miss <- sum(
                 !stats::complete.cases(
                   mm$model_matrix[, lm_all_x, drop = FALSE]
@@ -677,6 +790,75 @@ q_mediation <- function(x,
   } else {
     ci_out <- NULL
   }
+
+  # ==== Reliability coefficients ====
+
+  if (has_indicators) {
+    reliability <- rep(NA_real_, length(indicators))
+    names(reliability) <- names(indicators)
+    loadings <- vector("list", length(indicators))
+    names(loadings) <- names(indicators)
+  } else {
+    reliability <- NULL
+    loadings <- NULL
+  }
+
+  if ((fit_method == "lm") &&
+      has_indicators) {
+
+    # ==== Reliability in regression ====
+
+    tmp <- scale_reliability(
+      indicators = indicators,
+      data = data,
+      method = "sem"
+    )
+    reliability <- tmp$full_output
+    loadings <- tmp$loadings
+  }
+
+  if ((fit_method == "lavaan") &&
+      has_indicators &&
+      (indicator_method == "measurement_model")) {
+
+    # ==== Reliability in measurement model ====
+
+    cfa_args <- utils::modifyList(
+                    sem_args,
+                    list(model = lm_measurement,
+                         data = mm$model_matrix,
+                         meanstructure = TRUE,
+                         warn = FALSE,
+                         se = "none",
+                         test = "none",
+                         std.lv = TRUE,
+                         missing = missing)
+                  )
+    fit_cfa <- do.call(
+                lavaan::cfa,
+                cfa_args
+              )
+    reliability <- semTools::compRelSEM(
+      fit_cfa
+    )
+    loadings <- get_loadings(fit_cfa)
+  }
+
+  if ((fit_method == "lavaan") &&
+      has_indicators &&
+      (indicator_method == "scale_scores")) {
+
+    # ==== Reliability with scale scores ====
+
+    tmp <- scale_reliability(
+      indicators = indicators,
+      data = data,
+      method = "sem"
+    )
+    reliability <- tmp$full_output
+    loadings <- tmp$loadings
+  }
+
 
   # ==== Indirect effect ====
 
@@ -924,6 +1106,7 @@ q_mediation <- function(x,
               y = y,
               m = m,
               fit_method = fit_method,
+              indicator_method = indicator_method,
               sem_args = sem_args,
               sem_model = sem_model,
               lm_out_lav = lm_out_lav,
@@ -933,7 +1116,10 @@ q_mediation <- function(x,
               x_miss = x_miss,
               lm_all_x = lm_all_x,
               model_type = model_type,
-              ci_type = ci_type)
+              ci_type = ci_type,
+              indicators = indicators,
+              reliability = reliability,
+              loadings = loadings)
   if (model_type == "standard") {
     model_class <- switch(model,
                           simple = "q_simple_mediation",
@@ -996,6 +1182,7 @@ q_simple_mediation <- function(x,
                                y,
                                m = NULL,
                                cov = NULL,
+                               indicators = NULL,
                                data = NULL,
                                boot_ci = TRUE,
                                mc_ci = FALSE,
@@ -1005,6 +1192,9 @@ q_simple_mediation <- function(x,
                                ci_type = NULL,
                                boot_type = c("perc", "bc"),
                                fit_method = c("lm", "regression", "sem", "lavaan"),
+                               indicator_method = ifelse(fit_method %in% c("lm", "regression"),
+                                                         "scale_scores",
+                                                         "meaurement_model"),
                                missing = "fiml",
                                fixed.x = TRUE,
                                sem_args = list(),
@@ -1024,6 +1214,7 @@ q_simple_mediation <- function(x,
                      y = y,
                      m = m,
                      cov = cov,
+                     indicators = indicators,
                      data = data,
                      boot_ci = boot_ci,
                      mc_ci = mc_ci,
@@ -1034,6 +1225,7 @@ q_simple_mediation <- function(x,
                      boot_type = boot_type,
                      model = "simple",
                      fit_method = fit_method,
+                     indicator_method = indicator_method,
                      missing = missing,
                      fixed.x = fixed.x,
                      sem_args = sem_args,
@@ -1095,6 +1287,7 @@ q_serial_mediation <- function(x,
                                y,
                                m = NULL,
                                cov = NULL,
+                               indicators = NULL,
                                data = NULL,
                                boot_ci = TRUE,
                                mc_ci = FALSE,
@@ -1104,6 +1297,9 @@ q_serial_mediation <- function(x,
                                ci_type = NULL,
                                boot_type = c("perc", "bc"),
                                fit_method = c("lm", "regression", "sem", "lavaan"),
+                               indicator_method = ifelse(fit_method %in% c("lm", "regression"),
+                                                         "scale_scores",
+                                                         "meaurement_model"),
                                missing = "fiml",
                                fixed.x = TRUE,
                                sem_args = list(),
@@ -1123,6 +1319,7 @@ q_serial_mediation <- function(x,
                      y = y,
                      m = m,
                      cov = cov,
+                     indicators = indicators,
                      data = data,
                      boot_ci = boot_ci,
                      mc_ci = mc_ci,
@@ -1133,6 +1330,7 @@ q_serial_mediation <- function(x,
                      boot_type = boot_type,
                      model = "serial",
                      fit_method = fit_method,
+                     indicator_method = indicator_method,
                      missing = missing,
                      fixed.x = fixed.x,
                      sem_args = sem_args,
@@ -1193,6 +1391,7 @@ q_parallel_mediation <- function(x,
                                  y,
                                  m = NULL,
                                  cov = NULL,
+                                 indicators = NULL,
                                  data = NULL,
                                  boot_ci = TRUE,
                                  mc_ci = FALSE,
@@ -1202,6 +1401,9 @@ q_parallel_mediation <- function(x,
                                  ci_type = NULL,
                                  boot_type = c("perc", "bc"),
                                  fit_method = c("lm", "regression", "sem", "lavaan"),
+                                 indicator_method = ifelse(fit_method %in% c("lm", "regression"),
+                                                           "scale_scores",
+                                                           "meaurement_model"),
                                  missing = "fiml",
                                  fixed.x = TRUE,
                                  sem_args = list(),
@@ -1221,6 +1423,7 @@ q_parallel_mediation <- function(x,
                      y = y,
                      m = m,
                      cov = cov,
+                     indicators = indicators,
                      data = data,
                      boot_ci = boot_ci,
                      mc_ci = mc_ci,
@@ -1231,6 +1434,7 @@ q_parallel_mediation <- function(x,
                      boot_type = boot_type,
                      model = "parallel",
                      fit_method = fit_method,
+                     indicator_method = indicator_method,
                      missing = missing,
                      fixed.x = fixed.x,
                      sem_args = sem_args,
@@ -1494,6 +1698,7 @@ print.q_mediation <- function(x,
                               ...) {
 
   fit_method <- x$fit_method
+  indicator_method <- x$indicator_method
 
   sem_style <- match.arg(sem_style)
 
@@ -1520,6 +1725,12 @@ print.q_mediation <- function(x,
   cat("\nOutcome(y):", x$y)
   cat("\nMediator(s)(m):", paste0(x$m, collapse = ", "))
   cat("\nModel:", model_name)
+  if (!is.null(x$indicators)) {
+    cat("\nIndicators used to:",
+        switch(indicator_method,
+               scale_scores = "Compute scale scores",
+               measurement_model = "Fit a measurement model"))
+  }
   cat("\n")
 
   if (fit_method == "lm") {
@@ -1594,6 +1805,92 @@ print.q_mediation <- function(x,
 
   }
 
+  # ==== Indicator-related info ====
+
+
+  if (!is.null(x$indicators)) {
+    cat("\n")
+    cat("===================================================\n")
+    cat("|              Indicator Information              |\n")
+    cat("===================================================\n")
+
+    # ==== Indicators ====
+
+    tmp <- format_indicators(indicators = x$indicators)
+    cat("\n")
+    cat("The indicators for the following variable(s):\n")
+    cat("\n")
+    cat(tmp, sep = "\n")
+    cat("\nNote:\n")
+    tmp <- strwrap(
+      paste0("- '-' denotes revserse-coded items."),
+      exdent = 2
+    )
+    cat(tmp, sep = "\n")
+
+    # ==== Reliability ====
+
+    # if (!is.null(x$reliability)) {
+      # tmp_rel <- format_reliability(
+      #           reliability = x$reliability,
+      #           digits = digits
+      #         )
+      # cat("\n")
+      # cat("The reliability coefficient(s):\n")
+      # cat("\n")
+      # print(tmp,
+      #       right = FALSE,
+      #       row.names = FALSE)
+      # cat("\nNote:\n")
+      # tmp <- strwrap(
+      #   paste0("- Reliability coefficients are",
+      #          " omega coefficients."),
+      #   exdent = 2
+      # )
+      # cat(tmp, sep = "\n")
+
+    # ==== Loadings ====
+
+    if (!is.null(x$loadings)) {
+      tmp <- format_loadings(loadings = x$loadings,
+                            digits = digits)
+      if (!is.null(x$reliability)) {
+        tmp_rel <- unlist(x$reliability)
+        tmp_rel <- formatC(
+                    tmp_rel,
+                    digits = digits,
+                    format = "f"
+                  )
+        tmp2_rel <- paste0("\nReliability: ", tmp_rel)
+      } else {
+        tmp2_rel <- rep("", length(tmp))
+        names(tmp2_rel) <- names(tmp)
+      }
+      cat("\n")
+      cat("The standardized factor loadings:\n")
+      for (xx in seq_along(tmp)) {
+        cat(paste0("\n", names(tmp)[xx],
+                   ": ",
+                   tmp2_rel[xx],"\n"))
+        print(tmp[[xx]])
+      }
+      cat("\nNote:\n")
+      tmp <- strwrap(
+        paste0("- Revserse-coded items have been",
+               " reverse-coded when estimating the loadings."),
+        exdent = 2
+      )
+      if (!is.null(x$reliability)) {
+        tmp2 <- strwrap(
+          paste0("- Reliability estimated by omage coefficients."),
+          exdent = 2
+        )
+        tmp <- c(tmp, tmp2)
+      }
+      cat(tmp, sep = "\n")
+    }
+  }
+
   # ==== Print path coefficients ====
 
   if (fit_method == "lm") {
@@ -1627,13 +1924,65 @@ print.q_mediation <- function(x,
 
     # ==== Print path analysis results ====
 
+    if (x$call$indicator_method == "measurement_model") {
+      tmp <- "|      Structrual Equation Modeling Results       |\n"
+    } else {
+      tmp <- "|             Path Analysis Results               |\n"
+    }
+
     cat("\n")
     cat("===================================================\n")
-    cat("|             Path Analysis Results               |\n")
+    cat(tmp)
     cat("===================================================\n")
     cat("\n")
 
     print(x$lm_out)
+
+    # ==== Fit Measures ====
+
+    fm_to_print <- c(
+      # "npar",
+      # "fmin",
+      # "chisq",
+      # "df",
+      # "pvalue",
+      "baseline.chisq",
+      "baseline.df",
+      "baseline.pvalue",
+      "cfi",
+      "tli",
+      "aic",
+      "bic",
+      "rmsea",
+      "rmsea.ci.lower",
+      "rmsea.ci.upper",
+      "rmsea.pvalue",
+      "rmsea.close.h0",
+      "rmsea.notclose.pvalue",
+      "rmsea.notclose.h0",
+      "srmr"
+    )
+
+    if (!setequal(lavaan::lavTech(x$lm_out, "options")$test,
+                  "standard")) {
+      fm_to_print <- c(
+        fm_to_print,
+        "cfi.robust",
+        "tli.robust",
+        "rmsea.robust",
+        "rmsea.ci.lower.robust",
+        "rmsea.ci.uppwer.robust",
+        "rmsea.pvalue.robust",
+        "rmsea.notclose.pvalue.robust"
+      )
+    }
+
+    tmp <- lavaan::fitMeasures(
+              x$lm_out,
+              fit.measures = fm_to_print,
+              output = "text")
+
+    print(tmp)
 
     # TODO:
     # - Need to improve the printout for users
@@ -2067,4 +2416,57 @@ print_lavaan_as_lm <- function(
           sep = "\n")
     }
   }
+}
+
+#' @noRd
+format_indicators <- function(
+  indicators
+) {
+  tmp1 <- sapply(
+    indicators,
+    function(x) {
+      out0 <- paste0(x, collapse = ", ")
+      out0
+    }
+  )
+  tmp2 <- paste0(names(indicators),
+                 ": ",
+                 tmp1)
+  tmp2
+}
+
+#' @noRd
+format_loadings <- function(
+  loadings,
+  digits
+) {
+  out0 <- lapply(
+    loadings,
+    function(xx) {
+      out0 <- formatC(
+                xx,
+                digits = digits,
+                format = "f")
+      out1 <- data.frame(Loading = out0)
+    }
+  )
+  out0
+}
+
+#' @noRd
+format_reliability <- function(
+  reliability,
+  digits
+) {
+  out0 <- unlist(reliability)
+  out1 <- formatC(
+    out0,
+    digits = digits,
+    format = "f"
+  )
+  out2 <- data.frame(
+    Variable = names(reliability),
+    Reliability = out1
+  )
+  out2
 }

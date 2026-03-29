@@ -1,4 +1,22 @@
-# manymome 0.3.4.1
+# manymome 0.3.4.2
+
+## New Features
+
+- Updated the `q_*` functions
+  (`q_mediation()`, `q_simple_mediation()`,
+  `q_serial_mediation()` and `q_parallel_mediation()`)
+  to support fitting a model on scale
+  scores computed using user-supplied
+  list of indicators. If `indicator_method`
+  is set to `"scale_scores"`. If
+  `indicator_method` is set to
+  `measurement_model` and the fit method
+  is structural equation modeling, then
+  a latent variable model with
+  a measurement part will be fitted.
+  (0.3.4.2)
+
+## Miscellaneous
 
 - The quick functions now properly handle
   a data frame which has already been processed

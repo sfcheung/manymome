@@ -64,9 +64,22 @@ fix_names_for_lavaan_i <- function(x) {
 # - lm_all: A list of the lm() outputs.
 mm_from_lm_forms <- function(
                       lm_forms,
+                      indicators = NULL,
+                      indicator_method = c("measurement_model", "scale_scores"),
+                      lm_measurement = character(0),
                       data,
                       na.action = "na.pass"
                     ) {
+  indicator_method <- match.arg(indicator_method)
+  if (!is.null(indicators) &&
+      (indicator_method == "measurement_model")) {
+    # Create dummy scale scores
+    data_scale_scores <- scale_scores(
+              indicators = indicators,
+              data = data
+            )
+    data[, colnames(data_scale_scores)] <- data_scale_scores
+  }
   data <- fix_names_for_lavaan(data)
   all_y <- names(lm_forms)
   lm_all <- sapply(all_y,
@@ -91,6 +104,14 @@ mm_from_lm_forms <- function(
   }
   # merge_model_matrix assumes cases can be matched row-by-row.
   mm <- merge_model_matrix(lm_all)
+  if (!is.null(indicators) &&
+      (indicator_method == "measurement_model")) {
+    tmp1 <- lavaan::lavaanify(lm_measurement)
+    tmp2 <- lavaan::lavNames(tmp1, "ov.ind")
+    mm[, tmp2] <- data[, tmp2]
+    # Remove the dummy scale scores
+    mm[, names(indicators)] <- NULL
+  }
   b_names <- sapply(lm_all,
                     function(x) names(x$coefficients),
                     USE.NAMES = TRUE,
@@ -121,7 +142,10 @@ mm_from_lm_forms <- function(
        b_names = b_names,
        terms = terms,
        coefficients = coefficients,
-       lm_all = lm_all)
+       lm_all = lm_all,
+       indicators = indicators,
+       indicator_method = indicator_method,
+       lm_measurement = lm_measurement)
 }
 
 #' @noRd
@@ -230,7 +254,8 @@ lm_from_lavaan_list_for_q <- function(
                                   mm,
                                   ci_level = .95,
                                   group_number = NULL,
-                                  rsq_test = TRUE
+                                  rsq_test = TRUE,
+                                  lm_measurement = character(0)
                                 ) {
   # Assume it has only one group
   fixed.x <- lavaan::lavTech(fit, "fixed.x")
@@ -469,6 +494,7 @@ fit_null <- function(
                 fit
               ) {
   dvs <- names(mm$model_matrices)
+
   mod_null <- sapply(
                   dvs,
                   function(y) {
@@ -478,6 +504,17 @@ fit_null <- function(
                   },
                   simplify = FALSE,
                   USE.NAMES = TRUE)
+  if (mm$indicator_method == "measurement_model") {
+    mod_null <- mapply(function(x, y) {
+        paste0(x, "\n", y)
+      },
+      x = mod_null,
+      MoreArgs = list(y = mm$lm_measurement),
+      SIMPLIFY = FALSE,
+      USE.NAMES = FALSE
+    )
+  }
+
   fit_data <- fit@Data
   fit_model <- fit@Model
   fit_sampstats <- fit@SampleStats
