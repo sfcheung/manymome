@@ -396,6 +396,19 @@
 #' the model will be fitted by
 #' [lavaan::sem()]. Default is `"lm"`.
 #'
+#' @param indicator_method How indicators
+#' will be used.
+#' If set to `"scale_scores"`,
+#' the default if `fit_method` is
+#' `"lm"` or `"regression"`,
+#' scale scores will be computed (mean
+#' scores for now) first before fitting
+#' the models.
+#' If set to `"measurement_model"`,
+#' the default if `fit_method` is
+#' `"sem"` or `"lavaan"`,
+#' a measurement model will be added.
+#'
 #' @param missing If `fit_method` is
 #' set to `"sem"` or `"lavaan"`, this
 #' argument determine how missing data
@@ -520,6 +533,7 @@ q_mediation <- function(x,
                         boot_type = c("perc", "bc"),
                         model = NULL,
                         fit_method = c("lm", "regression", "sem", "lavaan"),
+                        indicator_method = ifelse(fit_method %in% c("lm", "regression"), "scale_scores", "meaurement_model"),
                         missing = "fiml",
                         fixed.x = TRUE,
                         sem_args = list(),
@@ -592,12 +606,23 @@ q_mediation <- function(x,
               )
       data[, colnames(data_scale_scores)] <- data_scale_scores
     }
-    if (fit_method == "sem") {
-      stop("Do not yet support using indicators with sem/lavaan")
+    if (fit_method == "lavaan") {
+      if (indicator_method == "measurement_model") {
+        # A placeholder for future code.
+      }
+      if ((indicator_method == "scale_scores")) {
+        # TODO:
+        # - Allow other scoring function
+        data_scale_scores <- scale_scores(
+                  indicators = indicators,
+                  data = data
+                )
+        data[, colnames(data_scale_scores)] <- data_scale_scores
+      }
     }
   }
 
-  # ===== Form the model =====
+  # ==== Form the model =====
 
   if (isTRUE(model %in% c("simple", "serial", "parallel"))) {
     model_type <- "standard"
@@ -619,6 +644,16 @@ q_mediation <- function(x,
     tmp1 <- paths_to_models(model)
     lm_forms <- form_models_paths(tmp1,
                               cov = cov)
+  }
+
+  # ==== Indicator method ====
+
+  lm_measurement <- character(0)
+  if (has_indicators &&
+      (fit_method == "lavaan")) {
+    if (indicator_method == "measurement_model") {
+      lm_measurement <- measurement_syntax(indicators = indicators)
+    }
   }
 
   # ==== Do listwise deletion (lm only) ====
@@ -661,12 +696,32 @@ q_mediation <- function(x,
 
     # Always pass all the cases. Let missing do the listwise,
     # if na.action is na.omit
-    mm <- mm_from_lm_forms(
-            lm_forms,
-            data = data,
-            na.action = "na.pass"
-          )
+
+    if ((indicator_method == "measurement_model") &&
+        !is.null(indicators)) {
+      mm <- mm_from_lm_forms(
+              lm_forms,
+              indicators = indicators,
+              indicator_method = indicator_method,
+              lm_measurement = lm_measurement,
+              data = data,
+              na.action = "na.pass"
+            )
+    } else {
+      mm <- mm_from_lm_forms(
+              lm_forms,
+              data = data,
+              na.action = "na.pass"
+            )
+    }
+
     sem_model <- b_names_to_lavaan_model(mm$b_names)
+    if (indicator_method == "measurement_model") {
+      sem_model <- paste0(sem_model,
+                          "\n",
+                          lm_measurement,
+                          collapse = "\n")
+    }
 
     sem_args1 <- utils::modifyList(
                     sem_args,
@@ -682,7 +737,8 @@ q_mediation <- function(x,
                       sem_args1)
 
     fixed.x <- lavaan::lavTech(lm_all, "fixed.x")
-    lm_all_x <- lavaan::lavNames(lm_all, "ov.x")
+    lm_all_x <- c(lavaan::lavNames(lm_all, "ov.x"),
+                  lavaan::lavNames(lm_all, "ov.ind"))
     x_miss <- sum(
                 !stats::complete.cases(
                   mm$model_matrix[, lm_all_x, drop = FALSE]
@@ -1064,6 +1120,9 @@ q_simple_mediation <- function(x,
                                ci_type = NULL,
                                boot_type = c("perc", "bc"),
                                fit_method = c("lm", "regression", "sem", "lavaan"),
+                               indicator_method = ifelse(fit_method %in% c("lm", "regression"),
+                                                         "scale_scores",
+                                                         "meaurement_model"),
                                missing = "fiml",
                                fixed.x = TRUE,
                                sem_args = list(),
@@ -1094,6 +1153,7 @@ q_simple_mediation <- function(x,
                      boot_type = boot_type,
                      model = "simple",
                      fit_method = fit_method,
+                     indicator_method = indicator_method,
                      missing = missing,
                      fixed.x = fixed.x,
                      sem_args = sem_args,
@@ -1165,6 +1225,9 @@ q_serial_mediation <- function(x,
                                ci_type = NULL,
                                boot_type = c("perc", "bc"),
                                fit_method = c("lm", "regression", "sem", "lavaan"),
+                               indicator_method = ifelse(fit_method %in% c("lm", "regression"),
+                                                         "scale_scores",
+                                                         "meaurement_model"),
                                missing = "fiml",
                                fixed.x = TRUE,
                                sem_args = list(),
@@ -1195,6 +1258,7 @@ q_serial_mediation <- function(x,
                      boot_type = boot_type,
                      model = "serial",
                      fit_method = fit_method,
+                     indicator_method = indicator_method,
                      missing = missing,
                      fixed.x = fixed.x,
                      sem_args = sem_args,
@@ -1265,6 +1329,9 @@ q_parallel_mediation <- function(x,
                                  ci_type = NULL,
                                  boot_type = c("perc", "bc"),
                                  fit_method = c("lm", "regression", "sem", "lavaan"),
+                                 indicator_method = ifelse(fit_method %in% c("lm", "regression"),
+                                                           "scale_scores",
+                                                           "meaurement_model"),
                                  missing = "fiml",
                                  fixed.x = TRUE,
                                  sem_args = list(),
@@ -1295,6 +1362,7 @@ q_parallel_mediation <- function(x,
                      boot_type = boot_type,
                      model = "parallel",
                      fit_method = fit_method,
+                     indicator_method = indicator_method,
                      missing = missing,
                      fixed.x = fixed.x,
                      sem_args = sem_args,

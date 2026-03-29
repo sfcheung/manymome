@@ -25,6 +25,8 @@ q_mediation(
   boot_type = c("perc", "bc"),
   model = NULL,
   fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = ifelse(fit_method \%in\% c("lm", "regression"), "scale_scores",
+    "meaurement_model"),
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
@@ -49,6 +51,8 @@ q_simple_mediation(
   ci_type = NULL,
   boot_type = c("perc", "bc"),
   fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = ifelse(fit_method \%in\% c("lm", "regression"), "scale_scores",
+    "meaurement_model"),
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
@@ -73,6 +77,8 @@ q_serial_mediation(
   ci_type = NULL,
   boot_type = c("perc", "bc"),
   fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = ifelse(fit_method \%in\% c("lm", "regression"), "scale_scores",
+    "meaurement_model"),
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
@@ -97,6 +103,8 @@ q_parallel_mediation(
   ci_type = NULL,
   boot_type = c("perc", "bc"),
   fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = ifelse(fit_method \%in\% c("lm", "regression"), "scale_scores",
+    "meaurement_model"),
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
@@ -244,6 +252,19 @@ to \code{"sem"} or \code{"lavaan"}, structural
 equation modeling will be used and
 the model will be fitted by
 \code{\link[lavaan:sem]{lavaan::sem()}}. Default is \code{"lm"}.}
+
+\item{indicator_method}{How indicators
+will be used.
+If set to \code{"scale_scores"},
+the default if \code{fit_method} is
+\code{"lm"} or \code{"regression"},
+scale scores will be computed (mean
+scores for now) first before fitting
+the models.
+If set to \code{"measurement_model"},
+the default if \code{fit_method} is
+\code{"sem"} or \code{"lavaan"},
+a measurement model will be added.}
 
 \item{missing}{If \code{fit_method} is
 set to \code{"sem"} or \code{"lavaan"}, this
