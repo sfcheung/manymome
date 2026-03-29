@@ -57,7 +57,7 @@ Imports:
     methods,
     lmhelprs,
     psych,
-    semTools
+    semTools (>= 0.5-8)
 Depends:
     R (>= 3.5.0)
 LazyData: true
