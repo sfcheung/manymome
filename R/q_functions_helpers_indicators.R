@@ -286,13 +286,20 @@ scale_reliability_i_sem <- function(
   # ==== Store the loadings ====
 
   if (fit_ok) {
-    loadings <- methods::getMethod("coef",
-                      signature = "lavaan",
-                      where = asNamespace("lavaan"))(fit)
-    i <- grepl("^f=~", names(loadings))
-    loadings <- loadings[i]
-    names(loadings) <- gsub("^f=~", "", names(loadings))
-    loadings <- loadings[ind]
+    est <- lavaan::parameterEstimates(fit,
+              se = FALSE,
+              standardized = TRUE)
+    # loadings <- methods::getMethod("coef",
+    #                   signature = "lavaan",
+    #                   where = asNamespace("lavaan"))(fit)
+    # i <- grepl("^f=~", names(loadings))
+    # loadings <- loadings[i]
+    # names(loadings) <- gsub("^f=~", "", names(loadings))
+    # loadings <- loadings[ind]
+    i <- est$op == "=~"
+    est <- est[i, , drop = FALSE]
+    loadings <- est$std.all[i]
+    names(loadings) <- est$rhs
   } else {
     loadings <- rep(NA, length(ind))
     names(loadings) <- ind
@@ -366,14 +373,17 @@ get_loadings <- function(
   object
 ) {
   lv <- lavaan::lavNames(object, "lv")
-  pt <- lavaan::parameterTable(object)
+  pt <- lavaan::parameterEstimates(
+          object,
+          se = FALSE,
+          standardized = TRUE)
   pt <- pt[pt$op == "=~", ]
   names(lv) <- lv
   out0 <- lapply(
     lv,
     function(x) {
       y1 <- pt[pt$lhs == x, "rhs"]
-      y2 <- pt[pt$lhs == x, "est"]
+      y2 <- pt[pt$lhs == x, "std.all"]
       names(y2) <- y1
       y2
     }

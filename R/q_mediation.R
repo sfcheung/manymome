@@ -1867,7 +1867,7 @@ print.q_mediation <- function(x,
         names(tmp2_rel) <- names(tmp)
       }
       cat("\n")
-      cat("The factor loadings for the following variable(s):\n")
+      cat("The standardized factor loadings:\n")
       for (xx in seq_along(tmp)) {
         cat(paste0("\n", names(tmp)[xx],
                    ": ",
