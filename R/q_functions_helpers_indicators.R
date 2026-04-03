@@ -288,7 +288,8 @@ scale_reliability_i_sem <- function(
   if (fit_ok) {
     est <- lavaan::parameterEstimates(fit,
               se = FALSE,
-              standardized = TRUE)
+              standardized = TRUE,
+              remove.step1 = FALSE)
     # loadings <- methods::getMethod("coef",
     #                   signature = "lavaan",
     #                   where = asNamespace("lavaan"))(fit)
@@ -376,7 +377,8 @@ get_loadings <- function(
   pt <- lavaan::parameterEstimates(
           object,
           se = FALSE,
-          standardized = TRUE)
+          standardized = TRUE,
+          remove.step1 = FALSE)
   pt <- pt[pt$op == "=~", ]
   names(lv) <- lv
   out0 <- lapply(

@@ -2028,7 +2028,8 @@ print.q_mediation <- function(x,
               level = lm_ci_level,
               rsquare = TRUE,
               output = "text",
-              standardized = lm_beta
+              standardized = lm_beta,
+              remove.step1 = FALSE
             )
 
       i_var <- (est$op == "~~") &

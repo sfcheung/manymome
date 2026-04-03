@@ -263,7 +263,8 @@ lm_from_lavaan_list_for_q <- function(
     ptable <- lavaan::parameterEstimates(fit,
                                         standardized = TRUE,
                                         level = ci_level,
-                                        rsquare = TRUE)
+                                        rsquare = TRUE,
+                                        remove.step1 = FALSE)
   } else {
     # Need to refit the model to get std.nox
     # lavaan does not compute std.nox if fixed.x is FALSE
@@ -287,14 +288,16 @@ lm_from_lavaan_list_for_q <- function(
     ptable <- lavaan::parameterEstimates(fit,
                                         standardized = TRUE,
                                         level = ci_level,
-                                        rsquare = TRUE)
+                                        rsquare = TRUE,
+                                        remove.step1 = FALSE)
     tmp <- lavaan::parameterEstimates(fit_random_x,
                                       standardized = "std.nox",
                                       se = FALSE,
                                       zstat = FALSE,
                                       pvalue = FALSE,
                                       ci = FALSE,
-                                      rsquare = TRUE)
+                                      rsquare = TRUE,
+                                      remove.step1 = FALSE)
     ptable$std.nox <- tmp$std.nox
   }
   b_names <- mm$b_names

@@ -1,4 +1,4 @@
-# manymome 0.3.4.3
+# manymome 0.3.4.4
 
 ## New Features
 
@@ -22,6 +22,11 @@
   a data frame which has already been processed
   by `na.omit()` and so has the attribute
   `na.action` set. (0.3.4.1)
+
+- Added `remove.step1 = FALSE` for calls
+  to `lavaan::parameterEstimates()`, to
+  adapt for output from `lavaan::sam()`.
+  (0.3.4.4)
 
 # manymome 0.3.4
 

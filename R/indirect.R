@@ -255,7 +255,7 @@ indirect_i <- function(x,
     # - df_residual
     fit <- auto_lm2list(fit)
     if (is.null(est)) {
-      est <- lav_est(fit)
+      est <- lav_est(fit, remove.step1 = FALSE)
     }
     ngroups <- 1
     if (!is.null(est$group)) {
