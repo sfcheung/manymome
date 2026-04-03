@@ -125,7 +125,7 @@ get_prod <- function(x,
                      skip_indicators = TRUE) {
     fit <- auto_lm2list(fit)
     if (is.null(est)) {
-      est <- lav_est(fit, se = FALSE, ci = FALSE)
+      est <- lav_est(fit, se = FALSE, ci = FALSE, remove.step1 = FALSE)
     }
     all_prods <- NA
     if (inherits(fit, "lavaan") || inherits(fit, "lavaan.mi")) {

@@ -326,7 +326,8 @@ plot.q_mediation <- function(
   est <- switch(
             fit_type,
             lm = lmhelprs::lm_list_to_partable(fit),
-            lavaan = lavaan::parameterEstimates(fit)
+            lavaan = lavaan::parameterEstimates(fit,
+                                                remove.step1 = FALSE)
           )
 
   # ==== Standardized Solution ====

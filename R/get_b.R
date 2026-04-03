@@ -36,7 +36,7 @@ get_b <- function(x,
          fit <- auto_lm2list(fit)
       }
     if (is.null(est)) {
-      est <- lav_est(fit, se = FALSE, ci = FALSE)
+      est <- lav_est(fit, se = FALSE, ci = FALSE, remove.step1 = FALSE)
     }
     if (!is.null(group_number)) {
         est <- est[est$group == group_number, ]
