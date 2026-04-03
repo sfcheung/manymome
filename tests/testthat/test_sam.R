@@ -4,7 +4,7 @@ library(manymome)
 library(testthat)
 suppressMessages(library(lavaan))
 
-test_that("SAM: Temp tests", {
+test_that("SAM: Indirect effects", {
 
 # Test when functions will SAM
 
@@ -21,43 +21,86 @@ f1 =~ x01 + x02 + x03
 f2 =~ x04 + x05 + x06 + x07
 f3 =~ x08 + x09 + x10
 f4 =~ x11 + x12 + x13 + x14
-f3 ~  a1*f1 + a2*f2
-f4 ~  b1*f1 + b3*f3
-a1b3 := a1 * b3
-a2b3 := a2 * b3
+f2 ~ a2*f1
+f3 ~ a3*f1
+f4 ~  b2*f2 + b3*f3 + cp*f1
+a2b2 := a2 * b2
+a3b3 := a3 * b3
 "
 
 # The warning is expected
 fit <- sam(
   model = mod,
   data = data_sem_miss,
-  missing = "fiml"
+  missing = "fiml",
+  warn = FALSE
 )
-summary(fit)
+# summary(fit)
 
-ind <- indirect_effect(
-  x = "f2",
+ind2 <- indirect_effect(
+  x = "f1",
+  y = "f4",
+  m = "f2",
+  fit = fit
+)
+ind3 <- indirect_effect(
+  x = "f1",
   y = "f4",
   m = "f3",
   fit = fit
 )
 
-ind
+expect_equal(coef(ind2),
+             coef(fit, type = "user")["a2b2"],
+             ignore_attr = TRUE)
+expect_equal(coef(ind3),
+             coef(fit, type = "user")["a3b3"],
+             ignore_attr = TRUE)
 
-boot_out <- do_boot(
-  fit,
-  R = 100,
-  seed = 1234
-)
+paths <- all_indirect_paths(fit)
 
-ind <- indirect_effect(
-  x = "f2",
-  y = "f4",
-  m = "f3",
+expect_true(length(paths) == 2)
+
+ind_all <- many_indirect_effects(
+              paths,
+              fit = fit)
+
+expect_equal(coef(ind_all),
+             c(coef(ind2), coef(ind3)),
+             ignore_attr = TRUE)
+
+mc_out <- do_mc(
   fit = fit,
-  boot_ci = TRUE,
-  boot_out = boot_out
+  R = 100,
+  seed = 1234,
+  parallel = FALSE,
+  progress = !is_testing()
 )
+
+ind2_mc <- indirect_effect(
+  x = "f1",
+  y = "f4",
+  m = "f2",
+  fit = fit,
+  mc_ci = TRUE,
+  mc_out = mc_out
+)
+
+tmp1 <- vcov(fit)
+set.seed(1234)
+tmp2 <- MASS::mvrnorm(
+          n = 100,
+          mu = coef(fit)[colnames(tmp1)],
+          Sigma = tmp1)
+tmp3 <- apply(tmp2[, c("a2", "b2")], MARGIN = 1, prod)
+chk <- boot_ci_internal(
+  t0 = prod(coef(fit)[c("a2", "b2")]),
+  t = cbind(tmp3)
+)
+
+expect_equal(confint(ind2_mc),
+             chk,
+             ignore_attr = TRUE)
 
 })
 
