@@ -1,4 +1,4 @@
-# manymome 0.3.4.2
+# manymome 0.3.4.3
 
 ## New Features
 
@@ -14,7 +14,7 @@
   is structural equation modeling, then
   a latent variable model with
   a measurement part will be fitted.
-  (0.3.4.2)
+  (0.3.4.2, 0.3.4.3)
 
 ## Miscellaneous
 

@@ -533,7 +533,7 @@ q_mediation <- function(x,
                         boot_type = c("perc", "bc"),
                         model = NULL,
                         fit_method = c("lm", "regression", "sem", "lavaan"),
-                        indicator_method = ifelse(fit_method %in% c("lm", "regression"), "scale_scores", "meaurement_model"),
+                        indicator_method = NULL,
                         missing = "fiml",
                         fixed.x = TRUE,
                         sem_args = list(),
@@ -578,6 +578,24 @@ q_mediation <- function(x,
     fit_method <- "lm"
   }
 
+  # ==== Set indicator_method ====
+
+  if (!is.null(indicator_method)) {
+    indicator_method <- match.arg(indicator_method,
+                                  c("scale_scores",
+                                    "measurement_model"))
+    if ((indicator_method == "measurement_model") &&
+        (fit_method == "lm")) {
+      stop("indicator_method == 'measurement_model' is ",
+           "not supported for regression-based fit_method.")
+    }
+  } else {
+    indicator_method <- switch(
+        fit_method,
+        lavaan = "measurement_model",
+        lm = "scale_scores")
+  }
+
   # ==== Sanity checks ====
 
   if ((fit_method == "lm") &&
@@ -610,7 +628,7 @@ q_mediation <- function(x,
       if (indicator_method == "measurement_model") {
         # A placeholder for future code.
       }
-      if ((indicator_method == "scale_scores")) {
+      if (indicator_method == "scale_scores") {
         # TODO:
         # - Allow other scoring function
         data_scale_scores <- scale_scores(
@@ -1194,7 +1212,7 @@ q_simple_mediation <- function(x,
                                fit_method = c("lm", "regression", "sem", "lavaan"),
                                indicator_method = ifelse(fit_method %in% c("lm", "regression"),
                                                          "scale_scores",
-                                                         "meaurement_model"),
+                                                         "measurement_model"),
                                missing = "fiml",
                                fixed.x = TRUE,
                                sem_args = list(),
@@ -1299,7 +1317,7 @@ q_serial_mediation <- function(x,
                                fit_method = c("lm", "regression", "sem", "lavaan"),
                                indicator_method = ifelse(fit_method %in% c("lm", "regression"),
                                                          "scale_scores",
-                                                         "meaurement_model"),
+                                                         "measurement_model"),
                                missing = "fiml",
                                fixed.x = TRUE,
                                sem_args = list(),
@@ -1403,7 +1421,7 @@ q_parallel_mediation <- function(x,
                                  fit_method = c("lm", "regression", "sem", "lavaan"),
                                  indicator_method = ifelse(fit_method %in% c("lm", "regression"),
                                                            "scale_scores",
-                                                           "meaurement_model"),
+                                                           "measurement_model"),
                                  missing = "fiml",
                                  fixed.x = TRUE,
                                  sem_args = list(),
@@ -1924,7 +1942,7 @@ print.q_mediation <- function(x,
 
     # ==== Print path analysis results ====
 
-    if (x$call$indicator_method == "measurement_model") {
+    if (isTRUE(x$call$indicator_method == "measurement_model")) {
       tmp <- "|      Structrual Equation Modeling Results       |\n"
     } else {
       tmp <- "|             Path Analysis Results               |\n"

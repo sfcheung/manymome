@@ -504,7 +504,7 @@ fit_null <- function(
                   },
                   simplify = FALSE,
                   USE.NAMES = TRUE)
-  if (mm$indicator_method == "measurement_model") {
+  if (isTRUE(mm$indicator_method == "measurement_model")) {
     mod_null <- mapply(function(x, y) {
         paste0(x, "\n", y)
       },
