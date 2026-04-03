@@ -104,6 +104,79 @@ expect_equal(confint(ind2_mc),
 
 })
 
+test_that("SAM: boot_ci: se = 'bootstrap'", {
+
+# Test when functions will SAM
+
+mod <-
+"
+f1 =~ x01 + x02 + x03
+f2 =~ x04 + x05 + x06 + x07
+f3 =~ x08 + x09 + x10
+f4 =~ x11 + x12 + x13 + x14
+f2 ~ a2*f1
+f3 ~ a3*f1
+f4 ~  b2*f2 + b3*f3 + cp*f1
+a2b2 := a2 * b2
+a3b3 := a3 * b3
+"
+
+fit <- sam(
+  model = mod,
+  data = data_sem,
+  se = "bootstrap",
+  bootstrap.args = list(R = 10),
+  iseed = 1234
+)
+
+boot_out <- do_boot(
+  fit,
+  progress = !is_testing(),
+  parallel = FALSE)
+
+suppressWarnings(
+ind2 <- indirect_effect(
+  x = "f1",
+  y = "f4",
+  m = "f2",
+  fit = fit,
+  boot_ci = TRUE,
+  boot_out = boot_out)
+)
+suppressWarnings(
+ind3 <- indirect_effect(
+  x = "f1",
+  y = "f4",
+  m = "f3",
+  fit = fit,
+  boot_ci = TRUE,
+  boot_out = boot_out)
+)
+
+tmp <- lavInspect(fit, "boot")[1:10, ]
+
+chk_a2b2 <- apply(
+            tmp[, c("a2", "b2")],
+            MARGIN = 1,
+            FUN = prod
+          )
+
+expect_equal(ind2$boot_indirect,
+             chk_a2b2,
+             ignore_attr = TRUE)
+
+chk_a3b3 <- apply(
+            tmp[, c("a3", "b3")],
+            MARGIN = 1,
+            FUN = prod
+          )
+
+expect_equal(ind3$boot_indirect,
+             chk_a3b3,
+             ignore_attr = TRUE)
+
+})
+
 test_that("SAM: do_boot", {
 
 # Test when functions will SAM
