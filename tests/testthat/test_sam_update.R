@@ -12,6 +12,7 @@ data_sem_miss[11:20, c(1:3, 5:14)] <- NA
 data_sem_miss[21:30, c(1:7, 9:14)] <- NA
 data_sem_miss[31:40, c(1:10, 12:14)] <- NA
 data_sem_miss[41:50, ] <- NA
+data_sem_miss[200, ] <- NA
 
 mod <-
 "
@@ -26,118 +27,207 @@ a2b2 := a2 * b2
 a3b3 := a3 * b3
 "
 
-# The warning is expected
-fit <- sam(
-  model = mod,
-  data = data_sem,
-  warn = FALSE
-)
-
-fit.sem <- sem(
-  model = mod,
-  data = data_sem
-)
-
-fit@internal$sam.cmd
-fit@internal$sam.mm.list
-fit@internal$sam.mm.args
-fit@internal$sam.struc.args
-fit@internal$sam.method
-fit@internal$sam.lavoptions
-fit@internal$sam.lavoptions$se
-fit@internal$sam.local.options
-fit@internal$sam.global.options
-
-dat_used <- lavInspect(fit, "data")
-n <- nrow(dat_used)
-set.seed(1234)
-dat2 <- dat_used[sample.int(n, replace = FALSE), ]
-expect_equal(colMeans(dat_used),
-             colMeans(dat2))
-expect_equal(colMeans(data_sem),
-             colMeans(dat2))
-
-# fit2 <- sam(
-#   model = fit,
-#   data = dat2,
-#   warn = FALSE
-# )
-
-fit_edited <- fit
-
-# From the help page of lav_data_update
-lavdata <- fit@Data
-lavoptions <- lavInspect(fit, "options")
-
-# create bootstrap sample
-set.seed(1234)
-boot.idx <- sample(x = nobs(fit), size = nobs(fit), replace = TRUE)
-newX <- list(lavdata@X[[1]][boot.idx,])
-
-# generate update lavdata object
-newdata <- lav_data_update(lavdata = lavdata, newX = newX,
-                           lavoptions = lavoptions)
-str(newdata)
-
-fit_edited@Data <- newdata
-
-# From the help page of lav_samplestats_from_data
-newsampleStats <- lav_samplestats_from_data(lavdata = newdata,
-                                         lavoptions = lavoptions)
-fit_edited@SampleStats <- newsampleStats
-
-fit2 <- sam(
-  model = fit_edited,
-  warn = FALSE
-)
-
-dat2 <- data_sem[sample.int(n), ]
-colnames(dat2) <- colnames(data_sem)
-head(dat2)
-head(lavInspect(fit2, "data"))
-tail(dat2)
-tail(lavInspect(fit2, "data"))
-colMeans(dat2)
-colMeans(newX[[1]])
-
-dat2 <- lavInspect(fit2, "data")
-fit3 <- sam(
-  model = mod,
-  data = dat2,
-  warn = FALSE
-)
-
-head(lavInspect(fit2, "data"))
-head(lavInspect(fit3, "data"))
-head(lavInspect(fit, "data"))
-colMeans(data_sem)
-colMeans(dat2)
-colMeans(lavInspect(fit, "data"))
-colMeans(lavInspect(fit2, "data"))
-colMeans(lavInspect(fit3, "data"))
-
-fit
-fit3
-fit2
-
-expect_equal(coef(fit2),
-             coef(fit3),
-             tolerance = 1e-5)
-expect_equal(coef(fit),
-             coef(fit3),
-             tolerance = 1e-5)
+set.seed(5981470)
+data_sem_miss$gp <- sample(c("gp1", "gp2"),
+                      size = nrow(data_sem_miss),
+                      replace = TRUE)
 
 # The warning is expected
-fitb <- sam(
+fit1 <- sam(
   model = mod,
   data = data_sem_miss,
-  se = "bootstrap",
-  bootstrap.args = list(R = 2),
+  group = "gp",
   missing = "fiml",
   warn = FALSE
 )
 
-fitb@internal$sam.lavoptions$se
-fitb@Options$bootstrap
+sam_update_internal_i <- function(
+  object,
+  boot_idx = NULL
+) {
+  lavdata <- object@Data
+  lavoptions <- lavaan::lavInspect(
+                  object,
+                  "options"
+                )
+  newX <- mapply(
+            function(x, y) {
+              x[y, ]
+            },
+            x = lavdata@X,
+            y = boot_idx
+          )
+  newdata <- lavaan::lav_data_update(
+              lavdata = lavdata,
+              newX = newX,
+              lavoptions = lavoptions
+            )
+  newsampleStats <- lavaan::lav_samplestats_from_data(
+                        lavdata = newdata,
+                        lavoptions = lavoptions
+                      )
+
+  # Based on lavaan:::lav_sam_step0()
+
+  x <- object
+
+  x@Options$do.fit <- FALSE
+  if (x@internal$sam.method %in%
+      c("local", "fsr", "cfsr")) {
+    x@Options$sample.icov <- TRUE
+  }
+  x@Options$se <- "none"
+  x@Options$test <- "none"
+  x@Options$ceq.simple <- TRUE
+  x@Options$check.lv.interaction <- FALSE
+  if (x@Options$se %in%
+      c("local", "ij", "twostep.robust")) {
+    x@Options$sample.icov <- TRUE
+    x@Options$NACOV <- TRUE
+    x@Options$fixed.x <- FALSE
+    x@Options$ov.order <- "force.model"
+  }
+  # Any lv interaction terms?
+  if (length(lavaan::lavNames(x, "lv.interaction")) > 0L) {
+    x@Options$meanstructure  <- TRUE
+  }
+
+  x@internal <- list()
+
+  x <- lavaan::lavaan(
+    slotData = newdata,
+    slotSampleStats = newsampleStats,
+    slotOptions = x@Options,
+    slotParTable = x@ParTable
+  )
+
+  x@internal <- object@internal
+
+  if ((x@Model@categorical) &&
+      (x@Options$se == "twostep")) {
+    if (x@internal$sam.method == "local") {
+      x@Options$se <- "twostep.robust"
+    }
+  }
+  PT <- x@ParTable
+  PT$est <- PT$ustart
+  if (any(PT$exo > 0L)) {
+    PT$est[PT$exo > 0L] <- PT$start[PT$exo > 0L]
+  }
+  PT$se <- rep(as.numeric(NA), length(PT$lhs))
+  PT$se[(PT$free == 0L) & (!is.na(PT$ustart))] <- 0.0
+  x@ParTable <- PT
+
+  out <- lavaan::sam(
+    model = x
+  )
+  out
+}
+
+# Create the test dataset
+fit1_data <- lavInspect(fit1,
+                        "data",
+                        drop.list.single.group = FALSE)
+case_idx <- lavInspect(fit1,
+                       "case.idx",
+                       drop.list.single.group = FALSE)
+lapply(case_idx, range)
+sapply(case_idx, length)
+empty_idx <- lavInspect(fit1,
+                       "empty.idx",
+                       drop.list.single.group = FALSE)
+sapply(empty_idx, length)
+(ns <- sapply(fit1_data, nrow))
+fit1_data <- mapply(
+  function(x, y) {
+    rownames(x) <- y
+    x
+  },
+  x = fit1_data,
+  y = case_idx
+)
+ns <- sapply(fit1_data, nrow)
+
+set.seed(234)
+boot_idx <- mapply(
+  function(x, y) {
+    x0 <- x[-y]
+    sample(x0,
+           size = length(x0),
+           replace = TRUE)
+  },
+  x = case_idx,
+  y = empty_idx
+)
+lapply(boot_idx, range)
+sapply(boot_idx, length)
+
+boot_idx2 <- mapply(
+  function(x, y) {
+    match(as.character(x), rownames(y))
+  },
+  x = boot_idx,
+  y = fit1_data
+)
+
+# Create the dataset for the check
+fit1_data_boot <- mapply(
+  function(x, idx) {
+    x[as.character(idx), , drop = FALSE]
+  },
+  x = fit1_data,
+  idx = boot_idx
+)
+sapply(fit1_data_boot, nrow)
+
+fit1_data_boot <- mapply(
+  function(x, y) {
+    x <- as.data.frame(x)
+    x$gp <- y
+    x
+  },
+  x = fit1_data_boot,
+  y = names(fit1_data_boot),
+  SIMPLIFY = FALSE
+)
+sapply(fit1_data_boot, nrow)
+fit1_data_boot <- do.call(rbind, fit1_data_boot)
+row.names(fit1_data_boot) <- NULL
+nrow(fit1_data_boot)
+nrow(na.omit(fit1_data_boot))
+nrow(na.omit(do.call(rbind, fit1_data)))
+
+fit1_chk <- sam(
+  model = mod,
+  data = fit1_data_boot,
+  group = "gp",
+  missing = "fiml",
+  warn = FALSE
+)
+# Must be equal
+lavInspect(fit1_chk, "nobs")
+lavInspect(fit1, "nobs")
+
+# Update sam
+fit1_updated <- sam_update_internal_i(
+  fit1,
+  boot_idx = boot_idx2
+)
+
+expect_equal(coef(fit1_chk),
+             coef(fit1_updated),
+             tolerance = 1e-4)
+
+expect_equal(vcov(fit1_chk),
+             vcov(fit1_updated),
+             tolerance = 1e-4)
+
+expect_equal(fit1_chk@internal$sam.struc.fit,
+             fit1_updated@internal$sam.struc.fit,
+             tolerance = 1e-4)
+
+expect_equal(fit1_chk@internal$sam.mm.rel,
+             fit1_updated@internal$sam.mm.rel,
+             tolerance = 1e-4)
 
 })
