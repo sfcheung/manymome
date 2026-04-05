@@ -208,11 +208,29 @@ fit2boot_out_do_boot <- function(fit,
       }
     dat_org <- lav_data_used(fit,
                              drop_list_single_group = TRUE)
+    case_idx <- lavaan::lavInspect(
+                  fit,
+                  "case.idx",
+                  drop.list.single.group = FALSE
+                )
     ngp <- lavaan::lavTech(fit, "ngroups")
+    empty_idx <- lavaan::lavInspect(fit, "empty.idx")
     if (ngp == 1) {
         n <- nrow(dat_org)
+        case_idx <- seq_len(n)
+        if (length(empty_idx) > 0) {
+          case_idx <- case_idx[-empty_idx]
+        }
       } else {
         n <- sapply(dat_org, nrow)
+        case_idx <- vector("list", ngp)
+        for (ii in seq_len(ngp)) {
+          tmp <- seq_len(n[ii])
+          if (length(empty_idx[[ii]]) > 0) {
+            tmp <- tmp[-empty_idx[[ii]]]
+          }
+          case_idx[[ii]] <- tmp
+        }
       }
     boot_test <- suppressWarnings(boot_i(dat_org,
                                          start = lavaan::parameterTable(fit)$start))
@@ -249,10 +267,35 @@ fit2boot_out_do_boot <- function(fit,
     requireNamespace("parallel", quietly = TRUE)
     if (!is.null(seed)) set.seed(seed)
     if (ngp == 1) {
-        ids <- replicate(R, sample.int(n, replace = TRUE), simplify = FALSE)
+        # ids <- replicate(R, sample.int(n, replace = TRUE), simplify = FALSE)
+        ids <- replicate(
+                    R,
+                    c(sample(
+                      case_idx,
+                      size = length(case_idx),
+                      replace = TRUE
+                      ), empty_idx),
+                    simplify = FALSE
+                  )
       } else {
-        ids <- replicate(R, sapply(n, sample.int, replace = TRUE, simplify = FALSE),
-                         simplify = FALSE)
+        # ids <- replicate(R, sapply(n, sample.int, replace = TRUE, simplify = FALSE),
+        #                  simplify = FALSE)
+        ids <- replicate(
+                    R,
+                    mapply(
+                      function(xx, yy) {
+                        out <- sample(
+                                xx,
+                                size = length(xx),
+                                replace = TRUE
+                              )
+                        c(out, yy)
+                      },
+                      xx = case_idx,
+                      yy = empty_idx,
+                      SIMPLIFY = FALSE),
+                    simplify = FALSE
+                  )
       }
     if (parallel) {
         if (is.numeric(ncores)) {

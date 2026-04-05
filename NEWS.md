@@ -1,4 +1,4 @@
-# manymome 0.3.4.4
+# manymome 0.3.4.5
 
 ## New Features
 
@@ -27,6 +27,12 @@
   to `lavaan::parameterEstimates()`, to
   adapt for output from `lavaan::sam()`.
   (0.3.4.4)
+
+- Updated `do_boot()` to handle a fit
+  object with empty cases (cases included
+  but not used due to missing data on
+  all variables in the model).
+  (0.3.4.5)
 
 # manymome 0.3.4
 
