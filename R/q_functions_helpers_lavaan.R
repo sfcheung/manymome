@@ -326,18 +326,18 @@ lm_from_lavaan_list_for_q <- function(
 
   if (rsq_test) {
     # ==== Null models ====
-    fit_null <- fit_null(
+    fit_null_list <- fit_null(
                 mm = mm,
                 fit = fit
               )
     # ==== Tests of R-squares ====
     rsq_test <- rsquare_test(
                   fit = fit,
-                  fit_null = fit_null
+                  fit_null = fit_null_list
                 )
   } else {
-    fit_null <- vector("list", length(dvs))
-    names(fit_null) <- dvs
+    fit_null_list <- vector("list", length(dvs))
+    names(fit_null_list) <- dvs
     tmp1 <- vector("numeric", length(dvs))
     tmp1[] <- NA
     names(tmp1) <- dvs
@@ -378,7 +378,7 @@ lm_from_lavaan_list_for_q <- function(
                          rsq,
                          rsq_test,
                          fit_null_lrt,
-                         fit_null,
+                         fit_null_i,
                          term_types) {
                   list(
                         dv = dv,
@@ -389,7 +389,7 @@ lm_from_lavaan_list_for_q <- function(
                         rsquare = rsq,
                         rsq_test = rsq_test,
                         fit_null_lrt = fit_null_lrt,
-                        fit_null = fit_null,
+                        fit_null = fit_null_i,
                         term_types = term_types
                       )
                 },
@@ -400,7 +400,7 @@ lm_from_lavaan_list_for_q <- function(
                 rsq = rsq_list,
                 rsq_test = rsq_test$pvalues,
                 fit_null_lrt = rsq_test$lrt_out,
-                fit_null = fit_null,
+                fit_null_i = fit_null_list,
                 coefs_lm = coefs_lm_list,
                 term_types = term_types_list,
                 SIMPLIFY = FALSE,
@@ -547,10 +547,10 @@ fit_null <- function(
 # - A named list of lavTestLRT() output
 rsquare_test <- function(
                   fit,
-                  fit_null,
+                  fit_null_list,
                   ...
                 ) {
-  dvs <- names(fit_null)
+  dvs <- names(fit_null_list)
   tmpfct <- function(fit0, fit1, ...) {
     outi <- lavaan::lavTestLRT(
                   fit0,
@@ -559,7 +559,7 @@ rsquare_test <- function(
                 )
     outi
   }
-  out0 <- sapply(fit_null,
+  out0 <- sapply(fit_null_list,
                  tmpfct,
                  fit1 = fit,
                  simplify = FALSE,

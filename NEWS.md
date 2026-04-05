@@ -1,4 +1,4 @@
-# manymome 0.3.4.7
+# manymome 0.3.4.8
 
 ## New Features
 
@@ -41,6 +41,11 @@
 - Added some tests to verify functions
   that work on the output of `lavaan::sam()`.
   (0.3.4.7)
+
+- Renamed the object `fit_null` to
+  `fit_null_list` in internal functions
+  to avoid confusing.
+  (0.3.4.8)
 
 # manymome 0.3.4
 
