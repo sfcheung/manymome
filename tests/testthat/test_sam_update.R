@@ -15,6 +15,7 @@ sam_update_internal_i <- function(
   object,
   boot_idx = NULL
 ) {
+  lavmodel <- object@Model
   lavdata <- object@Data
   lavoptions <- lavaan::lavInspect(
                   object,
@@ -66,9 +67,20 @@ sam_update_internal_i <- function(
 
   x@internal <- list()
 
+  # Adapted from bootstrapLavaan()
+
+  if (lavmodel@fixed.x
+      &&
+      (length(lavaan::lavNames(object, "ov.x")) > 0L)) {
+    model_boot <- NULL
+  } else {
+    model_boot <- lavmodel
+  }
+
   x <- lavaan::lavaan(
     slotData = newdata,
     slotSampleStats = newsampleStats,
+    slotModel = model_boot,
     slotOptions = x@Options,
     slotParTable = x@ParTable
   )
@@ -1333,3 +1345,503 @@ expect_equal(fit1_chk@internal$sam.mm.rel,
              tolerance = 1e-4)
 
 })
+
+# ==== Multigroup, FIML, some cases empty, fixed.x ====
+
+test_that("SAM: Internal update", {
+
+# Check only coefficient.
+
+data_sem_miss <- data_sem
+data_sem_miss[1:10, 2:14] <- NA
+data_sem_miss[11:20, c(1:3, 5:14)] <- NA
+data_sem_miss[21:30, c(1:7, 9:14)] <- NA
+data_sem_miss[31:40, c(1:10, 12:14)] <- NA
+data_sem_miss[41:50, ] <- NA
+data_sem_miss[200, ] <- NA
+
+mod <-
+"
+f1 =~ x01 + x02 + x03
+f2 =~ x04 + x05 + x06
+f3 =~ x08 + x09 + x10
+f4 =~ x11 + x12 + x13
+f2 ~ f1 + x07
+f3 ~ f1
+f4 ~ f2 + f3 + x14
+"
+
+set.seed(5981470)
+data_sem_miss$gp <- sample(c("gp1", "gp2"),
+                      size = nrow(data_sem_miss),
+                      replace = TRUE)
+
+# The warning is expected
+fit1 <- sam(
+  model = mod,
+  data = data_sem_miss,
+  group = "gp",
+  missing = "fiml",
+  warn = FALSE
+)
+
+chk <- bootstrapLavaan(
+  fit1,
+  R = 2,
+  iseed = 2345,
+  keep.idx = TRUE
+)
+
+# Update sam
+
+tmp1 <- attr(chk, "boot.idx")
+boot_idx2 <- list(
+  gp1 = tmp1[[1]][1, ],
+  gp2 = tmp1[[2]][1, ]
+)
+
+fit1_updated <- sam_update_internal_i(
+  fit1,
+  boot_idx = boot_idx2
+)
+
+pnames <- colnames(chk)
+expect_equal(chk[1, ],
+             coef(fit1_updated)[pnames],
+             tolerance = 1e-4)
+
+})
+
+
+# ==== Multigroup, FIML, no cases empty, fixed.x ====
+
+test_that("SAM: Internal update", {
+
+# Check only coefficient.
+
+data_sem_miss <- data_sem
+data_sem_miss[1:10, 2:14] <- NA
+data_sem_miss[11:20, c(1:3, 5:14)] <- NA
+data_sem_miss[21:30, c(1:7, 9:14)] <- NA
+data_sem_miss[31:40, c(1:10, 12:14)] <- NA
+
+mod <-
+"
+f1 =~ x01 + x02 + x03
+f2 =~ x04 + x05 + x06
+f3 =~ x08 + x09 + x10
+f4 =~ x11 + x12 + x13
+f2 ~ f1 + x07
+f3 ~ f1
+f4 ~ f2 + f3 + x14
+"
+
+set.seed(5981470)
+data_sem_miss$gp <- sample(c("gp1", "gp2"),
+                      size = nrow(data_sem_miss),
+                      replace = TRUE)
+
+# The warning is expected
+fit1 <- sam(
+  model = mod,
+  data = data_sem_miss,
+  group = "gp",
+  missing = "fiml",
+  warn = FALSE
+)
+
+chk <- bootstrapLavaan(
+  fit1,
+  R = 2,
+  iseed = 2345,
+  keep.idx = TRUE
+)
+
+# Update sam
+
+tmp1 <- attr(chk, "boot.idx")
+boot_idx2 <- list(
+  gp1 = tmp1[[1]][1, ],
+  gp2 = tmp1[[2]][1, ]
+)
+
+fit1_updated <- sam_update_internal_i(
+  fit1,
+  boot_idx = boot_idx2
+)
+
+pnames <- colnames(chk)
+expect_equal(chk[1, ],
+             coef(fit1_updated)[pnames],
+             tolerance = 1e-4)
+
+})
+
+
+# ==== Multigroup, listwise, some cases empty, fixed.x ====
+
+test_that("SAM: Internal update", {
+
+# Check only coefficient.
+
+data_sem_miss <- data_sem
+data_sem_miss[1:10, 2:14] <- NA
+data_sem_miss[11:20, c(1:3, 5:14)] <- NA
+data_sem_miss[21:30, c(1:7, 9:14)] <- NA
+data_sem_miss[31:40, c(1:10, 12:14)] <- NA
+data_sem_miss[41:50, ] <- NA
+data_sem_miss[200, ] <- NA
+
+mod <-
+"
+f1 =~ x01 + x02 + x03
+f2 =~ x04 + x05 + x06
+f3 =~ x08 + x09 + x10
+f4 =~ x11 + x12 + x13
+f2 ~ f1 + x07
+f3 ~ f1
+f4 ~ f2 + f3 + x14
+"
+
+set.seed(5981470)
+data_sem_miss$gp <- sample(c("gp1", "gp2"),
+                      size = nrow(data_sem_miss),
+                      replace = TRUE)
+
+# The warning is expected
+fit1 <- sam(
+  model = mod,
+  data = data_sem_miss,
+  group = "gp",
+  warn = FALSE
+)
+
+chk <- bootstrapLavaan(
+  fit1,
+  R = 2,
+  iseed = 2345,
+  keep.idx = TRUE
+)
+
+# Update sam
+
+tmp1 <- attr(chk, "boot.idx")
+boot_idx2 <- list(
+  gp1 = tmp1[[1]][1, ],
+  gp2 = tmp1[[2]][1, ]
+)
+
+fit1_updated <- sam_update_internal_i(
+  fit1,
+  boot_idx = boot_idx2
+)
+
+pnames <- colnames(chk)
+expect_equal(chk[1, ],
+             coef(fit1_updated)[pnames],
+             tolerance = 1e-4)
+
+})
+
+
+# ==== Multigroup, listwise, no cases empty, fixed.x ====
+
+test_that("SAM: Internal update", {
+
+# Check only coefficient.
+
+data_sem_miss <- data_sem
+data_sem_miss[1:10, 2:14] <- NA
+data_sem_miss[11:20, c(1:3, 5:14)] <- NA
+data_sem_miss[21:30, c(1:7, 9:14)] <- NA
+data_sem_miss[31:40, c(1:10, 12:14)] <- NA
+# data_sem_miss[41:50, ] <- NA
+# data_sem_miss[200, ] <- NA
+
+
+mod <-
+"
+f1 =~ x01 + x02 + x03
+f2 =~ x04 + x05 + x06
+f3 =~ x08 + x09 + x10
+f4 =~ x11 + x12 + x13
+f2 ~ f1 + x07
+f3 ~ f1
+f4 ~ f2 + f3 + x14
+"
+
+set.seed(5981470)
+data_sem_miss$gp <- sample(c("gp1", "gp2"),
+                      size = nrow(data_sem_miss),
+                      replace = TRUE)
+
+# The warning is expected
+fit1 <- sam(
+  model = mod,
+  data = data_sem_miss,
+  group = "gp",
+  warn = FALSE
+)
+
+chk <- bootstrapLavaan(
+  fit1,
+  R = 2,
+  iseed = 2345,
+  keep.idx = TRUE
+)
+
+# Update sam
+
+tmp1 <- attr(chk, "boot.idx")
+boot_idx2 <- list(
+  gp1 = tmp1[[1]][1, ],
+  gp2 = tmp1[[2]][1, ]
+)
+
+fit1_updated <- sam_update_internal_i(
+  fit1,
+  boot_idx = boot_idx2
+)
+
+pnames <- colnames(chk)
+expect_equal(chk[1, ],
+             coef(fit1_updated)[pnames],
+             tolerance = 1e-4)
+
+})
+
+
+# ==== Single-group, FIML, some cases empty, fixed.x ====
+
+test_that("SAM: Internal update", {
+
+# Check only coefficient.
+
+data_sem_miss <- data_sem
+data_sem_miss[1:10, 2:14] <- NA
+data_sem_miss[11:20, c(1:3, 5:14)] <- NA
+data_sem_miss[21:30, c(1:7, 9:14)] <- NA
+data_sem_miss[31:40, c(1:10, 12:14)] <- NA
+data_sem_miss[41:50, ] <- NA
+data_sem_miss[200, ] <- NA
+
+mod <-
+"
+f1 =~ x01 + x02 + x03
+f2 =~ x04 + x05 + x06
+f3 =~ x08 + x09 + x10
+f4 =~ x11 + x12 + x13
+f2 ~ f1 + x07
+f3 ~ f1
+f4 ~ f2 + f3 + x14
+"
+
+# The warning is expected
+fit1 <- sam(
+  model = mod,
+  data = data_sem_miss,
+  missing = "fiml",
+  warn = FALSE
+)
+
+chk <- bootstrapLavaan(
+  fit1,
+  R = 2,
+  iseed = 2345,
+  keep.idx = TRUE
+)
+
+# Update sam
+
+tmp1 <- attr(chk, "boot.idx")
+boot_idx2 <- list(
+  tmp1[[1]][1, ]
+)
+
+suppressWarnings(fit1_updated <- sam_update_internal_i(
+  fit1,
+  boot_idx = boot_idx2
+))
+
+pnames <- colnames(chk)
+expect_equal(chk[1, ],
+             coef(fit1_updated)[pnames],
+             tolerance = 1e-4)
+
+})
+
+
+# ==== Single-group, FIML, no cases empty, fixed.x ====
+
+test_that("SAM: Internal update", {
+
+# Check only coefficient.
+
+data_sem_miss <- data_sem
+data_sem_miss[1:10, 2:14] <- NA
+data_sem_miss[11:20, c(1:3, 5:14)] <- NA
+data_sem_miss[21:30, c(1:7, 9:14)] <- NA
+data_sem_miss[31:40, c(1:10, 12:14)] <- NA
+
+mod <-
+"
+f1 =~ x01 + x02 + x03
+f2 =~ x04 + x05 + x06
+f3 =~ x08 + x09 + x10
+f4 =~ x11 + x12 + x13
+f2 ~ f1 + x07
+f3 ~ f1
+f4 ~ f2 + f3 + x14
+"
+
+# The warning is expected
+fit1 <- sam(
+  model = mod,
+  data = data_sem_miss,
+  missing = "fiml",
+  warn = FALSE
+)
+
+chk <- bootstrapLavaan(
+  fit1,
+  R = 2,
+  iseed = 2345,
+  keep.idx = TRUE
+)
+
+# Update sam
+
+tmp1 <- attr(chk, "boot.idx")
+boot_idx2 <- list(
+  tmp1[[1]][1, ]
+)
+
+suppressWarnings(fit1_updated <- sam_update_internal_i(
+  fit1,
+  boot_idx = boot_idx2
+))
+
+pnames <- colnames(chk)
+expect_equal(chk[1, ],
+             coef(fit1_updated)[pnames],
+             tolerance = 1e-4)
+
+})
+
+# ==== Single-group, listwise, some cases empty, fixed.x ====
+
+test_that("SAM: Internal update", {
+
+# Check only coefficient.
+
+data_sem_miss <- data_sem
+data_sem_miss[1:10, 2:14] <- NA
+data_sem_miss[11:20, c(1:3, 5:14)] <- NA
+data_sem_miss[21:30, c(1:7, 9:14)] <- NA
+data_sem_miss[31:40, c(1:10, 12:14)] <- NA
+data_sem_miss[41:50, ] <- NA
+data_sem_miss[200, ] <- NA
+
+mod <-
+"
+f1 =~ x01 + x02 + x03
+f2 =~ x04 + x05 + x06
+f3 =~ x08 + x09 + x10
+f4 =~ x11 + x12 + x13
+f2 ~ f1 + x07
+f3 ~ f1
+f4 ~ f2 + f3 + x14
+"
+
+# The warning is expected
+fit1 <- sam(
+  model = mod,
+  data = data_sem_miss,
+  warn = FALSE
+)
+
+chk <- bootstrapLavaan(
+  fit1,
+  R = 2,
+  iseed = 2345,
+  keep.idx = TRUE
+)
+
+# Update sam
+
+tmp1 <- attr(chk, "boot.idx")
+boot_idx2 <- list(
+  tmp1[[1]][1, ]
+)
+
+suppressWarnings(fit1_updated <- sam_update_internal_i(
+  fit1,
+  boot_idx = boot_idx2
+))
+
+pnames <- colnames(chk)
+expect_equal(chk[1, ],
+             coef(fit1_updated)[pnames],
+             tolerance = 1e-4)
+
+})
+
+
+# ==== Single-group, listwise, no cases empty, fixed.x ====
+
+test_that("SAM: Internal update", {
+
+# Check only coefficient.
+
+data_sem_miss <- data_sem
+data_sem_miss[1:10, 2:14] <- NA
+data_sem_miss[11:20, c(1:3, 5:14)] <- NA
+data_sem_miss[21:30, c(1:7, 9:14)] <- NA
+data_sem_miss[31:40, c(1:10, 12:14)] <- NA
+# data_sem_miss[41:50, ] <- NA
+# data_sem_miss[200, ] <- NA
+
+mod <-
+"
+f1 =~ x01 + x02 + x03
+f2 =~ x04 + x05 + x06
+f3 =~ x08 + x09 + x10
+f4 =~ x11 + x12 + x13
+f2 ~ f1 + x07
+f3 ~ f1
+f4 ~ f2 + f3 + x14
+"
+
+# The warning is expected
+fit1 <- sam(
+  model = mod,
+  data = data_sem_miss,
+  warn = FALSE
+)
+
+chk <- bootstrapLavaan(
+  fit1,
+  R = 2,
+  iseed = 2345,
+  keep.idx = TRUE
+)
+
+# Update sam
+
+tmp1 <- attr(chk, "boot.idx")
+boot_idx2 <- list(
+  tmp1[[1]][1, ]
+)
+
+suppressWarnings(fit1_updated <- sam_update_internal_i(
+  fit1,
+  boot_idx = boot_idx2
+))
+
+pnames <- colnames(chk)
+expect_equal(chk[1, ],
+             coef(fit1_updated)[pnames],
+             tolerance = 1e-4)
+
+})
+
