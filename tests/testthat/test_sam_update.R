@@ -1,5 +1,8 @@
 skip_on_cran()
 
+# The functions below are only used for
+# testing and updating gen_boot_i_lavaan()
+
 library(manymome)
 library(testthat)
 suppressMessages(library(lavaan))
