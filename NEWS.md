@@ -1,4 +1,4 @@
-# manymome 0.3.4.6
+# manymome 0.3.4.7
 
 ## New Features
 
@@ -37,6 +37,10 @@
 - Updated `do_boot()` to support the
   output of `lavaan::sam()`.
   (0.3.4.6)
+
+- Added some tests to verify functions
+  that work on the output of `lavaan::sam()`.
+  (0.3.4.7)
 
 # manymome 0.3.4
 

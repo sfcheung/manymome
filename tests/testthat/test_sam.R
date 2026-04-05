@@ -1,10 +1,27 @@
-skip("WIP")
-
 library(manymome)
 library(testthat)
 suppressMessages(library(lavaan))
 
+get_boot_est <- function(
+  boot_out,
+  boot_chk
+) {
+  boot_est <- lapply(
+                boot_out,
+                function(x) {
+                  est <- x$est
+                  est$label <- lav_partable_labels(est)
+                  boot_est <- stats::setNames(est$est, est$label)
+                  boot_est <- boot_est[colnames(boot_chk)]
+                })
+  boot_est <- do.call(rbind, boot_est)
+  boot_est
+}
+
+
 test_that("SAM: lavaan functions", {
+
+skip("Not used")
 
 data_sem_miss <- data_sem
 data_sem_miss[1:10, 2:14] <- NA
@@ -133,13 +150,13 @@ expect_identical(lavaan::lavTech(fit, "norig"),
 expect_identical(lavaan::lavTech(fit, "pattern"),
                  lavaan::lavTech(fit2, "pattern"))
 
-expect_identical(lavaan::lavTech(fit, "options")$test,
-                 lavaan::lavTech(fit2, "options")$test)
+# expect_identical(lavaan::lavTech(fit, "options")$test,
+#                  lavaan::lavTech(fit2, "options")$test)
 
-fit@internal$sam.struc.fit
-fit@internal$sam.mm.rel
-fit@t@internal$sam.mm.table
-fit@internal$sam.method
+# fit@internal$sam.struc.fit
+# fit@internal$sam.mm.rel
+# fit@t@internal$sam.mm.table
+# fit@internal$sam.method
 
 })
 
@@ -264,7 +281,7 @@ fit <- sam(
   model = mod,
   data = data_sem,
   se = "bootstrap",
-  bootstrap.args = list(R = 10),
+  bootstrap.args = list(R = 2),
   iseed = 1234
 )
 
@@ -292,7 +309,7 @@ ind3 <- indirect_effect(
   boot_out = boot_out)
 )
 
-tmp <- lavInspect(fit, "boot")[1:10, ]
+tmp <- lavInspect(fit, "boot")[1:2, ]
 
 chk_a2b2 <- apply(
             tmp[, c("a2", "b2")],
@@ -345,13 +362,13 @@ fitb <- sam(
   model = mod,
   data = data_sem_miss,
   se = "bootstrap",
-  bootstrap.args = list(R = 5),
+  bootstrap.args = list(R = 2),
   iseed = 1234
 )
 vcov(fitb)[1:5, 1:5]
 summary(fitb)
 
-lavInspect(fitb, "boot")[1:5, 1:10]
+boot_chk <- lavInspect(fitb, "boot")[1:2, 1:10]
 
 fit2 <- sem(
   model = mod,
@@ -362,14 +379,22 @@ summary(fit2)
 
 boot_out <- do_boot(
   fit,
-  R = 5,
+  R = 2,
   seed = 1234,
   progress = !is_testing(),
   parallel = FALSE)
 
 # They are not supposed to be the same
-boot_out[[1]]$est[1:5, ]
-boot_out[[2]]$est[1:5, ]
+expect_false(isTRUE(all.equal(
+  boot_out[[1]]$est[1:2, ],
+  boot_out[[2]]$est[1:2, ]
+)))
+
+boot_est <- get_boot_est(boot_out, boot_chk)
+expect_equal(boot_est,
+             boot_chk,
+             ignore_attr = TRUE,
+             tolerance = 1e-5)
 
 boot_outb <-  do_boot(
   fitb,
@@ -377,18 +402,23 @@ boot_outb <-  do_boot(
   parallel = FALSE)
 
 # They are not supposed to be the same
-boot_outb[[1]]$est[1:5, ]
-boot_outb[[2]]$est[1:5, ]
+expect_false(isTRUE(all.equal(
+  boot_outb[[1]]$est[1:2, ],
+  boot_outb[[2]]$est[1:2, ]
+)))
 
 boot_out2 <- do_boot(
   fit2,
-  R = 5,
+  R = 2,
   seed = 1234,
   progress = !is_testing(),
   parallel = FALSE)
 
 # They are not supposed to be the same
-boot_out2[[1]]$est[1:5, ]
-boot_out2[[2]]$est[1:5, ]
+expect_false(isTRUE(all.equal(
+  boot_out2[[1]]$est[1:2, ],
+  boot_out2[[2]]$est[1:2, ]
+)))
+
 
 })
