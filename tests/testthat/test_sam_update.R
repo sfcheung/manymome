@@ -1,4 +1,4 @@
-skip("WIP")
+skip_on_cran()
 
 library(manymome)
 library(testthat)
@@ -22,7 +22,7 @@ sam_update_internal_i <- function(
                 )
   newX <- mapply(
             function(x, y) {
-              x[y, ]
+              x[y, , drop = FALSE]
             },
             x = lavdata@X,
             y = boot_idx,
@@ -31,6 +31,7 @@ sam_update_internal_i <- function(
   newdata <- lavaan::lav_data_update(
               lavdata = lavdata,
               newX = newX,
+              BOOT.idx = boot_idx,
               lavoptions = lavoptions
             )
   newsampleStats <- lavaan::lav_samplestats_from_data(
