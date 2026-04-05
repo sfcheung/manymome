@@ -837,6 +837,7 @@ gen_boot_i_lavaan <- function(fit,
   fit_sampstats <- fit_org@SampleStats
   fit_opts <- fit_org@Options
   fit_pt <- fit_org@ParTable
+  fit_internal <- fit_org@internal
 
   fit_opts$verbose <- FALSE
   fit_opts$se <- "none"
@@ -853,6 +854,7 @@ gen_boot_i_lavaan <- function(fit,
       force(fit_sampstats)
       force(fit_opts)
       force(fit_pt)
+      force(fit_internal)
       force(fit)
       force(compute_implied_stats)
       force(compute_rsquare)
@@ -867,6 +869,7 @@ gen_boot_i_lavaan <- function(fit,
                                 slotOptions = fit_opts,
                                 slotParTable = fit_pt1))
         } else {
+          is_sam <- isTRUE(!is.null(fit_internal$sam.method))
           # 2024-03-29: Added support for multigroup models
           if (!is.list(i)) {
               b_i <- list(i)
@@ -895,6 +898,38 @@ gen_boot_i_lavaan <- function(fit,
               return(out1)
             }
 
+          fit_opts1 <- fit_opts
+
+          # ==== Handle SAM ====
+
+          if (is_sam) {
+            # Need the original optoins
+            fit_opts1 <- lavaan::lavInspect(fit, "options")
+            # Need the original ptable
+            fit_pt1 <- fit_pt
+            # Adapted from avaan:::lav_sam_step0()
+            fit_opts1$do.fit <- FALSE
+            if (fit@internal$sam.method %in%
+                c("local", "fsr", "cfsr")) {
+              fit_opts1$sample.icov <- TRUE
+            }
+            fit_opts1$se <- "none"
+            fit_opts1$test <- "none"
+            fit_opts1$ceq.simple <- TRUE
+            fit_opts1$check.lv.interaction <- FALSE
+            if (fit_opts1$se %in%
+                c("local", "ij", "twostep.robust")) {
+              fit_opts1$sample.icov <- TRUE
+              fit_opts1$NACOV <- TRUE
+              fit_opts1$fixed.x <- FALSE
+              fit_opts1$ov.order <- "force.model"
+            }
+            # Any lv interaction terms?
+            if (length(lavaan::lavNames(fit, "lv.interaction")) > 0L) {
+              fit_opts1$meanstructure  <- TRUE
+            }
+          }
+
           # Use the approach in lavaan::lav_bootstrap_internal
           if (fit_model@fixed.x &&
               length(lavaan::lavNames(fit, "ov.x")) > 0) {
@@ -904,10 +939,10 @@ gen_boot_i_lavaan <- function(fit,
             }
 
           out <- tryCatch(lavaan::lavaan(
-                                    slotData = fit_data,
+                                    slotData = fit_data_new,
                                     slotModel = fit_model_i,
                                     slotSampleStats = fit_sampstats_new,
-                                    slotOptions = fit_opts,
+                                    slotOptions = fit_opts1,
                                     slotParTable = fit_pt1),
                           error = function(e) e,
                           warning = function(e) e)
@@ -924,6 +959,31 @@ gen_boot_i_lavaan <- function(fit,
                               implied_stats = NA,
                               ok = FALSE)
                 }
+
+              # ==== Handle SAM ====
+
+              if (is_sam) {
+                out@internal <- fit@internal
+                if ((out@Model@categorical) &&
+                    (out@Options$se == "twostep")) {
+                  if (out@internal$sam.method == "local") {
+                    out@Options$se <- "twostep.robust"
+                  }
+                }
+                out@Options$se <- "none"
+                PT <- out@ParTable
+                PT$est <- PT$ustart
+                if (any(PT$exo > 0L)) {
+                  PT$est[PT$exo > 0L] <- PT$start[PT$exo > 0L]
+                }
+                PT$se <- rep(as.numeric(NA), length(PT$lhs))
+                PT$se[(PT$free == 0L) & (!is.na(PT$ustart))] <- 0.0
+                out@ParTable <- PT
+                out <- lavaan::sam(
+                  model = out
+                )
+              }
+
               # If ngroups > 1,
               #   cov, mean, and mean_lv are lists.
               if (compute_implied_stats) {

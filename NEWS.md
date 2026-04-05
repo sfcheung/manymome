@@ -1,4 +1,4 @@
-# manymome 0.3.4.5
+# manymome 0.3.4.6
 
 ## New Features
 
@@ -33,6 +33,10 @@
   but not used due to missing data on
   all variables in the model).
   (0.3.4.5)
+
+- Updated `do_boot()` to support the
+  output of `lavaan::sam()`.
+  (0.3.4.6)
 
 # manymome 0.3.4
 
