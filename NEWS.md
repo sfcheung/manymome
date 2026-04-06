@@ -1,4 +1,4 @@
-# manymome 0.3.4.9
+# manymome 0.3.4.10
 
 ## New Features
 
@@ -52,6 +52,10 @@
   `fit_null_list` in internal functions
   to avoid confusing.
   (0.3.4.8)
+
+- Fixed a message in the printout of
+  `q_mediation()`.
+  (0.3.4.10)
 
 # manymome 0.3.4
 
