@@ -645,10 +645,18 @@ q_mediation <- function(x,
     }
     if (fit_method == "lavaan") {
       if (indicator_method == "measurement_model") {
-        # A placeholder for future code.
+        # Recode reverse items, if any
+        data <- reverse_scores(
+                  data = data,
+                  indicators_org = indicators
+                )
       }
       if (indicator_method == "sam") {
-        # A placeholder for future code.
+        # Recode reverse items, if any
+        data <- reverse_scores(
+                  data = data,
+                  indicators_org = indicators
+                )
       }
       if (indicator_method == "scale_scores") {
         # TODO:

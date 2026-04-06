@@ -81,8 +81,20 @@ measurement_syntax <- function(
 # Reverse scores
 reverse_scores <- function(
   x,
-  data
+  data,
+  indicators_org = NULL
 ) {
+  if (missing(x)) {
+    # Find reverse items (if any)
+    indicators_rev <- reverse_indicators(indicators_org)
+    indicators_rev <- unlist(indicators_rev)
+    if (length(indicators_rev) > 0) {
+      x <- indicators_rev
+    } else {
+      # No reverse items
+      return(data)
+    }
+  }
   for (xx in x) {
     data <- reverse_scores_i(x, data = data)
   }
@@ -92,9 +104,6 @@ reverse_scores_i <- function(
   x,
   data
 ) {
-  # TODO:
-  # - Do reverse coding
-  #   Not urgent: No impact on the coefficients
   data[, x] <- -data[, x, drop = TRUE]
   data
 }

@@ -1,4 +1,4 @@
-# manymome 0.3.4.11
+# manymome 0.3.4.12
 
 ## New Features
 
@@ -57,10 +57,16 @@
   `q_mediation()`.
   (0.3.4.10)
 
-- Updated `q_mediaton()` to use
+- Updated `q_mediation()` to use
   `lavaan::standardizedSolution()`
   when `fixed.x = FALSE`.
   (0.3.4.11)
+
+- Updated `q_mediation()` to take
+  reverse items into account when
+  computing reliability coefficients.
+  This is necessary for some methods.
+  (0.3.4.12)
 
 # manymome 0.3.4
 
