@@ -259,6 +259,8 @@ lm_from_lavaan_list_for_q <- function(
                                 ) {
   is_sam <- isTRUE(!is.null(fit@internal$sam.method))
   if (is_sam) {
+    # TODO (SAM):
+    # - Find a way to test R-squares for SAM
     # R-square test not supported for SAM for now
     rsq_test <- FALSE
   }
@@ -270,7 +272,7 @@ lm_from_lavaan_list_for_q <- function(
                                         level = ci_level,
                                         rsquare = TRUE,
                                         remove.step1 = FALSE)
-  } else {
+  } else if (!is_sam) {
     # Need to refit the model to get std.nox
     # lavaan does not compute std.nox if fixed.x is FALSE
     fit_data <- fit@Data
@@ -304,6 +306,16 @@ lm_from_lavaan_list_for_q <- function(
                                       rsquare = TRUE,
                                       remove.step1 = FALSE)
     ptable$std.nox <- tmp$std.nox
+  } else {
+    # SAM
+    # TODO (SAM):
+    # - Find a way to get std.nox with fixed.x = FALSE for SAM
+    ptable <- lavaan::parameterEstimates(fit,
+                                        standardized = TRUE,
+                                        level = ci_level,
+                                        rsquare = TRUE,
+                                        remove.step1 = FALSE)
+    ptable$std.nox <- NA
   }
   b_names <- mm$b_names
   # ==== Get all dvs (ov.nox, lv.ox) ====
@@ -501,6 +513,8 @@ fit_null <- function(
                 mm,
                 fit
               ) {
+  # TODO (SAM):
+  # - Check whether LRT works for SAM
   dvs <- names(mm$model_matrices)
 
   mod_null <- sapply(
