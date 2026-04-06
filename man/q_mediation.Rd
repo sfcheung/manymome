@@ -263,7 +263,12 @@ the models.
 If set to \code{"measurement_model"},
 the default if \code{fit_method} is
 \code{"sem"} or \code{"lavaan"},
-a measurement model will be added.}
+a measurement model will be added.
+If set to \code{"sam"}, the
+structural-after-measurement (SAM)
+method (Rosseel & Loh, 2024)
+will be used to estimate
+the regression coefficients}
 
 \item{missing}{If \code{fit_method} is
 set to \code{"sem"} or \code{"lavaan"}, this
@@ -287,7 +292,11 @@ regression fitted by \code{\link[stats:lm]{stats::lm()}}.}
 \item{sem_args}{If \code{fit_method} is
 set to \code{"sem"} or \code{"lavaan"}, this
 is a named list of arguments to be
-passed to \code{\link[lavaan:sem]{lavaan::sem()}}. Arguments
+passed to \code{\link[lavaan:sem]{lavaan::sem()}}.
+If the indicator method is \code{"sam"},
+then these are arguments to be passed
+to \code{\link[lavaan:sam]{lavaan::sam()}}.
+Arguments
 listed here will not override
 \code{missing} and \code{fixed.x}.}
 
@@ -563,10 +572,10 @@ the coefficients, then the mean scores
 (for now)
 of the indicators will be used in the model.
 
-(TO BE SUPPORTED) If structural equation
+If structural equation
 modeling is used to estimate the
 coefficients, then these indicators
-will be used in teh model to define
+will be used in the model to define
 the latent variables.
 }
 
@@ -843,6 +852,13 @@ print(out,
 #                             progress = FALSE)
 # out
 
+}
+\references{
+Rosseel, Y., & Loh, W. W. (2024). A
+structural after measurement approach
+to structural equation modeling.
+\emph{Psychological Methods, 29}(3), 561--588.
+https://doi.org/10.1037/met0000503
 }
 \seealso{
 \code{\link[lmhelprs:many_lm]{lmhelprs::many_lm()}} for

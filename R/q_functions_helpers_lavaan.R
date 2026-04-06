@@ -65,14 +65,14 @@ fix_names_for_lavaan_i <- function(x) {
 mm_from_lm_forms <- function(
                       lm_forms,
                       indicators = NULL,
-                      indicator_method = c("measurement_model", "scale_scores"),
+                      indicator_method = c("measurement_model", "scale_scores", "sam"),
                       lm_measurement = character(0),
                       data,
                       na.action = "na.pass"
                     ) {
   indicator_method <- match.arg(indicator_method)
   if (!is.null(indicators) &&
-      (indicator_method == "measurement_model")) {
+      (indicator_method %in% c("measurement_model", "sam"))) {
     # Create dummy scale scores
     data_scale_scores <- scale_scores(
               indicators = indicators,
@@ -105,7 +105,7 @@ mm_from_lm_forms <- function(
   # merge_model_matrix assumes cases can be matched row-by-row.
   mm <- merge_model_matrix(lm_all)
   if (!is.null(indicators) &&
-      (indicator_method == "measurement_model")) {
+      (indicator_method %in% c("measurement_model", "sam"))) {
     tmp1 <- lavaan::lavaanify(lm_measurement)
     tmp2 <- lavaan::lavNames(tmp1, "ov.ind")
     mm[, tmp2] <- data[, tmp2]
@@ -257,6 +257,13 @@ lm_from_lavaan_list_for_q <- function(
                                   rsq_test = TRUE,
                                   lm_measurement = character(0)
                                 ) {
+  is_sam <- isTRUE(!is.null(fit@internal$sam.method))
+  if (is_sam) {
+    # TODO (SAM):
+    # - Find a way to test R-squares for SAM
+    # R-square test not supported for SAM for now
+    rsq_test <- FALSE
+  }
   # Assume it has only one group
   fixed.x <- lavaan::lavTech(fit, "fixed.x")
   if (fixed.x) {
@@ -265,7 +272,7 @@ lm_from_lavaan_list_for_q <- function(
                                         level = ci_level,
                                         rsquare = TRUE,
                                         remove.step1 = FALSE)
-  } else {
+  } else if (!is_sam) {
     # Need to refit the model to get std.nox
     # lavaan does not compute std.nox if fixed.x is FALSE
     fit_data <- fit@Data
@@ -299,6 +306,16 @@ lm_from_lavaan_list_for_q <- function(
                                       rsquare = TRUE,
                                       remove.step1 = FALSE)
     ptable$std.nox <- tmp$std.nox
+  } else {
+    # SAM
+    # TODO (SAM):
+    # - Find a way to get std.nox with fixed.x = FALSE for SAM
+    ptable <- lavaan::parameterEstimates(fit,
+                                        standardized = TRUE,
+                                        level = ci_level,
+                                        rsquare = TRUE,
+                                        remove.step1 = FALSE)
+    ptable$std.nox <- NA
   }
   b_names <- mm$b_names
   # ==== Get all dvs (ov.nox, lv.ox) ====
@@ -333,7 +350,7 @@ lm_from_lavaan_list_for_q <- function(
     # ==== Tests of R-squares ====
     rsq_test <- rsquare_test(
                   fit = fit,
-                  fit_null = fit_null_list
+                  fit_nulls = fit_null_list
                 )
   } else {
     fit_null_list <- vector("list", length(dvs))
@@ -496,6 +513,8 @@ fit_null <- function(
                 mm,
                 fit
               ) {
+  # TODO (SAM):
+  # - Check whether LRT works for SAM
   dvs <- names(mm$model_matrices)
 
   mod_null <- sapply(
@@ -547,10 +566,10 @@ fit_null <- function(
 # - A named list of lavTestLRT() output
 rsquare_test <- function(
                   fit,
-                  fit_null_list,
+                  fit_nulls,
                   ...
                 ) {
-  dvs <- names(fit_null_list)
+  dvs <- names(fit_nulls)
   tmpfct <- function(fit0, fit1, ...) {
     outi <- lavaan::lavTestLRT(
                   fit0,
@@ -559,7 +578,7 @@ rsquare_test <- function(
                 )
     outi
   }
-  out0 <- sapply(fit_null_list,
+  out0 <- sapply(fit_nulls,
                  tmpfct,
                  fit1 = fit,
                  simplify = FALSE,
