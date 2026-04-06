@@ -272,50 +272,70 @@ lm_from_lavaan_list_for_q <- function(
                                         level = ci_level,
                                         rsquare = TRUE,
                                         remove.step1 = FALSE)
-  } else if (!is_sam) {
+  } else if (!is_sam || is_sam) {
+
     # Need to refit the model to get std.nox
     # lavaan does not compute std.nox if fixed.x is FALSE
-    fit_data <- fit@Data
-    fit_model <- fit@Model
-    fit_sampstats <- fit@SampleStats
-    fit_opts <- fit@Options
-    fit_pt <- fit@ParTable
-    fit_opts$se <- "none"
-    fit_opts$test <- "none"
-    fit_opts$baseline <- FALSE
-    fit_opts$fixed.x <- TRUE
-    fit_pt$start <- fit_pt$est
-    fit_random_x <- lavaan::lavaan(
-                        slotModel = fit_model,
-                        slotSampleStats = fit_sampstats,
-                        slotOptions = fit_opts,
-                        slotParTable = fit_pt,
-                        slotData = fit_data
-                      )
+    # 2026-04-06: No need to refit. Use lavaan::standardizedSolution()
+    # 2026-04-06: This block also works for SAM
+    # fit_data <- fit@Data
+    # fit_model <- fit@Model
+    # fit_sampstats <- fit@SampleStats
+    # fit_opts <- fit@Options
+    # fit_pt <- fit@ParTable
+    # fit_opts$se <- "none"
+    # fit_opts$test <- "none"
+    # fit_opts$baseline <- FALSE
+    # fit_opts$fixed.x <- TRUE
+    # fit_pt$start <- fit_pt$est
+    # fit_random_x <- lavaan::lavaan(
+    #                     slotModel = fit_model,
+    #                     slotSampleStats = fit_sampstats,
+    #                     slotOptions = fit_opts,
+    #                     slotParTable = fit_pt,
+    #                     slotData = fit_data
+    #                   )
+    # tmp <- lavaan::parameterEstimates(fit_random_x,
+    #                                   standardized = "std.nox",
+    #                                   se = FALSE,
+    #                                   zstat = FALSE,
+    #                                   pvalue = FALSE,
+    #                                   ci = FALSE,
+    #                                   rsquare = TRUE,
+    #                                   remove.step1 = FALSE)
     ptable <- lavaan::parameterEstimates(fit,
                                         standardized = TRUE,
                                         level = ci_level,
                                         rsquare = TRUE,
                                         remove.step1 = FALSE)
-    tmp <- lavaan::parameterEstimates(fit_random_x,
-                                      standardized = "std.nox",
-                                      se = FALSE,
-                                      zstat = FALSE,
-                                      pvalue = FALSE,
-                                      ci = FALSE,
-                                      rsquare = TRUE,
-                                      remove.step1 = FALSE)
-    ptable$std.nox <- tmp$std.nox
+    std <- lavaan::standardizedSolution(
+              fit,
+              type = "std.nox",
+              se = FALSE,
+              zstat = FALSE,
+              pvalue = FALSE,
+              ci = FALSE,
+              cov.std = FALSE
+            )
+    std$lavlabel <- lavaan::lav_partable_labels(std)
+    ptable$lavlabel <- lavaan::lav_partable_labels(ptable)
+    tmp <- intersect(std$lavlabel, ptable$lavlabel)
+    tmp1 <- match(tmp, ptable$lavlabel)
+    tmp2 <- match(tmp, std$lavlabel)
+    ptable$std.nox <- as.numeric(NA)
+    ptable$std.nox[tmp1] <- std[tmp1, "est.std"]
+    ptable$lavlabel <- NULL
   } else {
     # SAM
+    # 2026-04-06: This block is not used for now.
     # TODO (SAM):
     # - Find a way to get std.nox with fixed.x = FALSE for SAM
-    ptable <- lavaan::parameterEstimates(fit,
-                                        standardized = TRUE,
-                                        level = ci_level,
-                                        rsquare = TRUE,
-                                        remove.step1 = FALSE)
-    ptable$std.nox <- NA
+    # ptable <- lavaan::parameterEstimates(fit,
+    #                                     standardized = TRUE,
+    #                                     level = ci_level,
+    #                                     rsquare = TRUE,
+    #                                     remove.step1 = FALSE)
+    # ptable$std.nox <- NA
   }
   b_names <- mm$b_names
   # ==== Get all dvs (ov.nox, lv.ox) ====

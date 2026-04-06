@@ -1,4 +1,4 @@
-# manymome 0.3.4.10
+# manymome 0.3.4.11
 
 ## New Features
 
@@ -56,6 +56,11 @@
 - Fixed a message in the printout of
   `q_mediation()`.
   (0.3.4.10)
+
+- Updated `q_mediaton()` to use
+  `lavaan::standardizedSolution()`
+  when `fixed.x = FALSE`.
+  (0.3.4.11)
 
 # manymome 0.3.4
 
