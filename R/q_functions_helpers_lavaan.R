@@ -478,7 +478,7 @@ lm_coef_from_lavaan_i <- function(
   ci.lower <- lav_coefs$ci.lower
   ci.upper <- lav_coefs$ci.upper
   betas <- lav_coefs$std.all
-  tmp <- which(term_types != "numeric")
+  tmp <- which(!(term_types %in% c("(Intercept)", "numeric")))
   if (length(tmp) > 0) {
     betas[tmp] <- lav_coefs$std.nox[tmp]
   }
