@@ -292,7 +292,11 @@ regression fitted by \code{\link[stats:lm]{stats::lm()}}.}
 \item{sem_args}{If \code{fit_method} is
 set to \code{"sem"} or \code{"lavaan"}, this
 is a named list of arguments to be
-passed to \code{\link[lavaan:sem]{lavaan::sem()}}. Arguments
+passed to \code{\link[lavaan:sem]{lavaan::sem()}}.
+If the indicator method is \code{"sam"},
+then these are arguments to be passed
+to \code{\link[lavaan:sam]{lavaan::sam()}}.
+Arguments
 listed here will not override
 \code{missing} and \code{fixed.x}.}
 
