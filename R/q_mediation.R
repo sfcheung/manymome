@@ -436,7 +436,11 @@
 #' @param sem_args If `fit_method` is
 #' set to `"sem"` or `"lavaan"`, this
 #' is a named list of arguments to be
-#' passed to [lavaan::sem()]. Arguments
+#' passed to [lavaan::sem()].
+#' If the indicator method is `"sam"`,
+#' then these are arguments to be passed
+#' to [lavaan::sam()].
+#' Arguments
 #' listed here will not override
 #' `missing` and `fixed.x`.
 #'
