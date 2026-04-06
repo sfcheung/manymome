@@ -1867,12 +1867,13 @@ print.q_mediation <- function(x,
         missing_str,
         "\n")
 
-    if (((n_patterns == 1) &&
-         has_no_na &&
-         (fit_missing != "listwise")) ||
-        (norig == ntotal)) {
-      cat("No cases excluded in this analysis.\n")
-    }
+    # # The following message is redundant.
+    # # The previous messages are sufficient.
+    # if (((n_patterns == 1) &&
+    #      has_no_na &&
+    #      (fit_missing != "listwise"))) {
+    #   cat("No cases excluded in this analysis.\n")
+    # }
 
   }
 
