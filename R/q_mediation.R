@@ -2053,7 +2053,7 @@ print.q_mediation <- function(x,
 
     if (isTRUE(x$call$indicator_method == "sam")) {
       # TODO (SAM):
-      # - Decide what to print for SAM
+      # - Decide what fit mesaures to print for SAM
       # Placeholder
     }
 

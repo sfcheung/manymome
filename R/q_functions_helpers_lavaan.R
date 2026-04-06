@@ -328,8 +328,6 @@ lm_from_lavaan_list_for_q <- function(
   } else {
     # SAM
     # 2026-04-06: This block is not used for now.
-    # TODO (SAM):
-    # - Find a way to get std.nox with fixed.x = FALSE for SAM
     # ptable <- lavaan::parameterEstimates(fit,
     #                                     standardized = TRUE,
     #                                     level = ci_level,
