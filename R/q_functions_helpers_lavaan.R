@@ -257,6 +257,11 @@ lm_from_lavaan_list_for_q <- function(
                                   rsq_test = TRUE,
                                   lm_measurement = character(0)
                                 ) {
+  is_sam <- isTRUE(!is.null(fit@internal$sam.method))
+  if (is_sam) {
+    # R-square test not supported for SAM for now
+    rsq_test <- FALSE
+  }
   # Assume it has only one group
   fixed.x <- lavaan::lavTech(fit, "fixed.x")
   if (fixed.x) {
