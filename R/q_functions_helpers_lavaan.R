@@ -65,14 +65,14 @@ fix_names_for_lavaan_i <- function(x) {
 mm_from_lm_forms <- function(
                       lm_forms,
                       indicators = NULL,
-                      indicator_method = c("measurement_model", "scale_scores"),
+                      indicator_method = c("measurement_model", "scale_scores", "sam"),
                       lm_measurement = character(0),
                       data,
                       na.action = "na.pass"
                     ) {
   indicator_method <- match.arg(indicator_method)
   if (!is.null(indicators) &&
-      (indicator_method == "measurement_model")) {
+      (indicator_method %in% c("measurement_model", "sam"))) {
     # Create dummy scale scores
     data_scale_scores <- scale_scores(
               indicators = indicators,
@@ -105,7 +105,7 @@ mm_from_lm_forms <- function(
   # merge_model_matrix assumes cases can be matched row-by-row.
   mm <- merge_model_matrix(lm_all)
   if (!is.null(indicators) &&
-      (indicator_method == "measurement_model")) {
+      (indicator_method %in% c("measurement_model", "sam"))) {
     tmp1 <- lavaan::lavaanify(lm_measurement)
     tmp2 <- lavaan::lavNames(tmp1, "ov.ind")
     mm[, tmp2] <- data[, tmp2]

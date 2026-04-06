@@ -145,10 +145,10 @@
 #' (for now)
 #' of the indicators will be used in the model.
 #'
-#' (TO BE SUPPORTED) If structural equation
+#' If structural equation
 #' modeling is used to estimate the
 #' coefficients, then these indicators
-#' will be used in teh model to define
+#' will be used in the model to define
 #' the latent variables.
 #'
 #' ## Workflow
@@ -408,6 +408,11 @@
 #' the default if `fit_method` is
 #' `"sem"` or `"lavaan"`,
 #' a measurement model will be added.
+#' If set to `"sam"`, the
+#' structural-after-measurement (SAM)
+#' method (Rosseel & Loh, 2024)
+#' will be used to estimate
+#' the regression coefficients
 #'
 #' @param missing If `fit_method` is
 #' set to `"sem"` or `"lavaan"`, this
@@ -475,6 +480,13 @@
 #' [total_indirect_effect()] for
 #' computing and testing the total
 #' indirect effects.
+#'
+#' @references
+#' Rosseel, Y., & Loh, W. W. (2024). A
+#' structural after measurement approach
+#' to structural equation modeling.
+#' *Psychological Methods, 29*(3), 561--588.
+#' https://doi.org/10.1037/met0000503
 #'
 #' @author Idea to fit a model by
 #' structural equation modeling by
@@ -583,10 +595,13 @@ q_mediation <- function(x,
   if (!is.null(indicator_method)) {
     indicator_method <- match.arg(indicator_method,
                                   c("scale_scores",
-                                    "measurement_model"))
-    if ((indicator_method == "measurement_model") &&
+                                    "measurement_model",
+                                    "sam"))
+    if ((indicator_method %in% c("measurement_model", "sam")) &&
         (fit_method == "lm")) {
-      stop("indicator_method == 'measurement_model' is ",
+      stop("indicator_method == ",
+           sQuote(indicator_method),
+           " is ",
            "not supported for regression-based fit_method.")
     }
   } else {
@@ -626,6 +641,9 @@ q_mediation <- function(x,
     }
     if (fit_method == "lavaan") {
       if (indicator_method == "measurement_model") {
+        # A placeholder for future code.
+      }
+      if (indicator_method == "sam") {
         # A placeholder for future code.
       }
       if (indicator_method == "scale_scores") {
@@ -669,7 +687,7 @@ q_mediation <- function(x,
   lm_measurement <- character(0)
   if (has_indicators &&
       (fit_method == "lavaan")) {
-    if (indicator_method == "measurement_model") {
+    if (indicator_method %in% c("measurement_model", "sam")) {
       lm_measurement <- measurement_syntax(indicators = indicators)
     }
   }
@@ -715,7 +733,7 @@ q_mediation <- function(x,
     # Always pass all the cases. Let missing do the listwise,
     # if na.action is na.omit
 
-    if ((indicator_method == "measurement_model") &&
+    if ((indicator_method %in% c("measurement_model", "sam")) &&
         !is.null(indicators)) {
       mm <- mm_from_lm_forms(
               lm_forms,
@@ -734,25 +752,41 @@ q_mediation <- function(x,
     }
 
     sem_model <- b_names_to_lavaan_model(mm$b_names)
-    if (indicator_method == "measurement_model") {
+    if (indicator_method %in% c("measurement_model", "sam")) {
       sem_model <- paste0(sem_model,
                           "\n",
                           lm_measurement,
                           collapse = "\n")
     }
 
-    sem_args1 <- utils::modifyList(
-                    sem_args,
-                    list(model = sem_model,
-                         data = mm$model_matrix,
-                         meanstructure = TRUE,
-                         warn = FALSE,
-                         fixed.x = fixed.x,
-                         missing = missing)
-                  )
+    if (indicator_method %in% c("measurement_model", "scale_scores")) {
+      sem_args1 <- utils::modifyList(
+                      sem_args,
+                      list(model = sem_model,
+                          data = mm$model_matrix,
+                          meanstructure = TRUE,
+                          warn = FALSE,
+                          fixed.x = fixed.x,
+                          missing = missing)
+                    )
 
-    lm_all <- do.call(lavaan::sem,
-                      sem_args1)
+      lm_all <- do.call(lavaan::sem,
+                        sem_args1)
+    }
+
+    if (indicator_method == "sam") {
+      sem_args1 <- utils::modifyList(
+                      sem_args,
+                      list(model = sem_model,
+                          data = mm$model_matrix,
+                          meanstructure = TRUE,
+                          warn = FALSE,
+                          fixed.x = fixed.x,
+                          missing = missing)
+                    )
+      lm_all <- do.call(lavaan::sam,
+                        sem_args1)
+    }
 
     fixed.x <- lavaan::lavTech(lm_all, "fixed.x")
     lm_all_x <- c(lavaan::lavNames(lm_all, "ov.x"),
@@ -837,29 +871,43 @@ q_mediation <- function(x,
 
   if ((fit_method == "lavaan") &&
       has_indicators &&
-      (indicator_method == "measurement_model")) {
+      (indicator_method %in% c("measurement_model", "sam"))) {
 
     # ==== Reliability in measurement model ====
 
-    cfa_args <- utils::modifyList(
-                    sem_args,
-                    list(model = lm_measurement,
-                         data = mm$model_matrix,
-                         meanstructure = TRUE,
-                         warn = FALSE,
-                         se = "none",
-                         test = "none",
-                         std.lv = TRUE,
-                         missing = missing)
-                  )
-    fit_cfa <- do.call(
-                lavaan::cfa,
-                cfa_args
-              )
-    reliability <- semTools::compRelSEM(
-      fit_cfa
-    )
-    loadings <- get_loadings(fit_cfa)
+    if (indicator_method == "measurement_model") {
+      cfa_args <- utils::modifyList(
+                      sem_args,
+                      list(model = lm_measurement,
+                          data = mm$model_matrix,
+                          meanstructure = TRUE,
+                          warn = FALSE,
+                          se = "none",
+                          test = "none",
+                          std.lv = TRUE,
+                          missing = missing)
+                    )
+      fit_cfa <- do.call(
+                  lavaan::cfa,
+                  cfa_args
+                )
+      reliability <- semTools::compRelSEM(
+        fit_cfa
+      )
+      loadings <- get_loadings(fit_cfa)
+    }
+
+    if (indicator_method == "sam") {
+      names(lm_all@internal)
+      lm_all_internal <- lm_all@internal
+      # Assume single-group
+      tmp <- lm_all_internal$sam.mm.rel[[1]]
+      ovnames <- lavaan::lavNames(lm_all, "ov")
+      relnames <- setdiff(names(tmp), ovnames)
+      reliability <- tmp[relnames]
+      loadings <- get_loadings(lm_all)
+    }
+
   }
 
   if ((fit_method == "lavaan") &&
