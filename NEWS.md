@@ -1,4 +1,4 @@
-# manymome 0.3.4.8
+# manymome 0.3.4.9
 
 ## New Features
 
@@ -15,6 +15,12 @@
   a latent variable model with
   a measurement part will be fitted.
   (0.3.4.2, 0.3.4.3)
+
+- Added preliminary support for SAM
+  to the `q_*` functions
+  (`q_mediation()`, `q_simple_mediation()`,
+  `q_serial_mediation()` and `q_parallel_mediation()`).
+  (0.3.4.9)
 
 ## Miscellaneous
 
