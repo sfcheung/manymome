@@ -5,7 +5,7 @@ library(manymome)
 suppressMessages(library(lavaan))
 suppressMessages(library(semTools))
 
-test_that("q function: mediation with indicators: SAM", {
+test_that("q function: mediation with indicators: SEM: scale scores", {
 data_sem$x02r <- -data_sem$x02
 data_sem$x10r <- -data_sem$x10
 data_sem$x14r <- -data_sem$x14
@@ -20,7 +20,7 @@ out1 <- q_mediation(
           model = "simple",
           data = data_sem,
           fit_method = "sem",
-          indicator_method = "sam",
+          indicator_method = "scale_scores",
           boot_ci = FALSE,
           R = 100,
           seed = 1234,
@@ -38,7 +38,7 @@ out2 <- q_mediation(
           model = "simple",
           data = data_sem,
           fit_method = "sem",
-          indicator_method = "sam",
+          indicator_method = "scale_scores",
           boot_ci = FALSE,
           R = 100,
           seed = 1234,
@@ -56,7 +56,7 @@ out3 <- q_mediation(
           model = "simple",
           data = data_sem,
           fit_method = "sem",
-          indicator_method = "sam",
+          indicator_method = "scale_scores",
           boot_ci = FALSE,
           R = 100,
           seed = 1234,
@@ -74,16 +74,17 @@ out4 <- q_mediation(
           model = "simple",
           data = data_sem,
           fit_method = "sem",
-          indicator_method = "sam",
+          indicator_method = "scale_scores",
           boot_ci = FALSE,
           R = 100,
           seed = 1234,
           parallel = FALSE,
           progress = !is_testing())
 
-# SAM reliability coefficients not affected by sign of loadings
-expect_equal(as.numeric(out1$reliability),
-             as.numeric(out2$reliability))
+expect_false(isTRUE(all.equal(
+                as.numeric(out1$reliability),
+                as.numeric(out2$reliability)
+            )))
 
 chk <- sapply(out2$loadings, function(x) x < 0)
 expect_true(any(unlist(chk)))
@@ -93,9 +94,10 @@ expect_equal(out1$loadings,
              chk,
              ignore_attr = TRUE)
 
-# SAM reliability coefficients not affected by sign of loadings
-expect_equal(as.numeric(out1$reliability),
-             as.numeric(out3$reliability))
+expect_false(isTRUE(all.equal(
+                as.numeric(out1$reliability),
+                as.numeric(out3$reliability)
+              )))
 
 chk <- sapply(out3$loadings, function(x) x < 0)
 expect_true(any(unlist(chk)))
@@ -111,11 +113,19 @@ expect_equal(out1$loadings,
              out4$loadings,
              ignore_attr = TRUE)
 
-expect_equal(coef(out1$ind_out$ustd),
-             coef(out2$ind_out$ustd))
-expect_equal(coef(out1$ind_out$ustd),
-             coef(out3$ind_out$ustd))
+# The effect depends on scoring
+expect_false(isTRUE(all.equal(
+                as.numeric(out1$reliability),
+                as.numeric(out2$reliability)
+              )))
+expect_false(isTRUE(all.equal(
+                as.numeric(out1$reliability),
+                as.numeric(out3$reliability)
+              )))
+
 expect_equal(coef(out1$ind_out$ustd),
              coef(out4$ind_out$ustd))
+expect_equal(coef(out2$ind_out$ustd),
+             coef(out3$ind_out$ustd))
 
 })
