@@ -1871,7 +1871,7 @@ print.q_mediation <- function(x,
          has_no_na &&
          (fit_missing != "listwise")) ||
         (norig == ntotal)) {
-      cat("No missing data in this analysis.\n")
+      cat("No cases excluded in this analysis.\n")
     }
 
   }
