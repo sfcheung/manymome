@@ -333,7 +333,7 @@ lm_from_lavaan_list_for_q <- function(
     # ==== Tests of R-squares ====
     rsq_test <- rsquare_test(
                   fit = fit,
-                  fit_null = fit_null_list
+                  fit_nulls = fit_null_list
                 )
   } else {
     fit_null_list <- vector("list", length(dvs))
@@ -547,10 +547,10 @@ fit_null <- function(
 # - A named list of lavTestLRT() output
 rsquare_test <- function(
                   fit,
-                  fit_null_list,
+                  fit_nulls,
                   ...
                 ) {
-  dvs <- names(fit_null_list)
+  dvs <- names(fit_nulls)
   tmpfct <- function(fit0, fit1, ...) {
     outi <- lavaan::lavTestLRT(
                   fit0,
@@ -559,7 +559,7 @@ rsquare_test <- function(
                 )
     outi
   }
-  out0 <- sapply(fit_null_list,
+  out0 <- sapply(fit_nulls,
                  tmpfct,
                  fit1 = fit,
                  simplify = FALSE,
