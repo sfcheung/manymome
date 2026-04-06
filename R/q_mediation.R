@@ -1792,10 +1792,11 @@ print.q_mediation <- function(x,
   cat("\nMediator(s)(m):", paste0(x$m, collapse = ", "))
   cat("\nModel:", model_name)
   if (!is.null(x$indicators)) {
-    cat("\nIndicators used to:",
+    cat("\nIndicators Method:",
         switch(indicator_method,
                scale_scores = "Compute scale scores",
-               measurement_model = "Fit a measurement model"))
+               measurement_model = "Fit a measurement model",
+               sam = "Struactural-After-Measurement (SAM)"))
   }
   cat("\n")
 
@@ -1826,7 +1827,7 @@ print.q_mediation <- function(x,
         fiml = "FIML (full information maximum likelihood)",
         listwise = "Listwise deletion",
         ml.x = "FIML (full information maximum likelihood) (cases with missing x kept)",
-        paste(fit_missing, "(See the help page of lavaan on this optoin)")
+        paste(fit_missing, "(See the help page of lavaan on this option)")
       )
     ntotal <- lavaan::lavInspect(
                 x$lm_out,
@@ -1941,6 +1942,8 @@ print.q_mediation <- function(x,
         print(tmp[[xx]])
       }
       cat("\nNote:\n")
+      # TODO (SAM):
+      # - Check whether this note is correct.
       tmp <- strwrap(
         paste0("- Revserse-coded items have been",
                " reverse-coded when estimating the loadings."),
@@ -1990,7 +1993,7 @@ print.q_mediation <- function(x,
 
     # ==== Print path analysis results ====
 
-    if (isTRUE(x$call$indicator_method == "measurement_model")) {
+    if (isTRUE(x$call$indicator_method %in% c("measurement_model", "sam"))) {
       tmp <- "|      Structrual Equation Modeling Results       |\n"
     } else {
       tmp <- "|             Path Analysis Results               |\n"
@@ -2043,12 +2046,19 @@ print.q_mediation <- function(x,
       )
     }
 
-    tmp <- lavaan::fitMeasures(
+    if (isTRUE(x$call$indicator_method == "sam")) {
+      # TODO (SAM):
+      # - Decide what to print for SAM
+      # Placeholder
+    }
+
+    if (isTRUE(x$call$indicator_method == "measurement_model")) {
+      tmp <- lavaan::fitMeasures(
               x$lm_out,
               fit.measures = fm_to_print,
               output = "text")
-
-    print(tmp)
+      print(tmp)
+    }
 
     # TODO:
     # - Need to improve the printout for users
