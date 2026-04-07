@@ -592,6 +592,10 @@ find_w_type <- function(w, fit) {
       }
     fit_type <- cond_indirect_check_fit(fit)
     if (fit_type == "lavaan" || fit_type == "lavaan.mi") {
+        if (w %in% lavaan::lavNames(fit, "lv")) {
+          # Latent variables are treated as numeric
+          return("numeric")
+        }
         mm <- as.data.frame(lav_data_used(fit))
         w_dat <- as.vector(mm[, w])
         if (length(unique(w_dat)) > 2) {
