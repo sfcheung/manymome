@@ -1,4 +1,4 @@
-# manymome 0.3.4.12
+# manymome 0.3.4.13
 
 ## New Features
 
@@ -67,6 +67,10 @@
   computing reliability coefficients.
   This is necessary for some methods.
   (0.3.4.12)
+
+- Updated `do_boot()` to support latent
+  variable means.
+  (0.3.4.13)
 
 # manymome 0.3.4
 
