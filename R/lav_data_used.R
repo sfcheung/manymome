@@ -247,7 +247,7 @@ gen_pseudo_raw_lv_data <- function(
         )
   lv_des <- get_lv_means_and_cov(fit)
   f <- function(des, n) {
-    cov_lv <- des$cov_lv * n / (n - 1)
+    cov_lv <- des$cov_lv
     mean_lv <- des$mean_lv
     p <- ncol(cov_lv)
     if (isFALSE(length(mean_lv) == p) ||
