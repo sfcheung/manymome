@@ -370,6 +370,12 @@ mod_levels_i_lavaan_numerical <- mod_levels_i_lm_numerical <- function(fit,
     # No need for user-specified method. If users want to specify their own
     # values, they do not need  to call this function
     fit_type <- cond_indirect_check_fit(fit)
+    if (fit_type %in% c("lavaan", "lavaan.mi")) {
+      if ((w %in% lavaan::lavNames(fit, "lv")) &&
+          (w_method == "percentile")) {
+        stop("The percentile method does not support latent moderators.")
+      }
+    }
     mm <- switch(fit_type,
                  lavaan = as.data.frame(lav_data_used(fit)),
                  lavaan.mi = as.data.frame(lav_data_used(fit)),
