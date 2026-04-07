@@ -623,12 +623,12 @@ get_implied_i_lavaan <- function(est0,
         if (ngroups > 1) {
           k_lv <- length(implied_mean_lv[[1]])
           for (tmp in seq_len(ngroups)) {
-            implied_mean_ov[[tmp]] <- lavaan::lav_model_implied(mod0,
+            implied_mean_ov[[tmp]][] <- lavaan::lav_model_implied(mod0,
                                                 GLIST = NULL,
-                                                delta = TRUE)$mean[[tmp]][, 1]
+                                                delta = TRUE)$mean[[tmp]][, 1, drop = TRUE]
             # TODO:
             # - Support latent variable implied means
-            implied_mean_lv[[tmp]] <- rep(NA, k_lv)
+            # implied_mean_lv[[tmp]] <- rep(NA, k_lv)
           }
           implied_means <- mapply(c,
                                   implied_mean_ov,
@@ -640,11 +640,12 @@ get_implied_i_lavaan <- function(est0,
         } else {
           implied_mean_ov[] <- lavaan::lav_model_implied(mod0,
                                               GLIST = NULL,
-                                              delta = TRUE)$mean[[1]][, 1]
-          # TODO:
-          # - Support latent variable implied means
+                                              delta = TRUE)$mean[[1]][, 1, drop = TRUE]
           implied_mean_lv <- lavaan::lavInspect(fit, "mean.lv")
-          implied_mean_lv[] <- NA
+          # No mean structure
+          if (length(implied_mean_ov) == 0) {
+            implied_mean_lv[] <- NA
+          }
           implied <- list(cov = list(implied_cov_all),
                           mean = list(c(implied_mean_ov,
                                         implied_mean_lv)),
@@ -706,9 +707,10 @@ get_implied_i_lavaan <- function(est0,
       }
     if (has_lv) {
         if (ngroups > 1) {
-            for (j in seq_len(ngroups)) {
-                out1[["mean_lv"]][[j]][] <- NA
-              }
+            # No need to do anything. Already set previously
+            # for (j in seq_len(ngroups)) {
+            #     out1[["mean_lv"]][[j]][] <- NA
+            #   }
           } else {
             out1$mean_lv <- implied$mean_lv[[1]]
           }
@@ -767,6 +769,8 @@ get_implied_i_lavaan_mi <- function(est0,
             class(implied_mean_ov) <- c("lavaan.vector", class(implied_mean_ov))
           }
         # SF: `lavaan` raises an error in some cases for unknown reasons
+        # TODO:
+        # - Fix and support latent mean for lavaan.mi
         implied_mean_lv <- tryCatch(lavaan::lavInspect(fit_tmp, "mean.lv"),
                                     error = function(e) e)
         if (inherits(implied_mean_lv, "error")) {
