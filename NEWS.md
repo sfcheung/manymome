@@ -1,4 +1,4 @@
-# manymome 0.3.4.13
+# manymome 0.3.4.14
 
 ## New Features
 
@@ -21,6 +21,11 @@
   (`q_mediation()`, `q_simple_mediation()`,
   `q_serial_mediation()` and `q_parallel_mediation()`).
   (0.3.4.9)
+
+- Preliminary support for latent-variable
+  moderation and moderated-mediation
+  supported if a model is fitted by SAM.
+  (0.3.4.14)
 
 ## Miscellaneous
 
