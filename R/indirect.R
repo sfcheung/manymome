@@ -254,6 +254,14 @@ indirect_i <- function(x,
     # - est_vcov
     # - df_residual
     fit <- auto_lm2list(fit)
+    if (!is.null(fit)) {
+      fit_type <- cond_indirect_check_fit(fit)
+      if (fit_type == "lavaan") {
+        is_sam <- isTRUE(!is.null(fit@internal$sam.method))
+      }
+    } else {
+      is_sam <- FALSE
+    }
     if (is.null(est)) {
       est <- lav_est(fit, remove.step1 = FALSE)
     }
@@ -321,10 +329,11 @@ indirect_i <- function(x,
       }
     if (is.null(prods)) {
         if (isTRUE(any(chk_lv))) {
+            op <- if (is_sam) {":"} else {"_x_"}
             prods_lv <- mapply(get_prod,
                                x = xs,
                                y = ys,
-                               operator = "_x_",
+                               operator = op,
                                MoreArgs = list(est = est,
                                                skip_indicators = skip_indicators),
                                SIMPLIFY = FALSE)

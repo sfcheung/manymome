@@ -24,9 +24,10 @@
 
 lav_data_used <- function(fit,
                           drop_colon = TRUE,
-                          drop_list_single_group = TRUE) {
+                          drop_list_single_group = TRUE,
+                          add_lv = TRUE) {
     # Return a named list of N matrices if ngroups > 1
-    # TODOs: lav_data_used_lavaan_mi()
+    # TODO: lav_data_used_lavaan_mi()
     type <- NA
     if (inherits(fit, "lavaan")) {
         type <- "lavaan"
@@ -40,7 +41,8 @@ lav_data_used <- function(fit,
     out <- switch(type,
                   lavaan = lav_data_used_lavaan(fit = fit,
                                                 drop_colon = drop_colon,
-                                                drop_list_single_group = drop_list_single_group),
+                                                drop_list_single_group = drop_list_single_group,
+                                                add_lv = add_lv),
                   lavaan.mi = lav_data_used_lavaan_mi(fit = fit,
                                                       drop_colon = drop_colon))
     out
@@ -50,12 +52,26 @@ lav_data_used <- function(fit,
 
 lav_data_used_lavaan <- function(fit,
                                  drop_colon = TRUE,
-                                 drop_list_single_group = TRUE) {
+                                 drop_list_single_group = TRUE,
+                                 add_lv = TRUE) {
     # Return a named list of N matrices if ngroups > 1
     dat <- lavaan::lavInspect(fit, "data",
                               drop.list.single.group = FALSE)
     i_excluded <- lavaan::lavInspect(fit, "empty.idx",
                                      drop.list.single.group = FALSE)
+    if (add_lv) {
+      if (length(lavaan::lavNames(fit, "lv")) > 0) {
+        dat_lv <- gen_pseudo_raw_lv_data(fit)
+        dat <- mapply(
+          function(x, y) {
+            cbind(x, y)
+          },
+          x = dat,
+          y = dat_lv,
+          SIMPLIFY = FALSE
+        )
+      }
+    }
     ngp <- lavaan::lavTech(fit, "ngroups")
     if (drop_colon) {
         for (k in seq_len(ngp)) {
@@ -93,6 +109,19 @@ lav_data_used_lavaan_mi <- function(fit,
                               data = dat_list[[1]],
                               do.fit = FALSE)
     dat_tmp <- lavaan::lavInspect(fit_tmp, "data")
+    # TODO:
+    # - Fix the following when implied latent variable means are supported
+    # if (length(lavaan::lavNames(fit, "lv")) > 0) {
+    #   dat_lv <- gen_pseudo_raw_lv_data(fit)
+    #   dat <- mapply(
+    #     function(x, y) {
+    #       cbind(x, y)
+    #     },
+    #     x = dat,
+    #     y = dat_lv,
+    #     SIMPLIFY = FALSE
+    #   )
+    # }
     all_prods <- find_all_products(dat_tmp,
                                    expand = TRUE,
                                    skip_indicators = skip_indicators,
@@ -184,3 +213,61 @@ form_prods <- function(x, prods = NA) {
         return(x)
       }
   }
+
+#' @noRd
+get_lv_means_and_cov <- function(fit) {
+  lv_means <- lavaan::lavInspect(
+                fit,
+                "mean.lv",
+                drop.list.single.group = FALSE)
+  lv_cov <- lavaan::lavInspect(
+                fit,
+                "cov.lv",
+                drop.list.single.group = FALSE)
+  out <- mapply(
+    function(x, y) {
+      list(mean_lv = x,
+           cov_lv = y)
+    },
+    x = lv_means,
+    y = lv_cov,
+    SIMPLIFY = FALSE
+  )
+  out
+}
+
+#' @noRd
+gen_pseudo_raw_lv_data <- function(
+  fit
+) {
+  ns <- lavaan::lavInspect(
+          fit,
+          "nobs",
+          drop.list.single.group = FALSE
+        )
+  lv_des <- get_lv_means_and_cov(fit)
+  f <- function(des, n) {
+    cov_lv <- des$cov_lv
+    mean_lv <- des$mean_lv
+    p <- ncol(cov_lv)
+    if (isFALSE(length(mean_lv) == p) ||
+        isTRUE(any(is.na(mean_lv)))) {
+      mean_lv <- rep(0, p)
+      names(mean_lv) <- colnames(cov_lv)
+    }
+    dat_i <- MASS::mvrnorm(
+      n = n,
+      mu = mean_lv,
+      Sigma = cov_lv,
+      empirical = TRUE
+    )
+    dat_i
+  }
+  out <- mapply(
+    FUN = f,
+    des = lv_des,
+    n = ns,
+    SIMPLIFY = FALSE
+  )
+  out
+}
