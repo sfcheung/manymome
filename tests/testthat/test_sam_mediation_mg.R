@@ -28,7 +28,7 @@ mod <-
    ab1342 := a132 * b342
    ab1343 := a133 * b343
   '
-fit <- lavaan::sem(
+fit <- sam(
   model = mod,
   data = data_sem_mg,
   group = "gp",
