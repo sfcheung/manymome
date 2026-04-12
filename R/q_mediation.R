@@ -2069,11 +2069,15 @@ print.q_mediation <- function(x,
       # Placeholder
     }
 
-    if (isTRUE(x$call$indicator_method == "measurement_model")) {
-      tmp <- lavaan::fitMeasures(
+    if (isTRUE(x$call$indicator_method %in%
+               c("measurement_model", "scale_scores"))) {
+      # Supppress an unknown warning regarding
+      # robust fit measures even when they are
+      # not requested
+      tmp <- suppressWarnings(lavaan::fitMeasures(
               x$lm_out,
               fit.measures = fm_to_print,
-              output = "text")
+              output = "text"))
       print(tmp)
     }
 
