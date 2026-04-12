@@ -1955,13 +1955,17 @@ print.q_mediation <- function(x,
         print(tmp[[xx]])
       }
       cat("\nNote:\n")
-      # TODO (SAM):
-      # - Check whether this note is correct.
       tmp <- strwrap(
         paste0("- Revserse-coded items have been",
                " reverse-coded when estimating the loadings."),
         exdent = 2
       )
+      tmp2 <- strwrap(
+        paste0("- If the loading of an item is negative, its coding",
+               " (revserse or non-reverse) may be incorrect."),
+        exdent = 2
+      )
+      tmp <- c(tmp, tmp2)
       if (!is.null(x$reliability)) {
         tmp2 <- strwrap(
           paste0("- Reliability estimated by omage coefficients."),
