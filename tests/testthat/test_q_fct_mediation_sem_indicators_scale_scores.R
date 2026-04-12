@@ -4,6 +4,7 @@ library(testthat)
 library(manymome)
 
 test_that("q function: mediation with indicators: scale scores", {
+# The suppressed warnings are expected and can be ignored.
 
 data_sem2 <- data_sem
 data_sem2[, c("y", "m", "c2")] <-
@@ -14,6 +15,7 @@ data_sem2[, c("y", "m", "c2")] <-
       data_sem2
     )
 
+suppressWarnings(
 out <- q_mediation(
           x = "x10",
           y = "y",
@@ -30,7 +32,9 @@ out <- q_mediation(
           seed = 1234,
           parallel = FALSE,
           progress = !is_testing())
+)
 
+suppressWarnings(
 out_simple <- q_simple_mediation(
           x = "x10",
           y = "y",
@@ -46,7 +50,9 @@ out_simple <- q_simple_mediation(
           seed = 1234,
           parallel = FALSE,
           progress = !is_testing())
+)
 
+suppressWarnings(
 out_parallel <- q_parallel_mediation(
           x = "x10",
           y = "y",
@@ -62,7 +68,9 @@ out_parallel <- q_parallel_mediation(
           seed = 1234,
           parallel = FALSE,
           progress = !is_testing())
+)
 
+suppressWarnings(
 out_serial <- q_serial_mediation(
           x = "x10",
           y = "y",
@@ -78,7 +86,9 @@ out_serial <- q_serial_mediation(
           seed = 1234,
           parallel = FALSE,
           progress = !is_testing())
+)
 
+suppressWarnings(
 out_user <- q_mediation(
           x = "x10",
           y = "y",
@@ -96,6 +106,7 @@ out_user <- q_mediation(
           seed = 1234,
           parallel = FALSE,
           progress = !is_testing())
+)
 
 out_chk <- q_mediation(
           x = "x10",

@@ -1158,6 +1158,18 @@ q_mediation <- function(x,
     dir_std0 <- NULL
   }
 
+  # ==== Final Check ====
+
+  if (has_indicators) {
+    tmp <- unlist(loadings)
+    i <- (tmp < 0)
+    if (any(i)) {
+      tmp <- tmp[i]
+      tmp <- paste0(names(tmp), collapse = ",")
+      warning(tmp, " has/have negative loading(s). Please check.")
+    }
+  }
+
   # ==== Combine the output ====
 
   if (progress) {

@@ -6,6 +6,8 @@ suppressMessages(library(lavaan))
 suppressMessages(library(semTools))
 
 test_that("q function: mediation with indicators: Regression: scale scores", {
+# The suppressed warnings are expected and can be ignored.
+
 data_sem$x02r <- -data_sem$x02
 data_sem$x10r <- -data_sem$x10
 data_sem$x14r <- -data_sem$x14
@@ -28,6 +30,7 @@ out1 <- q_mediation(
           progress = !is_testing())
 
 # Items incorrectly reversed
+suppressWarnings(
 out2 <- q_mediation(
           x = "f1",
           y = "f4",
@@ -44,8 +47,10 @@ out2 <- q_mediation(
           seed = 1234,
           parallel = FALSE,
           progress = !is_testing())
+)
 
 # Items incorrectly recoded
+suppressWarnings(
 out3 <- q_mediation(
           x = "f1",
           y = "f4",
@@ -62,6 +67,7 @@ out3 <- q_mediation(
           seed = 1234,
           parallel = FALSE,
           progress = !is_testing())
+)
 
 # Reverse items denoted as such
 out4 <- q_mediation(
