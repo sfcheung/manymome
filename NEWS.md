@@ -1,4 +1,4 @@
-# manymome 0.3.4.15
+# manymome 0.3.4.16
 
 ## New Features
 
@@ -27,7 +27,7 @@
   supported if a model is fitted by SAM.
   (0.3.4.14)
 
-- Tested multigroup latent-variabl
+- Tested multigroup latent-variable
   mediation with SAM.
   (0.3.4.15)
 
@@ -80,6 +80,10 @@
 - Updated `do_boot()` to support latent
   variable means.
   (0.3.4.13)
+
+- Added a warning and a note for negative
+  loadings.
+  (0.3.4.16)
 
 # manymome 0.3.4
 
