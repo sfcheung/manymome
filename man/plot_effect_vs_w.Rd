@@ -70,14 +70,14 @@ at zero will always be drawn.}
 \item{line_linewidth}{The width of
 the line of the effect for each
 level of the moderator, to be used
-by \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}. Default is 1.
+by \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}}. Default is 1.
 Always overrides the value of
 \code{line_args}.}
 
 \item{line_color}{The color of the line
 of the effect for each level of the
 moderator, to be used
-by \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}.
+by \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}}.
 Default is "blue".
 Always overrides the value of
 \code{line_args}.}
@@ -113,7 +113,7 @@ Always overrides the value of
 \item{intervals_color}{The color of
 the lines of the confidence intervals,
 to be used
-by \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}. Default is
+by \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}}. Default is
 \code{"black"}.
 Always overrides the value of
 \code{intervals_args}.}
@@ -122,7 +122,7 @@ Always overrides the value of
 type of
 the lines of the confidence intervals,
 to be used
-by \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}. Default is
+by \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}}. Default is
 \code{"longdash"}.
 Always overrides the value of
 \code{intervals_args}.}
@@ -131,7 +131,7 @@ Always overrides the value of
 width of
 the lines of the confidence intervals,
 to be used
-by \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}. Default is
+by \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}}. Default is
 1.
 Always overrides the value of
 \code{intervals_args}.}
@@ -139,7 +139,7 @@ Always overrides the value of
 \item{zero_line_color}{The color of
 the line at zero,
 to be used
-by \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}. Default is
+by \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}}. Default is
 \code{"grey"}.
 Always overrides the value of
 \code{zero_line_args}.}
@@ -148,7 +148,7 @@ Always overrides the value of
 width of
 the line at zero,
 to be used
-by \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}. Default is
+by \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}}. Default is
 1.
 Always overrides the value of
 \code{zero_line_args}.}
@@ -157,14 +157,14 @@ Always overrides the value of
 type of
 the line at zero,
 to be used
-by \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}. Default is
+by \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}}. Default is
 \code{"solid"}.
 Always overrides the value of
 \code{zero_line_args}.}
 
 \item{line_args}{A named list of
 additional arguments to be passed
-to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}} for the line
+to \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}} for the line
 of the effect against moderator.
 Default is \code{list()}.}
 
@@ -176,13 +176,13 @@ Default is \code{list()}.}
 
 \item{intervals_args}{A named list of
 additional arguments to be passed
-to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}} for the lines
+to \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}} for the lines
 of confidence intervals.
 Default is \code{list()}.}
 
 \item{zero_line_args}{A named list of
 additional arguments to be passed
-to \code{\link[ggplot2:geom_path]{ggplot2::geom_line()}} for the line
+to \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}} for the line
 at zero.
 Default is \code{list()}.}
 

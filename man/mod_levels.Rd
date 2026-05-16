@@ -44,7 +44,7 @@ It can also be
 a \code{lavaan.mi} object
 returned by
 \code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::lavaan.mi()}} or
-its wrapper, such as \code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::sem.mi()}}.
+its wrapper, such as \code{\link[lavaan.mi:sem.mi]{lavaan.mi::sem.mi()}}.
 If it is a single model fitted by
 \code{\link[=lm]{lm()}}, it will be automatically converted
 to a list by \code{\link[=lm2list]{lm2list()}}.}
