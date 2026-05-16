@@ -1,4 +1,4 @@
-# manymome 0.3.4.16
+# manymome 0.3.4.17
 
 ## New Features
 
@@ -84,6 +84,9 @@
 - Added a warning and a note for negative
   loadings.
   (0.3.4.16)
+
+- `roxygen2` updated to 8.0.0.
+  (0.3.4.17)
 
 # manymome 0.3.4
 
