@@ -5,6 +5,7 @@
 \alias{q_simple_mediation}
 \alias{q_serial_mediation}
 \alias{q_parallel_mediation}
+\alias{get_fit}
 \alias{print.q_mediation}
 \title{Mediation Models By Regression
 or SEM}
@@ -112,6 +113,8 @@ q_parallel_mediation(
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
 )
+
+get_fit(q_out)
 
 \method{print}{q_mediation}(
   x,
@@ -327,6 +330,9 @@ detected by
 \item{progress}{Logical. Display
 progress or not.}
 
+\item{q_out}{The output of \code{\link[=q_mediation]{q_mediation()}}
+and friends.}
+
 \item{digits}{Number of digits to
 display. Default is 4.}
 
@@ -431,6 +437,12 @@ is a subclass of \code{q_mediation}.
 The function \code{\link[=q_parallel_mediation]{q_parallel_mediation()}} returns
 a \code{q_parallel_mediation} class object, which
 is a subclass of \code{q_mediation}.
+
+The function \code{\link[=get_fit]{get_fit()}} returns the
+fit output. If \code{fit_method} is \code{"lm"},
+then it returns a list of \code{\link[=lm]{lm()}}
+outputs. If \code{fit_method} is \code{"sem"},
+then it returns the output of \code{\link[lavaan:sem]{lavaan::sem()}}.
 }
 \description{
 Simple-to-use functions
@@ -722,6 +734,10 @@ serial mediation models.
 
 \item \code{q_parallel_mediation()}: A wrapper of \code{\link[=q_mediation]{q_mediation()}} for
 parallel mediation models.
+
+\item \code{get_fit()}: Just a helper
+to retrieve the fit output used in
+\code{\link[=q_mediation]{q_mediation()}} and friends.
 
 }}
 \examples{
