@@ -1,4 +1,4 @@
-# manymome 0.3.4.17
+# manymome 0.3.4.18
 
 ## New Features
 
@@ -87,6 +87,13 @@
 
 - `roxygen2` updated to 8.0.0.
   (0.3.4.17)
+
+- Added `get_fit()` to retrieve the
+  fit results (regression or SEM)
+  stored in the output of `q_mediation()`
+  and friends.
+  (0.3.4.18)
+
 
 # manymome 0.3.4
 
