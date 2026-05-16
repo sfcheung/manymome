@@ -1536,6 +1536,32 @@ q_parallel_mediation <- function(x,
   return(out)
 }
 
+#' @describeIn q_mediation Just a helper
+#' to retrieve the fit output used in
+#' [q_mediation()] and friends.
+#'
+#' @param q_out The output of [q_mediation()]
+#' and friends.
+#'
+#' @return
+#' The function [get_fit()] returns the
+#' fit output. If `fit_method` is `"lm"`,
+#' then it returns a list of [lm()]
+#' outputs. If `fit_method` is `"sem"`,
+#' then it returns the output of [lavaan::sem()].
+#'
+#' @export
+get_fit <- function(
+  q_out
+) {
+  # Just retrieve the internal fit output
+  # Either a list of lm() outputs,
+  # or a lavaan output.
+  out0 <- q_out$lm_out
+  out0
+}
+
+
 # Helpers
 
 
