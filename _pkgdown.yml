@@ -103,6 +103,7 @@ reference:
 - contents:
   - q_mediation
   - plot.q_mediation
+  - q_mediation_sem_indicators_simple
 - title: Presenting and Exploring the Effects
 - contents:
   - index_of_mome
