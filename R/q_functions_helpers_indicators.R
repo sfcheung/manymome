@@ -96,7 +96,7 @@ reverse_scores <- function(
     }
   }
   for (xx in x) {
-    data <- reverse_scores_i(x, data = data)
+    data <- reverse_scores_i(xx, data = data)
   }
   data
 }

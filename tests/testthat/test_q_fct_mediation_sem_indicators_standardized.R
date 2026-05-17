@@ -5,25 +5,20 @@ suppressMessages(library(semTools))
 
 test_that("q function: mediation with indicators: measurement model: standardized", {
 
-data_sem2 <- data_sem
-data_sem2[, c("y", "m", "c2")] <-
-    scale_scores(
-      list(y = c("-x01", "x02", "x03"),
-          m = c("x04", "x05", "x09"),
-          c2 = c("x11", "-x13", "x14")),
-      data_sem2
-    )
+data_sem_rev <- data_sem
+data_sem_rev$x02 <- -data_sem_rev$x02
+data_sem_rev$x14 <- -data_sem_rev$x14
 
 out <- q_mediation(
           x = "x10",
           y = "y",
           m = "m",
           cov = c("c2", "x12"),
-          indicators = list(y = c("-x01", "x02", "x03"),
+          indicators = list(y = c("x01", "-x02", "x03"),
                             m = c("x04", "x05", "x09"),
-                            c2 = c("x11", "-x13", "x14")),
+                            c2 = c("x11", "x13", "-x14")),
           model = "simple",
-          data = data_sem,
+          data = data_sem_rev,
           fit_method = "sem",
           indicator_method = "measurement_model",
           boot_ci = FALSE,
@@ -43,7 +38,7 @@ y =~ x01 + x02 + x03
 
 fit <- sem(
   mod,
-  data = data_sem,
+  data = data_sem_rev,
   missing = "fiml"
 )
 

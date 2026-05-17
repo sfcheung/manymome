@@ -1,4 +1,4 @@
-# manymome 0.3.4.18
+# manymome 0.3.4.19
 
 ## New Features
 
@@ -30,6 +30,12 @@
 - Tested multigroup latent-variable
   mediation with SAM.
   (0.3.4.15)
+
+- Fixed a bug in handling reverse items
+  when `indicator_method` is
+  `"measurement_model"`. Parameter
+  estimates not affected.
+  (0.3.4.19)
 
 ## Miscellaneous
 
@@ -93,7 +99,6 @@
   stored in the output of `q_mediation()`
   and friends.
   (0.3.4.18)
-
 
 # manymome 0.3.4
 

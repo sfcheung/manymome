@@ -6,25 +6,20 @@ test_that("q function: mediation with indicators: SAM", {
 
 # ==== q function: mediation with indicators: SAM ====
 
-data_sem2 <- data_sem
-data_sem2[, c("y", "m", "c2")] <-
-    scale_scores(
-      list(y = c("-x01", "x02", "x03"),
-          m = c("x04", "x05", "x09"),
-          c2 = c("x11", "-x13", "x14")),
-      data_sem2
-    )
+data_sem_rev <- data_sem
+data_sem_rev$x02 <- -data_sem_rev$x02
+data_sem_rev$x14 <- -data_sem_rev$x14
 
 out <- q_mediation(
           x = "x10",
           y = "y",
           m = "m",
           cov = c("c2", "x12"),
-          indicators = list(y = c("-x01", "x02", "x03"),
+          indicators = list(y = c("x01", "-x02", "x03"),
                             m = c("x04", "x05", "x09"),
-                            c2 = c("x11", "-x13", "x14")),
+                            c2 = c("x11", "x13", "-x14")),
           model = "simple",
-          data = data_sem,
+          data = data_sem_rev,
           fit_method = "sem",
           indicator_method = "sam",
           boot_ci = FALSE,
@@ -38,10 +33,10 @@ out_simple <- q_simple_mediation(
           y = "y",
           m = "m",
           cov = c("c2", "x12"),
-          indicators = list(y = c("-x01", "x02", "x03"),
+          indicators = list(y = c("x01", "-x02", "x03"),
                             m = c("x04", "x05", "x09"),
-                            c2 = c("x11", "-x13", "x14")),
-          data = data_sem,
+                            c2 = c("x11", "x13", "-x14")),
+          data = data_sem_rev,
           fit_method = "sem",
           indicator_method = "sam",
           boot_ci = FALSE,
@@ -55,10 +50,10 @@ out_parallel <- q_parallel_mediation(
           y = "y",
           m = "m",
           cov = c("c2", "x12"),
-          indicators = list(y = c("-x01", "x02", "x03"),
+          indicators = list(y = c("x01", "-x02", "x03"),
                             m = c("x04", "x05", "x09"),
-                            c2 = c("x11", "-x13", "x14")),
-          data = data_sem,
+                            c2 = c("x11", "x13", "-x14")),
+          data = data_sem_rev,
           fit_method = "sem",
           indicator_method = "sam",
           boot_ci = FALSE,
@@ -72,10 +67,10 @@ out_serial <- q_serial_mediation(
           y = "y",
           m = "m",
           cov = c("c2", "x12"),
-          indicators = list(y = c("-x01", "x02", "x03"),
+          indicators = list(y = c("x01", "-x02", "x03"),
                             m = c("x04", "x05", "x09"),
-                            c2 = c("x11", "-x13", "x14")),
-          data = data_sem,
+                            c2 = c("x11", "x13", "-x14")),
+          data = data_sem_rev,
           fit_method = "sem",
           indicator_method = "sam",
           boot_ci = FALSE,
@@ -91,10 +86,10 @@ out_user <- q_mediation(
           cov = c("c2", "x12"),
           model = c("x10 -> m -> y",
                     "x10 -> y"),
-          indicators = list(y = c("-x01", "x02", "x03"),
+          indicators = list(y = c("x01", "-x02", "x03"),
                             m = c("x04", "x05", "x09"),
-                            c2 = c("x11", "-x13", "x14")),
-          data = data_sem,
+                            c2 = c("x11", "x13", "-x14")),
+          data = data_sem_rev,
           fit_method = "sem",
           indicator_method = "sam",
           boot_ci = FALSE,
@@ -196,14 +191,9 @@ test_that("q function: mediation with indicators: SAM: boot_ci", {
 
 skip_on_cran()
 
-data_sem2 <- data_sem
-data_sem2[, c("y", "m", "c2")] <-
-    scale_scores(
-      list(y = c("-x01", "x02", "x03"),
-          m = c("x04", "x05", "x09"),
-          c2 = c("x11", "-x13", "x14")),
-      data_sem2
-    )
+data_sem_rev <- data_sem
+data_sem_rev$x02 <- -data_sem_rev$x02
+data_sem_rev$x14 <- -data_sem_rev$x14
 
 suppressWarnings(
 out <- q_mediation(
@@ -211,11 +201,11 @@ out <- q_mediation(
           y = "y",
           m = "m",
           cov = c("c2", "x12"),
-          indicators = list(y = c("-x01", "x02", "x03"),
+          indicators = list(y = c("x01", "x02", "x03"),
                             m = c("x04", "x05", "x09"),
-                            c2 = c("x11", "-x13", "x14")),
+                            c2 = c("x11", "x13", "-x14")),
           model = "simple",
-          data = data_sem,
+          data = data_sem_rev,
           fit_method = "sem",
           indicator_method = "sam",
           boot_ci = TRUE,
