@@ -21,6 +21,7 @@ setwd("vignettes/articles")
 knitr::knit("med_mg.Rmd.original", output = "med_mg.Rmd")
 knitr::knit("q_mediation.Rmd.original", output = "q_mediation.Rmd")
 knitr::knit("q_mediation_sem_indicators_simple.Rmd.original", output = "q_mediation_sem_indicators_simple.Rmd")
-build_articles("../../"); preview_site("../../")
+knitr::knit("q_mediation_sem_indicators_serial.Rmd.original", output = "q_mediation_sem_indicators_serial.Rmd")
+pkgdown::build_articles("../../"); pkgdown::preview_site("../../")
 
 setwd(base_dir)

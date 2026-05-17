@@ -1,0 +1,572 @@
+---
+title: "All-In-One Functions for Serial Mediation Models: With Measurement Error Taken Into Account"
+author: "Shu Fai Cheung & Sing-Hang Cheung"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig.align: "center"
+    toc: true
+    number_sections: false
+bibliography: references.bib
+csl: apa.csl
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = ""
+)
+```
+
+** Work-In-Progress: Not Ready **
+
+# Introduction
+
+This article is a brief illustration of how to use
+the all-in-one "quick" functions from
+[manymome](https://sfcheung.github.io/manymome/index.html)
+([Cheung & Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z))
+to fit a structural model and
+compute and test indirect effects in
+one step.
+
+It is similar to using them on observed
+scores, such as scaled scores, as
+illustrated in [this article](./q_mediation.html).
+However, that approach does not take into
+account measurement errors, which can
+be done if a construct is measured by
+several indicators.
+
+This article demonstrates how to fit
+a model and test indirect effects when
+some of the constructs are latent variables
+measured by multiple indicators, with the
+measurement error taken into account using
+structural equation modeling (SEM).
+
+NOTE: This is part of a series of similar articles
+with duplicated sections, each dedicated
+to one form of models.
+
+# Data Set
+
+The sample dataset `data_indicators`
+will be used in this illustration.
+
+```{r dataset_med}
+library(manymome)
+dat <- data_indicators
+print(round(head(dat), 2))
+```
+
+For illustration, only the following variables
+will be used:
+
+- `x_1`, `x_2`, `x_3`, and `x_4`:
+  The indicators
+  of `fx`, the predictor.
+  The indicator `x_4` is a reverse items.
+
+- `m1_1`, `m1_2`, `m1_3`, and `m1_4`:
+  The indicators
+  of `fm1`, the first mediator.
+
+- `m3_1`, `m3_2`, `m3_3`, and `m3_4`:
+  The indicators
+  of `fm3`, the second mediator.
+
+- `y_1`, `y_2`, `y_3`, and `y_4`:
+  The indicators
+  of `fy`, the outcome variable.
+  The indicator `y_4` is a reverse items.
+
+- `c1_1`, `c1_2`, `c1_3`, and `c1_4`:
+  The indicators
+  of `fc1`, a control variable.
+
+- `c2`:
+  An observed control variable. To
+  illustrate mixing latent and observed
+  variables in a model.
+
+# Serial Mediation Model
+
+Suppose we would like to fit a simple
+mediation model with two mediators,
+`fm1` and `fm3`,
+with `fc1` and `c2` as the control
+variables.
+
+```{r q_mediation_sem_indicators_serial, echo = FALSE, fig.cap = "Serial Mediation Model"}
+library(semPlot)
+suppressMessages(library(lavaan))
+mod <-
+"
+# Measurement Part
+fx =~ x_1 + x_2 + x_3 + x_4
+fm1 =~ m1_1 + m1_2 + m1_3 + m1_4
+fm3 =~ m3_1 + m3_2 + m3_3 + m3_4
+fy =~ y_1 + y_2 + y_3 + y_4
+# fc1 =~ c1_1 + c1_2 + c1_3 + c1_4
+
+# Structural Part
+fm1 ~ fx
+fm3 ~ fm1 + fx
+fy ~ fm3 + fm1 + fx
+"
+fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c(NA, "fm1", "fm3", NA,
+                     "fx", NA, NA, "fy"),
+                    2, 4, byrow = TRUE)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 10,
+              asize = 5,
+              DoNotPlot = TRUE,
+              structural = TRUE)
+plot(p)
+text(label = "(Control variables excluded for readability)",
+     x = 0, y = -1.25,
+     adj = c(.5, .5))
+```
+
+We would to fit the model above,
+and compute and test the indirect
+effect along the path `fx -> fm1 -> fm3 -> fy`,
+as well as two other paths,
+`fx -> fm1 -> y` and `fx -> fm3 -> y`,
+using nonparametric bootstrapping.
+
+# Analysis
+
+We can do that in one single step using
+`q_serial_mediation()`:
+
+```{r results = "hide", message = FALSE}
+out <- q_serial_mediation(
+  x = "fx",
+  y = "fy",
+  m = c("fm1", "fm3"),
+  cov = c("fc1", "c2"),
+  indicators = list(
+    fx = c("x_1", "x_2", "x_3", "-x_4"),
+    fy = c("y_1", "y_2", "y_3", "-y_4"),
+    fm1 = c("m1_1", "m1_2", "m1_3", "m1_4"),
+    fm3 = c("m3_1", "m3_2", "m3_3", "m3_4"),
+    fc1 = c("c1_1", "c1_2", "c1_3", "c1_4")
+  ),
+  fit_method = "sem",
+  indicator_method = "measurement_model",
+  data = dat,
+  R = 5000,
+  seed = 1234
+)
+```
+
+These are the arguments:
+
+- `x`: The name of the predictor ("x" variable).
+
+- `y`: The name of the outcome ("y" variable).
+
+- `m`: A vector of the names of the mediators
+  ("m" variables). The order of the names represents
+  the order of the mediators, from the
+  first name to the last name. Therefore,
+  if the path is `x -> fm1 -> fm3 -> y`,
+  set this to `c("fm1", "fm3")`.
+
+- `cov`: The name(s) of the control variable(s)
+  (covariate(s)). By default, they predict both
+  the mediator and the outcome.
+
+- `indicators`: The indicators for latent
+  variables. It should be a named list of
+  variable names. The name of each element
+  is the name of the latent variable. If
+  an indicator is a reverse item, add
+  a minus sign, `-`, before its name. It
+  will be reverse-coded (multiplied by `-1`)
+  before fitting the model. If a variable
+  in `x`, `y`, `m`, or `cov` is not one
+  of the latent factor, it is an observed
+  variable.
+
+- `fit_method` and `indicator_method`:
+  To fit a model with the measurement part,
+  using the information from `indicators`,
+  set `fit_method` to `"sem"` and
+  `indicator_method` to `"measurement_model"`
+
+- `data`: The data frame for the model.
+
+- `R`: The number of bootstrap samples.
+  Should be at least 5000 but can be
+  larger for stable results.
+
+- `seed`: The seed for the random number
+  generator. Should always be set to an
+  integer to make the results reproducible.
+
+The computation may take some time to run but should
+be at most one or two minutes for contemporary
+computers.
+
+# Results
+
+We can then just print the output:
+
+```{r eval=FALSE}
+out
+```
+
+```{r echo=FALSE, results="hide"}
+out_tmp <- capture.output(print(out))
+```
+
+The printout is long. They will be
+discussed section-by-section below.
+
+These are the main sections of the
+default results:
+
+## Basic Information
+
+This is the section `Basic Information`:
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      " Basic Information ",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      " Indicator Information ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1 - 1):(i2 - 2)]
+cat(tmp, sep = "\n")
+```
+
+It shows the variables, the models, and the
+number of cases. It also shows the
+measurement model in the model, in
+`lavaan` syntax:
+
+- The name on the left-hand side of `=~`
+  is the latent variable.
+
+- The name on the right-hand side of `=~`,
+  joined by `+`, are the indicators.
+
+When the model is fitted by SEM, the default
+method to handle missing data is
+full-information maximum likelihood (FIML).
+
+## Indicator Information
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      " Indicator Information ",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      " Structrual Equation Modeling Results ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1 - 1):(i2 - 2)]
+cat(tmp, sep = "\n")
+```
+
+The section `Indicator Information` shows
+results related to each latent factor:
+
+- The indicators for each latent variable.
+
+- The *standardized* factor loadings from
+  the SEM results.
+
+    - Note that, after recoding, all
+      loadings should be positive. If
+      any loading is negative, it may be
+      a reverse indicator not specified
+      in `indicators`.
+
+- The reliability coefficient for each
+  latent factor, based on the factor loadings.
+  Omega coefficient is used, computed by
+  `semTools::compRelSEM()`.
+
+## Model Fit
+
+The section `Structural Equation Modeling Results`
+print the results from `lavaan` for the model.
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      "Model Test User Model:",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      "Standardized Root Mean Square Residual",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1 - 0):(i2 + 2)]
+cat(tmp, sep = "\n")
+```
+
+First, results on goodness-of-fit are printed:
+
+- `Model Test User Model` reports the
+  model $\chi^2$ and its *df* and *p*-value.
+
+- Basic fit measures (CFI, TLI, RMSEA,
+  and SRMR) are also printed.
+
+## Regression Results
+
+The next few sections print the
+regression coefficients when predicting
+the mediator (`fm` in this model) and
+the outcome variable (`fy` in this model).
+
+These are the results in predicting `fm`:
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      " Predicting fm1 ",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      " Predicting fy ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1 - 1):(i2 - 2)]
+cat(tmp, sep = "\n")
+```
+
+These are the results in predicting `y`:
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      " Predicting fy ",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      "  Indirect Effect Results  ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1 - 1):(i2 - 2)]
+cat(tmp, sep = "\n")
+```
+
+The results from `lavaan::sem()` are
+reformatted to make them similar to those
+by regression analysis.
+
+If desired, the output of `lavaan::sem()`
+can be extracted from the output by
+`get_fit()`.
+
+## Indirect Effect Results
+
+By default, this section prints the estimated
+indirect effect, confidence interval,
+and asymmetric bootstrap *p*-value.
+
+Four sections will be printed:
+
+- The original indirect effect.
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      "== Indirect Effect(s) ==",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      " Indirect Effect(s) (x-variable(s) Standardized) ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1):(i2 - 4)]
+cat(tmp, sep = "\n")
+```
+
+- The indirect effect with the predictor ("x") standardized.
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      " Indirect Effect(s) (x-variable(s) Standardized) ",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      " Indirect Effect(s) (y-variable(s) Standardized) ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1):(i2 - 4)]
+cat(tmp, sep = "\n")
+```
+
+- The indirect effect with the outcome ("y") standardized.
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      " Indirect Effect(s) (y-variable(s) Standardized) ",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      " Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized) ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1):(i2 - 4)]
+cat(tmp, sep = "\n")
+```
+
+- The indirect effect with both `x` and `y` standardized.
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      " Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized) ",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      "  Direct Effect Results  ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1):(i2 - 3)]
+cat(tmp, sep = "\n")
+```
+
+The indirect effect with both the predictor
+("x") and the outcome ("y") standardized,
+also called the *completely*
+*standardized* *indirect* *effect* or
+simply the *standardized* *indirect*
+*effect*.
+
+These four versions of the results are
+printed by default so that users can
+select and interpret sections as they
+see fit.
+
+## Direct Effect Results
+
+The section `Direct Effect Results` prints the estimated
+direct effect (from the predictor "x" to
+the outcome "y", not mediated), confidence interval,
+and asymmetric bootstrap *p*-value.
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      "  Direct Effect Results  ",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      "  Notes  ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1 - 1):(i2 - 4)]
+cat(tmp, sep = "\n")
+```
+
+The *z*-test of the direct effect is
+already available in section
+*Structural Equation Modeling Results*.
+The bootstrap results are printed in
+case users prefer using the same
+confidence interval method for all
+the effects.
+
+# Additional Issues
+
+## Customize Control Variables
+
+If the control variables for the
+regression models are different, we can
+set `cov` to a named list. The names are
+the variables with control variables,
+and the element under each name is
+a character vector of the control variables.
+
+For example,
+
+- If we set `cov` to `list(m1 = "c1", m2 = "c2", y = c("c1", "c2"))`,
+  then only `c1` is included in predicting `m1`,
+  only `c2` is included in predicting `m2`,
+  while both `c1` and `c2` are included
+  in predicting `y`.
+
+A variable that does not appear in the
+list does not have control variables.
+
+## Customize The Printout
+
+The `print` method of the output of
+the quick mediation functions have
+arguments for customizing the output.
+These are arguments that likely may be
+used:
+
+- `digits`: The number of digits after
+  the decimal place for most results.
+  Default is 4.
+
+- `pvalue_digits`: The number of digits
+  after the decimal place for *p*-values.
+  Default is 4.
+
+See the help page of `print.q_mediation()`
+for other arguments.
+
+## Speed and Parallel Processing
+
+By default, parallel processing is used.
+If this failed for some reasons,
+add `parallel` to `FALSE`. It will take
+longer to run but should still be just
+one to two minutes in typical models.
+
+## Progress Bar
+
+By default, a progress bar will be displayed
+when doing bootstrapping. This can be
+disabled by adding `progress = FALSE`.
+
+## Workflow
+
+The quick functions are simply functions
+to do the following tasks internally:
+
+- Fit all the models by SEM
+  using `lavaan::sem()`.
+
+- Call `all_indirect_paths()` to
+  identify all indirect paths.
+
+- Call `many_indirect_effects()` to
+ compute all indirect effects and
+ form their confidence intervals.
+
+- Call `total_indirect_effect()` to
+ compute the total indirect effect.
+
+Therefore, all the tasks they do can be
+done manually by the functions above.
+These all-in-one functions are developed just
+as convenient functions to do all these
+tasks in one call.
+
+See this
+[article](./med_lav.html)
+for computing and testing indirect effects
+for more complicated models.
+
+# Final Remarks
+
+For details on the all-in-one functions,
+please refer to the help page of
+`q_mediation()`.
+
