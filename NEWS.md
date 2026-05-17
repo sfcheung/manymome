@@ -1,4 +1,4 @@
-# manymome 0.3.4.19
+# manymome 0.3.4.20
 
 ## New Features
 
@@ -99,6 +99,10 @@
   stored in the output of `q_mediation()`
   and friends.
   (0.3.4.18)
+
+- Fixed some typos in the printout of
+  `q_mediation()`.
+  (0.3.4.20)
 
 # manymome 0.3.4
 

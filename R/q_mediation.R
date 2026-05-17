@@ -1846,7 +1846,7 @@ print.q_mediation <- function(x,
         switch(indicator_method,
                scale_scores = "Compute scale scores",
                measurement_model = "Fit a measurement model",
-               sam = "Struactural-After-Measurement (SAM)"))
+               sam = "Structural-After-Measurement (SAM)"))
   }
   cat("\n")
 
@@ -2049,7 +2049,7 @@ print.q_mediation <- function(x,
     # ==== Print path analysis results ====
 
     if (isTRUE(x$call$indicator_method %in% c("measurement_model", "sam"))) {
-      tmp <- "|      Structrual Equation Modeling Results       |\n"
+      tmp <- "|      Structural Equation Modeling Results       |\n"
     } else {
       tmp <- "|             Path Analysis Results               |\n"
     }
