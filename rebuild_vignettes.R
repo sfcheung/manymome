@@ -23,6 +23,7 @@ knitr::knit("q_mediation.Rmd.original", output = "q_mediation.Rmd")
 knitr::knit("q_mediation_sem_indicators_simple.Rmd.original", output = "q_mediation_sem_indicators_simple.Rmd")
 knitr::knit("q_mediation_sem_indicators_serial.Rmd.original", output = "q_mediation_sem_indicators_serial.Rmd")
 knitr::knit("q_mediation_sem_indicators_parallel.Rmd.original", output = "q_mediation_sem_indicators_parallel.Rmd")
+knitr::knit("q_mediation_sem_indicators_arbitrary.Rmd.original", output = "q_mediation_sem_indicators_arbitrary.Rmd")
 pkgdown::build_articles("../../"); pkgdown::preview_site("../../")
 
 setwd(base_dir)
