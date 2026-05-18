@@ -59,10 +59,19 @@ i1 <- which(grepl(
       " Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized) ",
       out_tmp,
       fixed = TRUE))
-i2 <- which(grepl(
+i2a <- which(grepl(
+      "  Total Indirect Effect Results  ",
+      out_tmp,
+      fixed = TRUE))
+i2b <- which(grepl(
       "  Direct Effect Results  ",
       out_tmp,
       fixed = TRUE))
+if (isTRUE(i2a < i2b)) {
+  i2 <- i2a
+} else {
+  i2 <- i2b
+}
 tmp <- out_tmp[(i1):(i2 - 3)]
 cat(tmp, sep = "\n")
 ```
