@@ -1,7 +1,7 @@
 ---
 title: "All-In-One Functions for Simple Mediation Models: With Measurement Error Taken Into Account"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-05-17"
+date: "2026-05-18"
 output:
   html_document:
     fig.align: "center"
@@ -14,6 +14,7 @@ csl: apa.csl
 
 
 ** Work-In-Progress: Not Ready **
+
 
 # Introduction
 
@@ -113,7 +114,7 @@ variables.
 
 ![Simple Mediation Model](q_mediation_sem_indicators_simple-1.png)
 
-We would to fit the model above,
+We would like to fit the model above,
 and compute and test the indirect
 effect along the path `fx -> fm -> fy`
 using nonparametric bootstrapping.
@@ -168,6 +169,8 @@ These are the arguments:
   of the latent factor, it is an observed
   variable.
 
+
+
 - `fit_method` and `indicator_method`:
   To fit a model with the measurement part,
   using the information from `indicators`,
@@ -187,6 +190,7 @@ These are the arguments:
 The computation may take some time to run but should
 be at most one or two minutes for contemporary
 computers.
+
 
 # Results
 
@@ -366,7 +370,7 @@ print the results from `lavaan` for the model.
 #>   SRMR                                           0.031
 ```
 
-First, results on goodness-of-ti are printed:
+First, results on goodness-of-fit are printed:
 
 - `Model Test User Model` reports the
   model $\chi^2$ and its *df* and *p*-value.
@@ -416,6 +420,8 @@ These are the results in predicting `fm`:
 #>   computed from the z values and standard errors.
 ```
 
+
+
 These are the results in predicting `y`:
 
 
@@ -455,6 +461,12 @@ These are the results in predicting `y`:
 The results from `lavaan::sem()` are
 reformatted to make them similar to those
 by regression analysis.
+
+If desired, the output of `lavaan::sem()`
+can be extracted from the output by
+`get_fit()`.
+
+
 
 ## Indirect Effect Results
 
@@ -542,6 +554,8 @@ printed by default so that users can
 select and interpret sections as they
 see fit.
 
+
+
 ## Direct Effect Results
 
 The section `Direct Effect Results` prints the estimated
@@ -616,6 +630,8 @@ The bootstrap results are printed in
 case users prefer using the same
 confidence interval method for all
 the effects.
+
+
 
 # Additional Issues
 
@@ -701,9 +717,11 @@ See this
 for computing and testing indirect effects
 for more complicated models.
 
+
 # Final Remarks
 
 For details on the all-in-one functions,
 please refer to the help page of
 `q_mediation()`.
+
 

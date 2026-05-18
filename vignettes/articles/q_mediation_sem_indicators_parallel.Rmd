@@ -1,7 +1,7 @@
 ---
 title: "All-In-One Functions for Parallel Mediation Models: With Measurement Error Taken Into Account"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-05-17"
+date: "2026-05-18"
 output:
   html_document:
     fig.align: "center"
@@ -14,6 +14,7 @@ csl: apa.csl
 
 
 ** Work-In-Progress: Not Ready **
+
 
 # Introduction
 
@@ -177,6 +178,8 @@ These are the arguments:
   of the latent factor, it is an observed
   variable.
 
+
+
 - `fit_method` and `indicator_method`:
   To fit a model with the measurement part,
   using the information from `indicators`,
@@ -196,6 +199,7 @@ These are the arguments:
 The computation may take some time to run but should
 be at most one or two minutes for contemporary
 computers.
+
 
 # Results
 
@@ -398,10 +402,11 @@ First, results on goodness-of-fit are printed:
 
 The next few sections print the
 regression coefficients when predicting
-the mediator (`fm` in this model) and
+the mediators (`fm1` and `fm2` in this model) and
 the outcome variable (`fy` in this model).
 
-These are the results in predicting `fm`:
+These are the results in predicting `fm1`
+and `fm2`:
 
 
 ```
@@ -466,6 +471,8 @@ These are the results in predicting `fm`:
 #>   computed from the z values and standard errors.
 ```
 
+
+
 These are the results in predicting `y`:
 
 
@@ -510,6 +517,8 @@ by regression analysis.
 If desired, the output of `lavaan::sem()`
 can be extracted from the output by
 `get_fit()`.
+
+
 
 ## Indirect Effect Results
 
@@ -587,6 +596,97 @@ Four sections will be printed:
 #>  - [pvalue] are asymmetric bootstrap p-values.
 #>  - [SE] are standard errors.
 #>  - std: The standardized indirect effect(s).
+#>  
+#> ===================================================
+#> |          Total Indirect Effect Results          |
+#> ===================================================
+#> 
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect  ==
+#>                                         
+#>  Path:                fx -> fm1 -> fy   
+#>  Path:                fx -> fm2 -> fy   
+#>  Function of Effects: 0.6088            
+#>  95.0% Bootstrap CI:  [0.4365 to 0.8299]
+#>  Bootstrap p-value:   0.0000            
+#>  Bootstrap SE:        0.0998            
+#> 
+#> Computation of the Function of Effects:
+#>  (fx->fm1->fy)
+#> +(fx->fm2->fy) 
+#> 
+#> 
+#> Percentile confidence interval formed by nonparametric bootstrapping
+#> with 5000 bootstrap samples.
+#> Standard error (SE) based on nonparametric bootstrapping with 5000
+#> bootstrap samples.
+#> 
+#> 
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect ('fx' Standardized) ==
+#>                                         
+#>  Path:                fx -> fm1 -> fy   
+#>  Path:                fx -> fm2 -> fy   
+#>  Function of Effects: 0.4366            
+#>  95.0% Bootstrap CI:  [0.3187 to 0.5735]
+#>  Bootstrap p-value:   0.0000            
+#>  Bootstrap SE:        0.0656            
+#> 
+#> Computation of the Function of Effects:
+#>  (fx->fm1->fy)
+#> +(fx->fm2->fy) 
+#> 
+#> 
+#> Percentile confidence interval formed by nonparametric bootstrapping
+#> with 5000 bootstrap samples.
+#> Standard error (SE) based on nonparametric bootstrapping with 5000
+#> bootstrap samples.
+#> 
+#> 
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect ('fy' Standardized) ==
+#>                                         
+#>  Path:                fx -> fm1 -> fy   
+#>  Path:                fx -> fm2 -> fy   
+#>  Function of Effects: 0.4307            
+#>  95.0% Bootstrap CI:  [0.3114 to 0.5811]
+#>  Bootstrap p-value:   0.0000            
+#>  Bootstrap SE:        0.0693            
+#> 
+#> Computation of the Function of Effects:
+#>  (fx->fm1->fy)
+#> +(fx->fm2->fy) 
+#> 
+#> 
+#> Percentile confidence interval formed by nonparametric bootstrapping
+#> with 5000 bootstrap samples.
+#> Standard error (SE) based on nonparametric bootstrapping with 5000
+#> bootstrap samples.
+#> 
+#> 
+#> ----------------------------------------------------------------
+#> 
+#> == Indirect Effect (Both 'fx' and 'fy' Standardized) ==
+#>                                         
+#>  Path:                fx -> fm1 -> fy   
+#>  Path:                fx -> fm2 -> fy   
+#>  Function of Effects: 0.3089            
+#>  95.0% Bootstrap CI:  [0.2266 to 0.4022]
+#>  Bootstrap p-value:   0.0000            
+#>  Bootstrap SE:        0.0449            
+#> 
+#> Computation of the Function of Effects:
+#>  (fx->fm1->fy)
+#> +(fx->fm2->fy) 
+#> 
+#> 
+#> Percentile confidence interval formed by nonparametric bootstrapping
+#> with 5000 bootstrap samples.
+#> Standard error (SE) based on nonparametric bootstrapping with 5000
+#> bootstrap samples.
 ```
 
 The indirect effect with both the predictor
@@ -603,7 +703,7 @@ see fit.
 
 ## Total Indirect Effect Results
 
-The section `Total Indirect Effects Resutls`
+The section `Total Indirect Effects Results`
 prints the estimated
 *total* indirect effects, confidence intervals,
 and asymmetric bootstrap *p*-values.
@@ -728,6 +828,8 @@ printed by default such that users can
 select and interpret sections as they
 see fit.
 
+
+
 ## Direct Effect Results
 
 The section `Direct Effect Results` prints the estimated
@@ -802,6 +904,8 @@ The bootstrap results are printed in
 case users prefer using the same
 confidence interval method for all
 the effects.
+
+
 
 # Additional Issues
 
@@ -887,9 +991,11 @@ See this
 for computing and testing indirect effects
 for more complicated models.
 
+
 # Final Remarks
 
 For details on the all-in-one functions,
 please refer to the help page of
 `q_mediation()`.
+
 

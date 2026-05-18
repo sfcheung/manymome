@@ -1,7 +1,7 @@
 ---
 title: "All-In-One Functions for Serial Mediation Models: With Measurement Error Taken Into Account"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-05-17"
+date: "2026-05-18"
 output:
   html_document:
     fig.align: "center"
@@ -14,6 +14,7 @@ csl: apa.csl
 
 
 ** Work-In-Progress: Not Ready **
+
 
 # Introduction
 
@@ -180,6 +181,7 @@ These are the arguments:
   of the latent factor, it is an observed
   variable.
 
+
 - `fit_method` and `indicator_method`:
   To fit a model with the measurement part,
   using the information from `indicators`,
@@ -199,6 +201,7 @@ These are the arguments:
 The computation may take some time to run but should
 be at most one or two minutes for contemporary
 computers.
+
 
 # Results
 
@@ -404,7 +407,8 @@ regression coefficients when predicting
 the mediator (`fm` in this model) and
 the outcome variable (`fy` in this model).
 
-These are the results in predicting `fm`:
+These are the results in predicting `fm1`
+and `fm3`:
 
 
 ```
@@ -470,6 +474,8 @@ These are the results in predicting `fm`:
 #>   computed from the z values and standard errors.
 ```
 
+
+
 These are the results in predicting `y`:
 
 
@@ -514,6 +520,8 @@ by regression analysis.
 If desired, the output of `lavaan::sem()`
 can be extracted from the output by
 `get_fit()`.
+
+
 
 ## Indirect Effect Results
 
@@ -708,6 +716,8 @@ printed by default so that users can
 select and interpret sections as they
 see fit.
 
+
+
 ## Direct Effect Results
 
 The section `Direct Effect Results` prints the estimated
@@ -782,6 +792,8 @@ The bootstrap results are printed in
 case users prefer using the same
 confidence interval method for all
 the effects.
+
+
 
 # Additional Issues
 
@@ -866,6 +878,7 @@ See this
 [article](./med_lav.html)
 for computing and testing indirect effects
 for more complicated models.
+
 
 # Final Remarks
 
