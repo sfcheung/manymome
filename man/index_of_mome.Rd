@@ -76,7 +76,7 @@ It can also be
 a \code{lavaan.mi} object
 returned by
 \code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::lavaan.mi()}} or
-its wrapper, such as \code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::sem.mi()}}.}
+its wrapper, such as \code{\link[lavaan.mi:sem.mi]{lavaan.mi::sem.mi()}}.}
 
 \item{boot_ci}{Logical. Whether
 bootstrap confidence interval will be

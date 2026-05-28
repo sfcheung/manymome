@@ -652,7 +652,8 @@ cond_indirect <- function(x,
       }
     if (fit_type == "lavaan") {
         fit0 <- fit
-        if (is.null(est)) est <- lavaan::parameterEstimates(fit)
+        if (is.null(est)) est <- lavaan::parameterEstimates(fit,
+                                                            remove.step1 = FALSE)
         if (is.null(implied_stats)) implied_stats <- lav_implied_all(fit)
         est_vcov <- tryCatch(get_vcov(fit), error = function(e) NULL)
         df_residual <- tryCatch(lav_df_residual(fit), error = function(e) NULL)

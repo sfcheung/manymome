@@ -161,9 +161,9 @@ mediator(s). However, the model is
 not refitted, hence keeping the
 estimates of all other parameters
 unchanged.
-It then uses \code{\link[lavaan:lav_model]{lavaan::lav_model_set_parameters()}}
+It then uses \code{\link[lavaan:lav_model_set_parameters]{lavaan::lav_model_set_parameters()}}
 to update the parameters,
-\code{\link[lavaan:lav_model]{lavaan::lav_model_implied()}} to
+\code{\link[lavaan:lav_model_implied]{lavaan::lav_model_implied()}} to
 update the implied statistics, and
 then calls \code{\link[lavaan:lavInspect]{lavaan::lavInspect()}} to
 retrieve the implied variance of the

@@ -1,0 +1,28 @@
+
+## Direct Effect Results
+
+The section `Direct Effect Results` prints the estimated
+direct effect (from the predictor "x" to
+the outcome "y", not mediated), confidence interval,
+and asymmetric bootstrap *p*-value.
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      "  Direct Effect Results  ",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      "  Notes  ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1 - 1):(i2 - 4)]
+cat(tmp, sep = "\n")
+```
+
+The *z*-test of the direct effect is
+already available in section
+*Structural Equation Modeling Results*.
+The bootstrap results are printed in
+case users prefer using the same
+confidence interval method for all
+the effects.

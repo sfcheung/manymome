@@ -17,7 +17,7 @@ test_that("lav_data_used with mi", {
     expect_true(all.equal(lav_data_used(fit1_mi, drop_colon = FALSE),
                           lav_data_used(fit1_lav, drop_colon = FALSE)))
     expect_true(all.equal(lav_data_used(fit_lv_mi),
-                          lav_data_used(fit_lv_lav)))
+                          lav_data_used(fit_lv_lav, add_lv = FALSE)))
     expect_true(all.equal(lav_data_used(fit_lv_mi, drop_colon = FALSE),
-                          lav_data_used(fit_lv_lav, drop_colon = FALSE)))
+                          lav_data_used(fit_lv_lav, drop_colon = FALSE, add_lv = FALSE)))
   })

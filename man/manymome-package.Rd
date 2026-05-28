@@ -23,6 +23,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Shu Fai Cheung \email{shufai.cheung@gmail.com} (\href{https://orcid.org/0000-0002-9871-9448}{ORCID})
   \item Sing-Hang Cheung (\href{https://orcid.org/0000-0001-5182-0752}{ORCID})
 }
 

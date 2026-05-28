@@ -35,7 +35,7 @@ get_intercept <- function(x,
          fit <- auto_lm2list(fit)
       }
     if (is.null(est)) {
-      est <- lav_est(fit, se = FALSE, ci = FALSE)
+      est <- lav_est(fit, se = FALSE, ci = FALSE, remove.step1 = FALSE)
     }
     i <- (est$lhs == x) &
          (est$op == "~1")

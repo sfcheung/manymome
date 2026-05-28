@@ -1,0 +1,89 @@
+
+## Indirect Effect Results
+
+By default, this section prints the estimated
+indirect effect, confidence interval,
+and asymmetric bootstrap *p*-value.
+
+Four sections will be printed:
+
+- The original indirect effect.
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      "== Indirect Effect(s) ==",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      " Indirect Effect(s) (x-variable(s) Standardized) ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1):(i2 - 4)]
+cat(tmp, sep = "\n")
+```
+
+- The indirect effect with the predictor ("x") standardized.
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      " Indirect Effect(s) (x-variable(s) Standardized) ",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      " Indirect Effect(s) (y-variable(s) Standardized) ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1):(i2 - 4)]
+cat(tmp, sep = "\n")
+```
+
+- The indirect effect with the outcome ("y") standardized.
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      " Indirect Effect(s) (y-variable(s) Standardized) ",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      " Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized) ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1):(i2 - 4)]
+cat(tmp, sep = "\n")
+```
+
+- The indirect effect with both `x` and `y` standardized.
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      " Indirect Effect(s) (Both x-variable(s) and y-variable(s) Standardized) ",
+      out_tmp,
+      fixed = TRUE))
+i2a <- which(grepl(
+      "  Total Indirect Effect Results  ",
+      out_tmp,
+      fixed = TRUE))
+i2b <- which(grepl(
+      "  Direct Effect Results  ",
+      out_tmp,
+      fixed = TRUE))
+if (isTRUE(i2a < i2b)) {
+  i2 <- i2a
+} else {
+  i2 <- i2b
+}
+tmp <- out_tmp[(i1):(i2 - 3)]
+cat(tmp, sep = "\n")
+```
+
+The indirect effect with both the predictor
+("x") and the outcome ("y") standardized,
+also called the *completely*
+*standardized* *indirect* *effect* or
+simply the *standardized* *indirect*
+*effect*.
+
+These four versions of the results are
+printed by default so that users can
+select and interpret sections as they
+see fit.

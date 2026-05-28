@@ -208,11 +208,29 @@ fit2boot_out_do_boot <- function(fit,
       }
     dat_org <- lav_data_used(fit,
                              drop_list_single_group = TRUE)
+    case_idx <- lavaan::lavInspect(
+                  fit,
+                  "case.idx",
+                  drop.list.single.group = FALSE
+                )
     ngp <- lavaan::lavTech(fit, "ngroups")
+    empty_idx <- lavaan::lavInspect(fit, "empty.idx")
     if (ngp == 1) {
         n <- nrow(dat_org)
+        case_idx <- seq_len(n)
+        if (length(empty_idx) > 0) {
+          case_idx <- case_idx[-empty_idx]
+        }
       } else {
         n <- sapply(dat_org, nrow)
+        case_idx <- vector("list", ngp)
+        for (ii in seq_len(ngp)) {
+          tmp <- seq_len(n[ii])
+          if (length(empty_idx[[ii]]) > 0) {
+            tmp <- tmp[-empty_idx[[ii]]]
+          }
+          case_idx[[ii]] <- tmp
+        }
       }
     boot_test <- suppressWarnings(boot_i(dat_org,
                                          start = lavaan::parameterTable(fit)$start))
@@ -249,10 +267,35 @@ fit2boot_out_do_boot <- function(fit,
     requireNamespace("parallel", quietly = TRUE)
     if (!is.null(seed)) set.seed(seed)
     if (ngp == 1) {
-        ids <- replicate(R, sample.int(n, replace = TRUE), simplify = FALSE)
+        # ids <- replicate(R, sample.int(n, replace = TRUE), simplify = FALSE)
+        ids <- replicate(
+                    R,
+                    c(sample(
+                      case_idx,
+                      size = length(case_idx),
+                      replace = TRUE
+                      ), empty_idx),
+                    simplify = FALSE
+                  )
       } else {
-        ids <- replicate(R, sapply(n, sample.int, replace = TRUE, simplify = FALSE),
-                         simplify = FALSE)
+        # ids <- replicate(R, sapply(n, sample.int, replace = TRUE, simplify = FALSE),
+        #                  simplify = FALSE)
+        ids <- replicate(
+                    R,
+                    mapply(
+                      function(xx, yy) {
+                        out <- sample(
+                                xx,
+                                size = length(xx),
+                                replace = TRUE
+                              )
+                        c(out, yy)
+                      },
+                      xx = case_idx,
+                      yy = empty_idx,
+                      SIMPLIFY = FALSE),
+                    simplify = FALSE
+                  )
       }
     if (parallel) {
         if (is.numeric(ncores)) {
@@ -580,12 +623,12 @@ get_implied_i_lavaan <- function(est0,
         if (ngroups > 1) {
           k_lv <- length(implied_mean_lv[[1]])
           for (tmp in seq_len(ngroups)) {
-            implied_mean_ov[[tmp]] <- lavaan::lav_model_implied(mod0,
+            implied_mean_ov[[tmp]][] <- lavaan::lav_model_implied(mod0,
                                                 GLIST = NULL,
-                                                delta = TRUE)$mean[[tmp]][, 1]
+                                                delta = TRUE)$mean[[tmp]][, 1, drop = TRUE]
             # TODO:
             # - Support latent variable implied means
-            implied_mean_lv[[tmp]] <- rep(NA, k_lv)
+            # implied_mean_lv[[tmp]] <- rep(NA, k_lv)
           }
           implied_means <- mapply(c,
                                   implied_mean_ov,
@@ -597,11 +640,12 @@ get_implied_i_lavaan <- function(est0,
         } else {
           implied_mean_ov[] <- lavaan::lav_model_implied(mod0,
                                               GLIST = NULL,
-                                              delta = TRUE)$mean[[1]][, 1]
-          # TODO:
-          # - Support latent variable implied means
+                                              delta = TRUE)$mean[[1]][, 1, drop = TRUE]
           implied_mean_lv <- lavaan::lavInspect(fit, "mean.lv")
-          implied_mean_lv[] <- NA
+          # No mean structure
+          if (length(implied_mean_ov) == 0) {
+            implied_mean_lv[] <- NA
+          }
           implied <- list(cov = list(implied_cov_all),
                           mean = list(c(implied_mean_ov,
                                         implied_mean_lv)),
@@ -663,9 +707,10 @@ get_implied_i_lavaan <- function(est0,
       }
     if (has_lv) {
         if (ngroups > 1) {
-            for (j in seq_len(ngroups)) {
-                out1[["mean_lv"]][[j]][] <- NA
-              }
+            # No need to do anything. Already set previously
+            # for (j in seq_len(ngroups)) {
+            #     out1[["mean_lv"]][[j]][] <- NA
+            #   }
           } else {
             out1$mean_lv <- implied$mean_lv[[1]]
           }
@@ -724,6 +769,8 @@ get_implied_i_lavaan_mi <- function(est0,
             class(implied_mean_ov) <- c("lavaan.vector", class(implied_mean_ov))
           }
         # SF: `lavaan` raises an error in some cases for unknown reasons
+        # TODO:
+        # - Fix and support latent mean for lavaan.mi
         implied_mean_lv <- tryCatch(lavaan::lavInspect(fit_tmp, "mean.lv"),
                                     error = function(e) e)
         if (inherits(implied_mean_lv, "error")) {
@@ -794,6 +841,7 @@ gen_boot_i_lavaan <- function(fit,
   fit_sampstats <- fit_org@SampleStats
   fit_opts <- fit_org@Options
   fit_pt <- fit_org@ParTable
+  fit_internal <- fit_org@internal
 
   fit_opts$verbose <- FALSE
   fit_opts$se <- "none"
@@ -810,6 +858,7 @@ gen_boot_i_lavaan <- function(fit,
       force(fit_sampstats)
       force(fit_opts)
       force(fit_pt)
+      force(fit_internal)
       force(fit)
       force(compute_implied_stats)
       force(compute_rsquare)
@@ -824,6 +873,7 @@ gen_boot_i_lavaan <- function(fit,
                                 slotOptions = fit_opts,
                                 slotParTable = fit_pt1))
         } else {
+          is_sam <- isTRUE(!is.null(fit_internal$sam.method))
           # 2024-03-29: Added support for multigroup models
           if (!is.list(i)) {
               b_i <- list(i)
@@ -852,6 +902,38 @@ gen_boot_i_lavaan <- function(fit,
               return(out1)
             }
 
+          fit_opts1 <- fit_opts
+
+          # ==== Handle SAM ====
+
+          if (is_sam) {
+            # Need the original optoins
+            fit_opts1 <- lavaan::lavInspect(fit, "options")
+            # Need the original ptable
+            fit_pt1 <- fit_pt
+            # Adapted from avaan:::lav_sam_step0()
+            fit_opts1$do.fit <- FALSE
+            if (fit@internal$sam.method %in%
+                c("local", "fsr", "cfsr")) {
+              fit_opts1$sample.icov <- TRUE
+            }
+            fit_opts1$se <- "none"
+            fit_opts1$test <- "none"
+            fit_opts1$ceq.simple <- TRUE
+            fit_opts1$check.lv.interaction <- FALSE
+            if (fit_opts1$se %in%
+                c("local", "ij", "twostep.robust")) {
+              fit_opts1$sample.icov <- TRUE
+              fit_opts1$NACOV <- TRUE
+              fit_opts1$fixed.x <- FALSE
+              fit_opts1$ov.order <- "force.model"
+            }
+            # Any lv interaction terms?
+            if (length(lavaan::lavNames(fit, "lv.interaction")) > 0L) {
+              fit_opts1$meanstructure  <- TRUE
+            }
+          }
+
           # Use the approach in lavaan::lav_bootstrap_internal
           if (fit_model@fixed.x &&
               length(lavaan::lavNames(fit, "ov.x")) > 0) {
@@ -861,10 +943,10 @@ gen_boot_i_lavaan <- function(fit,
             }
 
           out <- tryCatch(lavaan::lavaan(
-                                    slotData = fit_data,
+                                    slotData = fit_data_new,
                                     slotModel = fit_model_i,
                                     slotSampleStats = fit_sampstats_new,
-                                    slotOptions = fit_opts,
+                                    slotOptions = fit_opts1,
                                     slotParTable = fit_pt1),
                           error = function(e) e,
                           warning = function(e) e)
@@ -881,6 +963,31 @@ gen_boot_i_lavaan <- function(fit,
                               implied_stats = NA,
                               ok = FALSE)
                 }
+
+              # ==== Handle SAM ====
+
+              if (is_sam) {
+                out@internal <- fit@internal
+                if ((out@Model@categorical) &&
+                    (out@Options$se == "twostep")) {
+                  if (out@internal$sam.method == "local") {
+                    out@Options$se <- "twostep.robust"
+                  }
+                }
+                out@Options$se <- "none"
+                PT <- out@ParTable
+                PT$est <- PT$ustart
+                if (any(PT$exo > 0L)) {
+                  PT$est[PT$exo > 0L] <- PT$start[PT$exo > 0L]
+                }
+                PT$se <- rep(as.numeric(NA), length(PT$lhs))
+                PT$se[(PT$free == 0L) & (!is.na(PT$ustart))] <- 0.0
+                out@ParTable <- PT
+                out <- lavaan::sam(
+                  model = out
+                )
+              }
+
               # If ngroups > 1,
               #   cov, mean, and mean_lv are lists.
               if (compute_implied_stats) {

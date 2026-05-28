@@ -62,8 +62,11 @@ lm_listwise <- function(formulas,
     stop(paste(not_in_data, collapse = ","),
          " in the model but not in the dataset.")
   }
-  data_listwise <- stats::na.omit(eval(my_call$data,
-                                  envir = parent.frame())[, all_vars, drop = FALSE])
+  # Clear "na.acton", if present
+  tmp <- eval(my_call$data,
+              envir = parent.frame())
+  attr(tmp, "na.action") <- NULL
+  data_listwise <- stats::na.omit(tmp[, all_vars, drop = FALSE])
   data_omitted <- attr(data_listwise,
                        "na.action")
   if (!is.null(data_omitted)) {

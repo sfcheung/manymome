@@ -5,6 +5,7 @@
 \alias{q_simple_mediation}
 \alias{q_serial_mediation}
 \alias{q_parallel_mediation}
+\alias{get_fit}
 \alias{print.q_mediation}
 \title{Mediation Models By Regression
 or SEM}
@@ -14,6 +15,7 @@ q_mediation(
   y,
   m = NULL,
   cov = NULL,
+  indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
   mc_ci = FALSE,
@@ -24,6 +26,7 @@ q_mediation(
   boot_type = c("perc", "bc"),
   model = NULL,
   fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = NULL,
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
@@ -38,6 +41,7 @@ q_simple_mediation(
   y,
   m = NULL,
   cov = NULL,
+  indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
   mc_ci = FALSE,
@@ -47,6 +51,8 @@ q_simple_mediation(
   ci_type = NULL,
   boot_type = c("perc", "bc"),
   fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = ifelse(fit_method \%in\% c("lm", "regression"), "scale_scores",
+    "measurement_model"),
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
@@ -61,6 +67,7 @@ q_serial_mediation(
   y,
   m = NULL,
   cov = NULL,
+  indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
   mc_ci = FALSE,
@@ -70,6 +77,8 @@ q_serial_mediation(
   ci_type = NULL,
   boot_type = c("perc", "bc"),
   fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = ifelse(fit_method \%in\% c("lm", "regression"), "scale_scores",
+    "measurement_model"),
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
@@ -84,6 +93,7 @@ q_parallel_mediation(
   y,
   m = NULL,
   cov = NULL,
+  indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
   mc_ci = FALSE,
@@ -93,6 +103,8 @@ q_parallel_mediation(
   ci_type = NULL,
   boot_type = c("perc", "bc"),
   fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = ifelse(fit_method \%in\% c("lm", "regression"), "scale_scores",
+    "measurement_model"),
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
@@ -101,6 +113,8 @@ q_parallel_mediation(
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
 )
+
+get_fit(q_out)
 
 \method{print}{q_mediation}(
   x,
@@ -155,6 +169,19 @@ element. For example, \code{list(m1 = "c1", dv = c("c2", "c3"))}
 indicates that \code{c1} predicts \code{"m1"},
 while \code{c2} and \code{c3} predicts \code{"dv"}.
 Default is \code{NULL}, no covariates.}
+
+\item{indicators}{Optional. A named
+vector of indicator names for scales or
+latent variables. If an indicator
+is to be reverse coded, add \code{"-"}
+before its names. For example,
+\code{list(x = c("x1", "x3"), m = c("-m1", "m2"))}
+denotes that \code{"x1"} and \code{"x3"} are
+the indicators of \code{x}, and \code{"m1"}
+and \code{"m2"} are the indicators of \code{m}.
+If named in this list, then these
+variables (\code{x} and \code{m} in this case)
+should not be present in \code{data}.}
 
 \item{data}{The data frame. Note that
 listwise deletion will be used and
@@ -228,6 +255,24 @@ equation modeling will be used and
 the model will be fitted by
 \code{\link[lavaan:sem]{lavaan::sem()}}. Default is \code{"lm"}.}
 
+\item{indicator_method}{How indicators
+will be used.
+If set to \code{"scale_scores"},
+the default if \code{fit_method} is
+\code{"lm"} or \code{"regression"},
+scale scores will be computed (mean
+scores for now) first before fitting
+the models.
+If set to \code{"measurement_model"},
+the default if \code{fit_method} is
+\code{"sem"} or \code{"lavaan"},
+a measurement model will be added.
+If set to \code{"sam"}, the
+structural-after-measurement (SAM)
+method (Rosseel & Loh, 2024)
+will be used to estimate
+the regression coefficients}
+
 \item{missing}{If \code{fit_method} is
 set to \code{"sem"} or \code{"lavaan"}, this
 argument determine how missing data
@@ -250,7 +295,11 @@ regression fitted by \code{\link[stats:lm]{stats::lm()}}.}
 \item{sem_args}{If \code{fit_method} is
 set to \code{"sem"} or \code{"lavaan"}, this
 is a named list of arguments to be
-passed to \code{\link[lavaan:sem]{lavaan::sem()}}. Arguments
+passed to \code{\link[lavaan:sem]{lavaan::sem()}}.
+If the indicator method is \code{"sam"},
+then these are arguments to be passed
+to \code{\link[lavaan:sam]{lavaan::sam()}}.
+Arguments
 listed here will not override
 \code{missing} and \code{fixed.x}.}
 
@@ -280,6 +329,9 @@ detected by
 
 \item{progress}{Logical. Display
 progress or not.}
+
+\item{q_out}{The output of \code{\link[=q_mediation]{q_mediation()}}
+and friends.}
 
 \item{digits}{Number of digits to
 display. Default is 4.}
@@ -385,6 +437,12 @@ is a subclass of \code{q_mediation}.
 The function \code{\link[=q_parallel_mediation]{q_parallel_mediation()}} returns
 a \code{q_parallel_mediation} class object, which
 is a subclass of \code{q_mediation}.
+
+The function \code{\link[=get_fit]{get_fit()}} returns the
+fit output. If \code{fit_method} is \code{"lm"},
+then it returns a list of \code{\link[=lm]{lm()}}
+outputs. If \code{fit_method} is \code{"sem"},
+then it returns the output of \code{\link[lavaan:sem]{lavaan::sem()}}.
 }
 \description{
 Simple-to-use functions
@@ -512,6 +570,25 @@ For example:
 The path \code{"x1 -> m1"} appears twice,
 to indicate two different pathways from
 \code{x1} to \code{y1}.
+}
+
+\subsection{Scale Scores or Latent Variables}{
+
+The argument \code{indicators} can be
+used to indicate that one or more
+variables in the model are measured
+by observed indicators
+
+If regression is used to estimate
+the coefficients, then the mean scores
+(for now)
+of the indicators will be used in the model.
+
+If structural equation
+modeling is used to estimate the
+coefficients, then these indicators
+will be used in the model to define
+the latent variables.
 }
 
 \subsection{Workflow}{
@@ -658,6 +735,10 @@ serial mediation models.
 \item \code{q_parallel_mediation()}: A wrapper of \code{\link[=q_mediation]{q_mediation()}} for
 parallel mediation models.
 
+\item \code{get_fit()}: Just a helper
+to retrieve the fit output used in
+\code{\link[=q_mediation]{q_mediation()}} and friends.
+
 }}
 \examples{
 
@@ -787,6 +868,13 @@ print(out,
 #                             progress = FALSE)
 # out
 
+}
+\references{
+Rosseel, Y., & Loh, W. W. (2024). A
+structural after measurement approach
+to structural equation modeling.
+\emph{Psychological Methods, 29}(3), 561--588.
+https://doi.org/10.1037/met0000503
 }
 \seealso{
 \code{\link[lmhelprs:many_lm]{lmhelprs::many_lm()}} for

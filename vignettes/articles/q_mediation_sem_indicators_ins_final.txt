@@ -1,0 +1,6 @@
+# Final Remarks
+
+For details on the all-in-one functions,
+please refer to the help page of
+`q_mediation()`.
+

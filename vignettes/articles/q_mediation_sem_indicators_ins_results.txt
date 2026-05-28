@@ -1,0 +1,109 @@
+# Results
+
+We can then just print the output:
+
+```{r eval=FALSE}
+out
+```
+
+```{r echo=FALSE, results="hide"}
+out_tmp <- capture.output(print(out))
+```
+
+The printout is long. They will be
+discussed section-by-section below.
+
+These are the main sections of the
+default results:
+
+## Basic Information
+
+This is the section `Basic Information`:
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      " Basic Information ",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      " Indicator Information ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1 - 1):(i2 - 2)]
+cat(tmp, sep = "\n")
+```
+
+It shows the variables, the models, and the
+number of cases. It also shows the
+measurement model in the model, in
+`lavaan` syntax:
+
+- The name on the left-hand side of `=~`
+  is the latent variable.
+
+- The name on the right-hand side of `=~`,
+  joined by `+`, are the indicators.
+
+When the model is fitted by SEM, the default
+method to handle missing data is
+full-information maximum likelihood (FIML).
+
+## Indicator Information
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      " Indicator Information ",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      " Structural Equation Modeling Results ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1 - 1):(i2 - 2)]
+cat(tmp, sep = "\n")
+```
+
+The section `Indicator Information` shows
+results related to each latent factor:
+
+- The indicators for each latent variable.
+
+- The *standardized* factor loadings from
+  the SEM results.
+
+    - Note that, after recoding, all
+      loadings should be positive. If
+      any loading is negative, it may be
+      a reverse indicator not specified
+      in `indicators`.
+
+- The reliability coefficient for each
+  latent factor, based on the factor loadings.
+  Omega coefficient is used, computed by
+  `semTools::compRelSEM()`.
+
+## Model Fit
+
+The section `Structural Equation Modeling Results`
+print the results from `lavaan` for the model.
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      "Model Test User Model:",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      "Standardized Root Mean Square Residual",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1 - 0):(i2 + 2)]
+cat(tmp, sep = "\n")
+```
+
+First, results on goodness-of-fit are printed:
+
+- `Model Test User Model` reports the
+  model $\chi^2$ and its *df* and *p*-value.
+
+- Basic fit measures (CFI, TLI, RMSEA,
+  and SRMR) are also printed.

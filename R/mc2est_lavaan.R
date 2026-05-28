@@ -148,7 +148,8 @@ mc2est <- function(fit,
         est_df0 <- lav_est(fit,
                            se = FALSE,
                            ci = FALSE,
-                           rsquare = FALSE)
+                           rsquare = FALSE,
+                           remove.step1 = FALSE)
       }
     if (inherits(fit, "lavaan.mi")) {
         est_df0 <- lav_est(fit,

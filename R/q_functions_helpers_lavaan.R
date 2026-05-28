@@ -64,9 +64,22 @@ fix_names_for_lavaan_i <- function(x) {
 # - lm_all: A list of the lm() outputs.
 mm_from_lm_forms <- function(
                       lm_forms,
+                      indicators = NULL,
+                      indicator_method = c("measurement_model", "scale_scores", "sam"),
+                      lm_measurement = character(0),
                       data,
                       na.action = "na.pass"
                     ) {
+  indicator_method <- match.arg(indicator_method)
+  if (!is.null(indicators) &&
+      (indicator_method %in% c("measurement_model", "sam"))) {
+    # Create dummy scale scores
+    data_scale_scores <- scale_scores(
+              indicators = indicators,
+              data = data
+            )
+    data[, colnames(data_scale_scores)] <- data_scale_scores
+  }
   data <- fix_names_for_lavaan(data)
   all_y <- names(lm_forms)
   lm_all <- sapply(all_y,
@@ -91,6 +104,14 @@ mm_from_lm_forms <- function(
   }
   # merge_model_matrix assumes cases can be matched row-by-row.
   mm <- merge_model_matrix(lm_all)
+  if (!is.null(indicators) &&
+      (indicator_method %in% c("measurement_model", "sam"))) {
+    tmp1 <- lavaan::lavaanify(lm_measurement)
+    tmp2 <- lavaan::lavNames(tmp1, "ov.ind")
+    mm[, tmp2] <- data[, tmp2]
+    # Remove the dummy scale scores
+    mm[, names(indicators)] <- NULL
+  }
   b_names <- sapply(lm_all,
                     function(x) names(x$coefficients),
                     USE.NAMES = TRUE,
@@ -121,7 +142,10 @@ mm_from_lm_forms <- function(
        b_names = b_names,
        terms = terms,
        coefficients = coefficients,
-       lm_all = lm_all)
+       lm_all = lm_all,
+       indicators = indicators,
+       indicator_method = indicator_method,
+       lm_measurement = lm_measurement)
 }
 
 #' @noRd
@@ -230,47 +254,86 @@ lm_from_lavaan_list_for_q <- function(
                                   mm,
                                   ci_level = .95,
                                   group_number = NULL,
-                                  rsq_test = TRUE
+                                  rsq_test = TRUE,
+                                  lm_measurement = character(0)
                                 ) {
+  is_sam <- isTRUE(!is.null(fit@internal$sam.method))
+  if (is_sam) {
+    # TODO (SAM):
+    # - Find a way to test R-squares for SAM
+    # R-square test not supported for SAM for now
+    rsq_test <- FALSE
+  }
   # Assume it has only one group
   fixed.x <- lavaan::lavTech(fit, "fixed.x")
   if (fixed.x) {
     ptable <- lavaan::parameterEstimates(fit,
                                         standardized = TRUE,
                                         level = ci_level,
-                                        rsquare = TRUE)
-  } else {
+                                        rsquare = TRUE,
+                                        remove.step1 = FALSE)
+  } else if (!is_sam || is_sam) {
+
     # Need to refit the model to get std.nox
     # lavaan does not compute std.nox if fixed.x is FALSE
-    fit_data <- fit@Data
-    fit_model <- fit@Model
-    fit_sampstats <- fit@SampleStats
-    fit_opts <- fit@Options
-    fit_pt <- fit@ParTable
-    fit_opts$se <- "none"
-    fit_opts$test <- "none"
-    fit_opts$baseline <- FALSE
-    fit_opts$fixed.x <- TRUE
-    fit_pt$start <- fit_pt$est
-    fit_random_x <- lavaan::lavaan(
-                        slotModel = fit_model,
-                        slotSampleStats = fit_sampstats,
-                        slotOptions = fit_opts,
-                        slotParTable = fit_pt,
-                        slotData = fit_data
-                      )
+    # 2026-04-06: No need to refit. Use lavaan::standardizedSolution()
+    # 2026-04-06: This block also works for SAM
+    # fit_data <- fit@Data
+    # fit_model <- fit@Model
+    # fit_sampstats <- fit@SampleStats
+    # fit_opts <- fit@Options
+    # fit_pt <- fit@ParTable
+    # fit_opts$se <- "none"
+    # fit_opts$test <- "none"
+    # fit_opts$baseline <- FALSE
+    # fit_opts$fixed.x <- TRUE
+    # fit_pt$start <- fit_pt$est
+    # fit_random_x <- lavaan::lavaan(
+    #                     slotModel = fit_model,
+    #                     slotSampleStats = fit_sampstats,
+    #                     slotOptions = fit_opts,
+    #                     slotParTable = fit_pt,
+    #                     slotData = fit_data
+    #                   )
+    # tmp <- lavaan::parameterEstimates(fit_random_x,
+    #                                   standardized = "std.nox",
+    #                                   se = FALSE,
+    #                                   zstat = FALSE,
+    #                                   pvalue = FALSE,
+    #                                   ci = FALSE,
+    #                                   rsquare = TRUE,
+    #                                   remove.step1 = FALSE)
     ptable <- lavaan::parameterEstimates(fit,
                                         standardized = TRUE,
                                         level = ci_level,
-                                        rsquare = TRUE)
-    tmp <- lavaan::parameterEstimates(fit_random_x,
-                                      standardized = "std.nox",
-                                      se = FALSE,
-                                      zstat = FALSE,
-                                      pvalue = FALSE,
-                                      ci = FALSE,
-                                      rsquare = TRUE)
-    ptable$std.nox <- tmp$std.nox
+                                        rsquare = TRUE,
+                                        remove.step1 = FALSE)
+    std <- lavaan::standardizedSolution(
+              fit,
+              type = "std.nox",
+              se = FALSE,
+              zstat = FALSE,
+              pvalue = FALSE,
+              ci = FALSE,
+              cov.std = FALSE
+            )
+    std$lavlabel <- lavaan::lav_partable_labels(std)
+    ptable$lavlabel <- lavaan::lav_partable_labels(ptable)
+    tmp <- intersect(std$lavlabel, ptable$lavlabel)
+    tmp1 <- match(tmp, ptable$lavlabel)
+    tmp2 <- match(tmp, std$lavlabel)
+    ptable$std.nox <- as.numeric(NA)
+    ptable$std.nox[tmp1] <- std[tmp1, "est.std"]
+    ptable$lavlabel <- NULL
+  } else {
+    # SAM
+    # 2026-04-06: This block is not used for now.
+    # ptable <- lavaan::parameterEstimates(fit,
+    #                                     standardized = TRUE,
+    #                                     level = ci_level,
+    #                                     rsquare = TRUE,
+    #                                     remove.step1 = FALSE)
+    # ptable$std.nox <- NA
   }
   b_names <- mm$b_names
   # ==== Get all dvs (ov.nox, lv.ox) ====
@@ -298,18 +361,18 @@ lm_from_lavaan_list_for_q <- function(
 
   if (rsq_test) {
     # ==== Null models ====
-    fit_null <- fit_null(
+    fit_null_list <- fit_null(
                 mm = mm,
                 fit = fit
               )
     # ==== Tests of R-squares ====
     rsq_test <- rsquare_test(
                   fit = fit,
-                  fit_null = fit_null
+                  fit_nulls = fit_null_list
                 )
   } else {
-    fit_null <- vector("list", length(dvs))
-    names(fit_null) <- dvs
+    fit_null_list <- vector("list", length(dvs))
+    names(fit_null_list) <- dvs
     tmp1 <- vector("numeric", length(dvs))
     tmp1[] <- NA
     names(tmp1) <- dvs
@@ -350,7 +413,7 @@ lm_from_lavaan_list_for_q <- function(
                          rsq,
                          rsq_test,
                          fit_null_lrt,
-                         fit_null,
+                         fit_null_i,
                          term_types) {
                   list(
                         dv = dv,
@@ -361,7 +424,7 @@ lm_from_lavaan_list_for_q <- function(
                         rsquare = rsq,
                         rsq_test = rsq_test,
                         fit_null_lrt = fit_null_lrt,
-                        fit_null = fit_null,
+                        fit_null = fit_null_i,
                         term_types = term_types
                       )
                 },
@@ -372,7 +435,7 @@ lm_from_lavaan_list_for_q <- function(
                 rsq = rsq_list,
                 rsq_test = rsq_test$pvalues,
                 fit_null_lrt = rsq_test$lrt_out,
-                fit_null = fit_null,
+                fit_null_i = fit_null_list,
                 coefs_lm = coefs_lm_list,
                 term_types = term_types_list,
                 SIMPLIFY = FALSE,
@@ -415,7 +478,7 @@ lm_coef_from_lavaan_i <- function(
   ci.lower <- lav_coefs$ci.lower
   ci.upper <- lav_coefs$ci.upper
   betas <- lav_coefs$std.all
-  tmp <- which(term_types != "numeric")
+  tmp <- which(!(term_types %in% c("(Intercept)", "numeric")))
   if (length(tmp) > 0) {
     betas[tmp] <- lav_coefs$std.nox[tmp]
   }
@@ -468,7 +531,10 @@ fit_null <- function(
                 mm,
                 fit
               ) {
+  # TODO (SAM):
+  # - Check whether LRT works for SAM
   dvs <- names(mm$model_matrices)
+
   mod_null <- sapply(
                   dvs,
                   function(y) {
@@ -478,6 +544,17 @@ fit_null <- function(
                   },
                   simplify = FALSE,
                   USE.NAMES = TRUE)
+  if (isTRUE(mm$indicator_method == "measurement_model")) {
+    mod_null <- mapply(function(x, y) {
+        paste0(x, "\n", y)
+      },
+      x = mod_null,
+      MoreArgs = list(y = mm$lm_measurement),
+      SIMPLIFY = FALSE,
+      USE.NAMES = FALSE
+    )
+  }
+
   fit_data <- fit@Data
   fit_model <- fit@Model
   fit_sampstats <- fit@SampleStats
@@ -507,10 +584,10 @@ fit_null <- function(
 # - A named list of lavTestLRT() output
 rsquare_test <- function(
                   fit,
-                  fit_null,
+                  fit_nulls,
                   ...
                 ) {
-  dvs <- names(fit_null)
+  dvs <- names(fit_nulls)
   tmpfct <- function(fit0, fit1, ...) {
     outi <- lavaan::lavTestLRT(
                   fit0,
@@ -519,7 +596,7 @@ rsquare_test <- function(
                 )
     outi
   }
-  out0 <- sapply(fit_null,
+  out0 <- sapply(fit_nulls,
                  tmpfct,
                  fit1 = fit,
                  simplify = FALSE,
