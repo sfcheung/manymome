@@ -23,51 +23,53 @@ navbar:
   structure:
     left:  [intro, articles, reference, tutorials, news]
     right: [search, github]
-  components:
-    articles:
-      text: Articles
-      menu:
-      - text: "<Structural Equation Models>"
-      - text: Moderation, Mediation, Moderated Mediation in Path Models
-        href: articles/manymome.html
-      - text: Mediation among Latent Variables
-        href: articles/med_lav.html
-      - text: -------
-      - text: "<Multiple Regression>"
-      - text: Mediation
-        href: articles/med_lm.html
-      - text: Moderated Mediation
-        href: articles/mome_lm.html
-      - text: -------
-      - text: "<Quick Functions>"
-      - text: All-In-One Functions For Common Mediation Models
-        href: articles/q_mediation.html
-      - text: -------
-      - text: "<Multigroup Models>"
-      - text: Mediation in Multigroup Models
-        href: articles/med_mg.html
-      - text: -------
-      - text: "<Multiple Imputation>"
-      - text: Monte Carlo Confidence Intervals with Multiple Imputation
-        href: articles/do_mc_lavaan_mi.html
-      - text: -------
-      - text: "<Helpers>"
-      - text: Generate Bootstrap Estimates
-        href: articles/do_boot.html
-      - text: Generate Monte Carlo Estimates
-        href: articles/do_mc.html
-      - text: Set Moderator Levels
-        href: articles/mod_levels.html
-      - text: -------
-      - text: "<Technical Appendices>"
-      - text: Workflow of `get_prod()` and Friends
-        href: articles/get_prod.html
-      - text: Workflow of `cond_indirect()`
-        href: articles/manymome_cond_indirect_and_friends_workflow.html
-      - text: Workflow of `do_boot()`
-        href: articles/manymome_do_boot_workflow.html
-      - text: Workflow of `do_mc()`
-        href: articles/manymome_do_mc_workflow.html
+
+articles:
+
+- title: Structural Equation Models
+  navbar: Structural Equation Models
+  contents:
+  - manymome
+  - med_lav
+
+- title: Multiple Regression
+  navbar: Multiple Regression
+  contents:
+  - med_lm
+  - mome_lm
+
+- title: All-In-One Functions
+  navbar: All-In-One Functions
+  contents:
+  - articles/q_mediation
+  - articles/q_mediation_sem_indicators_simple
+  - articles/q_mediation_sem_indicators_parallel
+  - articles/q_mediation_sem_indicators_serial
+  - articles/q_mediation_sem_indicators_arbitrary
+
+- title: Multigroup Models
+  navbar: Multigroup Models
+  contents:
+  - articles/med_mg
+
+- title: Multiple Imputation
+  navbar: Multiple Imputation
+  contents:
+  - do_mc_lavaan_mi
+
+- title: Helpers
+  navbar: Helpers
+  contents:
+  - do_boot
+  - do_mc
+  - mod_levels
+
+- title: Technical Appendices
+  contents:
+  - articles/get_prod
+  - articles/manymome_cond_indirect_and_friends_workflow
+  - articles/manymome_do_boot_workflow
+  - articles/manymome_do_mc_workflow
 
 # articles:
 # - title: Articles
