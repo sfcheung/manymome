@@ -1,0 +1,29 @@
+# Introduction
+
+This article is a brief illustration of how to use
+the all-in-one "quick" functions from
+[manymome](https://sfcheung.github.io/manymome/index.html)
+([Cheung & Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z))
+to fit a structural model and
+compute and test indirect effects in
+one step.
+
+It is similar to using them on observed
+scores, such as scaled scores, as
+illustrated in [this article](./q_mediation.html).
+However, that approach does not take into
+account measurement errors, which can
+be done if a construct is measured by
+several indicators.
+
+This article demonstrates how to fit
+a model and test indirect effects when
+some of the constructs are latent variables
+measured by multiple indicators, with the
+measurement error taken into account using
+structural equation modeling (SEM).
+
+NOTE: This is part of a series of similar articles
+with duplicated sections, each dedicated
+to one form of models. See a full list
+of articles [here](./index.html#all-in-one-functions).

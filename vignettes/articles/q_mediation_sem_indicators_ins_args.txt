@@ -1,0 +1,23 @@
+
+- `fit_method` and `indicator_method`:
+  To fit a model with the measurement part,
+  using the information from `indicators`,
+  set `fit_method` to `"sem"` and
+  `indicator_method` to `"measurement_model"`
+
+- `data`: The data frame for the model.
+
+- `R`: The number of bootstrap samples.
+  Should be at least 5000 but can be
+  larger for stable results.
+
+- `seed`: The seed for the random number
+  generator. Should always be set to an
+  integer to make the results reproducible.
+
+The computation may take some time to run,
+especially if missing data is presence,
+due to the processing time combining
+bootstrapping and full-information maximum
+likelihood (FIML), the default way to
+handle missing data.

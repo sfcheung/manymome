@@ -1,0 +1,23 @@
+
+These are the results in predicting `y`:
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      " Predicting fy ",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      "  Indirect Effect Results  ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1 - 1):(i2 - 2)]
+cat(tmp, sep = "\n")
+```
+
+The results from `lavaan::sem()` are
+reformatted to make them similar to those
+by regression analysis.
+
+If desired, the output of `lavaan::sem()`
+can be extracted from the output by
+`get_fit()`.

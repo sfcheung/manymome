@@ -1,0 +1,261 @@
+---
+title: "Parallel Mediation Models Corrected for Measurement Error"
+subtitle: "Using `q_mediation()`"
+author: "Shu Fai Cheung & Sing-Hang Cheung"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig.align: "center"
+    toc: true
+    number_sections: false
+bibliography: references.bib
+csl: apa.csl
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = ""
+)
+```
+
+```{r load_intro, child=c("q_mediation_sem_indicators_ins_intro.txt")}
+```
+
+# Data Set
+
+The sample dataset `data_indicators`
+will be used in this illustration.
+
+```{r dataset_med}
+library(manymome)
+dat <- data_indicators
+print(round(head(dat), 2))
+```
+
+For illustration, only the following variables
+will be used:
+
+- `x_1`, `x_2`, `x_3`, and `x_4`:
+  The indicators
+  of `fx`, the predictor.
+  The indicator `x_4` is a reverse items.
+
+- `m1_1`, `m1_2`, `m1_3`, and `m1_4`:
+  The indicators
+  of `fm1`, the first mediator.
+
+- `m2_1`, `m2_2`, `m2_3`, and `m2_4`:
+  The indicators
+  of `fm2`, the second mediator.
+
+- `y_1`, `y_2`, `y_3`, and `y_4`:
+  The indicators
+  of `fy`, the outcome variable.
+  The indicator `y_4` is a reverse items.
+
+- `c1_1`, `c1_2`, `c1_3`, and `c1_4`:
+  The indicators
+  of `fc1`, a control variable.
+
+- `c2`:
+  An observed control variable. To
+  illustrate mixing latent and observed
+  variables in a model.
+
+# Parallel Mediation Model
+
+Suppose we would like to fit a simple
+mediation model with two mediators,
+`fm1` and `fm2`,
+with `fc1` and `c2` as the control
+variables.
+
+```{r q_mediation_sem_indicators_parallel, echo = FALSE, fig.cap = "Parallel Mediation Model"}
+library(semPlot)
+suppressMessages(library(lavaan))
+mod <-
+"
+# Measurement Part
+fx =~ x_1 + x_2 + x_3 + x_4
+fm1 =~ m1_1 + m1_2 + m1_3 + m1_4
+fm2 =~ m2_1 + m2_2 + m2_3 + m2_4
+fy =~ y_1 + y_2 + y_3 + y_4
+# fc1 =~ c1_1 + c1_2 + c1_3 + c1_4
+
+# Structural Part
+fm1 ~ fx
+fm2 ~ fx
+fy ~ fm1 + fm2 + fx
+"
+fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c(NA, "fm1", NA,
+                     "fx", NA, "fy",
+                     NA, "fm2", NA),
+                    3, 3, byrow = TRUE)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 10,
+              asize = 5,
+              DoNotPlot = TRUE,
+              structural = TRUE)
+plot(p)
+text(label = "(Control variables excluded for readability)",
+     x = 0, y = -1.25,
+     adj = c(.5, .5))
+```
+
+We would to fit the model above,
+and compute and test the indirect
+effects along the paths
+`fx -> fm1 -> y` and `fx -> fm2 -> y`
+using nonparametric bootstrapping.
+
+# Analysis
+
+We can do that in one single step using
+`q_parallel_mediation()`:
+
+```{r results = "hide", message = FALSE}
+out <- q_parallel_mediation(
+  x = "fx",
+  y = "fy",
+  m = c("fm1", "fm2"),
+  cov = c("fc1", "c2"),
+  indicators = list(
+    fx = c("x_1", "x_2", "x_3", "-x_4"),
+    fy = c("y_1", "y_2", "y_3", "-y_4"),
+    fm1 = c("m1_1", "m1_2", "m1_3", "m1_4"),
+    fm2 = c("m2_1", "m2_2", "m2_3", "m2_4"),
+    fc1 = c("c1_1", "c1_2", "c1_3", "c1_4")
+  ),
+  fit_method = "sem",
+  indicator_method = "measurement_model",
+  data = dat,
+  R = 5000,
+  seed = 1234
+)
+```
+
+These are the arguments:
+
+- `x`: The name of the predictor ("x" variable).
+
+- `y`: The name of the outcome ("y" variable).
+
+- `m`: A vector of the names of the mediators
+  ("m" variables). For a parallel mediation
+  model, the order of the mediators does not
+  matter.
+
+- `cov`: The name(s) of the control variable(s)
+  (covariate(s)). By default, they predict both
+  the mediator and the outcome.
+
+- `indicators`: The indicators for latent
+  variables. It should be a named list of
+  variable names. The name of each element
+  is the name of the latent variable. If
+  an indicator is a reverse item, add
+  a minus sign, `-`, before its name. It
+  will be reverse-coded (multiplied by `-1`)
+  before fitting the model. If a variable
+  in `x`, `y`, `m`, or `cov` is not one
+  of the latent factor, it is an observed
+  variable.
+
+```{r load_args, child=c("q_mediation_sem_indicators_ins_args.txt")}
+```
+
+```{r load_results, child=c("q_mediation_sem_indicators_ins_results.txt")}
+```
+
+## Regression Results
+
+The next few sections print the
+regression coefficients when predicting
+the mediators (`fm1` and `fm2` in this model) and
+the outcome variable (`fy` in this model).
+
+These are the results in predicting `fm1`
+and `fm2`:
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      " Predicting fm1 ",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      " Predicting fy ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1 - 1):(i2 - 2)]
+cat(tmp, sep = "\n")
+```
+
+```{r load_predict_y, child=c("q_mediation_sem_indicators_ins_predict_y.txt")}
+```
+
+```{r load_indirect, child=c("q_mediation_sem_indicators_ins_indirect.txt")}
+```
+
+## Total Indirect Effect Results
+
+The section `Total Indirect Effects Results`
+prints the estimated
+*total* indirect effects, confidence intervals,
+and asymmetric bootstrap *p*-values.
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      "  Total Indirect Effect Results  ",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      "  Direct Effect Results  ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1 - 1):(i2 - 3)]
+cat(tmp, sep = "\n")
+```
+
+The total indirect effect in a parallel
+mediation model is the sum of all
+indirect effects from the predictor
+("x") to the outcome ("y").
+
+Four sections will be printed:
+
+- The original total indirect effect.
+
+- The total indirect effects with the predictor
+  ("x") standardized.
+
+- The total indirect effects with the outcome
+  ("y") standardized.
+
+- The total indirect effects with both the predictor
+  ("x") and the outcome ("y") standardized,
+  also called the *completely*
+  *standardized* *total* *indirect* *effects* or
+  simply the *standardized* *total* *indirect*
+  *effects*.
+
+These four versions of the results are
+printed by default such that users can
+select and interpret sections as they
+see fit.
+
+```{r load_direct, child=c("q_mediation_sem_indicators_ins_direct.txt")}
+```
+
+```{r load_additional, child=c("q_mediation_sem_indicators_ins_additional.txt")}
+```
+
+```{r load_final, child=c("q_mediation_sem_indicators_ins_final.txt")}
+```
+

@@ -1,0 +1,282 @@
+---
+title: "Arbitrary Mediation Models Corrected for Measurement Error"
+subtitle: "Using `q_mediation()`"
+author: "Shu Fai Cheung & Sing-Hang Cheung"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig.align: "center"
+    toc: true
+    number_sections: false
+bibliography: references.bib
+csl: apa.csl
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = ""
+)
+```
+
+```{r load_intro, child=c("q_mediation_sem_indicators_ins_intro.txt")}
+```
+
+# Data Set
+
+The sample dataset `data_indicators`
+will be used in this illustration.
+
+```{r dataset_med}
+library(manymome)
+dat <- data_indicators
+print(round(head(dat), 2))
+```
+
+For illustration, only the following variables
+will be used:
+
+- `x_1`, `x_2`, `x_3`, and `x_4`:
+  The indicators
+  of `fx`, the predictor.
+  The indicator `x_4` is a reverse items.
+
+- `m1_1`, `m1_2`, `m1_3`, and `m1_4`:
+  The indicators
+  of `fm1`, the first mediator.
+
+- `m2_1`, `m2_2`, `m2_3`, and `m2_4`:
+  The indicators
+  of `fm2`, the second mediator.
+
+- `m3_1`, `m3_2`, `m3_3`, and `m3_4`:
+  The indicators
+  of `fm3`, the second mediator.
+
+- `y_1`, `y_2`, `y_3`, and `y_4`:
+  The indicators
+  of `fy`, the outcome variable.
+  The indicator `y_4` is a reverse items.
+
+- `c1_1`, `c1_2`, `c1_3`, and `c1_4`:
+  The indicators
+  of `fc1`, a control variable.
+
+- `c2`:
+  An observed control variable. To
+  illustrate mixing latent and observed
+  variables in a model.
+
+# Arbitrary Mediation Model
+
+Suppose we would like to fit an arbitrary
+mediation model with three mediators,
+`fm1`, `fm2`, and `fm3`,
+with `fc1` and `c2` as the control
+variables.
+
+```{r q_mediation_sem_indicators_arbitrary, echo = FALSE, fig.cap = "Arbitrary Mediation Model"}
+library(semPlot)
+suppressMessages(library(lavaan))
+mod <-
+"
+# Measurement Part
+fx =~ x_1 + x_2 + x_3 + x_4
+fm1 =~ m1_1 + m1_2 + m1_3 + m1_4
+fm2 =~ m2_1 + m2_2 + m2_3 + m2_4
+fm3 =~ m3_1 + m3_2 + m3_3 + m3_4
+fy =~ y_1 + y_2 + y_3 + y_4
+# fc1 =~ c1_1 + c1_2 + c1_3 + c1_4
+
+# Structural Part
+fm1 ~ fx
+fm3 ~ fm1 + fx
+fm2 ~ fx
+fy ~ fm2 + fm3 + fm1 + fx
+"
+fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c(NA, "fm1", NA, "fm3", NA,
+                     "fx", NA, NA, NA, "fy",
+                     NA, NA, "fm2", NA, NA),
+                    3, 5, byrow = TRUE)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 10,
+              asize = 5,
+              DoNotPlot = TRUE,
+              structural = TRUE)
+plot(p)
+text(label = "(Control variables excluded for readability)",
+     x = 0, y = -1.25,
+     adj = c(.5, .5))
+```
+
+We would to fit the model above,
+and compute and test the indirect
+effects along the following paths:
+
+- `fx -> fm1 -> fm3 -> y`
+
+- `fx -> fm2 -> y`
+
+using nonparametric bootstrapping.
+
+# Analysis
+
+We can do that in one single step using
+`q_mediation()`:
+
+```{r results = "hide", message = FALSE}
+out <- q_mediation(
+  x = "fx",
+  y = "fy",
+  model = c("fx -> fm1 -> fm3 -> fy",
+            "fx -> fm1 -> fy",
+            "fx -> fm3 -> fy",
+            "fx -> fm2 -> fy",
+            "fx -> fy"),
+  m = c("fm1", "fm2"),
+  cov = c("fc1", "c2"),
+  indicators = list(
+    fx = c("x_1", "x_2", "x_3", "-x_4"),
+    fy = c("y_1", "y_2", "y_3", "-y_4"),
+    fm1 = c("m1_1", "m1_2", "m1_3", "m1_4"),
+    fm2 = c("m2_1", "m2_2", "m2_3", "m2_4"),
+    fm3 = c("m3_1", "m3_2", "m3_3", "m3_4"),
+    fc1 = c("c1_1", "c1_2", "c1_3", "c1_4")
+  ),
+  fit_method = "sem",
+  indicator_method = "measurement_model",
+  data = dat,
+  R = 5000,
+  seed = 1234
+)
+```
+
+These are the arguments:
+
+- `x`: The name of the predictor ("x" variable).
+
+- `y`: The name of the outcome ("y" variable).
+
+- `model`: A character vector of the paths
+  in the model. Each of the path is of this form:
+  `"x -> m1 -> m2 -> y"`, from the predictor
+  to the outcome, separated by `->`. The mediators
+  of the model will be inferred from the paths.
+  Any possible paths not specified will be fixed to
+  zero.
+
+    - For example, the path `"fx -> fm1 -> fm2 -> y"`
+      is not in the model. Therefore, the path
+      `fm1 -> fm2` will be fixed to zero.
+
+    - NOTE: When using `model` to specify an
+      arbitrary model, *all* paths need to be
+      manually specified. Therefore, the
+      direct path from `x` to
+      `y` is *not* added by default.
+      In the example, this is included by
+      `"fx -> fy"`.
+
+```{r load_args, child=c("q_mediation_sem_indicators_ins_args.txt")}
+```
+
+```{r load_results, child=c("q_mediation_sem_indicators_ins_results.txt")}
+```
+
+## Regression Results
+
+The next few sections print the
+regression coefficients when predicting
+the mediators (`fm1` and `fm2` in this model) and
+the outcome variable (`fy` in this model).
+
+These are the results in predicting `fm1`,
+`fm2`, `fm3`, and `fmy`:
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      " Predicting fm1 ",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      "  Indirect Effect Results  ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1 - 1):(i2 - 2)]
+cat(tmp, sep = "\n")
+```
+
+The results from `lavaan::sem()` are
+reformatted to make them similar to those
+by regression analysis.
+
+If desired, the output of `lavaan::sem()`
+can be extracted from the output by
+`get_fit()`.
+
+
+```{r load_indirect, child=c("q_mediation_sem_indicators_ins_indirect.txt")}
+```
+
+## Total Indirect Effect Results
+
+The section `Total Indirect Effects Results`
+prints the estimated
+*total* indirect effects, confidence intervals,
+and asymmetric bootstrap *p*-values.
+
+```{r echo=FALSE}
+i1 <- which(grepl(
+      "  Total Indirect Effect Results  ",
+      out_tmp,
+      fixed = TRUE))
+i2 <- which(grepl(
+      "  Direct Effect Results  ",
+      out_tmp,
+      fixed = TRUE))
+tmp <- out_tmp[(i1 - 1):(i2 - 3)]
+cat(tmp, sep = "\n")
+```
+
+The total indirect effect in a parallel
+mediation model is the sum of all
+indirect effects from the predictor
+("x") to the outcome ("y").
+
+Four sections will be printed:
+
+- The original total indirect effect.
+
+- The total indirect effects with the predictor
+  ("x") standardized.
+
+- The total indirect effects with the outcome
+  ("y") standardized.
+
+- The total indirect effects with both the predictor
+  ("x") and the outcome ("y") standardized,
+  also called the *completely*
+  *standardized* *total* *indirect* *effects* or
+  simply the *standardized* *total* *indirect*
+  *effects*.
+
+These four versions of the results are
+printed by default such that users can
+select and interpret sections as they
+see fit.
+
+```{r load_direct, child=c("q_mediation_sem_indicators_ins_direct.txt")}
+```
+
+```{r load_additional, child=c("q_mediation_sem_indicators_ins_additional.txt")}
+```
+
+```{r load_final, child=c("q_mediation_sem_indicators_ins_final.txt")}
+```
+
