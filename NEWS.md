@@ -1,4 +1,4 @@
-# manymome 0.3.4.20
+# manymome 0.3.4.21
 
 ## New Features
 
@@ -14,7 +14,7 @@
   is structural equation modeling, then
   a latent variable model with
   a measurement part will be fitted.
-  (0.3.4.2, 0.3.4.3)
+  (0.3.4.2, 0.3.4.3, 0.3.4.21)
 
 - Added preliminary support for SAM
   to the `q_*` functions
