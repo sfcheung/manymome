@@ -113,6 +113,7 @@ variables in advance in Stage 1, even for paths with moderators.
 This is the sample data set comes with the package:
 
 ``` r
+
 library(manymome)
 dat <- data_med_mod_ab
 print(head(dat), digits = 3)
@@ -165,6 +166,7 @@ users can, if so desired; they have no impact on the functions in
 variables, `c1` and `c2`, are also included.
 
 ``` r
+
 library(lavaan)
 # Form the product terms
 dat$w1x <- dat$w1 * dat$x
@@ -200,6 +202,7 @@ deviations are sample statistics.
 These are the parameter estimates of the paths:
 
 ``` r
+
 parameterEstimates(fit)[parameterEstimates(fit)$op == "~", ]
 #>    lhs op rhs    est    se      z pvalue ci.lower ci.upper
 #> 1    m  ~   x -0.663 0.533 -1.244  0.213   -1.707    0.381
@@ -242,6 +245,7 @@ variances of variables, which are needed to estimate standardized
 effects.
 
 ``` r
+
 fit_boot <- do_boot(fit = fit,
                     R = 500,
                     seed = 53253,
@@ -281,6 +285,7 @@ intervals, we can use
 [`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md).
 
 ``` r
+
 out_cond <- cond_indirect_effects(wlevels =c("w1", "w2"),
                                   x = "x",
                                   y = "y",
@@ -318,6 +323,7 @@ These are the major arguments:
 This is the output:
 
 ``` r
+
 out_cond
 #> 
 #> == Conditional indirect effects ==
@@ -370,6 +376,7 @@ details on the computation of the indirect effect when both `w1` and
 `w2` are one SD above their means (row 1):
 
 ``` r
+
 get_one_cond_indirect_effect(out_cond, 1)
 #> 
 #> == Conditional Indirect Effect   ==
@@ -418,6 +425,7 @@ set `standardized_y` to `TRUE`. To standardize both, set both
 This is the result when both `x` and `y` are standardized:
 
 ``` r
+
 out_cond_stdxy <- cond_indirect_effects(wlevels =c("w1", "w2"),
                                         x = "x",
                                         y = "y",
@@ -435,6 +443,7 @@ bootstrapping again.
 This is the output:
 
 ``` r
+
 out_cond_stdxy
 #> 
 #> == Conditional indirect effects ==
@@ -472,6 +481,7 @@ estimated, along with bootstrap confidence interval, using the function
 [`index_of_momome()`](https://sfcheung.github.io/manymome/reference/index_of_mome.md):
 
 ``` r
+
 out_momome <- index_of_momome(x = "x",
                               y = "y",
                               m = "m",
@@ -505,6 +515,7 @@ These are the major arguments:
 This is the result:
 
 ``` r
+
 out_momome
 #> 
 #> == Conditional indirect effects ==
@@ -549,6 +560,7 @@ plot of chunk manymome_plot_mome1
 This is the `lavaan` model:
 
 ``` r
+
 library(lavaan)
 dat$w1x <- dat$w1 * dat$x
 mod2 <-
@@ -565,6 +577,7 @@ fit2 <- sem(model = mod2,
 These are the parameter estimates of the paths:
 
 ``` r
+
 parameterEstimates(fit2)[parameterEstimates(fit2)$op == "~", ]
 #>   lhs op rhs    est    se      z pvalue ci.lower ci.upper
 #> 1   m  ~   x -0.663 0.533 -1.244  0.213   -1.707    0.381
@@ -582,6 +595,7 @@ We generate the bootstrap estimates first (`R` should be 2000 or even
 5000 in real research):
 
 ``` r
+
 fit2_boot <- do_boot(fit = fit2,
                     R = 500,
                     seed = 53253,
@@ -594,6 +608,7 @@ can be used to compute the index of moderated mediation of `w1` on the
 path `x -> m -> y`:
 
 ``` r
+
 out_mome <- index_of_mome(x = "x",
                           y = "y",
                           m = "m",
@@ -608,6 +623,7 @@ The arguments are nearly identical to those of
 except that only `w` needs to be specified. This is the output:
 
 ``` r
+
 out_mome
 #> 
 #> == Conditional indirect effects ==
@@ -646,6 +662,7 @@ The package can also be used for a mediation model.
 This is the sample data set that comes with the package:
 
 ``` r
+
 library(manymome)
 dat <- data_serial
 print(head(dat), digits = 3)
@@ -673,6 +690,7 @@ simple. With `manymome`, there is no need to label paths or define user
 parameters for the indirect effects.
 
 ``` r
+
 mod_med <- "
 m1 ~ x + c1 + c2
 m2 ~ m1 + x + c1 + c2
@@ -686,6 +704,7 @@ fit_med <- sem(model = mod_med,
 These are the estimates of the paths:
 
 ``` r
+
 parameterEstimates(fit_med)[parameterEstimates(fit_med)$op == "~", ]
 #>    lhs op rhs    est    se      z pvalue ci.lower ci.upper
 #> 1   m1  ~   x  0.822 0.092  8.907  0.000    0.641    1.003
@@ -718,6 +737,7 @@ For example, this is the call for the indirect effect from `x` to `y`
 through `m1` and `m2`:
 
 ``` r
+
 out_med <- indirect_effect(x = "x",
                            y = "y",
                            m = c("m1", "m2"),
@@ -756,6 +776,7 @@ is the same.
 This is the output:
 
 ``` r
+
 out_med
 #> 
 #> == Indirect Effect  ==
@@ -802,6 +823,7 @@ This is the call to compute the (completely) standardized indirect
 effect:
 
 ``` r
+
 out_med_stdxy <- indirect_effect(x = "x",
                                  y = "y",
                                  m = c("m1", "m2"),
@@ -854,6 +876,7 @@ For example, to estimate and test the indirect effect from `x` through
 `m` to `"m2"`:
 
 ``` r
+
 out_x_m2_y <- indirect_effect(x = "x",
                               y = "y",
                               m = "m2",
@@ -909,6 +932,7 @@ Two of them have been computed above (`out_med` and `out_x_m2_y`). We
 compute the indirect effect in `x -> m1 -> y`
 
 ``` r
+
 out_x_m1_y <- indirect_effect(x = "x",
                               y = "y",
                               m = "m1",
@@ -942,6 +966,7 @@ out_x_m1_y
 We can then “add” the indirect effects to get the total indirect effect:
 
 ``` r
+
 total_ind <- out_med + out_x_m1_y + out_x_m2_y
 total_ind
 #> 
@@ -968,6 +993,7 @@ of inconsistent mediation: some of the indirect Effects are positive and
 some are negative:
 
 ``` r
+
 coef(out_med)
 #>       y~x 
 #> 0.1802238
@@ -984,6 +1010,7 @@ the effects, direct or indirect. The direct effect can be computed with
 `m` not set:
 
 ``` r
+
 out_x_direct <- indirect_effect(x = "x",
                                 y = "y",
                                 fit = fit_med,
@@ -1011,6 +1038,7 @@ out_x_direct
 This is the total effect:
 
 ``` r
+
 total_effect <- out_med + out_x_m1_y + out_x_m2_y + out_x_direct
 total_effect
 #> 

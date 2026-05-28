@@ -196,6 +196,7 @@ the high level functions that should usually be used.
 ## Examples
 
 ``` r
+
 library(lavaan)
 dat <- modmed_x1m3w4y1
 mod <-

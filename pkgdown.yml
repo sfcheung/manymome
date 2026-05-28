@@ -1,4 +1,4 @@
-pandoc: 3.1.11
+pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
@@ -15,8 +15,12 @@ articles:
   articles/med_mg: med_mg.html
   mod_levels: mod_levels.html
   mome_lm: mome_lm.html
+  articles/q_mediation_sem_indicators_arbitrary: q_mediation_sem_indicators_arbitrary.html
+  articles/q_mediation_sem_indicators_parallel: q_mediation_sem_indicators_parallel.html
+  articles/q_mediation_sem_indicators_serial: q_mediation_sem_indicators_serial.html
+  articles/q_mediation_sem_indicators_simple: q_mediation_sem_indicators_simple.html
   articles/q_mediation: q_mediation.html
-last_built: 2026-03-27T12:17Z
+last_built: 2026-05-28T12:01Z
 urls:
   reference: https://sfcheung.github.io/manymome/reference
   article: https://sfcheung.github.io/manymome/articles

@@ -54,6 +54,7 @@ To get the proportion as a scalar, use the `coef` method of
 ## Examples
 
 ``` r
+
 library(lavaan)
 dat <- data_med
 head(dat)

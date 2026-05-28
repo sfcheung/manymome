@@ -15,6 +15,7 @@ estimate by ordinary least squares (OLS) multiple regression using
 This is the sample data set used for illustration:
 
 ``` r
+
 library(manymome)
 dat <- data_med_mod_a
 print(head(dat), digits = 3)
@@ -40,6 +41,7 @@ plot of chunk mome_lm_draw_model
 The path parameters can be estimated by two multiple regression models:
 
 ``` r
+
 lm_m <- lm(m ~ x*w + c1 + c2, dat)
 lm_y <- lm(y ~ m + x + c1 + c2, dat)
 ```
@@ -47,6 +49,7 @@ lm_y <- lm(y ~ m + x + c1 + c2, dat)
 These are the estimates of the regression coefficient of the paths:
 
 ``` r
+
 # ###### Predict m ######
 #
 summary(lm_m)
@@ -104,6 +107,7 @@ object (a system of regression models) using
 [`lm2list()`](https://sfcheung.github.io/manymome/reference/lm2list.md):
 
 ``` r
+
 fit_lm <- lm2list(lm_m, lm_y)
 fit_lm
 #> 
@@ -134,6 +138,7 @@ coefficients first. These estimates can be reused for any effects to be
 estimated.
 
 ``` r
+
 boot_out_lm <- do_boot(fit_lm,
                        R = 100,
                        seed = 54532,
@@ -168,6 +173,7 @@ and the help page of
 on the arguments.)
 
 ``` r
+
 out_xmy_on_w <- cond_indirect_effects(wlevels = "w",
                                       x = "x",
                                       y = "y",
@@ -229,6 +235,7 @@ and the help page of
 on the arguments.)
 
 ``` r
+
 out_mome <- index_of_mome(x = "x",
                           y = "y",
                           m = "m",
@@ -270,6 +277,7 @@ conditional on `w` can be estimated by setting `standardized_x` and
 `standardized_y` to `TRUE`:
 
 ``` r
+
 std_xmy_on_w <- cond_indirect_effects(wlevels = "w",
                                       x = "x",
                                       y = "y",

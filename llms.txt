@@ -1,6 +1,6 @@
 # manymome
 
-(Version 0.3.4, updated on 2026-03-26, [release
+(Version 0.3.4.21, updated on 2026-05-28, [release
 history](https://sfcheung.github.io/manymome/news/index.html))
 
 Functions for estimating indirect effects, conditional indirect effects,
@@ -179,6 +179,7 @@ The stable version at CRAN can be installed by
 [`install.packages()`](https://rdrr.io/r/utils/install.packages.html):
 
 ``` r
+
 install.packages("manymome")
 ```
 
@@ -186,6 +187,7 @@ The latest developmental-but-stable version at GitHub can be installed
 by `remotes::install_github()`:
 
 ``` r
+
 remotes::install_github("sfcheung/manymome")
 ```
 
@@ -235,12 +237,13 @@ effects.
 - [`total_indirect_effect()`](https://sfcheung.github.io/manymome/reference/total_indirect_effect.md)
   : Total Indirect Effect Between Two Variables
 
-## Quick Functions for Common Models
+## All-In-One Functions for Common Models
 
 - [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
   [`q_simple_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
   [`q_serial_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
   [`q_parallel_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  [`get_fit()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
   [`print(`*`<q_mediation>`*`)`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
   : Mediation Models By Regression or SEM
 - [`plot(`*`<q_mediation>`*`)`](https://sfcheung.github.io/manymome/reference/plot.q_mediation.md)
@@ -457,6 +460,8 @@ Helper functions exported for advanced users.
 
 Datasets used in examples.
 
+- [`data_indicators`](https://sfcheung.github.io/manymome/reference/data_indicators.md)
+  : Sample Dataset: With Reverse Items
 - [`data_med`](https://sfcheung.github.io/manymome/reference/data_med.md)
   : Sample Dataset: Simple Mediation
 - [`data_med_complicated`](https://sfcheung.github.io/manymome/reference/data_med_complicated.md)
@@ -521,14 +526,53 @@ Datasets used in examples.
 
 # Articles
 
-### All vignettes
+### Structural Equation Models
+
+- [manymome](https://sfcheung.github.io/manymome/articles/manymome.md):
+- [Mediation Models with Latent
+  Variables](https://sfcheung.github.io/manymome/articles/med_lav.md):
+
+### Multiple Regression
+
+- [Mediation Analysis by Multiple
+  Regression](https://sfcheung.github.io/manymome/articles/med_lm.md):
+- [Moderated Mediation Analysis by Multiple
+  Regression](https://sfcheung.github.io/manymome/articles/mome_lm.md):
+
+### All-In-One Functions
+
+- [All-In-One Functions for Common Mediation
+  Models](https://sfcheung.github.io/manymome/articles/q_mediation.md):
+- [Simple Mediation Models Corrected for Measurement
+  Error](https://sfcheung.github.io/manymome/articles/q_mediation_sem_indicators_simple.md):
+- [Parallel Mediation Models Corrected for Measurement
+  Error](https://sfcheung.github.io/manymome/articles/q_mediation_sem_indicators_parallel.md):
+- [Serial Mediation Models Corrected for Measurement
+  Error](https://sfcheung.github.io/manymome/articles/q_mediation_sem_indicators_serial.md):
+- [Arbitrary Mediation Models Corrected for Measurement
+  Error](https://sfcheung.github.io/manymome/articles/q_mediation_sem_indicators_arbitrary.md):
+
+### Multigroup Models
+
+- [Multigroup Models With Mediation
+  Effects](https://sfcheung.github.io/manymome/articles/med_mg.md):
+
+### Multiple Imputation
+
+- [Monte Carlo Confidence Intervals with Multiple
+  Imputation](https://sfcheung.github.io/manymome/articles/do_mc_lavaan_mi.md):
+
+### Helpers
 
 - [Generate Bootstrap
   Estimates](https://sfcheung.github.io/manymome/articles/do_boot.md):
-- [Monte Carlo Confidence Intervals with Multiple
-  Imputation](https://sfcheung.github.io/manymome/articles/do_mc_lavaan_mi.md):
 - [Generate Monte Carlo
   Estimates](https://sfcheung.github.io/manymome/articles/do_mc.md):
+- [Set Moderator
+  Levels](https://sfcheung.github.io/manymome/articles/mod_levels.md):
+
+### Technical Appendices
+
 - [Technical Appendix: Workflow of \`get_prod()\` and
   Friends](https://sfcheung.github.io/manymome/articles/get_prod.md):
 - [Technical Appendix: Workflow of
@@ -537,16 +581,3 @@ Datasets used in examples.
   \`do_boot()\`](https://sfcheung.github.io/manymome/articles/manymome_do_boot_workflow.md):
 - [Technical Appendix: Workflow of
   \`do_mc()\`](https://sfcheung.github.io/manymome/articles/manymome_do_mc_workflow.md):
-- [manymome](https://sfcheung.github.io/manymome/articles/manymome.md):
-- [Mediation Models with Latent
-  Variables](https://sfcheung.github.io/manymome/articles/med_lav.md):
-- [Mediation Analysis by Multiple
-  Regression](https://sfcheung.github.io/manymome/articles/med_lm.md):
-- [Multigroup Models With Mediation
-  Effects](https://sfcheung.github.io/manymome/articles/med_mg.md):
-- [Set Moderator
-  Levels](https://sfcheung.github.io/manymome/articles/mod_levels.md):
-- [Moderated Mediation Analysis by Multiple
-  Regression](https://sfcheung.github.io/manymome/articles/mome_lm.md):
-- [All-In-One Functions for Common Mediation
-  Models](https://sfcheung.github.io/manymome/articles/q_mediation.md):

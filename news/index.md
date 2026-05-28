@@ -1,5 +1,99 @@
 # Changelog
 
+## manymome 0.3.4.21
+
+### New Features
+
+- Updated the `q_*` functions
+  ([`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md),
+  [`q_simple_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md),
+  [`q_serial_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  and
+  [`q_parallel_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md))
+  to support fitting a model on scale scores computed using
+  user-supplied list of indicators. If `indicator_method` is set to
+  `"scale_scores"`. If `indicator_method` is set to `measurement_model`
+  and the fit method is structural equation modeling, then a latent
+  variable model with a measurement part will be fitted. (0.3.4.2,
+  0.3.4.3, 0.3.4.21)
+
+- Added preliminary support for SAM to the `q_*` functions
+  ([`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md),
+  [`q_simple_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md),
+  [`q_serial_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  and
+  [`q_parallel_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)).
+  (0.3.4.9)
+
+- Preliminary support for latent-variable moderation and
+  moderated-mediation supported if a model is fitted by SAM. (0.3.4.14)
+
+- Tested multigroup latent-variable mediation with SAM. (0.3.4.15)
+
+- Fixed a bug in handling reverse items when `indicator_method` is
+  `"measurement_model"`. Parameter estimates not affected. (0.3.4.19)
+
+### Miscellaneous
+
+- The quick functions now properly handle a data frame which has already
+  been processed by [`na.omit()`](https://rdrr.io/r/stats/na.fail.html)
+  and so has the attribute `na.action` set. (0.3.4.1)
+
+- Added `remove.step1 = FALSE` for calls to
+  [`lavaan::parameterEstimates()`](https://rdrr.io/pkg/lavaan/man/parameterEstimates.html),
+  to adapt for output from
+  [`lavaan::sam()`](https://rdrr.io/pkg/lavaan/man/sam.html). (0.3.4.4)
+
+- Updated
+  [`do_boot()`](https://sfcheung.github.io/manymome/reference/do_boot.md)
+  to handle a fit object with empty cases (cases included but not used
+  due to missing data on all variables in the model). (0.3.4.5)
+
+- Updated
+  [`do_boot()`](https://sfcheung.github.io/manymome/reference/do_boot.md)
+  to support the output of
+  [`lavaan::sam()`](https://rdrr.io/pkg/lavaan/man/sam.html). (0.3.4.6)
+
+- Added some tests to verify functions that work on the output of
+  [`lavaan::sam()`](https://rdrr.io/pkg/lavaan/man/sam.html). (0.3.4.7)
+
+- Renamed the object `fit_null` to `fit_null_list` in internal functions
+  to avoid confusing. (0.3.4.8)
+
+- Fixed a message in the printout of
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md).
+  (0.3.4.10)
+
+- Updated
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  to use
+  [`lavaan::standardizedSolution()`](https://rdrr.io/pkg/lavaan/man/standardizedSolution.html)
+  when `fixed.x = FALSE`. (0.3.4.11)
+
+- Updated
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  to take reverse items into account when computing reliability
+  coefficients. This is necessary for some methods. (0.3.4.12)
+
+- Updated
+  [`do_boot()`](https://sfcheung.github.io/manymome/reference/do_boot.md)
+  to support latent variable means. (0.3.4.13)
+
+- Added a warning and a note for negative loadings. (0.3.4.16)
+
+- `roxygen2` updated to 8.0.0. (0.3.4.17)
+
+- Added
+  [`get_fit()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  to retrieve the fit results (regression or SEM) stored in the output
+  of
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  and friends. (0.3.4.18)
+
+- Fixed some typos in the printout of
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md).
+  (0.3.4.20)
+
 ## manymome 0.3.4
 
 CRAN release: 2026-03-26
@@ -540,9 +634,9 @@ CRAN release: 2023-10-06
 
 - Added
   [`delta_med()`](https://sfcheung.github.io/manymome/reference/delta_med.md)
-  for computing $\Delta_{Med}$ (Delta_Med), an $R^{2}$-like measure of
+  for computing $`\Delta_{Med}`$ (Delta_Med), an $`R^2`$-like measure of
   indirect effect proposed by Liu, Yuan, and Li (2023). Can form
-  nonparametric bootstrap confidence interval for $\Delta_{Med}$.
+  nonparametric bootstrap confidence interval for $`\Delta_{Med}`$.
   (0.1.12.1, 0.1.12.3)
 - Added support for paths with both latent and observed variables.
   (0.1.12.2, 0.1.12.4)

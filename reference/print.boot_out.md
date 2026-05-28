@@ -30,6 +30,7 @@ print(x, ...)
 ## Examples
 
 ``` r
+
 data(data_med_mod_ab1)
 dat <- data_med_mod_ab1
 lm_m <- lm(m ~ x*w + c1 + c2, dat)

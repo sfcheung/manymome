@@ -1,6 +1,6 @@
 # manymome
 
-(Version 0.3.4, updated on 2026-03-26, [release
+(Version 0.3.4.21, updated on 2026-05-28, [release
 history](https://sfcheung.github.io/manymome/news/index.html))
 
 Functions for estimating indirect effects, conditional indirect effects,
@@ -179,6 +179,7 @@ The stable version at CRAN can be installed by
 [`install.packages()`](https://rdrr.io/r/utils/install.packages.html):
 
 ``` r
+
 install.packages("manymome")
 ```
 
@@ -186,6 +187,7 @@ The latest developmental-but-stable version at GitHub can be installed
 by `remotes::install_github()`:
 
 ``` r
+
 remotes::install_github("sfcheung/manymome")
 ```
 

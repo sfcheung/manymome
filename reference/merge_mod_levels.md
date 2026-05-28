@@ -49,6 +49,7 @@ on generating the levels of a moderator.
 ## Examples
 
 ``` r
+
 data(data_med_mod_ab)
 dat <- data_med_mod_ab
 # Form the levels from a list of lm() outputs

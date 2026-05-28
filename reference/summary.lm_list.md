@@ -73,6 +73,7 @@ effect.
 ## Examples
 
 ``` r
+
 data(data_serial_parallel)
 lm_m11 <- lm(m11 ~ x + c1 + c2, data_serial_parallel)
 lm_m12 <- lm(m12 ~ m11 + x + c1 + c2, data_serial_parallel)

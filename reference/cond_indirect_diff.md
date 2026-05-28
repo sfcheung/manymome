@@ -111,6 +111,7 @@ for preparing the levels to be compared.
 ## Examples
 
 ``` r
+
 library(lavaan)
 dat <- modmed_x1m3w4y1
 dat$xw1 <- dat$x * dat$w1

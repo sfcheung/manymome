@@ -5,8 +5,7 @@
 This article is a brief illustration of how to use
 [manymome](https://sfcheung.github.io/manymome/index.html) ([Cheung &
 Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z)) to compute
-and test indirect effects in a multigroup model fitted by `lavaan`.
-[¹](#fn1)
+and test indirect effects in a multigroup model fitted by `lavaan`. [^1]
 
 This article only focuses on issues specific to multigroup models.
 Readers are assumed to have basic understanding on using `manymome`.
@@ -21,6 +20,7 @@ on an illustration on a mediation model.
 This is the sample data set that comes with the package:
 
 ``` r
+
 library(manymome)
 dat <- data_med_mg
 print(head(dat), digits = 3)
@@ -49,6 +49,7 @@ There is no need to label any parameters because `manymome` will extract
 the parameters automatically.
 
 ``` r
+
 mod_med <-
 "
 m ~ x + c1 + c2
@@ -63,6 +64,7 @@ fit <- sem(model = mod_med,
 These are the estimates of the paths:
 
 ``` r
+
 summary(fit,
         estimates = TRUE)
 #> lavaan 0.6-21 ended normally after 1 iteration
@@ -178,6 +180,7 @@ an illustration on this function). The argument `ncores` can be omitted
 if the default value is acceptable.
 
 ``` r
+
 fit_boot_out <- do_boot(fit = fit,
                         R = 5000,
                         seed = 53253,
@@ -204,6 +207,7 @@ label as used in `lavaan` (`"Group A"` or `"Group B"` in this example)
 or the group number used in `lavaan`
 
 ``` r
+
 ind_gpA <- indirect_effect(x = "x",
                            y = "y",
                            m = "m",
@@ -216,6 +220,7 @@ ind_gpA <- indirect_effect(x = "x",
 This is the output:
 
 ``` r
+
 ind_gpA
 #> 
 #> == Indirect Effect  ==
@@ -253,6 +258,7 @@ We illustrate computing the indirect effect in `"Group B"`, using group
 number:
 
 ``` r
+
 ind_gpB <- indirect_effect(x = "x",
                            y = "y",
                            m = "m",
@@ -265,6 +271,7 @@ ind_gpB <- indirect_effect(x = "x",
 This is the output:
 
 ``` r
+
 ind_gpB
 #> 
 #> == Indirect Effect  ==
@@ -311,6 +318,7 @@ function will automatically identify all groups in a model, and compute
 the indirect effect of the requested path in each model.
 
 ``` r
+
 ind <- cond_indirect_effects(x = "x",
                              y = "y",
                              m = "m",
@@ -322,6 +330,7 @@ ind <- cond_indirect_effects(x = "x",
 This is the output:
 
 ``` r
+
 ind
 #> 
 #> == Conditional indirect effects ==
@@ -361,6 +370,7 @@ We have already computed the path `x->m->y` before for the two groups.
 Let us compute the differences:
 
 ``` r
+
 ind_diff <- ind_gpB - ind_gpA
 ind_diff
 #> 
@@ -407,6 +417,7 @@ on the output of
 [`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md):
 
 ``` r
+
 ind_diff2 <- cond_indirect_diff(ind,
                                 from = 1,
                                 to = 2)
@@ -453,6 +464,7 @@ Standardized indirect effects can be computed as for single-group models
 by setting `standardized_x` and/or `standardized_y`. This is an example:
 
 ``` r
+
 std_gpA <- indirect_effect(x = "x",
                            y = "y",
                            m = "m",
@@ -495,6 +507,7 @@ std_gpA
 ```
 
 ``` r
+
 std_gpB <- indirect_effect(x = "x",
                            y = "y",
                            m = "m",
@@ -552,6 +565,7 @@ The difference in the two completely standardized indirect effects can
 computed and tested using the math operator `-`:
 
 ``` r
+
 std_diff <- std_gpB - std_gpA
 std_diff
 #> 
@@ -589,6 +603,7 @@ and
 can also be used with standardization:
 
 ``` r
+
 std <- cond_indirect_effects(x = "x",
                              y = "y",
                              m = "m",
@@ -617,6 +632,7 @@ std
 ```
 
 ``` r
+
 std_diff2 <- cond_indirect_diff(std,
                                 from = 1,
                                 to = 2)
@@ -660,6 +676,7 @@ Suppose a model which has more than one, or has many, indirect paths, is
 fitted to this dataset:
 
 ``` r
+
 dat2 <- data_med_complicated_mg
 print(head(dat2), digits = 2)
 #>     m11   m12     m2     y1     y2    x1     x2    c1      c2   group
@@ -678,6 +695,7 @@ A Complicated Path Model
 We first fit this model in `lavaan`:
 
 ``` r
+
 mod2 <-
 "
 m11 ~ x1 + x2
@@ -700,6 +718,7 @@ for details).
 For example, the following identify all paths from `x1` to `y1`:
 
 ``` r
+
 paths_x1_y1 <- all_indirect_paths(fit = fit2,
                                   x = "x1",
                                   y = "y1")
@@ -709,6 +728,7 @@ If the `group` argument is not specified, it will automatically identify
 all paths in all groups, as shown in the printout:
 
 ``` r
+
 paths_x1_y1
 #> Call: 
 #> all_indirect_paths(fit = fit2, x = "x1", y = "y1")
@@ -729,6 +749,7 @@ We can then use
 to compute the indirect effects for all paths identified:
 
 ``` r
+
 all_ind_x1_y1 <- many_indirect_effects(paths_x1_y1,
                                        fit = fit2)
 all_ind_x1_y1
@@ -766,6 +787,7 @@ are interested in the between-group difference in the path from `m` to
 without setting the mediator:
 
 ``` r
+
 path1 <- cond_indirect_effects(x = "m",
                                y = "y",
                                fit = fit,
@@ -793,6 +815,7 @@ confidence interval using
 [`cond_indirect_diff()`](https://sfcheung.github.io/manymome/reference/cond_indirect_diff.md):
 
 ``` r
+
 path1_diff <- cond_indirect_diff(path1,
                                  from = 1,
                                  to = 2)
@@ -854,6 +877,7 @@ far to the right because `"Group A"` has a larger mean of `m` than
 These are the model implied means and SDs:
 
 ``` r
+
 # Model implied means
 lavInspect(fit, "mean.ov")
 #> $`Group A`
@@ -903,6 +927,4 @@ extrapolation when graphing interactions from a moderated multiple
 regression analysis. *Journal of Educational and Behavioral Statistics*,
 *41*(6), 593–604. <https://doi.org/10.3102/1076998616657080>
 
-------------------------------------------------------------------------
-
-1.  Support for multigroup model was introduced in Version 0.1.14.2.
+[^1]: Support for multigroup model was introduced in Version 0.1.14.2.

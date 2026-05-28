@@ -77,6 +77,7 @@ This path is also invalid: `x = "x", y = "y", m = c("m1", "m2")`
 ## Examples
 
 ``` r
+
 library(lavaan)
 data(data_serial_parallel)
 dat <- data_serial_parallel

@@ -102,6 +102,7 @@ that advanced users or developers can use it.
 ## Examples
 
 ``` r
+
 dat <- modmed_x1m3w4y1
 library(lavaan)
 mod <-

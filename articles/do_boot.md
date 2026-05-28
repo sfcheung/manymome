@@ -52,6 +52,7 @@ The following workflow will be demonstrated;
 The data set for illustration:
 
 ``` r
+
 library(manymome)
 dat <- data_med
 head(dat)
@@ -78,6 +79,7 @@ We first fit the model by
 [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html):
 
 ``` r
+
 mod <-
 "
 m ~ x + c1 + c2
@@ -153,6 +155,7 @@ parameters but are needed to form the confidence interval of the
 *standardized* indirect effect.
 
 ``` r
+
 boot_out_lavaan <- do_boot(fit = fit_lavaan,
                            R = 500,
                            ncores = 1,
@@ -190,6 +193,7 @@ save the output using [`saveRDS()`](https://rdrr.io/r/base/readRDS.html)
 or [`save()`](https://rdrr.io/r/base/save.html):
 
 ``` r
+
 ### Use saveRDS() ###
 # Save the output
 saveRDS(boot_out_lavaan, file = "boot_out_lavaan.rds")
@@ -218,6 +222,7 @@ will then retrieve he stored bootstrap estimates to form the percentile
 bootstrap confidence intervals, if requested.
 
 ``` r
+
 out_lavaan <- indirect_effect(x = "x",
                               y = "y",
                               m = "m",
@@ -267,6 +272,7 @@ Suppose we estimate the parameters using multiple regression. We need to
 fit two regression models, one predicts `m` and the other predicts `y`:
 
 ``` r
+
 # Fit Models
 lm_m <- lm(m ~ x + c1 + c2, dat)
 lm_y <- lm(y ~ m + x + c1 + c2, dat)
@@ -327,6 +333,7 @@ we first combine the regression outputs to one object using
 The output is an `lm_list`-class object.
 
 ``` r
+
 fit_lm <- lm2list(lm_m, lm_y)
 fit_lm
 #> 
@@ -345,6 +352,7 @@ instead of the output of
 [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html):
 
 ``` r
+
 boot_out_lm <- do_boot(fit = fit_lm,
                        R = 500,
                        seed = 98715,
@@ -371,6 +379,7 @@ or
 we cab set the argument `boot_out` to the output of `do_bout()`:
 
 ``` r
+
 out_lm <- indirect_effect(x = "x",
                           y = "y",
                           m = "m",
@@ -419,6 +428,7 @@ in this case is an object of the class `boot_out`, which is a list of
 This is the content of `est` of the first list:
 
 ``` r
+
 boot_out_lavaan[[1]]$est
 #>    lhs op rhs    est
 #> 1    m  ~   x  0.828
@@ -446,6 +456,7 @@ are not used even if present.
 This is the content of `implied_stats` of the first list:
 
 ``` r
+
 boot_out_lavaan[[1]]$implied_stats
 #> $cov
 #>         m      y      x     c1     c2
@@ -487,6 +498,7 @@ two elements: `est` and `implied_stats`.
 This is the content of `est` of the first list:
 
 ``` r
+
 boot_out_lm[[1]]$est
 #>   lhs op rhs        est
 #> 1   m  ~   x  0.9583396
@@ -508,6 +520,7 @@ However, the estimates are the estimates based on
 This is the content of `implied_stats` of the first list:
 
 ``` r
+
 boot_out_lm[[1]]$implied_stats
 #> $cov
 #>             x         c1          c2          m          y

@@ -69,6 +69,7 @@ https://www.statmodel.com/download/FAQ-Bootstrap%20-%20Pvalue.pdf
 ## Examples
 
 ``` r
+
 library(lavaan)
 data(data_serial_parallel)
 mod <-

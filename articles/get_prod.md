@@ -82,6 +82,7 @@ The sample dataset `modmed_x1m3w4y1` from the package `manymome` will be
 used for illustration:
 
 ``` r
+
 library(manymome)
 dat <- modmed_x1m3w4y1
 print(head(dat), digits = 3)
@@ -99,6 +100,7 @@ For illustration, some product terms will be formed manually, and some
 product terms will be formed using the `:` operator in `lavaan`:
 
 ``` r
+
 dat$x_o_w1 <- dat$x * dat$w1
 library(lavaan)
 ```
@@ -107,6 +109,7 @@ library(lavaan)
     ## lavaan is FREE software! Please report any bugs.
 
 ``` r
+
 mod <-
 "
 m1 ~ x   + w1 + x_o_w1
@@ -123,6 +126,7 @@ fit <- sem(model = mod,
 Fit the model by [`lm()`](https://rdrr.io/r/stats/lm.html):
 
 ``` r
+
 lm_m1 <- lm(m1 ~ x*w1, dat)
 lm_m2 <- lm(m2 ~ m1*w2, dat)
 lm_m3 <- lm(m3 ~ m2, dat)
@@ -150,6 +154,7 @@ any.
 Case: A path with a moderator
 
 ``` r
+
 get_prod(x = "x", y = "m1", fit = fit)
 ```
 
@@ -172,6 +177,7 @@ get_prod(x = "x", y = "m1", fit = fit)
 Case: A path with more than one moderator
 
 ``` r
+
 get_prod(x = "x", y = "y", fit = fit)
 ```
 
@@ -194,6 +200,7 @@ get_prod(x = "x", y = "y", fit = fit)
 Case: A path without a moderator
 
 ``` r
+
 get_prod(x = "m2", y = "m3", fit = fit)
 ```
 
@@ -202,6 +209,7 @@ get_prod(x = "m2", y = "m3", fit = fit)
 Case: `x` does not have a direct path to `y`
 
 ``` r
+
 get_prod(x = "m1", y = "m3", fit = fit)
 ```
 
@@ -221,6 +229,7 @@ any.
 Case: A path with a moderator
 
 ``` r
+
 get_prod(x = "x", y = "m1", est = lm_est$est, data = lm_est$data)
 ```
 
@@ -243,6 +252,7 @@ get_prod(x = "x", y = "m1", est = lm_est$est, data = lm_est$data)
 Case: A path with more than one moderator
 
 ``` r
+
 get_prod(x = "x", y = "y", est = lm_est$est, data = lm_est$data)
 ```
 
@@ -265,6 +275,7 @@ get_prod(x = "x", y = "y", est = lm_est$est, data = lm_est$data)
 Case: A path without a moderator
 
 ``` r
+
 get_prod(x = "m2", y = "m3", est = lm_est$est, data = lm_est$data)
 ```
 
@@ -273,6 +284,7 @@ get_prod(x = "m2", y = "m3", est = lm_est$est, data = lm_est$data)
 Case: `x` does not have a direct path to `y`
 
 ``` r
+
 get_prod(x = "m1", y = "m3", est = lm_est$est, data = lm_est$data)
 ```
 
@@ -295,6 +307,7 @@ or when raw data is not available.
 Case: A path with a moderator
 
 ``` r
+
 get_prod(x = "x", y = "m1", est = lm_est$est, operator = ":")
 ```
 
@@ -317,6 +330,7 @@ get_prod(x = "x", y = "m1", est = lm_est$est, operator = ":")
 Case: A path with more than one moderator
 
 ``` r
+
 get_prod(x = "x", y = "y", est = lm_est$est, operator = ":")
 ```
 
@@ -339,6 +353,7 @@ get_prod(x = "x", y = "y", est = lm_est$est, operator = ":")
 Case: A path without a moderator
 
 ``` r
+
 get_prod(x = "m2", y = "m3", est = lm_est$est, operator = ":")
 ```
 
@@ -347,6 +362,7 @@ get_prod(x = "m2", y = "m3", est = lm_est$est, operator = ":")
 Case: `x` does not have a direct path to `y`
 
 ``` r
+
 get_prod(x = "m1", y = "m3", est = lm_est$est, operator = ":")
 ```
 
@@ -391,6 +407,7 @@ identified.
 We first create a dataset with some product terms.
 
 ``` r
+
 library(manymome)
 set.seed(63224)
 dat <- round(as.data.frame(MASS::mvrnorm(100, rep(0, 5), diag(5))), 3)
@@ -406,6 +423,7 @@ head(dat)
     ## 6 -0.428 -0.187 -0.717  1.519  0.416
 
 ``` r
+
 dat$V2V1 <- dat$V2 * dat$V1
 dat$V3V5 <- dat$V3 * dat$V5
 dat$V1V2V3 <- dat$V1 * dat$V2 * dat$V3
@@ -421,6 +439,7 @@ print(head(dat), digits = 3)
     ## 6 -0.428 -0.187 -0.717  1.519  0.416  0.080 -0.29827 -0.0574
 
 ``` r
+
 manymome:::find_all_products(dat)
 ```
 

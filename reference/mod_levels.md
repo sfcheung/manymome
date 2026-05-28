@@ -184,6 +184,7 @@ for merging levels of moderators.
 ## Examples
 
 ``` r
+
 library(lavaan)
 data(data_med_mod_ab)
 dat <- data_med_mod_ab

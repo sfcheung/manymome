@@ -14,6 +14,7 @@ form bootstrap confidence intervals for these effects.
 This is the sample dataset used for illustration:
 
 ``` r
+
 library(manymome)
 dat <- data_sem
 print(round(head(dat), 1))
@@ -39,6 +40,7 @@ This model can be fitted by
 [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html):
 
 ``` r
+
 mod <-
 "
 f1 =~ x01 + x02 + x03
@@ -55,6 +57,7 @@ fit_med <- sem(model = mod,
 These are the estimates of the paths between the latent variables:
 
 ``` r
+
 est <- parameterEstimates(fit_med)
 est[est$op == "~", ]
 #>    lhs op rhs   est    se     z pvalue ci.lower ci.upper
@@ -79,6 +82,7 @@ to generate the bootstrap estimates to be used by
 [`indirect_effect()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md):
 
 ``` r
+
 boot_out_med <- do_boot(fit_med,
                         R = 100,
                         seed = 98171,
@@ -106,6 +110,7 @@ Suppose we want to estimate the indirect effect from `f1` to `f4`
 through `f3`:
 
 ``` r
+
 out_f1f3f4 <- indirect_effect(x = "f1",
                               y = "f4",
                               m = "f3",
@@ -143,6 +148,7 @@ Similarly, we can estimate the indirect effect from `f2` to `f4` through
 `f3`:
 
 ``` r
+
 out_f2f3f4 <- indirect_effect(x = "f2",
                               y = "f4",
                               m = "f3",
@@ -182,6 +188,7 @@ The standardized indirect effect from `f1` to `f4` through `f3` can be
 estimated by setting `standardized_x` and `standardized_y` to \`TRUE:
 
 ``` r
+
 std_f1f3f4 <- indirect_effect(x = "f1",
                               y = "f4",
                               m = "f3",
@@ -225,6 +232,7 @@ Similarly, we can estimate the standardized indirect effect from `f2` to
 `f4` through `f3`:
 
 ``` r
+
 std_f2f3f4 <- indirect_effect(x = "f2",
                               y = "f4",
                               m = "f3",
@@ -285,6 +293,7 @@ to compute it so that it can be added to the indirect effect computed
 above with bootstrap confidence interval:
 
 ``` r
+
 out_f1f4 <- indirect_effect(x = "f1",
                             y = "f4",
                             fit = fit_med,
@@ -312,6 +321,7 @@ out_f1f4
 We can now compute the total effect:
 
 ``` r
+
 out_f1_total <- out_f1f3f4 + out_f1f4
 out_f1_total
 #> 
@@ -341,6 +351,7 @@ the difference between the indirect effect of `f1` on `f4` and the
 direct effect of `f1` on `f4`:
 
 ``` r
+
 out_f1_diff <- out_f1f4 - out_f1f3f4
 out_f1_diff
 #> 
@@ -371,6 +382,7 @@ can be used to automatically identify all indirect paths (a path with at
 least one mediator) in a model:
 
 ``` r
+
 all_paths <- all_indirect_paths(fit = fit_med)
 all_paths
 #> Call: 
@@ -385,6 +397,7 @@ The output is a `all_paths`-class object. It can be used in
 [`many_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
 
 ``` r
+
 out_all <- many_indirect_effects(paths = all_paths,
                                  fit = fit_med,
                                  boot_ci = TRUE,
@@ -401,6 +414,7 @@ outputs of `indirect_effects()`. If printed, a summary of the indirect
 effects will be printed:
 
 ``` r
+
 out_all
 #> 
 #> == Indirect Effect(s) ==
@@ -424,6 +438,7 @@ the path names
 An example using index:
 
 ``` r
+
 out1 <- out_all[[1]]
 out1
 #> 
@@ -453,6 +468,7 @@ An example using path name (though not recommended because the name is
 usually long):
 
 ``` r
+
 out2 <- out_all[["f2 -> f3 -> f4"]]
 out2
 #> 

@@ -232,6 +232,7 @@ add the effects after drawing the modified plot.
 ## Examples
 
 ``` r
+
 # These examples require the package
 # semptools (version 0.3.2 or above).
 

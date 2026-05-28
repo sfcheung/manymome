@@ -19,12 +19,13 @@ effects.
 - [`total_indirect_effect()`](https://sfcheung.github.io/manymome/reference/total_indirect_effect.md)
   : Total Indirect Effect Between Two Variables
 
-## Quick Functions for Common Models
+## All-In-One Functions for Common Models
 
 - [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
   [`q_simple_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
   [`q_serial_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
   [`q_parallel_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  [`get_fit()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
   [`print(`*`<q_mediation>`*`)`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
   : Mediation Models By Regression or SEM
 - [`plot(`*`<q_mediation>`*`)`](https://sfcheung.github.io/manymome/reference/plot.q_mediation.md)
@@ -241,6 +242,8 @@ Helper functions exported for advanced users.
 
 Datasets used in examples.
 
+- [`data_indicators`](https://sfcheung.github.io/manymome/reference/data_indicators.md)
+  : Sample Dataset: With Reverse Items
 - [`data_med`](https://sfcheung.github.io/manymome/reference/data_med.md)
   : Sample Dataset: Simple Mediation
 - [`data_med_complicated`](https://sfcheung.github.io/manymome/reference/data_med_complicated.md)

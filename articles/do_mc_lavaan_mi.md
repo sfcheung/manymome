@@ -37,8 +37,8 @@ sample estimates using a multivariate normal distribution. Other
 parameters and implied variances, covariances, and means of variables
 are then generated from these simulated estimates.
 
-When a $(1 - \alpha)$% Monte Carlo confidence interval is requested, the
-$100(\alpha/2)$^(th) percentile and the $100(1 - \alpha/2)$^(th)
+When a $`(1 - \alpha)`$% Monte Carlo confidence interval is requested,
+the $`100(\alpha/2)`$^(th) percentile and the $`100(1 - \alpha/2)`$^(th)
 percentile are used to form the confidence interval. For a 95% Monte
 Carlo confidence interval, the 2.5^(th) percentile and 97.5^(th)
 percentile will be used.
@@ -78,6 +78,7 @@ This data set, with missing data introduced, will be used for
 illustration.
 
 ``` r
+
 library(manymome)
 dat <- data_med
 dat[1, 1] <- dat[2, 3] <- dat[3, 5] <- dat[4, 3] <- dat[5, 2] <- NA
@@ -108,6 +109,7 @@ Buuren, 2018). For the sake of illustration, we just use the default of
 imputation:
 
 ``` r
+
 library(mice)
 set.seed(26245)
 out_mice <- mice(dat, m = 5, printFlag = FALSE)
@@ -138,6 +140,7 @@ We then fit the model by
 [`lavaan.mi::sem.mi()`](https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html):
 
 ``` r
+
 library(lavaan.mi)
 mod <-
 "
@@ -225,6 +228,7 @@ free parameters but are needed to form the confidence interval of the
 *standardized* indirect effect.
 
 ``` r
+
 mc_out_lavaan <- do_mc(fit = fit_lavaan,
                        R = 10000,
                        seed = 4234)
@@ -262,6 +266,7 @@ They will then retrieve the stored simulated estimates to form the Monte
 Carlo confidence intervals, if requested.
 
 ``` r
+
 out_lavaan <- indirect_effect(x = "x",
                               y = "y",
                               m = "m",

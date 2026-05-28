@@ -39,6 +39,7 @@ It extracts and returns the column `ind` or `std` in the output of
 ## Examples
 
 ``` r
+
 library(lavaan)
 dat <- modmed_x1m3w4y1
 mod <-

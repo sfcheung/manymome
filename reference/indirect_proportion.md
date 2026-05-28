@@ -78,6 +78,7 @@ for the `coef` method.
 ## Examples
 
 ``` r
+
 library(lavaan)
 dat <- data_med
 head(dat)

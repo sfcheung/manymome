@@ -15,6 +15,7 @@ ordinary least squares (OLS) multiple regression using
 This is the sample dataset used for illustration:
 
 ``` r
+
 library(manymome)
 dat <- data_med_complicated
 print(round(head(dat), 2))
@@ -41,6 +42,7 @@ Despite the apparent complexity, the path parameters can be estimated by
 five multiple regression models:
 
 ``` r
+
 lm_m11 <- lm(m11 ~ x1 + x2 + c1 + c2, dat)
 lm_m12 <- lm(m12 ~ m11 + x1 + x2 + c1 + c2, dat)
 lm_m2 <- lm(m2 ~ x1 + x2 + c1 + c2, dat)
@@ -63,6 +65,7 @@ into one object (a system of regression models) using
 [`lm2list()`](https://sfcheung.github.io/manymome/reference/lm2list.md):
 
 ``` r
+
 fit_lm <- lm2list(lm_m11, lm_m12, lm_m2, lm_y1, lm_y2)
 fit_lm
 #> 
@@ -96,6 +99,7 @@ coefficients first. These estimates can be reused for any indirect
 effects to be estimated.
 
 ``` r
+
 boot_out_lm <- do_boot(fit_lm,
                        R = 100,
                        seed = 54532,
@@ -129,6 +133,7 @@ and the help page of
 on the arguments.)
 
 ``` r
+
 out_x1m11m12y1 <- indirect_effect(x = "x1",
                                   y = "y1",
                                   m = c("m11", "m12"),
@@ -167,6 +172,7 @@ Similarly, we can estimate the indirect effect from `x2` to `y2` through
 `m2`:
 
 ``` r
+
 out_x2m2y2 <- indirect_effect(x = "x2",
                               y = "y2",
                               m = "m2",
@@ -206,6 +212,7 @@ indirect effect from `x2` to `m12` through `m11`, we just call
 [`indirect_effect()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md):
 
 ``` r
+
 out_x2m11m12 <- indirect_effect(x = "x2",
                                 y = "m12",
                                 m = "m11",
@@ -253,6 +260,7 @@ The standardized indirect effect from `x1` to `y1` through `m11` and
 to \`TRUE:
 
 ``` r
+
 std_x1m11m12y1 <- indirect_effect(x = "x1",
                                   y = "y1",
                                   m = c("m11", "m12"),
@@ -297,6 +305,7 @@ Similarly, we can estimate the standardized indirect effect from `x1` to
 `y1` through `m2`:
 
 ``` r
+
 std_x1m2y1 <- indirect_effect(x = "x1",
                               y = "y1",
                               m = "m2",
@@ -354,6 +363,7 @@ The indirect effects along Path a has already been computed. We compute
 the indirect effects along Paths b, c, and d below:
 
 ``` r
+
 out_x1m11y1 <- indirect_effect(x = "x1",
                                y = "y1",
                                m = "m11",
@@ -385,6 +395,7 @@ out_x1m11y1
 ```
 
 ``` r
+
 out_x1m12y1 <- indirect_effect(x = "x1",
                                y = "y1",
                                m = "m12",
@@ -416,6 +427,7 @@ out_x1m12y1
 ```
 
 ``` r
+
 out_x1m2y1 <- indirect_effect(x = "x1",
                                y = "y1",
                                m = "m2",
@@ -449,6 +461,7 @@ out_x1m2y1
 We can now compute the total *indirect* effect:
 
 ``` r
+
 out_x1y1_total <- out_x1m11m12y1 + out_x1m11y1 + out_x1m12y1 + out_x1m2y1
 out_x1y1_total
 #> 
@@ -488,6 +501,7 @@ the difference between the indirect effect of `x1` on `y1` through `m11`
 and `m12` and the indirect effect of `x1` on `y1` through `m2`:
 
 ``` r
+
 out_x1_diff <- out_x1m11m12y1 - out_x1m2y1
 out_x1_diff
 #> 
@@ -524,6 +538,7 @@ can be used to automatically identify all indirect paths (a path with at
 least one mediator) in a model:
 
 ``` r
+
 all_paths <- all_indirect_paths(fit = fit_lm)
 all_paths
 #> Call: 
@@ -575,6 +590,7 @@ are included in the search. Moreover, paths that start from a mediator
 or end at a mediator are also included. Users can customize the search:
 
 ``` r
+
 all_paths <- all_indirect_paths(fit = fit_lm,
                                 x = c("x1", "x2"),
                                 y = c("y1", "y2"),
@@ -616,6 +632,7 @@ The output is a `all_paths`-class object. It can be used in
 [`many_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
 
 ``` r
+
 out_all <- many_indirect_effects(paths = all_paths,
                                  fit = fit_lm,
                                  boot_ci = TRUE,
@@ -632,6 +649,7 @@ outputs of `indirect_effects()`. If printed, a summary of the indirect
 effects will be printed:
 
 ``` r
+
 out_all
 #> 
 #> == Indirect Effect(s) ==
@@ -669,6 +687,7 @@ the path names
 An example using index:
 
 ``` r
+
 out1 <- out_all[[1]]
 out1
 #> 
@@ -699,6 +718,7 @@ An example using path name (though not recommended because the name is
 usually long):
 
 ``` r
+
 out2 <- out_all[["x2 -> m2 -> y2"]]
 out2
 #> 
@@ -741,6 +761,7 @@ be computed by
 [`total_indirect_effect()`](https://sfcheung.github.io/manymome/reference/total_indirect_effect.md).
 
 ``` r
+
 total_x1_y1 <- total_indirect_effect(out_all,
                                      x = "x1",
                                      y = "y1")

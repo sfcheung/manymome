@@ -147,6 +147,7 @@ this function.
 ## Examples
 
 ``` r
+
 library(lavaan)
 data(data_med_mod_ab1)
 dat <- data_med_mod_ab1

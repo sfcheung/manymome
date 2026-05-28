@@ -219,6 +219,7 @@ edition). The Guilford Press.
 ## Examples
 
 ``` r
+
 library(lavaan)
 
 dat <- data_med_mod_a

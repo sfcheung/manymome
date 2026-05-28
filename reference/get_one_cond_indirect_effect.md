@@ -70,6 +70,7 @@ and print all of them.
 ## Examples
 
 ``` r
+
 library(lavaan)
 dat <- modmed_x1m3w4y1
 mod <-

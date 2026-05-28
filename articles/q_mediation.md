@@ -18,6 +18,7 @@ This is the sample data set that comes with the package for this
 example:
 
 ``` r
+
 library(manymome)
 dat <- data_med
 print(head(dat), digits = 3)
@@ -52,6 +53,7 @@ We can do that in one single step using
 [`q_simple_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md):
 
 ``` r
+
 out_simple <- q_simple_mediation(x = "x",
                                  y = "y",
                                  m = "m",
@@ -88,6 +90,7 @@ two minutes for contemporary computers.
 We can then just print the output:
 
 ``` r
+
 out_simple
 #> 
 #> =============== Simple Mediation Model ===============
@@ -336,6 +339,7 @@ This is the sample data set that comes with the package for this
 example:
 
 ``` r
+
 library(manymome)
 dat <- data_serial
 print(head(dat), digits = 3)
@@ -379,6 +383,7 @@ We can do that in one single step using
 [`q_serial_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md):
 
 ``` r
+
 out_serial <- q_serial_mediation(x = "x",
                                  y = "y",
                                  m = c("m1", "m2"),
@@ -418,6 +423,7 @@ and can be a few minutes if `R` is large.
 We can then just print the output:
 
 ``` r
+
 out_serial
 #> 
 #> =============== Serial Mediation Model ===============
@@ -818,6 +824,7 @@ This is the sample data set that comes with the package for this
 example:
 
 ``` r
+
 library(manymome)
 dat <- data_parallel
 print(head(dat), digits = 3)
@@ -859,6 +866,7 @@ We can do that in one single step using
 [`q_parallel_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md):
 
 ``` r
+
 out_parallel <- q_parallel_mediation(x = "x",
                                      y = "y",
                                      m = c("m1", "m2"),
@@ -896,6 +904,7 @@ and can be a few minutes if `R` is large.
 We can then just print the output:
 
 ``` r
+
 out_parallel
 #> 
 #> =============== Parallel Mediation Model ===============
@@ -1314,6 +1323,7 @@ This is how the call to
 should be:
 
 ``` r
+
 out_serial_v2 <- q_serial_mediation(x = "x",
                                     y = "y",
                                     m = c("m1", "m2"),

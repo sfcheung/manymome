@@ -53,6 +53,7 @@ them to form the percentile confidence interval.
 ## Examples
 
 ``` r
+
 library(lavaan)
 data(data_serial_parallel)
 mod <-

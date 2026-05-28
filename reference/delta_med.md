@@ -207,6 +207,7 @@ and
 ## Examples
 
 ``` r
+
 library(lavaan)
 dat <- data_med
 mod <-

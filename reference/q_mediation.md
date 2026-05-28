@@ -12,6 +12,7 @@ q_mediation(
   y,
   m = NULL,
   cov = NULL,
+  indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
   mc_ci = FALSE,
@@ -22,6 +23,7 @@ q_mediation(
   boot_type = c("perc", "bc"),
   model = NULL,
   fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = NULL,
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
@@ -36,6 +38,7 @@ q_simple_mediation(
   y,
   m = NULL,
   cov = NULL,
+  indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
   mc_ci = FALSE,
@@ -45,6 +48,8 @@ q_simple_mediation(
   ci_type = NULL,
   boot_type = c("perc", "bc"),
   fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = ifelse(fit_method %in% c("lm", "regression"), "scale_scores",
+    "measurement_model"),
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
@@ -59,6 +64,7 @@ q_serial_mediation(
   y,
   m = NULL,
   cov = NULL,
+  indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
   mc_ci = FALSE,
@@ -68,6 +74,8 @@ q_serial_mediation(
   ci_type = NULL,
   boot_type = c("perc", "bc"),
   fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = ifelse(fit_method %in% c("lm", "regression"), "scale_scores",
+    "measurement_model"),
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
@@ -82,6 +90,7 @@ q_parallel_mediation(
   y,
   m = NULL,
   cov = NULL,
+  indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
   mc_ci = FALSE,
@@ -91,6 +100,8 @@ q_parallel_mediation(
   ci_type = NULL,
   boot_type = c("perc", "bc"),
   fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = ifelse(fit_method %in% c("lm", "regression"), "scale_scores",
+    "measurement_model"),
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
@@ -99,6 +110,8 @@ q_parallel_mediation(
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
   progress = TRUE
 )
+
+get_fit(q_out)
 
 # S3 method for class 'q_mediation'
 print(
@@ -150,6 +163,16 @@ print(
   this element. For example, `list(m1 = "c1", dv = c("c2", "c3"))`
   indicates that `c1` predicts `"m1"`, while `c2` and `c3` predicts
   `"dv"`. Default is `NULL`, no covariates.
+
+- indicators:
+
+  Optional. A named vector of indicator names for scales or latent
+  variables. If an indicator is to be reverse coded, add `"-"` before
+  its names. For example, `list(x = c("x1", "x3"), m = c("-m1", "m2"))`
+  denotes that `"x1"` and `"x3"` are the indicators of `x`, and `"m1"`
+  and `"m2"` are the indicators of `m`. If named in this list, then
+  these variables (`x` and `m` in this case) should not be present in
+  `data`.
 
 - data:
 
@@ -216,6 +239,16 @@ print(
   [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html). Default is
   `"lm"`.
 
+- indicator_method:
+
+  How indicators will be used. If set to `"scale_scores"`, the default
+  if `fit_method` is `"lm"` or `"regression"`, scale scores will be
+  computed (mean scores for now) first before fitting the models. If set
+  to `"measurement_model"`, the default if `fit_method` is `"sem"` or
+  `"lavaan"`, a measurement model will be added. If set to `"sam"`, the
+  structural-after-measurement (SAM) method (Rosseel & Loh, 2024) will
+  be used to estimate the regression coefficients
+
 - missing:
 
   If `fit_method` is set to `"sem"` or `"lavaan"`, this argument
@@ -237,7 +270,9 @@ print(
 
   If `fit_method` is set to `"sem"` or `"lavaan"`, this is a named list
   of arguments to be passed to
-  [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html). Arguments
+  [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html). If the
+  indicator method is `"sam"`, then these are arguments to be passed to
+  [`lavaan::sam()`](https://rdrr.io/pkg/lavaan/man/sam.html). Arguments
   listed here will not override `missing` and `fixed.x`.
 
 - na.action:
@@ -264,6 +299,10 @@ print(
 - progress:
 
   Logical. Display progress or not.
+
+- q_out:
+
+  The output of `q_mediation()` and friends.
 
 - digits:
 
@@ -358,6 +397,12 @@ object, which is a subclass of `q_mediation`.
 The function `q_parallel_mediation()` returns a `q_parallel_mediation`
 class object, which is a subclass of `q_mediation`.
 
+The function `get_fit()` returns the fit output. If `fit_method` is
+`"lm"`, then it returns a list of
+[`lm()`](https://rdrr.io/r/stats/lm.html) outputs. If `fit_method` is
+`"sem"`, then it returns the output of
+[`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html).
+
 ## Details
 
 The family of "q" (quick) functions are for testing mediation effects in
@@ -451,6 +496,18 @@ readability. For example:
 
 The path `"x1 -> m1"` appears twice, to indicate two different pathways
 from `x1` to `y1`.
+
+### Scale Scores or Latent Variables
+
+The argument `indicators` can be used to indicate that one or more
+variables in the model are measured by observed indicators
+
+If regression is used to estimate the coefficients, then the mean scores
+(for now) of the indicators will be used in the model.
+
+If structural equation modeling is used to estimate the coefficients,
+then these indicators will be used in the model to define the latent
+variables.
 
 ### Workflow
 
@@ -575,6 +632,15 @@ intervals if OLS regression is used.
 - `q_parallel_mediation()`: A wrapper of `q_mediation()` for parallel
   mediation models.
 
+- `get_fit()`: Just a helper to retrieve the fit output used in
+  `q_mediation()` and friends.
+
+## References
+
+Rosseel, Y., & Loh, W. W. (2024). A structural after measurement
+approach to structural equation modeling. *Psychological Methods,
+29*(3), 561–588. https://doi.org/10.1037/met0000503
+
 ## See also
 
 [`lmhelprs::many_lm()`](https://sfcheung.github.io/lmhelprs/reference/many_lm.html)
@@ -597,6 +663,7 @@ Idea to fit a model by structural equation modeling by Rong wei Sun
 ## Examples
 
 ``` r
+
 # ===== A user-specified mediation model
 
 # Set R to 5000 or 10000 in real studies

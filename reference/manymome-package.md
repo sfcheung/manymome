@@ -32,6 +32,9 @@ Useful links:
 
 Authors:
 
+- Shu Fai Cheung <shufai.cheung@gmail.com>
+  ([ORCID](https://orcid.org/0000-0002-9871-9448))
+
 - Sing-Hang Cheung ([ORCID](https://orcid.org/0000-0001-5182-0752))
 
 Other contributors:

@@ -44,6 +44,7 @@ the indirect effects together using the `+` operator.
 ## Examples
 
 ``` r
+
 library(lavaan)
 data(data_serial_parallel)
 mod <-

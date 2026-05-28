@@ -36,6 +36,7 @@ It extracts and returns the element `proportion` in the input object.
 ## Examples
 
 ``` r
+
 library(lavaan)
 dat <- data_med
 head(dat)
