@@ -15,6 +15,9 @@
   generator. Should always be set to an
   integer to make the results reproducible.
 
-The computation may take some time to run but should
-be at most one or two minutes for contemporary
-computers.
+The computation may take some time to run,
+especially if missing data is presence,
+due to the processing time combining
+bootstrapping and full-information maximum
+likelihood (FIML), the default way to
+handle missing data.

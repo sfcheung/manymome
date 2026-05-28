@@ -1,7 +1,7 @@
 ---
 title: "All-In-One Functions for Simple Mediation Models: With Measurement Error Taken Into Account"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-05-18"
+date: "2026-05-28"
 output:
   html_document:
     fig.align: "center"
@@ -187,9 +187,12 @@ These are the arguments:
   generator. Should always be set to an
   integer to make the results reproducible.
 
-The computation may take some time to run but should
-be at most one or two minutes for contemporary
-computers.
+The computation may take some time to run,
+especially if missing data is presence,
+due to the processing time combining
+bootstrapping and full-information maximum
+likelihood (FIML), the default way to
+handle missing data.
 
 
 # Results
@@ -679,8 +682,9 @@ for other arguments.
 By default, parallel processing is used.
 If this failed for some reasons,
 add `parallel` to `FALSE`. It will take
-longer to run but should still be just
-one to two minutes in typical models.
+longer, sometimes much long, to run
+if `parallel` is set to `FALSE`. Therefore,
+use parallel processing whenever possible.
 
 ## Progress Bar
 

@@ -220,7 +220,7 @@ i2 <- which(grepl(
       "  Direct Effect Results  ",
       out_tmp,
       fixed = TRUE))
-tmp <- out_tmp[(i1):(i2 - 3)]
+tmp <- out_tmp[(i1 - 1):(i2 - 3)]
 cat(tmp, sep = "\n")
 ```
 

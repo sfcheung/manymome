@@ -45,8 +45,9 @@ for other arguments.
 By default, parallel processing is used.
 If this failed for some reasons,
 add `parallel` to `FALSE`. It will take
-longer to run but should still be just
-one to two minutes in typical models.
+longer, sometimes much long, to run
+if `parallel` is set to `FALSE`. Therefore,
+use parallel processing whenever possible.
 
 ## Progress Bar
 
