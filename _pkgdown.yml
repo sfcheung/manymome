@@ -101,11 +101,10 @@ reference:
   - all_indirect_paths
   - indirect_effects_from_list
   - total_indirect_effect
-- title: Quick Functions for Common Models
+- title: All-In-One Functions for Common Models
 - contents:
   - q_mediation
   - plot.q_mediation
-  - q_mediation_sem_indicators_simple
 - title: Presenting and Exploring the Effects
 - contents:
   - index_of_mome
