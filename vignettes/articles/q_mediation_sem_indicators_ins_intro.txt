@@ -25,4 +25,5 @@ structural equation modeling (SEM).
 
 NOTE: This is part of a series of similar articles
 with duplicated sections, each dedicated
-to one form of models.
+to one form of models. See a full list
+of articles [here](./index.html#all-in-one-functions).

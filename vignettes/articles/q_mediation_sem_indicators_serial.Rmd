@@ -1,5 +1,6 @@
 ---
-title: "All-In-One Functions for Serial Mediation Models: With Measurement Error Taken Into Account"
+title: "Serial Mediation Models Corrected for Measurement Error"
+subtitle: "Using `q_mediation()`"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
 date: "2026-05-28"
 output:
@@ -12,8 +13,6 @@ csl: apa.csl
 ---
 
 
-
-** Work-In-Progress: Not Ready **
 
 
 # Introduction
@@ -43,7 +42,8 @@ structural equation modeling (SEM).
 
 NOTE: This is part of a series of similar articles
 with duplicated sections, each dedicated
-to one form of models.
+to one form of models. See a full list
+of articles [here](./index.html#all-in-one-functions).
 
 # Data Set
 

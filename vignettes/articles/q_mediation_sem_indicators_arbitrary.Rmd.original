@@ -1,5 +1,6 @@
 ---
-title: "All-In-One Functions for Arbitrary Mediation Models: With Measurement Error Taken Into Account"
+title: "Arbitrary Mediation Models Corrected for Measurement Error"
+subtitle: "Using `q_mediation()`"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
 date: "`r Sys.Date()`"
 output:
@@ -18,8 +19,6 @@ knitr::opts_chunk$set(
   fig.path = ""
 )
 ```
-
-** Work-In-Progress: Not Ready **
 
 ```{r load_intro, child=c("q_mediation_sem_indicators_ins_intro.txt")}
 ```
