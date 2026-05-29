@@ -1,0 +1,303 @@
+---
+title: "Latent Variable Moderated Mediation by SAM"
+author: "Shu Fai Cheung & Sing-Hang Cheung"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig.align: "center"
+    toc: true
+    number_sections: false
+bibliography: references.bib
+csl: apa.csl
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = ""
+)
+```
+
+** WORK-IN-PROGRESS. Not Ready **
+
+# Introduction
+
+This article is a brief illustration of how
+to use
+`cond_indirect_effects()`
+from the package
+[manymome](https://sfcheung.github.io/manymome/)
+([Cheung & Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z))
+to estimate the conditional
+indirect effects among latent variables
+when the model parameters are estimate by
+the SAM (structural-after-measurement)
+method by @rosseel_structural_2025.
+
+# Data Set and Model
+
+This is the sample data set used for
+illustration:
+
+```{r data}
+library(manymome)
+dat <- data_sem_mome
+print(head(dat), digits = 3)
+```
+
+This dataset has indicators of the following
+four latent variables:
+one predictor (`fx`),
+one mediators (`fm`),
+one outcome variable (`fy`), and
+one moderator (`fw`).
+
+Suppose this is the model being fitted:
+
+```{r mome_lm_draw_model, echo = FALSE}
+library(semPlot)
+suppressMessages(library(lavaan))
+mod <-
+"
+wx ~ fx + fw
+fm ~ wx
+fy ~ fm
+fy ~ fx
+wx =~ wx1 + wx2 + wx3
+fx =~ x1 + x2 + x3
+fw =~ w1 + w2 + w3
+fm =~ m1 + m2 + m3
+fy =~ y1 + y2 + y3
+"
+fit0 <- sem(mod, do.fit = FALSE, fixed.x = FALSE)
+dat <- simulateData(
+        parameterTable(fit0),
+        seed = 1234,
+        sample.nobs = 500
+      )
+layout_m <- matrix(c("fw", NA, "fm", NA, NA,
+                   NA, "wx", NA, NA, NA,
+                   "fx", NA, NA, NA, "fy"), 3, 5, byrow = TRUE)
+fit0 <- sem(mod, dat)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 10,
+              asize = 10,
+              structural = TRUE,
+              DoNotPlot = TRUE)
+p$graphAttributes$Nodes$width[c(1)] <- .01
+p$graphAttributes$Nodes$height[c(1)] <- .01
+p$graphAttributes$Edges$asize[c(1)] <- 0
+plot(p)
+```
+
+The path from `fx` to `fm` is moderated
+by `fw`, the moderator.
+
+If this model is fitted to the scale
+scores, then a product term `fx:fw` is
+used to model the moderation.
+
+If the model is for the latent variables,
+the new approach, SAM (structural-after-measurement),
+presented in @rosseel_structural_2025
+can be used, using the function `sam()`
+from `lavaan`. This is the model syntax:
+
+```{r model_sam}
+mod <- "
+# Measurement model:
+fx =~ x1 + x2 + x3 + x4
+fw =~ w1 + w2 + w3 + w4
+fm =~ m1 + m2 + m3 + m4
+fy =~ y1 + y2 + y3 + y4
+
+# Structural model:
+fm ~ fx + fw + fx:fw
+fy ~ fm + fx
+"
+```
+
+The moderation effect is modelled by
+`fx:fw`. To fit this model by SAM, use
+`sam()` from `lavaan`:
+
+```{r fit_sam}
+fit <- sam(
+  model = mod,
+  data = data_sem_mome
+)
+```
+
+For details on the SAM approach, consult
+@rosseel_structural_2025 and
+@rosseel_structural_2024.
+
+# Generating Bootstrap Estimates
+
+To form nonparametric bootstrap confidence interval for
+effects to be computed, `do_boot()` can be used
+to generate bootstrap estimates for all the
+parameter estimates first.
+These estimates can be reused for
+any effects to be estimated.
+
+```{r do_boot, echo=FALSE}
+boot_out <- do_boot(
+  fit,
+  R = 100,
+  seed = 54321,
+  parallel = FALSE,
+  ncores = 20
+)
+```
+
+Please see `vignette("do_boot")` or
+the help page of `do_boot()` on how
+to use this function. In real research,
+`R`, the number of bootstrap samples,
+should be set to 2000 or even 5000.
+The argument `ncores` can usually be omitted
+unless users want to manually control
+the number of CPU cores used in
+parallel processing.
+
+# Conditional Indirect Effects
+
+We can now use `cond_indirect_effects()` to
+estimate the indirect effects for
+different levels of the moderator (`w`) and
+form their
+bootstrap confidence interval. By reusing
+the generated bootstrap
+estimates, there is no need to repeat the
+resampling.
+
+Suppose we want to estimate the indirect
+effect from `x` to `y` through `m`,
+conditional on `w`:
+
+(Refer to `vignette("manymome")` and the help page
+of `cond_indirect_effects()` on the arguments.)
+
+```{r ind_xmy_on_w}
+out_xmy_on_w <- cond_indirect_effects(wlevels = "w",
+                                      x = "x",
+                                      y = "y",
+                                      m = "m",
+                                      fit = fit_lm,
+                                      boot_ci = TRUE,
+                                      boot_out = boot_out_lm)
+out_xmy_on_w
+```
+
+When `w` is one standard deviation
+below mean, the indirect effect is
+`r formatC(coef(out_xmy_on_w)[3], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(out_xmy_on_w)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+When `w` is one standard deviation
+above mean, the indirect effect is
+`r formatC(coef(out_xmy_on_w)[1], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(out_xmy_on_w)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+Note that any conditional indirect path in the model can be
+estimated this way. There is no limit on the path
+to be estimated, as long
+as all required path coefficients are in the model.
+`cond_indirect_effects()` will also check whether a path is valid.
+However, for complicated models, structural
+equation modelling may be a more flexible approach
+than multiple regression.
+
+Not covered here, but the index of moderated moderated mediation
+can also be estimated in models with two moderators on the same
+path, estimated by regression. See `vignette("manymome")`
+for an example.
+
+# Index of Moderated Mediation
+
+The function `index_of_mome()` can be used to compute
+the index of moderated mediation of `w` on the
+path `x -> m -> y`:
+
+(Refer to `vignette("manymome")` and the help page
+of `index_of_mome()` on the arguments.)
+
+```{r mome}
+out_mome <- index_of_mome(x = "x",
+                          y = "y",
+                          m = "m",
+                          w = "w",
+                          fit = fit_lm,
+                          boot_ci = TRUE,
+                          boot_out = boot_out_lm)
+out_mome
+```
+
+In this model, the index of moderated mediation is
+`r formatC(coef(out_mome), digits = 3, format = "f")`,
+with 95% bootstrap confidence interval
+[`r paste0(formatC(unlist(confint(out_mome)[1, ]), digits = 3, format = "f"), collapse = ", ")`].
+The indirect effect of `x` on `y` through `m`
+significantly changes when
+`w` increases by one unit.
+
+# Standardized Conditional Indirect effects
+
+The standardized conditional indirect
+effect from `x` to `y` through `m` conditional
+on `w`
+can be estimated by setting
+`standardized_x` and `standardized_y` to `TRUE`:
+
+```{r std_xmy_on_w}
+std_xmy_on_w <- cond_indirect_effects(wlevels = "w",
+                                      x = "x",
+                                      y = "y",
+                                      m = "m",
+                                      fit = fit_lm,
+                                      boot_ci = TRUE,
+                                      boot_out = boot_out_lm,
+                                      standardized_x = TRUE,
+                                      standardized_y = TRUE)
+std_xmy_on_w
+```
+
+The standardized indirect effect is
+`r formatC(coef(std_xmy_on_w)[3], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(std_xmy_on_w)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+# More Complicated Models
+
+After the regression coefficients are estimated, `cond_indirect_effects()`,
+`indirect_effect()`,
+and related functions are used in the same way as
+for models fitted by `lavaan::sem()`. The levels
+for the moderators are controlled by `mod_levels()`
+and related functions in the same way whether a
+model is fitted by `lavaan::sem()` or `lm()`.
+Pplease refer to other articles (e.g.,
+`vignette("manymome")` and `vignette("mod_levels")`)
+on how to estimate effects in other model analyzed by
+multiple regression.
+
+# Reference
+
+Cheung, S. F., & Cheung, S.-H. (2024).
+*manymome*: An R package for computing
+the indirect effects, conditional
+effects, and conditional indirect
+effects, standardized or unstandardized,
+and their bootstrap confidence intervals,
+in many (though not all) models.
+*Behavior Research Methods, 56*(5),
+4862--4882.
+https://doi.org/10.3758/s13428-023-02224-z
