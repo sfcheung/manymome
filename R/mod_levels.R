@@ -367,6 +367,7 @@ mod_levels_i_lavaan_numerical <- mod_levels_i_lm_numerical <- function(fit,
                                       percentiles = c(.16, .50, .84),
                                       values = NULL,
                                       descending = TRUE) {
+    w_method <- match.arg(w_method)
     # No need for user-specified method. If users want to specify their own
     # values, they do not need  to call this function
     fit_type <- cond_indirect_check_fit(fit)
@@ -380,7 +381,6 @@ mod_levels_i_lavaan_numerical <- mod_levels_i_lm_numerical <- function(fit,
                  lavaan = as.data.frame(lav_data_used(fit)),
                  lavaan.mi = as.data.frame(lav_data_used(fit)),
                  lm = merge_model_matrix(fit))
-    w_method <- match.arg(w_method)
     if (!is.null(values)) {
         w_method <- "user"
       }

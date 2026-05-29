@@ -984,7 +984,8 @@ gen_boot_i_lavaan <- function(fit,
                 PT$se[(PT$free == 0L) & (!is.na(PT$ustart))] <- 0.0
                 out@ParTable <- PT
                 out <- lavaan::sam(
-                  model = out
+                  model = out,
+                  se = "none"
                 )
               }
 
