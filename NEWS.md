@@ -1,4 +1,4 @@
-# manymome 0.3.4.21
+# manymome 0.3.4.22
 
 ## New Features
 
@@ -14,7 +14,7 @@
   is structural equation modeling, then
   a latent variable model with
   a measurement part will be fitted.
-  (0.3.4.2, 0.3.4.3, 0.3.4.21)
+  (0.3.4.2, 0.3.4.3, 0.3.4.22)
 
 - Added preliminary support for SAM
   to the `q_*` functions
@@ -25,7 +25,7 @@
 - Preliminary support for latent-variable
   moderation and moderated-mediation
   supported if a model is fitted by SAM.
-  (0.3.4.14)
+  (0.3.4.14, 0.3.4.22)
 
 - Tested multigroup latent-variable
   mediation with SAM.
