@@ -149,7 +149,7 @@ any effects to be estimated.
 ```{r do_boot, echo=FALSE}
 boot_out <- do_boot(
   fit,
-  R = 5000,
+  R = 100,
   seed = 54321,
   parallel = FALSE,
   ncores = 20
@@ -221,20 +221,22 @@ than multiple regression.
 # Index of Moderated Mediation
 
 The function `index_of_mome()` can be used to compute
-the index of moderated mediation of `w` on the
-path `x -> m -> y`:
+the index of moderated mediation of `fw` on the
+path `fx -> fm -> fy`:
 
 (Refer to `vignette("manymome")` and the help page
 of `index_of_mome()` on the arguments.)
 
 ```{r mome}
-out_mome <- index_of_mome(x = "x",
-                          y = "y",
-                          m = "m",
-                          w = "w",
-                          fit = fit_lm,
-                          boot_ci = TRUE,
-                          boot_out = boot_out_lm)
+out_mome <- index_of_mome(
+  x = "fx",
+  y = "fy",
+  m = "fm",
+  w = "fw",
+  fit = fit,
+  boot_ci = TRUE,
+  boot_out = boot_out
+)
 out_mome
 ```
 
@@ -242,28 +244,30 @@ In this model, the index of moderated mediation is
 `r formatC(coef(out_mome), digits = 3, format = "f")`,
 with 95% bootstrap confidence interval
 [`r paste0(formatC(unlist(confint(out_mome)[1, ]), digits = 3, format = "f"), collapse = ", ")`].
-The indirect effect of `x` on `y` through `m`
+The indirect effect of `fx` on `fy` through `fm`
 significantly changes when
-`w` increases by one unit.
+`fw` increases by one unit.
 
 # Standardized Conditional Indirect effects
 
 The standardized conditional indirect
-effect from `x` to `y` through `m` conditional
-on `w`
+effect from `fx` to `fy` through `fm` conditional
+on `fw`
 can be estimated by setting
 `standardized_x` and `standardized_y` to `TRUE`:
 
 ```{r std_xmy_on_w}
-std_xmy_on_w <- cond_indirect_effects(wlevels = "w",
-                                      x = "x",
-                                      y = "y",
-                                      m = "m",
-                                      fit = fit_lm,
-                                      boot_ci = TRUE,
-                                      boot_out = boot_out_lm,
-                                      standardized_x = TRUE,
-                                      standardized_y = TRUE)
+std_xmy_on_w <- cond_indirect_effects(
+  wlevels = "fw",
+  x = "fx",
+  y = "fy",
+  m = "fm",
+  fit = fit,
+  boot_ci = TRUE,
+  boot_out = boot_out,
+  standardized_x = TRUE,
+  standardized_y = TRUE
+)
 std_xmy_on_w
 ```
 
@@ -274,27 +278,16 @@ with 95% confidence interval
 
 # More Complicated Models
 
-After the regression coefficients are estimated, `cond_indirect_effects()`,
+After the path coefficients are estimated, `cond_indirect_effects()`,
 `indirect_effect()`,
 and related functions are used in the same way as
 for models fitted by `lavaan::sem()`. The levels
 for the moderators are controlled by `mod_levels()`
 and related functions in the same way whether a
-model is fitted by `lavaan::sem()` or `lm()`.
-Pplease refer to other articles (e.g.,
+model is fitted by `lavaan::sem()` or `lavaan::sem()`.
+Please refer to other articles (e.g.,
 `vignette("manymome")` and `vignette("mod_levels")`)
 on how to estimate effects in other model analyzed by
 multiple regression.
 
-# Reference
-
-Cheung, S. F., & Cheung, S.-H. (2024).
-*manymome*: An R package for computing
-the indirect effects, conditional
-effects, and conditional indirect
-effects, standardized or unstandardized,
-and their bootstrap confidence intervals,
-in many (though not all) models.
-*Behavior Research Methods, 56*(5),
-4862--4882.
-https://doi.org/10.3758/s13428-023-02224-z
+# Reference(s)
