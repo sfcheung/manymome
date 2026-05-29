@@ -228,8 +228,8 @@ indirect_2 <- (est[est$label == "a1", "est"] +
 # They should be the same
 coef(indirect_1)
 #>      y~x 
-#> 1.176091 
+#> 1.176089 
 indirect_2
 #>       w1 
-#> 1.176091 
+#> 1.176089 
 ```

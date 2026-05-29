@@ -1,6 +1,6 @@
 # Changelog
 
-## manymome 0.3.4.21
+## manymome 0.3.4.23
 
 ### New Features
 
@@ -15,7 +15,7 @@
   `"scale_scores"`. If `indicator_method` is set to `measurement_model`
   and the fit method is structural equation modeling, then a latent
   variable model with a measurement part will be fitted. (0.3.4.2,
-  0.3.4.3, 0.3.4.21)
+  0.3.4.3, 0.3.4.22)
 
 - Added preliminary support for SAM to the `q_*` functions
   ([`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md),
@@ -26,7 +26,8 @@
   (0.3.4.9)
 
 - Preliminary support for latent-variable moderation and
-  moderated-mediation supported if a model is fitted by SAM. (0.3.4.14)
+  moderated-mediation supported if a model is fitted by SAM. (0.3.4.14,
+  0.3.4.22, 0.3.4.23)
 
 - Tested multigroup latent-variable mediation with SAM. (0.3.4.15)
 
