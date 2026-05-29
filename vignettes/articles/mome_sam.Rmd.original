@@ -149,7 +149,7 @@ any effects to be estimated.
 ```{r do_boot, echo=FALSE}
 boot_out <- do_boot(
   fit,
-  R = 100,
+  R = 5000,
   seed = 54321,
   parallel = FALSE,
   ncores = 20
@@ -170,7 +170,7 @@ parallel processing.
 
 We can now use `cond_indirect_effects()` to
 estimate the indirect effects for
-different levels of the moderator (`w`) and
+different levels of the moderator (`fw`) and
 form their
 bootstrap confidence interval. By reusing
 the generated bootstrap
@@ -178,30 +178,32 @@ estimates, there is no need to repeat the
 resampling.
 
 Suppose we want to estimate the indirect
-effect from `x` to `y` through `m`,
-conditional on `w`:
+effect from `fx` to `fy` through `fm`,
+conditional on `fw`:
 
 (Refer to `vignette("manymome")` and the help page
 of `cond_indirect_effects()` on the arguments.)
 
 ```{r ind_xmy_on_w}
-out_xmy_on_w <- cond_indirect_effects(wlevels = "w",
-                                      x = "x",
-                                      y = "y",
-                                      m = "m",
-                                      fit = fit_lm,
-                                      boot_ci = TRUE,
-                                      boot_out = boot_out_lm)
+out_xmy_on_w <- cond_indirect_effects(
+  wlevels = "fw",
+  x = "fx",
+  y = "fy",
+  m = "fm",
+  fit = fit,
+  boot_ci = TRUE,
+  boot_out = boot_out
+)
 out_xmy_on_w
 ```
 
-When `w` is one standard deviation
+When `fw` is one standard deviation
 below mean, the indirect effect is
 `r formatC(coef(out_xmy_on_w)[3], digits = 3, format = "f")`,
 with 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out_xmy_on_w)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
-When `w` is one standard deviation
+When `fw` is one standard deviation
 above mean, the indirect effect is
 `r formatC(coef(out_xmy_on_w)[1], digits = 3, format = "f")`,
 with 95% confidence interval
@@ -215,11 +217,6 @@ as all required path coefficients are in the model.
 However, for complicated models, structural
 equation modelling may be a more flexible approach
 than multiple regression.
-
-Not covered here, but the index of moderated moderated mediation
-can also be estimated in models with two moderators on the same
-path, estimated by regression. See `vignette("manymome")`
-for an example.
 
 # Index of Moderated Mediation
 
