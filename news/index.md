@@ -1,6 +1,6 @@
 # Changelog
 
-## manymome 0.3.4.24
+## manymome 0.3.4.25
 
 ### New Features
 
@@ -27,7 +27,7 @@
 
 - Preliminary support for latent-variable moderation and
   moderated-mediation supported if a model is fitted by SAM. (0.3.4.14,
-  0.3.4.22, 0.3.4.23, 0.3.4.24)
+  0.3.4.22, 0.3.4.23, 0.3.4.24, 0.3.4.25)
 
 - Tested multigroup latent-variable mediation with SAM. (0.3.4.15)
 

@@ -168,9 +168,9 @@ out
 #>  Moderator(s) represented by: w
 #> 
 #>       [w]   (w)    ind  CI.lo CI.hi Sig    m~x   y~m
-#> 1 M+1.0SD 6.046  0.248  0.034 0.508 Sig  0.342 0.725
-#> 2 Mean    4.990  0.024 -0.059 0.107      0.063 0.375
-#> 3 M-1.0SD 3.934 -0.006 -0.078 0.049     -0.216 0.026
+#> 1 M+1.0SD 6.046  0.248  0.073 0.469 Sig  0.342 0.725
+#> 2 Mean    4.990  0.024 -0.075 0.145      0.063 0.375
+#> 3 M-1.0SD 3.934 -0.006 -0.091 0.041     -0.216 0.026
 #> 
 #>  - [CI.lo to CI.hi] are 95.0% Monte Carlo confidence intervals with 100
 #>    replications.

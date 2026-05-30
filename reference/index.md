@@ -295,6 +295,9 @@ Datasets used in examples.
   : Sample Dataset: Parallel Mediation
 - [`data_sem`](https://sfcheung.github.io/manymome/reference/data_sem.md)
   : Sample Dataset: A Latent Variable Mediation Model With 4 Factors
+- [`data_sem_mome`](https://sfcheung.github.io/manymome/reference/data_sem_mome.md)
+  : Sample Dataset: A Latent Variable Moderated Mediation Model With 4
+  Factors
 - [`data_serial`](https://sfcheung.github.io/manymome/reference/data_serial.md)
   : Sample Dataset: Serial Mediation
 - [`data_serial_parallel`](https://sfcheung.github.io/manymome/reference/data_serial_parallel.md)

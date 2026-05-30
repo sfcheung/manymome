@@ -5,6 +5,10 @@
 - [manymome](https://sfcheung.github.io/manymome/articles/manymome.md):
 - [Mediation Models with Latent
   Variables](https://sfcheung.github.io/manymome/articles/med_lav.md):
+- [Latent Variable Moderated Mediation by
+  SAM](https://sfcheung.github.io/manymome/articles/mome_sam.md):
+- [Latent Variable Moderation by
+  SAM](https://sfcheung.github.io/manymome/articles/mo_sam.md):
 
 ### Multiple Regression
 

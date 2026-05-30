@@ -1,6 +1,6 @@
 # manymome
 
-(Version 0.3.4.24, updated on 2026-05-30, [release
+(Version 0.3.4.25, updated on 2026-05-30, [release
 history](https://sfcheung.github.io/manymome/news/index.html))
 
 Functions for estimating indirect effects, conditional indirect effects,
@@ -513,6 +513,9 @@ Datasets used in examples.
   : Sample Dataset: Parallel Mediation
 - [`data_sem`](https://sfcheung.github.io/manymome/reference/data_sem.md)
   : Sample Dataset: A Latent Variable Mediation Model With 4 Factors
+- [`data_sem_mome`](https://sfcheung.github.io/manymome/reference/data_sem_mome.md)
+  : Sample Dataset: A Latent Variable Moderated Mediation Model With 4
+  Factors
 - [`data_serial`](https://sfcheung.github.io/manymome/reference/data_serial.md)
   : Sample Dataset: Serial Mediation
 - [`data_serial_parallel`](https://sfcheung.github.io/manymome/reference/data_serial_parallel.md)
@@ -531,6 +534,10 @@ Datasets used in examples.
 - [manymome](https://sfcheung.github.io/manymome/articles/manymome.md):
 - [Mediation Models with Latent
   Variables](https://sfcheung.github.io/manymome/articles/med_lav.md):
+- [Latent Variable Moderated Mediation by
+  SAM](https://sfcheung.github.io/manymome/articles/mome_sam.md):
+- [Latent Variable Moderation by
+  SAM](https://sfcheung.github.io/manymome/articles/mo_sam.md):
 
 ### Multiple Regression
 

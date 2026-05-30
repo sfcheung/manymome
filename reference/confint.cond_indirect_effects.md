@@ -127,8 +127,8 @@ out1 <- suppressWarnings(cond_indirect_effects(x = "x", y = "m1",
                       progress = FALSE))
 confint(out1)
 #>             2.5 %    97.5 %
-#> M+1.0SD 0.5470997 0.9277340
-#> Mean    0.4277303 0.5787752
+#> M+1.0SD 0.5470997 0.9277341
+#> Mean    0.4277303 0.5787753
 #> M-1.0SD 0.1590855 0.4261894
 
 ```

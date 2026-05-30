@@ -13,14 +13,16 @@ articles:
   med_lav: med_lav.html
   med_lm: med_lm.html
   articles/med_mg: med_mg.html
+  articles/mo_sam: mo_sam.html
   mod_levels: mod_levels.html
   mome_lm: mome_lm.html
+  articles/mome_sam: mome_sam.html
   articles/q_mediation_sem_indicators_arbitrary: q_mediation_sem_indicators_arbitrary.html
   articles/q_mediation_sem_indicators_parallel: q_mediation_sem_indicators_parallel.html
   articles/q_mediation_sem_indicators_serial: q_mediation_sem_indicators_serial.html
   articles/q_mediation_sem_indicators_simple: q_mediation_sem_indicators_simple.html
   articles/q_mediation: q_mediation.html
-last_built: 2026-05-30T00:09Z
+last_built: 2026-05-30T06:12Z
 urls:
   reference: https://sfcheung.github.io/manymome/reference
   article: https://sfcheung.github.io/manymome/articles
