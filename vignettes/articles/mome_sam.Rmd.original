@@ -19,8 +19,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-** WORK-IN-PROGRESS. Not Ready **
-
 # Introduction
 
 This article is a brief illustration of how
@@ -28,7 +26,7 @@ to use
 `cond_indirect_effects()`
 from the package
 [manymome](https://sfcheung.github.io/manymome/)
-([Cheung & Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z))
+[@cheung_manymome_2024]
 to estimate the conditional
 indirect effects among latent variables
 when the model parameters are estimate by
@@ -149,9 +147,9 @@ any effects to be estimated.
 ```{r do_boot, echo=FALSE}
 boot_out <- do_boot(
   fit,
-  R = 100,
+  R = 2000,
   seed = 54321,
-  parallel = FALSE,
+  parallel = TRUE,
   ncores = 20
 )
 ```
@@ -160,7 +158,7 @@ Please see `vignette("do_boot")` or
 the help page of `do_boot()` on how
 to use this function. In real research,
 `R`, the number of bootstrap samples,
-should be set to 2000 or even 5000.
+should be set to 5000 or higher.
 The argument `ncores` can usually be omitted
 unless users want to manually control
 the number of CPU cores used in
@@ -214,39 +212,6 @@ estimated this way. There is no limit on the path
 to be estimated, as long
 as all required path coefficients are in the model.
 `cond_indirect_effects()` will also check whether a path is valid.
-However, for complicated models, structural
-equation modelling may be a more flexible approach
-than multiple regression.
-
-# Index of Moderated Mediation
-
-The function `index_of_mome()` can be used to compute
-the index of moderated mediation of `fw` on the
-path `fx -> fm -> fy`:
-
-(Refer to `vignette("manymome")` and the help page
-of `index_of_mome()` on the arguments.)
-
-```{r mome}
-out_mome <- index_of_mome(
-  x = "fx",
-  y = "fy",
-  m = "fm",
-  w = "fw",
-  fit = fit,
-  boot_ci = TRUE,
-  boot_out = boot_out
-)
-out_mome
-```
-
-In this model, the index of moderated mediation is
-`r formatC(coef(out_mome), digits = 3, format = "f")`,
-with 95% bootstrap confidence interval
-[`r paste0(formatC(unlist(confint(out_mome)[1, ]), digits = 3, format = "f"), collapse = ", ")`].
-The indirect effect of `fx` on `fy` through `fm`
-significantly changes when
-`fw` increases by one unit.
 
 # Standardized Conditional Indirect effects
 
@@ -271,10 +236,17 @@ std_xmy_on_w <- cond_indirect_effects(
 std_xmy_on_w
 ```
 
-The standardized indirect effect is
+When `fw` is one standard deviation
+below mean, the standardized indirect effect is
 `r formatC(coef(std_xmy_on_w)[3], digits = 3, format = "f")`,
 with 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(std_xmy_on_w)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+When `fw` is one standard deviation
+above mean, the indirect effect is
+`r formatC(coef(std_xmy_on_w)[1], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(std_xmy_on_w)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 # More Complicated Models
 
@@ -284,7 +256,7 @@ and related functions are used in the same way as
 for models fitted by `lavaan::sem()`. The levels
 for the moderators are controlled by `mod_levels()`
 and related functions in the same way whether a
-model is fitted by `lavaan::sem()` or `lavaan::sem()`.
+model is fitted by `lavaan::sem()` or `lavaan::sam()`.
 Please refer to other articles (e.g.,
 `vignette("manymome")` and `vignette("mod_levels")`)
 on how to estimate effects in other model analyzed by
