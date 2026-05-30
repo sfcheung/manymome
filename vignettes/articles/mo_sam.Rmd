@@ -199,6 +199,9 @@ Otherwise, this step needs to be repeated
 every time those functions are called.
 
 
+``` r
+boot_out <- do_boot(fit)
+```
 
 Because bootstrap estimates have already
 been stored, only the output of `sam()`

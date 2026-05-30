@@ -165,7 +165,7 @@ be used in other functions in `manymome`.
 Otherwise, this step needs to be repeated
 every time those functions are called.
 
-```{r do_boot, echo=FALSE}
+```{r do_boot}
 boot_out <- do_boot(fit)
 ```
 
