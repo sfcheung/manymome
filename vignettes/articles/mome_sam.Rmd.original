@@ -29,7 +29,7 @@ from the package
 [@cheung_manymome_2024]
 to estimate the conditional
 indirect effects among latent variables
-when the model parameters are estimate by
+when the model parameters are estimated by
 the SAM (structural-after-measurement)
 method by @rosseel_structural_2025.
 
@@ -53,7 +53,7 @@ one moderator (`fw`).
 
 Suppose this is the model being fitted:
 
-```{r mome_lm_draw_model, echo = FALSE}
+```{r mome_sam_draw_model, echo = FALSE}
 library(semPlot)
 suppressMessages(library(lavaan))
 mod <-
@@ -122,47 +122,50 @@ fy ~ fm + fx
 
 The moderation effect is modelled by
 `fx:fw`. To fit this model by SAM, use
-`sam()` from `lavaan`:
+`sam()` from `lavaan`.
+
+As recommended by @rosseel_structural_2025,
+nonparametric bootstrapping will be used
+to compute the standard errors and form
+the confidence intervals.
 
 ```{r fit_sam}
 fit <- sam(
   model = mod,
-  data = data_sem_mome
+  data = data_sem_mome,
+  se = "bootstrap",
+  bootstrap.args = list(
+    R = 2000
+  ),
+  iseed = 2345,
+  parallel = "snow",
+  ncpus = 20
 )
 ```
 
-For details on the SAM approach, consult
+For details on the SAM approach, see
 @rosseel_structural_2025 and
 @rosseel_structural_2024.
 
-# Generating Bootstrap Estimates
 
-To form nonparametric bootstrap confidence interval for
-effects to be computed, `do_boot()` can be used
-to generate bootstrap estimates for all the
-parameter estimates first.
-These estimates can be reused for
-any effects to be estimated.
+# Generating Bootstrap Estimates (Optional)
+
+Although bootstrapping has already been
+conducted when calling `sam()`, it is
+recommended to call `do_boot()` to
+compute additional statistics, such as
+implied variances and covariances, to
+be used in other functions in `manymome`.
+Otherwise, this step needs to be repeated
+every time those functions are called.
 
 ```{r do_boot, echo=FALSE}
-boot_out <- do_boot(
-  fit,
-  R = 2000,
-  seed = 54321,
-  parallel = TRUE,
-  ncores = 20
-)
+boot_out <- do_boot(fit)
 ```
 
-Please see `vignette("do_boot")` or
-the help page of `do_boot()` on how
-to use this function. In real research,
-`R`, the number of bootstrap samples,
-should be set to 5000 or higher.
-The argument `ncores` can usually be omitted
-unless users want to manually control
-the number of CPU cores used in
-parallel processing.
+Because bootstrap estimates have already
+been stored, only the output of `sam()`
+is sufficient.
 
 # Conditional Indirect Effects
 
@@ -170,9 +173,9 @@ We can now use `cond_indirect_effects()` to
 estimate the indirect effects for
 different levels of the moderator (`fw`) and
 form their
-bootstrap confidence interval. By reusing
-the generated bootstrap
-estimates, there is no need to repeat the
+bootstrap confidence intervals. Information
+stored by `do_boot()` can be reused.
+There is no need to repeat the
 resampling.
 
 Suppose we want to estimate the indirect
@@ -247,19 +250,5 @@ above mean, the indirect effect is
 `r formatC(coef(std_xmy_on_w)[1], digits = 3, format = "f")`,
 with 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(std_xmy_on_w)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
-
-# More Complicated Models
-
-After the path coefficients are estimated, `cond_indirect_effects()`,
-`indirect_effect()`,
-and related functions are used in the same way as
-for models fitted by `lavaan::sem()`. The levels
-for the moderators are controlled by `mod_levels()`
-and related functions in the same way whether a
-model is fitted by `lavaan::sem()` or `lavaan::sam()`.
-Please refer to other articles (e.g.,
-`vignette("manymome")` and `vignette("mod_levels")`)
-on how to estimate effects in other model analyzed by
-multiple regression.
 
 # Reference(s)

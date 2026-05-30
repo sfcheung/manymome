@@ -23,7 +23,7 @@ from the package
 [@cheung_manymome_2024]
 to estimate the conditional
 indirect effects among latent variables
-when the model parameters are estimate by
+when the model parameters are estimated by
 the SAM (structural-after-measurement)
 method by @rosseel_structural_2025.
 
@@ -62,7 +62,7 @@ one moderator (`fw`).
 
 Suppose this is the model being fitted:
 
-![plot of chunk mome_lm_draw_model](mome_lm_draw_model-1.png)
+![plot of chunk mome_sam_draw_model](mome_sam_draw_model-1.png)
 
 The path from `fx` to `fm` is moderated
 by `fw`, the moderator.
@@ -94,43 +94,49 @@ fy ~ fm + fx
 
 The moderation effect is modelled by
 `fx:fw`. To fit this model by SAM, use
-`sam()` from `lavaan`:
+`sam()` from `lavaan`.
+
+As recommended by @rosseel_structural_2025,
+nonparametric bootstrapping will be used
+to compute the standard errors and form
+the confidence intervals.
 
 
 ``` r
 fit <- sam(
   model = mod,
-  data = data_sem_mome
+  data = data_sem_mome,
+  se = "bootstrap",
+  bootstrap.args = list(
+    R = 2000
+  ),
+  iseed = 2345,
+  parallel = "snow",
+  ncpus = 20
 )
 ```
 
-For details on the SAM approach, consult
+For details on the SAM approach, see
 @rosseel_structural_2025 and
 @rosseel_structural_2024.
 
-# Generating Bootstrap Estimates
 
-To form nonparametric bootstrap confidence interval for
-effects to be computed, `do_boot()` can be used
-to generate bootstrap estimates for all the
-parameter estimates first.
-These estimates can be reused for
-any effects to be estimated.
+# Generating Bootstrap Estimates (Optional)
+
+Although bootstrapping has already been
+conducted when calling `sam()`, it is
+recommended to call `do_boot()` to
+compute additional statistics, such as
+implied variances and covariances, to
+be used in other functions in `manymome`.
+Otherwise, this step needs to be repeated
+every time those functions are called.
 
 
-```
-#> 20 processes started to run bootstrapping.
-```
 
-Please see `vignette("do_boot")` or
-the help page of `do_boot()` on how
-to use this function. In real research,
-`R`, the number of bootstrap samples,
-should be set to 5000 or higher.
-The argument `ncores` can usually be omitted
-unless users want to manually control
-the number of CPU cores used in
-parallel processing.
+Because bootstrap estimates have already
+been stored, only the output of `sam()`
+is sufficient.
 
 # Conditional Indirect Effects
 
@@ -138,9 +144,9 @@ We can now use `cond_indirect_effects()` to
 estimate the indirect effects for
 different levels of the moderator (`fw`) and
 form their
-bootstrap confidence interval. By reusing
-the generated bootstrap
-estimates, there is no need to repeat the
+bootstrap confidence intervals. Information
+stored by `do_boot()` can be reused.
+There is no need to repeat the
 resampling.
 
 Suppose we want to estimate the indirect
@@ -170,9 +176,9 @@ out_xmy_on_w
 #>  Moderator(s) represented by: fw
 #> 
 #>      [fw]   (fw)    ind  CI.lo CI.hi Sig  fm~fx fy~fm
-#> 1 M+1.0SD  0.834  0.361  0.136 0.569 Sig  0.810 0.446
-#> 2 Mean     0.000  0.179  0.066 0.284 Sig  0.401 0.446
-#> 3 M-1.0SD -0.834 -0.003 -0.045 0.031     -0.007 0.446
+#> 1 M+1.0SD  0.834  0.361  0.141 0.568 Sig  0.810 0.446
+#> 2 Mean    -0.000  0.179  0.069 0.288 Sig  0.401 0.446
+#> 3 M-1.0SD -0.834 -0.003 -0.042 0.034     -0.007 0.446
 #> 
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
 #>    nonparametric bootstrapping with 2000 samples.
@@ -185,13 +191,13 @@ When `fw` is one standard deviation
 below mean, the indirect effect is
 -0.003,
 with 95% confidence interval
-[-0.045, 0.031].
+[-0.042, 0.034].
 
 When `fw` is one standard deviation
 above mean, the indirect effect is
 0.361,
 with 95% confidence interval
-[0.136, 0.569].
+[0.141, 0.568].
 
 Note that any conditional indirect path in the model can be
 estimated this way. There is no limit on the path
@@ -229,9 +235,9 @@ std_xmy_on_w
 #>  Moderator(s) represented by: fw
 #> 
 #>      [fw]   (fw)    std  CI.lo CI.hi Sig  fm~fx fy~fm    ind
-#> 1 M+1.0SD  0.834  0.435  0.161 0.671 Sig  0.810 0.446  0.361
-#> 2 Mean     0.000  0.215  0.079 0.335 Sig  0.401 0.446  0.179
-#> 3 M-1.0SD -0.834 -0.004 -0.054 0.037     -0.007 0.446 -0.003
+#> 1 M+1.0SD  0.834  0.435  0.170 0.680 Sig  0.810 0.446  0.361
+#> 2 Mean    -0.000  0.215  0.083 0.342 Sig  0.401 0.446  0.179
+#> 3 M-1.0SD -0.834 -0.004 -0.050 0.041     -0.007 0.446 -0.003
 #> 
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
 #>    nonparametric bootstrapping with 2000 samples.
@@ -245,26 +251,12 @@ When `fw` is one standard deviation
 below mean, the standardized indirect effect is
 -0.004,
 with 95% confidence interval
-[-0.054, 0.037].
+[-0.050, 0.041].
 
 When `fw` is one standard deviation
 above mean, the indirect effect is
 0.435,
 with 95% confidence interval
-[0.161, 0.671].
-
-# More Complicated Models
-
-After the path coefficients are estimated, `cond_indirect_effects()`,
-`indirect_effect()`,
-and related functions are used in the same way as
-for models fitted by `lavaan::sem()`. The levels
-for the moderators are controlled by `mod_levels()`
-and related functions in the same way whether a
-model is fitted by `lavaan::sem()` or `lavaan::sam()`.
-Please refer to other articles (e.g.,
-`vignette("manymome")` and `vignette("mod_levels")`)
-on how to estimate effects in other model analyzed by
-multiple regression.
+[0.170, 0.680].
 
 # Reference(s)
