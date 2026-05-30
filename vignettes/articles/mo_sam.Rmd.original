@@ -1,0 +1,282 @@
+---
+title: "Latent Variable Moderation by SAM"
+author: "Shu Fai Cheung & Sing-Hang Cheung"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig.align: "center"
+    toc: true
+    number_sections: false
+bibliography: references.bib
+csl: apa.csl
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = ""
+)
+```
+
+# Introduction
+
+This article is a brief illustration of how
+to use
+`cond_indirect_effects()`
+from the package
+[manymome](https://sfcheung.github.io/manymome/)
+[@cheung_manymome_2024]
+to estimate the conditional
+effects of a latent variable when its
+effect is moderated by another latent variable,
+given the model parameters are estimated by
+the SAM (structural-after-measurement)
+method by @rosseel_structural_2025.
+
+# Data Set and Model
+
+This is the sample data set used for
+illustration:
+
+```{r data}
+library(manymome)
+dat <- data_sem_mome
+print(head(dat), digits = 3)
+```
+
+This dataset has indicators of the following
+four latent variables:
+one predictor (`fx`),
+one mediators (`fm`),
+one outcome variable (`fy`), and
+one moderator (`fw`).
+
+Only the latent variables `fx`, `fx`,
+and `fy` will be used in this illustration.
+
+Suppose this is the model being fitted:
+
+```{r mo_sam_draw_model, echo = FALSE}
+library(semPlot)
+suppressMessages(library(lavaan))
+mod <-
+"
+wx ~ fx + fw
+fy ~ wx
+wx =~ wx1 + wx2 + wx3
+fx =~ x1 + x2 + x3
+fw =~ w1 + w2 + w3
+fy =~ y1 + y2 + y3
+"
+fit0 <- sem(mod, do.fit = FALSE, fixed.x = FALSE)
+dat <- simulateData(
+        parameterTable(fit0),
+        seed = 1234,
+        sample.nobs = 500
+      )
+# layout_m <- matrix(c("fw", NA, "fm", NA, NA,
+#                    NA, "wx", NA, NA, NA,
+#                    "fx", NA, NA, NA, "fy"), 3, 5, byrow = TRUE)
+layout_m <- matrix(c(NA, "fw",   NA,
+                     "fx", "wx", "fy"), 2, 3, byrow = TRUE)
+fit0 <- sem(mod, dat)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 10,
+              asize = 10,
+              structural = TRUE,
+              DoNotPlot = TRUE)
+p$graphAttributes$Nodes$width[c(1)] <- .01
+p$graphAttributes$Nodes$height[c(1)] <- .01
+p$graphAttributes$Edges$asize[c(1)] <- 0
+plot(p)
+```
+
+The path from `fx` to `fy` is moderated
+by `fw`, the moderator.
+
+If this model is fitted to the scale
+scores, then a product term `fx:fw` is
+used to model the moderation.
+
+If the model is for the latent variables,
+the new approach, SAM (structural-after-measurement),
+presented in @rosseel_structural_2025
+can be used, using the function `sam()`
+from `lavaan`. This is the model syntax:
+
+```{r model_sam}
+mod <- "
+# Measurement model:
+fx =~ x1 + x2 + x3 + x4
+fw =~ w1 + w2 + w3 + w4
+fy =~ y1 + y2 + y3 + y4
+
+# Structural model:
+fy ~ fx + fw + fx:fw
+"
+```
+
+The moderation effect is modelled by
+`fx:fw`. To fit this model by SAM, use
+`sam()` from `lavaan`.
+As recommended by @rosseel_structural_2025,
+nonparametric bootstrapping will be used
+to compute the standard errors and form
+the confidence intervals.
+
+```{r fit_sam}
+fit <- sam(
+  model = mod,
+  data = data_sem_mome,
+  se = "bootstrap",
+  bootstrap.args = list(
+    R = 2000
+  ),
+  iseed = 2345,
+  parallel = "snow",
+  ncpus = 20
+)
+```
+
+For details on the SAM approach, consult
+@rosseel_structural_2025 and
+@rosseel_structural_2024.
+
+This is a summary of the results:
+
+```{r sam_results}
+summary(fit,
+        ci = TRUE)
+```
+
+# Generating Bootstrap Estimates (Optional)
+
+Although bootstrapping has already been
+conducted when calling `sam()`, it is
+recommended to call `do_boot()` to
+compute additional statistics, such as
+implied variances and covariances, to
+be used in other functions in `manymome`.
+Otherwise, this step needs to be repeated
+every time those functions are called.
+
+```{r do_boot}
+boot_out <- do_boot(fit)
+```
+
+Because bootstrap estimates have already
+been stored, only the output of `sam()`
+is sufficient.
+
+# Conditional Effects
+
+We can now use `cond_effects()` to
+estimate the effect of `fx` on `fy` for
+different levels of the moderator (`fw`) and
+form their
+bootstrap confidence intervals. Information
+stored by `do_boot()` can be reused.
+There is no need to repeat the
+resampling.
+
+Suppose we want to estimate the conditional
+effects from `fx` to `fy`,
+conditional on `fw`:
+
+(Refer to `vignette("manymome")` and the help page
+of `cond_effects()` on the arguments.)
+
+```{r ind_xmy_on_w}
+out_xy_on_w <- cond_effects(
+  wlevels = "fw",
+  x = "fx",
+  y = "fy",
+  fit = fit,
+  boot_ci = TRUE,
+  boot_out = boot_out
+)
+out_xy_on_w
+```
+
+When `fw` is one standard deviation
+below mean, the indirect effect is
+`r formatC(coef(out_xy_on_w)[3], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(out_xy_on_w)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+When `fw` is one standard deviation
+above mean, the indirect effect is
+`r formatC(coef(out_xy_on_w)[1], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(out_xy_on_w)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+# Standardized Conditional Indirect effects
+
+The standardized conditional indirect
+effect from `fx` to `fy` conditional
+on `fw`
+can be estimated by setting
+`standardized_x` and `standardized_y` to `TRUE`:
+
+```{r std_xmy_on_w}
+std_xy_on_w <- cond_effects(
+  wlevels = "fw",
+  x = "fx",
+  y = "fy",
+  fit = fit,
+  boot_ci = TRUE,
+  boot_out = boot_out,
+  standardized_x = TRUE,
+  standardized_y = TRUE
+)
+std_xy_on_w
+```
+
+When `fw` is one standard deviation
+below mean, the standardized indirect effect is
+`r formatC(coef(std_xy_on_w)[3], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(std_xy_on_w)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+When `fw` is one standard deviation
+above mean, the indirect effect is
+`r formatC(coef(std_xy_on_w)[1], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(std_xy_on_w)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+# Plotting the Conditional Effects
+
+The `plot()` method can be used on
+the output of `cond_effects()`.
+
+This is the plot of the
+conditional effects:
+
+```{r plot_cond}
+plot(out_xy_on_w)
+```
+
+This is the plot of the
+standardized conditional effects:
+
+```{r plot_std}
+plot(std_xy_on_w)
+```
+
+The two plots are *expected* to be
+identical except for the values on the
+axes. It is because they differ merely
+only the units of the variables,
+one standardized and one unstandardized.
+
+Please the [help page](https://sfcheung.github.io/manymome/reference/plot.cond_indirect_effects.html)
+of the `plot()`
+method for the output of `cond_effects()`
+on how to customize the plot.
+
+# Reference(s)
