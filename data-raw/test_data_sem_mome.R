@@ -3,17 +3,17 @@
 #' A latent variable model
 # generate data
 library(lavaan)
-set.seed(246426)
+set.seed(246)
 n <- 500
 fx <- rnorm(n)
 fw <- rnorm(n)
-fm <- (.4 + .2 * fw) * fx + .25 * rnorm(n)
-fy <- .4 * fm + sqrt(1 - .4^2) * rnorm(n)
+fm <- (.4 + .4 * fw) * fx + .15 * rnorm(n)
+fy <- .6 * fm + sqrt(1 - .6^2) * rnorm(n)
 p <- 4
-x <- cbind(fx) %*% rbind(rep(.7, p)) + matrix(sqrt(1 - .7^2) * rnorm(n * p), nrow = n)
-w <- cbind(fw) %*% rbind(rep(.7, p)) + matrix(sqrt(1 - .7^2) * rnorm(n * p), nrow = n)
-m <- cbind(fm) %*% rbind(rep(.7, p)) + matrix(sqrt(1 - .7^2) * rnorm(n * p), nrow = n)
-y <- cbind(fy) %*% rbind(rep(.7, p)) + matrix(sqrt(1 - .7^2) * rnorm(n * p), nrow = n)
+x <- cbind(fx) %*% rbind(rep(.8, p)) + matrix(sqrt(1 - .8^2) * rnorm(n * p), nrow = n)
+w <- cbind(fw) %*% rbind(rep(.8, p)) + matrix(sqrt(1 - .8^2) * rnorm(n * p), nrow = n)
+m <- cbind(fm) %*% rbind(rep(.8, p)) + matrix(sqrt(1 - .8^2) * rnorm(n * p), nrow = n)
+y <- cbind(fy) %*% rbind(rep(.8, p)) + matrix(sqrt(1 - .8^2) * rnorm(n * p), nrow = n)
 colnames(x) <- paste0("x", seq_len(ncol(x)))
 colnames(w) <- paste0("w", seq_len(ncol(w)))
 colnames(m) <- paste0("m", seq_len(ncol(m)))
@@ -41,6 +41,41 @@ fit <- sam(
 summary(fit)
 lavInspect(fit, "cov.lv")
 lavInspect(fit, "mean.lv")
+
+boot_out <- do_boot(
+  fit,
+  R = 2000,
+  seed = 54321,
+  parallel = TRUE,
+  ncores = 20
+)
+mc_out <-  do_mc(
+  fit,
+  R = 1000,
+  seed = 54321,
+  parallel = TRUE,
+  ncores = 20
+)
+out_xmy_on_w_boot <- cond_indirect_effects(
+  wlevels = "fw",
+  x = "fx",
+  y = "fy",
+  m = "fm",
+  fit = fit,
+  boot_ci = TRUE,
+  boot_out = boot_out
+)
+out_xmy_on_w_boot
+out_xmy_on_w_mc <- cond_indirect_effects(
+  wlevels = "fw",
+  x = "fx",
+  y = "fy",
+  m = "fm",
+  fit = fit,
+  mc_ci = TRUE,
+  mc_out = mc_out
+)
+out_xmy_on_w_mc
 
 data_sem_mome <- dat
 usethis::use_data(data_sem_mome, overwrite=TRUE)
