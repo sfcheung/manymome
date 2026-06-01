@@ -1,6 +1,6 @@
 # Changelog
 
-## manymome 0.3.4.25
+## manymome 0.3.4.26
 
 ### New Features
 

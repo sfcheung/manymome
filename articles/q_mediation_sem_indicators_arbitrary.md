@@ -2,6 +2,10 @@
 
 ## Introduction
 
+(This document is for Version 0.3.4.25 or later, currently on GitHub
+only. The new version is scheduled to be available on CRAN in June
+2026.)
+
 This article is a brief illustration of how to use the all-in-one
 “quick” functions from
 [manymome](https://sfcheung.github.io/manymome/index.html) ([Cheung &

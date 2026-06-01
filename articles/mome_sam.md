@@ -1,5 +1,9 @@
 # Latent Variable Moderated Mediation by SAM
 
+(This document is for Version 0.3.4.25 or later, currently on GitHub
+only. The new version is scheduled to be available on CRAN in June
+2026.)
+
 ## Introduction
 
 This article is a brief illustration of how to use
