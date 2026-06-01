@@ -2,7 +2,7 @@
 title: "Arbitrary Mediation Models Corrected for Measurement Error"
 subtitle: "Using `q_mediation()`"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-05-28"
+date: "2026-06-01"
 output:
   html_document:
     fig.align: "center"
@@ -16,6 +16,10 @@ csl: apa.csl
 
 
 # Introduction
+
+(This document is for Version 0.3.4.25 or later, currently
+on GitHub only. The new version is scheduled to be available
+on CRAN in June 2026.)
 
 This article is a brief illustration of how to use
 the all-in-one "quick" functions from
