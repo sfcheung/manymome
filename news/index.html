@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.4.26</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,31 +65,21 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.4.26" id="manymome-03426">manymome 0.3.4.26<a class="anchor" aria-label="anchor" href="#manymome-03426"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.3.5" id="manymome-035">manymome 0.3.5<a class="anchor" aria-label="anchor" href="#manymome-035"></a></h2><p class="text-muted">CRAN release: 2026-06-01</p>
 <div class="section level3">
-<h3 id="new-features-0-3-4-26">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-3-4-26"></a></h3>
-<ul><li><p>Updated the <code>q_*</code> functions (<code><a href="../reference/q_mediation.html">q_mediation()</a></code>, <code><a href="../reference/q_mediation.html">q_simple_mediation()</a></code>, <code><a href="../reference/q_mediation.html">q_serial_mediation()</a></code> and <code><a href="../reference/q_mediation.html">q_parallel_mediation()</a></code>) to support fitting a model on scale scores computed using user-supplied list of indicators. If <code>indicator_method</code> is set to <code>"scale_scores"</code>. If <code>indicator_method</code> is set to <code>measurement_model</code> and the fit method is structural equation modeling, then a latent variable model with a measurement part will be fitted. (0.3.4.2, 0.3.4.3, 0.3.4.22)</p></li>
+<h3 id="new-features-0-3-5">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-3-5"></a></h3>
+<ul><li><p>Updated the <code>q_*</code> functions (<code><a href="../reference/q_mediation.html">q_mediation()</a></code>, <code><a href="../reference/q_mediation.html">q_simple_mediation()</a></code>, <code><a href="../reference/q_mediation.html">q_serial_mediation()</a></code> and <code><a href="../reference/q_mediation.html">q_parallel_mediation()</a></code>) to support fitting a model on scale scores computed using user-supplied list of indicators if <code>indicator_method</code> is set to <code>"scale_scores"</code>. If <code>indicator_method</code> is set to <code>measurement_model</code> and the fit method is structural equation modeling, then a latent variable model with a measurement part will be fitted. (0.3.4.2, 0.3.4.3, 0.3.4.22)</p></li>
 <li><p>Added preliminary support for SAM to the <code>q_*</code> functions (<code><a href="../reference/q_mediation.html">q_mediation()</a></code>, <code><a href="../reference/q_mediation.html">q_simple_mediation()</a></code>, <code><a href="../reference/q_mediation.html">q_serial_mediation()</a></code> and <code><a href="../reference/q_mediation.html">q_parallel_mediation()</a></code>). (0.3.4.9)</p></li>
 <li><p>Preliminary support for latent-variable moderation and moderated-mediation supported if a model is fitted by SAM. (0.3.4.14, 0.3.4.22, 0.3.4.23, 0.3.4.24, 0.3.4.25)</p></li>
-<li><p>Tested multigroup latent-variable mediation with SAM. (0.3.4.15)</p></li>
-<li><p>Fixed a bug in handling reverse items when <code>indicator_method</code> is <code>"measurement_model"</code>. Parameter estimates not affected. (0.3.4.19)</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="miscellaneous-0-3-4-26">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-3-4-26"></a></h3>
+<h3 id="miscellaneous-0-3-5">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-3-5"></a></h3>
 <ul><li><p>The quick functions now properly handle a data frame which has already been processed by <code><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit()</a></code> and so has the attribute <code>na.action</code> set. (0.3.4.1)</p></li>
-<li><p>Added <code>remove.step1 = FALSE</code> for calls to <code><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">lavaan::parameterEstimates()</a></code>, to adapt for output from <code><a href="https://rdrr.io/pkg/lavaan/man/sam.html" class="external-link">lavaan::sam()</a></code>. (0.3.4.4)</p></li>
 <li><p>Updated <code><a href="../reference/do_boot.html">do_boot()</a></code> to handle a fit object with empty cases (cases included but not used due to missing data on all variables in the model). (0.3.4.5)</p></li>
 <li><p>Updated <code><a href="../reference/do_boot.html">do_boot()</a></code> to support the output of <code><a href="https://rdrr.io/pkg/lavaan/man/sam.html" class="external-link">lavaan::sam()</a></code>. (0.3.4.6)</p></li>
-<li><p>Added some tests to verify functions that work on the output of <code><a href="https://rdrr.io/pkg/lavaan/man/sam.html" class="external-link">lavaan::sam()</a></code>. (0.3.4.7)</p></li>
-<li><p>Renamed the object <code>fit_null</code> to <code>fit_null_list</code> in internal functions to avoid confusing. (0.3.4.8)</p></li>
-<li><p>Fixed a message in the printout of <code><a href="../reference/q_mediation.html">q_mediation()</a></code>. (0.3.4.10)</p></li>
+<li><p>Fixed a message in the printout of <code><a href="../reference/q_mediation.html">q_mediation()</a></code>. (0.3.4.10, 0.3.4.20)</p></li>
 <li><p>Updated <code><a href="../reference/q_mediation.html">q_mediation()</a></code> to use <code><a href="https://rdrr.io/pkg/lavaan/man/standardizedSolution.html" class="external-link">lavaan::standardizedSolution()</a></code> when <code>fixed.x = FALSE</code>. (0.3.4.11)</p></li>
-<li><p>Updated <code><a href="../reference/q_mediation.html">q_mediation()</a></code> to take reverse items into account when computing reliability coefficients. This is necessary for some methods. (0.3.4.12)</p></li>
-<li><p>Updated <code><a href="../reference/do_boot.html">do_boot()</a></code> to support latent variable means. (0.3.4.13)</p></li>
-<li><p>Added a warning and a note for negative loadings. (0.3.4.16)</p></li>
-<li><p><code>roxygen2</code> updated to 8.0.0. (0.3.4.17)</p></li>
 <li><p>Added <code><a href="../reference/q_mediation.html">get_fit()</a></code> to retrieve the fit results (regression or SEM) stored in the output of <code><a href="../reference/q_mediation.html">q_mediation()</a></code> and friends. (0.3.4.18)</p></li>
-<li><p>Fixed some typos in the printout of <code><a href="../reference/q_mediation.html">q_mediation()</a></code>. (0.3.4.20)</p></li>
 </ul></div>
 </div>
     <div class="section level2">
