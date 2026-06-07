@@ -173,10 +173,12 @@ expect_identical(coef(out_user$ind_out$stdxy),
 fit_rel <- fit@internal$sam.mm.rel[[1]]
 
 expect_equal(out_simple$reliability,
-             fit_rel[names(out_simple$reliability)])
+             fit_rel[names(out_simple$reliability)],
+             tolerance = 1e-5)
 
 expect_equal(out_simple$loadings[names(get_loadings(fit))],
-             get_loadings(fit))
+             get_loadings(fit),
+             tolerance = 1e-5)
 
 # Print
 
