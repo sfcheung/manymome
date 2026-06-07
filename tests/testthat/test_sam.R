@@ -277,12 +277,16 @@ a2b2 := a2 * b2
 a3b3 := a3 * b3
 "
 
+# Suppress the harmless warning that will
+# appear in lavaan 0.7-1
+suppressWarnings(
 fit <- sam(
   model = mod,
   data = data_sem,
   se = "bootstrap",
   bootstrap.args = list(R = 2),
   iseed = 1234
+)
 )
 
 boot_out <- do_boot(
@@ -358,12 +362,16 @@ fit <- sam(
 )
 summary(fit)
 
+# Suppress the harmless warning that will
+# appear in lavaan 0.7-1
+suppressWarnings(
 fitb <- sam(
   model = mod,
   data = data_sem_miss,
   se = "bootstrap",
   bootstrap.args = list(R = 2),
   iseed = 1234
+)
 )
 vcov(fitb)[1:5, 1:5]
 summary(fitb)

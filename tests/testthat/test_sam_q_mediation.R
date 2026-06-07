@@ -226,12 +226,16 @@ c2 =~ x11 + x13 + x14
 y =~ x01 + x02 + x03
 "
 
+# Suppress the harmless warning that will
+# appear in lavaan 0.7-1
+suppressWarnings(
 fit <- sam(
   mod,
   data = data_sem,
   se = "bootstrap",
   bootstrap.args = list(R = 5),
   iseed = 1234
+)
 )
 
 suppressWarnings(
