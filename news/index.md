@@ -1,8 +1,6 @@
 # Changelog
 
-## manymome 0.3.5
-
-CRAN release: 2026-06-01
+## manymome 0.3.6
 
 ### New Features
 
