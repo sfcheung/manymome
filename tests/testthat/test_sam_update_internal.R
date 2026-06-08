@@ -219,11 +219,14 @@ sam_update_internal <- function(
   }
 
   # Options should have been set. Ignore ddd
-  out <- do.call(
+  # Suppress the harmless warning that will
+  # appear in lavaan 0.7-1
+
+  suppressWarnings(out <- do.call(
           lavaan::sam,
           c(list(model = x),
             ddd2)
-          )
+          ))
   # out <- lavaan::sam(
   #   model = x,
   #   ...

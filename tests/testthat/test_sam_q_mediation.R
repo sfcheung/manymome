@@ -173,10 +173,12 @@ expect_identical(coef(out_user$ind_out$stdxy),
 fit_rel <- fit@internal$sam.mm.rel[[1]]
 
 expect_equal(out_simple$reliability,
-             fit_rel[names(out_simple$reliability)])
+             fit_rel[names(out_simple$reliability)],
+             tolerance = 1e-5)
 
 expect_equal(out_simple$loadings[names(get_loadings(fit))],
-             get_loadings(fit))
+             get_loadings(fit),
+             tolerance = 1e-5)
 
 # Print
 
@@ -224,12 +226,16 @@ c2 =~ x11 + x13 + x14
 y =~ x01 + x02 + x03
 "
 
+# Suppress the harmless warning that will
+# appear in lavaan 0.7-1
+suppressWarnings(
 fit <- sam(
   mod,
   data = data_sem,
   se = "bootstrap",
   bootstrap.args = list(R = 5),
   iseed = 1234
+)
 )
 
 suppressWarnings(

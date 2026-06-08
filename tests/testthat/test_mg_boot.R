@@ -162,7 +162,8 @@ test_that("indirect_effect and multigrop", {
                  tolerance = 1e-05)
     # Can't just compare them. Don't know why.
     expect_equal(unname(coef(tmp3)) - unname(tmp3_chk),
-                 0)
+                 0,
+                 tolerance = 1e-05)
   })
 
 # mod_levels

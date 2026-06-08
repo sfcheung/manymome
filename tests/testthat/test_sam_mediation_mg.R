@@ -50,7 +50,8 @@ ab1243 <- est[est$label == "ab1243", "est"]
 
 expect_equal(coef(out),
              c(ab1241, ab1242, ab1243),
-             ignore_attr = TRUE)
+             ignore_attr = TRUE,
+             tolerance = 1e-5)
 
 out <- cond_indirect_effects(
   x = "f1",

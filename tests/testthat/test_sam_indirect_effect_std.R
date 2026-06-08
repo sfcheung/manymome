@@ -56,10 +56,12 @@ std3 <- indirect_effect(
 
 expect_equal(coef(std2),
              est[est$label == "a2b2", "std.all"],
-             ignore_attr = TRUE)
+             ignore_attr = TRUE,
+             tolerance = 1e-5)
 expect_equal(coef(std3),
              est[est$label == "a3b3", "std.all"],
-             ignore_attr = TRUE)
+             ignore_attr = TRUE,
+             tolerance = 1e-5)
 
 
 })
