@@ -2,6 +2,8 @@
 
 ## manymome 0.3.6
 
+CRAN release: 2026-06-08
+
 ### New Features
 
 - Updated the `q_*` functions
