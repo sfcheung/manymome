@@ -291,7 +291,7 @@ is_moderated <- function(
   out0 <- sapply(
     tmp,
     function(x) {
-      if (is.na(x)) {
+      if (identical(x, NA)) {
         return(FALSE)
       } else {
         if (!is.null(x$prod)) {
@@ -303,4 +303,31 @@ is_moderated <- function(
     }
   )
   any(out0)
+}
+
+
+#' @noRd
+get_w <- function(
+  path,
+  fit
+) {
+  # path must be a moderated path
+  tmp <- cond_indirect(
+    x = path$x,
+    y = path$y,
+    m = path$m,
+    fit = fit,
+    get_prods_only = TRUE
+  )
+  out0 <- sapply(
+    tmp,
+    function(x) {
+      if (identical(x, NA)) {
+        return(character(0))
+      } else {
+        x$w
+      }
+    }
+  )
+  unname(unique(unlist(out0)))
 }

@@ -972,22 +972,23 @@ q_mediation <- function(x,
                               exclude = unique(unlist(cov)))
   if (length(paths) > 0) {
     # Skip unforeseen cases for now
-    tmp <- rep(FALSE, length(paths))
+    # tmp <- rep(FALSE, length(paths))
     paths_moderated_idx <- tryCatch(sapply(
       paths,
       is_moderated,
       fit = lm_all
     ),
     error = function(e) tmp)
-
     paths_moderated <- paths[paths_moderated_idx]
     paths <- paths[!paths_moderated_idx]
   } else {
     paths_moderated <- list()
   }
 
-  has_moderated_path <- length(paths_moderated)
+  has_moderated_path <- (length(paths_moderated) > 0)
   has_indirect_path <- (length(paths) > 0)
+
+  # ==== Compute nonmoderated indirect paths ====
 
   if (has_indirect_path) {
 
@@ -1102,7 +1103,188 @@ q_mediation <- function(x,
 
   }
 
+  # ==== Compute moderated indirect paths ====
+
+  if (has_moderated_path) {
+
+    paths_mod_w <- lapply(
+      paths_moderated,
+      get_w,
+      fit = lm_all
+    )
+    paths_mod_x <- lapply(
+      paths_moderated,
+      function(x) x$x
+    )
+    paths_mod_m <- lapply(
+      paths_moderated,
+      function(x) x$m
+    )
+    paths_mod_y <- lapply(
+      paths_moderated,
+      function(x) x$y
+    )
+
+    if (progress) {
+      cat("- Compute unstandardized conditional indirect effect(s) ....\n")
+    }
+
+    # TODO:
+    # - Allow arguments for cond_indirect_effects
+    cond_ind_ustd <- mapply(
+      cond_indirect_effects,
+      wlevels = paths_mod_w,
+      x = paths_mod_x,
+      m = paths_mod_m,
+      y = paths_mod_y,
+      MoreArgs = list(
+        fit = lm_all,
+        R = R,
+        ci_type = ci_type,
+        boot_type = boot_type,
+        level = level,
+        seed = seed,
+        progress = progress,
+        ncores = ncores,
+        parallel = parallel,
+        ci_out = ci_out
+      ),
+      SIMPLIFY = FALSE
+    )
+
+    # ==== Store the bootstrap estimates ====
+
+    # ind_with_ci_out <- ind_ustd[[1]]
+
+    if (progress) {
+      cat("- Compute standardized-y conditional indirect effect(s) ....\n")
+    }
+
+    # TODO:
+    # - Allow arguments for cond_indirect_effects
+    cond_ind_stdy <- mapply(
+      cond_indirect_effects,
+      wlevels = paths_mod_w,
+      x = paths_mod_x,
+      m = paths_mod_m,
+      y = paths_mod_y,
+      MoreArgs = list(
+        fit = lm_all,
+        R = R,
+        ci_type = ci_type,
+        boot_type = boot_type,
+        level = level,
+        seed = seed,
+        progress = progress,
+        ncores = ncores,
+        parallel = parallel,
+        standardized_y = TRUE,
+        ci_out = ci_out
+      ),
+      SIMPLIFY = FALSE
+    )
+
+    if (progress) {
+      cat("- Compute standardized-x conditional indirect effect(s) ....\n")
+    }
+
+    # TODO:
+    # - Allow arguments for cond_indirect_effects
+    cond_ind_stdx <- mapply(
+      cond_indirect_effects,
+      wlevels = paths_mod_w,
+      x = paths_mod_x,
+      m = paths_mod_m,
+      y = paths_mod_y,
+      MoreArgs = list(
+        fit = lm_all,
+        R = R,
+        ci_type = ci_type,
+        boot_type = boot_type,
+        level = level,
+        seed = seed,
+        progress = progress,
+        ncores = ncores,
+        parallel = parallel,
+        standardized_x = TRUE,
+        ci_out = ci_out
+      ),
+      SIMPLIFY = FALSE
+    )
+
+    if (progress) {
+      cat("- Compute standardized-x-and-y conditional indirect effect(s) ....\n")
+    }
+
+    # TODO:
+    # - Allow arguments for cond_indirect_effects
+    cond_ind_std0 <- mapply(
+      cond_indirect_effects,
+      wlevels = paths_mod_w,
+      x = paths_mod_x,
+      m = paths_mod_m,
+      y = paths_mod_y,
+      MoreArgs = list(
+        fit = lm_all,
+        R = R,
+        ci_type = ci_type,
+        boot_type = boot_type,
+        level = level,
+        seed = seed,
+        progress = progress,
+        ncores = ncores,
+        parallel = parallel,
+        standardized_x = TRUE,
+        standardized_y = TRUE,
+        ci_out = ci_out
+      ),
+      SIMPLIFY = FALSE
+    )
+
+  } else {
+
+    if (progress) {
+      cat("- No moderated indirect path from ",
+          x,
+          " to ",
+          y,
+          " in the model. Skip the computation of conditional indirect effects ...\n",
+          sep = "")
+    }
+
+    cond_ind_ustd <- NULL
+    cond_ind_stdy <- NULL
+    cond_ind_stdx <- NULL
+    cond_ind_std0 <- NULL
+
+  }
+
+  # ==== Total indirect effects ====
+
+  if (has_indirect_path) {
+
+    if (progress) {
+      cat("- Compute total indirect effect(s) (only for nonmoderated paths)....\n")
+    }
+
+    ind_total_ustd <- total_indirect_effect(ind_ustd, x = x, y = y)
+    ind_total_stdx <- total_indirect_effect(ind_stdx, x = x, y = y)
+    ind_total_stdy <- total_indirect_effect(ind_stdy, x = x, y = y)
+    ind_total_std0 <- total_indirect_effect(ind_std0, x = x, y = y)
+
+  } else {
+
+    ind_total_ustd <- NULL
+    ind_total_stdx <- NULL
+    ind_total_stdy <- NULL
+    ind_total_std0 <- NULL
+
+  }
+
   # ==== Direct effects ====
+
+  # TODO:
+  # - Check whether the direct path is moderated
 
   has_direct_path <- check_path(
                         x = x,
@@ -1111,6 +1293,23 @@ q_mediation <- function(x,
                       )
 
   if (has_direct_path) {
+    direct_moderated <- is_moderated(
+      path = list(
+            x = x,
+            y = y,
+            m = NULL
+          ),
+      fit = lm_all
+    )
+  } else {
+    direct_moderated <- FALSE
+  }
+
+  if (has_direct_path &&
+      !direct_moderated) {
+
+    # ==== Compute nonmoderated direct path ====
+
     direct_path <- list(path = list(x = x,
                                     y = y,
                                     m = NULL))
@@ -1183,6 +1382,108 @@ q_mediation <- function(x,
                                       standardized_y = TRUE,
                                       standardized_x = TRUE,
                                       ci_out = ci_out)
+  } else if (has_direct_path &&
+             direct_moderated) {
+
+    # ==== Compute moderated direct path ====
+
+    direct_path <- list(path = list(x = x,
+                                    y = y,
+                                    m = NULL))
+    names(direct_path) <- paste(x, "->", y)
+
+    if (progress) {
+      cat("- Compute the moderated direct effect ....\n")
+    }
+
+    dir_mod_w <- get_w(
+      path = list(
+          x = x,
+          y = y,
+          m = NULL
+        ),
+      fit = lm_all
+    )
+
+    dir_ustd <- cond_indirect_effects(
+      wlevels = dir_mod_w,
+      x = x,
+      y = y,
+      fit = lm_all,
+      R = R,
+      ci_type = ci_type,
+      boot_type = boot_type,
+      level = level,
+      seed = seed,
+      progress = progress,
+      ncores = ncores,
+      parallel = parallel,
+      ci_out = ci_out
+    )
+
+    if (progress) {
+      cat("- Compute the standardized-y moderated direct effect ....\n")
+    }
+
+    dir_stdy <- cond_indirect_effects(
+      wlevels = dir_mod_w,
+      x = x,
+      y = y,
+      fit = lm_all,
+      R = R,
+      ci_type = ci_type,
+      boot_type = boot_type,
+      level = level,
+      seed = seed,
+      progress = progress,
+      ncores = ncores,
+      parallel = parallel,
+      standardized_y = TRUE,
+      ci_out = ci_out
+    )
+
+    if (progress) {
+      cat("- Compute the standardized-x moderated direct effect ....\n")
+    }
+
+    dir_stdx <- cond_indirect_effects(
+      wlevels = dir_mod_w,
+      x = x,
+      y = y,
+      fit = lm_all,
+      R = R,
+      ci_type = ci_type,
+      boot_type = boot_type,
+      level = level,
+      seed = seed,
+      progress = progress,
+      ncores = ncores,
+      parallel = parallel,
+      standardized_x = TRUE,
+      ci_out = ci_out
+    )
+
+    if (progress) {
+      cat("- Compute the standardized-x-and-y moderated direct effect ....\n")
+    }
+
+    dir_std0 <- cond_indirect_effects(
+      wlevels = dir_mod_w,
+      x = x,
+      y = y,
+      fit = lm_all,
+      R = R,
+      ci_type = ci_type,
+      boot_type = boot_type,
+      level = level,
+      seed = seed,
+      progress = progress,
+      ncores = ncores,
+      parallel = parallel,
+      standardized_x = TRUE,
+      ci_out = ci_out
+    )
+
   } else {
 
     if (progress) {
@@ -1198,6 +1499,7 @@ q_mediation <- function(x,
     dir_stdy <- NULL
     dir_stdx <- NULL
     dir_std0 <- NULL
+
   }
 
   # ==== Final Check ====
@@ -1228,6 +1530,11 @@ q_mediation <- function(x,
                                stdx = ind_total_stdx,
                                stdy = ind_total_stdy,
                                stdxy = ind_total_std0),
+              cond_ind_out = list(
+                             ustd = cond_ind_ustd,
+                             stdx = cond_ind_stdx,
+                             stdy = cond_ind_stdy,
+                             stdxy = cond_ind_std0),
               dir_out = list(ustd = dir_ustd,
                              stdx = dir_stdx,
                              stdy = dir_stdy,
