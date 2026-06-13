@@ -159,7 +159,8 @@ to_direct <- function(x) {
 # # Output:
 # - A named vector of lm formulas
 form_models_paths <- function(from_to,
-                              cov = NULL) {
+                              cov = NULL,
+                              moderators = NULL) {
   from_to_new <- from_to
   dvs <- names(from_to_new)
   if (!is.null(cov)) {
@@ -189,4 +190,65 @@ form_models_paths <- function(from_to,
                  SIMPLIFY = TRUE,
                  USE.NAMES = TRUE)
   out0
+}
+
+#' @noRd
+fix_moderators <- function(
+  moderators
+) {
+  path_names <- parse_paths(names(moderators))
+  tmp <- sapply(path_names, length)
+  if (any(tmp != 2)) {
+    tmp <- names(moderators)[tmp != 2]
+    stop("Moderator(s) must be specified only for component paths:",
+         tmp)
+  }
+  f <- function(
+    i,
+    moderators
+  ) {
+    m_i <- moderators[i]
+    path_name <- parse_paths(names(m_i))[[1]]
+    w_i <- moderators[[i]]
+    c(x = path_name[1],
+      y = path_name[2],
+      w = w_i,
+      xw = paste0(path_name[1], "*", w_i))
+  }
+  out0 <- lapply(
+    seq_along(moderators),
+    FUN = f,
+    moderators = moderators
+  )
+  out0
+}
+
+#' @noRd
+is_moderated <- function(
+  path,
+  fit
+) {
+  # Is a path moderated?
+  tmp <- cond_indirect(
+    x = path$x,
+    y = path$y,
+    m = path$m,
+    fit = fit,
+    get_prods_only = TRUE
+  )
+  out0 <- sapply(
+    tmp,
+    function(x) {
+      if (is.na(x)) {
+        return(FALSE)
+      } else {
+        if (!is.null(x$prod)) {
+          return(TRUE)
+        } else {
+          return(FALSE)
+        }
+      }
+    }
+  )
+  any(out0)
 }

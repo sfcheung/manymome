@@ -538,6 +538,7 @@ q_mediation <- function(x,
                         y,
                         m = NULL,
                         cov = NULL,
+                        moderators = NULL,
                         indicators = NULL,
                         data = NULL,
                         boot_ci = TRUE,
@@ -678,20 +679,24 @@ q_mediation <- function(x,
                       simple = form_models_simple(x = x,
                                                   y = y,
                                                   m = m,
-                                                  cov = cov),
+                                                  cov = cov,
+                                                  moderators = moderators),
                       serial = form_models_serial(x = x,
                                                   y = y,
                                                   m = m,
-                                                  cov = cov),
+                                                  cov = cov,
+                                                  moderators = moderators),
                       parallel = form_models_parallel(x = x,
                                                       y = y,
                                                       m = m,
-                                                      cov = cov))
+                                                      cov = cov,
+                                                      moderators = moderators))
   } else {
     model_type <- "user"
     tmp1 <- paths_to_models(model)
     lm_forms <- form_models_paths(tmp1,
-                              cov = cov)
+                              cov = cov,
+                              moderators = moderators)
   }
 
   # ==== Indicator method ====
@@ -944,7 +949,23 @@ q_mediation <- function(x,
                               x = x,
                               y = y,
                               exclude = unique(unlist(cov)))
+  if (length(paths) > 0) {
+    # Skip unforeseen cases for now
+    tmp <- rep(FALSE, length(paths))
+    paths_moderated_idx <- tryCatch(sapply(
+      paths,
+      is_moderated,
+      fit = lm_all
+    ),
+    error = function(e) tmp)
 
+    paths_moderated <- paths[paths_moderated_idx]
+    paths <- paths[!paths_moderated_idx]
+  } else {
+    paths_moderated <- list()
+  }
+
+  has_moderated_path <- length(paths_moderated)
   has_indirect_path <- (length(paths) > 0)
 
   if (has_indirect_path) {
@@ -1023,7 +1044,7 @@ q_mediation <- function(x,
   } else {
 
     if (progress) {
-      cat("- No indirect path from ",
+      cat("- No (nonmoderated) indirect path from ",
           x,
           " to ",
           y,
@@ -1569,7 +1590,8 @@ get_fit <- function(
 form_models_simple <- function(x,
                                y,
                                m,
-                               cov = NULL) {
+                               cov = NULL,
+                               moderators = NULL) {
   if ((length(x) != 1) ||
       (length(y) != 1) ||
       (length(m) != 1)) {
@@ -1582,14 +1604,42 @@ form_models_simple <- function(x,
     cov_m <- cov
     cov_y <- cov
   }
-  lm_m_form <- paste(m,
-                     "~",
-                     paste(c(x, cov_m),
-                           collapse = " + "))
-  lm_y_form <- paste(y,
-                     "~",
-                     paste(c(m, x, cov_y),
-                           collapse = " + "))
+  if (is.null(moderators)) {
+    lm_m_form <- paste(m,
+                      "~",
+                      paste(c(x, cov_m),
+                            collapse = " + "))
+    lm_y_form <- paste(y,
+                      "~",
+                      paste(c(m, x, cov_y),
+                            collapse = " + "))
+  } else {
+    tmp <- fix_moderators(moderators)
+    tmp_m <- sapply(tmp,
+                    function(x) x["y"] == m)
+    tmp_m <- unname(tmp[tmp_m])
+    tmp_y <- sapply(tmp,
+                    function(x) x["y"] == y)
+    tmp_y <- unname(tmp[tmp_y])
+    iv_m <- x
+    for (m_i in tmp_m) {
+      iv_m <- setdiff(iv_m, m_i[c("x", "w")])
+      iv_m <- union(iv_m, m_i["xw"])
+    }
+    lm_m_form <- paste(m,
+                      "~",
+                      paste(c(iv_m, cov_m),
+                            collapse = " + "))
+    iv_y <- c(m, x)
+    for (y_i in tmp_y) {
+      iv_y <- setdiff(iv_y, m_i[c("x", "w")])
+      iv_y <- union(iv_y, m_i["xw"])
+    }
+    lm_y_form <- paste(y,
+                      "~",
+                      paste(c(iv_y, cov_y),
+                            collapse = " + "))
+  }
   forms <- c(lm_m_form,
              lm_y_form)
   names(forms) <- c(m, y)
@@ -1604,7 +1654,8 @@ form_models_simple <- function(x,
 form_models_serial <- function(x,
                                y,
                                m,
-                               cov = NULL) {
+                               cov = NULL,
+                               moderators = NULL) {
   if ((length(x) != 1) ||
       (length(y) != 1)) {
     stop("The model must have exactly one 'x' and one 'y'.")
@@ -1659,7 +1710,8 @@ form_models_serial <- function(x,
 form_models_parallel <- function(x,
                                  y,
                                  m,
-                                 cov = NULL) {
+                                 cov = NULL,
+                                 moderators = NULL) {
   if ((length(x) != 1) ||
       (length(y) != 1)) {
     stop("The model must have exactly one 'x' and one 'y'.")
