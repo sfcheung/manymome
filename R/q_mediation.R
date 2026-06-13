@@ -311,6 +311,23 @@
 #' while `c2` and `c3` predicts `"dv"`.
 #' Default is `NULL`, no covariates.
 #'
+#' @param moderators A named list to
+#' specify paths that are moderated.
+#' For example, `list("x -> y" = "w1", "x -> m" = "w2")`
+#' indicates that the path `x -> y` is
+#' moderated by `"w1"` and the path
+#' `x -> m` is moderated by `"w2"`.
+#' For now, moderators is supported only
+#' if `fit_method` is `"lm"` or `"regression"`.
+#' To fit the model by `lavaan`, please
+#' specify the model manually and use
+#' other functions in `manymome`.
+#' A path can be moderated by more than
+#' one moderator (e.g., `"x -> y" = c("w1", "w2")`).
+#' If each path is moderated by exactly
+#' one moderator, a named character vector
+#' can also be used (e.g., `c("x -> y" = "w1", "x -> m" = "w2")`).
+#'
 #' @param indicators Optional. A named
 #' vector of indicator names for scales or
 #' latent variables. If an indicator
@@ -533,7 +550,6 @@ NULL
 #' "q" function for common mediation
 #' models. Not to be used directly.
 #' @export
-
 q_mediation <- function(x,
                         y,
                         m = NULL,
@@ -593,6 +609,11 @@ q_mediation <- function(x,
   }
   if (fit_method == "regression") {
     fit_method <- "lm"
+  }
+
+  if (!is.null(moderators) &&
+      (fit_method != "lm")) {
+    stop("moderators are supported only if fit_method is 'lm' for now.")
   }
 
   # ==== Set indicator_method ====
@@ -1245,6 +1266,10 @@ q_mediation <- function(x,
   return(out)
 }
 
+#' @rdname q_mediation
+#' @export
+q_moderated_mediation <- q_mediation
+
 #' @return
 #' The function [q_simple_mediation()] returns
 #' a `q_simple_mediation` class object, which
@@ -1293,6 +1318,7 @@ q_simple_mediation <- function(x,
                                y,
                                m = NULL,
                                cov = NULL,
+                               moderators = NULL,
                                indicators = NULL,
                                data = NULL,
                                boot_ci = TRUE,
@@ -1325,6 +1351,7 @@ q_simple_mediation <- function(x,
                      y = y,
                      m = m,
                      cov = cov,
+                     moderators = moderators,
                      indicators = indicators,
                      data = data,
                      boot_ci = boot_ci,
@@ -1347,6 +1374,10 @@ q_simple_mediation <- function(x,
   out$call <- match.call()
   return(out)
 }
+
+#' @rdname q_mediation
+#' @export
+q_moderated_simple_mediation <- q_simple_mediation
 
 #' @return
 #' The function [q_serial_mediation()] returns
@@ -1398,6 +1429,7 @@ q_serial_mediation <- function(x,
                                y,
                                m = NULL,
                                cov = NULL,
+                               moderators = NULL,
                                indicators = NULL,
                                data = NULL,
                                boot_ci = TRUE,
@@ -1430,6 +1462,7 @@ q_serial_mediation <- function(x,
                      y = y,
                      m = m,
                      cov = cov,
+                     moderators = moderators,
                      indicators = indicators,
                      data = data,
                      boot_ci = boot_ci,
@@ -1452,6 +1485,10 @@ q_serial_mediation <- function(x,
   out$call <- match.call()
   return(out)
 }
+
+#' @rdname q_mediation
+#' @export
+q_moderated_serial_mediation <- q_serial_mediation
 
 #' @return
 #' The function [q_parallel_mediation()] returns
@@ -1502,6 +1539,7 @@ q_parallel_mediation <- function(x,
                                  y,
                                  m = NULL,
                                  cov = NULL,
+                                 moderators = NULL,
                                  indicators = NULL,
                                  data = NULL,
                                  boot_ci = TRUE,
@@ -1534,6 +1572,7 @@ q_parallel_mediation <- function(x,
                      y = y,
                      m = m,
                      cov = cov,
+                     moderators = moderators,
                      indicators = indicators,
                      data = data,
                      boot_ci = boot_ci,
@@ -1556,6 +1595,10 @@ q_parallel_mediation <- function(x,
   out$call <- match.call()
   return(out)
 }
+
+#' @rdname q_mediation
+#' @export
+q_moderated_parallel_mediation <- q_parallel_mediation
 
 #' @describeIn q_mediation Just a helper
 #' to retrieve the fit output used in
@@ -1632,8 +1675,8 @@ form_models_simple <- function(x,
                             collapse = " + "))
     iv_y <- c(m, x)
     for (y_i in tmp_y) {
-      iv_y <- setdiff(iv_y, m_i[c("x", "w")])
-      iv_y <- union(iv_y, m_i["xw"])
+      iv_y <- setdiff(iv_y, y_i[c("x", "w")])
+      iv_y <- union(iv_y, y_i["xw"])
     }
     lm_y_form <- paste(y,
                       "~",
@@ -1679,22 +1722,73 @@ form_models_serial <- function(x,
     if (i == 1) next
     cov_m[[i]] <- c(m[seq(1, i - 1)], cov_m[[i]])
   }
-  tmpfct <- function(m,
-                     x,
-                     cov_m) {
-              paste(m,
-                     "~",
-                     paste(c(x, cov_m),
-                           collapse = " + "))
-            }
-  lm_m_form <- mapply(tmpfct,
-                      m = m,
-                      cov_m = cov_m,
-                      MoreArgs = list(x = x))
-  lm_y_form <- paste(y,
-                     "~",
-                     paste(c(m, x, cov_y),
-                           collapse = " + "))
+  if (is.null(moderators)) {
+    tmpfct <- function(m,
+                      x,
+                      cov_m) {
+                paste(m,
+                      "~",
+                      paste(c(x, cov_m),
+                            collapse = " + "))
+              }
+    lm_m_form <- mapply(tmpfct,
+                        m = m,
+                        cov_m = cov_m,
+                        MoreArgs = list(x = x))
+    lm_y_form <- paste(y,
+                      "~",
+                      paste(c(m, x, cov_y),
+                            collapse = " + "))
+  } else {
+    w_list <- fix_moderators(moderators)
+    w_m <- lapply(
+      m,
+      function(m_i, w_list) {
+        out <- sapply(
+                  w_list,
+                  function(x) x["y"] == m_i
+                )
+        unname(w_list[out])
+      },
+      w_list = w_list
+    )
+    names(w_m) <- m
+    w_y <- sapply(
+              w_list,
+              function(x) x["y"] == y
+            )
+    w_y <- unname(w_list[w_y])
+    tmpfct2 <- function(m,
+                       x,
+                       cov_m,
+                       w_m) {
+                iv_m <- x
+                for (m_i in w_m) {
+                  iv_m <- setdiff(iv_m, m_i[c("x", "w")])
+                  cov_m <- setdiff(cov_m, m_i[c("x", "w")])
+                  iv_m <- union(iv_m, m_i["xw"])
+                }
+                paste(m,
+                      "~",
+                      paste(c(iv_m, cov_m),
+                            collapse = " + "))
+              }
+    lm_m_form <- mapply(tmpfct2,
+                        m = m,
+                        cov_m = cov_m,
+                        w_m = w_m,
+                        MoreArgs = list(x = x))
+    iv_y <- c(m, x)
+    for (y_i in w_y) {
+      iv_y <- setdiff(iv_y, y_i[c("x", "w")])
+      cov_y <- setdiff(cov_y, y_i[c("x", "w")])
+      iv_y <- union(iv_y, y_i["xw"])
+    }
+    lm_y_form <- paste(y,
+                      "~",
+                      paste(c(iv_y, cov_y),
+                            collapse = " + "))
+  }
   names(lm_y_form) <- y
   forms <- c(lm_m_form,
              lm_y_form)
@@ -1730,22 +1824,73 @@ form_models_parallel <- function(x,
                     simplify = FALSE)
     cov_y <- cov
   }
-  tmpfct <- function(m,
-                     x,
-                     cov_m) {
-              paste(m,
-                    "~",
-                    paste(c(x, cov_m),
-                          collapse = " + "))
-            }
-  lm_m_form <- mapply(tmpfct,
-                      m = m,
-                      cov_m = cov_m,
-                      MoreArgs = list(x = x))
-  lm_y_form <- paste(y,
-                     "~",
-                     paste(c(m, x, cov_y),
-                           collapse = " + "))
+  if (is.null(moderators)) {
+    tmpfct <- function(m,
+                      x,
+                      cov_m) {
+                paste(m,
+                      "~",
+                      paste(c(x, cov_m),
+                            collapse = " + "))
+              }
+    lm_m_form <- mapply(tmpfct,
+                        m = m,
+                        cov_m = cov_m,
+                        MoreArgs = list(x = x))
+    lm_y_form <- paste(y,
+                      "~",
+                      paste(c(m, x, cov_y),
+                            collapse = " + "))
+  } else {
+    w_list <- fix_moderators(moderators)
+    w_m <- lapply(
+      m,
+      function(m_i, w_list) {
+        out <- sapply(
+                  w_list,
+                  function(x) x["y"] == m_i
+                )
+        unname(w_list[out])
+      },
+      w_list = w_list
+    )
+    names(w_m) <- m
+    w_y <- sapply(
+              w_list,
+              function(x) x["y"] == y
+            )
+    w_y <- unname(w_list[w_y])
+    tmpfct2 <- function(m,
+                       x,
+                       cov_m,
+                       w_m) {
+                iv_m <- x
+                for (m_i in w_m) {
+                  iv_m <- setdiff(iv_m, m_i[c("x", "w")])
+                  cov_m <- setdiff(cov_m, m_i[c("x", "w")])
+                  iv_m <- union(iv_m, m_i["xw"])
+                }
+                paste(m,
+                      "~",
+                      paste(c(iv_m, cov_m),
+                            collapse = " + "))
+              }
+    lm_m_form <- mapply(tmpfct2,
+                        m = m,
+                        cov_m = cov_m,
+                        w_m = w_m,
+                        MoreArgs = list(x = x))
+    iv_y <- c(m, x)
+    for (y_i in w_y) {
+      iv_y <- setdiff(iv_y, y_i[c("x", "w")])
+      cov_y <- setdiff(cov_y, y_i[c("x", "w")])
+      iv_y <- union(iv_y, y_i["xw"])
+    }
+    lm_y_form <- paste(y,
+                      "~",
+                      paste(c(iv_y, cov_y),
+                            collapse = " + "))
+  }
   names(lm_y_form) <- y
   forms <- c(lm_m_form,
              lm_y_form)

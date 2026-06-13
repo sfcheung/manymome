@@ -176,19 +176,54 @@ form_models_paths <- function(from_to,
       }
     }
   }
-  f0 <- function(y, x) {
-          out0 <- paste0(x,
-                         collapse = " + ")
-          out1 <- paste0(y,
-                         " ~ ",
-                         out0)
-          out1
-        }
-  out0 <- mapply(f0,
-                 y = dvs,
-                 x = from_to_new,
-                 SIMPLIFY = TRUE,
-                 USE.NAMES = TRUE)
+  if (is.null(moderators)) {
+    f0 <- function(y, x) {
+            out0 <- paste0(x,
+                          collapse = " + ")
+            out1 <- paste0(y,
+                          " ~ ",
+                          out0)
+            out1
+          }
+    out0 <- mapply(f0,
+                  y = dvs,
+                  x = from_to_new,
+                  SIMPLIFY = TRUE,
+                  USE.NAMES = TRUE)
+  } else {
+    w_list <- fix_moderators(moderators)
+    w_m <- lapply(
+      dvs,
+      function(m_i, w_list) {
+        out <- sapply(
+                  w_list,
+                  function(x) x["y"] == m_i
+                )
+        unname(w_list[out])
+      },
+      w_list = w_list
+    )
+    names(w_m) <- dvs
+    tmpfct <- function(m,
+                       x,
+                       w_m) {
+                iv_m <- x
+                for (m_i in w_m) {
+                  iv_m <- setdiff(iv_m, m_i[c("x", "w")])
+                  iv_m <- union(iv_m, m_i["xw"])
+                }
+                paste(m,
+                      "~",
+                      paste(iv_m,
+                            collapse = " + "))
+              }
+    out0 <- mapply(tmpfct,
+                    m = dvs,
+                    x = from_to_new,
+                    w_m = w_m,
+                   SIMPLIFY = TRUE,
+                   USE.NAMES = TRUE)
+  }
   out0
 }
 
@@ -196,13 +231,30 @@ form_models_paths <- function(from_to,
 fix_moderators <- function(
   moderators
 ) {
+  moderators_org <- moderators
+  # ==== One element for one product term ====
+  moderators <- unlist(moderators_org, use.names = FALSE)
+  moderators_names <- sapply(
+    seq_along(moderators_org),
+    function(x) {
+      rep(names(moderators_org)[x],
+          times = length(moderators_org[[x]]))
+    },
+    USE.NAMES = FALSE
+  )
+  moderators_names <- unlist(moderators_names)
+  names(moderators) <- moderators_names
+
   path_names <- parse_paths(names(moderators))
+
+  # ==== Check paths ====
   tmp <- sapply(path_names, length)
   if (any(tmp != 2)) {
     tmp <- names(moderators)[tmp != 2]
     stop("Moderator(s) must be specified only for component paths:",
          tmp)
   }
+  # ==== Form the output ====
   f <- function(
     i,
     moderators

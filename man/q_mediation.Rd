@@ -2,9 +2,13 @@
 % Please edit documentation in R/q_mediation.R
 \name{q_mediation}
 \alias{q_mediation}
+\alias{q_moderated_mediation}
 \alias{q_simple_mediation}
+\alias{q_moderated_simple_mediation}
 \alias{q_serial_mediation}
+\alias{q_moderated_serial_mediation}
 \alias{q_parallel_mediation}
+\alias{q_moderated_parallel_mediation}
 \alias{get_fit}
 \alias{print.q_mediation}
 \title{Mediation Models By Regression
@@ -15,6 +19,34 @@ q_mediation(
   y,
   m = NULL,
   cov = NULL,
+  moderators = NULL,
+  indicators = NULL,
+  data = NULL,
+  boot_ci = TRUE,
+  mc_ci = FALSE,
+  level = 0.95,
+  R = 100,
+  seed = NULL,
+  ci_type = NULL,
+  boot_type = c("perc", "bc"),
+  model = NULL,
+  fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = NULL,
+  missing = "fiml",
+  fixed.x = TRUE,
+  sem_args = list(),
+  na.action = NA,
+  parallel = TRUE,
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  progress = TRUE
+)
+
+q_moderated_mediation(
+  x,
+  y,
+  m = NULL,
+  cov = NULL,
+  moderators = NULL,
   indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
@@ -41,6 +73,34 @@ q_simple_mediation(
   y,
   m = NULL,
   cov = NULL,
+  moderators = NULL,
+  indicators = NULL,
+  data = NULL,
+  boot_ci = TRUE,
+  mc_ci = FALSE,
+  level = 0.95,
+  R = 100,
+  seed = NULL,
+  ci_type = NULL,
+  boot_type = c("perc", "bc"),
+  fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = ifelse(fit_method \%in\% c("lm", "regression"), "scale_scores",
+    "measurement_model"),
+  missing = "fiml",
+  fixed.x = TRUE,
+  sem_args = list(),
+  na.action = NA,
+  parallel = TRUE,
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  progress = TRUE
+)
+
+q_moderated_simple_mediation(
+  x,
+  y,
+  m = NULL,
+  cov = NULL,
+  moderators = NULL,
   indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
@@ -67,6 +127,34 @@ q_serial_mediation(
   y,
   m = NULL,
   cov = NULL,
+  moderators = NULL,
+  indicators = NULL,
+  data = NULL,
+  boot_ci = TRUE,
+  mc_ci = FALSE,
+  level = 0.95,
+  R = 100,
+  seed = NULL,
+  ci_type = NULL,
+  boot_type = c("perc", "bc"),
+  fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = ifelse(fit_method \%in\% c("lm", "regression"), "scale_scores",
+    "measurement_model"),
+  missing = "fiml",
+  fixed.x = TRUE,
+  sem_args = list(),
+  na.action = NA,
+  parallel = TRUE,
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  progress = TRUE
+)
+
+q_moderated_serial_mediation(
+  x,
+  y,
+  m = NULL,
+  cov = NULL,
+  moderators = NULL,
   indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
@@ -93,6 +181,34 @@ q_parallel_mediation(
   y,
   m = NULL,
   cov = NULL,
+  moderators = NULL,
+  indicators = NULL,
+  data = NULL,
+  boot_ci = TRUE,
+  mc_ci = FALSE,
+  level = 0.95,
+  R = 100,
+  seed = NULL,
+  ci_type = NULL,
+  boot_type = c("perc", "bc"),
+  fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = ifelse(fit_method \%in\% c("lm", "regression"), "scale_scores",
+    "measurement_model"),
+  missing = "fiml",
+  fixed.x = TRUE,
+  sem_args = list(),
+  na.action = NA,
+  parallel = TRUE,
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  progress = TRUE
+)
+
+q_moderated_parallel_mediation(
+  x,
+  y,
+  m = NULL,
+  cov = NULL,
+  moderators = NULL,
   indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
@@ -169,6 +285,23 @@ element. For example, \code{list(m1 = "c1", dv = c("c2", "c3"))}
 indicates that \code{c1} predicts \code{"m1"},
 while \code{c2} and \code{c3} predicts \code{"dv"}.
 Default is \code{NULL}, no covariates.}
+
+\item{moderators}{A named list to
+specify paths that are moderated.
+For example, \code{list("x -> y" = "w1", "x -> m" = "w2")}
+indicates that the path \code{x -> y} is
+moderated by \code{"w1"} and the path
+\code{x -> m} is moderated by \code{"w2"}.
+For now, moderators is supported only
+if \code{fit_method} is \code{"lm"} or \code{"regression"}.
+To fit the model by \code{lavaan}, please
+specify the model manually and use
+other functions in \code{manymome}.
+A path can be moderated by more than
+one moderator (e.g., \code{"x -> y" = c("w1", "w2")}).
+If each path is moderated by exactly
+one moderator, a named character vector
+can also be used (e.g., \code{c("x -> y" = "w1", "x -> m" = "w2")}).}
 
 \item{indicators}{Optional. A named
 vector of indicator names for scales or
