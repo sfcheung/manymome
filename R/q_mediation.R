@@ -2677,6 +2677,11 @@ print.q_mediation <- function(x,
     cat("===================================================\n")
     cat("|             Indirect Effect Results             |\n")
     cat("===================================================\n")
+
+    if (q_mediation_has_moderated_indirect_paths(x)) {
+      cat("\n(Only include nonmoderated indirect effects)\n")
+    }
+
   }
 
   if (!is.null(x$ind_out$ustd)) {
@@ -2756,6 +2761,11 @@ print.q_mediation <- function(x,
     cat("===================================================\n")
     cat("|          Total Indirect Effect Results          |\n")
     cat("===================================================\n")
+
+    if (q_mediation_has_moderated_indirect_paths(x)) {
+      cat("\n(Only include nonmoderated indirect effects)\n")
+    }
+
   }
 
   if (!is.null(x$ind_total$ustd) && print_total) {
@@ -2807,6 +2817,81 @@ print.q_mediation <- function(x,
           se = se,
           se_ci = se_ci,
           wrap_computation = wrap_computation,
+          ...)
+  }
+
+
+  if (!is.null(x$cond_ind_out$ustd) ||
+      !is.null(x$cond_ind_out$stdx) ||
+      !is.null(x$cond_ind_out$stdy) ||
+      !is.null(x$cond_ind_out$stdxy)) {
+    cat("\n")
+    cat("===================================================\n")
+    cat("|       Conditional Indirect Effect Result        |\n")
+    cat("===================================================\n")
+  }
+
+  if (!is.null(x$cond_ind_out$ustd)) {
+    # cat("\n")
+    # cat("===== Indirect Effect(s) =====")
+    # cat("\n")
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
+    print(x$cond_ind_out$ustd,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          for_each_path = for_each_path,
+          ...)
+  }
+
+  if (!is.null(x$cond_ind_out$stdx)) {
+    # cat("\n")
+    # cat("===== Indirect Effect(s): Predictor (", x$x, ") Standardized =====",
+    #     sep = "")
+    # cat("\n")
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
+    print(x$cond_ind_out$stdx,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          for_each_path = for_each_path,
+          ...)
+  }
+
+  if (!is.null(x$cond_ind_out$stdy)) {
+    # cat("\n")
+    # cat("===== Indirect Effect(s): Outcome (", x$y, ") Standardized =====",
+    #     sep = "")
+    # cat("\n")
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
+    print(x$cond_ind_out$stdy,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          for_each_path = for_each_path,
+          ...)
+  }
+
+  if (!is.null(x$cond_ind_out$stdxy)) {
+    # cat("\n")
+    # cat("===== Indirect Effect(s): Both Predictor (", x$x,
+    #     ") and Outcome (", x$y, ") Standardized =====",
+    #     sep = "")
+    # cat("\n")
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
+    print(x$cond_ind_out$stdxy,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          for_each_path = for_each_path,
           ...)
   }
 

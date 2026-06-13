@@ -331,3 +331,47 @@ get_w <- function(
   )
   unname(unique(unlist(out0)))
 }
+
+#' @noRd
+q_mediation_has_moderators <- function(
+  object
+) {
+  if (q_mediation_has_moderated_indirect_paths(object)) {
+    return(TRUE)
+  }
+  if (q_mediation_has_moderated_direct_paths(object)) {
+    return(TRUE)
+  }
+  FALSE
+}
+
+#' @noRd
+q_mediation_has_moderated_indirect_paths <- function(
+  object
+) {
+  chk <- sapply(
+    object$cond_ind_out,
+    is.null
+  )
+  if (any(!chk)) {
+    return(TRUE)
+  }
+  FALSE
+}
+
+#' @noRd
+q_mediation_has_moderated_direct_paths <- function(
+  object
+) {
+  chk <- sapply(
+    object$dir_out,
+    inherits,
+    what = "cond_indirect_effects"
+  )
+  if (any(chk)) {
+    return(TRUE)
+  }
+  FALSE
+}
+
+
