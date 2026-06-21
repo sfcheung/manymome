@@ -28,11 +28,14 @@ mod <-
    ab1342 := a132 * b342
    ab1343 := a133 * b343
   '
+# Harmless warnings due to lavaan 0.7-1
+suppressWarnings(
 fit <- sam(
   model = mod,
   data = data_sem_mg,
   group = "gp",
   group.label = c("gp1", "gp2", "gp3"))
+)
 
 out <- cond_indirect_effects(
   x = "f1",

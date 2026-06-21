@@ -1,3 +1,11 @@
+# manymome 0.3.6.1
+
+## Miscellaneous
+
+- Updated some tests for the forthcoming
+  `lavaan` 0.7-1.
+  (0.3.6.1)
+
 # manymome 0.3.6
 
 ## New Features
