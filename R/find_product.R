@@ -116,6 +116,11 @@ find_all_products <- function(
                           xy = out,
                           x = names(out))]
       }
+    if (is.null(fit)) {
+      out <- drop_by_nchar(out)
+    } else {
+      # Use regression model
+    }
     if (expand) {
         out <- expand2lower(out)
       }
@@ -139,8 +144,46 @@ expand2lower_i <- function(x, full_list) {
 
 expand2lower <- function(full_list) {
     out <- full_list
-    while (any(unlist(out) %in% names(full_list))) {
-        out <- sapply(out, expand2lower_i, full_list = out)
+    while (any(unique(unlist(out)) %in% names(full_list))) {
+        out <- lapply(out, expand2lower_i, full_list = out)
       }
     out
   }
+
+#' @noRd
+drop_by_nchar <- function(
+  out
+) {
+  # if:
+  #   x: xw w
+  #   xw: x w
+  # Keep the variable with the longest name
+  # Not an ideal solution, but usually work.
+  # Use the fit object whenever possible.
+  # This function should be the last resort.
+  a <- mapply(
+    function(x, y) {
+      sort(c(x, y))
+    },
+    x = names(out),
+    y = out,
+    SIMPLIFY = FALSE
+  )
+  for (i in seq_along(a)) {
+    a_i <- a[i]
+    j <- a %in% a_i
+    j[i] <- FALSE
+    if (!any(j)) next
+    b1 <- names(a)[i]
+    j1 <- which(j)[1]
+    b2 <- names(a)[j1]
+    if (nchar(b2) > nchar(b1)) {
+      a[[i]] <- NA
+    } else if (nchar(b2) < nchar(b1)) {
+      a[[j1]] <- NA
+    } else {
+      a[[j1]] <- NA
+    }
+  }
+  out[!is.na(a)]
+}
