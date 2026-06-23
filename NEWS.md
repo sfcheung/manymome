@@ -1,10 +1,13 @@
-# manymome 0.3.6.1
+# manymome 0.3.6.2
 
 ## Miscellaneous
 
 - Updated some tests for the forthcoming
   `lavaan` 0.7-1.
   (0.3.6.1)
+
+- Fixed handling a special case: `x:w:w == x`.
+  (0.3.6.2)
 
 # manymome 0.3.6
 
