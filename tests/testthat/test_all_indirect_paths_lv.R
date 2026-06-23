@@ -22,7 +22,10 @@ a1b11y1 := a1 * b11y1
 a2b2 := a2 * b2
 a2mb12 := a2m * b12
 "
+# Suppress a warning that is harmless for tests
+suppressWarnings(
 fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE, se = "none", baseline = FALSE)
+)
 est <- parameterEstimates(fit)
 
 outa1 <- all_indirect_paths(fit)

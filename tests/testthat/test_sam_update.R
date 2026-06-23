@@ -1,5 +1,8 @@
 skip_on_cran()
 
+skip_if(packageVersion("lavaan") >= "0.7.1")
+# Enable these tests after the official release of lavaan 0.7-1
+
 # The functions below are only used for
 # testing and updating gen_boot_i_lavaan()
 

@@ -79,7 +79,8 @@ find_all_products <- function(
                       data,
                       expand = TRUE,
                       skip_indicators = TRUE,
-                      fit = NULL) {
+                      fit = NULL,
+                      use_nchar = FALSE) {
     if (is.list(data) && !is.data.frame(data)) {
         ngroups <- length(data)
         data <- do.call(rbind, data)
@@ -98,6 +99,7 @@ find_all_products <- function(
         return(list())
       }
     }
+    all_y <- get_response_lavaan(fit)
     out <- sapply(colnames(data),
                   find_product, data = data,
                   USE.NAMES = TRUE,
@@ -107,6 +109,10 @@ find_all_products <- function(
     if (length(out) > 0) {
         out <- out[sapply(out, function(x) x[1] != x[2])]
       }
+    # Remove variables that appear in the lhs
+    if (length(out) > 0) {
+      out <- out[!(names(out) %in% all_y)]
+    }
     # Remove a * b == a
     if (length(out) > 0) {
         tmpfct <- function(xy, x) {
@@ -116,6 +122,9 @@ find_all_products <- function(
                           xy = out,
                           x = names(out))]
       }
+    if (use_nchar) {
+      out <- drop_by_nchar(out)
+    }
     if (expand) {
         out <- expand2lower(out)
       }
@@ -138,9 +147,60 @@ expand2lower_i <- function(x, full_list) {
 #'@noRd
 
 expand2lower <- function(full_list) {
-    out <- full_list
-    while (any(unlist(out) %in% names(full_list))) {
-        out <- sapply(out, expand2lower_i, full_list = out)
+    tmp1 <- mapply(
+      function(a, b) {
+        sort(c(a, b))
+      },
+      a = names(full_list),
+      b = full_list,
+      SIMPLIFY = FALSE
+    )
+    tmp2 <- duplicated(tmp1)
+    out2 <- full_list[tmp2]
+    full_list_tmp <- full_list[!tmp2]
+    out <- full_list_tmp
+    # Exclude duplicated from the expansion
+    while (any(unique(unlist(out)) %in% names(full_list_tmp))) {
+        out <- lapply(out, expand2lower_i, full_list = out)
       }
-    out
+    outx <- c(out, out2)
+    outx
   }
+
+#' @noRd
+drop_by_nchar <- function(
+  out
+) {
+  # if:
+  #   x: xw w
+  #   xw: x w
+  # Keep the variable with the longest name
+  # Not an ideal solution, but usually work.
+  # Use the fit object whenever possible.
+  # This function should be the last resort.
+  a <- mapply(
+    function(x, y) {
+      sort(c(x, y))
+    },
+    x = names(out),
+    y = out,
+    SIMPLIFY = FALSE
+  )
+  for (i in seq_along(a)) {
+    a_i <- a[i]
+    j <- a %in% a_i
+    j[i] <- FALSE
+    if (!any(j)) next
+    b1 <- names(a)[i]
+    j1 <- which(j)[1]
+    b2 <- names(a)[j1]
+    if (nchar(b2) > nchar(b1)) {
+      a[[i]] <- NA
+    } else if (nchar(b2) < nchar(b1)) {
+      a[[j1]] <- NA
+    } else {
+      a[[j1]] <- NA
+    }
+  }
+  out[!is.na(a)]
+}
