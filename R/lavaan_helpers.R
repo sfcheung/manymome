@@ -392,3 +392,19 @@ cond_indirect_effects_has_x_y <- function(object) {
         return(out)
       }
   }
+
+#' @noRd
+get_response_lavaan <- function(
+  fit
+) {
+  if (!inherits(fit, "lavaan") &&
+      !inherits(fit, "lavaan.mi")) {
+    return(character(0))
+  }
+  out <- lavaan::lavNames(
+    fit,
+    type = c("eqs.y", "ov.ind")
+  )
+  out <- unique(unlist(out))
+  out
+}
