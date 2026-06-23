@@ -79,7 +79,8 @@ find_all_products <- function(
                       data,
                       expand = TRUE,
                       skip_indicators = TRUE,
-                      fit = NULL) {
+                      fit = NULL,
+                      use_nchar = FALSE) {
     if (is.list(data) && !is.data.frame(data)) {
         ngroups <- length(data)
         data <- do.call(rbind, data)
@@ -98,6 +99,7 @@ find_all_products <- function(
         return(list())
       }
     }
+    all_y <- get_response_lavaan(fit)
     out <- sapply(colnames(data),
                   find_product, data = data,
                   USE.NAMES = TRUE,
@@ -107,6 +109,10 @@ find_all_products <- function(
     if (length(out) > 0) {
         out <- out[sapply(out, function(x) x[1] != x[2])]
       }
+    # Remove variables that appear in the lhs
+    if (length(out) > 0) {
+      out <- out[!(names(out) %in% all_y)]
+    }
     # Remove a * b == a
     if (length(out) > 0) {
         tmpfct <- function(xy, x) {
@@ -116,10 +122,8 @@ find_all_products <- function(
                           xy = out,
                           x = names(out))]
       }
-    if (is.null(fit)) {
+    if (use_nchar) {
       out <- drop_by_nchar(out)
-    } else {
-      # Use regression model
     }
     if (expand) {
         out <- expand2lower(out)
@@ -143,11 +147,24 @@ expand2lower_i <- function(x, full_list) {
 #'@noRd
 
 expand2lower <- function(full_list) {
-    out <- full_list
-    while (any(unique(unlist(out)) %in% names(full_list))) {
+    tmp1 <- mapply(
+      function(a, b) {
+        sort(c(a, b))
+      },
+      a = names(full_list),
+      b = full_list,
+      SIMPLIFY = FALSE
+    )
+    tmp2 <- duplicated(tmp1)
+    out2 <- full_list[tmp2]
+    full_list_tmp <- full_list[!tmp2]
+    out <- full_list_tmp
+    # Exclude duplicated from the expansion
+    while (any(unique(unlist(out)) %in% names(full_list_tmp))) {
         out <- lapply(out, expand2lower_i, full_list = out)
       }
-    out
+    outx <- c(out, out2)
+    outx
   }
 
 #' @noRd
