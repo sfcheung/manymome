@@ -1,4 +1,4 @@
-test_that("wsq == w", {
+test_that("x:w:w == x", {
 
 library(testthat)
 library(manymome)
