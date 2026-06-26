@@ -1,5 +1,4 @@
 skip_on_cran()
-skip("WIP")
 
 library(testthat)
 library(manymome)
