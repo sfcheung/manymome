@@ -818,6 +818,43 @@ a \code{print} method for
 printing all the major results.
 }
 
+\subsection{Moderated Mediation}{
+
+Support for moderated mediation
+has been added since Version 0.3.6
+for models fitted by multiple regression
+(\code{fit_method = "regression"}), and since
+Version 0.3.6.3 for models fitted
+by structural equation modeling
+(\code{fit_method = "sem"}) if a model
+has no latent variables. If a model
+has latent variables, the
+\code{indicator_method} must be \code{"sam"}
+(structural-after-measurement).
+See the description of the argument
+\code{moderators} on how to specify a
+moderated path.
+
+Only two-way interaction is supported
+for now, although a path can have
+any number of moderators. For higher-order
+interaction (e.g., moderated-moderated-mediation),
+please specify the model manually as
+usual, and then call functions such as
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}} directly.
+
+The functions \code{\link[=q_moderated_mediation]{q_moderated_mediation()}},
+\code{\link[=q_moderated_parallel_mediation]{q_moderated_parallel_mediation()}},
+\code{\link[=q_moderated_serial_mediation]{q_moderated_serial_mediation()}}, and
+\code{\link[=q_moderated_simple_mediation]{q_moderated_simple_mediation()}} are
+merely aliases to their nonmoderated
+counterparts. The functions
+\code{\link[=q_mediation]{q_mediation()}}, \code{\link[=q_parallel_mediation]{q_parallel_mediation()}},
+\code{\link[=q_serial_mediation]{q_serial_mediation()}}, and
+\code{\link[=q_simple_mediation]{q_simple_mediation()}} can also be
+used for models with moderators.
+}
+
 \subsection{Notes}{
 \subsection{Flexibility}{
 
