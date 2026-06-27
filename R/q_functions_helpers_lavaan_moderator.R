@@ -11,18 +11,19 @@ add_cov_with_w <- function(
   pt0 <- lavaan::parameterTable(fit0)
   model_cov0 <- w_cov_with_y(pt0)
   if (length(model_cov0) == 0) {
-    return(NULL)
+    return(character(0))
   }
-  requireNamespace("lavaan", quietly = TRUE)
-  model_cov1 <- semhelpinghands::auto_exo_cov(
-                  paste0(c(sem_model, model_cov0), collapse = "\n"),
-                  FUN = "sem",
-                  print = FALSE
+  model_cov1 <- auto_exo_cov(
+                  paste0(c(sem_model, model_cov0), collapse = "\n")
                 )
   out <- paste0(
     c(model_cov0,
       model_cov1),
     collapse = "\n"
+  )
+  out <- paste0(
+    "# Covariances added to ensure invariance to linear shifts\n",
+    out
   )
   out
 }
@@ -99,4 +100,70 @@ std_prods <- function(
     }
   }
   ptable
+}
+
+#' @noRd
+# Adapted from semhelpinghands
+auto_exo_cov <- function(
+  model
+) {
+  fit0 <- do.call(lavaan::sem,
+                  list(
+                    model = model,
+                    do.fit = FALSE,
+                    fixed.x = TRUE,
+                    warn = FALSE
+                  ))
+  if (lavaan::lavInspect(fit0, "ngroups") != 1) {
+    stop("Does not support a model with more than one group.")
+  }
+  isivov <- get_exo(fit0, type = "ov")
+  isivlv <- get_exo(fit0, type = "lv")
+  if (length(isivov) > 1) {
+    outov <- gen_cov(isivov)
+  } else {
+    outov <- character(0)
+  }
+  if (length(isivlv) > 1) {
+    outiv <- gen_cov(isivlv)
+  } else {
+    outiv <- character(0)
+  }
+  out <- paste0(c(outov, outiv), collapse = "\n")
+  out
+}
+
+# Get the exogenous observed variables and latent variables
+#' @noRd
+# Adapted from semhelpinghands
+get_exo <- function(fit, type = c("ov", "lv")) {
+  type <- match.arg(type)
+  ptable <- lavaan::parameterTable(fit)
+  isdv <- unique(ptable$lhs[ptable$op == "~"])
+  onrhs <- unique(ptable$rhs[ptable$op == "~"])
+  isiv <- setdiff(onrhs, isdv)
+  isiv[isiv %in% lavaan::lavNames(fit, type)]
+}
+
+# Generate covariances
+#' @noRd
+# Adapted from semhelpinghands
+gen_cov <- function(vars) {
+  p <- length(vars)
+  out <- character(0)
+  for (i in seq_len(p)) {
+    if (i < p) {
+      out <- c(
+          out,
+          paste0(vars[i], " ~~ ", vars[-seq_len(i)])
+        )
+      # out <- paste0(out,
+      #               vars[i],
+      #               " ~~ ",
+      #               paste0(vars[-seq_len(i)],
+      #                     collapse = " + "),
+      #               "\n")
+    }
+  }
+  out
 }
