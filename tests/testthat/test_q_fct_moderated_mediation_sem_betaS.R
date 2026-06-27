@@ -30,7 +30,6 @@ out1 <- q_simple_mediation(
 
 # ==== Check betaS ====
 
-names(out1)
 fit <- out1$lm_out
 est <- parameterEstimates(fit)
 fit_sd <- sqrt(diag(lavInspect(fit, "implied")$cov))
@@ -78,7 +77,6 @@ out2 <- q_simple_mediation(
   progress = !is_testing())
 )
 
-names(out2)
 lm_summary <- summary(out2$lm_out, betaselect = TRUE)
 
 expect_equal(
@@ -90,6 +88,11 @@ expect_equal(
   out1$lm_out_lav$y$coefs["m:w2", "std.prod"],
   lm_summary$y$coefficients["m:w2", "betaS"],
   tolerance = 1e-2
+)
+
+expect_output(
+  print(out1),
+  "product terms formed after"
 )
 
 })

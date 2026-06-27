@@ -3138,12 +3138,20 @@ print_lavaan_as_lm <- function(
     if (lm_beta) {
       term_types <- lm_out_lav[[i]]$term_types
       vars_std <- c(dvs[i], names(term_types)[term_types == "numeric"])
-      tmp <- strwrap(paste0("- BetaS are standardized coefficients with (a) ",
-                            "only numeric variables standardized and (b) ",
-                            "product terms formed after standardization. ",
-                            "Variable(s) standardized is/are: ",
-                            paste0(vars_std, collapse = ", ")),
-                      exdent = 2)
+      if (isTRUE("product" %in% term_types)) {
+        tmp <- strwrap(paste0("- BetaS are standardized coefficients with (a) ",
+                              "only numeric variables standardized and (b) ",
+                              "product terms formed after standardization. ",
+                              "Variable(s) standardized is/are: ",
+                              paste0(vars_std, collapse = ", ")),
+                        exdent = 2)
+      } else {
+        tmp <- strwrap(paste0("- BetaS are standardized coefficients with ",
+                              "only numeric variables standardized. ",
+                              "Variable(s) standardized is/are: ",
+                              paste0(vars_std, collapse = ", ")),
+                        exdent = 2)
+      }
       cat(tmp,
           sep = "\n")
     }
