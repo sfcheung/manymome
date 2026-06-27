@@ -253,10 +253,10 @@
 #' ## Moderated Mediation
 #'
 #' Support for moderated mediation
-#' has been added since Version 0.3.6
+#' has been added since Version 0.3.6.3
 #' for models fitted by multiple regression
-#' (`fit_method = "regression"`), and since
-#' Version 0.3.6.3 for models fitted
+#' (`fit_method = "regression"`), and
+#' for models fitted
 #' by structural equation modeling
 #' (`fit_method = "sem"`) if a model
 #' has no latent variables. If a model
