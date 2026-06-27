@@ -3130,11 +3130,13 @@ print_lavaan_as_lm <- function(
     # ==== LRT for R-squared =====
 
     rsq_lrt <- lm_out_lav[[i]]$fit_null_lrt
-    tmp <- utils::capture.output(print(rsq_lrt))
-    j <- grepl("Chi-Squared", tmp, fixed = TRUE)
-    tmp[j] <- paste(tmp[j], "for the R-square")
-    cat(tmp,
-        sep = "\n")
+    if (!is.null(rsq_lrt)) {
+      tmp <- utils::capture.output(print(rsq_lrt))
+      j <- grepl("Chi-Squared", tmp, fixed = TRUE)
+      tmp[j] <- paste(tmp[j], "for the R-square")
+      cat(tmp,
+          sep = "\n")
+    }
 
     # ==== Notes =====
 
