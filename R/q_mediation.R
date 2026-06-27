@@ -611,11 +611,6 @@ q_mediation <- function(x,
     fit_method <- "lm"
   }
 
-  # if (!is.null(moderators) &&
-  #     (fit_method != "lm")) {
-  #   stop("moderators are supported only if fit_method is 'lm' for now.")
-  # }
-
   # ==== Set indicator_method ====
 
   if (!is.null(indicator_method)) {
@@ -651,6 +646,13 @@ q_mediation <- function(x,
                     data = data)
   } else {
     has_indicators <- FALSE
+  }
+
+  if (!is.null(moderators) &&
+      (fit_method == "lavaan") &&
+      (indicator_method == "measurement_model") &&
+      has_indicators) {
+    stop("moderators are not supported if indicator_method is 'measurement_model'.")
   }
 
   # ==== Compute scale scores ====
