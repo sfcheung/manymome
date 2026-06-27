@@ -84,6 +84,12 @@ std_prods <- function(
     "implied"
   )$cov
   sd_all <- sqrt(diag(sd_all))
+  sd_all_lv <- lavaan::lavInspect(
+    fit,
+    "cov.lv"
+  )
+  sd_all_lv <- sqrt(diag(sd_all_lv))
+  sd_all <- c(sd_all, sd_all_lv)
   for (i in seq_along(xw)) {
     xw_name <- names(xw)[i]
     xw_i <- xw[[i]]
