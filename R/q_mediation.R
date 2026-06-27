@@ -1305,9 +1305,6 @@ q_mediation <- function(x,
 
   # ==== Direct effects ====
 
-  # TODO:
-  # - Check whether the direct path is moderated
-
   has_direct_path <- check_path(
                         x = x,
                         y = y,
