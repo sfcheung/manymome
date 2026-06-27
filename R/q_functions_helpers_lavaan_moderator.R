@@ -22,7 +22,7 @@ add_cov_with_w <- function(
     collapse = "\n"
   )
   out <- paste0(
-    "# Covariances added to ensure invariance to linear shifts\n",
+    "\n# Covariances added to ensure invariance to linear shifts\n",
     out
   )
   out
