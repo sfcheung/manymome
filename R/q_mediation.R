@@ -611,10 +611,10 @@ q_mediation <- function(x,
     fit_method <- "lm"
   }
 
-  if (!is.null(moderators) &&
-      (fit_method != "lm")) {
-    stop("moderators are supported only if fit_method is 'lm' for now.")
-  }
+  # if (!is.null(moderators) &&
+  #     (fit_method != "lm")) {
+  #   stop("moderators are supported only if fit_method is 'lm' for now.")
+  # }
 
   # ==== Set indicator_method ====
 
@@ -796,6 +796,26 @@ q_mediation <- function(x,
                           lm_measurement,
                           collapse = "\n")
     }
+
+    # ==== Add covariances if moderator && lavaan ====
+
+    if ((fit_method == "lavaan") &&
+        !is.null(moderators)) {
+      sem_model_cov <- add_cov_with_w(
+          sem_model,
+          meanstructure = TRUE,
+          warn = FALSE,
+          fixed.x = fixed.x,
+          missing = missing
+        )
+    } else {
+      sem_model_cov <- character(0)
+    }
+    sem_model <- paste0(
+      c(sem_model,
+        sem_model_cov),
+      collapse = "\n"
+    )
 
     if (indicator_method %in% c("measurement_model", "scale_scores")) {
       sem_args1 <- utils::modifyList(
