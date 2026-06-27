@@ -250,6 +250,42 @@
 #' a `print` method for
 #' printing all the major results.
 #'
+#' ## Moderated Mediation
+#'
+#' Support for moderated mediation
+#' has been added since Version 0.3.6.3
+#' for models fitted by multiple regression
+#' (`fit_method = "regression"`), and
+#' for models fitted
+#' by structural equation modeling
+#' (`fit_method = "sem"`) if a model
+#' has no latent variables. If a model
+#' has latent variables, the
+#' `indicator_method` must be `"sam"`
+#' (structural-after-measurement).
+#' See the description of the argument
+#' `moderators` on how to specify a
+#' moderated path.
+#'
+#' Only two-way interaction is supported
+#' for now, although a path can have
+#' any number of moderators. For higher-order
+#' interaction (e.g., moderated-moderated-mediation),
+#' please specify the model manually as
+#' usual, and then call functions such as
+#' [cond_indirect_effects()] directly.
+#'
+#' The functions [q_moderated_mediation()],
+#' [q_moderated_parallel_mediation()],
+#' [q_moderated_serial_mediation()], and
+#' [q_moderated_simple_mediation()] are
+#' merely aliases to their nonmoderated
+#' counterparts. The functions
+#' [q_mediation()], [q_parallel_mediation()],
+#' [q_serial_mediation()], and
+#' [q_simple_mediation()] can also be
+#' used for models with moderators.
+#'
 #' ## Notes
 #'
 #' ### Flexibility
@@ -310,6 +346,23 @@
 #' indicates that `c1` predicts `"m1"`,
 #' while `c2` and `c3` predicts `"dv"`.
 #' Default is `NULL`, no covariates.
+#'
+#' @param moderators A named list to
+#' specify paths that are moderated.
+#' For example, `list("x -> y" = "w1", "x -> m" = "w2")`
+#' indicates that the path `x -> y` is
+#' moderated by `"w1"` and the path
+#' `x -> m` is moderated by `"w2"`.
+#' For now, moderators is supported only
+#' if `fit_method` is `"lm"` or `"regression"`.
+#' To fit the model by `lavaan`, please
+#' specify the model manually and use
+#' other functions in `manymome`.
+#' A path can be moderated by more than
+#' one moderator (e.g., `"x -> y" = c("w1", "w2")`).
+#' If each path is moderated by exactly
+#' one moderator, a named character vector
+#' can also be used (e.g., `c("x -> y" = "w1", "x -> m" = "w2")`).
 #'
 #' @param indicators Optional. A named
 #' vector of indicator names for scales or
@@ -533,11 +586,11 @@ NULL
 #' "q" function for common mediation
 #' models. Not to be used directly.
 #' @export
-
 q_mediation <- function(x,
                         y,
                         m = NULL,
                         cov = NULL,
+                        moderators = NULL,
                         indicators = NULL,
                         data = NULL,
                         boot_ci = TRUE,
@@ -631,6 +684,13 @@ q_mediation <- function(x,
     has_indicators <- FALSE
   }
 
+  if (!is.null(moderators) &&
+      (fit_method == "lavaan") &&
+      (indicator_method == "measurement_model") &&
+      has_indicators) {
+    stop("moderators are not supported if indicator_method is 'measurement_model'.")
+  }
+
   # ==== Compute scale scores ====
 
   if (has_indicators) {
@@ -678,20 +738,24 @@ q_mediation <- function(x,
                       simple = form_models_simple(x = x,
                                                   y = y,
                                                   m = m,
-                                                  cov = cov),
+                                                  cov = cov,
+                                                  moderators = moderators),
                       serial = form_models_serial(x = x,
                                                   y = y,
                                                   m = m,
-                                                  cov = cov),
+                                                  cov = cov,
+                                                  moderators = moderators),
                       parallel = form_models_parallel(x = x,
                                                       y = y,
                                                       m = m,
-                                                      cov = cov))
+                                                      cov = cov,
+                                                      moderators = moderators))
   } else {
     model_type <- "user"
     tmp1 <- paths_to_models(model)
     lm_forms <- form_models_paths(tmp1,
-                              cov = cov)
+                              cov = cov,
+                              moderators = moderators)
   }
 
   # ==== Indicator method ====
@@ -770,6 +834,26 @@ q_mediation <- function(x,
                           lm_measurement,
                           collapse = "\n")
     }
+
+    # ==== Add covariances if moderator && lavaan ====
+
+    if ((fit_method == "lavaan") &&
+        !is.null(moderators)) {
+      sem_model_cov <- add_cov_with_w(
+          sem_model,
+          meanstructure = TRUE,
+          warn = FALSE,
+          fixed.x = fixed.x,
+          missing = missing
+        )
+    } else {
+      sem_model_cov <- character(0)
+    }
+    sem_model <- paste0(
+      c(sem_model,
+        sem_model_cov),
+      collapse = "\n"
+    )
 
     if (indicator_method %in% c("measurement_model", "scale_scores")) {
       sem_args1 <- utils::modifyList(
@@ -944,8 +1028,25 @@ q_mediation <- function(x,
                               x = x,
                               y = y,
                               exclude = unique(unlist(cov)))
+  if (length(paths) > 0) {
+    # Skip unforeseen cases for now
+    # tmp <- rep(FALSE, length(paths))
+    paths_moderated_idx <- tryCatch(sapply(
+      paths,
+      is_moderated,
+      fit = lm_all
+    ),
+    error = function(e) tmp)
+    paths_moderated <- paths[paths_moderated_idx]
+    paths <- paths[!paths_moderated_idx]
+  } else {
+    paths_moderated <- list()
+  }
 
+  has_moderated_path <- (length(paths_moderated) > 0)
   has_indirect_path <- (length(paths) > 0)
+
+  # ==== Compute nonmoderated indirect paths ====
 
   if (has_indirect_path) {
 
@@ -1023,7 +1124,7 @@ q_mediation <- function(x,
   } else {
 
     if (progress) {
-      cat("- No indirect path from ",
+      cat("- No (nonmoderated) indirect path from ",
           x,
           " to ",
           y,
@@ -1060,6 +1161,184 @@ q_mediation <- function(x,
 
   }
 
+  # ==== Compute moderated indirect paths ====
+
+  if (has_moderated_path) {
+
+    paths_mod_w <- lapply(
+      paths_moderated,
+      get_w,
+      fit = lm_all
+    )
+    paths_mod_x <- lapply(
+      paths_moderated,
+      function(x) x$x
+    )
+    paths_mod_m <- lapply(
+      paths_moderated,
+      function(x) x$m
+    )
+    paths_mod_y <- lapply(
+      paths_moderated,
+      function(x) x$y
+    )
+
+    if (progress) {
+      cat("- Compute unstandardized conditional indirect effect(s) ....\n")
+    }
+
+    # TODO:
+    # - Allow arguments for cond_indirect_effects
+    cond_ind_ustd <- mapply(
+      cond_indirect_effects,
+      wlevels = paths_mod_w,
+      x = paths_mod_x,
+      m = paths_mod_m,
+      y = paths_mod_y,
+      MoreArgs = list(
+        fit = lm_all,
+        R = R,
+        ci_type = ci_type,
+        boot_type = boot_type,
+        level = level,
+        seed = seed,
+        progress = progress,
+        ncores = ncores,
+        parallel = parallel,
+        ci_out = ci_out
+      ),
+      SIMPLIFY = FALSE
+    )
+
+    # ==== Store the bootstrap estimates ====
+
+    # ind_with_ci_out <- ind_ustd[[1]]
+
+    if (progress) {
+      cat("- Compute standardized-y conditional indirect effect(s) ....\n")
+    }
+
+    # TODO:
+    # - Allow arguments for cond_indirect_effects
+    cond_ind_stdy <- mapply(
+      cond_indirect_effects,
+      wlevels = paths_mod_w,
+      x = paths_mod_x,
+      m = paths_mod_m,
+      y = paths_mod_y,
+      MoreArgs = list(
+        fit = lm_all,
+        R = R,
+        ci_type = ci_type,
+        boot_type = boot_type,
+        level = level,
+        seed = seed,
+        progress = progress,
+        ncores = ncores,
+        parallel = parallel,
+        standardized_y = TRUE,
+        ci_out = ci_out
+      ),
+      SIMPLIFY = FALSE
+    )
+
+    if (progress) {
+      cat("- Compute standardized-x conditional indirect effect(s) ....\n")
+    }
+
+    # TODO:
+    # - Allow arguments for cond_indirect_effects
+    cond_ind_stdx <- mapply(
+      cond_indirect_effects,
+      wlevels = paths_mod_w,
+      x = paths_mod_x,
+      m = paths_mod_m,
+      y = paths_mod_y,
+      MoreArgs = list(
+        fit = lm_all,
+        R = R,
+        ci_type = ci_type,
+        boot_type = boot_type,
+        level = level,
+        seed = seed,
+        progress = progress,
+        ncores = ncores,
+        parallel = parallel,
+        standardized_x = TRUE,
+        ci_out = ci_out
+      ),
+      SIMPLIFY = FALSE
+    )
+
+    if (progress) {
+      cat("- Compute standardized-x-and-y conditional indirect effect(s) ....\n")
+    }
+
+    # TODO:
+    # - Allow arguments for cond_indirect_effects
+    cond_ind_std0 <- mapply(
+      cond_indirect_effects,
+      wlevels = paths_mod_w,
+      x = paths_mod_x,
+      m = paths_mod_m,
+      y = paths_mod_y,
+      MoreArgs = list(
+        fit = lm_all,
+        R = R,
+        ci_type = ci_type,
+        boot_type = boot_type,
+        level = level,
+        seed = seed,
+        progress = progress,
+        ncores = ncores,
+        parallel = parallel,
+        standardized_x = TRUE,
+        standardized_y = TRUE,
+        ci_out = ci_out
+      ),
+      SIMPLIFY = FALSE
+    )
+
+  } else {
+
+    if (progress) {
+      cat("- No moderated indirect path from ",
+          x,
+          " to ",
+          y,
+          " in the model. Skip the computation of conditional indirect effects ...\n",
+          sep = "")
+    }
+
+    cond_ind_ustd <- NULL
+    cond_ind_stdy <- NULL
+    cond_ind_stdx <- NULL
+    cond_ind_std0 <- NULL
+
+  }
+
+  # ==== Total indirect effects ====
+
+  if (has_indirect_path) {
+
+    if (progress) {
+      cat("- Compute total indirect effect(s) (only for nonmoderated paths)....\n")
+    }
+
+    ind_total_ustd <- total_indirect_effect(ind_ustd, x = x, y = y)
+    ind_total_stdx <- total_indirect_effect(ind_stdx, x = x, y = y)
+    ind_total_stdy <- total_indirect_effect(ind_stdy, x = x, y = y)
+    ind_total_std0 <- total_indirect_effect(ind_std0, x = x, y = y)
+
+  } else {
+
+    ind_total_ustd <- NULL
+    ind_total_stdx <- NULL
+    ind_total_stdy <- NULL
+    ind_total_std0 <- NULL
+
+  }
+
   # ==== Direct effects ====
 
   has_direct_path <- check_path(
@@ -1069,6 +1348,23 @@ q_mediation <- function(x,
                       )
 
   if (has_direct_path) {
+    direct_moderated <- is_moderated(
+      path = list(
+            x = x,
+            y = y,
+            m = NULL
+          ),
+      fit = lm_all
+    )
+  } else {
+    direct_moderated <- FALSE
+  }
+
+  if (has_direct_path &&
+      !direct_moderated) {
+
+    # ==== Compute nonmoderated direct path ====
+
     direct_path <- list(path = list(x = x,
                                     y = y,
                                     m = NULL))
@@ -1141,6 +1437,108 @@ q_mediation <- function(x,
                                       standardized_y = TRUE,
                                       standardized_x = TRUE,
                                       ci_out = ci_out)
+  } else if (has_direct_path &&
+             direct_moderated) {
+
+    # ==== Compute moderated direct path ====
+
+    direct_path <- list(path = list(x = x,
+                                    y = y,
+                                    m = NULL))
+    names(direct_path) <- paste(x, "->", y)
+
+    if (progress) {
+      cat("- Compute the moderated direct effect ....\n")
+    }
+
+    dir_mod_w <- get_w(
+      path = list(
+          x = x,
+          y = y,
+          m = NULL
+        ),
+      fit = lm_all
+    )
+
+    dir_ustd <- cond_indirect_effects(
+      wlevels = dir_mod_w,
+      x = x,
+      y = y,
+      fit = lm_all,
+      R = R,
+      ci_type = ci_type,
+      boot_type = boot_type,
+      level = level,
+      seed = seed,
+      progress = progress,
+      ncores = ncores,
+      parallel = parallel,
+      ci_out = ci_out
+    )
+
+    if (progress) {
+      cat("- Compute the standardized-y moderated direct effect ....\n")
+    }
+
+    dir_stdy <- cond_indirect_effects(
+      wlevels = dir_mod_w,
+      x = x,
+      y = y,
+      fit = lm_all,
+      R = R,
+      ci_type = ci_type,
+      boot_type = boot_type,
+      level = level,
+      seed = seed,
+      progress = progress,
+      ncores = ncores,
+      parallel = parallel,
+      standardized_y = TRUE,
+      ci_out = ci_out
+    )
+
+    if (progress) {
+      cat("- Compute the standardized-x moderated direct effect ....\n")
+    }
+
+    dir_stdx <- cond_indirect_effects(
+      wlevels = dir_mod_w,
+      x = x,
+      y = y,
+      fit = lm_all,
+      R = R,
+      ci_type = ci_type,
+      boot_type = boot_type,
+      level = level,
+      seed = seed,
+      progress = progress,
+      ncores = ncores,
+      parallel = parallel,
+      standardized_x = TRUE,
+      ci_out = ci_out
+    )
+
+    if (progress) {
+      cat("- Compute the standardized-x-and-y moderated direct effect ....\n")
+    }
+
+    dir_std0 <- cond_indirect_effects(
+      wlevels = dir_mod_w,
+      x = x,
+      y = y,
+      fit = lm_all,
+      R = R,
+      ci_type = ci_type,
+      boot_type = boot_type,
+      level = level,
+      seed = seed,
+      progress = progress,
+      ncores = ncores,
+      parallel = parallel,
+      standardized_x = TRUE,
+      ci_out = ci_out
+    )
+
   } else {
 
     if (progress) {
@@ -1156,6 +1554,7 @@ q_mediation <- function(x,
     dir_stdy <- NULL
     dir_stdx <- NULL
     dir_std0 <- NULL
+
   }
 
   # ==== Final Check ====
@@ -1186,6 +1585,11 @@ q_mediation <- function(x,
                                stdx = ind_total_stdx,
                                stdy = ind_total_stdy,
                                stdxy = ind_total_std0),
+              cond_ind_out = list(
+                             ustd = cond_ind_ustd,
+                             stdx = cond_ind_stdx,
+                             stdy = cond_ind_stdy,
+                             stdxy = cond_ind_std0),
               dir_out = list(ustd = dir_ustd,
                              stdx = dir_stdx,
                              stdy = dir_stdy,
@@ -1223,6 +1627,10 @@ q_mediation <- function(x,
                   class(out))
   return(out)
 }
+
+#' @rdname q_mediation
+#' @export
+q_moderated_mediation <- q_mediation
 
 #' @return
 #' The function [q_simple_mediation()] returns
@@ -1272,6 +1680,7 @@ q_simple_mediation <- function(x,
                                y,
                                m = NULL,
                                cov = NULL,
+                               moderators = NULL,
                                indicators = NULL,
                                data = NULL,
                                boot_ci = TRUE,
@@ -1304,6 +1713,7 @@ q_simple_mediation <- function(x,
                      y = y,
                      m = m,
                      cov = cov,
+                     moderators = moderators,
                      indicators = indicators,
                      data = data,
                      boot_ci = boot_ci,
@@ -1326,6 +1736,10 @@ q_simple_mediation <- function(x,
   out$call <- match.call()
   return(out)
 }
+
+#' @rdname q_mediation
+#' @export
+q_moderated_simple_mediation <- q_simple_mediation
 
 #' @return
 #' The function [q_serial_mediation()] returns
@@ -1377,6 +1791,7 @@ q_serial_mediation <- function(x,
                                y,
                                m = NULL,
                                cov = NULL,
+                               moderators = NULL,
                                indicators = NULL,
                                data = NULL,
                                boot_ci = TRUE,
@@ -1409,6 +1824,7 @@ q_serial_mediation <- function(x,
                      y = y,
                      m = m,
                      cov = cov,
+                     moderators = moderators,
                      indicators = indicators,
                      data = data,
                      boot_ci = boot_ci,
@@ -1431,6 +1847,10 @@ q_serial_mediation <- function(x,
   out$call <- match.call()
   return(out)
 }
+
+#' @rdname q_mediation
+#' @export
+q_moderated_serial_mediation <- q_serial_mediation
 
 #' @return
 #' The function [q_parallel_mediation()] returns
@@ -1481,6 +1901,7 @@ q_parallel_mediation <- function(x,
                                  y,
                                  m = NULL,
                                  cov = NULL,
+                                 moderators = NULL,
                                  indicators = NULL,
                                  data = NULL,
                                  boot_ci = TRUE,
@@ -1513,6 +1934,7 @@ q_parallel_mediation <- function(x,
                      y = y,
                      m = m,
                      cov = cov,
+                     moderators = moderators,
                      indicators = indicators,
                      data = data,
                      boot_ci = boot_ci,
@@ -1535,6 +1957,10 @@ q_parallel_mediation <- function(x,
   out$call <- match.call()
   return(out)
 }
+
+#' @rdname q_mediation
+#' @export
+q_moderated_parallel_mediation <- q_parallel_mediation
 
 #' @describeIn q_mediation Just a helper
 #' to retrieve the fit output used in
@@ -1569,7 +1995,8 @@ get_fit <- function(
 form_models_simple <- function(x,
                                y,
                                m,
-                               cov = NULL) {
+                               cov = NULL,
+                               moderators = NULL) {
   if ((length(x) != 1) ||
       (length(y) != 1) ||
       (length(m) != 1)) {
@@ -1582,14 +2009,42 @@ form_models_simple <- function(x,
     cov_m <- cov
     cov_y <- cov
   }
-  lm_m_form <- paste(m,
-                     "~",
-                     paste(c(x, cov_m),
-                           collapse = " + "))
-  lm_y_form <- paste(y,
-                     "~",
-                     paste(c(m, x, cov_y),
-                           collapse = " + "))
+  if (is.null(moderators)) {
+    lm_m_form <- paste(m,
+                      "~",
+                      paste(c(x, cov_m),
+                            collapse = " + "))
+    lm_y_form <- paste(y,
+                      "~",
+                      paste(c(m, x, cov_y),
+                            collapse = " + "))
+  } else {
+    tmp <- fix_moderators(moderators)
+    tmp_m <- sapply(tmp,
+                    function(x) x["y"] == m)
+    tmp_m <- unname(tmp[tmp_m])
+    tmp_y <- sapply(tmp,
+                    function(x) x["y"] == y)
+    tmp_y <- unname(tmp[tmp_y])
+    iv_m <- x
+    for (m_i in tmp_m) {
+      iv_m <- setdiff(iv_m, m_i[c("x", "w")])
+      iv_m <- union(iv_m, m_i["xw"])
+    }
+    lm_m_form <- paste(m,
+                      "~",
+                      paste(c(iv_m, cov_m),
+                            collapse = " + "))
+    iv_y <- c(m, x)
+    for (y_i in tmp_y) {
+      iv_y <- setdiff(iv_y, y_i[c("x", "w")])
+      iv_y <- union(iv_y, y_i["xw"])
+    }
+    lm_y_form <- paste(y,
+                      "~",
+                      paste(c(iv_y, cov_y),
+                            collapse = " + "))
+  }
   forms <- c(lm_m_form,
              lm_y_form)
   names(forms) <- c(m, y)
@@ -1604,7 +2059,8 @@ form_models_simple <- function(x,
 form_models_serial <- function(x,
                                y,
                                m,
-                               cov = NULL) {
+                               cov = NULL,
+                               moderators = NULL) {
   if ((length(x) != 1) ||
       (length(y) != 1)) {
     stop("The model must have exactly one 'x' and one 'y'.")
@@ -1628,22 +2084,73 @@ form_models_serial <- function(x,
     if (i == 1) next
     cov_m[[i]] <- c(m[seq(1, i - 1)], cov_m[[i]])
   }
-  tmpfct <- function(m,
-                     x,
-                     cov_m) {
-              paste(m,
-                     "~",
-                     paste(c(x, cov_m),
-                           collapse = " + "))
-            }
-  lm_m_form <- mapply(tmpfct,
-                      m = m,
-                      cov_m = cov_m,
-                      MoreArgs = list(x = x))
-  lm_y_form <- paste(y,
-                     "~",
-                     paste(c(m, x, cov_y),
-                           collapse = " + "))
+  if (is.null(moderators)) {
+    tmpfct <- function(m,
+                      x,
+                      cov_m) {
+                paste(m,
+                      "~",
+                      paste(c(x, cov_m),
+                            collapse = " + "))
+              }
+    lm_m_form <- mapply(tmpfct,
+                        m = m,
+                        cov_m = cov_m,
+                        MoreArgs = list(x = x))
+    lm_y_form <- paste(y,
+                      "~",
+                      paste(c(m, x, cov_y),
+                            collapse = " + "))
+  } else {
+    w_list <- fix_moderators(moderators)
+    w_m <- lapply(
+      m,
+      function(m_i, w_list) {
+        out <- sapply(
+                  w_list,
+                  function(x) x["y"] == m_i
+                )
+        unname(w_list[out])
+      },
+      w_list = w_list
+    )
+    names(w_m) <- m
+    w_y <- sapply(
+              w_list,
+              function(x) x["y"] == y
+            )
+    w_y <- unname(w_list[w_y])
+    tmpfct2 <- function(m,
+                       x,
+                       cov_m,
+                       w_m) {
+                iv_m <- x
+                for (m_i in w_m) {
+                  iv_m <- setdiff(iv_m, m_i[c("x", "w")])
+                  cov_m <- setdiff(cov_m, m_i[c("x", "w")])
+                  iv_m <- union(iv_m, m_i["xw"])
+                }
+                paste(m,
+                      "~",
+                      paste(c(iv_m, cov_m),
+                            collapse = " + "))
+              }
+    lm_m_form <- mapply(tmpfct2,
+                        m = m,
+                        cov_m = cov_m,
+                        w_m = w_m,
+                        MoreArgs = list(x = x))
+    iv_y <- c(m, x)
+    for (y_i in w_y) {
+      iv_y <- setdiff(iv_y, y_i[c("x", "w")])
+      cov_y <- setdiff(cov_y, y_i[c("x", "w")])
+      iv_y <- union(iv_y, y_i["xw"])
+    }
+    lm_y_form <- paste(y,
+                      "~",
+                      paste(c(iv_y, cov_y),
+                            collapse = " + "))
+  }
   names(lm_y_form) <- y
   forms <- c(lm_m_form,
              lm_y_form)
@@ -1659,7 +2166,8 @@ form_models_serial <- function(x,
 form_models_parallel <- function(x,
                                  y,
                                  m,
-                                 cov = NULL) {
+                                 cov = NULL,
+                                 moderators = NULL) {
   if ((length(x) != 1) ||
       (length(y) != 1)) {
     stop("The model must have exactly one 'x' and one 'y'.")
@@ -1678,22 +2186,73 @@ form_models_parallel <- function(x,
                     simplify = FALSE)
     cov_y <- cov
   }
-  tmpfct <- function(m,
-                     x,
-                     cov_m) {
-              paste(m,
-                    "~",
-                    paste(c(x, cov_m),
-                          collapse = " + "))
-            }
-  lm_m_form <- mapply(tmpfct,
-                      m = m,
-                      cov_m = cov_m,
-                      MoreArgs = list(x = x))
-  lm_y_form <- paste(y,
-                     "~",
-                     paste(c(m, x, cov_y),
-                           collapse = " + "))
+  if (is.null(moderators)) {
+    tmpfct <- function(m,
+                      x,
+                      cov_m) {
+                paste(m,
+                      "~",
+                      paste(c(x, cov_m),
+                            collapse = " + "))
+              }
+    lm_m_form <- mapply(tmpfct,
+                        m = m,
+                        cov_m = cov_m,
+                        MoreArgs = list(x = x))
+    lm_y_form <- paste(y,
+                      "~",
+                      paste(c(m, x, cov_y),
+                            collapse = " + "))
+  } else {
+    w_list <- fix_moderators(moderators)
+    w_m <- lapply(
+      m,
+      function(m_i, w_list) {
+        out <- sapply(
+                  w_list,
+                  function(x) x["y"] == m_i
+                )
+        unname(w_list[out])
+      },
+      w_list = w_list
+    )
+    names(w_m) <- m
+    w_y <- sapply(
+              w_list,
+              function(x) x["y"] == y
+            )
+    w_y <- unname(w_list[w_y])
+    tmpfct2 <- function(m,
+                       x,
+                       cov_m,
+                       w_m) {
+                iv_m <- x
+                for (m_i in w_m) {
+                  iv_m <- setdiff(iv_m, m_i[c("x", "w")])
+                  cov_m <- setdiff(cov_m, m_i[c("x", "w")])
+                  iv_m <- union(iv_m, m_i["xw"])
+                }
+                paste(m,
+                      "~",
+                      paste(c(iv_m, cov_m),
+                            collapse = " + "))
+              }
+    lm_m_form <- mapply(tmpfct2,
+                        m = m,
+                        cov_m = cov_m,
+                        w_m = w_m,
+                        MoreArgs = list(x = x))
+    iv_y <- c(m, x)
+    for (y_i in w_y) {
+      iv_y <- setdiff(iv_y, y_i[c("x", "w")])
+      cov_y <- setdiff(cov_y, y_i[c("x", "w")])
+      iv_y <- union(iv_y, y_i["xw"])
+    }
+    lm_y_form <- paste(y,
+                      "~",
+                      paste(c(iv_y, cov_y),
+                            collapse = " + "))
+  }
   names(lm_y_form) <- y
   forms <- c(lm_m_form,
              lm_y_form)
@@ -1970,6 +2529,7 @@ print.q_mediation <- function(x,
     # ==== Loadings ====
 
     if (!is.null(x$loadings)) {
+
       tmp <- format_loadings(loadings = x$loadings,
                             digits = digits)
       if (!is.null(x$reliability)) {
@@ -1980,6 +2540,7 @@ print.q_mediation <- function(x,
                     format = "f"
                   )
         tmp2_rel <- paste0("\nReliability: ", tmp_rel)
+        names(tmp2_rel) <- names(tmp_rel)
       } else {
         tmp2_rel <- rep("", length(tmp))
         names(tmp2_rel) <- names(tmp)
@@ -1987,9 +2548,10 @@ print.q_mediation <- function(x,
       cat("\n")
       cat("The standardized factor loadings:\n")
       for (xx in seq_along(tmp)) {
+        if (nrow(tmp[[xx]]) == 0) next
         cat(paste0("\n", names(tmp)[xx],
                    ": ",
-                   tmp2_rel[xx],"\n"))
+                   tmp2_rel[names(tmp)[xx]], "\n"))
         print(tmp[[xx]])
       }
       cat("\nNote:\n")
@@ -2173,6 +2735,11 @@ print.q_mediation <- function(x,
     cat("===================================================\n")
     cat("|             Indirect Effect Results             |\n")
     cat("===================================================\n")
+
+    if (q_mediation_has_moderated_indirect_paths(x)) {
+      cat("\n(Only include nonmoderated indirect effects)\n")
+    }
+
   }
 
   if (!is.null(x$ind_out$ustd)) {
@@ -2252,6 +2819,11 @@ print.q_mediation <- function(x,
     cat("===================================================\n")
     cat("|          Total Indirect Effect Results          |\n")
     cat("===================================================\n")
+
+    if (q_mediation_has_moderated_indirect_paths(x)) {
+      cat("\n(Only include nonmoderated indirect effects)\n")
+    }
+
   }
 
   if (!is.null(x$ind_total$ustd) && print_total) {
@@ -2303,6 +2875,81 @@ print.q_mediation <- function(x,
           se = se,
           se_ci = se_ci,
           wrap_computation = wrap_computation,
+          ...)
+  }
+
+
+  if (!is.null(x$cond_ind_out$ustd) ||
+      !is.null(x$cond_ind_out$stdx) ||
+      !is.null(x$cond_ind_out$stdy) ||
+      !is.null(x$cond_ind_out$stdxy)) {
+    cat("\n")
+    cat("===================================================\n")
+    cat("|       Conditional Indirect Effect Result        |\n")
+    cat("===================================================\n")
+  }
+
+  if (!is.null(x$cond_ind_out$ustd)) {
+    # cat("\n")
+    # cat("===== Indirect Effect(s) =====")
+    # cat("\n")
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
+    print(x$cond_ind_out$ustd,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          for_each_path = for_each_path,
+          ...)
+  }
+
+  if (!is.null(x$cond_ind_out$stdx)) {
+    # cat("\n")
+    # cat("===== Indirect Effect(s): Predictor (", x$x, ") Standardized =====",
+    #     sep = "")
+    # cat("\n")
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
+    print(x$cond_ind_out$stdx,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          for_each_path = for_each_path,
+          ...)
+  }
+
+  if (!is.null(x$cond_ind_out$stdy)) {
+    # cat("\n")
+    # cat("===== Indirect Effect(s): Outcome (", x$y, ") Standardized =====",
+    #     sep = "")
+    # cat("\n")
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
+    print(x$cond_ind_out$stdy,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          for_each_path = for_each_path,
+          ...)
+  }
+
+  if (!is.null(x$cond_ind_out$stdxy)) {
+    # cat("\n")
+    # cat("===== Indirect Effect(s): Both Predictor (", x$x,
+    #     ") and Outcome (", x$y, ") Standardized =====",
+    #     sep = "")
+    # cat("\n")
+    cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
+    print(x$cond_ind_out$stdxy,
+          digits = digits,
+          annotation = annotation,
+          pvalue = pvalue,
+          pvalue_digits = pvalue_digits,
+          se = se,
+          for_each_path = for_each_path,
           ...)
   }
 
@@ -2516,11 +3163,13 @@ print_lavaan_as_lm <- function(
     # ==== LRT for R-squared =====
 
     rsq_lrt <- lm_out_lav[[i]]$fit_null_lrt
-    tmp <- utils::capture.output(print(rsq_lrt))
-    j <- grepl("Chi-Squared", tmp, fixed = TRUE)
-    tmp[j] <- paste(tmp[j], "for the R-square")
-    cat(tmp,
-        sep = "\n")
+    if (!is.null(rsq_lrt)) {
+      tmp <- utils::capture.output(print(rsq_lrt))
+      j <- grepl("Chi-Squared", tmp, fixed = TRUE)
+      tmp[j] <- paste(tmp[j], "for the R-square")
+      cat(tmp,
+          sep = "\n")
+    }
 
     # ==== Notes =====
 
@@ -2529,12 +3178,20 @@ print_lavaan_as_lm <- function(
     if (lm_beta) {
       term_types <- lm_out_lav[[i]]$term_types
       vars_std <- c(dvs[i], names(term_types)[term_types == "numeric"])
-      tmp <- strwrap(paste0("- BetaS are standardized coefficients with (a) ",
-                            "only numeric variables standardized and (b) ",
-                            "product terms formed after standardization. ",
-                            "Variable(s) standardized is/are: ",
-                            paste0(vars_std, collapse = ", ")),
-                      exdent = 2)
+      if (isTRUE("product" %in% term_types)) {
+        tmp <- strwrap(paste0("- BetaS are standardized coefficients with (a) ",
+                              "only numeric variables standardized and (b) ",
+                              "product terms formed after standardization. ",
+                              "Variable(s) standardized is/are: ",
+                              paste0(vars_std, collapse = ", ")),
+                        exdent = 2)
+      } else {
+        tmp <- strwrap(paste0("- BetaS are standardized coefficients with ",
+                              "only numeric variables standardized. ",
+                              "Variable(s) standardized is/are: ",
+                              paste0(vars_std, collapse = ", ")),
+                        exdent = 2)
+      }
       cat(tmp,
           sep = "\n")
     }
