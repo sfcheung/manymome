@@ -2496,6 +2496,7 @@ print.q_mediation <- function(x,
     # ==== Loadings ====
 
     if (!is.null(x$loadings)) {
+
       tmp <- format_loadings(loadings = x$loadings,
                             digits = digits)
       if (!is.null(x$reliability)) {
@@ -2506,6 +2507,7 @@ print.q_mediation <- function(x,
                     format = "f"
                   )
         tmp2_rel <- paste0("\nReliability: ", tmp_rel)
+        names(tmp2_rel) <- names(tmp_rel)
       } else {
         tmp2_rel <- rep("", length(tmp))
         names(tmp2_rel) <- names(tmp)
@@ -2513,9 +2515,10 @@ print.q_mediation <- function(x,
       cat("\n")
       cat("The standardized factor loadings:\n")
       for (xx in seq_along(tmp)) {
+        if (nrow(tmp[[xx]]) == 0) next
         cat(paste0("\n", names(tmp)[xx],
                    ": ",
-                   tmp2_rel[xx],"\n"))
+                   tmp2_rel[names(tmp)[xx]], "\n"))
         print(tmp[[xx]])
       }
       cat("\nNote:\n")
