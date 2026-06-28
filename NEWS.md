@@ -1,4 +1,4 @@
-# manymome 0.3.6.3
+# manymome 0.3.6.4
 
 ## New Features
 
@@ -26,6 +26,10 @@
 
 - Fixed handling a special case: `x:w:w == x`.
   (0.3.6.2)
+
+- Updated to handle possible `NA` from
+  `parallel::detectCores()`.
+  (0.3.6.4)
 
 # manymome 0.3.6
 
