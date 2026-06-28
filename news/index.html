@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,9 +65,13 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.6.2" id="manymome-0362">manymome 0.3.6.2<a class="anchor" aria-label="anchor" href="#manymome-0362"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.3.6.3" id="manymome-0363">manymome 0.3.6.3<a class="anchor" aria-label="anchor" href="#manymome-0363"></a></h2>
 <div class="section level3">
-<h3 id="miscellaneous-0-3-6-2">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-3-6-2"></a></h3>
+<h3 id="new-features-0-3-6-3">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-3-6-3"></a></h3>
+<ul><li>Update the <code>q_*</code> functions (<code><a href="../reference/q_mediation.html">q_mediation()</a></code>, <code><a href="../reference/q_mediation.html">q_simple_mediation()</a></code>, <code><a href="../reference/q_mediation.html">q_serial_mediation()</a></code> and <code><a href="../reference/q_mediation.html">q_parallel_mediation()</a></code>) to support models with moderators (moderated mediation). The paths moderated are specified by the argument <code>moderators</code>. Models fitted by multiple regression or structural equation modelling on observed variables only are supported. If a model has latent variables and is fitted by structural equation modeling, then the <code>indicator_method</code> must be set to <code>"sam"</code> to use the structural-after-measurement method. (0.3.6.3)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="miscellaneous-0-3-6-3">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-3-6-3"></a></h3>
 <ul><li><p>Updated some tests for the forthcoming <code>lavaan</code> 0.7-1. (0.3.6.1)</p></li>
 <li><p>Fixed handling a special case: <code>x:w:w == x</code>. (0.3.6.2)</p></li>
 </ul></div>

@@ -1,6 +1,22 @@
 # Changelog
 
-## manymome 0.3.6.2
+## manymome 0.3.6.3
+
+### New Features
+
+- Update the `q_*` functions
+  ([`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md),
+  [`q_simple_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md),
+  [`q_serial_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  and
+  [`q_parallel_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md))
+  to support models with moderators (moderated mediation). The paths
+  moderated are specified by the argument `moderators`. Models fitted by
+  multiple regression or structural equation modelling on observed
+  variables only are supported. If a model has latent variables and is
+  fitted by structural equation modeling, then the `indicator_method`
+  must be set to `"sam"` to use the structural-after-measurement method.
+  (0.3.6.3)
 
 ### Miscellaneous
 

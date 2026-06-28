@@ -12,6 +12,34 @@ q_mediation(
   y,
   m = NULL,
   cov = NULL,
+  moderators = NULL,
+  indicators = NULL,
+  data = NULL,
+  boot_ci = TRUE,
+  mc_ci = FALSE,
+  level = 0.95,
+  R = 100,
+  seed = NULL,
+  ci_type = NULL,
+  boot_type = c("perc", "bc"),
+  model = NULL,
+  fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = NULL,
+  missing = "fiml",
+  fixed.x = TRUE,
+  sem_args = list(),
+  na.action = NA,
+  parallel = TRUE,
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  progress = TRUE
+)
+
+q_moderated_mediation(
+  x,
+  y,
+  m = NULL,
+  cov = NULL,
+  moderators = NULL,
   indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
@@ -38,6 +66,34 @@ q_simple_mediation(
   y,
   m = NULL,
   cov = NULL,
+  moderators = NULL,
+  indicators = NULL,
+  data = NULL,
+  boot_ci = TRUE,
+  mc_ci = FALSE,
+  level = 0.95,
+  R = 100,
+  seed = NULL,
+  ci_type = NULL,
+  boot_type = c("perc", "bc"),
+  fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = ifelse(fit_method %in% c("lm", "regression"), "scale_scores",
+    "measurement_model"),
+  missing = "fiml",
+  fixed.x = TRUE,
+  sem_args = list(),
+  na.action = NA,
+  parallel = TRUE,
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  progress = TRUE
+)
+
+q_moderated_simple_mediation(
+  x,
+  y,
+  m = NULL,
+  cov = NULL,
+  moderators = NULL,
   indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
@@ -64,6 +120,34 @@ q_serial_mediation(
   y,
   m = NULL,
   cov = NULL,
+  moderators = NULL,
+  indicators = NULL,
+  data = NULL,
+  boot_ci = TRUE,
+  mc_ci = FALSE,
+  level = 0.95,
+  R = 100,
+  seed = NULL,
+  ci_type = NULL,
+  boot_type = c("perc", "bc"),
+  fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = ifelse(fit_method %in% c("lm", "regression"), "scale_scores",
+    "measurement_model"),
+  missing = "fiml",
+  fixed.x = TRUE,
+  sem_args = list(),
+  na.action = NA,
+  parallel = TRUE,
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  progress = TRUE
+)
+
+q_moderated_serial_mediation(
+  x,
+  y,
+  m = NULL,
+  cov = NULL,
+  moderators = NULL,
   indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
@@ -90,6 +174,34 @@ q_parallel_mediation(
   y,
   m = NULL,
   cov = NULL,
+  moderators = NULL,
+  indicators = NULL,
+  data = NULL,
+  boot_ci = TRUE,
+  mc_ci = FALSE,
+  level = 0.95,
+  R = 100,
+  seed = NULL,
+  ci_type = NULL,
+  boot_type = c("perc", "bc"),
+  fit_method = c("lm", "regression", "sem", "lavaan"),
+  indicator_method = ifelse(fit_method %in% c("lm", "regression"), "scale_scores",
+    "measurement_model"),
+  missing = "fiml",
+  fixed.x = TRUE,
+  sem_args = list(),
+  na.action = NA,
+  parallel = TRUE,
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  progress = TRUE
+)
+
+q_moderated_parallel_mediation(
+  x,
+  y,
+  m = NULL,
+  cov = NULL,
+  moderators = NULL,
   indicators = NULL,
   data = NULL,
   boot_ci = TRUE,
@@ -163,6 +275,19 @@ print(
   this element. For example, `list(m1 = "c1", dv = c("c2", "c3"))`
   indicates that `c1` predicts `"m1"`, while `c2` and `c3` predicts
   `"dv"`. Default is `NULL`, no covariates.
+
+- moderators:
+
+  A named list to specify paths that are moderated. For example,
+  `list("x -> y" = "w1", "x -> m" = "w2")` indicates that the path
+  `x -> y` is moderated by `"w1"` and the path `x -> m` is moderated by
+  `"w2"`. For now, moderators is supported only if `fit_method` is
+  `"lm"` or `"regression"`. To fit the model by `lavaan`, please specify
+  the model manually and use other functions in `manymome`. A path can
+  be moderated by more than one moderator (e.g.,
+  `"x -> y" = c("w1", "w2")`). If each path is moderated by exactly one
+  moderator, a named character vector can also be used (e.g.,
+  `c("x -> y" = "w1", "x -> m" = "w2")`).
 
 - indicators:
 
@@ -591,6 +716,30 @@ methods are supported.
 
 The output of the "q" functions have a `print` method for printing all
 the major results.
+
+### Moderated Mediation
+
+Support for moderated mediation has been added since Version 0.3.6 for
+models fitted by multiple regression (`fit_method = "regression"`), and
+since Version 0.3.6.3 for models fitted by structural equation modeling
+(`fit_method = "sem"`) if a model has no latent variables. If a model
+has latent variables, the `indicator_method` must be `"sam"`
+(structural-after-measurement). See the description of the argument
+`moderators` on how to specify a moderated path.
+
+Only two-way interaction is supported for now, although a path can have
+any number of moderators. For higher-order interaction (e.g.,
+moderated-moderated-mediation), please specify the model manually as
+usual, and then call functions such as
+[`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
+directly.
+
+The functions `q_moderated_mediation()`,
+`q_moderated_parallel_mediation()`, `q_moderated_serial_mediation()`,
+and `q_moderated_simple_mediation()` are merely aliases to their
+nonmoderated counterparts. The functions `q_mediation()`,
+`q_parallel_mediation()`, `q_serial_mediation()`, and
+`q_simple_mediation()` can also be used for models with moderators.
 
 ### Notes
 

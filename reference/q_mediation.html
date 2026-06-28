@@ -15,7 +15,7 @@ just one function."><meta property="og:image" content="https://sfcheung.github.i
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,6 +88,34 @@ just one function.</p>
 <span>  <span class="va">y</span>,</span>
 <span>  m <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cov <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  moderators <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  indicators <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  mc_ci <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  R <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ci_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  boot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"perc"</span>, <span class="st">"bc"</span><span class="op">)</span>,</span>
+<span>  model <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  fit_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm"</span>, <span class="st">"regression"</span>, <span class="st">"sem"</span>, <span class="st">"lavaan"</span><span class="op">)</span>,</span>
+<span>  indicator_method <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  missing <span class="op">=</span> <span class="st">"fiml"</span>,</span>
+<span>  fixed.x <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  sem_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  na.action <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  parallel <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  progress <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">q_moderated_mediation</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">y</span>,</span>
+<span>  m <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cov <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  moderators <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  indicators <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -114,6 +142,34 @@ just one function.</p>
 <span>  <span class="va">y</span>,</span>
 <span>  m <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cov <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  moderators <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  indicators <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  mc_ci <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  R <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ci_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  boot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"perc"</span>, <span class="st">"bc"</span><span class="op">)</span>,</span>
+<span>  fit_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm"</span>, <span class="st">"regression"</span>, <span class="st">"sem"</span>, <span class="st">"lavaan"</span><span class="op">)</span>,</span>
+<span>  indicator_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">fit_method</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm"</span>, <span class="st">"regression"</span><span class="op">)</span>, <span class="st">"scale_scores"</span>,</span>
+<span>    <span class="st">"measurement_model"</span><span class="op">)</span>,</span>
+<span>  missing <span class="op">=</span> <span class="st">"fiml"</span>,</span>
+<span>  fixed.x <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  sem_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  na.action <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  parallel <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  progress <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">q_moderated_simple_mediation</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">y</span>,</span>
+<span>  m <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cov <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  moderators <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  indicators <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -140,6 +196,34 @@ just one function.</p>
 <span>  <span class="va">y</span>,</span>
 <span>  m <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cov <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  moderators <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  indicators <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  mc_ci <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  R <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ci_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  boot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"perc"</span>, <span class="st">"bc"</span><span class="op">)</span>,</span>
+<span>  fit_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm"</span>, <span class="st">"regression"</span>, <span class="st">"sem"</span>, <span class="st">"lavaan"</span><span class="op">)</span>,</span>
+<span>  indicator_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">fit_method</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm"</span>, <span class="st">"regression"</span><span class="op">)</span>, <span class="st">"scale_scores"</span>,</span>
+<span>    <span class="st">"measurement_model"</span><span class="op">)</span>,</span>
+<span>  missing <span class="op">=</span> <span class="st">"fiml"</span>,</span>
+<span>  fixed.x <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  sem_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  na.action <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  parallel <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  progress <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">q_moderated_serial_mediation</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">y</span>,</span>
+<span>  m <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cov <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  moderators <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  indicators <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -166,6 +250,34 @@ just one function.</p>
 <span>  <span class="va">y</span>,</span>
 <span>  m <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cov <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  moderators <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  indicators <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  mc_ci <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  R <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ci_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  boot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"perc"</span>, <span class="st">"bc"</span><span class="op">)</span>,</span>
+<span>  fit_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm"</span>, <span class="st">"regression"</span>, <span class="st">"sem"</span>, <span class="st">"lavaan"</span><span class="op">)</span>,</span>
+<span>  indicator_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">fit_method</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm"</span>, <span class="st">"regression"</span><span class="op">)</span>, <span class="st">"scale_scores"</span>,</span>
+<span>    <span class="st">"measurement_model"</span><span class="op">)</span>,</span>
+<span>  missing <span class="op">=</span> <span class="st">"fiml"</span>,</span>
+<span>  fixed.x <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  sem_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  na.action <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  parallel <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  ncores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  progress <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">q_moderated_parallel_mediation</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">y</span>,</span>
+<span>  m <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cov <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  moderators <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  indicators <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  boot_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -254,6 +366,25 @@ element. For example, <code>list(m1 = "c1", dv = c("c2", "c3"))</code>
 indicates that <code>c1</code> predicts <code>"m1"</code>,
 while <code>c2</code> and <code>c3</code> predicts <code>"dv"</code>.
 Default is <code>NULL</code>, no covariates.</p></dd>
+
+
+<dt id="arg-moderators">moderators<a class="anchor" aria-label="anchor" href="#arg-moderators"></a></dt>
+<dd><p>A named list to
+specify paths that are moderated.
+For example, <code>list("x -&gt; y" = "w1", "x -&gt; m" = "w2")</code>
+indicates that the path <code>x -&gt; y</code> is
+moderated by <code>"w1"</code> and the path
+<code>x -&gt; m</code> is moderated by <code>"w2"</code>.
+For now, moderators is supported only
+if <code>fit_method</code> is <code>"lm"</code> or <code>"regression"</code>.
+To fit the model by <code>lavaan</code>, please
+specify the model manually and use
+other functions in <code>manymome</code>.
+A path can be moderated by more than
+one moderator (e.g., <code>"x -&gt; y" = c("w1", "w2")</code>).
+If each path is moderated by exactly
+one moderator, a named character vector
+can also be used (e.g., <code>c("x -&gt; y" = "w1", "x -&gt; m" = "w2")</code>).</p></dd>
 
 
 <dt id="arg-indicators">indicators<a class="anchor" aria-label="anchor" href="#arg-indicators"></a></dt>
@@ -808,6 +939,43 @@ are supported.</p>
 <p>The output of the "q" functions have
 a <code>print</code> method for
 printing all the major results.</p>
+</div>
+
+<div class="section">
+<h3 id="moderated-mediation">Moderated Mediation<a class="anchor" aria-label="anchor" href="#moderated-mediation"></a></h3>
+
+
+<p>Support for moderated mediation
+has been added since Version 0.3.6
+for models fitted by multiple regression
+(<code>fit_method = "regression"</code>), and since
+Version 0.3.6.3 for models fitted
+by structural equation modeling
+(<code>fit_method = "sem"</code>) if a model
+has no latent variables. If a model
+has latent variables, the
+<code>indicator_method</code> must be <code>"sam"</code>
+(structural-after-measurement).
+See the description of the argument
+<code>moderators</code> on how to specify a
+moderated path.</p>
+<p>Only two-way interaction is supported
+for now, although a path can have
+any number of moderators. For higher-order
+interaction (e.g., moderated-moderated-mediation),
+please specify the model manually as
+usual, and then call functions such as
+<code><a href="cond_indirect.html">cond_indirect_effects()</a></code> directly.</p>
+<p>The functions <code>q_moderated_mediation()</code>,
+<code>q_moderated_parallel_mediation()</code>,
+<code>q_moderated_serial_mediation()</code>, and
+<code>q_moderated_simple_mediation()</code> are
+merely aliases to their nonmoderated
+counterparts. The functions
+<code>q_mediation()</code>, <code>q_parallel_mediation()</code>,
+<code>q_serial_mediation()</code>, and
+<code>q_simple_mediation()</code> can also be
+used for models with moderators.</p>
 </div>
 
 <div class="section">

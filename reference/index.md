@@ -22,9 +22,13 @@ effects.
 ## All-In-One Functions for Common Models
 
 - [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  [`q_moderated_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
   [`q_simple_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  [`q_moderated_simple_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
   [`q_serial_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  [`q_moderated_serial_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
   [`q_parallel_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  [`q_moderated_parallel_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
   [`get_fit()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
   [`print(`*`<q_mediation>`*`)`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
   : Mediation Models By Regression or SEM
