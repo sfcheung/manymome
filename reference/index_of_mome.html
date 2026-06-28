@@ -13,7 +13,7 @@ proposed by Hayes (2015, 2018)."><meta property="og:image" content="https://sfch
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -98,6 +98,8 @@ proposed by Hayes (2015, 2018).</p>
 <span>  ci_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  boot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"perc"</span>, <span class="st">"bc"</span><span class="op">)</span>,</span>
 <span>  skip_indicators <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  increase_from <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  increase_to <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -120,6 +122,10 @@ proposed by Hayes (2015, 2018).</p>
 <span>  ci_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  boot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"perc"</span>, <span class="st">"bc"</span><span class="op">)</span>,</span>
 <span>  skip_indicators <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  w_increase_from <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  w_increase_to <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  z_increase_from <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  z_increase_to <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -290,6 +296,15 @@ the search for product terms. Default
 is <code>TRUE</code>.</p></dd>
 
 
+<dt id="arg-increase-from-increase-to">increase_from, increase_to<a class="anchor" aria-label="anchor" href="#arg-increase-from-increase-to"></a></dt>
+<dd><p>The
+change in the value of the moderator
+on which the index is to be computed.
+The default is a one-unit increase
+(e.g., from 0 to 1), as proposed by
+Hayes (2015).</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Arguments to be passed to
 <code><a href="cond_indirect.html">cond_indirect_effects()</a></code></p></dd>
@@ -300,6 +315,24 @@ is <code>TRUE</code>.</p></dd>
 second moderator, for computing the
 index of moderated moderated
 mediation.</p></dd>
+
+
+<dt id="arg-w-increase-from-w-increase-to">w_increase_from, w_increase_to<a class="anchor" aria-label="anchor" href="#arg-w-increase-from-w-increase-to"></a></dt>
+<dd><p>The
+change in the value of the moderator <code>w</code>
+on which the index is to be computed.
+The default is a one-unit increase
+(e.g., from 0 to 1), as proposed by
+Hayes (2015).</p></dd>
+
+
+<dt id="arg-z-increase-from-z-increase-to">z_increase_from, z_increase_to<a class="anchor" aria-label="anchor" href="#arg-z-increase-from-z-increase-to"></a></dt>
+<dd><p>The
+change in the value of the moderator <code>z</code>
+on which the index is to be computed.
+The default is a one-unit increase
+(e.g., from 0 to 1), as proposed by
+Hayes (2015).</p></dd>
 
 </dl></div>
     <div class="section level2">

@@ -1,6 +1,6 @@
 # Changelog
 
-## manymome 0.3.6.4
+## manymome 0.3.6.5
 
 ### New Features
 
@@ -17,6 +17,16 @@
   fitted by structural equation modeling, then the `indicator_method`
   must be set to `"sam"` to use the structural-after-measurement method.
   (0.3.6.3)
+
+### Improvement
+
+- Users can specify the change of moderator values when calling
+  [`index_of_mome()`](https://sfcheung.github.io/manymome/reference/index_of_mome.md)
+  and
+  [`index_of_momome()`](https://sfcheung.github.io/manymome/reference/index_of_mome.md)
+  via the new arguments `increase_from`, `increase_to`,
+  `w_increase_from`, `w_increase_to`, `z_increase_from`, and
+  `z_increase_to`. (0.3.6.5)
 
 ### Miscellaneous
 

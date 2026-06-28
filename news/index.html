@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,13 +65,17 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.6.4" id="manymome-0364">manymome 0.3.6.4<a class="anchor" aria-label="anchor" href="#manymome-0364"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.3.6.5" id="manymome-0365">manymome 0.3.6.5<a class="anchor" aria-label="anchor" href="#manymome-0365"></a></h2>
 <div class="section level3">
-<h3 id="new-features-0-3-6-4">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-3-6-4"></a></h3>
+<h3 id="new-features-0-3-6-5">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-3-6-5"></a></h3>
 <ul><li>Update the <code>q_*</code> functions (<code><a href="../reference/q_mediation.html">q_mediation()</a></code>, <code><a href="../reference/q_mediation.html">q_simple_mediation()</a></code>, <code><a href="../reference/q_mediation.html">q_serial_mediation()</a></code> and <code><a href="../reference/q_mediation.html">q_parallel_mediation()</a></code>) to support models with moderators (moderated mediation). The paths moderated are specified by the argument <code>moderators</code>. Models fitted by multiple regression or structural equation modelling on observed variables only are supported. If a model has latent variables and is fitted by structural equation modeling, then the <code>indicator_method</code> must be set to <code>"sam"</code> to use the structural-after-measurement method. (0.3.6.3)</li>
 </ul></div>
 <div class="section level3">
-<h3 id="miscellaneous-0-3-6-4">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-3-6-4"></a></h3>
+<h3 id="improvement-0-3-6-5">Improvement<a class="anchor" aria-label="anchor" href="#improvement-0-3-6-5"></a></h3>
+<ul><li>Users can specify the change of moderator values when calling <code><a href="../reference/index_of_mome.html">index_of_mome()</a></code> and <code><a href="../reference/index_of_mome.html">index_of_momome()</a></code> via the new arguments <code>increase_from</code>, <code>increase_to</code>, <code>w_increase_from</code>, <code>w_increase_to</code>, <code>z_increase_from</code>, and <code>z_increase_to</code>. (0.3.6.5)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="miscellaneous-0-3-6-5">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-3-6-5"></a></h3>
 <ul><li><p>Updated some tests for the forthcoming <code>lavaan</code> 0.7-1. (0.3.6.1)</p></li>
 <li><p>Fixed handling a special case: <code>x:w:w == x</code>. (0.3.6.2)</p></li>
 <li><p>Updated to handle possible <code>NA</code> from <code><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">parallel::detectCores()</a></code>. (0.3.6.4)</p></li>
