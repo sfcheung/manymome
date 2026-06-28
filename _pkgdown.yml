@@ -39,6 +39,7 @@ articles:
   contents:
   - med_lm
   - mome_lm
+  - articles/mo_lm
 
 - title: All-In-One Functions
   navbar: All-In-One Functions
