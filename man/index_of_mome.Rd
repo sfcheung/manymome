@@ -25,6 +25,8 @@ index_of_mome(
   ci_out = NULL,
   boot_type = c("perc", "bc"),
   skip_indicators = TRUE,
+  increase_from = 0,
+  increase_to = 1,
   ...
 )
 
@@ -47,6 +49,10 @@ index_of_momome(
   ci_out = NULL,
   boot_type = c("perc", "bc"),
   skip_indicators = TRUE,
+  w_increase_from = 0,
+  w_increase_to = 1,
+  z_increase_from = 0,
+  z_increase_to = 1,
   ...
 )
 }
@@ -179,6 +185,13 @@ observed indicators are skipped from
 the search for product terms. Default
 is \code{TRUE}.}
 
+\item{increase_from, increase_to}{The
+change in the value of the moderator
+on which the index is to be computed.
+The default is a one-unit increase
+(e.g., from 0 to 1), as proposed by
+Hayes (2015).}
+
 \item{...}{Arguments to be passed to
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}}
 
@@ -186,6 +199,20 @@ is \code{TRUE}.}
 second moderator, for computing the
 index of moderated moderated
 mediation.}
+
+\item{w_increase_from, w_increase_to}{The
+change in the value of the moderator \code{w}
+on which the index is to be computed.
+The default is a one-unit increase
+(e.g., from 0 to 1), as proposed by
+Hayes (2015).}
+
+\item{z_increase_from, z_increase_to}{The
+change in the value of the moderator \code{z}
+on which the index is to be computed.
+The default is a one-unit increase
+(e.g., from 0 to 1), as proposed by
+Hayes (2015).}
 }
 \value{
 It returns a
