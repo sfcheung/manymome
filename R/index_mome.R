@@ -177,6 +177,13 @@
 #' the search for product terms. Default
 #' is `TRUE`.
 #'
+#' @param increase_from,increase_to The
+#' change in the value of the moderator
+#' on which the index is to be computed.
+#' The default is a one-unit increase
+#' (e.g., from 0 to 1), as proposed by
+#' Hayes (2015).
+#'
 #' @param ... Arguments to be passed to
 #' [cond_indirect_effects()]
 #'
@@ -232,7 +239,6 @@
 #' index of moderated mediation.
 #'
 #' @order 1
-
 index_of_mome <- function(x,
                           y,
                           m = NULL,
@@ -250,13 +256,19 @@ index_of_mome <- function(x,
                           ci_out = NULL,
                           boot_type = c("perc", "bc"),
                           skip_indicators = TRUE,
+                          increase_from = 0,
+                          increase_to = 1,
                           ...) {
     fit <- auto_lm2list(fit)
     boot_type <- match.arg(boot_type)
     if (is.null(w) || length(w) != 1) {
         stop("The path must have exactly one moderator.")
       }
-    mm_w <- mod_levels(w, fit = fit, values = c(0, 1))
+    mm_w <- mod_levels(
+              w,
+              fit = fit,
+              values = c(increase_from, increase_to)
+            )
     prods <- cond_indirect(wvalues = mm_w[1, ],
                             x = x,
                             y = y,
@@ -285,6 +297,20 @@ index_of_mome <- function(x,
     out
   }
 
+#' @param w_increase_from,w_increase_to The
+#' change in the value of the moderator `w`
+#' on which the index is to be computed.
+#' The default is a one-unit increase
+#' (e.g., from 0 to 1), as proposed by
+#' Hayes (2015).
+#'
+#' @param z_increase_from,z_increase_to The
+#' change in the value of the moderator `z`
+#' on which the index is to be computed.
+#' The default is a one-unit increase
+#' (e.g., from 0 to 1), as proposed by
+#' Hayes (2015).
+#'
 #' @examples
 #'
 #' library(lavaan)
@@ -337,6 +363,10 @@ index_of_momome <- function(x,
                             ci_out = NULL,
                             boot_type = c("perc", "bc"),
                             skip_indicators = TRUE,
+                            w_increase_from = 0,
+                            w_increase_to = 1,
+                            z_increase_from = 0,
+                            z_increase_to = 1,
                             ...) {
     dotdotdot <- list(...)
     fit <- auto_lm2list(fit)
@@ -345,8 +375,16 @@ index_of_momome <- function(x,
         length(w) != 1 || length(z) != 1) {
         stop("The path must have exactly two moderators.")
       }
-    mm_w <- mod_levels(w, fit = fit, values = c(0, 1))
-    mm_z <- mod_levels(z, fit = fit, values = c(0, 1))
+    mm_w <- mod_levels(
+              w,
+              fit = fit,
+              values = c(w_increase_from, w_increase_to)
+            )
+    mm_z <- mod_levels(
+              z,
+              fit = fit,
+              values = c(z_increase_from, z_increase_to)
+            )
     mm <- merge_mod_levels(mm_w, mm_z)
     prods <- cond_indirect(wvalues = mm[1, ],
                             x = x,
