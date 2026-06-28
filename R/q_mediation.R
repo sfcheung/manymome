@@ -514,7 +514,7 @@
 #' CPU cores to use when `parallel` is
 #' `TRUE`. Default is the number of
 #' non-logical cores minus one (one
-#' minimum). Will raise an error if
+#' minimum). Will raise a warning if
 #' greater than the number of cores
 #' detected by
 #' [parallel::detectCores()]. If
@@ -608,7 +608,7 @@ q_mediation <- function(x,
                         sem_args = list(),
                         na.action = NA,
                         parallel = TRUE,
-                        ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                        ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
                         progress = TRUE) {
   if (is.null(model)) {
     stop("Must specify the model by setting the argument 'model'.")
@@ -1699,7 +1699,7 @@ q_simple_mediation <- function(x,
                                sem_args = list(),
                                na.action = NA,
                                parallel = TRUE,
-                               ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                               ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
                                progress = TRUE) {
   boot_type <- match.arg(boot_type)
   fit_method <- match.arg(fit_method)
@@ -1810,7 +1810,7 @@ q_serial_mediation <- function(x,
                                sem_args = list(),
                                na.action = NA,
                                parallel = TRUE,
-                               ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                               ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
                                progress = TRUE) {
   boot_type <- match.arg(boot_type)
   fit_method <- match.arg(fit_method)
@@ -1920,7 +1920,7 @@ q_parallel_mediation <- function(x,
                                  sem_args = list(),
                                  na.action = NA,
                                  parallel = TRUE,
-                                 ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                                 ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
                                  progress = TRUE) {
   boot_type <- match.arg(boot_type)
   fit_method <- match.arg(fit_method)
