@@ -25,7 +25,7 @@ cond_indirect(
   R = 100,
   seed = NULL,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   make_cluster_args = list(),
   progress = TRUE,
   save_boot_full = FALSE,
@@ -62,7 +62,7 @@ cond_indirect_effects(
   R = 100,
   seed = NULL,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   make_cluster_args = list(),
   progress = TRUE,
   boot_out = NULL,
@@ -92,7 +92,7 @@ indirect_effect(
   R = 100,
   seed = NULL,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   make_cluster_args = list(),
   progress = TRUE,
   save_boot_full = FALSE,
@@ -127,7 +127,7 @@ cond_effects(
   R = 100,
   seed = NULL,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   make_cluster_args = list(),
   progress = TRUE,
   boot_out = NULL,
@@ -259,7 +259,7 @@ many_indirect_effects(paths, ...)
 
   Integer. The number of CPU cores to use when `parallel` is `TRUE`.
   Default is the number of non-logical cores minus one (one minimum).
-  Will raise an error if greater than the number of cores detected by
+  Will raise a warning if greater than the number of cores detected by
   [`parallel::detectCores()`](https://rdrr.io/r/parallel/detectCores.html).
   If `ncores` is set, it will override `make_cluster_args` in
   [`do_boot()`](https://sfcheung.github.io/manymome/reference/do_boot.md).

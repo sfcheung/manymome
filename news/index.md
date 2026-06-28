@@ -1,6 +1,6 @@
 # Changelog
 
-## manymome 0.3.6.3
+## manymome 0.3.6.4
 
 ### New Features
 
@@ -23,6 +23,10 @@
 - Updated some tests for the forthcoming `lavaan` 0.7-1. (0.3.6.1)
 
 - Fixed handling a special case: `x:w:w == x`. (0.3.6.2)
+
+- Updated to handle possible `NA` from
+  [`parallel::detectCores()`](https://rdrr.io/r/parallel/detectCores.html).
+  (0.3.6.4)
 
 ## manymome 0.3.6
 

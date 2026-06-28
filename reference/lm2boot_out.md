@@ -18,7 +18,7 @@ lm2boot_out_parallel(
   R = 100,
   seed = NULL,
   parallel = FALSE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   make_cluster_args = list(),
   progress = TRUE,
   compute_implied_stats = TRUE
@@ -59,7 +59,7 @@ lm2boot_out_parallel(
 
   Integer. The number of CPU cores to use when `parallel` is `TRUE`.
   Default is the number of non-logical cores minus one (one minimum).
-  Will raise an error if greater than the number of cores detected by
+  Will raise a warning if greater than the number of cores detected by
   [`parallel::detectCores()`](https://rdrr.io/r/parallel/detectCores.html).
   If `ncores` is set, it will override `make_cluster_args`.
 

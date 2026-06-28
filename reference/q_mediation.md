@@ -30,7 +30,7 @@ q_mediation(
   sem_args = list(),
   na.action = NA,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   progress = TRUE
 )
 
@@ -57,7 +57,7 @@ q_moderated_mediation(
   sem_args = list(),
   na.action = NA,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   progress = TRUE
 )
 
@@ -84,7 +84,7 @@ q_simple_mediation(
   sem_args = list(),
   na.action = NA,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   progress = TRUE
 )
 
@@ -111,7 +111,7 @@ q_moderated_simple_mediation(
   sem_args = list(),
   na.action = NA,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   progress = TRUE
 )
 
@@ -138,7 +138,7 @@ q_serial_mediation(
   sem_args = list(),
   na.action = NA,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   progress = TRUE
 )
 
@@ -165,7 +165,7 @@ q_moderated_serial_mediation(
   sem_args = list(),
   na.action = NA,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   progress = TRUE
 )
 
@@ -192,7 +192,7 @@ q_parallel_mediation(
   sem_args = list(),
   na.action = NA,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   progress = TRUE
 )
 
@@ -219,7 +219,7 @@ q_moderated_parallel_mediation(
   sem_args = list(),
   na.action = NA,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   progress = TRUE
 )
 
@@ -416,7 +416,7 @@ print(
 
   Integer. The number of CPU cores to use when `parallel` is `TRUE`.
   Default is the number of non-logical cores minus one (one minimum).
-  Will raise an error if greater than the number of cores detected by
+  Will raise a warning if greater than the number of cores detected by
   [`parallel::detectCores()`](https://rdrr.io/r/parallel/detectCores.html).
   If `ncores` is set, it will override `make_cluster_args` in
   [`do_boot()`](https://sfcheung.github.io/manymome/reference/do_boot.md).
@@ -719,13 +719,13 @@ the major results.
 
 ### Moderated Mediation
 
-Support for moderated mediation has been added since Version 0.3.6 for
+Support for moderated mediation has been added since Version 0.3.6.3 for
 models fitted by multiple regression (`fit_method = "regression"`), and
-since Version 0.3.6.3 for models fitted by structural equation modeling
-(`fit_method = "sem"`) if a model has no latent variables. If a model
-has latent variables, the `indicator_method` must be `"sam"`
-(structural-after-measurement). See the description of the argument
-`moderators` on how to specify a moderated path.
+for models fitted by structural equation modeling (`fit_method = "sem"`)
+if a model has no latent variables. If a model has latent variables, the
+`indicator_method` must be `"sam"` (structural-after-measurement). See
+the description of the argument `moderators` on how to specify a
+moderated path.
 
 Only two-way interaction is supported for now, although a path can have
 any number of moderators. For higher-order interaction (e.g.,

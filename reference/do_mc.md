@@ -14,7 +14,7 @@ do_mc(
   R = 100,
   seed = NULL,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   make_cluster_args = list(),
   progress = TRUE,
   compute_implied_stats = TRUE
