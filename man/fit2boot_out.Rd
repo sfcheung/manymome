@@ -13,7 +13,7 @@ fit2boot_out_do_boot(
   R = 100,
   seed = NULL,
   parallel = FALSE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   make_cluster_args = list(),
   progress = TRUE,
   compute_implied_stats = TRUE,
@@ -47,7 +47,7 @@ Default is \code{NULL}.}
 CPU cores to use when \code{parallel} is
 \code{TRUE}. Default is the number of
 non-logical cores minus one (one
-minimum). Will raise an error if
+minimum). Will raise a warning if
 greater than the number of cores
 detected by
 \code{\link[parallel:detectCores]{parallel::detectCores()}}. If

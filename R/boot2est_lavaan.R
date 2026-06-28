@@ -155,7 +155,7 @@ fit2boot_out <- function(fit,
 #' CPU cores to use when `parallel` is
 #' `TRUE`. Default is the number of
 #' non-logical cores minus one (one
-#' minimum). Will raise an error if
+#' minimum). Will raise a warning if
 #' greater than the number of cores
 #' detected by
 #' [parallel::detectCores()]. If
@@ -191,7 +191,7 @@ fit2boot_out_do_boot <- function(fit,
                                  R = 100,
                                  seed = NULL,
                                  parallel = FALSE,
-                                 ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                                 ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
                                  make_cluster_args = list(),
                                  progress = TRUE,
                                  compute_implied_stats = TRUE,
@@ -300,7 +300,7 @@ fit2boot_out_do_boot <- function(fit,
     if (parallel) {
         if (is.numeric(ncores)) {
             ncores0 <- parallel::detectCores()
-            if (ncores == ncores0) {
+            if (isTRUE(ncores >= ncores0)) {
                 warning(paste0("'ncores' >= The number of detected cores (",
                                ncores0,"). The computer may not be responsive",
                                " when bootstrapping is running."),

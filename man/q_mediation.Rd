@@ -37,7 +37,7 @@ q_mediation(
   sem_args = list(),
   na.action = NA,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   progress = TRUE
 )
 
@@ -64,7 +64,7 @@ q_moderated_mediation(
   sem_args = list(),
   na.action = NA,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   progress = TRUE
 )
 
@@ -91,7 +91,7 @@ q_simple_mediation(
   sem_args = list(),
   na.action = NA,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   progress = TRUE
 )
 
@@ -118,7 +118,7 @@ q_moderated_simple_mediation(
   sem_args = list(),
   na.action = NA,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   progress = TRUE
 )
 
@@ -145,7 +145,7 @@ q_serial_mediation(
   sem_args = list(),
   na.action = NA,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   progress = TRUE
 )
 
@@ -172,7 +172,7 @@ q_moderated_serial_mediation(
   sem_args = list(),
   na.action = NA,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   progress = TRUE
 )
 
@@ -199,7 +199,7 @@ q_parallel_mediation(
   sem_args = list(),
   na.action = NA,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   progress = TRUE
 )
 
@@ -226,7 +226,7 @@ q_moderated_parallel_mediation(
   sem_args = list(),
   na.action = NA,
   parallel = TRUE,
-  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
   progress = TRUE
 )
 
@@ -453,7 +453,7 @@ doing bootstrapping.}
 CPU cores to use when \code{parallel} is
 \code{TRUE}. Default is the number of
 non-logical cores minus one (one
-minimum). Will raise an error if
+minimum). Will raise a warning if
 greater than the number of cores
 detected by
 \code{\link[parallel:detectCores]{parallel::detectCores()}}. If
@@ -821,10 +821,10 @@ printing all the major results.
 \subsection{Moderated Mediation}{
 
 Support for moderated mediation
-has been added since Version 0.3.6
+has been added since Version 0.3.6.3
 for models fitted by multiple regression
-(\code{fit_method = "regression"}), and since
-Version 0.3.6.3 for models fitted
+(\code{fit_method = "regression"}), and
+for models fitted
 by structural equation modeling
 (\code{fit_method = "sem"}) if a model
 has no latent variables. If a model

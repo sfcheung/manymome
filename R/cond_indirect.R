@@ -297,7 +297,7 @@
 #' CPU cores to use when `parallel` is
 #' `TRUE`. Default is the number of
 #' non-logical cores minus one (one
-#' minimum). Will raise an error if
+#' minimum). Will raise a warning if
 #' greater than the number of cores
 #' detected by
 #' [parallel::detectCores()]. If
@@ -526,7 +526,7 @@ cond_indirect <- function(x,
                      R = 100,
                      seed = NULL,
                      parallel = TRUE,
-                     ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                     ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
                      make_cluster_args = list(),
                      progress = TRUE,
                      save_boot_full = FALSE,
@@ -862,7 +862,7 @@ indirect_effect <- function(x,
                      R = 100,
                      seed = NULL,
                      parallel = TRUE,
-                     ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                     ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
                      make_cluster_args = list(),
                      progress = TRUE,
                      save_boot_full = FALSE,
@@ -1024,7 +1024,7 @@ cond_indirect_effects <- function(wlevels,
                                   R = 100,
                                   seed = NULL,
                                   parallel = TRUE,
-                                  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1),
+                                  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
                                   make_cluster_args = list(),
                                   progress = TRUE,
                                   boot_out = NULL,
