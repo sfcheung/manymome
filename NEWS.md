@@ -1,4 +1,4 @@
-# manymome 0.3.6.4
+# manymome 0.3.6.5
 
 ## New Features
 
@@ -17,6 +17,16 @@
   to `"sam"` to use the
   structural-after-measurement method.
   (0.3.6.3)
+
+## Improvement
+
+- Users can specify the change of moderator
+  values when calling `index_of_mome()`
+  and `index_of_momome()` via the new
+  arguments `increase_from`, `increase_to`,
+  `w_increase_from`, `w_increase_to`,
+  `z_increase_from`, and `z_increase_to`.
+  (0.3.6.5)
 
 ## Miscellaneous
 
