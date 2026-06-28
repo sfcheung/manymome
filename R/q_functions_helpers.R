@@ -159,7 +159,8 @@ to_direct <- function(x) {
 # # Output:
 # - A named vector of lm formulas
 form_models_paths <- function(from_to,
-                              cov = NULL) {
+                              cov = NULL,
+                              moderators = NULL) {
   from_to_new <- from_to
   dvs <- names(from_to_new)
   if (!is.null(cov)) {
@@ -175,18 +176,202 @@ form_models_paths <- function(from_to,
       }
     }
   }
-  f0 <- function(y, x) {
-          out0 <- paste0(x,
-                         collapse = " + ")
-          out1 <- paste0(y,
-                         " ~ ",
-                         out0)
-          out1
-        }
-  out0 <- mapply(f0,
-                 y = dvs,
-                 x = from_to_new,
-                 SIMPLIFY = TRUE,
-                 USE.NAMES = TRUE)
+  if (is.null(moderators)) {
+    f0 <- function(y, x) {
+            out0 <- paste0(x,
+                          collapse = " + ")
+            out1 <- paste0(y,
+                          " ~ ",
+                          out0)
+            out1
+          }
+    out0 <- mapply(f0,
+                  y = dvs,
+                  x = from_to_new,
+                  SIMPLIFY = TRUE,
+                  USE.NAMES = TRUE)
+  } else {
+    w_list <- fix_moderators(moderators)
+    w_m <- lapply(
+      dvs,
+      function(m_i, w_list) {
+        out <- sapply(
+                  w_list,
+                  function(x) x["y"] == m_i
+                )
+        unname(w_list[out])
+      },
+      w_list = w_list
+    )
+    names(w_m) <- dvs
+    tmpfct <- function(m,
+                       x,
+                       w_m) {
+                iv_m <- x
+                for (m_i in w_m) {
+                  iv_m <- setdiff(iv_m, m_i[c("x", "w")])
+                  iv_m <- union(iv_m, m_i["xw"])
+                }
+                paste(m,
+                      "~",
+                      paste(iv_m,
+                            collapse = " + "))
+              }
+    out0 <- mapply(tmpfct,
+                    m = dvs,
+                    x = from_to_new,
+                    w_m = w_m,
+                   SIMPLIFY = TRUE,
+                   USE.NAMES = TRUE)
+  }
   out0
 }
+
+#' @noRd
+fix_moderators <- function(
+  moderators
+) {
+  moderators_org <- moderators
+  # ==== One element for one product term ====
+  moderators <- unlist(moderators_org, use.names = FALSE)
+  moderators_names <- sapply(
+    seq_along(moderators_org),
+    function(x) {
+      rep(names(moderators_org)[x],
+          times = length(moderators_org[[x]]))
+    },
+    USE.NAMES = FALSE
+  )
+  moderators_names <- unlist(moderators_names)
+  names(moderators) <- moderators_names
+
+  path_names <- parse_paths(names(moderators))
+
+  # ==== Check paths ====
+  tmp <- sapply(path_names, length)
+  if (any(tmp != 2)) {
+    tmp <- names(moderators)[tmp != 2]
+    stop("Moderator(s) must be specified only for component paths:",
+         tmp)
+  }
+  # ==== Form the output ====
+  f <- function(
+    i,
+    moderators
+  ) {
+    m_i <- moderators[i]
+    path_name <- parse_paths(names(m_i))[[1]]
+    w_i <- moderators[[i]]
+    c(x = path_name[1],
+      y = path_name[2],
+      w = w_i,
+      xw = paste0(path_name[1], "*", w_i))
+  }
+  out0 <- lapply(
+    seq_along(moderators),
+    FUN = f,
+    moderators = moderators
+  )
+  out0
+}
+
+#' @noRd
+is_moderated <- function(
+  path,
+  fit
+) {
+  # Is a path moderated?
+  tmp <- cond_indirect(
+    x = path$x,
+    y = path$y,
+    m = path$m,
+    fit = fit,
+    get_prods_only = TRUE
+  )
+  out0 <- sapply(
+    tmp,
+    function(x) {
+      if (identical(x, NA)) {
+        return(FALSE)
+      } else {
+        if (!is.null(x$prod)) {
+          return(TRUE)
+        } else {
+          return(FALSE)
+        }
+      }
+    }
+  )
+  any(out0)
+}
+
+
+#' @noRd
+get_w <- function(
+  path,
+  fit
+) {
+  # path must be a moderated path
+  tmp <- cond_indirect(
+    x = path$x,
+    y = path$y,
+    m = path$m,
+    fit = fit,
+    get_prods_only = TRUE
+  )
+  out0 <- sapply(
+    tmp,
+    function(x) {
+      if (identical(x, NA)) {
+        return(character(0))
+      } else {
+        x$w
+      }
+    }
+  )
+  unname(unique(unlist(out0)))
+}
+
+#' @noRd
+q_mediation_has_moderators <- function(
+  object
+) {
+  if (q_mediation_has_moderated_indirect_paths(object)) {
+    return(TRUE)
+  }
+  if (q_mediation_has_moderated_direct_paths(object)) {
+    return(TRUE)
+  }
+  FALSE
+}
+
+#' @noRd
+q_mediation_has_moderated_indirect_paths <- function(
+  object
+) {
+  chk <- sapply(
+    object$cond_ind_out,
+    is.null
+  )
+  if (any(!chk)) {
+    return(TRUE)
+  }
+  FALSE
+}
+
+#' @noRd
+q_mediation_has_moderated_direct_paths <- function(
+  object
+) {
+  chk <- sapply(
+    object$dir_out,
+    inherits,
+    what = "cond_indirect_effects"
+  )
+  if (any(chk)) {
+    return(TRUE)
+  }
+  FALSE
+}
+
+

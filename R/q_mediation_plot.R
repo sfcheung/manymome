@@ -298,6 +298,11 @@ plot.q_mediation <- function(
                 ...
               ) {
 
+  # Does not support a model with moderators, for now
+  if (q_mediation_has_moderators(x)) {
+    stop("The plot method does not (yet) support a model with moderators.")
+  }
+
   v_pos <- match.arg(v_pos)
   v_preference <- match.arg(v_preference)
 
