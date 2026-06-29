@@ -55,7 +55,7 @@ merge_model_frame <- function(outputs) {
                  function(x) {
                     out <- stats::model.frame(x)
                   })
-    vnames <- unique(unlist(sapply(mm, colnames)))
+    vnames <- unique(unlist(lapply(mm, colnames)))
     idname <- newname(vnames)
     mm1 <- lapply(mm, function(x) {
                           j <- colnames(x)
