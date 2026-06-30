@@ -71,6 +71,7 @@ articles:
   contents:
   - articles/mo_lm
   - articles/mo_lm_2x1w
+  - articles/mo_lm_2x2w
 
 - title: Technical Appendices
   contents:
