@@ -27,6 +27,7 @@ knitr::knit("q_mediation_sem_indicators_arbitrary.Rmd.original", output = "q_med
 knitr::knit("mome_sam.Rmd.original", output = "mome_sam.Rmd")
 knitr::knit("mo_sam.Rmd.original", output = "mo_sam.Rmd")
 knitr::knit("mo_lm.Rmd.original", output = "mo_lm.Rmd")
+knitr::knit("mo_lm_2x1w.Rmd.original", output = "mo_lm_2x1w.Rmd")
 pkgdown::build_articles("../../"); pkgdown::preview_site("../../")
 
 setwd(base_dir)

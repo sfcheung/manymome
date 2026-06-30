@@ -1,0 +1,30 @@
+## Generating Bootstrap Estimates
+
+Although OLS can be used to estimate and
+test the
+unstandardized effects, it is inappropriate
+for forming the confidence intervals for the
+standardized effects (see
+Yuan & Chan, 2011, on the issue on standardized
+regression coefficients). Therefore,
+we will introduce how to generate
+nonparametric bootstrap estimates in this guide.
+
+To form nonparametric bootstrap confidence interval for
+effects to be computed, `do_boot()` can be used
+to generate bootstrap estimates for all regression
+coefficients first. These estimates can be reused for
+any effects to be estimated.
+
+
+```{r do_boot}
+boot_out <- do_boot(
+  lm_y,
+  R = 5000,
+  seed = 54532
+)
+```
+
+Please see `vignette("do_boot")` or
+the help page of `do_boot()` on how
+to use this function.

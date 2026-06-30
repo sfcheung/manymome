@@ -39,7 +39,6 @@ articles:
   contents:
   - med_lm
   - mome_lm
-  - articles/mo_lm
 
 - title: All-In-One Functions
   navbar: All-In-One Functions
@@ -66,6 +65,12 @@ articles:
   - do_boot
   - do_mc
   - mod_levels
+
+- title: Moderated Regression
+  navbar: Moderated Regression
+  contents:
+  - articles/mo_lm
+  - articles/mo_lm_2x1w
 
 - title: Technical Appendices
   contents:
