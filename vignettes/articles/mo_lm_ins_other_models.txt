@@ -1,0 +1,20 @@
+
+# Other Moderated Regression Models
+
+The function `cond_effects()` has no limit
+on the number of moderators and the number
+of predictors with their effects moderated.
+
+The demonstrations of other moderated
+regression models can be found from
+the [list of articles](./index.html#moderated-regression).
+
+The levels
+for the moderators are controlled by `mod_levels()`
+and related functions in the same way whether a
+model is fitted by `lavaan::sem()` or `lm()`.
+Please refer to other articles (e.g.,
+`vignette("manymome")` and `vignette("mod_levels")`)
+on how to estimate effects in other model analyzed by
+multiple regression.
+

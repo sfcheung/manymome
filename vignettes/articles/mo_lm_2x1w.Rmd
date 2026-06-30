@@ -77,29 +77,29 @@ of the paths:
 
 ``` r
 summary(lm_y)
-#>
+#> 
 #> Call:
 #> lm(formula = y ~ w * x1 + w * x2 + c1 + c2, data = dat)
-#>
+#> 
 #> Residuals:
-#>      Min       1Q   Median       3Q      Max
-#> -0.46049 -0.12989 -0.00299  0.11899  0.54333
-#>
+#>      Min       1Q   Median       3Q      Max 
+#> -0.46049 -0.12989 -0.00299  0.11899  0.54333 
+#> 
 #> Coefficients:
-#>             Estimate Std. Error t value Pr(>|t|)
+#>             Estimate Std. Error t value Pr(>|t|)    
 #> (Intercept)  3.91686    0.46699   8.387 1.06e-14 ***
 #> w           -1.94839    0.25990  -7.497 2.35e-12 ***
 #> x1          -0.63573    0.18248  -3.484 0.000612 ***
 #> x2          -0.89621    0.13362  -6.707 2.16e-10 ***
-#> c1           0.17521    0.05892   2.974 0.003318 **
-#> c2           0.12061    0.05786   2.085 0.038421 *
+#> c1           0.17521    0.05892   2.974 0.003318 ** 
+#> c2           0.12061    0.05786   2.085 0.038421 *  
 #> w:x1         0.45617    0.10450   4.365 2.07e-05 ***
 #> w:x2         0.56611    0.07950   7.121 2.09e-11 ***
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-#>
+#> 
 #> Residual standard error: 0.2023 on 192 degrees of freedom
-#> Multiple R-squared:  0.4886,	Adjusted R-squared:   0.47
+#> Multiple R-squared:  0.4886,	Adjusted R-squared:   0.47 
 #> F-statistic: 26.21 on 7 and 192 DF,  p-value: < 2.2e-16
 ```
 
@@ -162,18 +162,18 @@ out1 <- cond_effects(
   fit = lm_y
 )
 out1
-#>
+#> 
 #> == Conditional effects ==
-#>
+#> 
 #>  Path: x1 -> y
 #>  Conditional on moderator(s): w
 #>  Moderator(s) represented by: w
-#>
+#> 
 #>       [w]   (w)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1 M+1.0SD 2.176  0.357 0.069  5.168  0.000 ***  0.221 0.493
 #> 2 Mean    1.717  0.148 0.047  3.160  0.002 **   0.055 0.240
 #> 3 M-1.0SD 1.258 -0.062 0.065 -0.953  0.342     -0.189 0.066
-#>
+#> 
 #>  - [SE] are regression standard errors.
 #>  - [Stat] are the t statistics used to test the effects.
 #>  - [pvalue] are p-values computed from 'Stat'.
@@ -181,20 +181,20 @@ out1
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from
 #>    regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#>
+#> 
 ```
 
 The column `ind` show the effects of
 `x1` on `y` for different levels of `w`.
 
 When `w` is one standard deviation
-below mean, the indirect effect is
+below mean, the effect of `x1` is
 -0.062,
 with 95% confidence interval
 [-0.189, 0.066].
 
 When `w` is one standard deviation
-above mean, the indirect effect is
+above mean, the effect of `x1` is
 0.357,
 with 95% confidence interval
 [0.221, 0.493].
@@ -214,18 +214,18 @@ out2 <- cond_effects(
   fit = lm_y
 )
 out2
-#>
+#> 
 #> == Conditional effects ==
-#>
+#> 
 #>  Path: x2 -> y
 #>  Conditional on moderator(s): w
 #>  Moderator(s) represented by: w
-#>
+#> 
 #>       [w]   (w)    ind    SE   Stat pvalue Sig  CI.lo  CI.hi
 #> 1 M+1.0SD 2.176  0.336 0.069  4.862  0.000 ***  0.200  0.472
 #> 2 Mean    1.717  0.076 0.050  1.505  0.134     -0.024  0.175
 #> 3 M-1.0SD 1.258 -0.184 0.055 -3.363  0.001 *** -0.292 -0.076
-#>
+#> 
 #>  - [SE] are regression standard errors.
 #>  - [Stat] are the t statistics used to test the effects.
 #>  - [pvalue] are p-values computed from 'Stat'.
@@ -233,7 +233,7 @@ out2
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from
 #>    regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#>
+#> 
 ```
 
 When `w` is one standard deviation
@@ -340,23 +340,23 @@ std1 <- cond_effects(
   standardized_y = TRUE
 )
 std1
-#>
+#> 
 #> == Conditional effects ==
-#>
+#> 
 #>  Path: x1 -> y
 #>  Conditional on moderator(s): w
 #>  Moderator(s) represented by: w
-#>
+#> 
 #>       [w]   (w)    std  CI.lo CI.hi Sig    ind
 #> 1 M+1.0SD 2.176  0.401  0.267 0.533 Sig  0.357
 #> 2 Mean    1.717  0.166  0.077 0.254 Sig  0.148
 #> 3 M-1.0SD 1.258 -0.069 -0.191 0.060     -0.062
-#>
+#> 
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
 #>    nonparametric bootstrapping with 5000 samples.
-#>  - std: The standardized conditional effects.
+#>  - std: The standardized conditional effects. 
 #>  - ind: The unstandardized conditional effects.
-#>
+#> 
 ```
 
 When `w` is one standard deviation below
@@ -386,23 +386,23 @@ std2 <- cond_effects(
   standardized_y = TRUE
 )
 std2
-#>
+#> 
 #> == Conditional effects ==
-#>
+#> 
 #>  Path: x2 -> y
 #>  Conditional on moderator(s): w
 #>  Moderator(s) represented by: w
-#>
+#> 
 #>       [w]   (w)    std  CI.lo  CI.hi Sig    ind
 #> 1 M+1.0SD 2.176  0.420  0.265  0.586 Sig  0.336
 #> 2 Mean    1.717  0.095 -0.026  0.211      0.076
 #> 3 M-1.0SD 1.258 -0.230 -0.362 -0.104 Sig -0.184
-#>
+#> 
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
 #>    nonparametric bootstrapping with 5000 samples.
-#>  - std: The standardized conditional effects.
+#>  - std: The standardized conditional effects. 
 #>  - ind: The unstandardized conditional effects.
-#>
+#> 
 ```
 
 When `w` is one standard deviation below
@@ -454,6 +454,9 @@ plot(std2,
 
 ![plot of chunk mo_lm_2x1w_plot_std2_tumble](mo_lm_2x1w_plot_std2_tumble-1.png)
 
+
+
+
 # Other Moderated Regression Models
 
 The function `cond_effects()` has no limit
@@ -472,6 +475,7 @@ Please refer to other articles (e.g.,
 `vignette("manymome")` and `vignette("mod_levels")`)
 on how to estimate effects in other model analyzed by
 multiple regression.
+
 
 # References
 

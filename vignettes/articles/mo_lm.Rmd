@@ -1,7 +1,7 @@
 ---
 title: "Moderating Effect by Multiple Regression"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-06-28"
+date: "2026-06-30"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -15,7 +15,8 @@ vignette: >
 
 # Introduction
 
-This article is a brief illustration of how
+This article is part of a series of
+brief illustrations of how
 to use
 `cond_effects()`
 from the package
@@ -63,7 +64,7 @@ Suppose this is the model being fitted,
 with control variables omitted from the
 plot for readability:
 
-![plot of chunk mo_lm_draw_model_w1](mo_lm_draw_model_w1-1.png)
+![plot of chunk mo_lm_1x1w_model](mo_lm_1x1w_model-1.png)
 
 ## Fit by Regression
 
@@ -125,7 +126,7 @@ any effects to be estimated.
 
 
 ``` r
-boot_out_lm_w1 <- do_boot(
+boot_out_lm_y_w1 <- do_boot(
   lm_y_w1,
   R = 5000,
   seed = 54532
@@ -185,13 +186,13 @@ The column `ind` show the effects of
 `x` on `y` for different levels of `w1`.
 
 When `w1` is one standard deviation
-below mean, the indirect effect is
+below mean, the effect of `x1` is
 -0.219,
 with 95% confidence interval
 [-0.442, 0.004].
 
 When `w1` is one standard deviation
-above mean, the indirect effect is
+above mean, the effect of `x1` is
 0.633,
 with 95% confidence interval
 [0.448, 0.818].
@@ -206,7 +207,7 @@ method for plotting the conditional effects:
 plot(out_xy_on_w1)
 ```
 
-![plot of chunk plot_cond_w1](plot_cond_w1-1.png)
+![plot of chunk mo_lm_plot_cond_w1](mo_lm_plot_cond_w1-1.png)
 
 By default, the lines
 span the range of one standard deviation below
@@ -223,7 +224,7 @@ plot(out_xy_on_w1,
      graph_type = "tumble")
 ```
 
-![plot of chunk plot_cond_tumble_w1](plot_cond_tumble_w1-1.png)
+![plot of chunk mo_lm_plot_cond_tumble_w1](mo_lm_plot_cond_tumble_w1-1.png)
 
 In this example, the distribution of the predictor
 vary as the level of the moderator changes:
@@ -242,7 +243,7 @@ Please refer to the help page of
 `plot.cond_indirect_effects()` for available
 options.
 
-## Standardized Conditional Indirect Effects
+## Standardized Conditional Effects
 
 The standardized conditional
 effect from `x` to `y` conditional
@@ -261,7 +262,7 @@ std_xy_on_w1 <- cond_effects(
   y = "y",
   fit = lm_y_w1,
   boot_ci = TRUE,
-  boot_out = boot_out_lm_w1,
+  boot_out = boot_out_lm_y_w1,
   standardized_x = TRUE,
   standardized_y = TRUE
 )
@@ -307,7 +308,7 @@ values displayed on the axes:
 plot(std_xy_on_w1)
 ```
 
-![plot of chunk plot_cond_std](plot_cond_std-1.png)
+![plot of chunk mo_lm_plot_cond_std_w1](mo_lm_plot_cond_std_w1-1.png)
 
 This is the tumble graph:
 
@@ -317,7 +318,7 @@ plot(std_xy_on_w1,
      graph_type = "tumble")
 ```
 
-![plot of chunk plot_cond_std_tumble_w1](plot_cond_std_tumble_w1-1.png)
+![plot of chunk mo_lm_plot_cond_std_tumble_w1](mo_lm_plot_cond_std_tumble_w1-1.png)
 
 # Two Moderators
 
@@ -328,7 +329,7 @@ moderating effects of two moderators,
 with control variables omitted from the
 plot for readability:
 
-![plot of chunk mo_lm_draw_model_w1w2](mo_lm_draw_model_w1w2-1.png)
+![plot of chunk mo_lm_model_w1w2](mo_lm_model_w1w2-1.png)
 
 The path parameters
 can be estimated by the following multiple
@@ -437,7 +438,7 @@ even with two moderators:
 plot(out_xy_on_w1w2)
 ```
 
-![plot of chunk plot_cond_w1w2](plot_cond_w1w2-1.png)
+![plot of chunk mo_lm_plot_cond_w1w2](mo_lm_plot_cond_w1w2-1.png)
 
 This plot is not easy to read when the
 model has two or more moderators.
@@ -456,7 +457,7 @@ plot(out_xy_on_w1w2,
      facet_grid_cols = "w2")
 ```
 
-![plot of chunk plot_cond_w1w2_w2](plot_cond_w1w2_w2-1.png)
+![plot of chunk mo_lm_plot_cond_w1w2_w2](mo_lm_plot_cond_w1w2_w2-1.png)
 
 We can do the same for `w1`:
 
@@ -466,7 +467,7 @@ plot(out_xy_on_w1w2,
      facet_grid_cols = "w1")
 ```
 
-![plot of chunk plot_cond_w1w2_w1](plot_cond_w1w2_w1-1.png)
+![plot of chunk mo_lm_plot_cond_w1w2_w1](mo_lm_plot_cond_w1w2_w1-1.png)
 
 We can also use `graph_type = "tumble"`
 to generate tumble graphs:
@@ -478,7 +479,7 @@ plot(out_xy_on_w1w2,
      graph_type = "tumble")
 ```
 
-![plot of chunk plot_cond_w1w2_w2_tumble](plot_cond_w1w2_w2_tumble-1.png)
+![plot of chunk mo_lm_plot_cond_w1w2_w2_tumble](mo_lm_plot_cond_w1w2_w2_tumble-1.png)
 
 We can do the same for `w1`:
 
@@ -489,9 +490,9 @@ plot(out_xy_on_w1w2,
      graph_type = "tumble")
 ```
 
-![plot of chunk plot_cond_w1w2_w1_tumble](plot_cond_w1w2_w1_tumble-1.png)
+![plot of chunk mo_lm_plot_cond_w1w2_w1_tumble](mo_lm_plot_cond_w1w2_w1_tumble-1.png)
 
-## Standardized Conditional Indirect Effects
+## Standardized Conditional Effects
 
 The standardized conditional
 effect from `x` to `y` conditional
@@ -541,7 +542,7 @@ plot(std_xy_on_w1w2,
      facet_grid_cols = "w2")
 ```
 
-![plot of chunk plot_cond_std_w1w2_w2](plot_cond_std_w1w2_w2-1.png)
+![plot of chunk mo_lm_plot_cond_std_w1w2_w2](mo_lm_plot_cond_std_w1w2_w2-1.png)
 
 
 ``` r
@@ -549,7 +550,7 @@ plot(std_xy_on_w1w2,
      facet_grid_cols = "w1")
 ```
 
-![plot of chunk plot_cond_std_w1w2_w1](plot_cond_std_w1w2_w1-1.png)
+![plot of chunk mo_lm_plot_cond_std_w1w2_w1](mo_lm_plot_cond_std_w1w2_w1-1.png)
 
 These are the tumble graphs:
 
@@ -560,7 +561,7 @@ plot(std_xy_on_w1w2,
      graph_type = "tumble")
 ```
 
-![plot of chunk plot_cond_std_w1w2_w2_tumble](plot_cond_std_w1w2_w2_tumble-1.png)
+![plot of chunk mo_lm_plot_cond_std_w1w2_w2_tumble](mo_lm_plot_cond_std_w1w2_w2_tumble-1.png)
 
 
 ``` r
@@ -569,12 +570,20 @@ plot(std_xy_on_w1w2,
      graph_type = "tumble")
 ```
 
-![plot of chunk plot_cond_std_w1w2_w1_tumble](plot_cond_std_w1w2_w1_tumble-1.png)
+![plot of chunk mo_lm_plot_cond_std_w1w2_w1_tumble](mo_lm_plot_cond_std_w1w2_w1_tumble-1.png)
 
-# More Complicated Models
+
+
+# Other Moderated Regression Models
 
 The function `cond_effects()` has no limit
-on the number of moderators.
+on the number of moderators and the number
+of predictors with their effects moderated.
+
+The demonstrations of other moderated
+regression models can be found from
+the [list of articles](./index.html#moderated-regression).
+
 The levels
 for the moderators are controlled by `mod_levels()`
 and related functions in the same way whether a
@@ -583,6 +592,7 @@ Please refer to other articles (e.g.,
 `vignette("manymome")` and `vignette("mod_levels")`)
 on how to estimate effects in other model analyzed by
 multiple regression.
+
 
 # References
 

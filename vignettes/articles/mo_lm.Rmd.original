@@ -21,7 +21,8 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This article is a brief illustration of how
+This article is part of a series of
+brief illustrations of how
 to use
 `cond_effects()`
 from the package
@@ -61,7 +62,7 @@ Suppose this is the model being fitted,
 with control variables omitted from the
 plot for readability:
 
-```{r mo_lm_draw_model_w1, echo = FALSE}
+```{r mo_lm_1x1w_model, echo = FALSE}
 library(semPlot)
 suppressMessages(library(lavaan))
 dat$w1x <- dat$x * dat$w1
@@ -123,7 +124,7 @@ coefficients first. These estimates can be reused for
 any effects to be estimated.
 
 ```{r do_boo_w1}
-boot_out_lm_w1 <- do_boot(
+boot_out_lm_y_w1 <- do_boot(
   lm_y_w1,
   R = 5000,
   seed = 54532
@@ -161,13 +162,13 @@ The column `ind` show the effects of
 `x` on `y` for different levels of `w1`.
 
 When `w1` is one standard deviation
-below mean, the indirect effect is
+below mean, the effect of `x1` is
 `r formatC(coef(out_xy_on_w1)[3], digits = 3, format = "f")`,
 with 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out_xy_on_w1)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 When `w1` is one standard deviation
-above mean, the indirect effect is
+above mean, the effect of `x1` is
 `r formatC(coef(out_xy_on_w1)[1], digits = 3, format = "f")`,
 with 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out_xy_on_w1)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
@@ -177,7 +178,7 @@ with 95% confidence interval
 The output of `cond_effects()` has a `plot`
 method for plotting the conditional effects:
 
-```{r plot_cond_w1}
+```{r mo_lm_plot_cond_w1}
 plot(out_xy_on_w1)
 ```
 
@@ -190,7 +191,7 @@ levels of the moderators, a version of
 *tumble graph* proposed by Bodner (2016)
 can be plotted by adding `graph_type = "tumble"`:
 
-```{r plot_cond_tumble_w1}
+```{r mo_lm_plot_cond_tumble_w1}
 plot(out_xy_on_w1,
      graph_type = "tumble")
 ```
@@ -212,7 +213,7 @@ Please refer to the help page of
 `plot.cond_indirect_effects()` for available
 options.
 
-## Standardized Conditional Indirect Effects
+## Standardized Conditional Effects
 
 The standardized conditional
 effect from `x` to `y` conditional
@@ -230,7 +231,7 @@ std_xy_on_w1 <- cond_effects(
   y = "y",
   fit = lm_y_w1,
   boot_ci = TRUE,
-  boot_out = boot_out_lm_w1,
+  boot_out = boot_out_lm_y_w1,
   standardized_x = TRUE,
   standardized_y = TRUE
 )
@@ -254,13 +255,13 @@ on the standardized conditional effects,
 although the only differences are the
 values displayed on the axes:
 
-```{r plot_cond_std}
+```{r mo_lm_plot_cond_std_w1}
 plot(std_xy_on_w1)
 ```
 
 This is the tumble graph:
 
-```{r plot_cond_std_tumble_w1}
+```{r mo_lm_plot_cond_std_tumble_w1}
 plot(std_xy_on_w1,
      graph_type = "tumble")
 ```
@@ -274,7 +275,7 @@ moderating effects of two moderators,
 with control variables omitted from the
 plot for readability:
 
-```{r mo_lm_draw_model_w1w2, echo = FALSE}
+```{r mo_lm_model_w1w2, echo = FALSE}
 library(semPlot)
 suppressMessages(library(lavaan))
 dat$wx <- dat$x * dat$w1
@@ -352,7 +353,7 @@ and `w2`.
 The `plot()` method can be used directly
 even with two moderators:
 
-```{r plot_cond_w1w2}
+```{r mo_lm_plot_cond_w1w2}
 plot(out_xy_on_w1w2)
 ```
 
@@ -367,14 +368,14 @@ For example, supposed we would like to
 generate one graph for each level of `w2`,
 we add `facet_grid_cols = "w2"`:
 
-```{r plot_cond_w1w2_w2}
+```{r mo_lm_plot_cond_w1w2_w2}
 plot(out_xy_on_w1w2,
      facet_grid_cols = "w2")
 ```
 
 We can do the same for `w1`:
 
-```{r plot_cond_w1w2_w1}
+```{r mo_lm_plot_cond_w1w2_w1}
 plot(out_xy_on_w1w2,
      facet_grid_cols = "w1")
 ```
@@ -382,7 +383,7 @@ plot(out_xy_on_w1w2,
 We can also use `graph_type = "tumble"`
 to generate tumble graphs:
 
-```{r plot_cond_w1w2_w2_tumble}
+```{r mo_lm_plot_cond_w1w2_w2_tumble}
 plot(out_xy_on_w1w2,
      facet_grid_cols = "w2",
      graph_type = "tumble")
@@ -390,13 +391,13 @@ plot(out_xy_on_w1w2,
 
 We can do the same for `w1`:
 
-```{r plot_cond_w1w2_w1_tumble}
+```{r mo_lm_plot_cond_w1w2_w1_tumble}
 plot(out_xy_on_w1w2,
      facet_grid_cols = "w1",
      graph_type = "tumble")
 ```
 
-## Standardized Conditional Indirect Effects
+## Standardized Conditional Effects
 
 The standardized conditional
 effect from `x` to `y` conditional
@@ -421,42 +422,32 @@ std_xy_on_w1w2
 The `plot()` method can also be used
 on the standardized conditional effects:
 
-```{r plot_cond_std_w1w2_w2}
+```{r mo_lm_plot_cond_std_w1w2_w2}
 plot(std_xy_on_w1w2,
      facet_grid_cols = "w2")
 ```
 
-```{r plot_cond_std_w1w2_w1}
+```{r mo_lm_plot_cond_std_w1w2_w1}
 plot(std_xy_on_w1w2,
      facet_grid_cols = "w1")
 ```
 
 These are the tumble graphs:
 
-```{r plot_cond_std_w1w2_w2_tumble}
+```{r mo_lm_plot_cond_std_w1w2_w2_tumble}
 plot(std_xy_on_w1w2,
      facet_grid_cols = "w2",
      graph_type = "tumble")
 ```
 
-```{r plot_cond_std_w1w2_w1_tumble}
+```{r mo_lm_plot_cond_std_w1w2_w1_tumble}
 plot(std_xy_on_w1w2,
      facet_grid_cols = "w1",
      graph_type = "tumble")
 ```
 
-# More Complicated Models
-
-The function `cond_effects()` has no limit
-on the number of moderators.
-The levels
-for the moderators are controlled by `mod_levels()`
-and related functions in the same way whether a
-model is fitted by `lavaan::sem()` or `lm()`.
-Please refer to other articles (e.g.,
-`vignette("manymome")` and `vignette("mod_levels")`)
-on how to estimate effects in other model analyzed by
-multiple regression.
+```{r load_other_models, child=c("mo_lm_ins_other_models.txt")}
+```
 
 # References
 
