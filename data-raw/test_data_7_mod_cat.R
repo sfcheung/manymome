@@ -1,6 +1,6 @@
 # Generate data
 library(lavaan)
-set.seed(64324132)
+set.seed(655345)
 e_sd <- sqrt(1 - .2^2)
 # gp: "Control"; : site: "Site 1"
 n <- 100
@@ -44,6 +44,7 @@ c1 <- rnorm(n)
 c2 <- rnorm(n)
 x <- rnorm(n, 0, 1)
 y <- .0 * x + rnorm(n, 0, e_sd) + .1 * c2 + .2 * c2
+x <- x - 2
 dat5 <- data.frame(x, y, c1, c2)
 dat5$gp <- "Control"
 dat5$site <- "Site 3"
@@ -53,6 +54,7 @@ c1 <- rnorm(n)
 c2 <- rnorm(n)
 x <- rnorm(n, 0, 1)
 y <- .0 * x + rnorm(n, 0, e_sd) + .1 * c2 + .2 * c2
+x <- x - 2
 dat6 <- data.frame(x, y, c1, c2)
 dat6$gp <- "Treatment"
 dat6$site <- "Site 3"
@@ -106,7 +108,8 @@ out3
 plot(out3, graph_type = "tumble")
 plot(out3, facet_grid_cols = "gp", graph_type = "tumble")
 plot(out3, facet_grid_cols = "site", graph_type = "tumble")
-plot(out3, facet_grid_cols = "site")
+plot(out3, facet_grid_cols = "site", graph_type = "tumble")
+plot(out3, facet_grid_rows = "site", graph_type = "tumble")
 
 psych::describe(dat)
 
@@ -127,5 +130,5 @@ lm_out3 <- lm(y ~ x*gp*site + c1 + c2, dat)
 summary(lm_out3)
 
 data_mod_cat_2w <- dat
-# usethis::use_data(data_mod_cat_2w, overwrite = TRUE)
+usethis::use_data(data_mod_cat_2w, overwrite = TRUE)
 
