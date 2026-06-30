@@ -97,7 +97,7 @@ out2 <- cond_effects(
 )
 out2
 data_mod_2x1w <- dat
-# usethis::use_data(data_mod_2x1w, overwrite = TRUE)
+usethis::use_data(data_mod_2x1w, overwrite = TRUE)
 
 # Generate data
 library(lavaan)
@@ -157,4 +157,4 @@ out2 <- cond_effects(
 )
 out2
 data_mod_2x2w <- dat
-# usethis::use_data(data_mod_2x2w, overwrite = TRUE)
+usethis::use_data(data_mod_2x2w, overwrite = TRUE)
