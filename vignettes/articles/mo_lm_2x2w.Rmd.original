@@ -9,6 +9,8 @@ vignette: >
   %\VignetteIndexEntry{Moderated Regression: Two Predictors and Two Moderators}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: references.bib
+csl: apa.csl
 ---
 
 ```{r, include = FALSE}
@@ -33,17 +35,21 @@ dat <- data_mod_2x2w
 print(head(dat), digits = 3)
 ```
 
-This dataset has 6 variables:
-one outcome variable (`y`),
-two predictors (`x1`, `x2`),
-two moderators (`w1`, `w2`),
-and two control variables (`c1` and `c2`).
+This dataset has 7 variables:
+
+- one outcome variable (`y`),
+
+- two predictors (`x1`, `x2`),
+
+- two moderators (`w1`, `w2`),
+
+- two control variables (`c1` and `c2`).
 
 Suppose this is the model being fitted,
 with control variables omitted from the
 plot for readability:
 
-```{r mo_lm_2x2w_model_2x2w, echo = FALSE}
+```{r mo_lm_2x2w_model_2x2w, echo = FALSE, fig.cap="Model"}
 library(semPlot)
 suppressMessages(library(lavaan))
 dat$w1x1 <- dat$x1 * dat$w1
@@ -78,10 +84,14 @@ plot(p)
 ## Fit by Regression
 
 The path parameters
-can be estimated by two multiple regression models:
+can be estimated by multiple regression
+using `lm()`:
 
 ```{r fit_lm_2x2w}
-lm_y <- lm(y ~ w1*x1 + w2*x2 + c1 + c2, dat)
+lm_y <- lm(
+  y ~ w1*x1 + w2*x2 + c1 + c2,
+  data = dat
+)
 ```
 
 These are the estimates of the regression coefficient
@@ -89,9 +99,6 @@ of the paths:
 
 ```{r est_2x2w}
 summary(lm_y)
-```
-
-```{r load_dO_boot, child=c("mo_lm_ins_do_boot.txt")}
 ```
 
 ## Conditional Effects
@@ -135,6 +142,10 @@ above mean, the effect of `x1` is
 with 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out1)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
+```{r load_pickapoint, child=c("mo_lm_ins_pickapoint.txt")}
+```
+
+
 ### Conditional Effects of `x2`
 
 The step to compute the conditional
@@ -166,41 +177,42 @@ with 95% confidence interval
 
 ## Plotting the Conditional Effects
 
+### Conventional Plot
+
 The output of `cond_effects()` has a `plot`
 method for plotting the conditional effects:
 
-```{r mo_lm_2x2w_plot_cond1}
+```{r mo_lm_2x2w_plot_cond1, fig.cap = "Conventional Plot of Conditional Effects (w1)"}
 plot(out1)
 ```
 
-```{r mo_lm_2x2w_plot_cond2}
+```{r mo_lm_2x2w_plot_cond2, fig.cap = "Conventional Plot of Conditional Effects (w2)"}
 plot(out2)
 ```
 
 By default, the lines
 span the range of one standard deviation below
 and above the mean of the predictor.
+
+The plot can be customized in a lot of way.
+Please refer to the help page of
+`plot.cond_indirect_effects()` for available
+options.
+
+### Tumble Plot
+
 If the distribution
-of the predictor may vary for different
+of the `x` variable may vary for different
 levels of the moderators, a version of
-*tumble graph* proposed by Bodner (2016)
+*tumble graph* proposed by @bodner_tumble_2016
 can be plotted by adding `graph_type = "tumble"`:
 
-```{r mo_lm_2x2w_plot_cond1_tumble}
+```{r mo_lm_2x2w_plot_cond1_tumble, fig.cap = "Tumble Plot of Conditional Effects (w1)"}
 plot(out1,
      graph_type = "tumble")
 ```
 
-```{r mo_lm_2x2w_plot_cond2_tumble}
-plot(out2,
-     graph_type = "tumble")
-```
-
-In this example, the distributions of `x2`
-for the three levels of moderator `w2`
-are similar.
-
-However, the distributions of `x1`
+The distributions of `x1`
 vary as the level of the moderator `w1` changes:
 the mean of `x1` is lower and the
 standard deviation smaller when `w1` is
@@ -212,24 +224,28 @@ mean.
 
 Therefore, the tumble graph is a better
 way to visualize the moderating effect
-of `w1` on the effect of `x1`. For `x2`,
+of `w1` on the effect of `x1`.
+
+```{r mo_lm_2x2w_plot_cond2_tumble, fig.cap = "Tumble Plot of Conditional Effects (w2)"}
+plot(out2,
+     graph_type = "tumble")
+```
+
+In this example, the distributions of `x2`
+for the three levels of moderator `w2`
+are similar.  For `x2`,
 the conventional graph is sufficient.
 
-The plot can be customized in a lot of way.
-Please refer to the help page of
-`plot.cond_indirect_effects()` for available
-options.
-
 ## Standardized Conditional Effects
+
+```{r load_boot_short, child=c("mo_lm_ins_do_boot_short.txt")}
+```
 
 The standardized conditional
 effects from `x1` and `x2` to `y` conditional
 on `w1` and `w2`
 can be estimated by setting
-`standardized_x` and `standardized_y` to `TRUE`,
-with bootstrap estimates from `do_boot()`
-used to from bootstrap confidence
-intervals.
+`standardized_x` and `standardized_y` to `TRUE`.
 
 This is the output for `x1`:
 
@@ -240,7 +256,8 @@ std1 <- cond_effects(
   y = "y",
   fit = lm_y,
   boot_ci = TRUE,
-  boot_out = boot_out,
+  R = 5000,
+  seed = 54532,
   standardized_x = TRUE,
   standardized_y = TRUE
 )
@@ -268,7 +285,8 @@ std2 <- cond_effects(
   y = "y",
   fit = lm_y,
   boot_ci = TRUE,
-  boot_out = boot_out,
+  R = 5000,
+  seed = 54532,
   standardized_x = TRUE,
   standardized_y = TRUE
 )
@@ -287,27 +305,31 @@ its mean, the standardized effect of `x2` is
 with 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(std2)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
+### Conventional Plot Standardized Conditional Effects
+
 The `plot()` method can also be used
 on the standardized conditional effects,
 although the only differences are the
 values displayed on the axes:
 
-```{r mo_lm_2x2w_plot_std1}
+```{r mo_lm_2x2w_plot_std1, fig.cap = "Conventional Plot of Standardized Conditional Effects (w1)"}
 plot(std1)
 ```
 
-```{r mo_lm_2x2w_plot_std2}
+```{r mo_lm_2x2w_plot_std2, fig.cap = "Conventional Plot of Standardized Conditional Effects (w2)"}
 plot(std2)
 ```
 
+### Tumble Plot Standardized Conditional Effects
+
 These are the tumble graphs:
 
-```{r mo_lm_2x2w_plot_std1_tumble}
+```{r mo_lm_2x2w_plot_std1_tumble, fig.cap = "Tumble Plot of Standardized Conditional Effects (w1)"}
 plot(std1,
      graph_type = "tumble")
 ```
 
-```{r mo_lm_2x2w_plot_std2_tumble}
+```{r mo_lm_2x2w_plot_std2_tumble, fig.cap = "Tumble Plot of Standardized Conditional Effects (w2)"}
 plot(std2,
      graph_type = "tumble")
 ```
@@ -317,28 +339,3 @@ plot(std2,
 ```
 
 # References
-
-Bodner, T. E. (2016). Tumble graphs:
-Avoiding misleading end point
-extrapolation when graphing interactions
-from a moderated multiple
-regression analysis.
-*Journal of Educational and Behavioral Statistics, 41*(6),
-593--604. https://doi.org/10.3102/1076998616657080
-
-Cheung, S. F., & Cheung, S.-H. (2024).
-*manymome*: An R package for computing
-the indirect effects, conditional
-effects, and conditional indirect
-effects, standardized or unstandardized,
-and their bootstrap confidence intervals,
-in many (though not all) models.
-*Behavior Research Methods, 56*(5),
-4862--4882.
-https://doi.org/10.3758/s13428-023-02224-z
-
-Yuan, K.-H., & Chan, W. (2011). Biases
-and standard errors of standardized
-regression coefficients.
-*Psychometrika, 76*(4), 670--690.
-https://doi.org/10.1007/s11336-011-9224-6
