@@ -1,7 +1,7 @@
 ---
 title: "Moderated Regression: Categorical Moderators"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-07-01"
+date: "2026-07-02"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -9,7 +9,10 @@ vignette: >
   %\VignetteIndexEntry{Moderated Regression: Categorical Moderators}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: references.bib
+csl: apa.csl
 ---
+
 
 
 
@@ -21,7 +24,7 @@ to use
 `cond_effects()`
 from the package
 [manymome](https://sfcheung.github.io/manymome/)
-([Cheung & Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z))
+[@cheung_manymome_2024]
 to estimate the conditional
 effects
 when the model parameters are estimate by
@@ -29,6 +32,9 @@ ordinary least squares (OLS) multiple regression
 using `lm()`. For moderated mediation
 tested by OLS regression, please refer
 to [this article](./mome_lm.html).
+
+(Articles in this series had duplicated
+sections, to make each of them self-contained.)
 
 # Data Set and Model
 
@@ -50,10 +56,14 @@ print(head(dat), digits = 3)
 ```
 
 This dataset has 6 variables:
-one outcome variable (`y`),
-one predictor (`x`),
-two categorical moderators (`gp`, `site`),
-and two control variables (`c1` and `c2`).
+
+- one outcome variable (`y`),
+
+- one predictor (`x`),
+
+- two categorical moderators (`gp`, `site`),
+
+- two control variables (`c1` and `c2`).
 
 The moderator `gp` has two possible
 values: `"Control"` and `"Treatment"`.
@@ -71,16 +81,20 @@ Suppose this is the model being fitted,
 with control variables omitted from the
 plot for readability:
 
-![plot of chunk mo_lm_cat_2w_gp](mo_lm_cat_2w_gp-1.png)
+![Model: gp](mo_lm_cat_2w_gp-1.png)
 
 ## Fit by Regression
 
 The path parameters
-can be estimated by a multiple regression model:
+can be estimated by multiple regression
+using `lm()`:
 
 
 ``` r
-lm_y_gp <- lm(y ~ gp*x + c1 + c2, dat)
+lm_y_gp <- lm(
+  y ~ gp*x + c1 + c2,
+  data = dat
+)
 ```
 
 These are the estimates of the regression coefficient
@@ -112,38 +126,6 @@ summary(lm_y_gp)
 #> Multiple R-squared:  0.2698,	Adjusted R-squared:  0.2636 
 #> F-statistic: 43.89 on 5 and 594 DF,  p-value: < 2.2e-16
 ```
-
-## Generating Bootstrap Estimates
-
-Although OLS can be used to estimate and
-test the
-unstandardized effects, it is inappropriate
-for forming the confidence intervals for the
-standardized effects (see
-Yuan & Chan, 2011, on the issue on standardized
-regression coefficients). Therefore,
-we will introduce how to generate
-nonparametric bootstrap estimates in this guide.
-
-To form nonparametric bootstrap confidence interval for
-effects to be computed, `do_boot()` can be used
-to generate bootstrap estimates for all regression
-coefficients first. These estimates can be reused for
-any effects to be estimated.
-
-
-``` r
-boot_out_gp <- do_boot(
-  lm_y_gp,
-  R = 5000,
-  seed = 54532
-)
-#> 19 processes started to run bootstrapping.
-```
-
-Please see `vignette("do_boot")` or
-the help page of `do_boot()` on how
-to use this function.
 
 ## Conditional Effects
 
@@ -179,8 +161,7 @@ out_gp
 #>  - [Stat] are the t statistics used to test the effects.
 #>  - [pvalue] are p-values computed from 'Stat'.
 #>  - [Sig]: 0 '***' 0.001 '**' 0.01 '*' 0.05 ' ' 1.
-#>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from regression standard
-#>    errors.
+#>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
 #> 
 ```
@@ -199,6 +180,12 @@ In the group `"Treatment"`, the effect of `x` is
 with 95% confidence interval
 [0.255, 0.385].
 
+
+NOTE: The standard error (`SE`) and
+related results are computed using
+the pick-a-point approach by
+@rogosa_comparing_1980.
+
 ## Plotting the Conditional Effects
 
 The output of `cond_effects()` has a `plot`
@@ -209,15 +196,23 @@ method for plotting the conditional effects:
 plot(out_gp)
 ```
 
-![plot of chunk mo_lm_cat_2w_plot_cond_gp](mo_lm_cat_2w_plot_cond_gp-1.png)
+![Conventional Plot of Conditional Effects (gp)](mo_lm_cat_2w_plot_cond_gp-1.png)
 
 By default, the lines
 span the range of one standard deviation below
 and above the mean of the predictor.
+
+The plot can be customized in a lot of way.
+Please refer to the help page of
+`plot.cond_indirect_effects()` for available
+options.
+
+### Tumble Plot
+
 If the distribution
-of the predictor may vary for different
+of the `x` variable may vary for different
 levels of the moderators, a version of
-*tumble graph* proposed by Bodner (2016)
+*tumble graph* proposed by @bodner_tumble_2016
 can be plotted by adding `graph_type = "tumble"`:
 
 
@@ -226,27 +221,36 @@ plot(out_gp,
      graph_type = "tumble")
 ```
 
-![plot of chunk mo_lm_cat_2w_plot_cond_gp_tumble](mo_lm_cat_2w_plot_cond_gp_tumble-1.png)
+![Tumble Plot of Conditional Effects (gp)](mo_lm_cat_2w_plot_cond_gp_tumble-1.png)
 
 In this example, the distributions of `x`
 for the groups
 are similar.
 
-The plot can be customized in a lot of way.
-Please refer to the help page of
-`plot.cond_indirect_effects()` for available
-options.
-
 ## Standardized Conditional Effects
+
+
+Although OLS can be used to estimate and
+test the
+unstandardized effects, it is inappropriate
+for forming the confidence intervals for the
+standardized effects. See
+@yuan_biases_2011 on the issue on standardized
+regression coefficients.
+
+To form nonparametric bootstrap confidence interval for
+effects to be computed, add `boot_ci = TRUE`,
+`R` to the number of bootstrap samples
+(should be 5000 or even 10000, for
+multiple regression), and `seed` (set
+it to an integer to ensure the results are
+reproducible).
 
 The standardized conditional
 effects from `x` to `y` conditional
 on `gp`
 can be estimated by setting
-`standardized_x` and `standardized_y` to `TRUE`,
-with bootstrap estimates from `do_boot()`
-used to from bootstrap confidence
-intervals.
+`standardized_x` and `standardized_y` to `TRUE`.
 
 This is the output:
 
@@ -258,10 +262,12 @@ std_gp <- cond_effects(
   y = "y",
   fit = lm_y_gp,
   boot_ci = TRUE,
-  boot_out = boot_out_gp,
+  R = 5000,
+  seed = 54532,
   standardized_x = TRUE,
   standardized_y = TRUE
 )
+#> 19 processes started to run bootstrapping.
 std_gp
 #> 
 #> == Conditional effects ==
@@ -274,8 +280,8 @@ std_gp
 #> 1 Control               0 -0.039 -0.130 0.048     -0.027
 #> 2 Treatment             1  0.457  0.363 0.551 Sig  0.320
 #> 
-#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by nonparametric
-#>    bootstrapping with 5000 samples.
+#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by nonparametric bootstrapping with 5000
+#>    samples.
 #>  - std: The standardized conditional effects. 
 #>  - ind: The unstandardized conditional effects.
 #> 
@@ -291,6 +297,8 @@ In the group `"Treatment"`, the standardized effect of `x` is
 with 95% confidence interval
 [0.363, 0.551].
 
+### Plot Standardized Conditional Effects
+
 The `plot()` method can also be used
 on the standardized conditional effects,
 although the only differences are the
@@ -301,7 +309,7 @@ values displayed on the axes:
 plot(std_gp)
 ```
 
-![plot of chunk mo_lm_cat_2w_plot_std_gp](mo_lm_cat_2w_plot_std_gp-1.png)
+![Conventional Plot of Standardized Conditional Effects (gp)](mo_lm_cat_2w_plot_std_gp-1.png)
 
 
 ``` r
@@ -309,8 +317,7 @@ plot(std_gp,
      graph_type = "tumble")
 ```
 
-![plot of chunk mo_lm_cat_2w_plot_std_gp_tumble](mo_lm_cat_2w_plot_std_gp_tumble-1.png)
-
+![Tumble Plot of Standardized Conditional Effects (gp)](mo_lm_cat_2w_plot_std_gp_tumble-1.png)
 
 # One Categorical Moderator: Three Categories
 
@@ -322,7 +329,7 @@ Suppose this is the model being fitted,
 with control variables omitted from the
 plot for readability:
 
-![plot of chunk mo_lm_cat_2w_site](mo_lm_cat_2w_site-1.png)
+![Model: site](mo_lm_cat_2w_site-1.png)
 
 ## Fit by Regression
 
@@ -331,7 +338,10 @@ can be estimated by a multiple regression model:
 
 
 ``` r
-lm_y_site <- lm(y ~ site*x + c1 + c2, dat)
+lm_y_site <- lm(
+  y ~ site*x + c1 + c2,
+  data = dat
+)
 ```
 
 These are the estimates of the regression coefficient
@@ -366,20 +376,6 @@ summary(lm_y_site)
 #> F-statistic:  19.9 on 7 and 592 DF,  p-value: < 2.2e-16
 ```
 
-## Generating Bootstrap Estimates
-
-Let's use `do_boot()` again:
-
-
-``` r
-boot_out_site <- do_boot(
-  lm_y_site,
-  R = 5000,
-  seed = 54532
-)
-#> 19 processes started to run bootstrapping.
-```
-
 ## Conditional Effects
 
 The function `cond_effects()` will determine
@@ -410,8 +406,7 @@ out_site
 #>  - [Stat] are the t statistics used to test the effects.
 #>  - [pvalue] are p-values computed from 'Stat'.
 #>  - [Sig]: 0 '***' 0.001 '**' 0.01 '*' 0.05 ' ' 1.
-#>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from regression standard
-#>    errors.
+#>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
 #> 
 ```
@@ -441,7 +436,7 @@ These are the plots of the conditional effects:
 plot(out_site)
 ```
 
-![plot of chunk mo_lm_cat_2w_plot_cond_site](mo_lm_cat_2w_plot_cond_site-1.png)
+![Conventional Plot of Conditional Effects (site)](mo_lm_cat_2w_plot_cond_site-1.png)
 
 
 ``` r
@@ -449,7 +444,7 @@ plot(out_site,
      graph_type = "tumble")
 ```
 
-![plot of chunk mo_lm_cat_2w_plot_cond_site_tumble](mo_lm_cat_2w_plot_cond_site_tumble-1.png)
+![Tumble Plot of Conditional Effects (site)](mo_lm_cat_2w_plot_cond_site_tumble-1.png)
 
 This example demonstrates the advantage of
 the tumble graph. The distribution of
@@ -460,13 +455,14 @@ of `x` in all three groups will give
 the incorrect impression of a cross-over
 of the lines
 in the *samples* (though it is possible that
-such a cross-over of the lines happen in the
+such a cross-over of the lines happens in the
 *populations*).
 
 ## Standardized Conditional Effects
 
 This is the output of the standardized
-conditional effects:
+conditional effects, with bootstrap
+confidence intervals:
 
 
 ``` r
@@ -476,10 +472,12 @@ std_site <- cond_effects(
   y = "y",
   fit = lm_y_site,
   boot_ci = TRUE,
-  boot_out = boot_out_site,
+  R = 5000,
+  seed = 54532,
   standardized_x = TRUE,
   standardized_y = TRUE
 )
+#> 19 processes started to run bootstrapping.
 std_site
 #> 
 #> == Conditional effects ==
@@ -493,12 +491,14 @@ std_site
 #> 2 Site 2            1            0 0.616  0.414 0.818 Sig 0.432
 #> 3 Site 3            0            1 0.018 -0.157 0.201     0.013
 #> 
-#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by nonparametric
-#>    bootstrapping with 5000 samples.
+#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by nonparametric bootstrapping with 5000
+#>    samples.
 #>  - std: The standardized conditional effects. 
 #>  - ind: The unstandardized conditional effects.
 #> 
 ```
+
+### Plot Standardized Conditional Effects
 
 These are the plots of the standardized
 conditional effects:
@@ -508,7 +508,7 @@ conditional effects:
 plot(std_site)
 ```
 
-![plot of chunk mo_lm_cat_2w_plot_std_site](mo_lm_cat_2w_plot_std_site-1.png)
+![Conventional Plot of Standardized Conditional Effects (site)](mo_lm_cat_2w_plot_std_site-1.png)
 
 
 ``` r
@@ -516,7 +516,7 @@ plot(std_site,
      graph_type = "tumble")
 ```
 
-![plot of chunk mo_lm_cat_2w_plot_std_site_tumble](mo_lm_cat_2w_plot_std_site_tumble-1.png)
+![Tumble Plot of Standardized Conditional Effects (site)](mo_lm_cat_2w_plot_std_site_tumble-1.png)
 
 # Two Categorical Moderators
 
@@ -526,9 +526,10 @@ moderators.
 
 Suppose this is the model being fitted,
 with control variables omitted from the
-plot for readability:
+plot for readability, both `gp` and `site`
+included, but no interaction between them:
 
-![plot of chunk mo_lm_cat_2w_gp_site](mo_lm_cat_2w_gp_site-1.png)
+![Model: gp + site](mo_lm_cat_2w_gp_site-1.png)
 
 ## Fit by Regression
 
@@ -536,7 +537,10 @@ We first fit the regression model as usual:
 
 
 ``` r
-lm_y_gp_site <- lm(y ~ gp*x + site*x + c1 + c2, dat)
+lm_y_gp_site <- lm(
+  y ~ gp*x + site*x + c1 + c2,
+  data = dat
+)
 ```
 
 These are the estimates of the regression coefficient
@@ -573,20 +577,6 @@ summary(lm_y_gp_site)
 #> F-statistic: 29.13 on 9 and 590 DF,  p-value: < 2.2e-16
 ```
 
-## Generating Bootstrap Estimates
-
-Let's use `do_boot()` again:
-
-
-``` r
-boot_out_gp_site <- do_boot(
-  lm_y_gp_site,
-  R = 5000,
-  seed = 54532
-)
-#> 19 processes started to run bootstrapping.
-```
-
 ## Conditional Effects
 
 The function `cond_effects()` can be used
@@ -609,32 +599,24 @@ out_gp_site
 #>  Conditional on moderator(s): gp, site
 #>  Moderator(s) represented by: gpTreatment, siteSite 2, siteSite 3
 #> 
-#>        [gp] [site] (gpTreatment) (siteSite 2) (siteSite 3)    ind    SE   Stat pvalue Sig  CI.lo
-#> 1 Control   Site 1             0            0            0 -0.084 0.060 -1.409  0.159     -0.201
-#> 2 Control   Site 2             0            1            0  0.229 0.065  3.527  0.000 ***  0.101
-#> 3 Control   Site 3             0            0            1 -0.173 0.067 -2.592  0.010 **  -0.304
-#> 4 Treatment Site 1             1            0            0  0.271 0.060  4.543  0.000 ***  0.154
-#> 5 Treatment Site 2             1            1            0  0.584 0.064  9.146  0.000 ***  0.459
-#> 6 Treatment Site 3             1            0            1  0.182 0.062  2.936  0.003 **   0.060
-#>    CI.hi
-#> 1  0.033
-#> 2  0.356
-#> 3 -0.042
-#> 4  0.388
-#> 5  0.709
-#> 6  0.304
+#>        [gp] [site] (gpTreatment) (siteSite 2) (siteSite 3)    ind    SE   Stat pvalue Sig  CI.lo  CI.hi
+#> 1 Control   Site 1             0            0            0 -0.084 0.060 -1.409  0.159     -0.201  0.033
+#> 2 Control   Site 2             0            1            0  0.229 0.065  3.527  0.000 ***  0.101  0.356
+#> 3 Control   Site 3             0            0            1 -0.173 0.067 -2.592  0.010 **  -0.304 -0.042
+#> 4 Treatment Site 1             1            0            0  0.271 0.060  4.543  0.000 ***  0.154  0.388
+#> 5 Treatment Site 2             1            1            0  0.584 0.064  9.146  0.000 ***  0.459  0.709
+#> 6 Treatment Site 3             1            0            1  0.182 0.062  2.936  0.003 **   0.060  0.304
 #> 
 #>  - [SE] are regression standard errors.
 #>  - [Stat] are the t statistics used to test the effects.
 #>  - [pvalue] are p-values computed from 'Stat'.
 #>  - [Sig]: 0 '***' 0.001 '**' 0.01 '*' 0.05 ' ' 1.
-#>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from regression standard
-#>    errors.
+#>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
 #> 
 ```
 
-NOTE: Even though this model does not
+IMPORTANT: Even though this model does not
 have three-way interaction, the conditional
 effects still need to consider *both*
 moderators. It is because the effect of
@@ -642,7 +624,7 @@ moderators. It is because the effect of
 there is higher order interaction or not.
 
 If one or more moderators are omitted,
-a warning message will be issued. This
+a *warning message* will be issued. This
 is an example:
 
 
@@ -653,9 +635,35 @@ cond_effects(
   y = "y",
   fit = lm_y_gp_site
 )
+#> Warning in (function (xi, yi, yiname, digits = 3, y, wvalues = NULL, warn = TRUE, : siteSite 2, siteSite 3 modelled as
+#> moderator(s) for the path from y~x to y but not included in 'wvalues'. They will be set to zero in computing the
+#> conditional effect, which may not be meaningful. Please check.
+#> Warning in (function (xi, yi, yiname, digits = 3, y, wvalues = NULL, warn = TRUE, : siteSite 2, siteSite 3 modelled as
+#> moderator(s) for the path from y~x to y but not included in 'wvalues'. They will be set to zero in computing the
+#> conditional effect, which may not be meaningful. Please check.
+#> 
+#> == Conditional effects ==
+#> 
+#>  Path: x -> y
+#>  Conditional on moderator(s): gp
+#>  Moderator(s) represented by: gpTreatment
+#> 
+#>        [gp] (gpTreatment)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
+#> 1 Control               0 -0.084 0.060 -1.409  0.159     -0.201 0.033
+#> 2 Treatment             1  0.271 0.060  4.543  0.000 ***  0.154 0.388
+#> 
+#>  - [SE] are regression standard errors.
+#>  - [Stat] are the t statistics used to test the effects.
+#>  - [pvalue] are p-values computed from 'Stat'.
+#>  - [Sig]: 0 '***' 0.001 '**' 0.01 '*' 0.05 ' ' 1.
+#>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from regression standard errors.
+#>  - The 'ind' column shows the conditional effects.
+#> 
 ```
 
 ## Plotting the Conditional Effects
+
+### Conventional Plots
 
 These are the plots of the conditional effects:
 
@@ -664,11 +672,11 @@ These are the plots of the conditional effects:
 plot(out_gp_site)
 ```
 
-![plot of chunk mo_lm_cat_2w_plot_cond_gp_site](mo_lm_cat_2w_plot_cond_gp_site-1.png)
+![Conventional Plot of Conditional Effects (gp + site)](mo_lm_cat_2w_plot_cond_gp_site-1.png)
 
 For two or more moderators, it is not
 easy to visualize the conditional effects
-if all lines plotted on the same graph.
+if all lines are plotted on the same graph.
 
 The argument `facet_grid_cols` can be used
 to plot the effect of one moderator for
@@ -683,7 +691,7 @@ plot(out_gp_site,
      facet_grid_cols = "gp")
 ```
 
-![plot of chunk mo_lm_cat_2w_plot_cond_gp_site_cols_gp](mo_lm_cat_2w_plot_cond_gp_site_cols_gp-1.png)
+![Conventional Plot of Conditional Effects: Site within Group](mo_lm_cat_2w_plot_cond_gp_site_cols_gp-1.png)
 
 This is the plot of effects for each site:
 
@@ -693,7 +701,7 @@ plot(out_gp_site,
      facet_grid_cols = "site")
 ```
 
-![plot of chunk mo_lm_cat_2w_plot_cond_gp_site_cols_site](mo_lm_cat_2w_plot_cond_gp_site_cols_site-1.png)
+![Conventional Plot of Conditional Effects: Group within Site](mo_lm_cat_2w_plot_cond_gp_site_cols_site-1.png)
 
 Note that, without three-way interaction,
 the *moderating effect* of `gp` is the same
@@ -701,7 +709,11 @@ in all three sites, and the *moderating effect*
 of `site` is the same in all two
 groups. The six lines are different simply
 because the effect of `x` depends on *both*
-`gp` and `site`.
+`gp` and `site`. They do *not* denote
+three-way interaction (because it is not in the
+regression model).
+
+### Tumble Plots
 
 We already know the distributions of `x`
 are not the same in all three sites.
@@ -715,7 +727,7 @@ plot(out_gp_site,
      graph_type = "tumble")
 ```
 
-![plot of chunk mo_lm_cat_2w_plot_cond_gp_site_cols_gp_tumble](mo_lm_cat_2w_plot_cond_gp_site_cols_gp_tumble-1.png)
+![Tumble Plot of Conditional Effects: Group within Site](mo_lm_cat_2w_plot_cond_gp_site_cols_gp_tumble-1.png)
 
 
 ``` r
@@ -724,12 +736,13 @@ plot(out_gp_site,
      graph_type = "tumble")
 ```
 
-![plot of chunk mo_lm_cat_2w_plot_cond_gp_site_cols_site_tumble](mo_lm_cat_2w_plot_cond_gp_site_cols_site_tumble-1.png)
+![Tumble Plot of Conditional Effects: Site within Group](mo_lm_cat_2w_plot_cond_gp_site_cols_site_tumble-1.png)
 
 ## Standardized Conditional Effects
 
 This is the output of the standardized
-conditional effects:
+conditional effects, with bootstrap
+confidence intervals:
 
 
 ``` r
@@ -739,10 +752,12 @@ std_gp_site <- cond_effects(
   y = "y",
   fit = lm_y_gp_site,
   boot_ci = TRUE,
-  boot_out = boot_out_gp_site,
+  R = 5000,
+  seed = 54532,
   standardized_x = TRUE,
   standardized_y = TRUE
 )
+#> 19 processes started to run bootstrapping.
 std_gp_site
 #> 
 #> == Conditional effects ==
@@ -759,12 +774,14 @@ std_gp_site
 #> 5 Treatment Site 2             1            1            0  0.833  0.650  1.009 Sig  0.584
 #> 6 Treatment Site 3             1            0            1  0.260  0.068  0.466 Sig  0.182
 #> 
-#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by nonparametric
-#>    bootstrapping with 5000 samples.
+#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by nonparametric bootstrapping with 5000
+#>    samples.
 #>  - std: The standardized conditional effects. 
 #>  - ind: The unstandardized conditional effects.
 #> 
 ```
+
+### Tumble Plots of Standardized Conditional Effects
 
 These are the plots of the standardized
 conditional effects, with `facet_grid_cols`
@@ -777,7 +794,7 @@ plot(std_gp_site,
      graph_type = "tumble")
 ```
 
-![plot of chunk mo_lm_cat_2w_plot_std_gp_site_tumble_cols_gp](mo_lm_cat_2w_plot_std_gp_site_tumble_cols_gp-1.png)
+![Tumble Plot of Standardized Conditional Effects: Site within Group](mo_lm_cat_2w_plot_std_gp_site_tumble_cols_gp-1.png)
 
 
 ``` r
@@ -786,7 +803,7 @@ plot(std_gp_site,
      graph_type = "tumble")
 ```
 
-![plot of chunk mo_lm_cat_2w_plot_std_gp_site_tumble_cols_site](mo_lm_cat_2w_plot_std_gp_site_tumble_cols_site-1.png)
+![Tumble Plot of Standardized Conditional Effects: Group within Site](mo_lm_cat_2w_plot_std_gp_site_tumble_cols_site-1.png)
 
 # Two Categorical Moderators, with Three-Way Interaction
 
@@ -803,7 +820,10 @@ in this regression model:
 
 
 ``` r
-lm_y_gp_x_site <- lm(y ~ gp*site*x + c1 + c2, dat)
+lm_y_gp_x_site <- lm(
+  y ~ x*site*gp + c1 + c2,
+  data = dat
+)
 ```
 
 The test of the difference between this
@@ -820,7 +840,7 @@ anova(
 #> Analysis of Variance Table
 #> 
 #> Model 1: y ~ gp * x + site * x + c1 + c2
-#> Model 2: y ~ gp * site * x + c1 + c2
+#> Model 2: y ~ x * site * gp + c1 + c2
 #>   Res.Df    RSS Df Sum of Sq      F    Pr(>F)    
 #> 1    590 9436.6                                  
 #> 2    586 9108.5  4    328.07 5.2766 0.0003516 ***
@@ -836,7 +856,7 @@ of this model:
 summary(lm_y_gp_x_site)
 #> 
 #> Call:
-#> lm(formula = y ~ gp * site * x + c1 + c2, data = dat)
+#> lm(formula = y ~ x * site * gp + c1 + c2, data = dat)
 #> 
 #> Residuals:
 #>      Min       1Q   Median       3Q      Max 
@@ -845,40 +865,25 @@ summary(lm_y_gp_x_site)
 #> Coefficients:
 #>                           Estimate Std. Error t value Pr(>|t|)    
 #> (Intercept)              22.077128   2.213474   9.974  < 2e-16 ***
-#> gpTreatment              -8.501074   2.708983  -3.138  0.00179 ** 
+#> x                        -0.128074   0.074369  -1.722  0.08557 .  
 #> siteSite 2               -5.276352   2.748471  -1.920  0.05538 .  
 #> siteSite 3               -3.063916   2.296016  -1.334  0.18258    
-#> x                        -0.128074   0.074369  -1.722  0.08557 .  
+#> gpTreatment              -8.501074   2.708983  -3.138  0.00179 ** 
 #> c1                       -0.002987   0.037316  -0.080  0.93622    
 #> c2                        0.385877   0.042952   8.984  < 2e-16 ***
-#> gpTreatment:siteSite 2   -1.970235   3.954140  -0.498  0.61848    
-#> gpTreatment:siteSite 3    8.743721   3.254470   2.687  0.00742 ** 
-#> gpTreatment:x             0.453702   0.107574   4.218 2.86e-05 ***
-#> siteSite 2:x              0.222148   0.112091   1.982  0.04796 *  
-#> siteSite 3:x              0.154193   0.113159   1.363  0.17352    
-#> gpTreatment:siteSite 2:x  0.157510   0.159449   0.988  0.32364    
-#> gpTreatment:siteSite 3:x -0.485461   0.160220  -3.030  0.00255 ** 
+#> x:siteSite 2              0.222148   0.112091   1.982  0.04796 *  
+#> x:siteSite 3              0.154193   0.113159   1.363  0.17352    
+#> x:gpTreatment             0.453702   0.107574   4.218 2.86e-05 ***
+#> siteSite 2:gpTreatment   -1.970235   3.954140  -0.498  0.61848    
+#> siteSite 3:gpTreatment    8.743721   3.254470   2.687  0.00742 ** 
+#> x:siteSite 2:gpTreatment  0.157510   0.159449   0.988  0.32364    
+#> x:siteSite 3:gpTreatment -0.485461   0.160220  -3.030  0.00255 ** 
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
 #> Residual standard error: 3.943 on 586 degrees of freedom
 #> Multiple R-squared:  0.3317,	Adjusted R-squared:  0.3169 
 #> F-statistic: 22.38 on 13 and 586 DF,  p-value: < 2.2e-16
-```
-
-## Generating Bootstrap Estimates
-
-The bootstrap estimates can be
-generated as before using `do_boot()`:
-
-
-``` r
-boot_out_gp_x_site <- do_boot(
-  lm_y_gp_x_site,
-  R = 5000,
-  seed = 54532
-)
-#> 19 processes started to run bootstrapping.
 ```
 
 ## Conditional Effects
@@ -891,7 +896,7 @@ or not:
 
 ``` r
 out_gp_x_site <- cond_effects(
-  wlevels = c("gp", "site"),
+  wlevels = c("site", "gp"),
   x = "x",
   y = "y",
   fit = lm_y_gp_x_site
@@ -901,30 +906,22 @@ out_gp_x_site
 #> == Conditional effects ==
 #> 
 #>  Path: x -> y
-#>  Conditional on moderator(s): gp, site
-#>  Moderator(s) represented by: gpTreatment, siteSite 2, siteSite 3
+#>  Conditional on moderator(s): site, gp
+#>  Moderator(s) represented by: siteSite 2, siteSite 3, gpTreatment
 #> 
-#>        [gp] [site] (gpTreatment) (siteSite 2) (siteSite 3)    ind    SE   Stat pvalue Sig  CI.lo
-#> 1 Control   Site 1             0            0            0 -0.128 0.074 -1.722  0.086     -0.274
-#> 2 Control   Site 2             0            1            0  0.094 0.084  1.122  0.262     -0.071
-#> 3 Control   Site 3             0            0            1  0.026 0.085  0.307  0.759     -0.141
-#> 4 Treatment Site 1             1            0            0  0.326 0.078  4.190  0.000 ***  0.173
-#> 5 Treatment Site 2             1            1            0  0.705 0.083  8.543  0.000 ***  0.543
-#> 6 Treatment Site 3             1            0            1 -0.006 0.082 -0.069  0.945     -0.167
-#>   CI.hi
-#> 1 0.018
-#> 2 0.259
-#> 3 0.193
-#> 4 0.478
-#> 5 0.867
-#> 6 0.156
+#>   [site]      [gp] (siteSite 2) (siteSite 3) (gpTreatment)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
+#> 1 Site 1 Control              0            0             0 -0.128 0.074 -1.722  0.086     -0.274 0.018
+#> 2 Site 1 Treatment            0            0             1  0.326 0.078  4.190  0.000 ***  0.173 0.478
+#> 3 Site 2 Control              1            0             0  0.094 0.084  1.122  0.262     -0.071 0.259
+#> 4 Site 2 Treatment            1            0             1  0.705 0.083  8.543  0.000 ***  0.543 0.867
+#> 5 Site 3 Control              0            1             0  0.026 0.085  0.307  0.759     -0.141 0.193
+#> 6 Site 3 Treatment            0            1             1 -0.006 0.082 -0.069  0.945     -0.167 0.156
 #> 
 #>  - [SE] are regression standard errors.
 #>  - [Stat] are the t statistics used to test the effects.
 #>  - [pvalue] are p-values computed from 'Stat'.
 #>  - [Sig]: 0 '***' 0.001 '**' 0.01 '*' 0.05 ' ' 1.
-#>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from regression standard
-#>    errors.
+#>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
 #> 
 ```
@@ -941,7 +938,7 @@ plot(out_gp_x_site,
      graph_type = "tumble")
 ```
 
-![plot of chunk mo_lm_cat_2w_plot_cond_gp_x_site_cols_gp](mo_lm_cat_2w_plot_cond_gp_x_site_cols_gp-1.png)
+![Tumble Plot of Conditional Effects: Site within Group](mo_lm_cat_2w_plot_cond_gp_x_site_cols_gp-1.png)
 
 
 ``` r
@@ -950,12 +947,13 @@ plot(out_gp_x_site,
      graph_type = "tumble")
 ```
 
-![plot of chunk mo_lm_cat_2w_plot_cond_gp_x_site_cols_site](mo_lm_cat_2w_plot_cond_gp_x_site_cols_site-1.png)
+![Tumble Plot of Conditional Effects: Group within Site](mo_lm_cat_2w_plot_cond_gp_x_site_cols_site-1.png)
 
 ## Standardized Conditional Effects
 
 This is the output of the standardized
-conditional effects:
+conditional effects, with bootstrap
+confidence intervals:
 
 
 ``` r
@@ -965,10 +963,12 @@ std_gp_x_site <- cond_effects(
   y = "y",
   fit = lm_y_gp_x_site,
   boot_ci = TRUE,
-  boot_out = boot_out_gp_x_site,
+  R = 5000,
+  seed = 54532,
   standardized_x = TRUE,
   standardized_y = TRUE
 )
+#> 19 processes started to run bootstrapping.
 std_gp_x_site
 #> 
 #> == Conditional effects ==
@@ -985,8 +985,8 @@ std_gp_x_site
 #> 5 Treatment Site 2             1            1            0  1.006  0.740 1.269 Sig  0.705
 #> 6 Treatment Site 3             1            0            1 -0.008 -0.229 0.231     -0.006
 #> 
-#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by nonparametric
-#>    bootstrapping with 5000 samples.
+#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by nonparametric bootstrapping with 5000
+#>    samples.
 #>  - std: The standardized conditional effects. 
 #>  - ind: The unstandardized conditional effects.
 #> 
@@ -1003,7 +1003,7 @@ plot(std_gp_x_site,
      graph_type = "tumble")
 ```
 
-![plot of chunk mo_lm_cat_2w_plot_std_gp_x_site_tumble_cols_gp](mo_lm_cat_2w_plot_std_gp_x_site_tumble_cols_gp-1.png)
+![Tumble Plot of Standardized Conditional Effects: Site within Group](mo_lm_cat_2w_plot_std_gp_x_site_tumble_cols_gp-1.png)
 
 
 ``` r
@@ -1012,7 +1012,7 @@ plot(std_gp_x_site,
      graph_type = "tumble")
 ```
 
-![plot of chunk mo_lm_cat_2w_plot_std_gp_x_site_tumble_cols_site](mo_lm_cat_2w_plot_std_gp_x_site_tumble_cols_site-1.png)
+![Tumble Plot of Standardized Conditional Effects: Group within Site](mo_lm_cat_2w_plot_std_gp_x_site_tumble_cols_site-1.png)
 
 
 
