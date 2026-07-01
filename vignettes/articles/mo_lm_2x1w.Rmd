@@ -69,7 +69,7 @@ Suppose this is the model being fitted,
 with control variables omitted from the
 plot for readability:
 
-![plot of chunk mo_lm_2x1m_model_2x1m](mo_lm_2x1m_model_2x1m-1.png)
+![Model](mo_lm_2x1m_model_2x1m-1.png)
 
 ## Fit by Regression
 

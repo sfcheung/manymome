@@ -49,7 +49,7 @@ Suppose this is the model being fitted,
 with control variables omitted from the
 plot for readability:
 
-```{r mo_lm_2x1m_model_2x1m, echo = FALSE}
+```{r mo_lm_2x1m_model_2x1m, echo = FALSE, fig.cap = "Model"}
 library(semPlot)
 suppressMessages(library(lavaan))
 dat$wx1 <- dat$x1 * dat$w
