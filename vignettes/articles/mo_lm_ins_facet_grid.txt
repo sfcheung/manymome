@@ -1,0 +1,7 @@
+
+This plot is not easy to read when the
+model has two or more moderators.
+The argument
+`facet_grid_cols` can be used to generate
+one plot for each level of one of the moderators,
+presented in one row, side-by-side.

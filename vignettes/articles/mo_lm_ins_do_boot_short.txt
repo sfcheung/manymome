@@ -1,0 +1,15 @@
+Although OLS can be used to estimate and
+test the
+unstandardized effects, it is inappropriate
+for forming the confidence intervals for the
+standardized effects. See
+@yuan_biases_2011 on the issue on standardized
+regression coefficients.
+
+To form nonparametric bootstrap confidence interval for
+effects to be computed, add `boot_ci = TRUE`,
+`R` to the number of bootstrap samples
+(should be 5000 or even 10000, for
+multiple regression), and `seed` (set
+it to an integer to ensure the results are
+reproducible).

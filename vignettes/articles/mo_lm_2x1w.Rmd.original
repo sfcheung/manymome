@@ -19,22 +19,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Introduction
-
-This article is part of a series of
-brief illustrations of how
-to use
-`cond_effects()`
-from the package
-[manymome](https://sfcheung.github.io/manymome/)
-([Cheung & Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z))
-to estimate the conditional
-effects
-when the model parameters are estimate by
-ordinary least squares (OLS) multiple regression
-using `lm()`. For moderated mediation
-tested by OLS regression, please refer
-to [this article](./mome_lm.html).
+```{r load_intro, child=c("mo_lm_ins_intro.txt")}
+```
 
 # Data Set and Model
 

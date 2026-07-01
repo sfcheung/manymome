@@ -9,6 +9,8 @@ vignette: >
   %\VignetteIndexEntry{Moderating Effect by Multiple Regression}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: references.bib
+csl: apa.csl
 ---
 
 ```{r, include = FALSE}
@@ -19,22 +21,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Introduction
-
-This article is part of a series of
-brief illustrations of how
-to use
-`cond_effects()`
-from the package
-[manymome](https://sfcheung.github.io/manymome/)
-([Cheung & Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z))
-to estimate the conditional
-effects
-when the model parameters are estimate by
-ordinary least squares (OLS) multiple regression
-using `lm()`. For moderated mediation
-tested by OLS regression, please refer
-to [this article](./mome_lm.html).
+```{r load_intro, child=c("mo_lm_ins_intro.txt")}
+```
 
 # Data Set and Model
 
@@ -48,10 +36,14 @@ print(head(dat), digits = 3)
 ```
 
 This dataset has 6 variables:
-one outcome variable (`y`),
-one predictor (`x`),
-two moderators (`w1`, `w2`),
-and two control variables (`c1` and `c2`).
+
+- one outcome variable (`y`),
+
+- one predictor (`x`),
+
+- two moderators (`w1`, `w2`),
+
+- two control variables (`c1` and `c2`).
 
 We will start with a model with only one
 moderator.
@@ -62,7 +54,7 @@ Suppose this is the model being fitted,
 with control variables omitted from the
 plot for readability:
 
-```{r mo_lm_1x1w_model, echo = FALSE}
+```{r mo_lm_1x1w_model, echo = FALSE, fig.cap="Model"}
 library(semPlot)
 suppressMessages(library(lavaan))
 dat$w1x <- dat$x * dat$w1
@@ -92,10 +84,14 @@ plot(p)
 ## Fit by Regression
 
 The path parameters
-can be estimated by two multiple regression models:
+can be estimated by multiple regression
+using `lm()`:
 
 ```{r fit_lm_w1}
-lm_y_w1 <- lm(y ~ w1*x + c1 + c2, dat)
+lm_y_w1 <- lm(
+  y ~ w1*x + c1 + c2,
+  data = dat
+)
 ```
 
 These are the estimates of the regression coefficient
@@ -104,36 +100,6 @@ of the paths:
 ```{r est_w1}
 summary(lm_y_w1)
 ```
-
-## Generating Bootstrap Estimates
-
-Although OLS can be used to estimate and
-test the
-unstandardized effects, it is inappropriate
-for forming the confidence intervals for the
-standardized effects (see
-Yuan & Chan, 2011, on the issue on standardized
-regression coefficients). Therefore,
-we will introduce how to generate
-nonparametric bootstrap estimates in this guide.
-
-To form nonparametric bootstrap confidence interval for
-effects to be computed, `do_boot()` can be used
-to generate bootstrap estimates for all regression
-coefficients first. These estimates can be reused for
-any effects to be estimated.
-
-```{r do_boo_w1}
-boot_out_lm_y_w1 <- do_boot(
-  lm_y_w1,
-  R = 5000,
-  seed = 54532
-)
-```
-
-Please see `vignette("do_boot")` or
-the help page of `do_boot()` on how
-to use this function.
 
 ## Conditional Effects
 
@@ -173,34 +139,50 @@ above mean, the effect of `x1` is
 with 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out_xy_on_w1)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
+```{r load_pickapoint, child=c("mo_lm_ins_pickapoint.txt")}
+```
+
 ## Plotting the Conditional Effects
 
-The output of `cond_effects()` has a `plot`
-method for plotting the conditional effects:
+### Conventional Plot
 
-```{r mo_lm_plot_cond_w1}
+The output of `cond_effects()` has a `plot`
+method for plotting the conditional effects
+(also called simple effects):
+
+```{r mo_lm_plot_cond_w1, fig.cap = "Conventional Plot of Conditional Effects"}
 plot(out_xy_on_w1)
 ```
 
 By default, the lines
 span the range of one standard deviation below
 and above the mean of the `x` variable.
+
+The plot can be customized in a lot of way.
+Please refer to the help page of
+`plot.cond_indirect_effects()` for available
+options.
+
+### Tumble Plot
+
 If the distribution
 of the `x` variable may vary for different
 levels of the moderators, a version of
-*tumble graph* proposed by Bodner (2016)
+*tumble graph* proposed by @bodner_tumble_2016
 can be plotted by adding `graph_type = "tumble"`:
 
-```{r mo_lm_plot_cond_tumble_w1}
+```{r mo_lm_plot_cond_tumble_w1, fig.cap = "Tumble Plot of Conditional Effects"}
 plot(out_xy_on_w1,
      graph_type = "tumble")
 ```
 
 In this example, the distribution of the predictor
 vary as the level of the moderator changes:
-lower with a smaller variation when `w1` is
-one standard deviation below its mean,
-and higher with a larger variation when
+
+- lower with a smaller variation when `w1` is
+one standard deviation below its mean, and
+
+- higher with a larger variation when
 `w1` is one standard deviation above its
 mean.
 
@@ -208,12 +190,10 @@ Therefore, the tumble graph is a better
 way to visualize the moderating effect
 of `w1`.
 
-The plot can be customized in a lot of way.
-Please refer to the help page of
-`plot.cond_indirect_effects()` for available
-options.
-
 ## Standardized Conditional Effects
+
+```{r load_boot_short, child=c("mo_lm_ins_do_boot_short.txt")}
+```
 
 The standardized conditional
 effect from `x` to `y` conditional
@@ -222,7 +202,7 @@ can be estimated by setting
 `standardized_x` and `standardized_y` to `TRUE`,
 with bootstrap estimates from `do_boot()`
 used to from bootstrap confidence
-intervals:
+intervals
 
 ```{r std_xmy_on_w1}
 std_xy_on_w1 <- cond_effects(
@@ -231,7 +211,8 @@ std_xy_on_w1 <- cond_effects(
   y = "y",
   fit = lm_y_w1,
   boot_ci = TRUE,
-  boot_out = boot_out_lm_y_w1,
+  R = 5000,
+  seed = 54532,
   standardized_x = TRUE,
   standardized_y = TRUE
 )
@@ -250,18 +231,20 @@ its mean, the standardized effect is
 with 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(std_xy_on_w1)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
+### Plot Standardized Conditional Effects
+
 The `plot()` method can also be used
 on the standardized conditional effects,
 although the only differences are the
 values displayed on the axes:
 
-```{r mo_lm_plot_cond_std_w1}
+```{r mo_lm_plot_cond_std_w1, fig.cap = "Conventional Plot of Standardized Conditional Effects"}
 plot(std_xy_on_w1)
 ```
 
 This is the tumble graph:
 
-```{r mo_lm_plot_cond_std_tumble_w1}
+```{r mo_lm_plot_cond_std_tumble_w1, fig.cap = "Tumble Plot of Standardized Conditional Effects"}
 plot(std_xy_on_w1,
      graph_type = "tumble")
 ```
@@ -306,7 +289,10 @@ can be estimated by the following multiple
 regression model:
 
 ```{r fit_lm_w1w2}
-lm_y_w1w2 <- lm(y ~ x*w1 + x*w2 + c1 + c2, dat)
+lm_y_w1w2 <- lm(
+  y ~ x*w1 + x*w2 + c1 + c2,
+  data = dat
+)
 ```
 
 These are the estimates of the regression coefficient
@@ -314,19 +300,6 @@ of the paths:
 
 ```{r est_w1w2}
 summary(lm_y_w1w2)
-```
-
-## Generating Bootstrap Estimates
-
-The bootstrap estimates can be generated
-in exactly the same way:
-
-```{r do_boo_w1w2}
-boot_out_lm_w1w2 <- do_boot(
-  lm_y_w1w2,
-  R = 5000,
-  seed = 54532
-)
 ```
 
 ## Conditional Effects
@@ -350,40 +323,40 @@ and `w2`.
 
 ## Plotting the Conditional Effects
 
+### Conventional Plots
+
 The `plot()` method can be used directly
 even with two moderators:
 
-```{r mo_lm_plot_cond_w1w2}
+```{r mo_lm_plot_cond_w1w2, fig.cap = "Conventional Plot of Conditional Effects"}
 plot(out_xy_on_w1w2)
 ```
 
-This plot is not easy to read when the
-model has two or more moderators.
-The argument
-`facet_grid_cols` can be used to generate
-one plot for each level of one of the moderators,
-presented in one row, side-by-side.
+```{r load_facet_grid, child=c("mo_lm_ins_facet_grid.txt")}
+```
 
 For example, supposed we would like to
 generate one graph for each level of `w2`,
 we add `facet_grid_cols = "w2"`:
 
-```{r mo_lm_plot_cond_w1w2_w2}
+```{r mo_lm_plot_cond_w1w2_w2, fig.cap = "Plots of Conditional Effects: By w2"}
 plot(out_xy_on_w1w2,
      facet_grid_cols = "w2")
 ```
 
 We can do the same for `w1`:
 
-```{r mo_lm_plot_cond_w1w2_w1}
+```{r mo_lm_plot_cond_w1w2_w1, fig.cap = "Plots of Conditional Effects: By w1"}
 plot(out_xy_on_w1w2,
      facet_grid_cols = "w1")
 ```
 
+### Tumble Plots
+
 We can also use `graph_type = "tumble"`
 to generate tumble graphs:
 
-```{r mo_lm_plot_cond_w1w2_w2_tumble}
+```{r mo_lm_plot_cond_w1w2_w2_tumble, fig.cap = "Tumble Plots of Conditional Effects: By w2"}
 plot(out_xy_on_w1w2,
      facet_grid_cols = "w2",
      graph_type = "tumble")
@@ -391,7 +364,7 @@ plot(out_xy_on_w1w2,
 
 We can do the same for `w1`:
 
-```{r mo_lm_plot_cond_w1w2_w1_tumble}
+```{r mo_lm_plot_cond_w1w2_w1_tumble, fig.cap = "Tumble Plots of Conditional Effects: By w1"}
 plot(out_xy_on_w1w2,
      facet_grid_cols = "w1",
      graph_type = "tumble")
@@ -403,7 +376,8 @@ The standardized conditional
 effect from `x` to `y` conditional
 on `w1` and `w2`
 can be estimated by setting
-`standardized_x` and `standardized_y` to `TRUE`:
+`standardized_x` and `standardized_y` to `TRUE`,
+with bootstrap confidence intervals:
 
 ```{r std_xmy_on_w1w2}
 std_xy_on_w1w2 <- cond_effects(
@@ -412,7 +386,8 @@ std_xy_on_w1w2 <- cond_effects(
   y = "y",
   fit = lm_y_w1w2,
   boot_ci = TRUE,
-  boot_out = boot_out_lm_w1w2,
+  R = 5000,
+  seed = 54532,
   standardized_x = TRUE,
   standardized_y = TRUE
 )
@@ -422,25 +397,25 @@ std_xy_on_w1w2
 The `plot()` method can also be used
 on the standardized conditional effects:
 
-```{r mo_lm_plot_cond_std_w1w2_w2}
+```{r mo_lm_plot_cond_std_w1w2_w2, fig.cap = "Plots of Standardized Conditional Effects: By w2"}
 plot(std_xy_on_w1w2,
      facet_grid_cols = "w2")
 ```
 
-```{r mo_lm_plot_cond_std_w1w2_w1}
+```{r mo_lm_plot_cond_std_w1w2_w1, fig.cap = "Plots of Standardized Conditional Effects: By w1"}
 plot(std_xy_on_w1w2,
      facet_grid_cols = "w1")
 ```
 
 These are the tumble graphs:
 
-```{r mo_lm_plot_cond_std_w1w2_w2_tumble}
+```{r mo_lm_plot_cond_std_w1w2_w2_tumble, fig.cap = "Tumble Plots of Standardized Conditional Effects: By w2"}
 plot(std_xy_on_w1w2,
      facet_grid_cols = "w2",
      graph_type = "tumble")
 ```
 
-```{r mo_lm_plot_cond_std_w1w2_w1_tumble}
+```{r mo_lm_plot_cond_std_w1w2_w1_tumble, fig.cap = "Tumble Plots of Standardized Conditional Effects: By w1"}
 plot(std_xy_on_w1w2,
      facet_grid_cols = "w1",
      graph_type = "tumble")
@@ -450,28 +425,3 @@ plot(std_xy_on_w1w2,
 ```
 
 # References
-
-Bodner, T. E. (2016). Tumble graphs:
-Avoiding misleading end point
-extrapolation when graphing interactions
-from a moderated multiple
-regression analysis.
-*Journal of Educational and Behavioral Statistics, 41*(6),
-593--604. https://doi.org/10.3102/1076998616657080
-
-Cheung, S. F., & Cheung, S.-H. (2024).
-*manymome*: An R package for computing
-the indirect effects, conditional
-effects, and conditional indirect
-effects, standardized or unstandardized,
-and their bootstrap confidence intervals,
-in many (though not all) models.
-*Behavior Research Methods, 56*(5),
-4862--4882.
-https://doi.org/10.3758/s13428-023-02224-z
-
-Yuan, K.-H., & Chan, W. (2011). Biases
-and standard errors of standardized
-regression coefficients.
-*Psychometrika, 76*(4), 670--690.
-https://doi.org/10.1007/s11336-011-9224-6
