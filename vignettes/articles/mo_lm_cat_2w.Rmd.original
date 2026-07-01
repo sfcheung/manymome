@@ -1,0 +1,761 @@
+---
+title: "Moderated Regression: Categorical Moderators"
+author: "Shu Fai Cheung & Sing-Hang Cheung"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    number_sections: true
+vignette: >
+  %\VignetteIndexEntry{Moderated Regression: Categorical Moderators}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = ""
+)
+optold <- options(width = 100)
+```
+
+# Introduction
+
+This article is part of a series of
+brief illustrations of how
+to use
+`cond_effects()`
+from the package
+[manymome](https://sfcheung.github.io/manymome/)
+([Cheung & Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z))
+to estimate the conditional
+effects
+when the model parameters are estimate by
+ordinary least squares (OLS) multiple regression
+using `lm()`. For moderated mediation
+tested by OLS regression, please refer
+to [this article](./mome_lm.html).
+
+# Data Set and Model
+
+This is the sample data set used for
+illustration:
+
+```{r data}
+library(manymome)
+dat <- data_mod_cat_2w
+print(head(dat), digits = 3)
+```
+
+This dataset has 6 variables:
+one outcome variable (`y`),
+one predictor (`x`),
+two categorical moderators (`gp`, `site`),
+and two control variables (`c1` and `c2`).
+
+The moderator `gp` has two possible
+values: `"Control"` and `"Treatment"`.
+
+The moderator `site` has three possible
+values: `"Site 1"`, `"Site 2"`, and
+`"Site 3"`.
+
+We will first consider two models, each
+with only one of the two moderators.
+
+# One Categorical Moderator: Two Categories
+
+Suppose this is the model being fitted,
+with control variables omitted from the
+plot for readability:
+
+```{r mo_lm_cat_2w_gp, echo = FALSE}
+library(semPlot)
+suppressMessages(library(lavaan))
+dat_tmp <- dat
+dat_tmp$gp <- as.numeric(factor(dat_tmp$gp))
+dat_tmp$gpx <- dat_tmp$gp * dat_tmp$x
+mod <-
+"
+gpx ~ x + gp
+y ~ gpx
+"
+fit0 <- sem(mod, dat_tmp, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c(NA, NA, "gp", NA, NA,
+                     "x", NA, "gpx", NA, "y"), 2, 5, byrow = TRUE)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 10,
+              asize = 10,
+              DoNotPlot = TRUE)
+p$graphAttributes$Nodes$width[c(1)] <- .01
+p$graphAttributes$Nodes$height[c(1)] <- .01
+p$graphAttributes$Edges$asize[c(1)] <- 0
+plot(p)
+```
+
+## Fit by Regression
+
+The path parameters
+can be estimated by a multiple regression model:
+
+```{r fit_lm_cat_gp}
+lm_y_gp <- lm(y ~ gp*x + c1 + c2, dat)
+```
+
+These are the estimates of the regression coefficient
+of the paths:
+
+```{r est_cat_gp}
+summary(lm_y_gp)
+```
+
+## Generating Bootstrap Estimates
+
+Although OLS can be used to estimate and
+test the
+unstandardized effects, it is inappropriate
+for forming the confidence intervals for the
+standardized effects (see
+Yuan & Chan, 2011, on the issue on standardized
+regression coefficients). Therefore,
+we will introduce how to generate
+nonparametric bootstrap estimates in this guide.
+
+To form nonparametric bootstrap confidence interval for
+effects to be computed, `do_boot()` can be used
+to generate bootstrap estimates for all regression
+coefficients first. These estimates can be reused for
+any effects to be estimated.
+
+```{r do_boot}
+boot_out_gp <- do_boot(
+  lm_y_gp,
+  R = 5000,
+  seed = 54532
+)
+```
+
+Please see `vignette("do_boot")` or
+the help page of `do_boot()` on how
+to use this function.
+
+## Conditional Effects
+
+We can now use `cond_effects()` to
+estimate the effects of `x`
+on `y` for
+different categories of the moderator `gp`.
+
+(Refer to `vignette("manymome")` and the help page
+of `cond_effects()` on the arguments.)
+
+```{r cond_gp}
+out_gp <- cond_effects(
+  wlevels = "gp",
+  x = "x",
+  y = "y",
+  fit = lm_y_gp
+)
+out_gp
+```
+
+The column `ind` show the effects of
+`x` on `y` for different categories of `gp`.
+
+In the group `"Control"`, the effect of `x` is
+`r formatC(coef(out_gp)[1], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(out_gp)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+
+In the group `"Treatment"`, the effect of `x` is
+`r formatC(coef(out_gp)[2], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(out_gp)[2, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+## Plotting the Conditional Effects
+
+The output of `cond_effects()` has a `plot`
+method for plotting the conditional effects:
+
+```{r mo_lm_cat_2w_plot_cond_gp}
+plot(out_gp)
+```
+
+By default, the lines
+span the range of one standard deviation below
+and above the mean of the predictor.
+If the distribution
+of the predictor may vary for different
+levels of the moderators, a version of
+*tumble graph* proposed by Bodner (2016)
+can be plotted by adding `graph_type = "tumble"`:
+
+```{r mo_lm_cat_2w_plot_cond_gp_tumble}
+plot(out_gp,
+     graph_type = "tumble")
+```
+
+In this example, the distributions of `x`
+for the groups
+are similar.
+
+The plot can be customized in a lot of way.
+Please refer to the help page of
+`plot.cond_indirect_effects()` for available
+options.
+
+## Standardized Conditional Effects
+
+The standardized conditional
+effects from `x` to `y` conditional
+on `gp`
+can be estimated by setting
+`standardized_x` and `standardized_y` to `TRUE`,
+with bootstrap estimates from `do_boot()`
+used to from bootstrap confidence
+intervals.
+
+This is the output:
+
+```{r std_gp}
+std_gp <- cond_effects(
+  wlevels = "gp",
+  x = "x",
+  y = "y",
+  fit = lm_y_gp,
+  boot_ci = TRUE,
+  boot_out = boot_out_gp,
+  standardized_x = TRUE,
+  standardized_y = TRUE
+)
+std_gp
+```
+
+In the group `"Control"`, the standardized effect of `x` is
+`r formatC(coef(std_gp)[1], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(std_gp)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+In the group `"Treatment"`, the standardized effect of `x` is
+`r formatC(coef(std_gp)[2], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(std_gp)[2, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+The `plot()` method can also be used
+on the standardized conditional effects,
+although the only differences are the
+values displayed on the axes:
+
+```{r mo_lm_cat_2w_plot_std_gp}
+plot(std_gp)
+```
+
+```{r mo_lm_cat_2w_plot_std_gp_tumble}
+plot(std_gp,
+     graph_type = "tumble")
+```
+
+
+# One Categorical Moderator: Three Categories
+
+The steps demonstrated above can be used
+for a categorical moderator with any number
+of levels.
+
+Suppose this is the model being fitted,
+with control variables omitted from the
+plot for readability:
+
+```{r mo_lm_cat_2w_site, echo = FALSE}
+library(semPlot)
+suppressMessages(library(lavaan))
+dat_tmp <- dat
+dat_tmp$site <- as.numeric(factor(dat_tmp$site))
+dat_tmp$sitex <- dat_tmp$site * dat_tmp$x
+mod <-
+"
+sitex ~ x + site
+y ~ sitex
+"
+fit0 <- sem(mod, dat_tmp, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c(NA, NA, "site", NA, NA,
+                     "x", NA, "sitex", NA, "y"), 2, 5, byrow = TRUE)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 10,
+              asize = 10,
+              DoNotPlot = TRUE)
+p$graphAttributes$Nodes$width[c(1)] <- .01
+p$graphAttributes$Nodes$height[c(1)] <- .01
+p$graphAttributes$Edges$asize[c(1)] <- 0
+plot(p)
+```
+
+## Fit by Regression
+
+The path parameters
+can be estimated by a multiple regression model:
+
+```{r fit_lm_cat_site}
+lm_y_site <- lm(y ~ site*x + c1 + c2, dat)
+```
+
+These are the estimates of the regression coefficient
+of the paths:
+
+```{r est_cat_site}
+summary(lm_y_site)
+```
+
+## Generating Bootstrap Estimates
+
+Let's use `do_boot()` again:
+
+```{r do_boot_site}
+boot_out_site <- do_boot(
+  lm_y_site,
+  R = 5000,
+  seed = 54532
+)
+```
+
+## Conditional Effects
+
+The function `cond_effects()` will determine
+the number of categories automatically:
+
+```{r cond_site}
+out_site <- cond_effects(
+  wlevels = "site",
+  x = "x",
+  y = "y",
+  fit = lm_y_site
+)
+out_site
+```
+
+In the site `"Site 1"`, the effect of `x` is
+`r formatC(coef(out_site)[1], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(out_site)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+In the site `"Site 2"`, the effect of `x` is
+`r formatC(coef(out_site)[2], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(out_site)[2, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+In the site `"Site 3"`, the effect of `x` is
+`r formatC(coef(out_site)[3], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(out_site)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+
+## Plotting the Conditional Effects
+
+These are the plots of the conditional effects:
+
+```{r mo_lm_cat_2w_plot_cond_site}
+plot(out_site)
+```
+
+```{r mo_lm_cat_2w_plot_cond_site_tumble}
+plot(out_site,
+     graph_type = "tumble")
+```
+
+This example demonstrates the advantage of
+the tumble graph. The distribution of
+`x` in `"Site 3"` has a mean lower than
+those in the other two sites. The
+conventional plot using the same range
+of `x` in all three groups will give
+the incorrect impression of a cross-over
+of the lines
+in the *samples* (though it is possible that
+such a cross-over of the lines happen in the
+*populations*).
+
+## Standardized Conditional Effects
+
+This is the output of the standardized
+conditional effects:
+
+```{r std_site}
+std_site <- cond_effects(
+  wlevels = "site",
+  x = "x",
+  y = "y",
+  fit = lm_y_site,
+  boot_ci = TRUE,
+  boot_out = boot_out_site,
+  standardized_x = TRUE,
+  standardized_y = TRUE
+)
+std_site
+```
+
+These are the plots of the standardized
+conditional effects:
+
+```{r mo_lm_cat_2w_plot_std_site}
+plot(std_site)
+```
+
+```{r mo_lm_cat_2w_plot_std_site_tumble}
+plot(std_site,
+     graph_type = "tumble")
+```
+
+# Two Categorical Moderators
+
+The steps demonstrated above can be used
+in a regression model with any number of
+moderators.
+
+Suppose this is the model being fitted,
+with control variables omitted from the
+plot for readability:
+
+```{r mo_lm_cat_2w_gp_site, echo = FALSE}
+library(semPlot)
+suppressMessages(library(lavaan))
+dat_tmp <- dat
+dat_tmp$site <- as.numeric(factor(dat_tmp$site))
+dat_tmp$gp <- as.numeric(factor(dat_tmp$gp))
+dat_tmp$sitex <- dat_tmp$site * dat_tmp$x
+mod <-
+"
+sitex ~ x + gp + site
+y ~ sitex
+"
+fit0 <- sem(mod, dat_tmp, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c(NA, "gp", NA, "site", NA,
+                     "x", NA, "sitex", NA, "y"), 2, 5, byrow = TRUE)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 10,
+              asize = 10,
+              DoNotPlot = TRUE)
+p$graphAttributes$Nodes$width[c(1)] <- .01
+p$graphAttributes$Nodes$height[c(1)] <- .01
+p$graphAttributes$Edges$asize[c(1)] <- 0
+plot(p)
+```
+
+## Fit by Regression
+
+We first fit the regression model as usual:
+
+```{r fit_lm_cat_gp_site}
+lm_y_gp_site <- lm(y ~ gp*x + site*x + c1 + c2, dat)
+```
+
+These are the estimates of the regression coefficient
+of the paths:
+
+```{r est_cat_gp_site}
+summary(lm_y_gp_site)
+```
+
+## Generating Bootstrap Estimates
+
+Let's use `do_boot()` again:
+
+```{r do_boot_gp_site}
+boot_out_gp_site <- do_boot(
+  lm_y_gp_site,
+  R = 5000,
+  seed = 54532
+)
+```
+
+## Conditional Effects
+
+The function `cond_effects()` can be used
+for any number of moderators, as long as
+they are listed in `wlevels`:
+
+```{r cond_gp_site}
+out_gp_site <- cond_effects(
+  wlevels = c("gp", "site"),
+  x = "x",
+  y = "y",
+  fit = lm_y_gp_site
+)
+out_gp_site
+```
+
+NOTE: Even though this model does not
+have three-way interaction, the conditional
+effects still need to consider *both*
+moderators. It is because the effect of
+`x` depends on *all* moderators, whether
+there is higher order interaction or not.
+
+If one or more moderators are omitted,
+a warning message will be issued. This
+is an example:
+
+```{r eval=FALSE}
+cond_effects(
+  wlevels = "gp",
+  x = "x",
+  y = "y",
+  fit = lm_y_gp_site
+)
+```
+
+## Plotting the Conditional Effects
+
+These are the plots of the conditional effects:
+
+```{r mo_lm_cat_2w_plot_cond_gp_site}
+plot(out_gp_site)
+```
+
+For two or more moderators, it is not
+easy to visualize the conditional effects
+if all lines plotted on the same graph.
+
+The argument `facet_grid_cols` can be used
+to plot the effect of one moderator for
+each category of the other moderator.
+
+This is the plot of effects for `"Control"`
+and `"Treatment"`:
+
+```{r mo_lm_cat_2w_plot_cond_gp_site_cols_gp}
+plot(out_gp_site,
+     facet_grid_cols = "gp")
+```
+
+This is the plot of effects for each site:
+
+```{r mo_lm_cat_2w_plot_cond_gp_site_cols_site}
+plot(out_gp_site,
+     facet_grid_cols = "site")
+```
+
+Note that, without three-way interaction,
+the *moderating effect* of `gp` is the same
+in all three sites, and the *moderating effect*
+of `site` is the same in all two
+groups. The six lines are different simply
+because the effect of `x` depends on *both*
+`gp` and `site`.
+
+We already know the distributions of `x`
+are not the same in all three sites.
+Therefore, the tumble graph is a better
+way to visualize the effects:
+
+```{r mo_lm_cat_2w_plot_cond_gp_site_cols_gp_tumble}
+plot(out_gp_site,
+     facet_grid_cols = "gp",
+     graph_type = "tumble")
+```
+
+```{r mo_lm_cat_2w_plot_cond_gp_site_cols_site_tumble}
+plot(out_gp_site,
+     facet_grid_cols = "site",
+     graph_type = "tumble")
+```
+
+## Standardized Conditional Effects
+
+This is the output of the standardized
+conditional effects:
+
+```{r std_gp_site}
+std_gp_site <- cond_effects(
+  wlevels = c("gp", "site"),
+  x = "x",
+  y = "y",
+  fit = lm_y_gp_site,
+  boot_ci = TRUE,
+  boot_out = boot_out_gp_site,
+  standardized_x = TRUE,
+  standardized_y = TRUE
+)
+std_gp_site
+```
+
+These are the plots of the standardized
+conditional effects, with `facet_grid_cols`
+set:
+
+```{r mo_lm_cat_2w_plot_std_gp_site_tumble_cols_gp}
+plot(std_gp_site,
+     facet_grid_cols = "gp",
+     graph_type = "tumble")
+```
+
+```{r mo_lm_cat_2w_plot_std_gp_site_tumble_cols_site}
+plot(std_gp_site,
+     facet_grid_cols = "site",
+     graph_type = "tumble")
+```
+
+# Two Categorical Moderators, with Three-Way Interaction
+
+Suppose that we suspect that the two
+categorical moderators interact with each
+other. That is, the group difference in
+the effect of `x` may not be the same in
+all three sites, or the site difference
+in the effect of `x` may not be the same
+in the two groups.
+
+The steps demonstrated above can also be used
+in this regression model:
+
+```{r fit_lm_cat_gp_x_site}
+lm_y_gp_x_site <- lm(y ~ gp*site*x + c1 + c2, dat)
+```
+
+The test of the difference between this
+model and the previous model with no three-way
+interaction supports that this model fits
+better:
+
+```{r}
+anova(
+  lm_y_gp_site,
+  lm_y_gp_x_site
+)
+```
+
+These are the estimates of the regression coefficient
+of this model:
+
+```{r est_cat_gp_x_site}
+summary(lm_y_gp_x_site)
+```
+
+## Generating Bootstrap Estimates
+
+The bootstrap estimates can be
+generated as before using `do_boot()`:
+
+```{r do_boot_gp_x_site}
+boot_out_gp_x_site <- do_boot(
+  lm_y_gp_x_site,
+  R = 5000,
+  seed = 54532
+)
+```
+
+## Conditional Effects
+
+The function `cond_effects()` can be
+used in exactly the same way, whether
+the moderators interact with each other
+or not:
+
+```{r cond_gp_x_site}
+out_gp_x_site <- cond_effects(
+  wlevels = c("gp", "site"),
+  x = "x",
+  y = "y",
+  fit = lm_y_gp_x_site
+)
+out_gp_x_site
+```
+
+## Plotting the Conditional Effects
+
+These are the tumble plots of the conditional effects,
+with `facet_grid_cols` set:
+
+```{r mo_lm_cat_2w_plot_cond_gp_x_site_cols_gp}
+plot(out_gp_x_site,
+     facet_grid_cols = "gp",
+     graph_type = "tumble")
+```
+
+```{r mo_lm_cat_2w_plot_cond_gp_x_site_cols_site}
+plot(out_gp_x_site,
+     facet_grid_cols = "site",
+     graph_type = "tumble")
+```
+
+## Standardized Conditional Effects
+
+This is the output of the standardized
+conditional effects:
+
+```{r std_gp_x_site}
+std_gp_x_site <- cond_effects(
+  wlevels = c("gp", "site"),
+  x = "x",
+  y = "y",
+  fit = lm_y_gp_x_site,
+  boot_ci = TRUE,
+  boot_out = boot_out_gp_x_site,
+  standardized_x = TRUE,
+  standardized_y = TRUE
+)
+std_gp_x_site
+```
+
+These are the plots of the standardized
+conditional effects, with `facet_grid_cols`
+set:
+
+```{r mo_lm_cat_2w_plot_std_gp_x_site_tumble_cols_gp}
+plot(std_gp_x_site,
+     facet_grid_cols = "gp",
+     graph_type = "tumble")
+```
+
+```{r mo_lm_cat_2w_plot_std_gp_x_site_tumble_cols_site}
+plot(std_gp_x_site,
+     facet_grid_cols = "site",
+     graph_type = "tumble")
+```
+
+```{r load_other_models, child=c("mo_lm_ins_other_models.txt")}
+```
+
+```{r, include = FALSE}
+options(optold)
+```
+
+# References
+
+Bodner, T. E. (2016). Tumble graphs:
+Avoiding misleading end point
+extrapolation when graphing interactions
+from a moderated multiple
+regression analysis.
+*Journal of Educational and Behavioral Statistics, 41*(6),
+593--604. https://doi.org/10.3102/1076998616657080
+
+Cheung, S. F., & Cheung, S.-H. (2024).
+*manymome*: An R package for computing
+the indirect effects, conditional
+effects, and conditional indirect
+effects, standardized or unstandardized,
+and their bootstrap confidence intervals,
+in many (though not all) models.
+*Behavior Research Methods, 56*(5),
+4862--4882.
+https://doi.org/10.3758/s13428-023-02224-z
+
+Yuan, K.-H., & Chan, W. (2011). Biases
+and standard errors of standardized
+regression coefficients.
+*Psychometrika, 76*(4), 670--690.
+https://doi.org/10.1007/s11336-011-9224-6
