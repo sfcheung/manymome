@@ -199,10 +199,7 @@ The standardized conditional
 effect from `x` to `y` conditional
 on `w1`
 can be estimated by setting
-`standardized_x` and `standardized_y` to `TRUE`,
-with bootstrap estimates from `do_boot()`
-used to from bootstrap confidence
-intervals
+`standardized_x` and `standardized_y` to `TRUE`.
 
 ```{r std_xmy_on_w1}
 std_xy_on_w1 <- cond_effects(
