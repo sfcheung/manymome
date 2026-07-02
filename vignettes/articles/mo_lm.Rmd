@@ -47,12 +47,12 @@ library(manymome)
 dat <- data_mod_2w
 print(head(dat), digits = 3)
 #>      y    x   w1   w2   c1   c2
-#> 1 3.96 4.78 6.11 4.22 3.82 7.80
-#> 2 6.15 6.27 6.20 2.98 7.09 5.47
-#> 3 4.62 4.90 5.82 5.20 4.98 6.70
-#> 4 7.28 6.61 6.95 4.21 5.97 5.31
-#> 5 6.19 6.71 7.01 5.70 6.20 5.67
-#> 6 7.19 6.69 9.45 4.75 4.78 6.39
+#> 1 3.85 5.00 6.11 4.22 3.82 7.80
+#> 2 6.58 6.75 6.20 2.98 7.09 5.47
+#> 3 4.89 5.29 5.82 5.20 4.98 6.70
+#> 4 8.06 6.79 6.95 4.21 5.97 5.31
+#> 5 7.50 6.88 7.01 5.70 6.20 5.67
+#> 6 5.92 5.63 9.45 4.75 4.78 6.39
 ```
 
 This dataset has 6 variables:
@@ -102,29 +102,29 @@ summary(lm_y_w1)
 #> 
 #> Residuals:
 #>      Min       1Q   Median       3Q      Max 
-#> -2.06989 -0.52821  0.00169  0.47599  2.13184 
+#> -2.29074 -0.62350 -0.05257  0.64493  2.60438 
 #> 
 #> Coefficients:
 #>             Estimate Std. Error t value Pr(>|t|)    
-#> (Intercept) 14.08656    2.41388   5.836 2.22e-08 ***
-#> w1          -1.64679    0.33923  -4.855 2.48e-06 ***
-#> x           -2.54673    0.45039  -5.655 5.53e-08 ***
-#> c1           0.09003    0.05413   1.663   0.0979 .  
-#> c2           0.20577    0.04572   4.501 1.16e-05 ***
-#> w1:x         0.40037    0.06230   6.426 9.91e-10 ***
+#> (Intercept)  6.14284    3.32593   1.847 0.066277 .  
+#> w1          -0.52086    0.46251  -1.126 0.261486    
+#> x           -0.95008    0.60613  -1.567 0.118636    
+#> c1           0.08857    0.06496   1.363 0.174331    
+#> c2           0.18836    0.05498   3.426 0.000747 ***
+#> w1:x         0.18154    0.08380   2.166 0.031508 *  
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
-#> Residual standard error: 0.7985 on 194 degrees of freedom
-#> Multiple R-squared:  0.5349,	Adjusted R-squared:  0.5229 
-#> F-statistic: 44.63 on 5 and 194 DF,  p-value: < 2.2e-16
+#> Residual standard error: 0.9566 on 194 degrees of freedom
+#> Multiple R-squared:  0.3322,	Adjusted R-squared:  0.315 
+#> F-statistic:  19.3 on 5 and 194 DF,  p-value: 1.41e-15
 ```
 
 ## Conditional Effects
 
 We can now use `cond_effects()` to
 estimate the effect of `x` on `y` for
-different levels of the moderator (`w`).
+different levels of the moderator (`w1`).
 
 Suppose we want to estimate the
 effect from `x` to `y`,
@@ -149,10 +149,10 @@ out_xy_on_w1
 #>  Conditional on moderator(s): w1
 #>  Moderator(s) represented by: w1
 #> 
-#>      [w1]  (w1)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
-#> 1 M+1.0SD 7.942  0.633 0.094  6.750  0.000 ***  0.448 0.818
-#> 2 Mean    6.878  0.207 0.080  2.590  0.010 *    0.049 0.365
-#> 3 M-1.0SD 5.813 -0.219 0.113 -1.940  0.054     -0.442 0.004
+#>      [w1]  (w1)   ind    SE  Stat pvalue Sig  CI.lo CI.hi
+#> 1 M+1.0SD 7.942 0.492 0.101 4.853  0.000 ***  0.292 0.692
+#> 2 Mean    6.878 0.299 0.082 3.643  0.000 ***  0.137 0.460
+#> 3 M-1.0SD 5.813 0.105 0.138 0.762  0.447     -0.167 0.378
 #> 
 #>  - [SE] are regression standard errors.
 #>  - [Stat] are the t statistics used to test the effects.
@@ -169,15 +169,15 @@ The column `ind` show the effects of
 
 When `w1` is one standard deviation
 below mean, the effect of `x1` is
--0.219,
+0.105,
 with 95% confidence interval
-[-0.442, 0.004].
+[-0.167, 0.378].
 
 When `w1` is one standard deviation
 above mean, the effect of `x1` is
-0.633,
+0.492,
 with 95% confidence interval
-[0.448, 0.818].
+[0.292, 0.692].
 
 
 NOTE: The standard error (`SE`) and
@@ -226,7 +226,7 @@ plot(out_xy_on_w1,
 ![Tumble Plot of Conditional Effects](mo_lm_plot_cond_tumble_w1-1.png)
 
 In this example, the distribution of the predictor
-vary as the level of the moderator changes:
+vary slightly as the level of the moderator changes:
 
 - lower with a smaller variation when `w1` is
 one standard deviation below its mean, and
@@ -286,10 +286,10 @@ std_xy_on_w1
 #>  Conditional on moderator(s): w1
 #>  Moderator(s) represented by: w1
 #> 
-#>      [w1]  (w1)    std  CI.lo CI.hi Sig    ind
-#> 1 M+1.0SD 7.942  0.481  0.357 0.616 Sig  0.633
-#> 2 Mean    6.878  0.157  0.040 0.277 Sig  0.207
-#> 3 M-1.0SD 5.813 -0.167 -0.342 0.011     -0.219
+#>      [w1]  (w1)   std  CI.lo CI.hi Sig   ind
+#> 1 M+1.0SD 7.942 0.374  0.204 0.518 Sig 0.492
+#> 2 Mean    6.878 0.227  0.094 0.352 Sig 0.299
+#> 3 M-1.0SD 5.813 0.080 -0.136 0.280     0.105
 #> 
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
 #>    nonparametric bootstrapping with 5000 samples.
@@ -300,15 +300,15 @@ std_xy_on_w1
 
 When `w1` is one standard deviation below
 its mean, the standardized effect is
--0.167,
+0.080,
 with 95% confidence interval
-[-0.342, 0.011].
+[-0.136, 0.280].
 
 When `w` is one standard deviation above
 its mean, the standardized effect is
-0.481,
+0.374,
 with 95% confidence interval
-[0.357, 0.616].
+[0.204, 0.518].
 
 ### Plot Standardized Conditional Effects
 
@@ -369,25 +369,29 @@ summary(lm_y_w1w2)
 #> 
 #> Residuals:
 #>      Min       1Q   Median       3Q      Max 
-#> -1.90899 -0.51558 -0.02173  0.52914  2.10963 
+#> -2.29403 -0.65294 -0.01277  0.64934  2.58194 
 #> 
 #> Coefficients:
 #>             Estimate Std. Error t value Pr(>|t|)    
-#> (Intercept) 11.70420    2.63634   4.440 1.52e-05 ***
-#> x           -2.00026    0.49146  -4.070 6.86e-05 ***
-#> w1          -1.67718    0.33375  -5.025 1.15e-06 ***
-#> w2           0.66854    0.38362   1.743   0.0830 .  
-#> c1           0.09245    0.05293   1.747   0.0823 .  
-#> c2           0.19396    0.04482   4.328 2.42e-05 ***
-#> x:w1         0.40409    0.06123   6.599 3.93e-10 ***
-#> x:w2        -0.14497    0.06700  -2.164   0.0317 *  
+#> (Intercept)  6.88344    3.64126   1.890 0.060210 .  
+#> x           -1.17277    0.66638  -1.760 0.080015 .  
+#> w1          -0.57214    0.46589  -1.228 0.220932    
+#> w2          -0.08857    0.49859  -0.178 0.859190    
+#> c1           0.08432    0.06481   1.301 0.194794    
+#> c2           0.19407    0.05509   3.523 0.000534 ***
+#> x:w1         0.19117    0.08432   2.267 0.024482 *  
+#> x:w2         0.03787    0.08633   0.439 0.661378    
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
-#> Residual standard error: 0.7792 on 192 degrees of freedom
-#> Multiple R-squared:  0.5617,	Adjusted R-squared:  0.5457 
-#> F-statistic: 35.15 on 7 and 192 DF,  p-value: < 2.2e-16
+#> Residual standard error: 0.9529 on 192 degrees of freedom
+#> Multiple R-squared:  0.3442,	Adjusted R-squared:  0.3203 
+#> F-statistic:  14.4 on 7 and 192 DF,  p-value: 5.341e-15
 ```
+
+Although `w2` does not significantly moderate
+the effect of `x`, we still proceed to examine
+its moderating effect, just for illustration.
 
 ## Conditional Effects
 
@@ -410,11 +414,11 @@ out_xy_on_w1w2
 #>  Conditional on moderator(s): w1, w2
 #>  Moderator(s) represented by: w1, w2
 #> 
-#>      [w1]    [w2]  (w1)  (w2)    ind    SE   Stat pvalue Sig  CI.lo  CI.hi
-#> 1 M+1.0SD M+1.0SD 7.942 4.829  0.509 0.107  4.744  0.000 ***  0.297  0.721
-#> 2 M+1.0SD M-1.0SD 7.942 2.897  0.789 0.117  6.722  0.000 ***  0.557  1.020
-#> 3 M-1.0SD M+1.0SD 5.813 4.829 -0.351 0.130 -2.694  0.008 **  -0.608 -0.094
-#> 4 M-1.0SD M-1.0SD 5.813 2.897 -0.071 0.126 -0.566  0.572     -0.319  0.177
+#>      [w1]    [w2]  (w1)  (w2)   ind    SE  Stat pvalue Sig  CI.lo CI.hi
+#> 1 M+1.0SD M+1.0SD 7.942 4.829 0.528 0.122 4.343  0.000 ***  0.288 0.768
+#> 2 M+1.0SD M-1.0SD 7.942 2.897 0.455 0.141 3.220  0.002 **   0.176 0.734
+#> 3 M-1.0SD M+1.0SD 5.813 4.829 0.121 0.163 0.744  0.458     -0.201 0.444
+#> 4 M-1.0SD M-1.0SD 5.813 2.897 0.048 0.159 0.303  0.762     -0.266 0.363
 #> 
 #>  - [SE] are regression standard errors.
 #>  - [Stat] are the t statistics used to test the effects.
@@ -429,6 +433,59 @@ out_xy_on_w1w2
 The column `ind` show the effects of
 `x` on `y` for different levels of `w1`
 and `w2`.
+
+IMPORTANT: Even though this model does not
+have three-way interaction, the conditional
+effects still need to consider *both*
+moderators. It is because the effect of
+`x` depends on *all* moderators, whether
+there is a higher order interaction or not.
+
+If one or more moderators are omitted,
+a *warning message* will be issued. This
+is an example:
+
+
+``` r
+cond_effects(
+  wlevels = "w1",
+  x = "x",
+  y = "y",
+  fit = lm_y_w1w2
+)
+#> Warning in (function (xi, yi, yiname, digits = 3, y, wvalues = NULL, warn =
+#> TRUE, : w2 modelled as moderator(s) for the path from y~x to y but not included
+#> in 'wvalues'. They will be set to zero in computing the conditional effect,
+#> which may not be meaningful. Please check.
+#> Warning in (function (xi, yi, yiname, digits = 3, y, wvalues = NULL, warn =
+#> TRUE, : w2 modelled as moderator(s) for the path from y~x to y but not included
+#> in 'wvalues'. They will be set to zero in computing the conditional effect,
+#> which may not be meaningful. Please check.
+#> Warning in (function (xi, yi, yiname, digits = 3, y, wvalues = NULL, warn =
+#> TRUE, : w2 modelled as moderator(s) for the path from y~x to y but not included
+#> in 'wvalues'. They will be set to zero in computing the conditional effect,
+#> which may not be meaningful. Please check.
+#> 
+#> == Conditional effects ==
+#> 
+#>  Path: x -> y
+#>  Conditional on moderator(s): w1
+#>  Moderator(s) represented by: w1
+#> 
+#>      [w1]  (w1)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
+#> 1 M+1.0SD 7.942  0.346 0.363  0.951  0.343     -0.371 1.062
+#> 2 Mean    6.878  0.142 0.349  0.407  0.684     -0.546 0.831
+#> 3 M-1.0SD 5.813 -0.061 0.357 -0.172  0.864     -0.766 0.643
+#> 
+#>  - [SE] are regression standard errors.
+#>  - [Stat] are the t statistics used to test the effects.
+#>  - [pvalue] are p-values computed from 'Stat'.
+#>  - [Sig]: 0 '***' 0.001 '**' 0.01 '*' 0.05 ' ' 1.
+#>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from
+#>    regression standard errors.
+#>  - The 'ind' column shows the conditional effects.
+#> 
+```
 
 ## Plotting the Conditional Effects
 
@@ -531,11 +588,11 @@ std_xy_on_w1w2
 #>  Conditional on moderator(s): w1, w2
 #>  Moderator(s) represented by: w1, w2
 #> 
-#>      [w1]    [w2]  (w1)  (w2)    std  CI.lo  CI.hi Sig    ind
-#> 1 M+1.0SD M+1.0SD 7.942 4.829  0.387  0.232  0.536 Sig  0.509
-#> 2 M+1.0SD M-1.0SD 7.942 2.897  0.599  0.437  0.799 Sig  0.789
-#> 3 M-1.0SD M+1.0SD 5.813 4.829 -0.267 -0.479 -0.075 Sig -0.351
-#> 4 M-1.0SD M-1.0SD 5.813 2.897 -0.054 -0.249  0.149     -0.071
+#>      [w1]    [w2]  (w1)  (w2)   std  CI.lo CI.hi Sig   ind
+#> 1 M+1.0SD M+1.0SD 7.942 4.829 0.402  0.203 0.560 Sig 0.528
+#> 2 M+1.0SD M-1.0SD 7.942 2.897 0.346  0.143 0.586 Sig 0.455
+#> 3 M-1.0SD M+1.0SD 5.813 4.829 0.092 -0.169 0.323     0.121
+#> 4 M-1.0SD M-1.0SD 5.813 2.897 0.037 -0.210 0.264     0.048
 #> 
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
 #>    nonparametric bootstrapping with 5000 samples.
@@ -582,6 +639,201 @@ plot(std_xy_on_w1w2,
 ```
 
 ![Tumble Plots of Standardized Conditional Effects: By w1](mo_lm_plot_cond_std_w1w2_w1_tumble-1.png)
+
+# Two Moderators, with Three-Way Interaction
+
+Suppose that we suspect that the two
+moderators interact with each
+other. That is, the moderating effect of `w1` on
+the effect of `x` may not be the same for
+different levels of `w2`, or the moderating
+effect of `w2` on
+the effect of `x` may depend on the level
+of `w1`.
+
+The steps demonstrated above can also be used
+in this regression model:
+
+
+``` r
+lm_y_w1_x_w2 <- lm(
+  y ~ w1*w2*x + c1 + c2,
+  data = dat
+)
+```
+
+These are the estimates of the regression coefficient
+of this model:
+
+
+``` r
+summary(lm_y_w1_x_w2)
+#> 
+#> Call:
+#> lm(formula = y ~ w1 * w2 * x + c1 + c2, data = dat)
+#> 
+#> Residuals:
+#>      Min       1Q   Median       3Q      Max 
+#> -2.27658 -0.63668 -0.03106  0.61117  2.55406 
+#> 
+#> Coefficients:
+#>              Estimate Std. Error t value Pr(>|t|)    
+#> (Intercept) -23.46400   14.16783  -1.656  0.09934 .  
+#> w1            3.68387    1.98858   1.853  0.06550 .  
+#> w2            7.85339    3.63294   2.162  0.03189 *  
+#> x             4.46108    2.56813   1.737  0.08399 .  
+#> c1            0.08359    0.06427   1.301  0.19500    
+#> c2            0.19658    0.05465   3.597  0.00041 ***
+#> w1:w2        -1.11035    0.50635  -2.193  0.02953 *  
+#> w1:x         -0.59907    0.35889  -1.669  0.09672 .  
+#> w2:x         -1.43247    0.65486  -2.187  0.02993 *  
+#> w1:w2:x       0.20562    0.09102   2.259  0.02501 *  
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> 
+#> Residual standard error: 0.9449 on 190 degrees of freedom
+#> Multiple R-squared:  0.3618,	Adjusted R-squared:  0.3316 
+#> F-statistic: 11.97 on 9 and 190 DF,  p-value: 7.009e-15
+```
+
+The significant three-way interaction
+term, `w1:w2:x`, suggests that, although
+`w2` does not moderate the effect of `x`
+on `y`, it does moderate the moderating
+effect of `w1`.
+
+
+## Conditional Effects
+
+The function `cond_effects()` can be
+used in exactly the same way, whether
+the moderators interact with each other
+or not:
+
+
+``` r
+out_xy_on_w1_x_w2 <- cond_effects(
+  wlevels = c("w1", "w2"),
+  x = "x",
+  y = "y",
+  fit = lm_y_w1_x_w2
+)
+out_xy_on_w1_x_w2
+#> 
+#> == Conditional effects ==
+#> 
+#>  Path: x -> y
+#>  Conditional on moderator(s): w1, w2
+#>  Moderator(s) represented by: w1, w2
+#> 
+#>      [w1]    [w2]  (w1)  (w2)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
+#> 1 M+1.0SD M+1.0SD 7.942 4.829  0.672 0.137  4.903  0.000 ***  0.402 0.942
+#> 2 M+1.0SD M-1.0SD 7.942 2.897  0.284 0.161  1.768  0.079     -0.033 0.602
+#> 3 M-1.0SD M+1.0SD 5.813 4.829 -0.167 0.207 -0.806  0.421     -0.574 0.241
+#> 4 M-1.0SD M-1.0SD 5.813 2.897  0.292 0.191  1.530  0.128     -0.084 0.667
+#> 
+#>  - [SE] are regression standard errors.
+#>  - [Stat] are the t statistics used to test the effects.
+#>  - [pvalue] are p-values computed from 'Stat'.
+#>  - [Sig]: 0 '***' 0.001 '**' 0.01 '*' 0.05 ' ' 1.
+#>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from
+#>    regression standard errors.
+#>  - The 'ind' column shows the conditional effects.
+#> 
+```
+
+As shown above, among the levels examined,
+`x` has a significant effect on `y`
+only when both `w1` and `w2` are one
+standard deviation above their means.
+
+## Plotting the Conditional Effects
+
+These are the tumble plots of the conditional effects,
+with `facet_grid_cols` set:
+
+
+
+``` r
+plot(out_xy_on_w1_x_w2,
+     facet_grid_cols = "w2",
+     graph_type = "tumble")
+```
+
+![Tumble Plot of Conditional Effects (w2)](mo_lm_plot_cond_w1_x_w2_tumble_w2-1.png)
+
+
+``` r
+plot(out_xy_on_w1_x_w2,
+     facet_grid_cols = "w1",
+     graph_type = "tumble")
+```
+
+![Tumble Plot of Conditional Effects (w1)](mo_lm_plot_cond_w1_x_w2_tumble_w1-1.png)
+
+## Standardized Conditional Effects
+
+This is the output of the standardized
+conditional effects, with bootstrap
+confidence intervals:
+
+
+``` r
+std_xy_on_w1_x_w2 <- cond_effects(
+  wlevels = c("w1", "w2"),
+  x = "x",
+  y = "y",
+  fit = lm_y_w1_x_w2,
+  boot_ci = TRUE,
+  R = 5000,
+  seed = 54532,
+  standardized_x = TRUE,
+  standardized_y = TRUE
+)
+#> 19 processes started to run bootstrapping.
+std_xy_on_w1_x_w2
+#> 
+#> == Conditional effects ==
+#> 
+#>  Path: x -> y
+#>  Conditional on moderator(s): w1, w2
+#>  Moderator(s) represented by: w1, w2
+#> 
+#>      [w1]    [w2]  (w1)  (w2)    std  CI.lo CI.hi Sig    ind
+#> 1 M+1.0SD M+1.0SD 7.942 4.829  0.511  0.360 0.760 Sig  0.672
+#> 2 M+1.0SD M-1.0SD 7.942 2.897  0.216 -0.015 0.456      0.284
+#> 3 M-1.0SD M+1.0SD 5.813 4.829 -0.127 -0.462 0.177     -0.167
+#> 4 M-1.0SD M-1.0SD 5.813 2.897  0.222 -0.062 0.501      0.292
+#> 
+#>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
+#>    nonparametric bootstrapping with 5000 samples.
+#>  - std: The standardized conditional effects. 
+#>  - ind: The unstandardized conditional effects.
+#> 
+```
+
+The `plot()` method can also be used
+on the standardized conditional effects,
+in the presence of three-way interaction:
+
+
+``` r
+plot(std_xy_on_w1_x_w2,
+     facet_grid_cols = "w2",
+     graph_type = "tumble")
+```
+
+![Tumble Plots of Standardized Conditional Effects: By w2](mo_lm_plot_cond_std_w1_x_w2_w2-1.png)
+
+
+``` r
+plot(std_xy_on_w1_x_w2,
+     facet_grid_cols = "w1",
+     graph_type = "tumble")
+```
+
+![Tumble Plots of Standardized Conditional Effects: By w1](mo_lm_plot_cond_std_w1_x_w2_w1-1.png)
+
 
 
 
