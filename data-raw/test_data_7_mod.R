@@ -6,17 +6,20 @@ w1 <- rnorm(n)
 w2 <- rnorm(n)
 c1 <- rnorm(n)
 c2 <- rnorm(n)
-x <- 5 * (w1 + 5) * rnorm(n)
+x <- 4 * (w1 + 5) * rnorm(n)
 x <- scale(x)[, 1]
-x <- .6 * w1 + x
+# x <- .6 * w1 + x
+x <- .0 * w1 + x
 plot(w1, x)
-y <- (.3 + .6 * w1) * x + (.0 + -.2 * w2) * x + .2 * c1 + .3 * c2 + rnorm(n, 0, 1.5)
-y <- .3 + w1 + -.4 * w2 + y
-lm_out <- lm(y ~ x*w1 + x*w2 + c1 + c2)
+# y <- (.3 + .6 * w1) * x + (.0 + -.2 * w2) * x + .2 * c1 + .3 * c2 + rnorm(n, 0, 1.5)
+# y <- .3 + w1 + -.4 * w2 + y
+y <- (.4 + (.1 + 0.2 * w2) * w1) * x + .2 * c1 + .3 * c2 + rnorm(n, 0, 1.5)
+y <- -.5 + w1 + .0 * w2 + y
+lm_out <- lm(y ~ x*w1*w2 + c1 + c2)
 summary(lm_out)
 library(manymome)
 out <- cond_effects(
-  wlevels = c("w1", "w2"),
+  wlevels = c("w2", "w1"),
   x = "x",
   fit = lm_out
 )
@@ -25,6 +28,19 @@ plot(out, facet_grid_cols = "w1", graph_type = "tumble")
 plot(out, facet_grid_cols = "w2", graph_type = "tumble")
 plot(out, facet_grid_cols = "w1")
 plot(out, facet_grid_cols = "w2")
+
+lm_out <- lm(y ~ x*w1 + c1 + c2)
+summary(lm_out)
+library(manymome)
+out <- cond_effects(
+  wlevels = c("w1"),
+  x = "x",
+  fit = lm_out
+)
+out
+plot(out, graph_type = "tumble")
+
+
 dat <- data.frame(y, x, w1, w2, c1, c2)
 dat <- scale(dat)
 dat <- scale(dat, center = -c(5, 6, 7, 4, 6, 5) + rnorm(6, 0, .2), scale = FALSE)
@@ -32,6 +48,8 @@ dat <- scale(dat, center = FALSE, scale = runif(6, .8, 1.2))
 dat <- as.data.frame(round(dat, 2))
 psych::describe(dat)
 lm_out <- lm(y ~ x*w1 + x*w2 + c1 + c2)
+summary(lm_out)
+lm_out <- lm(y ~ x*w1*w2 + c1 + c2)
 summary(lm_out)
 library(manymome)
 out <- cond_effects(
