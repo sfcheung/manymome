@@ -1,0 +1,4 @@
+NOTE: The standard error (`SE`) and
+related results are computed using
+the pick-a-point approach by
+@rogosa_comparing_1980.

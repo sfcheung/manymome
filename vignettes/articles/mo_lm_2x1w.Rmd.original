@@ -1,0 +1,338 @@
+---
+title: "Moderated Regression: Two Predictors and One Moderator"
+author: "Shu Fai Cheung & Sing-Hang Cheung"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    number_sections: true
+vignette: >
+  %\VignetteIndexEntry{Moderated Regression: Two Predictors and One Moderator}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: references.bib
+csl: apa.csl
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = ""
+)
+```
+
+```{r load_intro, child=c("mo_lm_ins_intro.txt")}
+```
+
+# Data Set and Model
+
+This is the sample data set used for
+illustration:
+
+```{r data}
+library(manymome)
+dat <- data_mod_2x1w
+print(head(dat), digits = 3)
+```
+
+This dataset has 6 variables:
+
+- one outcome variable (`y`),
+
+- two predictors (`x1`, `x2`),
+
+- one moderator (`w`),
+
+- two control variables (`c1` and `c2`).
+
+Suppose this is the model being fitted,
+with control variables omitted from the
+plot for readability:
+
+```{r mo_lm_2x1m_model_2x1m, echo = FALSE, fig.cap = "Model"}
+library(semPlot)
+suppressMessages(library(lavaan))
+dat$wx1 <- dat$x1 * dat$w
+dat$wx2 <- dat$x2 * dat$w
+#dat$mw2 <- dat$m * dat$w2
+mod <-
+"
+wx1 ~ x1 + w
+wx2 ~ x2 + w
+y ~ wx1 + wx2
+"
+fit0 <- sem(mod, dat, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c("x1", NA, NA, NA, NA,
+                     NA, NA, "wx1", NA, NA,
+                     NA, "w", NA, NA, "y",
+                     NA, NA, "wx2", NA, NA,
+                     "x2", NA, NA, NA, NA), 5, 5, byrow = TRUE)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 10,
+              asize = 10,
+              DoNotPlot = TRUE)
+p$graphAttributes$Nodes$width[c(1, 2)] <- .01
+p$graphAttributes$Nodes$height[c(1, 2)] <- .01
+p$graphAttributes$Edges$asize[c(1, 3)] <- 0
+plot(p)
+```
+
+## Fit by Regression
+
+The path parameters
+can be estimated by multiple regression
+using `lm()`:
+
+```{r fit_lm_2x1w}
+lm_y <- lm(
+  y ~ w*x1 + w*x2 + c1 + c2,
+  data = dat
+)
+```
+
+These are the estimates of the regression coefficient
+of the paths:
+
+```{r est_2x1w}
+summary(lm_y)
+```
+
+## Conditional Effects
+
+We can now use `cond_effects()` to
+estimate the effects of `x1` and `x2`
+on `y` for
+different levels of the moderator (`w`).
+
+### Conditional Effects of `x1`
+
+Suppose we want to estimate the
+effect from `x1` to `y`,
+conditional on `w`:
+
+(Refer to `vignette("manymome")` and the help page
+of `cond_effects()` on the arguments.)
+
+```{r cond_x1}
+out1 <- cond_effects(
+  wlevels = "w",
+  x = "x1",
+  y = "y",
+  fit = lm_y
+)
+out1
+```
+
+The column `ind` show the effects of
+`x1` on `y` for different levels of `w`.
+
+When `w` is one standard deviation
+below mean, the effect of `x1` is
+`r formatC(coef(out1)[3], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(out1)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+When `w` is one standard deviation
+above mean, the effect of `x1` is
+`r formatC(coef(out1)[1], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(out1)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+```{r load_pickapoint, child=c("mo_lm_ins_pickapoint.txt")}
+```
+
+### Conditional Effects of `x2`
+
+The step to compute the conditional
+effects for the other predictor, `x2`,
+is similar:
+
+```{r cond_x2}
+out2 <- cond_effects(
+  wlevels = "w",
+  x = "x2",
+  y = "y",
+  fit = lm_y
+)
+out2
+```
+
+When `w` is one standard deviation
+below mean, the effect of `x2` is
+`r formatC(coef(out2)[3], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(out2)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+When `w` is one standard deviation
+above mean, the effect of `x2` is
+`r formatC(coef(out2)[1], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(out2)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+## Plotting the Conditional Effects
+
+### Conventional Plot
+
+The output of `cond_effects()` has a `plot`
+method for plotting the conditional effects:
+
+```{r mo_lm_2x1w_plot_cond1, fig.cap = "Conventional Plot of Conditional Effects (x1)"}
+plot(out1)
+```
+
+```{r mo_lm_2x1w_plot_cond2, fig.cap = "Conventional Plot of Conditional Effects (x2)"}
+plot(out2)
+```
+
+By default, the lines
+span the range of one standard deviation below
+and above the mean of the predictor.
+
+The plot can be customized in a lot of way.
+Please refer to the help page of
+`plot.cond_indirect_effects()` for available
+options.
+
+### Tumble Plot
+
+If the distribution
+of the `x` variable may vary for different
+levels of the moderators, a version of
+*tumble graph* proposed by @bodner_tumble_2016
+can be plotted by adding `graph_type = "tumble"`:
+
+```{r mo_lm_2x1w_plot_cond1_tumble, fig.cap = "Tumble Plot of Conditional Effects (x2)"}
+plot(out1,
+     graph_type = "tumble")
+```
+
+In this example, the distributions of `x1`
+for the three levels of moderator `w`
+are similar.
+
+```{r mo_lm_2x1w_plot_cond2_tumble, fig.cap = "Tumble Plot of Conditional Effects (x1)"}
+plot(out2,
+     graph_type = "tumble")
+```
+
+The distributions of `x2`
+vary as the level of the moderator `w` changes:
+
+- the mean of `x2` is lower when `w` is
+one standard deviation below its mean,
+and,
+
+- the mean of `x2` is higher when
+`w` is one standard deviation above its
+mean.
+
+Therefore, the tumble graph is a better
+way to visualize the moderating effect
+of `w` on the effect of `x2`. For `x1`,
+the conventional graph is sufficient.
+
+## Standardized Conditional Effects
+
+```{r load_boot_short, child=c("mo_lm_ins_do_boot_short.txt")}
+```
+
+The standardized conditional
+effect from `x1` and `x2` to `y` conditional
+on `w`
+can be estimated by setting
+`standardized_x` and `standardized_y` to `TRUE`.
+
+This is the output for `x1`:
+
+```{r std1}
+std1 <- cond_effects(
+  wlevels = "w",
+  x = "x1",
+  y = "y",
+  fit = lm_y,
+  boot_ci = TRUE,
+  R = 5000,
+  seed = 54532,
+  standardized_x = TRUE,
+  standardized_y = TRUE
+)
+std1
+```
+
+When `w` is one standard deviation below
+its mean, the standardized effect of `x1` is
+`r formatC(coef(std1)[3], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(std1)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+When `w` is one standard deviation above
+its mean, the standardized effect of `x1` is
+`r formatC(coef(std1)[1], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(std1)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+This is the output for `x2`:
+
+```{r std2}
+std2 <- cond_effects(
+  wlevels = "w",
+  x = "x2",
+  y = "y",
+  fit = lm_y,
+  boot_ci = TRUE,
+  R = 5000,
+  seed = 54532,
+  standardized_x = TRUE,
+  standardized_y = TRUE
+)
+std2
+```
+
+When `w` is one standard deviation below
+its mean, the standardized effect of `x2` is
+`r formatC(coef(std2)[3], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(std2)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+When `w` is one standard deviation above
+its mean, the standardized effect of `x2` is
+`r formatC(coef(std2)[1], digits = 3, format = "f")`,
+with 95% confidence interval
+`r paste0("[", paste(formatC(unlist(confint(std2)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
+
+### Plot Standardized Conditional Effects
+
+The `plot()` method can also be used
+on the standardized conditional effects,
+although the only differences are the
+values displayed on the axes:
+
+```{r mo_lm_2x1w_plot_std1, fig.cap = "Plot of Standardized Conditional Effects (x1)"}
+plot(std1)
+```
+
+```{r mo_lm_2x1w_plot_std2, fig.cap = "Plot of Standardized Conditional Effects (x2)"}
+plot(std2)
+```
+
+These are the tumble graphs:
+
+```{r mo_lm_2x1w_plot_std1_tumble, fig.cap = "Tumble Plot of Standardized Conditional Effects (x1)"}
+plot(std1,
+     graph_type = "tumble")
+```
+
+```{r mo_lm_2x1w_plot_std2_tumble, fig.cap = "Tumble Plot of Standardized Conditional Effects (x2)"}
+plot(std2,
+     graph_type = "tumble")
+```
+
+
+```{r load_other_models, child=c("mo_lm_ins_other_models.txt")}
+```
+
+# References
