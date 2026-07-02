@@ -1,0 +1,19 @@
+# Introduction
+
+This article is part of a series of
+brief illustrations of how
+to use
+`cond_effects()`
+from the package
+[manymome](https://sfcheung.github.io/manymome/)
+[@cheung_manymome_2024]
+to estimate the conditional
+effects
+when the model parameters are estimate by
+ordinary least squares (OLS) multiple regression
+using `lm()`. For moderated mediation
+tested by OLS regression, please refer
+to [this article](./mome_lm.html).
+
+(Articles in this series had duplicated
+sections, to make each of them self-contained.)

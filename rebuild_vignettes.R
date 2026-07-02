@@ -26,6 +26,11 @@ knitr::knit("q_mediation_sem_indicators_parallel.Rmd.original", output = "q_medi
 knitr::knit("q_mediation_sem_indicators_arbitrary.Rmd.original", output = "q_mediation_sem_indicators_arbitrary.Rmd")
 knitr::knit("mome_sam.Rmd.original", output = "mome_sam.Rmd")
 knitr::knit("mo_sam.Rmd.original", output = "mo_sam.Rmd")
+knitr::knit("mo_lm.Rmd.original", output = "mo_lm.Rmd")
+knitr::knit("mo_lm_2x1w.Rmd.original", output = "mo_lm_2x1w.Rmd")
+knitr::knit("mo_lm_2x2w.Rmd.original", output = "mo_lm_2x2w.Rmd")
+knitr::knit("mo_lm_cat_2w.Rmd.original", output = "mo_lm_cat_2w.Rmd")
+knitr::knit("mo_lm_cat_num_2w.Rmd.original", output = "mo_lm_cat_num_2w.Rmd")
 pkgdown::build_articles("../../"); pkgdown::preview_site("../../")
 
 setwd(base_dir)

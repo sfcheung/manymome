@@ -1,0 +1,367 @@
+---
+title: "Moderated Regression: Numerical and Categorical Moderators"
+author: "Shu Fai Cheung & Sing-Hang Cheung"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    number_sections: true
+vignette: >
+  %\VignetteIndexEntry{Moderated Regression: Numerical and Categorical Moderators}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: references.bib
+csl: apa.csl
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = ""
+)
+optold <- options(width = 120)
+```
+
+```{r load_intro, child=c("mo_lm_ins_intro.txt")}
+```
+
+# Data Set and Model
+
+This is the sample data set used for
+illustration:
+
+```{r data}
+library(manymome)
+dat <- data_mod_cat_num_2w
+print(head(dat), digits = 3)
+```
+
+This dataset has 6 variables:
+
+- one outcome variable (`y`),
+
+- one predictor (`x`),
+
+- one numerical moderator (`w`).
+
+- one categorical moderator (`city`),
+
+- two control variables (`c1` and `c2`).
+
+The moderator `city` has two possible
+values: `"City A"` and `"City B"`.
+
+Models with only numerical moderators
+or only categorical moderators have been
+covered in other articles of this series.
+Therefore, only two models will be
+considered: a model with no three-way
+interaction and a model with three-way
+interaction.
+
+# One Numerical Moderator and One Categorical Moderator
+
+Suppose this is the model being fitted,
+with control variables omitted from the
+plot for readability:
+
+```{r mo_lm_cat_num_2w, echo = FALSE, fig.cap = "Model"}
+library(semPlot)
+suppressMessages(library(lavaan))
+dat_tmp <- dat
+dat_tmp$city <- as.numeric(factor(dat_tmp$city))
+dat_tmp$cityx <- dat_tmp$city * dat_tmp$x
+mod <-
+"
+cityx ~ x + city + w
+y ~ cityx
+"
+fit0 <- sem(mod, dat_tmp, do.fit = FALSE, fixed.x = FALSE)
+layout_m <- matrix(c(NA, "city", NA, "w", NA,
+                     "x", NA, "cityx", NA, "y"), 2, 5, byrow = TRUE)
+p <- semPaths(fit0,
+              layout = layout_m,
+              nCharNodes = 0,
+              exoCov = FALSE,
+              residuals = FALSE,
+              sizeMan = 10,
+              asize = 10,
+              DoNotPlot = TRUE)
+p$graphAttributes$Nodes$width[c(1)] <- .01
+p$graphAttributes$Nodes$height[c(1)] <- .01
+p$graphAttributes$Edges$asize[c(1)] <- 0
+plot(p)
+```
+
+## Fit by Regression
+
+The path parameters
+can be estimated by multiple regression
+using `lm()`:
+
+```{r fit_lm_cat_num}
+lm_y <- lm(
+  y ~ w*x + city*x + c1 + c2,
+  data = dat
+)
+```
+
+These are the estimates of the regression coefficient
+of the paths:
+
+```{r est_cat_num}
+summary(lm_y)
+```
+
+## Conditional Effects
+
+We can now use `cond_effects()` to
+estimate the effects of `x`
+on `y` for different levels of
+`w` and different cities.
+
+(Refer to `vignette("manymome")` and the help page
+of `cond_effects()` on the arguments.)
+
+```{r cond_gp}
+out <- cond_effects(
+  wlevels = c("city", "w"),
+  x = "x",
+  y = "y",
+  fit = lm_y
+)
+out
+```
+
+The column `ind` show the effects of
+`x` on `y` for combinations of the levels
+of the moderators.
+
+IMPORTANT: Even though this model does not
+have a three-way interaction, the conditional
+effects still need to consider *both*
+moderators. It is because the effect of
+`x` depends on *all* moderators, whether
+there is a higher order interaction or not.
+
+If one or more moderators are omitted,
+a *warning message* will be issued. This
+is an example:
+
+```{r}
+cond_effects(
+  wlevels = "w",
+  x = "x",
+  y = "y",
+  fit = lm_y
+)
+```
+
+```{r load_pickapoint, child=c("mo_lm_ins_pickapoint.txt")}
+```
+
+## Plotting the Conditional Effects
+
+The output of `cond_effects()` has a `plot`
+method for plotting the conditional effects:
+
+```{r mo_lm_cat_num_2w_plot_cond, fig.cap = "Conventional Plot of Conditional Effects"}
+plot(out)
+```
+
+By default, the lines
+span the range of one standard deviation below
+and above the mean of the predictor.
+
+The plot can be customized in a lot of way.
+Please refer to the help page of
+`plot.cond_indirect_effects()` for available
+options.
+
+For two or more moderators, it is not
+easy to visualize the conditional effects
+if all lines are plotted on the same graph.
+
+The argument `facet_grid_cols` can be used
+to plot the effect of one moderator for
+each level of the other moderator.
+
+In this case, it is natural to plot the
+moderating effect of `w` in each city:
+
+```{r mo_lm_cat_num_2w_plot_cond_city, fig.cap = "Conventional Plot of Conditional Effects (by city)"}
+plot(out,
+     facet_grid_cols = "city")
+```
+
+Note that, without three-way interaction,
+the *moderating effect* of `w` is the same
+in all cities. The lines are different simply
+because the effect of `x` depends on *both*
+`w` and `city`. They do *not* denote
+a three-way interaction (because it is not in the
+regression model).
+
+### Tumble Plot
+
+If the distribution
+of the `x` variable may vary for different
+levels of the moderators, a version of
+*tumble graph* proposed by @bodner_tumble_2016
+can be plotted by adding `graph_type = "tumble"`:
+
+```{r mo_lm_cat_num_2w_plot_cond_city_tumble, fig.cap = "Tumble Plot of Conditional Effects (by city)"}
+plot(out,
+     facet_grid_cols = "city",
+     graph_type = "tumble")
+```
+
+In this example, the distributions of `x`
+for the two cities
+are different: The standard deviations of
+`x` are larger in City B. Therefore, the
+tumble graph is more appropriate than
+the conventional graph.
+
+## Standardized Conditional Effects
+
+```{r load_boot_short, child=c("mo_lm_ins_do_boot_short.txt")}
+```
+
+The standardized conditional
+effects from `x` to `y` conditional
+on `w` and `city`
+can be estimated by setting
+`standardized_x` and `standardized_y` to `TRUE`.
+
+This is the output:
+
+```{r std}
+std <- cond_effects(
+  wlevels = c("city", "w"),
+  x = "x",
+  y = "y",
+  fit = lm_y,
+  boot_ci = TRUE,
+  R = 5000,
+  seed = 54532,
+  standardized_x = TRUE,
+  standardized_y = TRUE
+)
+std
+```
+
+### Plot Standardized Conditional Effects
+
+The `plot()` method can also be used
+on the standardized conditional effects,
+although the only differences are the
+values displayed on the axes:
+
+```{r mo_lm_cat_num_2w_plot_std_gp, fig.cap = "Tumble Plot of Standardized Conditional Effects (by city)"}
+plot(std,
+     facet_grid_cols = "city",
+     graph_type = "tumble")
+```
+
+# One Numerical Moderator and One Categorical Moderator, with Three-Way Interaction
+
+Suppose that we suspect that the two
+moderators interact with each
+other. That is, the moderating effect of
+`w` on
+the effect of `x` may not be the same in
+the two cities.
+
+The steps demonstrated above can also be used
+in this regression model:
+
+```{r fit_lm_cat_x_num}
+lm_y_city_x_w <- lm(
+  y ~ x*city*w + c1 + c2,
+  data = dat
+)
+```
+
+These are the estimates of the regression coefficient
+of this model:
+
+```{r est_cat_city_x_w}
+summary(lm_y_city_x_w)
+```
+
+The three-way interaction term,
+`x:city City B:w`, is significant,
+suggesting a three-way interaction.
+
+## Conditional Effects
+
+The function `cond_effects()` can be
+used in exactly the same way, whether
+the moderators interact with each other
+or not:
+
+```{r cond_gp_x_site}
+out_city_x_w <- cond_effects(
+  wlevels = c("city", "w"),
+  x = "x",
+  y = "y",
+  fit = lm_y_city_x_w
+)
+out_city_x_w
+```
+
+The results show that, within one
+standard deviation of the mean of `w`,
+`x` has significant effects only in City B.
+
+## Plotting the Conditional Effects
+
+These are the tumble plots of the conditional effects,
+with `facet_grid_cols` set:
+
+```{r mo_lm_cat_num_2w_plot_cond_city_x_w_cols_city, fig.cap = "Tumble Plot of Conditional Effects (By City)"}
+plot(out_city_x_w,
+     facet_grid_cols = "city",
+     graph_type = "tumble")
+```
+
+## Standardized Conditional Effects
+
+This is the output of the standardized
+conditional effects, with bootstrap
+confidence intervals:
+
+```{r std_city_x_w}
+std_city_x_w <- cond_effects(
+  wlevels = c("city", "w"),
+  x = "x",
+  y = "y",
+  fit = lm_y_city_x_w,
+  boot_ci = TRUE,
+  R = 5000,
+  seed = 54532,
+  standardized_x = TRUE,
+  standardized_y = TRUE
+)
+std_city_x_w
+```
+
+These are the plots of the standardized
+conditional effects, with `facet_grid_cols`
+set:
+
+```{r mo_lm_cat_num_2w_plot_std_city_x_w_tumble_cols_city, fig.cap = "Tumble Plot of Standardized Conditional Effects (By City)"}
+plot(std_city_x_w,
+     facet_grid_cols = "city",
+     graph_type = "tumble")
+```
+
+```{r load_other_models, child=c("mo_lm_ins_other_models.txt")}
+```
+
+```{r, include = FALSE}
+options(optold)
+```
+
+# References
