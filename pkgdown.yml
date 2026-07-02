@@ -13,6 +13,11 @@ articles:
   med_lav: med_lav.html
   med_lm: med_lm.html
   articles/med_mg: med_mg.html
+  articles/mo_lm_2x1w: mo_lm_2x1w.html
+  articles/mo_lm_2x2w: mo_lm_2x2w.html
+  articles/mo_lm_cat_2w: mo_lm_cat_2w.html
+  articles/mo_lm_cat_num_2w: mo_lm_cat_num_2w.html
+  articles/mo_lm: mo_lm.html
   articles/mo_sam: mo_sam.html
   mod_levels: mod_levels.html
   mome_lm: mome_lm.html
@@ -22,7 +27,7 @@ articles:
   articles/q_mediation_sem_indicators_serial: q_mediation_sem_indicators_serial.html
   articles/q_mediation_sem_indicators_simple: q_mediation_sem_indicators_simple.html
   articles/q_mediation: q_mediation.html
-last_built: 2026-06-29T14:32Z
+last_built: 2026-07-02T16:44Z
 urls:
   reference: https://sfcheung.github.io/manymome/reference
   article: https://sfcheung.github.io/manymome/articles

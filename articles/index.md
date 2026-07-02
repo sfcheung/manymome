@@ -49,6 +49,19 @@
 - [Set Moderator
   Levels](https://sfcheung.github.io/manymome/articles/mod_levels.md):
 
+### Moderated Regression
+
+- [Moderating Effect by Multiple
+  Regression](https://sfcheung.github.io/manymome/articles/mo_lm.md):
+- [Moderated Regression: Two Predictors and One
+  Moderator](https://sfcheung.github.io/manymome/articles/mo_lm_2x1w.md):
+- [Moderated Regression: Two Predictors and Two
+  Moderators](https://sfcheung.github.io/manymome/articles/mo_lm_2x2w.md):
+- [Moderated Regression: Categorical
+  Moderators](https://sfcheung.github.io/manymome/articles/mo_lm_cat_2w.md):
+- [Moderated Regression: Numerical and Categorical
+  Moderators](https://sfcheung.github.io/manymome/articles/mo_lm_cat_num_2w.md):
+
 ### Technical Appendices
 
 - [Technical Appendix: Workflow of \`get_prod()\` and

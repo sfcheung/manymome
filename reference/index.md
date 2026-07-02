@@ -288,8 +288,18 @@ Datasets used in examples.
   : Sample Dataset: One Moderator
 - [`data_mod2`](https://sfcheung.github.io/manymome/reference/data_mod2.md)
   : Sample Dataset: Two Moderators
+- [`data_mod_2w`](https://sfcheung.github.io/manymome/reference/data_mod_2w.md)
+  : Sample Dataset: Two Moderators (Version 2)
+- [`data_mod_2x1w`](https://sfcheung.github.io/manymome/reference/data_mod_2x1w.md)
+  : Sample Dataset: One Moderator on Two Predictors
+- [`data_mod_2x2w`](https://sfcheung.github.io/manymome/reference/data_mod_2x2w.md)
+  : Sample Dataset: Two Moderators on Two Predictors
 - [`data_mod_cat`](https://sfcheung.github.io/manymome/reference/data_mod_cat.md)
   : Sample Dataset: Moderation with One Categorical Moderator
+- [`data_mod_cat_2w`](https://sfcheung.github.io/manymome/reference/data_mod_cat_2w.md)
+  : Sample Dataset: Two Categorical Moderators
+- [`data_mod_cat_num_2w`](https://sfcheung.github.io/manymome/reference/data_mod_cat_num_2w.md)
+  : Sample Dataset: Mixed Moderators
 - [`data_mome_demo`](https://sfcheung.github.io/manymome/reference/data_mome_demo.md)
   : Sample Dataset: A Complicated Moderated-Mediation Model
 - [`data_mome_demo_missing`](https://sfcheung.github.io/manymome/reference/data_mome_demo_missing.md)

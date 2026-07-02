@@ -13,6 +13,11 @@
 <url><loc>https://sfcheung.github.io/manymome/articles/med_lav.html</loc></url>
 <url><loc>https://sfcheung.github.io/manymome/articles/med_lm.html</loc></url>
 <url><loc>https://sfcheung.github.io/manymome/articles/med_mg.html</loc></url>
+<url><loc>https://sfcheung.github.io/manymome/articles/mo_lm.html</loc></url>
+<url><loc>https://sfcheung.github.io/manymome/articles/mo_lm_2x1w.html</loc></url>
+<url><loc>https://sfcheung.github.io/manymome/articles/mo_lm_2x2w.html</loc></url>
+<url><loc>https://sfcheung.github.io/manymome/articles/mo_lm_cat_2w.html</loc></url>
+<url><loc>https://sfcheung.github.io/manymome/articles/mo_lm_cat_num_2w.html</loc></url>
 <url><loc>https://sfcheung.github.io/manymome/articles/mo_sam.html</loc></url>
 <url><loc>https://sfcheung.github.io/manymome/articles/mod_levels.html</loc></url>
 <url><loc>https://sfcheung.github.io/manymome/articles/mome_lm.html</loc></url>
@@ -59,7 +64,12 @@
 <url><loc>https://sfcheung.github.io/manymome/reference/data_med_mod_serial_parallel_cat.html</loc></url>
 <url><loc>https://sfcheung.github.io/manymome/reference/data_mod.html</loc></url>
 <url><loc>https://sfcheung.github.io/manymome/reference/data_mod2.html</loc></url>
+<url><loc>https://sfcheung.github.io/manymome/reference/data_mod_2w.html</loc></url>
+<url><loc>https://sfcheung.github.io/manymome/reference/data_mod_2x1w.html</loc></url>
+<url><loc>https://sfcheung.github.io/manymome/reference/data_mod_2x2w.html</loc></url>
 <url><loc>https://sfcheung.github.io/manymome/reference/data_mod_cat.html</loc></url>
+<url><loc>https://sfcheung.github.io/manymome/reference/data_mod_cat_2w.html</loc></url>
+<url><loc>https://sfcheung.github.io/manymome/reference/data_mod_cat_num_2w.html</loc></url>
 <url><loc>https://sfcheung.github.io/manymome/reference/data_mome_demo.html</loc></url>
 <url><loc>https://sfcheung.github.io/manymome/reference/data_mome_demo_missing.html</loc></url>
 <url><loc>https://sfcheung.github.io/manymome/reference/data_parallel.html</loc></url>

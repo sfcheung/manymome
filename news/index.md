@@ -1,6 +1,6 @@
 # Changelog
 
-## manymome 0.3.6.6
+## manymome 0.3.6.7
 
 ### New Features
 
@@ -37,6 +37,9 @@
 - Updated to handle possible `NA` from
   [`parallel::detectCores()`](https://rdrr.io/r/parallel/detectCores.html).
   (0.3.6.4)
+
+- Added `pkgdown` website articles on regression models with moderators
+  (no mediators). (0.3.6.7)
 
 ## manymome 0.3.6
 

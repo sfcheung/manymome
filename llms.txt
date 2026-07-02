@@ -1,6 +1,6 @@
 # manymome
 
-(Version 0.3.6.6, updated on 2026-06-29, [release
+(Version 0.3.6.7, updated on 2026-07-03, [release
 history](https://sfcheung.github.io/manymome/news/index.html))
 
 Functions for estimating indirect effects, conditional indirect effects,
@@ -506,8 +506,18 @@ Datasets used in examples.
   : Sample Dataset: One Moderator
 - [`data_mod2`](https://sfcheung.github.io/manymome/reference/data_mod2.md)
   : Sample Dataset: Two Moderators
+- [`data_mod_2w`](https://sfcheung.github.io/manymome/reference/data_mod_2w.md)
+  : Sample Dataset: Two Moderators (Version 2)
+- [`data_mod_2x1w`](https://sfcheung.github.io/manymome/reference/data_mod_2x1w.md)
+  : Sample Dataset: One Moderator on Two Predictors
+- [`data_mod_2x2w`](https://sfcheung.github.io/manymome/reference/data_mod_2x2w.md)
+  : Sample Dataset: Two Moderators on Two Predictors
 - [`data_mod_cat`](https://sfcheung.github.io/manymome/reference/data_mod_cat.md)
   : Sample Dataset: Moderation with One Categorical Moderator
+- [`data_mod_cat_2w`](https://sfcheung.github.io/manymome/reference/data_mod_cat_2w.md)
+  : Sample Dataset: Two Categorical Moderators
+- [`data_mod_cat_num_2w`](https://sfcheung.github.io/manymome/reference/data_mod_cat_num_2w.md)
+  : Sample Dataset: Mixed Moderators
 - [`data_mome_demo`](https://sfcheung.github.io/manymome/reference/data_mome_demo.md)
   : Sample Dataset: A Complicated Moderated-Mediation Model
 - [`data_mome_demo_missing`](https://sfcheung.github.io/manymome/reference/data_mome_demo_missing.md)
@@ -581,6 +591,19 @@ Datasets used in examples.
   Estimates](https://sfcheung.github.io/manymome/articles/do_mc.md):
 - [Set Moderator
   Levels](https://sfcheung.github.io/manymome/articles/mod_levels.md):
+
+### Moderated Regression
+
+- [Moderating Effect by Multiple
+  Regression](https://sfcheung.github.io/manymome/articles/mo_lm.md):
+- [Moderated Regression: Two Predictors and One
+  Moderator](https://sfcheung.github.io/manymome/articles/mo_lm_2x1w.md):
+- [Moderated Regression: Two Predictors and Two
+  Moderators](https://sfcheung.github.io/manymome/articles/mo_lm_2x2w.md):
+- [Moderated Regression: Categorical
+  Moderators](https://sfcheung.github.io/manymome/articles/mo_lm_cat_2w.md):
+- [Moderated Regression: Numerical and Categorical
+  Moderators](https://sfcheung.github.io/manymome/articles/mo_lm_cat_num_2w.md):
 
 ### Technical Appendices
 
