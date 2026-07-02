@@ -697,28 +697,3 @@ options(optold)
 ```
 
 # References
-
-Bodner, T. E. (2016). Tumble graphs:
-Avoiding misleading end point
-extrapolation when graphing interactions
-from a moderated multiple
-regression analysis.
-*Journal of Educational and Behavioral Statistics, 41*(6),
-593--604. https://doi.org/10.3102/1076998616657080
-
-Cheung, S. F., & Cheung, S.-H. (2024).
-*manymome*: An R package for computing
-the indirect effects, conditional
-effects, and conditional indirect
-effects, standardized or unstandardized,
-and their bootstrap confidence intervals,
-in many (though not all) models.
-*Behavior Research Methods, 56*(5),
-4862--4882.
-https://doi.org/10.3758/s13428-023-02224-z
-
-Yuan, K.-H., & Chan, W. (2011). Biases
-and standard errors of standardized
-regression coefficients.
-*Psychometrika, 76*(4), 670--690.
-https://doi.org/10.1007/s11336-011-9224-6
