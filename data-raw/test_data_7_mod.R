@@ -13,10 +13,11 @@ x <- .0 * w1 + x
 plot(w1, x)
 # y <- (.3 + .6 * w1) * x + (.0 + -.2 * w2) * x + .2 * c1 + .3 * c2 + rnorm(n, 0, 1.5)
 # y <- .3 + w1 + -.4 * w2 + y
-y <- (.4 + (.1 + 0.2 * w2) * w1) * x + .2 * c1 + .3 * c2 + rnorm(n, 0, 1.5)
-y <- -.5 + w1 + .0 * w2 + y
+y <- (.55 + (0.3 + 0.3 * w2) * w1) * x + .2 * c1 + .3 * c2 + rnorm(n, 0, 2)
+y <- -.75 + w1 + .0 * w2 + y
 lm_out <- lm(y ~ x*w1*w2 + c1 + c2)
 summary(lm_out)
+summary(lm(y ~ x*w1 + c1 + c2))
 library(manymome)
 out <- cond_effects(
   wlevels = c("w2", "w1"),
