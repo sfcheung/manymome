@@ -1,4 +1,4 @@
-# manymome 0.3.6.11
+# manymome 0.3.6.12
 
 ## New Features
 
@@ -66,6 +66,11 @@
 - Stored indices of sampled cases
   (`ids` or `design`, if available).
   (0.3.6.11)
+
+- Updated `many_indirect_effects()` to
+  do bootstrapping or Monte Carlo simulation
+  only once when `ci_type` is set.
+  (0.3.6.12)
 
 # manymome 0.3.6
 
