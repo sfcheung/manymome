@@ -1,4 +1,4 @@
-# manymome 0.3.6.10
+# manymome 0.3.6.11
 
 ## New Features
 
@@ -62,6 +62,10 @@
 - Amended some tests to allow for
   optimization noise.
   (0.3.6.10)
+
+- Stored indices of sampled cases
+  (`ids` or `design`, if available).
+  (0.3.6.11)
 
 # manymome 0.3.6
 
