@@ -109,7 +109,8 @@ sam_update_internal_i <- function(
   x@ParTable <- PT
 
   out <- lavaan::sam(
-    model = x
+    model = x,
+    missing = "fiml"
   )
   out
 }

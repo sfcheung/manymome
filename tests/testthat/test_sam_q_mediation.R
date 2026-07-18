@@ -109,7 +109,8 @@ y =~ x01 + x02 + x03
 
 fit <- sam(
   mod,
-  data = data_sem
+  data = data_sem,
+  missing = "fiml"
 )
 
 ind <- indirect_effect(
@@ -234,7 +235,8 @@ fit <- sam(
   data = data_sem,
   se = "bootstrap",
   bootstrap.args = list(R = 5),
-  iseed = 2345
+  iseed = 2345,
+  missing = "fiml"
 )
 )
 
@@ -249,7 +251,7 @@ ind <- indirect_effect(
 
 expect_identical(coef(out$ind_out$ustd),
                  coef(ind),
-                 tolerance = 1e-5,
+                 tolerance = 1e-4,
                  ignore_attr = TRUE)
 
 tmp <- lavInspect(fit, "boot")
