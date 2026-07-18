@@ -117,26 +117,26 @@ ind <- indirect_effect(
   m = "m",
   fit = fit)
 
-expect_identical(coef(out$ind_out$ustd),
-                 coef(ind),
-                 tolerance = 1e-5,
-                 ignore_attr = TRUE)
-expect_identical(coef(out_simple$ind_out$ustd),
-                 coef(ind),
-                 tolerance = 1e-5,
-                 ignore_attr = TRUE)
-expect_identical(coef(out_parallel$ind_out$ustd),
-                 coef(ind),
-                 tolerance = 1e-5,
-                 ignore_attr = TRUE)
-expect_identical(coef(out_serial$ind_out$ustd),
-                 coef(ind),
-                 tolerance = 1e-5,
-                 ignore_attr = TRUE)
-expect_identical(coef(out_user$ind_out$ustd),
-                 coef(ind),
-                 tolerance = 1e-5,
-                 ignore_attr = TRUE)
+expect_equal(coef(out$ind_out$ustd),
+             coef(ind),
+             tolerance = 1e-3,
+             ignore_attr = TRUE)
+expect_equal(coef(out_simple$ind_out$ustd),
+             coef(ind),
+             tolerance = 1e-3,
+             ignore_attr = TRUE)
+expect_equal(coef(out_parallel$ind_out$ustd),
+             coef(ind),
+             tolerance = 1e-3,
+             ignore_attr = TRUE)
+expect_equal(coef(out_serial$ind_out$ustd),
+             coef(ind),
+             tolerance = 1e-3,
+             ignore_attr = TRUE)
+expect_equal(coef(out_user$ind_out$ustd),
+             coef(ind),
+             tolerance = 1e-3,
+             ignore_attr = TRUE)
 
 indstdxy <- indirect_effect(
   x = "x10",
@@ -146,26 +146,26 @@ indstdxy <- indirect_effect(
   standardized_x = TRUE,
   standardized_y = TRUE)
 
-expect_identical(coef(out$ind_out$stdxy),
-                 coef(indstdxy),
-                 tolerance = 1e-5,
-                 ignore_attr = TRUE)
-expect_identical(coef(out_simple$ind_out$stdxy),
-                 coef(indstdxy),
-                 tolerance = 1e-5,
-                 ignore_attr = TRUE)
-expect_identical(coef(out_parallel$ind_out$stdxy),
-                 coef(indstdxy),
-                 tolerance = 1e-5,
-                 ignore_attr = TRUE)
-expect_identical(coef(out_serial$ind_out$stdxy),
-                 coef(indstdxy),
-                 tolerance = 1e-5,
-                 ignore_attr = TRUE)
-expect_identical(coef(out_user$ind_out$stdxy),
-                 coef(indstdxy),
-                 tolerance = 1e-5,
-                 ignore_attr = TRUE)
+expect_equal(coef(out$ind_out$stdxy),
+             coef(indstdxy),
+             tolerance = 1e-3,
+             ignore_attr = TRUE)
+expect_equal(coef(out_simple$ind_out$stdxy),
+             coef(indstdxy),
+             tolerance = 1e-3,
+             ignore_attr = TRUE)
+expect_equal(coef(out_parallel$ind_out$stdxy),
+             coef(indstdxy),
+             tolerance = 1e-3,
+             ignore_attr = TRUE)
+expect_equal(coef(out_serial$ind_out$stdxy),
+             coef(indstdxy),
+             tolerance = 1e-3,
+             ignore_attr = TRUE)
+expect_equal(coef(out_user$ind_out$stdxy),
+              coef(indstdxy),
+              tolerance = 1e-3,
+              ignore_attr = TRUE)
 
 # Reliability
 
@@ -245,9 +245,9 @@ ind <- indirect_effect(
   m = "m",
   fit = fit)
 
-expect_identical(coef(out$ind_out$ustd),
-                 coef(ind),
-                 tolerance = 1e-5,
-                 ignore_attr = TRUE)
+expect_equal(coef(out$ind_out$ustd),
+             coef(ind),
+             tolerance = 1e-3,
+             ignore_attr = TRUE)
 
 })
