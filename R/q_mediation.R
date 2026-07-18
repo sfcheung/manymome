@@ -497,6 +497,12 @@
 #' listed here will not override
 #' `missing` and `fixed.x`.
 #'
+#' @param cond_indirect_effects_args
+#' A named list of additional arguments
+#' to be passed to [cond_indirect_effects()]
+#' when computing conditional effects
+#' or conditional indirect effects.
+#'
 #' @param na.action This argument is
 #' no longer supported because using it
 #' with `missing` is confusing. Use
@@ -606,6 +612,7 @@ q_mediation <- function(x,
                         missing = "fiml",
                         fixed.x = TRUE,
                         sem_args = list(),
+                        cond_indirect_effects_args = list(),
                         na.action = NA,
                         parallel = TRUE,
                         ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -1189,13 +1196,9 @@ q_mediation <- function(x,
 
     # TODO:
     # - Allow arguments for cond_indirect_effects
-    cond_ind_ustd <- mapply(
-      cond_indirect_effects,
-      wlevels = paths_mod_w,
-      x = paths_mod_x,
-      m = paths_mod_m,
-      y = paths_mod_y,
-      MoreArgs = list(
+    cond_MoreArgs_base <- utils::modifyList(
+      cond_indirect_effects_args,
+      list(
         fit = lm_all,
         R = R,
         ci_type = ci_type,
@@ -1207,6 +1210,16 @@ q_mediation <- function(x,
         parallel = parallel,
         ci_out = ci_out
       ),
+      keep.null = TRUE
+    )
+
+    cond_ind_ustd <- mapply(
+      cond_indirect_effects,
+      wlevels = paths_mod_w,
+      x = paths_mod_x,
+      m = paths_mod_m,
+      y = paths_mod_y,
+      MoreArgs = cond_MoreArgs_base,
       SIMPLIFY = FALSE
     )
 
@@ -1220,25 +1233,20 @@ q_mediation <- function(x,
 
     # TODO:
     # - Allow arguments for cond_indirect_effects
+    cond_MoreArgs_stdy <- utils::modifyList(
+      cond_MoreArgs_base,
+      list(
+        standardized_y = TRUE
+      ),
+      keep.null = TRUE
+    )
     cond_ind_stdy <- mapply(
       cond_indirect_effects,
       wlevels = paths_mod_w,
       x = paths_mod_x,
       m = paths_mod_m,
       y = paths_mod_y,
-      MoreArgs = list(
-        fit = lm_all,
-        R = R,
-        ci_type = ci_type,
-        boot_type = boot_type,
-        level = level,
-        seed = seed,
-        progress = progress,
-        ncores = ncores,
-        parallel = parallel,
-        standardized_y = TRUE,
-        ci_out = ci_out
-      ),
+      MoreArgs = cond_MoreArgs_stdy,
       SIMPLIFY = FALSE
     )
 
@@ -1248,25 +1256,20 @@ q_mediation <- function(x,
 
     # TODO:
     # - Allow arguments for cond_indirect_effects
+    cond_MoreArgs_stdx <- utils::modifyList(
+      cond_MoreArgs_base,
+      list(
+        standardized_x = TRUE
+      ),
+      keep.null = TRUE
+    )
     cond_ind_stdx <- mapply(
       cond_indirect_effects,
       wlevels = paths_mod_w,
       x = paths_mod_x,
       m = paths_mod_m,
       y = paths_mod_y,
-      MoreArgs = list(
-        fit = lm_all,
-        R = R,
-        ci_type = ci_type,
-        boot_type = boot_type,
-        level = level,
-        seed = seed,
-        progress = progress,
-        ncores = ncores,
-        parallel = parallel,
-        standardized_x = TRUE,
-        ci_out = ci_out
-      ),
+      MoreArgs = cond_MoreArgs_stdx,
       SIMPLIFY = FALSE
     )
 
@@ -1276,26 +1279,21 @@ q_mediation <- function(x,
 
     # TODO:
     # - Allow arguments for cond_indirect_effects
+    cond_MoreArgs_std0 <- utils::modifyList(
+      cond_MoreArgs_base,
+      list(
+        standardized_x = TRUE,
+        standardized_y = TRUE
+      ),
+      keep.null = TRUE
+    )
     cond_ind_std0 <- mapply(
       cond_indirect_effects,
       wlevels = paths_mod_w,
       x = paths_mod_x,
       m = paths_mod_m,
       y = paths_mod_y,
-      MoreArgs = list(
-        fit = lm_all,
-        R = R,
-        ci_type = ci_type,
-        boot_type = boot_type,
-        level = level,
-        seed = seed,
-        progress = progress,
-        ncores = ncores,
-        parallel = parallel,
-        standardized_x = TRUE,
-        standardized_y = TRUE,
-        ci_out = ci_out
-      ),
+      MoreArgs = cond_MoreArgs_std0,
       SIMPLIFY = FALSE
     )
 
@@ -1602,6 +1600,7 @@ q_mediation <- function(x,
               fit_method = fit_method,
               indicator_method = indicator_method,
               sem_args = sem_args,
+              cond_indirect_effects_args = cond_indirect_effects_args,
               sem_model = sem_model,
               lm_out_lav = lm_out_lav,
               model_matrices = mm,
@@ -1697,6 +1696,7 @@ q_simple_mediation <- function(x,
                                missing = "fiml",
                                fixed.x = TRUE,
                                sem_args = list(),
+                               cond_indirect_effects_args = list(),
                                na.action = NA,
                                parallel = TRUE,
                                ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -1729,6 +1729,7 @@ q_simple_mediation <- function(x,
                      missing = missing,
                      fixed.x = fixed.x,
                      sem_args = sem_args,
+                     cond_indirect_effects_args = cond_indirect_effects_args,
                      na.action = na.action,
                      parallel = parallel,
                      ncores = ncores,
@@ -1808,6 +1809,7 @@ q_serial_mediation <- function(x,
                                missing = "fiml",
                                fixed.x = TRUE,
                                sem_args = list(),
+                               cond_indirect_effects_args = list(),
                                na.action = NA,
                                parallel = TRUE,
                                ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -1840,6 +1842,7 @@ q_serial_mediation <- function(x,
                      missing = missing,
                      fixed.x = fixed.x,
                      sem_args = sem_args,
+                     cond_indirect_effects_args = cond_indirect_effects_args,
                      na.action = na.action,
                      parallel = parallel,
                      ncores = ncores,
@@ -1918,6 +1921,7 @@ q_parallel_mediation <- function(x,
                                  missing = "fiml",
                                  fixed.x = TRUE,
                                  sem_args = list(),
+                                 cond_indirect_effects_args = list(),
                                  na.action = NA,
                                  parallel = TRUE,
                                  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -1950,6 +1954,7 @@ q_parallel_mediation <- function(x,
                      missing = missing,
                      fixed.x = fixed.x,
                      sem_args = sem_args,
+                     cond_indirect_effects_args = cond_indirect_effects_args,
                      na.action = na.action,
                      parallel = parallel,
                      ncores = ncores,
