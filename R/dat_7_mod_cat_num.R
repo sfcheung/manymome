@@ -18,10 +18,10 @@
 #' data(data_mod_cat_num_2w)
 #' lm_out <- lm(y ~ x*city*w + c1 + c2, data_mod_cat_num_2w)
 #' out <- cond_effects(
-#'   wlevels = c("city, "w"),
+#'   wlevels = c("city", "w"),
 #'   x = "x",
 #'   fit = lm_out
 #' )
 #' out
-#' plot(out, facet_grid_cols = "site", graph_type = "tumble")
+#' plot(out, facet_grid_cols = "city", graph_type = "tumble")
 "data_mod_cat_num_2w"
