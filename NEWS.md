@@ -1,4 +1,4 @@
-# manymome 0.3.6.8
+# manymome 0.3.6.9
 
 ## New Features
 
@@ -53,6 +53,11 @@
 - Fixed a typo in a help page of
   `data_mod_cat_num_2w`.
   (0.3.6.8)
+
+- Fixed some tests to work with
+  `auto.cov.x = TRUE` in `lavaan`
+  (default to `FALSE` in `lavaan` 0.7-2).
+  (0.3.6.9)
 
 # manymome 0.3.6
 
