@@ -37,7 +37,9 @@ fit <- sem(
           fixed.x = FALSE
         )
 # parameterEstimates(fit, standardized = "std.nox")
-std <- standardizedSolution(fit, type = "std.nox")
+# 2026-07-18:
+# - Suppress a harmless warning introduced in lavaan 0.7-2.
+std <- suppressWarnings(standardizedSolution(fit, type = "std.nox"))
 
 out1 <- lm_from_lavaan_list_for_q(
                     fit = out$lm_out,

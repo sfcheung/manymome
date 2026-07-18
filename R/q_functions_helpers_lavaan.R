@@ -308,7 +308,9 @@ lm_from_lavaan_list_for_q <- function(
                                         level = ci_level,
                                         rsquare = TRUE,
                                         remove.step1 = FALSE)
-    std <- lavaan::standardizedSolution(
+    # 2026-07-18:
+    # - Suppress a harmless warning introduced in lavaan 0.7-2
+    std <- suppressWarnings(lavaan::standardizedSolution(
               fit,
               type = "std.nox",
               se = FALSE,
@@ -316,7 +318,7 @@ lm_from_lavaan_list_for_q <- function(
               pvalue = FALSE,
               ci = FALSE,
               cov.std = FALSE
-            )
+            ))
     std$lavlabel <- lavaan::lav_partable_labels(std)
     ptable$lavlabel <- lavaan::lav_partable_labels(ptable)
     tmp <- intersect(std$lavlabel, ptable$lavlabel)
