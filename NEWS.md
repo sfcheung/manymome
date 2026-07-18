@@ -1,4 +1,4 @@
-# manymome 0.3.6.13
+# manymome 0.3.6.14
 
 ## New Features
 
@@ -39,6 +39,12 @@
   `w_increase_from`, `w_increase_to`,
   `z_increase_from`, and `z_increase_to`.
   (0.3.6.5)
+
+- Added the argument `cond_indirect_effects_args`
+  to the `q_*` functions for customizing
+  the computation of conditional indirect
+  effects or conditional effects.
+  (0.3.6.14)
 
 ## Miscellaneous
 
