@@ -93,7 +93,7 @@ fy ~ fm + fx
 library(lavaan)
 fit <- sam(model = mod, data = data_sem_mome)
 summary(fit)
-#> This is lavaan 0.6-21 -- using the SAM approach to SEM
+#> This is lavaan 0.7-2 -- using the SAM approach to SEM
 #> 
 #>   SAM method                                     LOCAL
 #>   Mapping matrix M method                           ML
@@ -118,8 +118,8 @@ summary(fit)
 #> 
 #>   Summary Information Structural part:
 #> 
-#>    chisq df   cfi rmsea  srmr
-#>   42.373  2 0.977 0.201 0.015
+#>   chisq.scaled df pvalue.scaled cfi.robust rmsea.robust  srmr
+#>          2.807  2         0.246      0.993         0.11 0.015
 #> 
 #> Parameter Estimates:
 #> 

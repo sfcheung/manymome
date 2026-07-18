@@ -28,6 +28,7 @@ q_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
+  cond_indirect_effects_args = list(),
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -55,6 +56,7 @@ q_moderated_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
+  cond_indirect_effects_args = list(),
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -82,6 +84,7 @@ q_simple_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
+  cond_indirect_effects_args = list(),
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -109,6 +112,7 @@ q_moderated_simple_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
+  cond_indirect_effects_args = list(),
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -136,6 +140,7 @@ q_serial_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
+  cond_indirect_effects_args = list(),
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -163,6 +168,7 @@ q_moderated_serial_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
+  cond_indirect_effects_args = list(),
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -190,6 +196,7 @@ q_parallel_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
+  cond_indirect_effects_args = list(),
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -217,6 +224,7 @@ q_moderated_parallel_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
+  cond_indirect_effects_args = list(),
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -399,6 +407,12 @@ print(
   indicator method is `"sam"`, then these are arguments to be passed to
   [`lavaan::sam()`](https://rdrr.io/pkg/lavaan/man/sam.html). Arguments
   listed here will not override `missing` and `fixed.x`.
+
+- cond_indirect_effects_args:
+
+  A named list of additional arguments to be passed to
+  [`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
+  when computing conditional effects or conditional indirect effects.
 
 - na.action:
 

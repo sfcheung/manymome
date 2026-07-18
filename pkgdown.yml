@@ -1,5 +1,5 @@
 pandoc: 3.8.3
-pkgdown: 2.2.0
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   do_boot: do_boot.html
@@ -27,7 +27,7 @@ articles:
   articles/q_mediation_sem_indicators_serial: q_mediation_sem_indicators_serial.html
   articles/q_mediation_sem_indicators_simple: q_mediation_sem_indicators_simple.html
   articles/q_mediation: q_mediation.html
-last_built: 2026-07-02T16:44Z
+last_built: 2026-07-18T16:31Z
 urls:
   reference: https://sfcheung.github.io/manymome/reference
   article: https://sfcheung.github.io/manymome/articles

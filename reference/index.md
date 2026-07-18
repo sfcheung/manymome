@@ -40,6 +40,8 @@ effects.
 
 - [`index_of_mome()`](https://sfcheung.github.io/manymome/reference/index_of_mome.md)
   [`index_of_momome()`](https://sfcheung.github.io/manymome/reference/index_of_mome.md)
+  [`z_index_of_momome()`](https://sfcheung.github.io/manymome/reference/index_of_mome.md)
+  [`z_index_of_mome()`](https://sfcheung.github.io/manymome/reference/index_of_mome.md)
   : Index of Moderated Mediation and Index of Moderated Moderated
   Mediation
 - [`cond_indirect_diff()`](https://sfcheung.github.io/manymome/reference/cond_indirect_diff.md)

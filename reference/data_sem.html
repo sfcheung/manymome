@@ -11,7 +11,7 @@ structural model."><meta property="og:image" content="https://sfcheung.github.io
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.14</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -151,7 +151,7 @@ and 14 variables:</p><dl><dt>x01</dt>
 <span class="r-in"><span><span class="st">  '</span></span></span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">lavaan</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">mod</span>, data <span class="op">=</span> <span class="va">data_sem</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> lavaan 0.6-21 ended normally after 42 iterations</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lavaan 0.7-2 ended normally after 42 iterations</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Estimator                                         ML</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Optimization method                           NLMINB</span>
@@ -232,6 +232,11 @@ and 14 variables:</p><dl><dt>x01</dt>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a1b3              0.098    0.051    1.918    0.055</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a2b3              0.131    0.049    2.676    0.007</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> lavaan NOTE:  </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>    Standard errors and confidence intervals of the (nonlinear) defined (:=) </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>    parameters are based on the first-order delta method; for strongly </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>    nonlinear definitions, se.def = "mc" (Monte Carlo) or se = "bootstrap" may </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>    be more accurate.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -244,7 +249,7 @@ and 14 variables:</p><dl><dt>x01</dt>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

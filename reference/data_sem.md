@@ -86,7 +86,7 @@ mod <-
   '
 fit <- lavaan::sem(model = mod, data = data_sem)
 summary(fit)
-#> lavaan 0.6-21 ended normally after 42 iterations
+#> lavaan 0.7-2 ended normally after 42 iterations
 #> 
 #>   Estimator                                         ML
 #>   Optimization method                           NLMINB
@@ -167,4 +167,9 @@ summary(fit)
 #>     a1b3              0.098    0.051    1.918    0.055
 #>     a2b3              0.131    0.049    2.676    0.007
 #> 
+#> lavaan NOTE:  
+#>    Standard errors and confidence intervals of the (nonlinear) defined (:=) 
+#>    parameters are based on the first-order delta method; for strongly 
+#>    nonlinear definitions, se.def = "mc" (Monte Carlo) or se = "bootstrap" may 
+#>    be more accurate.
 ```

@@ -26,6 +26,7 @@ index_of_mome(
   skip_indicators = TRUE,
   increase_from = 0,
   increase_to = 1,
+  w_unit = c("raw", "sd"),
   ...
 )
 
@@ -52,6 +53,60 @@ index_of_momome(
   w_increase_to = 1,
   z_increase_from = 0,
   z_increase_to = 1,
+  w_unit = c("raw", "sd"),
+  z_unit = c("raw", "sd"),
+  ...
+)
+
+z_index_of_momome(
+  x,
+  y,
+  m = NULL,
+  w = NULL,
+  z = NULL,
+  fit = NULL,
+  boot_ci = FALSE,
+  level = 0.95,
+  boot_out = NULL,
+  R = 100,
+  seed = NULL,
+  progress = TRUE,
+  mc_ci = FALSE,
+  mc_out = NULL,
+  ci_type = NULL,
+  ci_out = NULL,
+  boot_type = c("perc", "bc"),
+  skip_indicators = TRUE,
+  w_increase_from = 0,
+  w_increase_to = 1,
+  z_increase_from = 0,
+  z_increase_to = 1,
+  w_unit = c("raw", "sd"),
+  z_unit = c("raw", "sd"),
+  ...
+)
+
+z_index_of_mome(
+  x,
+  y,
+  m = NULL,
+  w = NULL,
+  fit = NULL,
+  boot_ci = FALSE,
+  level = 0.95,
+  boot_out = NULL,
+  R = 100,
+  seed = NULL,
+  progress = TRUE,
+  mc_ci = FALSE,
+  mc_out = NULL,
+  ci_type = NULL,
+  ci_out = NULL,
+  boot_type = c("perc", "bc"),
+  skip_indicators = TRUE,
+  increase_from = 0,
+  increase_to = 1,
+  w_unit = c("raw", "sd"),
   ...
 )
 ```
@@ -189,6 +244,16 @@ index_of_momome(
   computed. The default is a one-unit increase (e.g., from 0 to 1), as
   proposed by Hayes (2015).
 
+- w_unit:
+
+  The unit used to by `increase_from` and `increase_to`. If `"raw"`, the
+  original unit of `w` is used. If `"sd"`, then distance from the mean
+  in standard deviation is used. Therefore, if `increase_from = 0`,
+  `increase_to = 1`, and `w_unit == "sd"`, the *z-index of moderated
+  mediation* proposed by Cheung and Cheung (2024) is computed. (For
+  `index_of_momome()`, the corresponding arguments are `w_increase_from`
+  and `w_increase_to`.)
+
 - ...:
 
   Arguments to be passed to
@@ -210,6 +275,12 @@ index_of_momome(
   The change in the value of the moderator `z` on which the index is to
   be computed. The default is a one-unit increase (e.g., from 0 to 1),
   as proposed by Hayes (2015).
+
+- z_unit:
+
+  The unit used to by `z_increase_from` and `z_increase_to`. If `"raw"`,
+  the original unit of `z` is used. If `"sd"`, then distance from the
+  mean in standard deviation is used.
 
 ## Value
 
@@ -245,7 +316,25 @@ unit.
 - `index_of_momome()`: Compute the index of moderated moderated
   mediation.
 
+- `z_index_of_momome()`: Compute the *z* index of moderated moderated
+  mediation, based on the idea proposed by Cheung and Cheung (2024). A
+  wrapper of `index_of_momome()` with `w_unit = "sd"`, `z_unit = "sd"`,
+  `w_increase_from = 0`, `w_increase_to = 1`. `z_increase_from = 0`, and
+  `z_increase_to = 1`.
+
+- `z_index_of_mome()`: Compute the *z* index of moderated mediation
+  proposed by Cheung and Cheung (2024). A wrapper of `index_of_mome()`
+  with `w_unit` set to `"sd"`, `increase_from` set to 0, and
+  `increase_to` set to 1.
+
 ## References
+
+Cheung, S. F., & Cheung, S.-H. (2024). *manymome*: An R package for
+computing the indirect effects, conditional effects, and conditional
+indirect effects, standardized or unstandardized, and their bootstrap
+confidence intervals, in many (though not all) models. *Behavior
+Research Methods, 56*(5), 4862-4882.
+[doi:10.3758/s13428-023-02224-z](https://doi.org/10.3758/s13428-023-02224-z)
 
 Hayes, A. F. (2015). An index and test of linear moderated mediation.
 *Multivariate Behavioral Research, 50*(1), 1-22.
