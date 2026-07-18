@@ -1,4 +1,4 @@
-# manymome 0.3.6.7
+# manymome 0.3.6.8
 
 ## New Features
 
@@ -45,6 +45,14 @@
   regression models with moderators
   (no mediators).
   (0.3.6.7)
+
+- Suppressed a `lavaan` 0.7-2 warning
+  that does not affect the computation.
+  (0.3.6.8)
+
+- Fixed a typo in a help page of
+  `data_mod_cat_num_2w`.
+  (0.3.6.8)
 
 # manymome 0.3.6
 
