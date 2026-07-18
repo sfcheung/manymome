@@ -1,4 +1,4 @@
-# manymome 0.3.6.9
+# manymome 0.3.6.10
 
 ## New Features
 
@@ -58,6 +58,10 @@
   `auto.cov.x = TRUE` in `lavaan`
   (default to `FALSE` in `lavaan` 0.7-2).
   (0.3.6.9)
+
+- Amended some tests to allow for
+  optimization noise.
+  (0.3.6.10)
 
 # manymome 0.3.6
 
