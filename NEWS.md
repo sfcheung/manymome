@@ -1,4 +1,4 @@
-# manymome 0.3.6.12
+# manymome 0.3.6.13
 
 ## New Features
 
@@ -17,6 +17,18 @@
   to `"sam"` to use the
   structural-after-measurement method.
   (0.3.6.3)
+
+- Updated `index_of_mome()` and
+  `index_of_momome()` to use standard
+  deviation as the unit of the moderator
+  to compute the index, as proposed by
+  Cheung and Cheung (2024), enabled by
+  the arguments `w_unit` and `z_unit`.
+  Also added two wrappers,
+  `z_index_mome()` and `z_index_of_momome()`,
+  with `w_unit` and `z_unit` set to
+  `"sd"` automatically.
+  (0.3.6.13)
 
 ## Improvement
 
