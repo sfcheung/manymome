@@ -1,4 +1,4 @@
-# manymome 0.3.6.7
+# manymome 0.3.6.14
 
 ## New Features
 
@@ -18,6 +18,18 @@
   structural-after-measurement method.
   (0.3.6.3)
 
+- Updated `index_of_mome()` and
+  `index_of_momome()` to use standard
+  deviation as the unit of the moderator
+  to compute the index, as proposed by
+  Cheung and Cheung (2024), enabled by
+  the arguments `w_unit` and `z_unit`.
+  Also added two wrappers,
+  `z_index_mome()` and `z_index_of_momome()`,
+  with `w_unit` and `z_unit` set to
+  `"sd"` automatically.
+  (0.3.6.13)
+
 ## Improvement
 
 - Users can specify the change of moderator
@@ -27,6 +39,12 @@
   `w_increase_from`, `w_increase_to`,
   `z_increase_from`, and `z_increase_to`.
   (0.3.6.5)
+
+- Added the argument `cond_indirect_effects_args`
+  to the `q_*` functions for customizing
+  the computation of conditional indirect
+  effects or conditional effects.
+  (0.3.6.14)
 
 ## Miscellaneous
 
@@ -45,6 +63,32 @@
   regression models with moderators
   (no mediators).
   (0.3.6.7)
+
+- Suppressed a `lavaan` 0.7-2 warning
+  that does not affect the computation.
+  (0.3.6.8)
+
+- Fixed a typo in a help page of
+  `data_mod_cat_num_2w`.
+  (0.3.6.8)
+
+- Fixed some tests to work with
+  `auto.cov.x = TRUE` in `lavaan`
+  (default to `FALSE` in `lavaan` 0.7-2).
+  (0.3.6.9)
+
+- Amended some tests to allow for
+  optimization noise.
+  (0.3.6.10)
+
+- Stored indices of sampled cases
+  (`ids` or `design`, if available).
+  (0.3.6.11)
+
+- Updated `many_indirect_effects()` to
+  do bootstrapping or Monte Carlo simulation
+  only once when `ci_type` is set.
+  (0.3.6.12)
 
 # manymome 0.3.6
 

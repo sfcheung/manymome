@@ -261,3 +261,16 @@ test_that("Check total indirect effect", {
     expect_identical(tot1_no_ci_m11, ind_1_no_ci[[1]])
     expect_error(total_indirect_effect(ind_1_stdx, x = "x2", y = "y1"))
   })
+
+# Test reusing boot_out
+
+ind_1_reuse <- many_indirect_effects(out_tmp,
+                                     fit = fit_tmp,
+                                     R = 50,
+                                     ci_type = "boot",
+                                     seed = 98743,
+                                     ncores = 2)
+expect_equal(
+  as.character(ind_1_reuse[[2]]$cond_indirect_call$ci_out),
+  "ci_out"
+)

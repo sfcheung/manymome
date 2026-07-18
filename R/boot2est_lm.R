@@ -121,19 +121,49 @@ lm2boot_out <- function(outputs, R = 100,
     n <- nrow(dat)
     if (!is.null(seed)) set.seed(seed)
     coefs_template <- lapply(outputs, coef2lor)
+    ids <- replicate(
+      R,
+      sample.int(n, replace = TRUE),
+      simplify = FALSE
+    )
     if (progress) {
-        out0 <- pbapply::pbreplicate(R, lm_boot2est_i(d = dat,
-                                          i = sample.int(n, replace = TRUE),
-                                          outputs = outputs,
-                                          compute_implied_stats = compute_implied_stats,
-                                          coefs_template = coefs_template), simplify = FALSE)
+        # out0 <- pbapply::pbreplicate(R, lm_boot2est_i(d = dat,
+        #                                   i = sample.int(n, replace = TRUE),
+        #                                   outputs = outputs,
+        #                                   compute_implied_stats = compute_implied_stats,
+        #                                   coefs_template = coefs_template), simplify = FALSE)
+        out0 <- pbapply::pbsapply(
+                  ids,
+                  function(ids_i) {
+                    lm_boot2est_i(
+                      d = dat,
+                      i = ids_i,
+                      outputs = outputs,
+                      compute_implied_stats = compute_implied_stats,
+                      coefs_template = coefs_template)
+                  },
+                  simplify = FALSE
+                )
       } else {
-        out0 <- replicate(R, lm_boot2est_i(d = dat,
-                                          i = sample.int(n, replace = TRUE),
-                                          outputs = outputs,
-                                          compute_implied_stats = compute_implied_stats,
-                                          coefs_template = coefs_template), simplify = FALSE)
+        # out0 <- replicate(R, lm_boot2est_i(d = dat,
+        #                                   i = sample.int(n, replace = TRUE),
+        #                                   outputs = outputs,
+        #                                   compute_implied_stats = compute_implied_stats,
+        #                                   coefs_template = coefs_template), simplify = FALSE)
+        out0 <- sapply(
+                  ids,
+                  function(ids_i) {
+                    lm_boot2est_i(
+                      d = dat,
+                      i = ids_i,
+                      outputs = outputs,
+                      compute_implied_stats = compute_implied_stats,
+                      coefs_template = coefs_template)
+                  },
+                  simplify = FALSE
+                )
       }
+    attr(out0, "ids") <- ids
     class(out0) <- "boot_out"
     out0
   }
@@ -307,6 +337,7 @@ lm2boot_out_parallel <- function(outputs,
                                                             outputs = outputs)))
           }
       }
+    attr(out, "ids") <- ids
     class(out) <- "boot_out"
     out
   }

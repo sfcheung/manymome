@@ -137,6 +137,7 @@ fit2boot_out <- function(fit,
                   y = boot_implied,
                   SIMPLIFY = FALSE)
     names(out) <- names(boot_est)
+    attr(out, "boot_design") <- attr(boot_est, "boot_design")
     class(out) <- "boot_out"
     out
   }
@@ -392,6 +393,7 @@ fit2boot_out_do_boot <- function(fit,
       } else if (n_ok == 0) {
         stop("Estimation failed in all bootstrap samples.")
       }
+    attr(out, "ids") <- ids
     class(out) <- "boot_out"
     out
   }
@@ -413,11 +415,23 @@ boot2est <- function(fit) {
         boot_est0 <- boot_est0[-tmp, ]
       }
     ptable <- lavaan::parameterTable(fit)
+    tmp <- tryCatch(suppressWarnings(
+            lavaan::parameterEstimates(
+                fit,
+                boot.ci.type = "bca"
+              )),
+            error = function(e) e)
+    if (!is.null(tmp) && !inherits(tmp, "error")) {
+      boot_design <- tmp
+    } else {
+      boot_design <- NULL
+    }
     p_free <- ptable$free > 0
     boot_est <- split(boot_est0, row(boot_est0))
     out_all <- lapply(boot_est, set_est_i,
                         fit = fit,
                         p_free = p_free)
+    attr(out_all, "boot_design") <- boot_design
     out_all
   }
 

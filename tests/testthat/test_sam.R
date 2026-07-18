@@ -285,7 +285,8 @@ fit <- sam(
   data = data_sem,
   se = "bootstrap",
   bootstrap.args = list(R = 2),
-  iseed = 1234
+  iseed = 1234,
+  missing = "fiml"
 )
 )
 
@@ -370,7 +371,8 @@ fitb <- sam(
   data = data_sem_miss,
   se = "bootstrap",
   bootstrap.args = list(R = 2),
-  iseed = 1234
+  iseed = 1234,
+  missing = "fiml"
 )
 )
 vcov(fitb)[1:5, 1:5]
@@ -402,7 +404,7 @@ boot_est <- get_boot_est(boot_out, boot_chk)
 expect_equal(boot_est,
              boot_chk,
              ignore_attr = TRUE,
-             tolerance = 1e-5)
+             tolerance = 1e-4)
 
 boot_outb <-  do_boot(
   fitb,

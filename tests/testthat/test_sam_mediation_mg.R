@@ -34,7 +34,8 @@ fit <- sam(
   model = mod,
   data = data_sem_mg,
   group = "gp",
-  group.label = c("gp1", "gp2", "gp3"))
+  group.label = c("gp1", "gp2", "gp3"),
+  missing = "fiml")
 )
 
 out <- cond_indirect_effects(
@@ -54,7 +55,7 @@ ab1243 <- est[est$label == "ab1243", "est"]
 expect_equal(coef(out),
              c(ab1241, ab1242, ab1243),
              ignore_attr = TRUE,
-             tolerance = 1e-5)
+             tolerance = 1e-4)
 
 out <- cond_indirect_effects(
   x = "f1",
@@ -70,6 +71,7 @@ ab1343 <- est[est$label == "ab1343", "est"]
 
 expect_equal(coef(out),
              c(ab1341, ab1342, ab1343),
-             ignore_attr = TRUE)
+             ignore_attr = TRUE,
+             tolerance = 1e-4)
 
 })

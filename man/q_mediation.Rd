@@ -35,6 +35,7 @@ q_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
+  cond_indirect_effects_args = list(),
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -62,6 +63,7 @@ q_moderated_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
+  cond_indirect_effects_args = list(),
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -89,6 +91,7 @@ q_simple_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
+  cond_indirect_effects_args = list(),
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -116,6 +119,7 @@ q_moderated_simple_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
+  cond_indirect_effects_args = list(),
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -143,6 +147,7 @@ q_serial_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
+  cond_indirect_effects_args = list(),
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -170,6 +175,7 @@ q_moderated_serial_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
+  cond_indirect_effects_args = list(),
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -197,6 +203,7 @@ q_parallel_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
+  cond_indirect_effects_args = list(),
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -224,6 +231,7 @@ q_moderated_parallel_mediation(
   missing = "fiml",
   fixed.x = TRUE,
   sem_args = list(),
+  cond_indirect_effects_args = list(),
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
@@ -435,6 +443,11 @@ to \code{\link[lavaan:sam]{lavaan::sam()}}.
 Arguments
 listed here will not override
 \code{missing} and \code{fixed.x}.}
+
+\item{cond_indirect_effects_args}{A named list of additional arguments
+to be passed to \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
+when computing conditional effects
+or conditional indirect effects.}
 
 \item{na.action}{This argument is
 no longer supported because using it

@@ -23,4 +23,15 @@ data_mod_cat_num_2w
 A two-moderator model,
 one categorical and one numerical.
 }
+\examples{
+data(data_mod_cat_num_2w)
+lm_out <- lm(y ~ x*city*w + c1 + c2, data_mod_cat_num_2w)
+out <- cond_effects(
+  wlevels = c("city", "w"),
+  x = "x",
+  fit = lm_out
+)
+out
+plot(out, facet_grid_cols = "city", graph_type = "tumble")
+}
 \keyword{datasets}

@@ -1531,7 +1531,8 @@ many_indirect_effects <- function(paths, ...) {
     xym <- all_paths_to_df(paths)
     args <- list(...)
     if ((isTRUE(args$boot_ci) && is.null(args$boot_out)) ||
-        (isTRUE(args$mc_ci) && is.null(args$mc_out))) {
+        (isTRUE(args$mc_ci) && is.null(args$mc_out)) ||
+        (!is.null(args$ci_type) && is.null(args$ci_out))) {
         do_sim_once <- TRUE
       } else {
         do_sim_once <- FALSE
@@ -1552,6 +1553,10 @@ many_indirect_effects <- function(paths, ...) {
                 args_final <- utils::modifyList(args,
                               list(mc_out = sim_out))
               }
+            if (!is.null(args$ci_type)) {
+                args_final <- utils::modifyList(args,
+                              list(ci_out = sim_out))
+            }
           } else {
             args_final <- args
           }
@@ -1577,6 +1582,10 @@ many_indirect_effects <- function(paths, ...) {
                 args_final <- utils::modifyList(args,
                               list(mc_out = sim_out))
               }
+            if (!is.null(args$ci_type)) {
+                args_final <- utils::modifyList(args,
+                              list(ci_out = sim_out))
+            }
           } else {
             args_final <- args
           }

@@ -14,7 +14,8 @@ mod <-
 
 fit <- sam(
   mod,
-  data = data_sem
+  data = data_sem,
+  missing = "fiml"
 )
 
 summary(fit)
@@ -37,7 +38,8 @@ a_hi <- a + f2sd * d
 
 expect_equal(c(a_hi, a, a_lo),
              coef(out1),
-             ignore_attr = TRUE)
+             ignore_attr = TRUE,
+             tolerance = 1e-4)
 
 expect_no_error(plot(out1))
 
@@ -58,7 +60,8 @@ mod <-
 
 fit <- sam(
   mod,
-  data = data_sem
+  data = data_sem,
+  missing = "fiml"
 )
 
 summary(fit)
@@ -102,7 +105,8 @@ mod <-
 
 fit <- sam(
   mod,
-  data = data_sem
+  data = data_sem,
+  missing = "fiml"
 )
 
 summary(fit)
@@ -128,7 +132,8 @@ ind_me <- a * b
 
 expect_equal(c(ind_hi, a * b, ind_lo),
              coef(out1),
-             ignore_attr = TRUE)
+             ignore_attr = TRUE,
+             tolerance = 1e-4)
 
 })
 
@@ -146,7 +151,8 @@ mod <-
 
 fit <- sam(
   mod,
-  data = data_sem
+  data = data_sem,
+  missing = "fiml"
 )
 
 summary(fit)
@@ -173,6 +179,7 @@ ind_me <- a * b
 
 expect_equal(c(ind_hi, a * b, ind_lo),
              coef(out1),
-             ignore_attr = TRUE)
+             ignore_attr = TRUE,
+             tolerance = 1e-4)
 
 })

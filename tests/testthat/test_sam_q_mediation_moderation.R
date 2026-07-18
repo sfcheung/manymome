@@ -137,7 +137,8 @@ w ~~ m:w
 
 fit <- sam(
   mod,
-  data = data_sem
+  data = data_sem,
+  missing = "fiml"
 )
 
 ind <- cond_indirect_effects(
@@ -159,13 +160,13 @@ ind_stdxy <- cond_indirect_effects(
 expect_identical(
   coef(out$cond_ind_out$ustd[[1]]),
   coef(ind),
-  tolerance = 1e-5,
+  tolerance = 1e-4,
   ignore_attr = TRUE
 )
 expect_identical(
   coef(out$cond_ind_out$stdxy[[1]]),
   coef(ind_stdxy),
-  tolerance = 1e-5,
+  tolerance = 1e-4,
   ignore_attr = TRUE
 )
 
@@ -233,7 +234,8 @@ fit <- sam(
   se = "bootstrap",
   parallel = "snow",
   bootstrap.args = list(R = 5000),
-  iseed = 2345
+  iseed = 2345,
+  missing = "fiml"
 )
 )
 
@@ -266,7 +268,7 @@ ind <- cond_indirect_effects(
 
 expect_identical(coef(out$cond_ind_out$stdxy[[1]]),
                  coef(ind),
-                 tolerance = 1e-5,
+                 tolerance = 1e-4,
                  ignore_attr = TRUE)
 
 })

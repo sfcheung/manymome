@@ -3,6 +3,8 @@
 \name{index_of_mome}
 \alias{index_of_mome}
 \alias{index_of_momome}
+\alias{z_index_of_momome}
+\alias{z_index_of_mome}
 \title{Index of Moderated Mediation
 and Index of Moderated Moderated
 Mediation}
@@ -27,6 +29,7 @@ index_of_mome(
   skip_indicators = TRUE,
   increase_from = 0,
   increase_to = 1,
+  w_unit = c("raw", "sd"),
   ...
 )
 
@@ -53,6 +56,60 @@ index_of_momome(
   w_increase_to = 1,
   z_increase_from = 0,
   z_increase_to = 1,
+  w_unit = c("raw", "sd"),
+  z_unit = c("raw", "sd"),
+  ...
+)
+
+z_index_of_momome(
+  x,
+  y,
+  m = NULL,
+  w = NULL,
+  z = NULL,
+  fit = NULL,
+  boot_ci = FALSE,
+  level = 0.95,
+  boot_out = NULL,
+  R = 100,
+  seed = NULL,
+  progress = TRUE,
+  mc_ci = FALSE,
+  mc_out = NULL,
+  ci_type = NULL,
+  ci_out = NULL,
+  boot_type = c("perc", "bc"),
+  skip_indicators = TRUE,
+  w_increase_from = 0,
+  w_increase_to = 1,
+  z_increase_from = 0,
+  z_increase_to = 1,
+  w_unit = c("raw", "sd"),
+  z_unit = c("raw", "sd"),
+  ...
+)
+
+z_index_of_mome(
+  x,
+  y,
+  m = NULL,
+  w = NULL,
+  fit = NULL,
+  boot_ci = FALSE,
+  level = 0.95,
+  boot_out = NULL,
+  R = 100,
+  seed = NULL,
+  progress = TRUE,
+  mc_ci = FALSE,
+  mc_out = NULL,
+  ci_type = NULL,
+  ci_out = NULL,
+  boot_type = c("perc", "bc"),
+  skip_indicators = TRUE,
+  increase_from = 0,
+  increase_to = 1,
+  w_unit = c("raw", "sd"),
   ...
 )
 }
@@ -192,6 +249,20 @@ The default is a one-unit increase
 (e.g., from 0 to 1), as proposed by
 Hayes (2015).}
 
+\item{w_unit}{The unit used to
+by \code{increase_from} and \code{increase_to}.
+If \code{"raw"}, the original unit of \code{w}
+is used. If \code{"sd"}, then distance
+from the mean in standard deviation
+is used. Therefore, if
+\code{increase_from = 0}, \code{increase_to = 1},
+and \code{w_unit == "sd"}, the
+\emph{z-index of moderated mediation}
+proposed by Cheung and Cheung (2024)
+is computed. (For \code{\link[=index_of_momome]{index_of_momome()}},
+the corresponding arguments are
+\code{w_increase_from} and \code{w_increase_to}.)}
+
 \item{...}{Arguments to be passed to
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}}
 
@@ -213,6 +284,13 @@ on which the index is to be computed.
 The default is a one-unit increase
 (e.g., from 0 to 1), as proposed by
 Hayes (2015).}
+
+\item{z_unit}{The unit used to
+by \code{z_increase_from} and \code{z_increase_to}.
+If \code{"raw"}, the original unit of \code{z}
+is used. If \code{"sd"}, then distance
+from the mean in standard deviation
+is used.}
 }
 \value{
 It returns a
@@ -266,6 +344,25 @@ index of moderated mediation.
 \item \code{index_of_momome()}: Compute the
 index of moderated moderated
 mediation.
+
+\item \code{z_index_of_momome()}: Compute the
+\emph{z} index of moderated moderated
+mediation, based on the idea proposed
+by Cheung and Cheung (2024). A wrapper
+of \code{\link[=index_of_momome]{index_of_momome()}} with
+\code{w_unit = "sd"}, \code{z_unit = "sd"},
+\code{w_increase_from = 0},
+\code{w_increase_to = 1}.
+\code{z_increase_from = 0}, and
+\code{z_increase_to = 1}.
+
+\item \code{z_index_of_mome()}: Compute the
+\emph{z} index of moderated mediation
+proposed by Cheung and Cheung (2024).
+A wrapper of \code{\link[=index_of_mome]{index_of_mome()}} with
+\code{w_unit} set to \code{"sd"},
+\code{increase_from} set to 0,
+and \code{increase_to} set to 1.
 
 }}
 \examples{
@@ -328,6 +425,16 @@ print(est[32, ], nd = 8)
 
 }
 \references{
+Cheung, S. F., & Cheung, S.-H. (2024).
+\emph{manymome}: An R package for computing
+the indirect effects, conditional effects,
+and conditional indirect effects,
+standardized or unstandardized, and their
+bootstrap confidence intervals, in many
+(though not all) models.
+\emph{Behavior Research Methods, 56}(5),
+4862-4882. \doi{10.3758/s13428-023-02224-z}
+
 Hayes, A. F. (2015). An index and test of linear moderated mediation.
 \emph{Multivariate Behavioral Research, 50}(1), 1-22.
 \doi{10.1080/00273171.2014.962683}
