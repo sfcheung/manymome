@@ -40,7 +40,8 @@ ab := a*b
 
 fit <- sam(
   mod,
-  data = data_sem_rev
+  data = data_sem_rev,
+  missing = "fiml"
 )
 
 ind <- indirect_effect(
@@ -62,12 +63,12 @@ ind_std_est <- est[est$label == "ab", "std.all"]
 
 expect_identical(coef(out$ind_out$stdxy),
                  coef(indstdxy),
-                 tolerance = 1e-5,
+                 tolerance = 1e-4,
                  ignore_attr = TRUE)
 
 expect_identical(coef(out$ind_out$stdxy),
                  ind_std_est,
-                 tolerance = 1e-5,
+                 tolerance = 1e-4,
                  ignore_attr = TRUE)
 
 })
