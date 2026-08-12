@@ -126,7 +126,7 @@ indirect_on_plot(
   that this only affects the initial positions. The positions will be
   further adjusted based on the free paths in the model. This argument
   is to be passed to
-  [`semptools::auto_layout_mediation()`](https://rdrr.io/pkg/semptools/man/auto_layout_mediation.html).
+  [`semptools::auto_layout_mediation()`](https://sfcheung.github.io/semptools/reference/auto_layout_mediation.html).
 
 - v_preference:
 
@@ -136,7 +136,7 @@ indirect_on_plot(
   is `"lower"`, then `v_preference` will be forced to be `"lower"`. If
   `v_pos` is `"upper"`, then `v_preference` will be forced to be
   `"upper"`. This argument is to be passed to
-  [`semptools::auto_layout_mediation()`](https://rdrr.io/pkg/semptools/man/auto_layout_mediation.html).
+  [`semptools::auto_layout_mediation()`](https://sfcheung.github.io/semptools/reference/auto_layout_mediation.html).
 
 - print_indirect:
 
@@ -171,7 +171,7 @@ indirect_on_plot(
   For the `plot` method, these are optional arguments to be passed to
   [`semPlot::semPaths()`](https://rdrr.io/pkg/semPlot/man/semPaths.html)
   to generate the initial plot, before being adjusted by
-  [`semptools::auto_layout_mediation()`](https://rdrr.io/pkg/semptools/man/auto_layout_mediation.html).
+  [`semptools::auto_layout_mediation()`](https://sfcheung.github.io/semptools/reference/auto_layout_mediation.html).
 
 - q_mediation_output:
 
@@ -219,7 +219,7 @@ on the right, mediators between them, and arrows (paths) flow from left
 to right. The figure should usually be usable. If not, it can be further
 modified by helper functions such as those in `semptools` that can
 manipulate a `qgraph` object. For example,
-[`semptools::move_node()`](https://rdrr.io/pkg/semptools/man/move_node.html)
+[`semptools::move_node()`](https://sfcheung.github.io/semptools/reference/move_node.html)
 can be used to adjust the position of a variable in the plot.
 
 The helper function `indirect_on_plot()` adds the indirect effect
