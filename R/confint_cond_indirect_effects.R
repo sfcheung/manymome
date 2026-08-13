@@ -78,12 +78,13 @@
 #'
 #' @param level The level of confidence,
 #' default is .95, returning the 95%
-#' confidence interval. Ignored for now
-#' and will use the level of the stored
-#' intervals.
+#' confidence interval. This argument
+#' is used, and will override the
+#' `level` set when computing the effects,
+#' starting from 0.3.6.15.
 #'
 #' @param ...  Additional arguments.
-#' Ignored by the function.
+#' To be passed to [confint.indirect()].
 #'
 #' @return A data frame with two
 #' columns, one for each confidence
@@ -128,18 +129,6 @@
 #' @export
 
 confint.cond_indirect_effects <- function(object, parm, level = .95, ...) {
-    # TODO: Get CIs for other levels
-    # if (isTRUE(!is.null(object$boot_ci))) {
-    #     boot_out <- list(t0 = object$indirect,
-    #                      t = matrix(object$boot_indirect, ncol = 1),
-    #                      R = length(object$boot_indirect))
-    #     out0 <- boot::boot.ci(boot_out,
-    #                         type = "perc",
-    #                         conf = level)$percent[4:5]
-    #   } else {
-    #     warning("Bootstrapping interval not in the object.")
-    #     out0 <- c(NA, NA)
-    #   }
     has_wlevels <- cond_indirect_effects_has_wlevels(object)
     has_groups <- cond_indirect_effects_has_groups(object)
     out0 <- as.data.frame(object)
@@ -161,6 +150,7 @@ confint.cond_indirect_effects <- function(object, parm, level = .95, ...) {
     has_m <- isTRUE(!is.null(x_i$m))
     standardized_x <- x_i$standardized_x
     standardized_y <- x_i$standardized_y
+    se_ci <- FALSE
     if (!has_ci &&
         !has_m &&
         !has_groups &&
@@ -170,6 +160,7 @@ confint.cond_indirect_effects <- function(object, parm, level = .95, ...) {
         has_original_se) {
         out0[, c("CI.lo")] <- se_out$cilo
         out0[, c("CI.hi")] <- se_out$cihi
+        se_ci <- TRUE
         has_ci <- TRUE
       }
     if (!has_ci) {
@@ -178,14 +169,31 @@ confint.cond_indirect_effects <- function(object, parm, level = .95, ...) {
                              "CI.hi" = rep(NA, nrow(object)))
       } else {
         out <- out0[, c("CI.lo", "CI.hi")]
+        ci_out <- lapply(
+          full_output,
+          stats::confint,
+          level = level,
+          ...
+        )
+        ci_out <- do.call(
+                rbind,
+                ci_out
+              )
+        colnames(out) <- colnames(ci_out)
+        out[] <- ci_out
       }
-    # Borrowed from stats::confint()
-    probs <- c((1 - level) / 2, 1 - (1 - level) / 2)
-    cnames <- paste(format(100 * probs,
-                           trim = TRUE,
-                           scientific = FALSE,
-                           digits = 2), "%")
-    colnames(out) <- cnames
+    if (se_ci) {
+      # ==== Override the column names ====
+      # No need for boot/MC CIs because stats::confint
+      # will set the name correctly.
+      # Borrowed from stats::confint()
+      probs <- c((1 - level) / 2, 1 - (1 - level) / 2)
+      cnames <- paste(format(100 * probs,
+                            trim = TRUE,
+                            scientific = FALSE,
+                            digits = 2), "%")
+      colnames(out) <- cnames
+    }
     if (has_wlevels && !has_groups) {
         wlevels <- attr(object, "wlevels")
         rownames(out) <- rownames(wlevels)
