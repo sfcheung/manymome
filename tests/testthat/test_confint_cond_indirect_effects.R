@@ -31,18 +31,32 @@ out_cond_99 <- cond_indirect_effects(
 )
 
 ci95_to_99 <- confint(out_cond_95, level = 0.99)
-ci99_to_95 <- confint(out_cond_99)
+ci99_to_95 <- confint(out_cond_99, level = 0.95)
+ci95_to_NULL <- confint(out_cond_95)
+ci99_to_NULL <- confint(out_cond_99)
 
 expect_equal(
-  ci99_to_95,
-  confint(out_cond_95),
+  out_cond_99[, c("CI.lo", "CI.hi")],
+  ci99_to_NULL,
   ignore_attr = TRUE
 )
 
 expect_equal(
-  ci95_to_99,
-  confint(out_cond_99, level = .99),
+  out_cond_95[, c("CI.lo", "CI.hi")],
+  ci95_to_NULL,
   ignore_attr = TRUE
+)
+
+# Checking attributes is intentional
+expect_equal(
+  ci99_to_95,
+  confint(out_cond_95)
+)
+
+# Checking attributes is intentional
+expect_equal(
+  ci95_to_99,
+  confint(out_cond_99, level = .99)
 )
 
 out_cond_95_1 <- attr(out_cond_95, "full_output")[[1]]

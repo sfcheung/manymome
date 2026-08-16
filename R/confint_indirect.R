@@ -81,9 +81,19 @@
 #' stored object always has only one
 #' parameter.
 #'
-#' @param level The level of confidence,
-#' default is .95, returning the 95%
-#' confidence interval.
+#' @param level If set to `NULL`, the default,
+#' then the
+#' level of confidence used to generate
+#' `object`
+#' is used. If set to a value,
+#' this value will be used
+#' to recompute the confidence intervals.
+#' If the confidence interval is to be
+#' computed from the standard error,
+#' and so `level` is not set in `object`,
+#' then the default value is .95.
+#' (This new behavior applies to 0.3.6.16
+#' and later version.)
 #'
 #' @param boot_type If bootstrap
 #' confidence interval is to be formed,
@@ -136,40 +146,77 @@
 #' @export
 
 
-confint.indirect <- function(object,
-                             parm,
-                             level = .95,
-                             boot_type,
-                             ...) {
+confint.indirect <- function(
+  object,
+  parm,
+  level = NULL,
+  boot_type,
+  ...
+) {
+
     if (missing(boot_type)) {
         ci_boot_type <- object$boot_type
       } else {
         ci_boot_type <- boot_type
       }
     has_ci <- FALSE
+    level_default <- .95
     if (isTRUE(!is.null(object$boot_ci))) {
+
+        # ==== Boot CI found ====
+
         has_ci <- TRUE
         old_ci <- object$boot_ci
         ci_type <- "boot"
         ind_i <- object$boot_indirect
+        if (is.null(level)) {
+          level <- object$level
+        }
         if ((level == object$level) &&
             (ci_boot_type == object$boot_type)) {
+            # Retrieve stored CI if
+            # no change to level and boot_type
             new_ci <- FALSE
           } else {
+            # Recompute CI if
+            # level or boot_type changed
             new_ci <- TRUE
           }
       }
     if (isTRUE(!is.null(object$mc_ci))) {
+
+        # ==== Monte Carlo CI found ====
+
         has_ci <- TRUE
         old_ci <- object$mc_ci
         ci_type <- "mc"
         ind_i <- object$mc_indirect
+        if (is.null(level)) {
+          level <- object$level
+        }
         if (level == object$level) {
+            # Retrieve stored CI if
+            # no change to level
             new_ci <- FALSE
           } else {
+            # Recompute CI if
+            # level changed
             new_ci <- TRUE
           }
       }
+
+    if (!has_ci &&
+        is.null(level)) {
+      # No stored CI and so no stored level
+      # Set default level if level is NULL
+      level <- level_default
+    }
+    # level should have a value up to this point
+    # - If set, always used.
+    # - If not set, it depends on the type of CI.
+
+    # ==== SE CI: Try ====
+
     se_out <- cond_effect_original_se(object,
                                       level = level)
     has_original_se <- !is.null(se_out)
@@ -185,14 +232,25 @@ confint.indirect <- function(object,
         !standardized_x &&
         !standardized_y &&
         has_original_se) {
+
+        # ==== Use SE CI ====
+
         ci_type <- "se"
         has_ci <- TRUE
       }
+
+    # ==== has_ci? ====
+
     if (has_ci) {
         if (ci_type == "se") {
+            # Use SE CI
             out0 <- c(se_out$cilo, se_out$cihi)
           } else {
+            # Boot CI or MC CI
             if (new_ci) {
+
+                # ==== Recompute CI (new_ci TRUE) ====
+
                 out0 <- boot_ci_internal(t0 = object$indirect,
                                 t = ind_i,
                                 level = level,
@@ -201,6 +259,9 @@ confint.indirect <- function(object,
                                                   "perc"),
                                 add_names = FALSE)
               } else {
+
+                # ==== Retrieved stored CI ====
+
                 out0 <- old_ci
               }
           }

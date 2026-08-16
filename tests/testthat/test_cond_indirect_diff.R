@@ -84,6 +84,14 @@ test_that("cond_indirect_diff", {
         index_ind_2w_ci_ans,
         ignore_attr = TRUE
       )
+    expect_true(
+        diff(unlist(confint(index_ind_2w, level = .90))) <
+        diff(index_ind_2w_ci_ans)
+      )
+    expect_true(
+        diff(unlist(confint(index_ind_2w, level = .80))) <
+        diff(unlist(confint(index_ind_2w, level = .90)))
+      )
     expect_equal(
         coef(index_ind),
         index_ind_ans,
