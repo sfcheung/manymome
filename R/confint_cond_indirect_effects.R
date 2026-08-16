@@ -155,20 +155,29 @@ confint.cond_indirect_effects <- function(
 
     # ==== Handle level ====
 
-    if (is.null(level) &&
-        has_ci) {
-      # Use stored level if possible
-      # All objects should have the same `level`
-      all_levels <- sapply(
-        full_output,
-        function(x) x$level
-      )
-      if (isTRUE(all.equal(max(all_levels), min(all_levels)))) {
-        level <- max(all_levels)
+    if (has_ci) {
+      if (is.null(level)) {
+        # Use stored level if possible
+        # All objects should have the same `level`
+        all_levels <- sapply(
+          full_output,
+          function(x) x$level
+        )
+        if (isTRUE(all.equal(max(all_levels), min(all_levels)))) {
+          level <- max(all_levels)
+        } else {
+          warning("The levels of confidence cannot be determined. ",
+                  level_default,
+                  " is used instead.")
+          level <- level_default
+        }
       } else {
-        warning("The levels of confidence cannot be determined. ",
-                level_default,
-                " is used instead.")
+        # Always use explicitly specified level
+        # Spaceholder
+      }
+    } else {
+      # No boot CI or Monte Carlo CI
+      if (is.null(level)) {
         level <- level_default
       }
     }
@@ -183,6 +192,7 @@ confint.cond_indirect_effects <- function(
     standardized_x <- x_i$standardized_x
     standardized_y <- x_i$standardized_y
     se_ci <- FALSE
+
     if (!has_ci &&
         !has_m &&
         !has_groups &&
@@ -202,7 +212,6 @@ confint.cond_indirect_effects <- function(
           level <- level_default
         }
       }
-
     # ==== has_ci? ====
 
     if (!has_ci) {
