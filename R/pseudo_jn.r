@@ -593,6 +593,7 @@ print.pseudo_johnson_neyman <- function(x, digits = 3, ...) {
                             w_range_lb_str, " to ", w_range_ub_str, "). ",
                             "Set a higher value for 'w_upper' if necessary."))
       }
+    # Use stored CI and so level should be level to NULL, the default
     tmp <- as.vector(unlist(stats::confint(out_cond)))
     tmp2 <- sapply(tmp,
               function(x) {
@@ -666,8 +667,10 @@ pseudo_johnson_neyman_one_bound <- function(w0,
                          mc_ci = mc_ci,
                          mc_out = mc_out,
                          level = level)
+    # boot_type use the boot_type stored in the object
     out1 <- switch(which, lower = stats::confint(out, level = level)[1, 2] + adj,
                           upper = stats::confint(out, level = level)[1, 1] - adj)
+    # boot_type use the boot_type stored in the object
     return(switch(type,
                   distance = out1^2,
                   limit = out1,
