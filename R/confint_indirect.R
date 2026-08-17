@@ -92,7 +92,7 @@
 #' computed from the standard error,
 #' and so `level` is not set in `object`,
 #' then the default value is .95.
-#' (This new behavior applies to 0.3.6.16
+#' (This new behavior applies to 0.3.6.15
 #' and later version.)
 #'
 #' @param boot_type If bootstrap

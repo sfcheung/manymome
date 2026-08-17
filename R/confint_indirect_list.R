@@ -32,7 +32,7 @@
 #'
 #' @param ...  Additional arguments.
 #' To be passed to [confint.indirect()].
-#' (This new behavior applies to 0.3.6.16
+#' (This new behavior applies to 0.3.6.15
 #' and later version.)
 #'
 #' @return A two-column data frame.
