@@ -41,29 +41,29 @@ out1lo <- cond_indirect_effects(x = "x",
 
 test_that("pseudo_johnson_neyman", {
     w_range <- pseudo_johnson_neyman(out1)
-    expect_equal(confint(w_range$cond_effects)[1, 1], 0,
+    expect_equal(confint(w_range$cond_effects, level = w_range$level)[1, 1], 0,
                  tolerance = 1e-5)
-    expect_equal(confint(w_range$cond_effects)[2, 2], 0,
+    expect_equal(confint(w_range$cond_effects, level = w_range$level)[2, 2], 0,
                  tolerance = 1e-5)
 
     expect_error(pseudo_johnson_neyman(out1stdxy))
 
     w_range <- pseudo_johnson_neyman(out1up)
-    expect_equal(confint(w_range$cond_effects)[1, 1], 0,
+    expect_equal(confint(w_range$cond_effects, level = w_range$level)[1, 1], 0,
                  tolerance = 1e-5)
-    expect_equal(confint(w_range$cond_effects)[2, 2], 0,
+    expect_equal(confint(w_range$cond_effects, level = w_range$level)[2, 2], 0,
                  tolerance = 1e-5)
 
     w_range_not_found1 <- pseudo_johnson_neyman(out1up, w_lower = 5)
-    expect_true(confint(w_range_not_found1$cond_effects)[1, 1] > 0)
+    expect_true(confint(w_range_not_found1$cond_effects, level = w_range$level)[1, 1] > 0)
 
     w_range_not_found2 <- pseudo_johnson_neyman(out1up, w_upper = -10)
-    expect_true(confint(w_range_not_found2$cond_effects)[2, 2] < 0)
+    expect_true(confint(w_range_not_found2$cond_effects, level = w_range$level)[2, 2] < 0)
 
     w_range_not_found1_ext <- pseudo_johnson_neyman(out1up, w_lower = -5, extendInt = "yes")
-    expect_equal(confint(w_range_not_found1_ext$cond_effects)[1, 1], 0,
+    expect_equal(confint(w_range_not_found1_ext$cond_effects, level = w_range$level)[1, 1], 0,
                  tolerance = 1e-5)
-    expect_equal(confint(w_range_not_found1_ext$cond_effects)[2, 2], 0,
+    expect_equal(confint(w_range_not_found1_ext$cond_effects, level = w_range$level)[2, 2], 0,
                  tolerance = 1e-5)
 
     # Check level

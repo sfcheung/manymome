@@ -576,28 +576,52 @@ coef.cond_indirect_diff <- function(object, ...) {
 #' confidence interval is not available,
 #' the limits are `NA`s.
 #'
+#' @inheritParams confint.indirect
+#'
 #' @param object The output of
 #' [cond_indirect_diff()].
 #'
 #' @param parm Ignored.
-#'
-#' @param level The level of confidence
-#' for the confidence
-#' interval. Default is .95. Must match
-#' the level of the stored confidence
-#' interval.
 #'
 #' @param ... Optional arguments.
 #' Ignored.
 #'
 #' @export
 
-confint.cond_indirect_diff<- function(object, parm, level = .95, ...) {
-    if (object$level != level) {
-        stop("Requested level does not match stored level.")
+confint.cond_indirect_diff <- function(
+  object,
+  parm,
+  level = NULL,
+  ...
+) {
+    update_ci <- FALSE
+    level_default <- .95
+    if (is.null(level)) {
+      if (is.null(object$level)) {
+        # Could have used SE CI
+        level <- level_default
+        update_ci <- TRUE
+      } else {
+        # No change in level. Do not recompute the CI
+        level <- object$level
+        object_new_ci <- object
       }
+    } else {
+      # if (object$level != level) {
+      #     stop("Requested level does not match stored level.")
+      #   }
+      update_ci <- TRUE
+    }
+    if (update_ci) {
+      object_new_ci <- cond_indirect_diff(
+        object$output,
+        from = 2,
+        to = 1,
+        level = level
+      )
+    }
     full_output_attr <- attr(object$output, "full_output")[[1]]
-    out <- data.frame(as.list(object$ci), check.names = FALSE)
+    out <- data.frame(as.list(object_new_ci$ci), check.names = FALSE)
     if (all(is.na(out))) out <- data.frame(ci.lower = NA, ci.upper = NA)
     rownames(out) <- paste0(full_output_attr$y,
                          "~",
