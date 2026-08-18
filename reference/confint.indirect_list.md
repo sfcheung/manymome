@@ -8,7 +8,7 @@ output of
 
 ``` r
 # S3 method for class 'indirect_list'
-confint(object, parm = NULL, level = 0.95, ...)
+confint(object, parm = NULL, level = NULL, ...)
 ```
 
 ## Arguments
@@ -24,12 +24,18 @@ confint(object, parm = NULL, level = 0.95, ...)
 
 - level:
 
-  The level of confidence, default is .95, returning the 95% confidence
-  interval.
+  If set to `NULL`, the default, then the level of confidence used to
+  generate `object` is used. If set to a value, this value will be used
+  to recompute the confidence intervals. If the confidence interval is
+  to be computed from the standard error, and so `level` is not set in
+  `object`, then the default value is .95. (This new behavior applies to
+  0.3.6.15 and later version.)
 
 - ...:
 
-  Additional arguments. Ignored by the function.
+  Additional arguments. To be passed to
+  [`confint.indirect()`](https://sfcheung.github.io/manymome/reference/confint.indirect.md).
+  (This new behavior applies to 0.3.6.15 and later version.)
 
 ## Value
 

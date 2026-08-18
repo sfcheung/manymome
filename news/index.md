@@ -1,6 +1,6 @@
 # Changelog
 
-## manymome 0.3.6.14
+## manymome 0.3.6.15
 
 ### New Features
 
@@ -42,6 +42,12 @@
 - Added the argument `cond_indirect_effects_args` to the `q_*` functions
   for customizing the computation of conditional indirect effects or
   conditional effects. (0.3.6.14)
+
+- Most `confint` methods now can make use of the value set to `level`.
+  If not set, the default is `NULL` and the stored value of `level`
+  (e.g., when calling
+  [`indirect_effect()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md))
+  will be used. (0.3.6.15)
 
 ### Miscellaneous
 

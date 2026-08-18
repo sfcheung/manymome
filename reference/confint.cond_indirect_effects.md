@@ -8,7 +8,7 @@ conditional effects in the output of
 
 ``` r
 # S3 method for class 'cond_indirect_effects'
-confint(object, parm, level = 0.95, ...)
+confint(object, parm, level = NULL, ...)
 ```
 
 ## Arguments
@@ -25,13 +25,18 @@ confint(object, parm, level = 0.95, ...)
 
 - level:
 
-  The level of confidence, default is .95, returning the 95% confidence
-  interval. Ignored for now and will use the level of the stored
-  intervals.
+  If set to `NULL`, the default, then the level of confidence used to
+  generate `object` is used. If set to a value, this value will be used
+  to recompute the confidence intervals. If the confidence interval is
+  to be computed from the standard error, and so `level` is not set in
+  `object`, then the default value is .95. (This new behavior applies to
+  0.3.6.15 and later version.)
 
 - ...:
 
-  Additional arguments. Ignored by the function.
+  Additional arguments. To be passed to
+  [`confint.indirect()`](https://sfcheung.github.io/manymome/reference/confint.indirect.md).
+  (This new behavior applies to 0.3.6.15 and later version.)
 
 ## Value
 
@@ -126,9 +131,9 @@ out1 <- suppressWarnings(cond_indirect_effects(x = "x", y = "m1",
                       parallel = FALSE,
                       progress = FALSE))
 confint(out1)
-#>             2.5 %    97.5 %
-#> M+1.0SD 0.5470997 0.9277341
-#> Mean    0.4277303 0.5787753
-#> M-1.0SD 0.1590855 0.4261894
+#>         Percentile: 2.5 % Percentile: 97.5 %
+#> M+1.0SD         0.5470997          0.9277340
+#> Mean            0.4277303          0.5787752
+#> M-1.0SD         0.1590855          0.4261894
 
 ```

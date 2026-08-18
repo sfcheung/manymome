@@ -98,9 +98,9 @@ out2
 #> 
 coef(out2)
 #> w1: M+1.0SD; w4: M+1.0SD w1: M+1.0SD; w4: M-1.0SD w1: M-1.0SD; w4: M+1.0SD 
-#>               0.13702472               0.12079776               0.05422599 
+#>               0.13702461               0.12079753               0.05422595 
 #> w1: M-1.0SD; w4: M-1.0SD 
-#>               0.04780435 
+#>               0.04780426 
 
 # Standardized conditional indirect effects from x1 through m1 and m2 to y,
 out2std <- cond_indirect_effects(x = "x", y = "y", m = c("m1", "m2"),
@@ -127,7 +127,7 @@ out2std
 #> 
 coef(out2std)
 #> w1: M+1.0SD; w4: M+1.0SD w1: M+1.0SD; w4: M-1.0SD w1: M-1.0SD; w4: M+1.0SD 
-#>               0.03124944               0.02754877               0.01236662 
+#>               0.03124942               0.02754872               0.01236660 
 #> w1: M-1.0SD; w4: M-1.0SD 
-#>               0.01090212 
+#>               0.01090210 
 ```
