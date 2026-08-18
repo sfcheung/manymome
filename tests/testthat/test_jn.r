@@ -158,9 +158,9 @@ test_that("pseudo_johnson_neyman", {
     w_range_narrower <- pseudo_johnson_neyman(out, level = .90)
     expect_true(min(w_range$cond_effects$ind) < min(w_range_narrower$cond_effects$ind))
     expect_true(max(w_range$cond_effects$ind) > max(w_range_narrower$cond_effects$ind))
-    expect_equal(confint(w_range_narrower$cond_effects)[1, 1], 0,
+    expect_equal(confint(w_range_narrower$cond_effects, level = .90)[1, 1], 0,
                  tolerance = 1e-5)
-    expect_equal(confint(w_range_narrower$cond_effects)[2, 2], 0,
+    expect_equal(confint(w_range_narrower$cond_effects, level = .90)[2, 2], 0,
                  tolerance = 1e-5)
 
     # Check level: MC
@@ -168,9 +168,9 @@ test_that("pseudo_johnson_neyman", {
     w_range_mc_narrower2 <- pseudo_johnson_neyman(out_mc, level = .60)
     expect_true(min(w_range_mc_narrower$cond_effects$ind) < min(w_range_mc_narrower2$cond_effects$ind))
     expect_true(max(w_range_mc_narrower$cond_effects$ind) > max(w_range_mc_narrower2$cond_effects$ind))
-    expect_equal(confint(w_range_narrower$cond_effects)[1, 1], 0,
+    expect_equal(confint(w_range_mc_narrower$cond_effects, level = .80)[1, 1], 0,
                  tolerance = 1e-5)
-    expect_equal(confint(w_range_narrower$cond_effects)[2, 2], 0,
+    expect_equal(confint(w_range_mc_narrower$cond_effects, level = .80)[2, 2], 0,
                  tolerance = 1e-5)
 })
 

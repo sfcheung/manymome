@@ -90,5 +90,7 @@ export(q_simple_mediation)
 export(total_indirect_effect)
 export(z_index_of_mome)
 export(z_index_of_momome)
-importFrom(graphics,mtext)
-importFrom(graphics,par)
+importFrom(graphics,
+  mtext,
+  par
+)

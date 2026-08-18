@@ -6,7 +6,7 @@
 Indirect Effect or Conditional
 Indirect Effect}
 \usage{
-\method{confint}{indirect}(object, parm, level = 0.95, boot_type, ...)
+\method{confint}{indirect}(object, parm, level = NULL, boot_type, ...)
 }
 \arguments{
 \item{object}{The output of
@@ -17,9 +17,19 @@ Indirect Effect}
 stored object always has only one
 parameter.}
 
-\item{level}{The level of confidence,
-default is .95, returning the 95\%
-confidence interval.}
+\item{level}{If set to \code{NULL}, the default,
+then the
+level of confidence used to generate
+\code{object}
+is used. If set to a value,
+this value will be used
+to recompute the confidence intervals.
+If the confidence interval is to be
+computed from the standard error,
+and so \code{level} is not set in \code{object},
+then the default value is .95.
+(This new behavior applies to 0.3.6.15
+and later version.)}
 
 \item{boot_type}{If bootstrap
 confidence interval is to be formed,

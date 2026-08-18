@@ -69,21 +69,19 @@
 #' that the model is not invariant to
 #' linear transformation of the variables.
 #'
+#' @inheritParams confint.indirect
+#'
 #' @param object The output of
 #' [cond_indirect_effects()].
 #'
 #' @param parm Ignored. Always returns
 #' the confidence intervals of
 #' the effects for all levels stored.
-#'
-#' @param level The level of confidence,
-#' default is .95, returning the 95%
-#' confidence interval. Ignored for now
-#' and will use the level of the stored
-#' intervals.
-#'
+
 #' @param ...  Additional arguments.
-#' Ignored by the function.
+#' To be passed to [confint.indirect()].
+#' (This new behavior applies to 0.3.6.15
+#' and later version.)
 #'
 #' @return A data frame with two
 #' columns, one for each confidence
@@ -127,19 +125,13 @@
 #'
 #' @export
 
-confint.cond_indirect_effects <- function(object, parm, level = .95, ...) {
-    # TODO: Get CIs for other levels
-    # if (isTRUE(!is.null(object$boot_ci))) {
-    #     boot_out <- list(t0 = object$indirect,
-    #                      t = matrix(object$boot_indirect, ncol = 1),
-    #                      R = length(object$boot_indirect))
-    #     out0 <- boot::boot.ci(boot_out,
-    #                         type = "perc",
-    #                         conf = level)$percent[4:5]
-    #   } else {
-    #     warning("Bootstrapping interval not in the object.")
-    #     out0 <- c(NA, NA)
-    #   }
+confint.cond_indirect_effects <- function(
+  object,
+  parm,
+  level = NULL,
+  ...
+) {
+    level_default <- .95
     has_wlevels <- cond_indirect_effects_has_wlevels(object)
     has_groups <- cond_indirect_effects_has_groups(object)
     out0 <- as.data.frame(object)
@@ -147,13 +139,51 @@ confint.cond_indirect_effects <- function(object, parm, level = .95, ...) {
     x_i <- full_output[[1]]
     has_ci <- FALSE
     if (!is.null(full_output[[1]]$boot_ci)) {
+
+        # ==== Boot CI found ====
+
         has_ci <- TRUE
         ci_type <- "boot"
       }
     if (!is.null(full_output[[1]]$mc_ci)) {
+
+        # ==== Monte Carlo CI found ====
+
         has_ci <- TRUE
         ci_type <- "mc"
       }
+
+    # ==== Handle level ====
+
+    if (has_ci) {
+      if (is.null(level)) {
+        # Use stored level if possible
+        # All objects should have the same `level`
+        all_levels <- sapply(
+          full_output,
+          function(x) x$level
+        )
+        if (isTRUE(all.equal(max(all_levels), min(all_levels)))) {
+          level <- max(all_levels)
+        } else {
+          warning("The levels of confidence cannot be determined. ",
+                  level_default,
+                  " is used instead.")
+          level <- level_default
+        }
+      } else {
+        # Always use explicitly specified level
+        # Spaceholder
+      }
+    } else {
+      # No boot CI or Monte Carlo CI
+      if (is.null(level)) {
+        level <- level_default
+      }
+    }
+
+    # ==== SE CI: Try ====
+
     se_out <- cond_effects_original_se(object,
                                        level = level,
                                        append = FALSE)
@@ -161,6 +191,8 @@ confint.cond_indirect_effects <- function(object, parm, level = .95, ...) {
     has_m <- isTRUE(!is.null(x_i$m))
     standardized_x <- x_i$standardized_x
     standardized_y <- x_i$standardized_y
+    se_ci <- FALSE
+
     if (!has_ci &&
         !has_m &&
         !has_groups &&
@@ -168,24 +200,68 @@ confint.cond_indirect_effects <- function(object, parm, level = .95, ...) {
         !standardized_x &&
         !standardized_y &&
         has_original_se) {
+
+        # ==== Use SE CI ====
+
         out0[, c("CI.lo")] <- se_out$cilo
         out0[, c("CI.hi")] <- se_out$cihi
+        se_ci <- TRUE
         has_ci <- TRUE
+        # For se_ci, level_default is used if not set
+        if (is.null(level)) {
+          level <- level_default
+        }
       }
+    # ==== has_ci? ====
+
     if (!has_ci) {
           warning("Confidence intervals not in the object.")
           out <- data.frame("CI.o" = rep(NA, nrow(object)),
                              "CI.hi" = rep(NA, nrow(object)))
       } else {
+        # out is the tentative output
         out <- out0[, c("CI.lo", "CI.hi")]
+        # The CIs in out may be SE CI
+        if (!se_ci) {
+
+          # ==== Boot CI or Monte Carlo CI ====
+
+          # Update the content of out
+
+          # Always call confint(),
+          # such that dotdotdot can be used,
+          # except when SEs are used.
+          # confint.indirect may still use stored CIs.
+          ci_out <- lapply(
+            full_output,
+            stats::confint,
+            level = level,
+            ...
+          )
+          ci_out <- do.call(
+                  rbind,
+                  ci_out
+                )
+          # Column names reflect ci_type and level
+          colnames(out) <- colnames(ci_out)
+          out[] <- ci_out
+        }
       }
-    # Borrowed from stats::confint()
-    probs <- c((1 - level) / 2, 1 - (1 - level) / 2)
-    cnames <- paste(format(100 * probs,
-                           trim = TRUE,
-                           scientific = FALSE,
-                           digits = 2), "%")
-    colnames(out) <- cnames
+
+    if (se_ci) {
+
+      # out's CIs are already SE CIs. Just update the column names
+
+      # ==== Override the column names (SE CI)====
+
+      # Borrowed from stats::confint()
+      probs <- c((1 - level) / 2, 1 - (1 - level) / 2)
+      cnames <- paste(format(100 * probs,
+                            trim = TRUE,
+                            scientific = FALSE,
+                            digits = 2), "%")
+      colnames(out) <- cnames
+    }
     if (has_wlevels && !has_groups) {
         wlevels <- attr(object, "wlevels")
         rownames(out) <- rownames(wlevels)
