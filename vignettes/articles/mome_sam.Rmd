@@ -1,7 +1,7 @@
 ---
 title: "Latent Variable Moderated Mediation by SAM"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-06-01"
+date: "2026-08-23"
 output:
   html_document:
     fig.align: "center"
@@ -118,6 +118,8 @@ fit <- sam(
   parallel = "snow",
   ncpus = 20
 )
+#> Warning: lavaan->sam():  
+#>    'bootstrap_args' is deprecated; please use 'bootstrap' instead.
 ```
 
 For details on the SAM approach, see

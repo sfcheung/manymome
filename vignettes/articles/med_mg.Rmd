@@ -1,7 +1,7 @@
 ---
 title: "Multigroup Models With Mediation Effects"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-03-26"
+date: "2026-08-23"
 output:
   html_document:
     fig.align: "center"
@@ -85,7 +85,7 @@ These are the estimates of the paths:
 ``` r
 summary(fit,
         estimates = TRUE)
-#> lavaan 0.6-21 ended normally after 1 iteration
+#> lavaan 0.7-2.3166 ended normally after 1 iteration
 #> 
 #>   Estimator                                         ML
 #>   Optimization method                           NLMINB
@@ -102,6 +102,13 @@ summary(fit,
 #>   Test statistic for each group:
 #>     Group A                                      0.000
 #>     Group B                                      0.000
+#>                                                       
+#>   Browne's residual (NT model-based) test             
+#>   Test statistic                                 0.000
+#>   Degrees of freedom                                 0
+#>   Test statistic for each group:
+#>     Group A                                      0.000
+#>     Group B                                     -0.000
 #> 
 #> Parameter Estimates:
 #> 
