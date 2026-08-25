@@ -61,6 +61,9 @@ find_product <- function(data, target) {
         for (j in colnames(data)) {
             q <- q + 1
             if (!is.vector(data[, j], mode = "numeric")) next
+            # Prevent a * b == a here
+            if (((i == target) && (j != target)) ||
+                ((i != target) && (j == target))) next
             xy <- data[, i] * data[, j]
             target_xy <- all.equal(a_col, xy)
             if (isTRUE(target_xy)) {

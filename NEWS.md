@@ -1,4 +1,4 @@
-# manymome 0.3.7
+# manymome 0.3.6.16
 
 ## New Features
 
@@ -96,6 +96,12 @@
   do bootstrapping or Monte Carlo simulation
   only once when `ci_type` is set.
   (0.3.6.12)
+
+## Bug Fixes
+
+- Fixed a bug in finding a product
+  term automatically in some special cases.
+  (0.3.6.16)
 
 # manymome 0.3.6
 
