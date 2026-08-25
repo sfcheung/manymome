@@ -1,7 +1,7 @@
 ---
 title: "Monte Carlo Confidence Intervals with Multiple Imputation"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-03-26"
+date: "2026-08-23"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -110,6 +110,14 @@ do the imputation:
 
 ``` r
 library(mice)
+#> 
+#> Attaching package: 'mice'
+#> The following object is masked from 'package:stats':
+#> 
+#>     filter
+#> The following objects are masked from 'package:base':
+#> 
+#>     cbind, rbind
 set.seed(26245)
 out_mice <- mice(dat, m = 5, printFlag = FALSE)
 dat_mi <- complete(out_mice, action = "all")
@@ -140,6 +148,15 @@ We then fit the model by `lavaan.mi::sem.mi()`:
 
 ``` r
 library(lavaan.mi)
+#> Registered S3 method overwritten by 'lavaan.mi':
+#>   method           from  
+#>   print.lavMoments lavaan
+#> 
+#> ###################################################################
+#> This is lavaan.mi 0.1-1
+#> See the README file on github.com/TDJorgensen/lavaan.mi
+#> for a table comparing it with deprecated semTools features.
+#> ###################################################################
 mod <-
 "
 m ~ x + c1 + c2
@@ -149,8 +166,8 @@ fit_lavaan <- sem.mi(model = mod,
                      data = dat_mi)
 summary(fit_lavaan)
 #> lavaan.mi object fit to 5 imputed data sets using:
-#>  - lavaan    (0.6-21)
-#>  - lavaan.mi (0.1-0)
+#>  - lavaan    (0.7-2.3166)
+#>  - lavaan.mi (0.1-1)
 #> See class?lavaan.mi help page for available methods. 
 #> 
 #> Convergence information:
@@ -163,12 +180,74 @@ summary(fit_lavaan)
 #> 
 #>   Number of observations                           100
 #> 
+#> Test statistic(s) pooled using the D4 pooling method.
+#>   Pooled statistic: "standard"
+#> 
 #> Model Test User Model:
 #> 
 #>   Test statistic                                 0.000
 #>   Degrees of freedom                                 0
 #>   P-value                                        1.000
 #>   Pooling method                                    D4
+#> 
+#> Model Test Baseline Model:
+#> 
+#>   Test statistic                               123.438
+#>   Degrees of freedom                                 7
+#>   P-value                                        0.000
+#> 
+#> User Model versus Baseline Model:
+#> 
+#>   Comparative Fit Index (CFI)                    1.000
+#>   Tucker-Lewis Index (TLI)                       1.000
+#>   Bentler-Bonett Non-normed Fit Index (NNFI)     1.000
+#>   Bentler-Bonett Normed Fit Index (NFI)          1.000
+#>   Parsimony Normed Fit Index (PNFI)              0.000
+#>   Bollen's Relative Fit Index (RFI)              1.000
+#>   Bollen's Incremental Fit Index (IFI)           1.000
+#>   Relative Noncentrality Index (RNI)             1.000
+#> 
+#> Loglikelihood and Information Criteria:
+#> 
+#>   Loglikelihood user model (H0)               -335.928
+#>   Loglikelihood unrestricted model (H1)       -335.928
+#>                                                       
+#>   Akaike (AIC)                                 689.856
+#>   Bayesian (BIC)                               713.302
+#>   Sample-size adjusted Bayesian (SABIC)        684.878
+#> 
+#> Root Mean Square Error of Approximation:
+#> 
+#>   RMSEA                                          0.000
+#>   90 Percent confidence interval - lower         0.000
+#>   90 Percent confidence interval - upper         0.000
+#>   P-value H_0: RMSEA <= 0.050                       NA
+#>   P-value H_0: RMSEA >= 0.080                       NA
+#> 
+#> Standardized Root Mean Square Residual:
+#> 
+#>   RMR                                            0.045
+#>   RMR (No Mean)                                  0.045
+#>   SRMR                                           0.013
+#> 
+#> Goodness of Fit Index:
+#> 
+#>   Goodness of Fit Index (GFI)                    1.000
+#>   90 Percent confidence interval - lower         1.000
+#>   90 Percent confidence interval - upper         1.000
+#> 
+#> Other Fit Indices:
+#> 
+#>   Hoelter Critical N (CN) alpha = 0.05               NA
+#>   Hoelter Critical N (CN) alpha = 0.01               NA
+#>                                                        
+#>   Goodness of Fit Index LISREL (GFI)              1.000
+#>   Adjusted Goodness of Fit Index LISREL (AGFI)    1.000
+#>   Parsimony Goodness of Fit Index (PGFI)          0.000
+#>                                                        
+#>   McDonald Fit Index (MFI)                        1.000
+#>                                                        
+#>   Expected Cross-Validation Index (ECVI)          0.180
 #> 
 #> Parameter Estimates:
 #> 
@@ -274,7 +353,7 @@ out_lavaan
 #>                                        
 #>  Path:                 x -> m -> y     
 #>  Indirect Effect:      0.656           
-#>  95.0% Monte Carlo CI: [0.213 to 1.124]
+#>  95.0% Monte Carlo CI: [0.219 to 1.130]
 #> 
 #> Computation Formula:
 #>   (b.m~x)*(b.y~m)
