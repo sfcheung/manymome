@@ -94,6 +94,8 @@ fit <- sam(
   parallel = "snow",
   ncpus = 20
 )
+#> Warning: lavaan->sam():  
+#>    'bootstrap_args' is deprecated; please use 'bootstrap' instead.
 ```
 
 For details on the SAM approach, see Rosseel et al. (2025) and Rosseel &

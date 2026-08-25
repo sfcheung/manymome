@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.15</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,7 +106,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-06-01</h4>
+            <h4 data-toc-skip class="date">2026-08-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/articles/q_mediation_sem_indicators_serial.Rmd" class="external-link"><code>vignettes/articles/q_mediation_sem_indicators_serial.Rmd</code></a></small>
       <div class="d-none name"><code>q_mediation_sem_indicators_serial.Rmd</code></div>
@@ -406,6 +406,11 @@ the results from <code>lavaan</code> for the model.</p>
 <span><span class="co">#&gt;   Test statistic                               186.674</span></span>
 <span><span class="co">#&gt;   Degrees of freedom                               177</span></span>
 <span><span class="co">#&gt;   P-value (Chi-square)                           0.294</span></span>
+<span><span class="co">#&gt;                                                       </span></span>
+<span><span class="co">#&gt;   Browne's residual (NT model-based) test             </span></span>
+<span><span class="co">#&gt;   Test statistic                               169.502</span></span>
+<span><span class="co">#&gt;   Degrees of freedom                               177</span></span>
+<span><span class="co">#&gt;   P-value (Chi-square)                           0.644</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Model Test Baseline Model:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -417,6 +422,9 @@ the results from <code>lavaan</code> for the model.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Comparative Fit Index (CFI)                    0.998</span></span>
 <span><span class="co">#&gt;   Tucker-Lewis Index (TLI)                       0.997</span></span>
+<span><span class="co">#&gt;                                                       </span></span>
+<span><span class="co">#&gt;   Robust Comparative Fit Index (CFI)             0.998</span></span>
+<span><span class="co">#&gt;   Robust Tucker-Lewis Index (TLI)                0.997</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Root Mean Square Error of Approximation:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -425,6 +433,12 @@ the results from <code>lavaan</code> for the model.</p>
 <span><span class="co">#&gt;   Confidence interval - upper                    0.021</span></span>
 <span><span class="co">#&gt;   P-value H_0: RMSEA &lt;= 0.050                    1.000</span></span>
 <span><span class="co">#&gt;   P-value H_0: RMSEA &gt;= 0.080                    0.000</span></span>
+<span><span class="co">#&gt;                                                       </span></span>
+<span><span class="co">#&gt;   Robust RMSEA                                   0.010</span></span>
+<span><span class="co">#&gt;   Confidence interval - lower                    0.000</span></span>
+<span><span class="co">#&gt;   Confidence interval - upper                       NA</span></span>
+<span><span class="co">#&gt;   P-value H_0: Robust RMSEA &lt;= 0.050             1.000</span></span>
+<span><span class="co">#&gt;   P-value H_0: Robust RMSEA &gt;= 0.080             0.000</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Standardized Root Mean Square Residual:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -470,9 +484,8 @@ variable (<code>fy</code> in this model).</p>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; - BetaS are standardized coefficients with (a) only numeric variables</span></span>
-<span><span class="co">#&gt;   standardized and (b) product terms formed after standardization.</span></span>
-<span><span class="co">#&gt;   Variable(s) standardized is/are: fm1, fx, fc1, c2</span></span>
+<span><span class="co">#&gt; - BetaS are standardized coefficients with only numeric variables</span></span>
+<span><span class="co">#&gt;   standardized. Variable(s) standardized is/are: fm1, fx, fc1, c2</span></span>
 <span><span class="co">#&gt; - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'</span></span>
 <span><span class="co">#&gt;   computed from the z values and standard errors.</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -501,9 +514,8 @@ variable (<code>fy</code> in this model).</p>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; - BetaS are standardized coefficients with (a) only numeric variables</span></span>
-<span><span class="co">#&gt;   standardized and (b) product terms formed after standardization.</span></span>
-<span><span class="co">#&gt;   Variable(s) standardized is/are: fm3, fx, fm1, fc1, c2</span></span>
+<span><span class="co">#&gt; - BetaS are standardized coefficients with only numeric variables</span></span>
+<span><span class="co">#&gt;   standardized. Variable(s) standardized is/are: fm3, fx, fm1, fc1, c2</span></span>
 <span><span class="co">#&gt; - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'</span></span>
 <span><span class="co">#&gt;   computed from the z values and standard errors.</span></span></code></pre>
 <p>These are the results in predicting <code>y</code>:</p>
@@ -533,9 +545,9 @@ variable (<code>fy</code> in this model).</p>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; - BetaS are standardized coefficients with (a) only numeric variables</span></span>
-<span><span class="co">#&gt;   standardized and (b) product terms formed after standardization.</span></span>
-<span><span class="co">#&gt;   Variable(s) standardized is/are: fy, fm1, fm3, fx, fc1, c2</span></span>
+<span><span class="co">#&gt; - BetaS are standardized coefficients with only numeric variables</span></span>
+<span><span class="co">#&gt;   standardized. Variable(s) standardized is/are: fy, fm1, fm3, fx, fc1,</span></span>
+<span><span class="co">#&gt;   c2</span></span>
 <span><span class="co">#&gt; - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'</span></span>
 <span><span class="co">#&gt;   computed from the z values and standard errors.</span></span></code></pre>
 <p>The results from <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> are reformatted to make

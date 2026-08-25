@@ -285,6 +285,11 @@ from `lavaan` for the model.
     #>   Test statistic                               121.132
     #>   Degrees of freedom                               112
     #>   P-value (Chi-square)                           0.262
+    #>                                                       
+    #>   Browne's residual (NT model-based) test             
+    #>   Test statistic                               113.356
+    #>   Degrees of freedom                               112
+    #>   P-value (Chi-square)                           0.446
     #> 
     #> Model Test Baseline Model:
     #> 
@@ -296,6 +301,9 @@ from `lavaan` for the model.
     #> 
     #>   Comparative Fit Index (CFI)                    0.997
     #>   Tucker-Lewis Index (TLI)                       0.996
+    #>                                                       
+    #>   Robust Comparative Fit Index (CFI)             0.997
+    #>   Robust Tucker-Lewis Index (TLI)                0.996
     #> 
     #> Root Mean Square Error of Approximation:
     #> 
@@ -304,6 +312,12 @@ from `lavaan` for the model.
     #>   Confidence interval - upper                    0.024
     #>   P-value H_0: RMSEA <= 0.050                    1.000
     #>   P-value H_0: RMSEA >= 0.080                    0.000
+    #>                                                       
+    #>   Robust RMSEA                                   0.012
+    #>   Confidence interval - lower                    0.000
+    #>   Confidence interval - upper                       NA
+    #>   P-value H_0: Robust RMSEA <= 0.050             1.000
+    #>   P-value H_0: Robust RMSEA >= 0.080             0.000
     #> 
     #> Standardized Root Mean Square Residual:
     #> 
@@ -348,9 +362,8 @@ These are the results in predicting `fm`:
     #> ---
     #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     #> 
-    #> - BetaS are standardized coefficients with (a) only numeric variables
-    #>   standardized and (b) product terms formed after standardization.
-    #>   Variable(s) standardized is/are: fm, fx, fc1, c2
+    #> - BetaS are standardized coefficients with only numeric variables
+    #>   standardized. Variable(s) standardized is/are: fm, fx, fc1, c2
     #> - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'
     #>   computed from the z values and standard errors.
 
@@ -381,9 +394,8 @@ These are the results in predicting `y`:
     #> ---
     #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     #> 
-    #> - BetaS are standardized coefficients with (a) only numeric variables
-    #>   standardized and (b) product terms formed after standardization.
-    #>   Variable(s) standardized is/are: fy, fm, fx, fc1, c2
+    #> - BetaS are standardized coefficients with only numeric variables
+    #>   standardized. Variable(s) standardized is/are: fy, fm, fx, fc1, c2
     #> - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'
     #>   computed from the z values and standard errors.
 

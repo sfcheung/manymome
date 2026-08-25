@@ -1,6 +1,6 @@
 # Changelog
 
-## manymome 0.3.6.15
+## manymome 0.3.6.16
 
 ### New Features
 
@@ -79,6 +79,11 @@
   [`many_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
   to do bootstrapping or Monte Carlo simulation only once when `ci_type`
   is set. (0.3.6.12)
+
+### Bug Fixes
+
+- Fixed a bug in finding a product term automatically in some special
+  cases. (0.3.6.16)
 
 ## manymome 0.3.6
 

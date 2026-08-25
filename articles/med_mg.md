@@ -67,7 +67,7 @@ These are the estimates of the paths:
 
 summary(fit,
         estimates = TRUE)
-#> lavaan 0.6-21 ended normally after 1 iteration
+#> lavaan 0.7-2.3166 ended normally after 1 iteration
 #> 
 #>   Estimator                                         ML
 #>   Optimization method                           NLMINB
@@ -84,6 +84,13 @@ summary(fit,
 #>   Test statistic for each group:
 #>     Group A                                      0.000
 #>     Group B                                      0.000
+#>                                                       
+#>   Browne's residual (NT model-based) test             
+#>   Test statistic                                 0.000
+#>   Degrees of freedom                                 0
+#>   Test statistic for each group:
+#>     Group A                                      0.000
+#>     Group B                                     -0.000
 #> 
 #> Parameter Estimates:
 #> 

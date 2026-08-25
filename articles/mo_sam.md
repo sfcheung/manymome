@@ -95,6 +95,8 @@ fit <- sam(
   parallel = "snow",
   ncpus = 20
 )
+#> Warning: lavaan->sam():  
+#>    'bootstrap_args' is deprecated; please use 'bootstrap' instead.
 ```
 
 For details on the SAM approach, consult Rosseel et al. (2025) and
@@ -106,7 +108,7 @@ This is a summary of the results:
 
 summary(fit,
         ci = TRUE)
-#> This is lavaan 0.6-21 -- using the SAM approach to SEM
+#> This is lavaan 0.7-2.3166 -- using the SAM approach to SEM
 #> 
 #>   SAM method                                     LOCAL
 #>   Mapping matrix M method                           ML
@@ -130,8 +132,8 @@ summary(fit,
 #> 
 #>   Summary Information Structural part:
 #> 
-#>   chisq df cfi rmsea srmr
-#>       0  0   1     0    0
+#>   chisq df pvalue cfi rmsea srmr
+#>       0  0     NA   1     0    0
 #> 
 #> Parameter Estimates:
 #> 
