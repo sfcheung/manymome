@@ -8,7 +8,7 @@
 #'
 #' @details
 #'
-#' Ths function takes the output of
+#' This function takes the output of
 #' [cond_indirect_effects()] and
 #' computes the difference in
 #' conditional indirect effects between
@@ -22,7 +22,7 @@
 #' sets of levels are meaningful. For
 #' example, if the two levels are the
 #' mean of the moderator and one
-#' standard deviation above mean of the
+#' standard deviation above the mean of the
 #' moderator, then this difference is
 #' the change in indirect effect when
 #' the moderator increases by one
@@ -43,7 +43,7 @@
 #' the moderators.
 #'
 #' This function is intended to be a
-#' general purpose function that allows
+#' general-purpose function that allows
 #' users to compute the difference
 #' between any two levels or sets of
 #' levels that are meaningful in a
@@ -69,11 +69,11 @@
 #' conditional indirect effects
 #' using the stored estimates.
 #'
-#' If bootstrap confidence interval is
+#' If a bootstrap confidence interval is
 #' to be formed and both effects used
 #' the same type of interval, then that
 #' type will be used. Otherwise,
-#' percentile confidence interval will
+#' a percentile confidence interval will
 #' be formed.
 #'
 #' @return A `cond_indirect_diff`-class
@@ -154,7 +154,7 @@
 #' @export
 #'
 #' @describeIn cond_indirect_diff
-#' Compute the difference in in
+#' Compute the difference in
 #' conditional indirect effect between
 #' two rows in the output of
 #' [cond_indirect_effects()].
@@ -363,7 +363,7 @@ cond_indirect_diff <- function(output,
 #' @param pvalue Logical. If `TRUE`,
 #' asymmetric *p*-value based on
 #' bootstrapping will be printed if
-#' available. Default is `FALSE.`
+#' available. Default is `FALSE`.
 #'
 #' @param pvalue_digits Number of decimal
 #' places to display for the *p*-value.
@@ -529,7 +529,7 @@ print.cond_indirect_diff <- function(x,
 #' @details The `coef` method of the
 #' `cond_indirect_diff`-class object.
 #'
-#' @return Scalar: The change of
+#' @return Scalar: The change in
 #' conditional indirect effect in
 #' `object`.
 #'
@@ -559,7 +559,7 @@ coef.cond_indirect_diff <- function(object, ...) {
 #' Output of 'cond_indirect_diff()'
 #'
 #' @description Extract the confidence
-#' interval the output of
+#' interval of the output of
 #' [cond_indirect_diff()].
 #'
 #' @details The `confint` method of the
