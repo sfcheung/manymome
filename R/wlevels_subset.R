@@ -47,7 +47,7 @@
 #' of column(s) to be selected.
 #'
 #' @param drop Whether dropping a
-#' dimension if it only have one
+#' dimension if it only has one
 #' row/column.
 #'
 #' @param value Ignored.
