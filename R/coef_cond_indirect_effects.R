@@ -2,7 +2,7 @@
 #' Indirect Effects or Conditional
 #' Effects
 #'
-#' @description Return the estimates of
+#' @description Returns the estimates of
 #' the conditional indirect effects or
 #' conditional effects for all levels in
 #' the output of
