@@ -230,7 +230,7 @@
 #' # progress is displayed by default.
 #' boot_out <- do_boot(fit,
 #'                     R = 40,
-#'                     seed = 4314,
+#'                     seed = 2345,
 #'                     parallel = FALSE,
 #'                     progress = FALSE)
 #' out <- cond_indirect_effects(x = "x", y = "y", m = "m",

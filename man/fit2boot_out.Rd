@@ -170,7 +170,7 @@ fit <- sem(model = mod, data = dat, fixed.x = FALSE,
            se = "none", baseline = FALSE)
 fit_boot_out <- fit2boot_out_do_boot(fit = fit,
                                      R = 40,
-                                     seed = 1234,
+                                     seed = 2345,
                                      progress = FALSE)
 out <- cond_indirect_effects(wlevels = "w",
                              x = "x",
