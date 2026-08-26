@@ -237,7 +237,7 @@ functions.
 This method requires the
 \code{semptools} and \code{semPlot} packages.
 They are not installed by default.
-Install them first before using the
+Install them before using the
 plot method.
 
 This method draws the path models

@@ -40,7 +40,7 @@ its wrapper, such as \code{\link[lavaan.mi:sem.mi]{lavaan.mi::sem.mi()}}.}
 \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}. If
 \code{NULL}, the default, it will be
 generated from \code{fit}. If supplied,
-\code{fit} will ge ignored.}
+\code{fit} will be ignored.}
 
 \item{data}{Data frame (optional). If
 supplied, it will be used to identify

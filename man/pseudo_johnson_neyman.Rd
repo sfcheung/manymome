@@ -35,16 +35,16 @@ which is the output of \code{\link[=cond_indirect_effects]{cond_indirect_effects
 
 \item{w_lower}{The smallest value of
 the moderator when doing the search.
-If set to \verb{NULL,} the default, it
+If set to \code{NULL}, the default, it
 will be 10 standard deviations
-below mean, which should be small
+below the mean, which should be small
 enough.}
 
 \item{w_upper}{The largest value of
 the moderator when doing the search.
-If set to \verb{NULL,} the default, it
+If set to \code{NULL}, the default, it
 will be 10 standard deviations
-above mean, which should be large
+above the mean, which should be large
 enough.}
 
 \item{optimize_method}{The optimization
@@ -134,22 +134,22 @@ based on the confidence interval.
 
 This function receives the output
 of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
-and search for, within
+and searches for, within
 a specific range, the two values of
 the moderator at which
 the conditional effect is "nearly just significant",
 that is, the confidence interval
 "nearly touches" zero.
 
-Note that numerical method is used
+Note that a numerical method is used
 to find the points. Therefore,
 strictly speaking, the effects at
-the end points are still either
+the endpoints are still either
 significant or not significant, even
 if the confidence limit is very close
 to zero.
 
-Though numerical method is used,
+Though a numerical method is used,
 if the test is conducted using the
 standard error (see below), the result is
 equivalent to the (true)
@@ -168,7 +168,7 @@ and Monte Carlo confidence intervals.
 It also supports conditional
 direct paths (no mediator) and
 conditional indirect paths (with one
-or more mediator), with \code{x} and/or
+or more mediators), with \code{x} and/or
 \code{y} standardized.
 }
 
@@ -179,7 +179,7 @@ one of these conditions must be met:
 \itemize{
 \item One form of confidence intervals
 (e.g, bootstrapping or Monte Carlo)
-must has been requested (e.g.,
+must have been requested (e.g.,
 setting \code{boot_ci = TRUE} or
 \code{mc_ci = TRUE}) when calling
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
@@ -208,9 +208,9 @@ more than one solution, is/are found
 if the relation between this moderator
 and the conditional effect is not linear.
 
-Solution may also be not found if
+A solution may also not be found if
 the conditional effect is significant
-over a wide range of value of the
+over a wide range of values of the
 moderator.
 
 It is advised to use \code{\link[=plot_effect_vs_w]{plot_effect_vs_w()}}

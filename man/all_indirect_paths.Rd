@@ -31,7 +31,7 @@ in the search, such as control variables.}
 included as the \code{x} variables. If supplied, only
 paths that start from these variables will be included
 in the search.
-If \code{NULL}, the default, then all variables that are
+If \code{NULL} the default, then all variables that are
 one of the predictors in at least one regression
 equation will be
 included in the search.}
@@ -40,7 +40,7 @@ included in the search.}
 included as the \code{y} variables. If supplied, only
 paths that start from these variables will be included
 in the search.
-If \code{NULL}, the default, then all variables that are
+If \code{NULL} the default, then all variables that are
 the outcome variables in at least one regression
 equation will be
 included in the search.}
@@ -54,8 +54,8 @@ the \link[lavaan:lavaan-class]{lavaan::lavaan} object.
 Used only when the number of
 groups is greater than one. Default
 is \code{NULL}. If not specified by the model
-has more than one group, than paths
-that appears in at least one group
+has more than one group, then paths
+that appear in at least one group
 will be included in the output.}
 
 \item{all_paths}{An \code{all_paths}-class object. For example,
@@ -88,9 +88,9 @@ Since Version 0.1.14.2, support for
 multigroup models has been added for models
 fitted by \code{lavaan}. If a model has more
 than one group and \code{group} is not
-specified, than paths in all groups
+specified, then paths in all groups
 will be returned. If \code{group} is
-specified, than only paths in the
+specified, then only paths in the
 selected group will be returned.
 }
 }

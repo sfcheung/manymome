@@ -38,7 +38,7 @@ to a list by \code{\link[=lm2list]{lm2list()}}.}
 \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}. If
 \code{NULL}, the default, it will be
 generated from \code{fit}. If supplied,
-\code{fit} will ge ignored.}
+\code{fit} will be ignored.}
 }
 \value{
 A logical vector of length
@@ -58,7 +58,7 @@ sequence of mediators (\code{m}), exists
 in a model. It can check models in a
 \code{lavaan::lavaan-class} object or a
 list of outputs of \code{\link[=lm]{lm()}}.
-It also support
+It also supports
 \code{lavaan.mi} objects
 returned by
 \code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::lavaan.mi()}} or

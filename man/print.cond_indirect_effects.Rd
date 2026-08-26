@@ -43,7 +43,7 @@ display. Default is 3.}
 \item{annotation}{Logical. Whether
 the annotation after the table of
 effects is to be printed. Default is
-\code{TRUE.}}
+\code{TRUE}.}
 
 \item{pvalue}{Logical. If \code{TRUE},
 asymmetric \emph{p}-values based on
@@ -144,7 +144,7 @@ method presented in Asparouhov and Muthén (2021).
 Note that these \emph{p}-values are asymmetric
 bootstrap \emph{p}-values based on the
 distribution of the bootstrap estimates.
-They not computed based on the
+They are not computed based on the
 distribution under the null hypothesis.
 
 For a \emph{p}-value of \emph{a}, it means that
@@ -160,8 +160,8 @@ will exclude zero.
 
 If these conditions are met, the
 stored standard errors, if available,
-will be used test an effect and
-form it confidence interval:
+will be used to test an effect and
+form its confidence interval:
 \itemize{
 \item Confidence intervals have not been
 formed (e.g., by bootstrapping or
@@ -169,7 +169,7 @@ Monte Carlo).
 \item The path has no mediators.
 \item The model has only one group.
 \item The path is moderated by one or
-more moderator.
+more moderators.
 \item Both the \code{x}-variable and the
 \code{y}-variable are not standardized.
 }
@@ -195,7 +195,7 @@ from the \emph{z} statistic.
 If the model is fitted by structural
 equation modeling and has moderators,
 the standard errors, \emph{p}-values,
-and confidence interval computed
+and confidence intervals computed
 from the variance-covariance matrices
 for conditional effects
 can only be trusted if all covariances

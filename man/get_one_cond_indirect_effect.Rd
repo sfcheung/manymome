@@ -25,7 +25,7 @@ print_all_cond_effects(object, ...)
 to be retrieved.}
 
 \item{...}{Optional arguments to be
-passed to teh \code{print} method of
+passed to the \code{print} method of
 the output of
 \code{\link[=indirect_effect]{indirect_effect()}} and
 \code{\link[=cond_indirect]{cond_indirect()}}}
@@ -60,7 +60,7 @@ row.
 alias of \code{\link[=get_one_cond_indirect_effect]{get_one_cond_indirect_effect()}}.
 
 \code{\link[=print_all_cond_indirect_effects]{print_all_cond_indirect_effects()}} loops over
-the conditional effects and print all
+the conditional effects and prints all
 of them.
 
 \code{\link[=print_all_cond_effects]{print_all_cond_effects()}} is an

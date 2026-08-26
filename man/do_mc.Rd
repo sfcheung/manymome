@@ -54,7 +54,7 @@ progress or not. Default is \code{TRUE}.}
 \code{TRUE}, default, implied statistics
 will be computed for each replication.
 Letting users to disable this
-is an experimental features to let
+is an experimental feature to let
 the process run faster.}
 }
 \value{
@@ -120,13 +120,13 @@ fitted by \code{lavaan}.
 }
 \section{Functions}{
 \itemize{
-\item \code{do_mc()}: A general purpose function for
+\item \code{do_mc()}: A general-purpose function for
 creating Monte Carlo estimates to be reused
 by other functions. It returns a
 \code{mc_out}-class object.
 
 \item \code{gen_mc_est()}: Generate Monte Carlo
-estimates and store them in the \code{external}
+estimates and stores them in the \code{external}
 slot: \code{external$manymome$mc}. For advanced
 users.
 

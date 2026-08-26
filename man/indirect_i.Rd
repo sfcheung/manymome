@@ -46,7 +46,7 @@ from \code{x} to \code{y}.}
 \item{fit}{The fit object. Currently
 only supports \link[lavaan:lavaan-class]{lavaan::lavaan}
 objects. Support for lists of \code{\link[=lm]{lm()}}
-output is implemented by high level
+output is implemented by high-level
 functions such as \code{\link[=indirect_effect]{indirect_effect()}}
 and \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
 It can also be
@@ -116,8 +116,8 @@ more than two terms will be searched.
 the function will warn against
 possible misspecification, such as
 not setting the value of a moderator
-which moderate one of the component
-path. Set this to \code{FALSE} will
+which moderates one of the component
+path. Setting this to \code{FALSE} will
 suppress these warnings. Suppress
 them only when the moderators are
 omitted intentionally.}
@@ -184,7 +184,7 @@ function called by
 \code{\link[=indirect_effect]{indirect_effect()}},
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, and
 \code{\link[=cond_indirect]{cond_indirect()}}, which call this
-function multiple times if bootstrap
+function multiple times if a bootstrap
 confidence interval is requested.
 
 This function usually should not be

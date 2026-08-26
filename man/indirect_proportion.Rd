@@ -64,11 +64,11 @@ and the direct effect from \code{x} to
 
 To ensure that the proportion can
 indeed be interpreted as a proportion,
-this function computes the the
+this function computes the
 proportion only if the signs of
 all the indirect and direct effects
 from \code{x} to \code{y}
-are same (i.e., all effects
+are the same (i.e., all effects
 positive or all effects negative).
 }
 \examples{

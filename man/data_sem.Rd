@@ -30,7 +30,7 @@ and 14 variables:
 data_sem
 }
 \description{
-This data set is for
+This dataset is for
 testing functions in a four-factor
 structural model.
 }

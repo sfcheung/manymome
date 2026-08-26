@@ -25,8 +25,8 @@ simple_mediation_latent
 }
 \description{
 Generated from a simple
-mediation model among xthree latent
-factors, \code{fx}, \code{fm}, and \code{fy}, xeach
+mediation model among three latent
+factors, \code{fx}, \code{fm}, and \code{fy}; each
 has three indicators.
 }
 \details{

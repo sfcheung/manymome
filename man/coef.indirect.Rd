@@ -23,13 +23,13 @@ indirect effect.
 \description{
 Return the estimate of
 the indirect effect in the output of
-\code{\link[=indirect_effect]{indirect_effect()}} or or the
-conditional indirect in the output of
+\code{\link[=indirect_effect]{indirect_effect()}} or the
+conditional indirect effect in the output of
 \code{\link[=cond_indirect]{cond_indirect()}}.
 }
 \details{
 It extracts and returns the
-element \code{indirect}. in an object.
+element \code{indirect} in an object.
 
 If standardized effect is requested
 when calling \code{\link[=indirect_effect]{indirect_effect()}} or

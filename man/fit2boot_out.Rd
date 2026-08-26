@@ -29,8 +29,8 @@ function only supports a
 \item{compute_implied_stats}{If
 \code{TRUE}, default, implied statistics
 will be computed for each bootstrap
-sample. Letting users to disable this
-is an experimental features to let
+sample. Allowing users to disable this
+is an experimental feature to let
 the process run faster.}
 
 \item{R}{The number of bootstrap

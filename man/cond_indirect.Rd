@@ -182,7 +182,7 @@ generated from \code{fit}. If supplied,
 
 \item{implied_stats}{Implied means,
 variances, and covariances of
-observed variables, of the form of
+observed variables, in the form of
 the output of \code{\link[lavaan:lavInspect]{lavaan::lavInspect()}}
 with \code{what} set to \code{"implied"}. The
 standard deviations are extracted
@@ -201,14 +201,14 @@ Default is \code{NULL}.}
 \item{standardized_x}{Logical.
 Whether \code{x} will be standardized.
 Default is \code{FALSE}. For multigroup
-models, model implied standard
+models, the model-implied standard
 deviation for the selected group
 will be used.}
 
 \item{standardized_y}{Logical.
 Whether \code{y} will be standardized.
 Default is \code{FALSE}. For multigroup
-models, model implied standard
+models, the model-implied standard
 deviation for the selected group
 will be used.}
 
@@ -286,7 +286,7 @@ Default is \code{TRUE}.}
 
 \item{save_boot_full}{If \code{TRUE}, full
 bootstrapping results will be stored.
-Default is \code{FALSE.}}
+Default is \code{FALSE}.}
 
 \item{prods}{The product terms found. For internal use.}
 
@@ -326,7 +326,7 @@ them from \code{fit}.}
 
 \item{save_mc_full}{If \code{TRUE}, full
 Monte Carlo results will be stored.
-Default is \code{FALSE.}}
+Default is \code{FALSE}.}
 
 \item{save_mc_out}{If \code{mc_out} is
 supplied, whether it will be saved in
@@ -342,7 +342,7 @@ argument will be used as \code{mc_out}.}
 \item{save_ci_full}{If \code{TRUE}, full
 bootstrapping or Monte Carlo results
 will be stored.
-Default is \code{FALSE.}}
+Default is \code{FALSE}.}
 
 \item{save_ci_out}{If either \code{mc_out}
 or \code{boot_out} is
@@ -355,7 +355,7 @@ Can be either \code{"boot"} (bootstrapping)
 or \code{"mc"} (Monte Carlo). If not
 supplied or is \code{NULL}, will check
 other arguments
-(e.g, \code{boot_ci} and \code{mc_ci}). If
+(e.g., \code{boot_ci} and \code{mc_ci}). If
 supplied, will override \code{boot_ci}
 and \code{mc_ci}.}
 
@@ -448,7 +448,7 @@ Specify the percentile (in
 proportion) for each level. Default
 is \code{c(.16, .50, .84)} if there is one
 moderator, and \code{c(.16, .84)} when
-there are more than one moderator.
+there is more than one moderator.
 Ignored if \code{w_method} is not equal to
 \code{"percentile"}. See
 \code{\link[=mod_levels_list]{mod_levels_list()}} for further
@@ -458,7 +458,7 @@ information.}
 of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}. If
 \code{"data.frame"}, the default, the
 output will be converted to a data
-frame. If any other values, the
+frame. If any other value, the
 output is a list of the outputs from
 \code{\link[=cond_indirect]{cond_indirect()}}.}
 
@@ -623,18 +623,18 @@ a multigroup model:
 specify the \code{group} argument
 (by number or label). When using
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}, if
-\code{group} is not set, all groups wil
+\code{group} is not set, all groups will
 be used and the indirect effect
 in each group will be computed,
 kind of treating group as a moderator.
 \item For \code{\link[=many_indirect_effects]{many_indirect_effects()}},
 the paths can be generated from a
-multigroup models.
+multigroup model.
 \item Currently, \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
 does not support a multigroup model
 with moderators on the path selected.
 The function \code{\link[=cond_indirect]{cond_indirect()}} does
-not have this limitation but users
+not have this limitation, but users
 need to manually specify the desired
 value of the moderator(s).
 }
@@ -682,9 +682,9 @@ a better name when a path has no
 moderator.
 
 \item \code{many_indirect_effects()}: Compute the
-indirect effects along more than one paths.
+indirect effects along more than one path.
 It call \code{\link[=indirect_effect]{indirect_effect()}} once for
-each of the path.
+each of the paths.
 
 }}
 \examples{

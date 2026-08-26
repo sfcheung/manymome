@@ -26,12 +26,12 @@ computed from the standard error,
 and so \code{level} is not set in \code{object},
 then the default value is .95.
 (This new behavior applies to 0.3.6.15
-and later version.)}
+and later versions.)}
 
 \item{...}{Additional arguments.
 To be passed to \code{\link[=confint.indirect]{confint.indirect()}}.
 (This new behavior applies to 0.3.6.15
-and later version.)}
+and later versions.)}
 }
 \value{
 A two-column data frame.
