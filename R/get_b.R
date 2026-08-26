@@ -18,7 +18,7 @@
 #' [lavaan::parameterEstimates()]. If
 #' `NULL`, the default, it will be
 #' generated from `fit`. If supplied,
-#' `fit` will ge ignored.
+#' `fit` will be ignored.
 #'
 #'
 #' @examples
