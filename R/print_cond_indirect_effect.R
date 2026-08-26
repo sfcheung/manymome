@@ -15,7 +15,7 @@
 #' Note that these *p*-values are asymmetric
 #' bootstrap *p*-values based on the
 #' distribution of the bootstrap estimates.
-#' They not computed based on the
+#' They are not computed based on the
 #' distribution under the null hypothesis.
 #'
 #' For a *p*-value of *a*, it means that
@@ -32,8 +32,8 @@
 #'
 #' If these conditions are met, the
 #' stored standard errors, if available,
-#' will be used test an effect and
-#' form it confidence interval:
+#' will be used to test an effect and
+#' form its confidence interval:
 #'
 #' - Confidence intervals have not been
 #'  formed (e.g., by bootstrapping or
@@ -44,7 +44,7 @@
 #' - The model has only one group.
 #'
 #' - The path is moderated by one or
-#'  more moderator.
+#'  more moderators.
 #'
 #' - Both the `x`-variable and the
 #'  `y`-variable are not standardized.
@@ -69,7 +69,7 @@
 #' If the model is fitted by structural
 #' equation modeling and has moderators,
 #' the standard errors, *p*-values,
-#' and confidence interval computed
+#' and confidence intervals computed
 #' from the variance-covariance matrices
 #' for conditional effects
 #' can only be trusted if all covariances
@@ -92,7 +92,7 @@
 #' @param annotation Logical. Whether
 #' the annotation after the table of
 #' effects is to be printed. Default is
-#' `TRUE.`
+#' `TRUE`.
 #'
 #' @param pvalue Logical. If `TRUE`,
 #' asymmetric *p*-values based on
