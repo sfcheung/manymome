@@ -88,7 +88,7 @@
 #' required to have no titles.
 #'
 #' @param x_from_mean_in_sd How many SD
-#' from mean is used to define "low" and
+#' from the mean is used to define "low" and
 #' "high" for the focal variable.
 #' Default is 1.
 #'
@@ -109,9 +109,9 @@
 #' used, divided by 100. It must be a
 #'   vector of two numbers. The default
 #' is `c(.16, .84)`, the 16th and 84th
-#' percentiles, which corresponds
+#' percentiles, which correspond
 #' approximately to one SD below and
-#' above mean for a normal distribution,
+#' above the mean for a normal distribution,
 #' respectively.
 #'
 #' @param x_sd_to_percentiles If
@@ -132,7 +132,7 @@
 #' Default is `NA`.
 #'
 #' @param note_standardized If `TRUE`,
-#' will check whether a variable has SD
+#' will check whether a variable has an SD
 #' nearly equal to one. If yes, will
 #' report this in the plot. Default is
 #' `TRUE`.
@@ -155,7 +155,7 @@
 #' end-points will be plotted. If
 #' `"tumble"`, then the tumble graph
 #' proposed by Bodner (2016) will be
-#' plotted. Default is `"default"`
+#' plotted. The default is `"default"`
 #' for single-group models, and
 #' `"tumble"` for multigroup models.
 #'
@@ -164,12 +164,12 @@
 #' the default,
 #' model implied statistics will be
 #' used in computing the means and SDs,
-#' which take into equality constraints,
+#' which take into account equality constraints,
 #' if any.
 #' If `FALSE`, then the raw
 #' data is
 #' used to compute the means and SDs.
-#' For latent variables, model implied
+#' For latent variables, model-implied
 #' statistics are always used.
 #'
 #' @param facet_grid_cols,facet_grid_rows
