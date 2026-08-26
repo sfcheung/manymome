@@ -1,8 +1,8 @@
 #' @title Math Operators for
 #' 'indirect'-Class Objects
 #'
-#' @description Mathematic operators for
-#' 'indirect'-class object, the output
+#' @description Mathematical operators for
+#' 'indirect'-class objects, the output
 #' of [indirect_effect()] and
 #' [cond_indirect()].
 #'
