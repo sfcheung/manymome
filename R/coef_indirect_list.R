@@ -1,5 +1,5 @@
 #' @title Extract the Indirect Effects
-#' from a 'indirect_list' Object
+#' from an 'indirect_list' Object
 #'
 #' @description Return the estimates of
 #' the indirect effects in the output of
