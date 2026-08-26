@@ -158,7 +158,7 @@
 #' or `"mc"` (Monte Carlo). If not
 #' supplied or is `NULL`, will check
 #' other arguments
-#' (e.g, `boot_ci` and `mc_ci`). If
+#' (e.g., `boot_ci` and `mc_ci`). If
 #' supplied, will override `boot_ci`
 #' and `mc_ci`.
 #'
@@ -184,11 +184,11 @@
 #' (e.g., from 0 to 1), as proposed by
 #' Hayes (2015).
 #'
-#' @param w_unit The unit used to
+#' @param w_unit The unit used
 #' by `increase_from` and `increase_to`.
 #' If `"raw"`, the original unit of `w`
 #' is used. If `"sd"`, then distance
-#' from the mean in standard deviation
+#' from the mean in standard deviations
 #' is used. Therefore, if
 #' `increase_from = 0`, `increase_to = 1`,
 #' and `w_unit == "sd"`, the
@@ -413,7 +413,7 @@ z_index_of_mome <- function(
 #' by `z_increase_from` and `z_increase_to`.
 #' If `"raw"`, the original unit of `z`
 #' is used. If `"sd"`, then distance
-#' from the mean in standard deviation
+#' from the mean in standard deviations
 #' is used.
 #'
 #' @examples
