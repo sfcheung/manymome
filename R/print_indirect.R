@@ -29,7 +29,7 @@
 #' interval with a lower confidence level
 #' will exclude zero.
 #'
-#' We recommend using confidence interval
+#' We recommend using confidence intervals
 #' directly. Therefore, *p*-value is not
 #' printed by default. Nevertheless,
 #' users who need it can request it
@@ -40,7 +40,7 @@
 #' If these conditions are met, the
 #' stored standard error, if available,
 #' will be used to test an effect and
-#' form it confidence interval:
+#' form its confidence interval:
 #'
 #' - Confidence interval has not been
 #'  formed (e.g., by bootstrapping or
@@ -73,12 +73,12 @@
 #' If the model is fitted by structural
 #' equation modeling and has moderators,
 #' the standard errors, *p*-values,
-#' and confidence interval computed
+#' and confidence intervals computed
 #' from the variance-covariance matrices
 #' for conditional effects
 #' can only be trusted if all covariances
 #' involving the product terms are free.
-#' If any some of them are fixed, for example,
+#' If any of them are fixed, for example,
 #' fixed to zero, it is possible
 #' that the model is not invariant to
 #' linear transformation of the variables.
@@ -152,7 +152,7 @@
 #' @param wrap_computation Logical.
 #' If `TRUE`, the default, long
 #' computational symbols and values
-#' will be wrapped to fit to the screen
+#' will be wrapped to fit the screen
 #' width.
 #'
 #' @param ... Other arguments. Not used.
