@@ -82,7 +82,7 @@ get_one_cond_indirect_effect <- function(object, row) {
 get_one_cond_effect <- get_one_cond_indirect_effect
 
 #' @param ... Optional arguments to be
-#' passed to teh `print` method of
+#' passed to the `print` method of
 #' the output of
 #' [indirect_effect()] and
 #' [cond_indirect()]
@@ -100,7 +100,7 @@ get_one_cond_effect <- get_one_cond_indirect_effect
 #'
 #' @details
 #' [print_all_cond_indirect_effects()] loops over
-#' the conditional effects and print all
+#' the conditional effects and prints all
 #' of them.
 #'
 #' @export
