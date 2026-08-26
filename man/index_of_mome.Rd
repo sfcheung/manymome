@@ -387,8 +387,8 @@ est <- parameterEstimates(fit)
 out_mome <- index_of_mome(x = "x", y = "y", m = "m1", w = "w1",
                           fit = fit,
                           boot_ci = TRUE,
-                          R = 42,
-                          seed = 4314,
+                          R = 40,
+                          seed = 2345,
                           parallel = FALSE,
                           progress = FALSE)
 out_mome

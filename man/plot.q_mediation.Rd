@@ -320,8 +320,6 @@ out <- q_parallel_mediation(x = "x",
 plot(out)
 plot(out,
      v_pos = "lower")
-plot(out,
-     v_pos = "upper")
 
 # ===== A user-specified mediation model
 

@@ -140,7 +140,7 @@ fit <- sem(mod1, dat,
 out1 <- indirect_effect(x = "x", y = "y",
                         m = c("m1", "m2"),
                         fit = fit,
-                        boot_ci = TRUE, R = 45, seed = 54151,
+                        boot_ci = TRUE, R = 40, seed = 2345,
                         parallel = FALSE,
                         progress = FALSE)
 out1
