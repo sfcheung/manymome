@@ -81,7 +81,7 @@
 #' `TRUE`, default, implied statistics
 #' will be computed for each replication.
 #' Letting users to disable this
-#' is an experimental features to let
+#' is an experimental feature to let
 #' the process run faster.
 #'
 #' @param parallel Not used. Kept
@@ -123,7 +123,7 @@
 #'                              mc_out = mc_out)
 #' out
 #'
-#' @describeIn do_mc A general purpose function for
+#' @describeIn do_mc A general-purpose function for
 #' creating Monte Carlo estimates to be reused
 #' by other functions. It returns a
 #' `mc_out`-class object.
@@ -161,7 +161,7 @@ do_mc <- function(fit,
   }
 
 #' @describeIn do_mc Generate Monte Carlo
-#' estimates and store them in the `external`
+#' estimates and stores them in the `external`
 #' slot: `external$manymome$mc`. For advanced
 #' users.
 #'
