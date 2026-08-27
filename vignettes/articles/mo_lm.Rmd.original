@@ -94,7 +94,7 @@ lm_y_w1 <- lm(
 )
 ```
 
-These are the estimates of the regression coefficient
+These are the estimates of the regression coefficients
 of the paths:
 
 ```{r est_w1}
@@ -124,19 +124,19 @@ out_xy_on_w1 <- cond_effects(
 out_xy_on_w1
 ```
 
-The column `ind` show the effects of
+The column `ind` shows the effects of
 `x` on `y` for different levels of `w1`.
 
 When `w1` is one standard deviation
-below mean, the effect of `x1` is
+below the mean, the effect of `x1` is
 `r formatC(coef(out_xy_on_w1)[3], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out_xy_on_w1)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 When `w1` is one standard deviation
-above mean, the effect of `x1` is
+above the mean, the effect of `x1` is
 `r formatC(coef(out_xy_on_w1)[1], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out_xy_on_w1)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 ```{r load_pickapoint, child=c("mo_lm_ins_pickapoint.txt")}
@@ -158,7 +158,7 @@ By default, the lines
 span the range of one standard deviation below
 and above the mean of the `x` variable.
 
-The plot can be customized in a lot of way.
+The plot can be customized in a lot of ways.
 Please refer to the help page of
 `plot.cond_indirect_effects()` for available
 options.
@@ -177,7 +177,7 @@ plot(out_xy_on_w1,
 ```
 
 In this example, the distribution of the predictor
-vary slightly as the level of the moderator changes:
+varies slightly as the level of the moderator changes:
 
 - lower with a smaller variation when `w1` is
 one standard deviation below its mean, and
@@ -219,13 +219,13 @@ std_xy_on_w1
 When `w1` is one standard deviation below
 its mean, the standardized effect is
 `r formatC(coef(std_xy_on_w1)[3], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(std_xy_on_w1)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 When `w` is one standard deviation above
 its mean, the standardized effect is
 `r formatC(coef(std_xy_on_w1)[1], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(std_xy_on_w1)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 ### Plot Standardized Conditional Effects
@@ -292,7 +292,7 @@ lm_y_w1w2 <- lm(
 )
 ```
 
-These are the estimates of the regression coefficient
+These are the estimates of the regression coefficients
 of the paths:
 
 ```{r est_w1w2}
@@ -318,7 +318,7 @@ out_xy_on_w1w2 <- cond_effects(
 out_xy_on_w1w2
 ```
 
-The column `ind` show the effects of
+The column `ind` shows the effects of
 `x` on `y` for different levels of `w1`
 and `w2`.
 
@@ -327,7 +327,7 @@ have three-way interaction, the conditional
 effects still need to consider *both*
 moderators. It is because the effect of
 `x` depends on *all* moderators, whether
-there is a higher order interaction or not.
+there is a higher-order interaction or not.
 
 If one or more moderators are omitted,
 a *warning message* will be issued. This
@@ -356,7 +356,7 @@ plot(out_xy_on_w1w2)
 ```{r load_facet_grid, child=c("mo_lm_ins_facet_grid.txt")}
 ```
 
-For example, supposed we would like to
+For example, suppose we would like to
 generate one graph for each level of `w2`,
 we add `facet_grid_cols = "w2"`:
 
@@ -463,7 +463,7 @@ lm_y_w1_x_w2 <- lm(
 )
 ```
 
-These are the estimates of the regression coefficient
+These are the estimates of the regression coefficients
 of this model:
 
 ```{r}
