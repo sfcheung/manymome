@@ -74,6 +74,7 @@ cond_indirect_effects(
   ci_type = NULL,
   boot_type = c("perc", "bc"),
   groups = NULL,
+  wlevels_not_found = c("warn", "error", "ignore"),
   ...
 )
 
@@ -139,6 +140,7 @@ cond_effects(
   ci_type = NULL,
   boot_type = c("perc", "bc"),
   groups = NULL,
+  wlevels_not_found = c("warn", "error", "ignore"),
   ...
 )
 
@@ -477,6 +479,15 @@ the \link[lavaan:lavaan-class]{lavaan::lavaan} object.
 Used only when the number of
 groups is greater than one. Default
 is \code{NULL}.}
+
+\item{wlevels_not_found}{How to handle
+variables in \code{wlevels} not found in
+the components of product terms.
+If \code{"warn"}, a warning will be issued.
+If \code{"error"}, an error will be raised.
+If \code{"ignore"}, variables not found
+in the components will be ignored
+silently.`}
 
 \item{...}{For \code{\link[=many_indirect_effects]{many_indirect_effects()}},
 these are arguments to be passed to

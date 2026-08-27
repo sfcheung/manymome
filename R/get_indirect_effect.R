@@ -52,7 +52,7 @@
 #' # Conditional effects from x to m1
 #' # when w1 is equal to each of the default levels
 #' out1 <- cond_indirect_effects(x = "x", y = "m1",
-#'                               wlevels = c("w1", "w4"), fit = fit)
+#'                               wlevels = c("w1"), fit = fit)
 #' get_one_cond_indirect_effect(out1, 3)
 #'
 #' # Conditional Indirect effect from x1 through m1 to y,

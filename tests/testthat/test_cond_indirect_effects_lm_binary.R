@@ -21,28 +21,28 @@ fit <- list(lm_m1, lm_m2, lm_m3, lm_y)
 
 out_mm_1 <- mod_levels_list("w4", "gp", fit = fit, merge = TRUE)
 
-out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit)
+out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit, wlevels_not_found = "ignore")
 out_2 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
-                               standardized_x = TRUE)
+                               standardized_x = TRUE, wlevels_not_found = "ignore")
 out_3 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
-                               standardized_y = TRUE)
+                               standardized_y = TRUE, wlevels_not_found = "ignore")
 out_4 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
-                               standardized_x = TRUE, standardized_y = TRUE)
+                               standardized_x = TRUE, standardized_y = TRUE, wlevels_not_found = "ignore")
 
 out_5 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                boot_ci = TRUE, seed = 87415,
                                parallel = FALSE, progress = FALSE,
-                               R = 40)
+                               R = 40, wlevels_not_found = "ignore")
 fit_boot_out <- lm2boot_out(fit, R = 40, seed = 87415, progress = FALSE)
 out_6 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                standardized_x = TRUE,
-                               boot_ci = TRUE, boot_out = fit_boot_out)
+                               boot_ci = TRUE, boot_out = fit_boot_out, wlevels_not_found = "ignore")
 out_7 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                standardized_y = TRUE,
-                               boot_ci = TRUE, boot_out = fit_boot_out)
+                               boot_ci = TRUE, boot_out = fit_boot_out, wlevels_not_found = "ignore")
 out_8 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                standardized_x = TRUE, standardized_y = TRUE,
-                               boot_ci = TRUE, boot_out = fit_boot_out)
+                               boot_ci = TRUE, boot_out = fit_boot_out, wlevels_not_found = "ignore")
 
 tmp <- capture.output(print(out_1))
 tmp <- capture.output(print(out_2))

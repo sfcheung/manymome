@@ -967,6 +967,15 @@ indirect_effect <- function(x,
 #' for creating the levels of
 #' moderators. Default is `list()`.
 #'
+#' @param wlevels_not_found How to handle
+#' variables in `wlevels` not found in
+#' the components of product terms.
+#' If `"warn"`, a warning will be issued.
+#' If `"error"`, an error will be raised.
+#' If `"ignore"`, variables not found
+#' in the components will be ignored
+#' silently.`
+#'
 #' @examples
 #' # Examples for cond_indirect_effects():
 #'
@@ -1036,7 +1045,9 @@ cond_indirect_effects <- function(wlevels,
                                   ci_type = NULL,
                                   boot_type = c("perc", "bc"),
                                   groups = NULL,
+                                  wlevels_not_found = c("warn", "error", "ignore"),
                                   ...) {
+    wlevels_not_found <- match.arg(wlevels_not_found)
     fit <- auto_lm2list(fit)
     if (missing(y)) {
         y <- tryCatch(get_one_response(fit),
@@ -1220,6 +1231,28 @@ cond_indirect_effects <- function(wlevels,
                                group = 1,
                                ...)
       }
+
+    # ==== Check w: In the paths? ====
+
+    prods_all_w <- get_prod_components(prods)
+    wvars <- unique(unname(unlist(attr(wlevels, "wvars"))))
+    w_chk <- setdiff(wvars, prods_all_w)
+    if ((length(w_chk) > 0) &&
+        (wlevels_not_found != "skip")) {
+      w_chk <- paste0(w_chk, collapse = ",")
+      tmp <- paste0(
+                w_chk, " in wlevels not among the product term(s). ",
+                "Either not moderator(s), or the function failed to identify the product term(s) automatically. ",
+                "Check wlevels, use ':' to form the product terms, ",
+                "or set wlevels_not_found to 'ignore' to suppress this "
+              )
+      tmp2 <- switch(
+        wlevels_not_found,
+        warn = warning(paste0(tmp, "warning.")),
+        error = stop(paste0(tmp, "error."))
+      )
+    }
+
     # TODO:
     # Revise cond_indirect and friends such that
     # no need to have three very similar blocks.
