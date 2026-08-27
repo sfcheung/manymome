@@ -10,7 +10,7 @@ fit_lm <- lm2list(lm_m, lm_y)
 cond_out <- cond_indirect_effects(wlevels = "w",
                                   x = "x",
                                   y = "y",
-                                  fit = fit_lm)
+                                  fit = fit_lm, wlevels_not_found = "ignore")
 test_that("No moderator", {
     # Updated in 0.2.3.8.
     # SEs are computed even for a direct path in
