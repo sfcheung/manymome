@@ -21,7 +21,7 @@ fit <- list(lm_m1, lm_m2, lm_m3, lm_y)
 
 out_mm_1 <- mod_levels_list("w4", c("gpgp2", "gpgp3"), fit = fit, merge = TRUE)
 
-out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit)
+out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit, wlevels_not_found = "ignore")
 
 expect_output(print_all_cond_indirect_effects(out_1),
               "Moderator Level")

@@ -57,7 +57,7 @@ out_mm_1 <- mod_levels_list("w4", c("gpgp2", "gpgp3"), fit = fit, merge = TRUE)
 fit_boot_out <- lm2boot_out(fit, R = 40, seed = 87415, progress = FALSE)
 out_6 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                standardized_x = TRUE,
-                               boot_ci = TRUE, boot_out = fit_boot_out)
+                               boot_ci = TRUE, boot_out = fit_boot_out, wlevels_not_found = "ignore")
 out_6_full <- attr(out_6, "full_output")
 tmp <- sapply(out_6_full, function(x) x$boot_p)
 expect_true(all(is.na(tmp)))
@@ -65,7 +65,7 @@ expect_true(all(is.na(tmp)))
 out_6b <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                standardized_x = TRUE,
                                boot_ci = TRUE, boot_out = fit_boot_out,
-                               internal_options = list(pvalue_min_size = 39))
+                               internal_options = list(pvalue_min_size = 39), wlevels_not_found = "ignore")
 out_6b_full <- attr(out_6b, "full_output")
 tmp <- sapply(out_6b_full, function(x) x$boot_p)
 expect_true(all(!is.na(tmp)))
