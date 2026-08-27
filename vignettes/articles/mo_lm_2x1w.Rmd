@@ -1,7 +1,7 @@
 ---
 title: "Moderated Regression: Two Predictors and One Moderator"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-08-23"
+date: "2026-08-27"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -27,14 +27,14 @@ from the package
 [@cheung_manymome_2024]
 to estimate the conditional
 effects
-when the model parameters are estimate by
+when the model parameters are estimated by
 ordinary least squares (OLS) multiple regression
 using `lm()`. For moderated mediation
 tested by OLS regression, please refer
 to [this article](./mome_lm.html).
 
 (Articles in this series had duplicated
-sections, to make each of them self-contained.)
+sections to make each of them self-contained.)
 
 # Data Set and Model
 
@@ -85,7 +85,7 @@ lm_y <- lm(
 )
 ```
 
-These are the estimates of the regression coefficient
+These are the estimates of the regression coefficients
 of the paths:
 
 
@@ -164,19 +164,19 @@ out1
 #> 
 ```
 
-The column `ind` show the effects of
+The column `ind` shows the effects of
 `x1` on `y` for different levels of `w`.
 
 When `w` is one standard deviation
-below mean, the effect of `x1` is
+below the mean, the effect of `x1` is
 -0.062,
-with 95% confidence interval
+with a 95% confidence interval
 [-0.189, 0.066].
 
 When `w` is one standard deviation
-above mean, the effect of `x1` is
+above the mean, the effect of `x1` is
 0.357,
-with 95% confidence interval
+with a 95% confidence interval
 [0.221, 0.493].
 
 
@@ -223,15 +223,15 @@ out2
 ```
 
 When `w` is one standard deviation
-below mean, the effect of `x2` is
+below the mean, the effect of `x2` is
 -0.184,
-with 95% confidence interval
+with a 95% confidence interval
 [-0.292, -0.076].
 
 When `w` is one standard deviation
-above mean, the effect of `x2` is
+above the mean, the effect of `x2` is
 0.336,
-with 95% confidence interval
+with a 95% confidence interval
 [0.200, 0.472].
 
 ## Plotting the Conditional Effects
@@ -259,7 +259,7 @@ By default, the lines
 span the range of one standard deviation below
 and above the mean of the predictor.
 
-The plot can be customized in a lot of way.
+The plot can be customized in a lot of ways.
 Please refer to the help page of
 `plot.cond_indirect_effects()` for available
 options.
@@ -316,10 +316,10 @@ test the
 unstandardized effects, it is inappropriate
 for forming the confidence intervals for the
 standardized effects. See
-@yuan_biases_2011 on the issue on standardized
+@yuan_biases_2011 on the issue of standardized
 regression coefficients.
 
-To form nonparametric bootstrap confidence interval for
+To form nonparametric bootstrap confidence intervals for
 effects to be computed, add `boot_ci = TRUE`,
 `R` to the number of bootstrap samples
 (should be 5000 or even 10000, for
@@ -372,13 +372,13 @@ std1
 When `w` is one standard deviation below
 its mean, the standardized effect of `x1` is
 -0.069,
-with 95% confidence interval
+with a 95% confidence interval
 [-0.191, 0.060].
 
 When `w` is one standard deviation above
 its mean, the standardized effect of `x1` is
 0.401,
-with 95% confidence interval
+with a 95% confidence interval
 [0.267, 0.533].
 
 This is the output for `x2`:
@@ -420,13 +420,13 @@ std2
 When `w` is one standard deviation below
 its mean, the standardized effect of `x2` is
 -0.230,
-with 95% confidence interval
+with a 95% confidence interval
 [-0.362, -0.104].
 
 When `w` is one standard deviation above
 its mean, the standardized effect of `x2` is
 0.420,
-with 95% confidence interval
+with a 95% confidence interval
 [0.265, 0.586].
 
 ### Plot Standardized Conditional Effects
@@ -478,7 +478,7 @@ on the number of moderators and the number
 of predictors with their effects moderated.
 
 The demonstrations of other moderated
-regression models can be found from
+regression models can be found in
 the [list of articles](./index.html#moderated-regression).
 
 The levels
@@ -487,7 +487,7 @@ and related functions in the same way whether a
 model is fitted by `lavaan::sem()` or `lm()`.
 Please refer to other articles (e.g.,
 `vignette("manymome")` and `vignette("mod_levels")`)
-on how to estimate effects in other model analyzed by
+on how to estimate effects in other models analyzed by
 multiple regression.
 
 

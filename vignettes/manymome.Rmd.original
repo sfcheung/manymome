@@ -26,7 +26,7 @@ from the package
 [manymome](https://sfcheung.github.io/manymome/index.html)
 ([Cheung & Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z))
 can be
-used in some typical cases. It assumes that readers havea 
+used in some typical cases. It assumes that readers have a
 basic understanding of mediation, moderation, moderated
 mediation, structural equation modeling (SEM), and bootstrapping.
 
@@ -331,7 +331,7 @@ out_cond
 ```
 
 For two or more moderators, the default levels for numeric moderators
-are one standard deviation (SD) below the mean and one SD above the 
+are one standard deviation (SD) below the mean and one SD above the
 mean. For two moderators, there are four combinations.
 
 As shown

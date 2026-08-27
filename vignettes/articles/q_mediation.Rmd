@@ -1,7 +1,7 @@
 ---
 title: "All-In-One Functions for Common Mediation Models"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-08-23"
+date: "2026-08-27"
 output:
   html_document:
     fig.align: "center"
@@ -26,7 +26,7 @@ one step.
 The following sections on the three
 models, simple mediation model,
 serial mediation model, and parallel
-mediation model has sections duplicated,
+mediation model have sections duplicated,
 to make each section self-contained.
 
 # Simple Mediation Model
@@ -55,13 +55,13 @@ variables.
 
 ![Simple Mediation Model](manymome_draw_q_simple-1.png)
 
-We would to fit the two regression models
+We would like to fit the two regression models
 
 - `m ~ x + c1 + c2`
 
 - `y ~ m + x + c1 + c2`
 
-and the compute and test the indirect
+and compute and test the indirect
 effect along the path `x -> m -> y`
 using nonparametric bootstrapping.
 
@@ -315,7 +315,7 @@ default results:
 
 The variables, the models, and the
 number of cases. Listwise deletion is
-used and only cases without missing data
+used, and only cases without missing data
 on all variables in the models are
 used.
 
@@ -398,7 +398,7 @@ variables.
 
 ![Serial Mediation Model](manymome_draw_q_serial-1.png)
 
-We would to fit three regression models:
+We would like to fit three regression models:
 
 - `m1 ~ x + c1 + c2`
 
@@ -406,7 +406,7 @@ We would to fit three regression models:
 
 - `y ~ m1 + m2 + x + c1 + c2`
 
-and the compute and test the following
+and compute and test the following
 indirect effects:
 
 - `x -> m1 -> m2 -> y`
@@ -419,7 +419,7 @@ using nonparametric bootstrapping.
 
 ## Analysis
 
-We can do that in one single step using
+We can do that in a single step using
 `q_serial_mediation()`:
 
 
@@ -799,7 +799,7 @@ default results:
 
 The variables, the models, and the
 number of cases. Listwise deletion is
-used and only cases without missing data
+used, and only cases without missing data
 on all variables in the models are
 used.
 
@@ -915,7 +915,7 @@ variables.
 
 ![Parallel Mediation Model](manymome_draw_q_parallel-1.png)
 
-We would to fit three regression models:
+We would like to fit three regression models:
 
 - `m1 ~ x + c1 + c2`
 
@@ -923,7 +923,7 @@ We would to fit three regression models:
 
 - `y ~ m1 + m2 + x + c1 + c2`
 
-and the compute and test the following
+and compute and test the following
 indirect effects:
 
 - `x -> m1 -> y`
@@ -1299,7 +1299,7 @@ default results:
 
 The variables, the models, and the
 number of cases. Listwise deletion is
-used and only cases without missing data
+used, and only cases without missing data
 on all variables in the models are
 used.
 
@@ -1442,11 +1442,11 @@ out_serial_v2 <- q_serial_mediation(x = "x",
 The `print` method of the output of
 the quick mediation functions have
 arguments for customizing the output.
-These are arguments that likely may be
+These are arguments that may be
 used:
 
 - `digits`: The number of digits after
-  the decimal place for most reults.
+  the decimal place for most results.
   Default is 4.
 
 - `pvalue_digits`: The number of digits
@@ -1459,8 +1459,8 @@ for other arguments.
 ## Speed and Parallel Processing
 
 By default, parallel processing is used.
-If this failed for some reasons,
-add `parallel` to `FALSE`. It will take
+If this fails for some reason,
+set `parallel` to `FALSE`. It will take
 longer to run but should still be just
 one to two minutes in typical models.
 
@@ -1502,6 +1502,6 @@ for more complicated models.
 # Final Remarks
 
 For details on the quick functions,
-pleaes refer to the help page of
+please refer to the help page of
 `q_mediation()`.
 

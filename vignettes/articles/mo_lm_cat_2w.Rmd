@@ -1,7 +1,7 @@
 ---
 title: "Moderated Regression: Categorical Moderators"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-08-23"
+date: "2026-08-27"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -27,14 +27,14 @@ from the package
 [@cheung_manymome_2024]
 to estimate the conditional
 effects
-when the model parameters are estimate by
+when the model parameters are estimated by
 ordinary least squares (OLS) multiple regression
 using `lm()`. For moderated mediation
 tested by OLS regression, please refer
 to [this article](./mome_lm.html).
 
 (Articles in this series had duplicated
-sections, to make each of them self-contained.)
+sections to make each of them self-contained.)
 
 # Data Set and Model
 
@@ -97,7 +97,7 @@ lm_y_gp <- lm(
 )
 ```
 
-These are the estimates of the regression coefficient
+These are the estimates of the regression coefficients
 of the paths:
 
 
@@ -166,18 +166,18 @@ out_gp
 #> 
 ```
 
-The column `ind` show the effects of
+The column `ind` shows the effects of
 `x` on `y` for different categories of `gp`.
 
 In the group `"Control"`, the effect of `x` is
 -0.027,
-with 95% confidence interval
+with a 95% confidence interval
 [-0.100, 0.045].
 
 
 In the group `"Treatment"`, the effect of `x` is
 0.320,
-with 95% confidence interval
+with a 95% confidence interval
 [0.255, 0.385].
 
 
@@ -202,7 +202,7 @@ By default, the lines
 span the range of one standard deviation below
 and above the mean of the predictor.
 
-The plot can be customized in a lot of way.
+The plot can be customized in a lot of ways.
 Please refer to the help page of
 `plot.cond_indirect_effects()` for available
 options.
@@ -235,10 +235,10 @@ test the
 unstandardized effects, it is inappropriate
 for forming the confidence intervals for the
 standardized effects. See
-@yuan_biases_2011 on the issue on standardized
+@yuan_biases_2011 on the issue of standardized
 regression coefficients.
 
-To form nonparametric bootstrap confidence interval for
+To form nonparametric bootstrap confidence intervals for
 effects to be computed, add `boot_ci = TRUE`,
 `R` to the number of bootstrap samples
 (should be 5000 or even 10000, for
@@ -289,12 +289,12 @@ std_gp
 
 In the group `"Control"`, the standardized effect of `x` is
 -0.039,
-with 95% confidence interval
+with a 95% confidence interval
 [-0.130, 0.048].
 
 In the group `"Treatment"`, the standardized effect of `x` is
 0.457,
-with 95% confidence interval
+with a 95% confidence interval
 [0.363, 0.551].
 
 ### Plot Standardized Conditional Effects
@@ -344,7 +344,7 @@ lm_y_site <- lm(
 )
 ```
 
-These are the estimates of the regression coefficient
+These are the estimates of the regression coefficients
 of the paths:
 
 
@@ -413,17 +413,17 @@ out_site
 
 In the site `"Site 1"`, the effect of `x` is
 0.102,
-with 95% confidence interval
+with a 95% confidence interval
 [-0.013, 0.217].
 
 In the site `"Site 2"`, the effect of `x` is
 0.432,
-with 95% confidence interval
+with a 95% confidence interval
 [0.306, 0.558].
 
 In the site `"Site 3"`, the effect of `x` is
 0.013,
-with 95% confidence interval
+with a 95% confidence interval
 [-0.112, 0.138].
 
 
@@ -543,7 +543,7 @@ lm_y_gp_site <- lm(
 )
 ```
 
-These are the estimates of the regression coefficient
+These are the estimates of the regression coefficients
 of the paths:
 
 
@@ -617,11 +617,11 @@ out_gp_site
 ```
 
 IMPORTANT: Even though this model does not
-have three-way interaction, the conditional
+have a three-way interaction, the conditional
 effects still need to consider *both*
-moderators. It is because the effect of
+moderators. This is because the effect of
 `x` depends on *all* moderators, whether
-there is higher order interaction or not.
+there is higher-order interaction or not.
 
 If one or more moderators are omitted,
 a *warning message* will be issued. This
@@ -848,7 +848,7 @@ anova(
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-These are the estimates of the regression coefficient
+These are the estimates of the regression coefficients
 of this model:
 
 
@@ -1023,7 +1023,7 @@ on the number of moderators and the number
 of predictors with their effects moderated.
 
 The demonstrations of other moderated
-regression models can be found from
+regression models can be found in
 the [list of articles](./index.html#moderated-regression).
 
 The levels
@@ -1032,7 +1032,7 @@ and related functions in the same way whether a
 model is fitted by `lavaan::sem()` or `lm()`.
 Please refer to other articles (e.g.,
 `vignette("manymome")` and `vignette("mod_levels")`)
-on how to estimate effects in other model analyzed by
+on how to estimate effects in other models analyzed by
 multiple regression.
 
 
