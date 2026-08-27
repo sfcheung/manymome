@@ -103,7 +103,7 @@ lm_y_gp <- lm(
 )
 ```
 
-These are the estimates of the regression coefficient
+These are the estimates of the regression coefficients
 of the paths:
 
 ```{r est_cat_gp}
@@ -130,18 +130,18 @@ out_gp <- cond_effects(
 out_gp
 ```
 
-The column `ind` show the effects of
+The column `ind` shows the effects of
 `x` on `y` for different categories of `gp`.
 
 In the group `"Control"`, the effect of `x` is
 `r formatC(coef(out_gp)[1], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out_gp)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 
 In the group `"Treatment"`, the effect of `x` is
 `r formatC(coef(out_gp)[2], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out_gp)[2, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 ```{r load_pickapoint, child=c("mo_lm_ins_pickapoint.txt")}
@@ -160,7 +160,7 @@ By default, the lines
 span the range of one standard deviation below
 and above the mean of the predictor.
 
-The plot can be customized in a lot of way.
+The plot can be customized in a lot of ways.
 Please refer to the help page of
 `plot.cond_indirect_effects()` for available
 options.
@@ -212,12 +212,12 @@ std_gp
 
 In the group `"Control"`, the standardized effect of `x` is
 `r formatC(coef(std_gp)[1], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(std_gp)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 In the group `"Treatment"`, the standardized effect of `x` is
 `r formatC(coef(std_gp)[2], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(std_gp)[2, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 ### Plot Standardized Conditional Effects
@@ -286,7 +286,7 @@ lm_y_site <- lm(
 )
 ```
 
-These are the estimates of the regression coefficient
+These are the estimates of the regression coefficients
 of the paths:
 
 ```{r est_cat_site}
@@ -310,17 +310,17 @@ out_site
 
 In the site `"Site 1"`, the effect of `x` is
 `r formatC(coef(out_site)[1], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out_site)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 In the site `"Site 2"`, the effect of `x` is
 `r formatC(coef(out_site)[2], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out_site)[2, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 In the site `"Site 3"`, the effect of `x` is
 `r formatC(coef(out_site)[3], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out_site)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 
@@ -435,7 +435,7 @@ lm_y_gp_site <- lm(
 )
 ```
 
-These are the estimates of the regression coefficient
+These are the estimates of the regression coefficients
 of the paths:
 
 ```{r est_cat_gp_site}
@@ -459,11 +459,11 @@ out_gp_site
 ```
 
 IMPORTANT: Even though this model does not
-have three-way interaction, the conditional
+have a three-way interaction, the conditional
 effects still need to consider *both*
-moderators. It is because the effect of
+moderators. This is because the effect of
 `x` depends on *all* moderators, whether
-there is higher order interaction or not.
+there is higher-order interaction or not.
 
 If one or more moderators are omitted,
 a *warning message* will be issued. This
@@ -611,7 +611,7 @@ anova(
 )
 ```
 
-These are the estimates of the regression coefficient
+These are the estimates of the regression coefficients
 of this model:
 
 ```{r est_cat_gp_x_site}
