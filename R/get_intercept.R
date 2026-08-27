@@ -1,7 +1,7 @@
 #' @title Get the intercept in 'lavaan'
 #' fit object
 #'
-#' @param x Character. The variable for
+#' @param x Character. The variable from
 #' which the intercept will be
 #' extracted.
 #'
@@ -18,7 +18,7 @@
 #' [lavaan::parameterEstimates()]. If
 #' `NULL`, the default, it will be
 #' generated from `fit`. If supplied,
-#' `fit` will ge ignored.
+#' `fit` will be ignored.
 #'
 #'
 #' @examples

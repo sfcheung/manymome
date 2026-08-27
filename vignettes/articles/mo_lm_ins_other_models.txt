@@ -6,7 +6,7 @@ on the number of moderators and the number
 of predictors with their effects moderated.
 
 The demonstrations of other moderated
-regression models can be found from
+regression models can be found in
 the [list of articles](./index.html#moderated-regression).
 
 The levels
@@ -15,6 +15,6 @@ and related functions in the same way whether a
 model is fitted by `lavaan::sem()` or `lm()`.
 Please refer to other articles (e.g.,
 `vignette("manymome")` and `vignette("mod_levels")`)
-on how to estimate effects in other model analyzed by
+on how to estimate effects in other models analyzed by
 multiple regression.
 

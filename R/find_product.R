@@ -12,16 +12,16 @@
 #' that are the products of two columns.
 #' It may be able to identify columns
 #' that are the products of three or
-#' more columns but there is no
+#' more columns, but there is no
 #' guarantee.
 #'
 #' @return `find_all_products()` returns
 #' a named list. For each element, the
 #' name is the column name of a product
 #' term, and the content is a vector of
-#' the names of the columns used for
+#' the names of the columns used to
 #' form the product term. If no column
-#' is a product of other column, it
+#' is a product of other columns, it
 #' returns a names list of zero length.
 #'
 #' `find_product()` returns a vector of
@@ -39,8 +39,8 @@
 #' columns.
 #'
 #' @param expand Whether the function
-#' will attempt to expand a lower order
-#' term to their components. Default is
+#' will attempt to expand a lower-order
+#' term to its components. Default is
 #' `TRUE`.
 #'
 #'@noRd
@@ -48,7 +48,7 @@
 find_product <- function(data, target) {
     if (is.list(data) && !is.data.frame(data)) {
         ngroups <- length(data)
-        # Aasume all groups have the same variables
+        # Assume all groups have the same variables
         data <- do.call(rbind, data)
       } else {
         ngroups <- 1
@@ -162,7 +162,7 @@ expand2lower <- function(full_list) {
     out2 <- full_list[tmp2]
     full_list_tmp <- full_list[!tmp2]
     out <- full_list_tmp
-    # Exclude duplicated from the expansion
+    # Exclude duplicates from the expansion
     while (any(unique(unlist(out)) %in% names(full_list_tmp))) {
         out <- lapply(out, expand2lower_i, full_list = out)
       }
@@ -178,7 +178,7 @@ drop_by_nchar <- function(
   #   x: xw w
   #   xw: x w
   # Keep the variable with the longest name
-  # Not an ideal solution, but usually work.
+  # Not an ideal solution, but usually works.
   # Use the fit object whenever possible.
   # This function should be the last resort.
   a <- mapply(

@@ -29,7 +29,7 @@ from the package
 ([Cheung & Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z))
 to estimate the conditional
 indirect effects
-when the model parameters are estimate by
+when the model parameters are estimated by
 ordinary least squares (OLS) multiple regression
 using `lm()`.
 
@@ -46,7 +46,7 @@ print(head(dat), digits = 3)
 
 This dataset has 6 variables:
 one predictor (`x`),
-one mediators (`m`),
+one mediator (`m`),
 one outcome variable (`y`),
 one moderator (`w`)
 and two control variables (`c1` and `c2`).
@@ -91,7 +91,7 @@ lm_m <- lm(m ~ x*w + c1 + c2, dat)
 lm_y <- lm(y ~ m + x + c1 + c2, dat)
 ```
 
-These are the estimates of the regression coefficient
+These are the estimates of the regression coefficients
 of the paths:
 
 ```{r est}
@@ -119,7 +119,7 @@ the regression outputs can be validly combined,
 `lm2list()` will also check:
 
 a. whether the same
-sample is used in all regression analysis (not just
+sample is used in all regression analyses (not just
 same sample size, but the same set of cases), and
 
 b. whether the models are "connected", to ensure that
@@ -127,7 +127,7 @@ the regression outputs can be validly combined.
 
 # Generating Bootstrap Estimates
 
-To form nonparametric bootstrap confidence interval for
+To form nonparametric bootstrap confidence intervals for
 effects to be computed, `do_boot()` can be used
 to generate bootstrap estimates for all regression
 coefficients first. These estimates can be reused for
@@ -181,15 +181,15 @@ out_xmy_on_w
 ```
 
 When `w` is one standard deviation
-below mean, the indirect effect is
+below the mean, the indirect effect is
 `r formatC(coef(out_xmy_on_w)[3], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out_xmy_on_w)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 When `w` is one standard deviation
-above mean, the indirect effect is
+above the mean, the indirect effect is
 `r formatC(coef(out_xmy_on_w)[1], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out_xmy_on_w)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 Note that any conditional indirect path in the model can be
@@ -198,7 +198,7 @@ to be estimated, as long
 as all required path coefficients are in the model.
 `cond_indirect_effects()` will also check whether a path is valid.
 However, for complicated models, structural
-equation modelling may be a more flexible approach
+equation modeling may be a more flexible approach
 than multiple regression.
 
 Not covered here, but the index of moderated moderated mediation
@@ -228,7 +228,7 @@ out_mome
 
 In this model, the index of moderated mediation is
 `r formatC(coef(out_mome), digits = 3, format = "f")`,
-with 95% bootstrap confidence interval
+with a 95% bootstrap confidence interval
 [`r paste0(formatC(unlist(confint(out_mome)[1, ]), digits = 3, format = "f"), collapse = ", ")`].
 The indirect effect of `x` on `y` through `m`
 significantly changes when
@@ -257,7 +257,7 @@ std_xmy_on_w
 
 The standardized indirect effect is
 `r formatC(coef(std_xmy_on_w)[3], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(std_xmy_on_w)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 # More Complicated Models
@@ -269,9 +269,9 @@ for models fitted by `lavaan::sem()`. The levels
 for the moderators are controlled by `mod_levels()`
 and related functions in the same way whether a
 model is fitted by `lavaan::sem()` or `lm()`.
-Pplease refer to other articles (e.g.,
+Please refer to other articles (e.g.,
 `vignette("manymome")` and `vignette("mod_levels")`)
-on how to estimate effects in other model analyzed by
+on how to estimate effects in other models analyzed by
 multiple regression.
 
 # Reference

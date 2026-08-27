@@ -11,7 +11,7 @@
 #' in a model. It can check models in a
 #' `lavaan::lavaan-class` object or a
 #' list of outputs of [lm()].
-#' It also support
+#' It also supports
 #' `lavaan.mi` objects
 #' returned by
 #' [lavaan.mi::lavaan.mi()] or
@@ -68,7 +68,7 @@
 #' [lavaan::parameterEstimates()]. If
 #' `NULL`, the default, it will be
 #' generated from `fit`. If supplied,
-#' `fit` will ge ignored.
+#' `fit` will be ignored.
 #'
 #'
 #' @examples

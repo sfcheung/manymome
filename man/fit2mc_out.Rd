@@ -23,8 +23,8 @@ progress or not. Default is \code{TRUE}.}
 \item{compute_implied_stats}{If
 \code{TRUE}, default, implied statistics
 will be computed for each replication.
-Letting users to disable this
-is an experimental features to let
+Letting users disable this
+is an experimental feature to let
 the process run faster.}
 }
 \value{

@@ -30,8 +30,8 @@
 #' column name(s), or a logical vector
 #' of column(s) to be selected.
 #'
-#' @param drop Whether dropping a
-#' dimension if it only have one
+#' @param drop Whether to drop a
+#' dimension if it only has one
 #' row/column.
 #'
 #'

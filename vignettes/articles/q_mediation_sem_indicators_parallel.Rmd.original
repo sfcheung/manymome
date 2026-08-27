@@ -40,7 +40,7 @@ will be used:
 - `x_1`, `x_2`, `x_3`, and `x_4`:
   The indicators
   of `fx`, the predictor.
-  The indicator `x_4` is a reverse items.
+  The indicator `x_4` is a reverse item.
 
 - `m1_1`, `m1_2`, `m1_3`, and `m1_4`:
   The indicators
@@ -53,7 +53,7 @@ will be used:
 - `y_1`, `y_2`, `y_3`, and `y_4`:
   The indicators
   of `fy`, the outcome variable.
-  The indicator `y_4` is a reverse items.
+  The indicator `y_4` is a reverse item.
 
 - `c1_1`, `c1_2`, `c1_3`, and `c1_4`:
   The indicators
@@ -109,7 +109,7 @@ text(label = "(Control variables excluded for readability)",
      adj = c(.5, .5))
 ```
 
-We would to fit the model above,
+We would like to fit the model above,
 and compute and test the indirect
 effects along the paths
 `fx -> fm1 -> y` and `fx -> fm2 -> y`
@@ -165,7 +165,7 @@ These are the arguments:
   will be reverse-coded (multiplied by `-1`)
   before fitting the model. If a variable
   in `x`, `y`, `m`, or `cov` is not one
-  of the latent factor, it is an observed
+  of the latent factors, it is an observed
   variable.
 
 ```{r load_args, child=c("q_mediation_sem_indicators_ins_args.txt")}
@@ -181,7 +181,7 @@ regression coefficients when predicting
 the mediators (`fm1` and `fm2` in this model) and
 the outcome variable (`fy` in this model).
 
-These are the results in predicting `fm1`
+These are the results for predicting `fm1`
 and `fm2`:
 
 ```{r echo=FALSE}

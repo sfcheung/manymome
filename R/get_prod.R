@@ -53,7 +53,7 @@
 #' [lavaan::parameterEstimates()]. If
 #' `NULL`, the default, it will be
 #' generated from `fit`. If supplied,
-#' `fit` will ge ignored.
+#' `fit` will be ignored.
 #'
 #' @param data Data frame (optional). If
 #' supplied, it will be used to identify

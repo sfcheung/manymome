@@ -40,7 +40,7 @@
 #' @param annotation Logical. Whether
 #' the annotation after the table of
 #' effects is to be printed. Default is
-#' `TRUE.`
+#' `TRUE`.
 #'
 #' @param pvalue Logical. If `TRUE`,
 #' asymmetric *p*-values based on

@@ -58,7 +58,7 @@ manuscript submission and figures are
 required to have no titles.}
 
 \item{x_from_mean_in_sd}{How many SD
-from mean is used to define "low" and
+from the mean is used to define "low" and
 "high" for the focal variable.
 Default is 1.}
 
@@ -79,9 +79,9 @@ specifies the two percentiles to be
 used, divided by 100. It must be a
 vector of two numbers. The default
 is \code{c(.16, .84)}, the 16th and 84th
-percentiles, which corresponds
+percentiles, which correspond
 approximately to one SD below and
-above mean for a normal distribution,
+above the mean for a normal distribution,
 respectively.}
 
 \item{x_sd_to_percentiles}{If
@@ -102,7 +102,7 @@ are 16th and 84th, respectively.
 Default is \code{NA}.}
 
 \item{note_standardized}{If \code{TRUE},
-will check whether a variable has SD
+will check whether a variable has an SD
 nearly equal to one. If yes, will
 report this in the plot. Default is
 \code{TRUE}.}
@@ -125,7 +125,7 @@ typical line-graph with equal
 end-points will be plotted. If
 \code{"tumble"}, then the tumble graph
 proposed by Bodner (2016) will be
-plotted. Default is \code{"default"}
+plotted. The default is \code{"default"}
 for single-group models, and
 \code{"tumble"} for multigroup models.}
 
@@ -134,12 +134,12 @@ multigroup model, if \code{TRUE},
 the default,
 model implied statistics will be
 used in computing the means and SDs,
-which take into equality constraints,
+which take into account equality constraints,
 if any.
 If \code{FALSE}, then the raw
 data is
 used to compute the means and SDs.
-For latent variables, model implied
+For latent variables, model-implied
 statistics are always used.}
 
 \item{facet_grid_cols, facet_grid_rows}{If either or both of them are set

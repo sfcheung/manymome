@@ -3,7 +3,7 @@
 \name{coef.indirect_list}
 \alias{coef.indirect_list}
 \title{Extract the Indirect Effects
-from a 'indirect_list' Object}
+from an 'indirect_list' Object}
 \usage{
 \method{coef}{indirect_list}(object, ...)
 }

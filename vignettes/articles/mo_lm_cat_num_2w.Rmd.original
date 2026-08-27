@@ -106,7 +106,7 @@ lm_y <- lm(
 )
 ```
 
-These are the estimates of the regression coefficient
+These are the estimates of the regression coefficients
 of the paths:
 
 ```{r est_cat_num}
@@ -133,7 +133,7 @@ out <- cond_effects(
 out
 ```
 
-The column `ind` show the effects of
+The column `ind` shows the effects of
 `x` on `y` for combinations of the levels
 of the moderators.
 
@@ -142,7 +142,7 @@ have a three-way interaction, the conditional
 effects still need to consider *both*
 moderators. It is because the effect of
 `x` depends on *all* moderators, whether
-there is a higher order interaction or not.
+there is a higher-order interaction or not.
 
 If one or more moderators are omitted,
 a *warning message* will be issued. This
@@ -173,7 +173,7 @@ By default, the lines
 span the range of one standard deviation below
 and above the mean of the predictor.
 
-The plot can be customized in a lot of way.
+The plot can be customized in a lot of ways.
 Please refer to the help page of
 `plot.cond_indirect_effects()` for available
 options.
@@ -283,7 +283,7 @@ lm_y_city_x_w <- lm(
 )
 ```
 
-These are the estimates of the regression coefficient
+These are the estimates of the regression coefficients
 of this model:
 
 ```{r est_cat_city_x_w}

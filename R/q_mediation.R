@@ -83,7 +83,7 @@
 #' be flexible. For more complex models,
 #' it is recommended to fit the models
 #' manually, either by structural
-#' equation modelling (e.g.,
+#' equation modeling (e.g.,
 #' [lavaan::sem()]) or by regression
 #' analysis using [stats::lm()] or
 #' [lmhelprs::many_lm()]. See
@@ -189,7 +189,7 @@
 #'
 #' - Return all the results for printing.
 #'
-#' The output of the "q" functions have
+#' The output of the "q" functions has
 #' a `print` method for
 #' printing all the major results.
 #'
@@ -246,7 +246,7 @@
 #'
 #' ## Printing the Results
 #'
-#' The output of the "q" functions have
+#' The output of the "q" functions has
 #' a `print` method for
 #' printing all the major results.
 #'
@@ -325,10 +325,10 @@
 #' @param m A character vector of the
 #' name(s) of the mediator(s). For
 #' a simple mediation model, it must
-#' has only one name. For serial and
+#' have only one name. For serial and
 #' parallel mediation models, it can
 #' have one or more names. For a serial
-#' mediation models, the direction of
+#' mediation model, the direction of
 #' the paths go from the first names to
 #' the last names. For example,
 #' `c("m1", "m3", "m4")` denoted that
@@ -353,7 +353,7 @@
 #' indicates that the path `x -> y` is
 #' moderated by `"w1"` and the path
 #' `x -> m` is moderated by `"w2"`.
-#' For now, moderators is supported only
+#' For now, moderators are supported only
 #' if `fit_method` is `"lm"` or `"regression"`.
 #' To fit the model by `lavaan`, please
 #' specify the model manually and use
@@ -414,7 +414,7 @@
 #' or `"mc"` (Monte Carlo). If not
 #' supplied or is `NULL`, will check
 #' other arguments
-#' (e.g, `boot_ci` and `mc_ci`). If
+#' (e.g., `boot_ci` and `mc_ci`). If
 #' supplied, will override `boot_ci`
 #' and `mc_ci`. If `fit_method` is
 #' `"regression"` or `"lm"`, then only
@@ -469,7 +469,7 @@
 #'
 #' @param missing If `fit_method` is
 #' set to `"sem"` or `"lavaan"`, this
-#' argument determine how missing data
+#' argument determines how missing data
 #' is handled. The default value is
 #' `"fiml"` and full information maximum
 #' likelihood will be used to handle
@@ -2278,7 +2278,7 @@ form_models_parallel <- function(x,
 #' @param annotation Logical. Whether
 #' the annotation after the table of
 #' effects is to be printed. Default is
-#' `TRUE.`
+#' `TRUE`.
 #'
 #' @param pvalue Logical. If `TRUE`,
 #' asymmetric *p*-values based on
@@ -2310,7 +2310,7 @@ form_models_parallel <- function(x,
 #' standard error if the original
 #' standard error is to be used.
 #' Ignored
-#' if confidence interval has already
+#' if the confidence interval has already
 #' been computed. Default
 #' is `TRUE`.
 #'
@@ -2344,7 +2344,7 @@ form_models_parallel <- function(x,
 #' of the confidence interval. Ignored
 #' if `lm_ci` is not `TRUE`.
 #'
-#' @param sem_style How the for the
+#' @param sem_style How the
 #' model is to be printed if the model
 #' is fitted by structural equation
 #' modeling (using `lavaan`). Default

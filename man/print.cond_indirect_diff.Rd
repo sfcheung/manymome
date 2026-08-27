@@ -17,7 +17,7 @@ places in the printout.}
 \item{pvalue}{Logical. If \code{TRUE},
 asymmetric \emph{p}-value based on
 bootstrapping will be printed if
-available. Default is \code{FALSE.}}
+available. Default is \code{FALSE}.}
 
 \item{pvalue_digits}{Number of decimal
 places to display for the \emph{p}-value.

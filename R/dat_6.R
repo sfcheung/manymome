@@ -3,7 +3,7 @@
 #' Moderated-Moderation
 #'
 #' @description A simple mediation model
-#' with moderated-mediation on the
+#' with moderated mediation on the
 #' b-path.
 #'
 #' @format A data frame with 100 rows

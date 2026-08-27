@@ -272,10 +272,10 @@ functions.}
 \item{m}{A character vector of the
 name(s) of the mediator(s). For
 a simple mediation model, it must
-has only one name. For serial and
+have only one name. For serial and
 parallel mediation models, it can
 have one or more names. For a serial
-mediation models, the direction of
+mediation model, the direction of
 the paths go from the first names to
 the last names. For example,
 \code{c("m1", "m3", "m4")} denoted that
@@ -300,7 +300,7 @@ For example, \code{list("x -> y" = "w1", "x -> m" = "w2")}
 indicates that the path \code{x -> y} is
 moderated by \code{"w1"} and the path
 \code{x -> m} is moderated by \code{"w2"}.
-For now, moderators is supported only
+For now, moderators are supported only
 if \code{fit_method} is \code{"lm"} or \code{"regression"}.
 To fit the model by \code{lavaan}, please
 specify the model manually and use
@@ -361,7 +361,7 @@ Can be either \code{"boot"} (bootstrapping)
 or \code{"mc"} (Monte Carlo). If not
 supplied or is \code{NULL}, will check
 other arguments
-(e.g, \code{boot_ci} and \code{mc_ci}). If
+(e.g., \code{boot_ci} and \code{mc_ci}). If
 supplied, will override \code{boot_ci}
 and \code{mc_ci}. If \code{fit_method} is
 \code{"regression"} or \code{"lm"}, then only
@@ -416,7 +416,7 @@ the regression coefficients}
 
 \item{missing}{If \code{fit_method} is
 set to \code{"sem"} or \code{"lavaan"}, this
-argument determine how missing data
+argument determines how missing data
 is handled. The default value is
 \code{"fiml"} and full information maximum
 likelihood will be used to handle
@@ -485,7 +485,7 @@ display. Default is 4.}
 \item{annotation}{Logical. Whether
 the annotation after the table of
 effects is to be printed. Default is
-\code{TRUE.}}
+\code{TRUE}.}
 
 \item{pvalue}{Logical. If \code{TRUE},
 asymmetric \emph{p}-values based on
@@ -517,7 +517,7 @@ to compute them from stored
 standard error if the original
 standard error is to be used.
 Ignored
-if confidence interval has already
+if the confidence interval has already
 been computed. Default
 is \code{TRUE}.}
 
@@ -551,7 +551,7 @@ is \code{TRUE}.}
 of the confidence interval. Ignored
 if \code{lm_ci} is not \code{TRUE}.}
 
-\item{sem_style}{How the for the
+\item{sem_style}{How the
 model is to be printed if the model
 is fitted by structural equation
 modeling (using \code{lavaan}). Default
@@ -669,7 +669,7 @@ Note that they are \emph{not} intended to
 be flexible. For more complex models,
 it is recommended to fit the models
 manually, either by structural
-equation modelling (e.g.,
+equation modeling (e.g.,
 \code{\link[lavaan:sem]{lavaan::sem()}}) or by regression
 analysis using \code{\link[stats:lm]{stats::lm()}} or
 \code{\link[lmhelprs:many_lm]{lmhelprs::many_lm()}}. See
@@ -769,7 +769,7 @@ compute the total indirect effect.
 \item Return all the results for printing.
 }
 
-The output of the "q" functions have
+The output of the "q" functions has
 a \code{print} method for
 printing all the major results.
 }
@@ -826,7 +826,7 @@ are supported.
 
 \subsection{Printing the Results}{
 
-The output of the "q" functions have
+The output of the "q" functions has
 a \code{print} method for
 printing all the major results.
 }

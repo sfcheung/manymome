@@ -94,7 +94,7 @@ lm_y <- lm(
 )
 ```
 
-These are the estimates of the regression coefficient
+These are the estimates of the regression coefficients
 of the paths:
 
 ```{r est_2x2w}
@@ -127,19 +127,19 @@ out1 <- cond_effects(
 out1
 ```
 
-The column `ind` show the effects of
+The column `ind` shows the effects of
 `x1` on `y` for different levels of `w1`.
 
 When `w1` is one standard deviation
-below mean, the effect of `x1` is
+below the mean, the effect of `x1` is
 `r formatC(coef(out1)[3], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out1)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 When `w1` is one standard deviation
-above mean, the effect of `x1` is
+above the mean, the effect of `x1` is
 `r formatC(coef(out1)[1], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out1)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 ```{r load_pickapoint, child=c("mo_lm_ins_pickapoint.txt")}
@@ -164,15 +164,15 @@ out2
 ```
 
 When `w2` is one standard deviation
-below mean, the effect of `x2` is
+below the mean, the effect of `x2` is
 `r formatC(coef(out2)[3], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out2)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 When `w2` is one standard deviation
-above mean, the effect of `x2` is
+above the mean, the effect of `x2` is
 `r formatC(coef(out2)[1], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out2)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 ## Plotting the Conditional Effects
@@ -194,7 +194,7 @@ By default, the lines
 span the range of one standard deviation below
 and above the mean of the predictor.
 
-The plot can be customized in a lot of way.
+The plot can be customized in a lot of ways.
 Please refer to the help page of
 `plot.cond_indirect_effects()` for available
 options.
@@ -217,7 +217,7 @@ vary as the level of the moderator `w1` changes:
 the mean of `x1` is lower and the
 standard deviation smaller when `w1` is
 one standard deviation below its mean,
-and has higher mean and larger standard
+and has a higher mean and larger standard
 deviation when
 `w1` is one standard deviation above its
 mean.
@@ -267,13 +267,13 @@ std1
 When `w1` is one standard deviation below
 its mean, the standardized effect of `x1` is
 `r formatC(coef(std1)[3], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(std1)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 When `w1` is one standard deviation above
 its mean, the standardized effect of `x1` is
 `r formatC(coef(std1)[1], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(std1)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 This is the output for `x2`:
@@ -296,13 +296,13 @@ std2
 When `w2` is one standard deviation below
 its mean, the standardized effect of `x2` is
 `r formatC(coef(std2)[3], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(std2)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 When `w2` is one standard deviation above
 its mean, the standardized effect of `x2` is
 `r formatC(coef(std2)[1], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(std2)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 ### Conventional Plot Standardized Conditional Effects

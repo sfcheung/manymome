@@ -23,22 +23,22 @@
 #'
 #' This function receives the output
 #' of [cond_indirect_effects()]
-#' and search for, within
+#' and searches for, within
 #' a specific range, the two values of
 #' the moderator at which
 #' the conditional effect is "nearly just significant",
 #' that is, the confidence interval
 #' "nearly touches" zero.
 #'
-#' Note that numerical method is used
+#' Note that a numerical method is used
 #' to find the points. Therefore,
 #' strictly speaking, the effects at
-#' the end points are still either
+#' the endpoints are still either
 #' significant or not significant, even
 #' if the confidence limit is very close
 #' to zero.
 #'
-#' Though numerical method is used,
+#' Though a numerical method is used,
 #' if the test is conducted using the
 #' standard error (see below), the result is
 #' equivalent to the (true)
@@ -58,7 +58,7 @@
 #' It also supports conditional
 #' direct paths (no mediator) and
 #' conditional indirect paths (with one
-#' or more mediator), with `x` and/or
+#' or more mediators), with `x` and/or
 #' `y` standardized.
 #'
 #' ## Requirements
@@ -68,7 +68,7 @@
 #'
 #' - One form of confidence intervals
 #' (e.g, bootstrapping or Monte Carlo)
-#' must has been requested (e.g.,
+#' must have been requested (e.g.,
 #' setting `boot_ci = TRUE` or
 #' `mc_ci = TRUE`) when calling
 #' [cond_indirect_effects()].
@@ -96,9 +96,9 @@
 #' if the relation between this moderator
 #' and the conditional effect is not linear.
 #'
-#' Solution may also be not found if
+#' A solution may also not be found if
 #' the conditional effect is significant
-#' over a wide range of value of the
+#' over a wide range of values of the
 #' moderator.
 #'
 #' It is advised to use [plot_effect_vs_w()]
@@ -157,16 +157,16 @@
 #'
 #' @param w_lower The smallest value of
 #' the moderator when doing the search.
-#' If set to `NULL,` the default, it
+#' If set to `NULL`, the default, it
 #' will be 10 standard deviations
-#' below mean, which should be small
+#' below the mean, which should be small
 #' enough.
 #'
 #' @param w_upper The largest value of
 #' the moderator when doing the search.
-#' If set to `NULL,` the default, it
+#' If set to `NULL`, the default, it
 #' will be 10 standard deviations
-#' above mean, which should be large
+#' above the mean, which should be large
 #' enough.
 #'
 #' @param optimize_method The optimization

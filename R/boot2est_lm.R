@@ -59,8 +59,8 @@
 #' @param compute_implied_stats If
 #' `TRUE`, default, implied statistics
 #' will be computed for each bootstrap
-#' sample. Letting users to disable this
-#' is an experimental features to let
+#' sample. Letting users disable this
+#' is an experimental feature to let
 #' the process run faster.
 #'
 #' @param seed The seed for the
@@ -169,7 +169,7 @@ lm2boot_out <- function(outputs, R = 100,
   }
 
 # Generate the function for bootstrapping.
-# Return a parameter estimates tables.
+# Return a parameter estimates table.
 #' @noRd
 
 lm_boot2est_i <- function(d, i = NULL, outputs,

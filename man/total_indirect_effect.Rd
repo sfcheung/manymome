@@ -35,7 +35,7 @@ variables in the paths estimated by
 \details{
 It extracts the
 \code{indirect}-class objects
-of relevant paths and then add
+of relevant paths and then adds
 the indirect effects together
 using the \code{+} operator.
 }

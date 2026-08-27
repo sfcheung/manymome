@@ -1,5 +1,5 @@
 
-#' @title Check the number of outcome variable
+#' @title Check the number of outcome variables
 #'
 #' @details
 #' If only one outcome variable, return it.

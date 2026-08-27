@@ -16,7 +16,7 @@
 #' mean. The percentiles of these three
 #' levels in a normal distribution
 #' (16th, 50th, and 84th) can also be
-#' used. For categorical variable, it
+#' used. For categorical variables, it
 #' will simply collect the unique
 #' categories in the data.
 #'
@@ -27,7 +27,7 @@
 #' If a model has more than one
 #' moderator, [mod_levels_list()] can be
 #' used to generate combinations of
-#' levels. The output can then passed to
+#' levels. The output can then be passed to
 #' [cond_indirect_effects()] to compute
 #' the conditional effects or
 #' conditional indirect effects for all
@@ -92,12 +92,12 @@
 #' [mod_levels()], corresponding
 #' approximately to one standard
 #' deviation below mean, mean, and one
-#' standard deviation above mean in a
+#' standard deviation above the mean in a
 #' normal distribution. For
 #' [mod_levels_list()], default is
 #' `c(.16, .50, .84)` if there is one
 #' moderator, and `c(.16, .84)` when
-#' there are more than one moderator.
+#' there is more than one moderator.
 #' Ignored if `w_method` is not equal to
 #' `"percentile"`.
 #'
@@ -119,7 +119,7 @@
 #' values to be used and will override
 #' other options. For categorical
 #' moderators, a named list of numeric
-#' vector, each vector has length equal
+#' vector; each vector has length equal
 #' to the number of indicator variables.
 #' If the vector is named, the names
 #' will be used to label the values. For
@@ -146,7 +146,7 @@
 #' descending order for numerical
 #' moderators: The highest value on the
 #' first row and the lowest values on
-#' the last row. For user supplied
+#' the last row. For user-supplied
 #' values, the first value is on the
 #' last row and the last value is on the
 #' first row. If `FALSE`, the rows are
@@ -290,7 +290,7 @@ mod_levels <- function(w,
 
 #' @examples
 #'
-#' # mod_levels_list() forms a combinations of levels in one call
+#' # mod_levels_list() forms a combination of levels in one call
 #' # It returns a list, by default.
 #' # Form the levels from a list of lm() outputs
 #' # "merge = TRUE" is optional. cond_indirect_effects will merge the levels

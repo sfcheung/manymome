@@ -24,7 +24,7 @@ data_med_mod_b_mod
 }
 \description{
 A simple mediation model
-with moderated-mediation on the
+with moderated mediation on the
 b-path.
 }
 \examples{

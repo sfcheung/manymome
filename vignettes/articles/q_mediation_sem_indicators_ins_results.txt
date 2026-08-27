@@ -79,13 +79,13 @@ results related to each latent factor:
 
 - The reliability coefficient for each
   latent factor, based on the factor loadings.
-  Omega coefficient is used, computed by
+  The omega coefficient is used, computed by
   `semTools::compRelSEM()`.
 
 ## Model Fit
 
 The section `Structural Equation Modeling Results`
-print the results from `lavaan` for the model.
+prints the results from `lavaan` for the model.
 
 ```{r echo=FALSE}
 i1 <- which(grepl(

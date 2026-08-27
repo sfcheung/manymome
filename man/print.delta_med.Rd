@@ -13,7 +13,7 @@
 after the decimal. Default is 3.}
 
 \item{level}{The level of confidence
-of bootstrap confidence interval,
+of the bootstrap confidence interval,
 if requested when created. If \code{NULL},
 the default, the level requested when
 calling \code{\link[=delta_med]{delta_med()}} is used. If

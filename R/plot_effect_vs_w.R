@@ -2,7 +2,7 @@
 #'
 #' @description It plots an effect, direct
 #' or indirect,
-#' against a moderator, with confidence
+#' against a moderator, with a confidence
 #' band if available.
 #'
 #' @details It receives an output
@@ -15,7 +15,7 @@
 #' stored in the output of
 #' [cond_indirect_effects()]. Therefore,
 #' the desired levels of the moderator
-#' to be plotted needs to be specified
+#' to be plotted need to be specified
 #' when calling [cond_indirect_effects()],
 #' as illustrated in the example.
 #'
@@ -39,7 +39,7 @@
 #' - The model has only one group.
 #'
 #' - The path is moderated by one or
-#'  more moderator.
+#'  more moderators.
 #'
 #' - Both the `x`-variable and the
 #'  `y`-variable are not standardized.
@@ -64,7 +64,7 @@
 #' If the model is fitted by structural
 #' equation modeling and has moderators,
 #' the standard errors, *p*-values,
-#' and confidence interval computed
+#' and confidence intervals computed
 #' from the variance-covariance matrices
 #' for conditional effects
 #' can only be trusted if all covariances
@@ -109,7 +109,7 @@
 #'
 #' @param always_draw_zero_line If `FALSE`,
 #' the default,
-#' then the line at zero, if requested
+#' then the line at zero, if requested,
 #' will be drawn
 #' only if zero is within the range of
 #' the plot. If `TRUE`, then the line
@@ -213,7 +213,7 @@
 #' @param line_args A named list of
 #' additional arguments to be passed
 #' to [ggplot2::geom_line()] for the line
-#' of the effect against moderator.
+#' of the effect against the moderator.
 #' Default is `list()`.
 #'
 #' @param band_args A named list of
@@ -428,7 +428,7 @@ plot_effect_vs_w <- function(object,
 #' a helper to automatically
 #' fill in additional levels
 #' of the moderators, to plot a graph
-#' with smooth confidence band. It
+#' with a smooth confidence band. It
 #' accepts the output of [cond_indirect_effects()]
 #' or [pseudo_johnson_neyman()], finds
 #' the range of the values of the

@@ -48,7 +48,7 @@ digits after the decimal in printing
 numerical results. Default is \code{NULL}.
 If set to an integer, numerical
 results in the coefficient table
-will be printed according this setting,
+will be printed according to this setting,
 and \code{digits} will be ignored.}
 }
 \value{
@@ -62,7 +62,7 @@ invisibly. Called for its side
 effect.
 }
 \description{
-The summary of content
+The summary of the content
 of the output of \code{\link[=lm2list]{lm2list()}}.
 }
 \section{Functions}{

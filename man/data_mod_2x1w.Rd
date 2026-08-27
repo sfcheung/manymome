@@ -21,7 +21,7 @@ data_mod_2x1w
 }
 \description{
 A one-moderator model,
-with moderator affecting the effects
+with a moderator affecting the effects
 of two predictors.
 }
 \examples{
