@@ -1,5 +1,5 @@
 
-These are the results in predicting `y`:
+These are the results of predicting `y`:
 
 ```{r echo=FALSE}
 i1 <- which(grepl(
