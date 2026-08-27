@@ -40,7 +40,7 @@ will be used:
 - `x_1`, `x_2`, `x_3`, and `x_4`:
   The indicators
   of `fx`, the predictor.
-  The indicator `x_4` is a reverse items.
+  The indicator `x_4` is a reverse item.
 
 - `m1_1`, `m1_2`, `m1_3`, and `m1_4`:
   The indicators
@@ -57,7 +57,7 @@ will be used:
 - `y_1`, `y_2`, `y_3`, and `y_4`:
   The indicators
   of `fy`, the outcome variable.
-  The indicator `y_4` is a reverse items.
+  The indicator `y_4` is a reverse item.
 
 - `c1_1`, `c1_2`, `c1_3`, and `c1_4`:
   The indicators
@@ -127,7 +127,7 @@ using nonparametric bootstrapping.
 
 # Analysis
 
-We can do that in one single step using
+We can do that in a single step using
 `q_mediation()`:
 
 ```{r results = "hide", message = FALSE}
@@ -164,7 +164,7 @@ These are the arguments:
 - `y`: The name of the outcome ("y" variable).
 
 - `model`: A character vector of the paths
-  in the model. Each of the path is of this form:
+  in the model. Each path is of this form:
   `"x -> m1 -> m2 -> y"`, from the predictor
   to the outcome, separated by `->`. The mediators
   of the model will be inferred from the paths.
