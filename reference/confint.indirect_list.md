@@ -29,13 +29,13 @@ confint(object, parm = NULL, level = NULL, ...)
   to recompute the confidence intervals. If the confidence interval is
   to be computed from the standard error, and so `level` is not set in
   `object`, then the default value is .95. (This new behavior applies to
-  0.3.6.15 and later version.)
+  0.3.6.15 and later versions.)
 
 - ...:
 
   Additional arguments. To be passed to
   [`confint.indirect()`](https://sfcheung.github.io/manymome/reference/confint.indirect.md).
-  (This new behavior applies to 0.3.6.15 and later version.)
+  (This new behavior applies to 0.3.6.15 and later versions.)
 
 ## Value
 
@@ -87,7 +87,7 @@ paths
 # Indirect effect estimates
 # R should be 2000 or even 5000 in real research
 # parallel should be used in real research.
-fit_boot <- do_boot(fit, R = 45, seed = 8974,
+fit_boot <- do_boot(fit, R = 40, seed = 2345,
                     parallel = FALSE,
                     progress = FALSE)
 out <- many_indirect_effects(paths,
@@ -99,21 +99,21 @@ out
 #> == Indirect Effect(s) ==
 #> 
 #>                        ind  CI.lo CI.hi Sig
-#> x -> m11 -> m12 -> y 0.193  0.029 0.550 Sig
-#> x -> m11 -> y        0.163 -0.346 0.570    
-#> x -> m12 -> y        0.059 -0.156 0.208    
-#> x -> m2 -> y         0.364  0.130 0.889 Sig
+#> x -> m11 -> m12 -> y 0.193 -0.063 0.603    
+#> x -> m11 -> y        0.163 -0.573 0.582    
+#> x -> m12 -> y        0.059 -0.189 0.292    
+#> x -> m2 -> y         0.364  0.047 0.829 Sig
 #> 
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
-#>    nonparametric bootstrapping with 45 samples.
+#>    nonparametric bootstrapping with 40 samples.
 #>  - The 'ind' column shows the indirect effect(s).
 #>  
 confint(out)
 #>                      Percentile: 2.5 % Percentile: 97.5 %
-#> x -> m11 -> m12 -> y        0.02866626          0.5501760
-#> x -> m11 -> y              -0.34617725          0.5702562
-#> x -> m12 -> y              -0.15615492          0.2081817
-#> x -> m2 -> y                0.12961514          0.8892807
+#> x -> m11 -> m12 -> y       -0.06345507          0.6030915
+#> x -> m11 -> y              -0.57291478          0.5824840
+#> x -> m12 -> y              -0.18860352          0.2919631
+#> x -> m2 -> y                0.04739547          0.8285792
 
 
 ```

@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,7 +103,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-23</h4>
+            <h4 data-toc-skip class="date">2026-08-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/articles/q_mediation.Rmd" class="external-link"><code>vignettes/articles/q_mediation.Rmd</code></a></small>
       <div class="d-none name"><code>q_mediation.Rmd</code></div>
@@ -119,7 +119,7 @@
 2024</a>) to fit the regression models and compute and test indirect
 effects in one step.</p>
 <p>The following sections on the three models, simple mediation model,
-serial mediation model, and parallel mediation model has sections
+serial mediation model, and parallel mediation model have sections
 duplicated, to make each section self-contained.</p>
 </div>
 <div class="section level2">
@@ -144,12 +144,12 @@ variables.</p>
 <div class="float">
 <img src="manymome_draw_q_simple-1.png" alt="Simple Mediation Model"><div class="figcaption">Simple Mediation Model</div>
 </div>
-<p>We would to fit the two regression models</p>
+<p>We would like to fit the two regression models</p>
 <ul>
 <li><p><code>m ~ x + c1 + c2</code></p></li>
 <li><p><code>y ~ m + x + c1 + c2</code></p></li>
 </ul>
-<p>and the compute and test the indirect effect along the path
+<p>and compute and test the indirect effect along the path
 <code>x -&gt; m -&gt; y</code> using nonparametric bootstrapping.</p>
 <div class="section level3">
 <h3 id="analysis">Analysis<a class="anchor" aria-label="anchor" href="#analysis"></a>
@@ -386,7 +386,7 @@ or two minutes for contemporary computers.</p>
 <h4 id="basic-information">Basic Information<a class="anchor" aria-label="anchor" href="#basic-information"></a>
 </h4>
 <p>The variables, the models, and the number of cases. Listwise deletion
-is used and only cases without missing data on all variables in the
+is used, and only cases without missing data on all variables in the
 models are used.</p>
 </div>
 <div class="section level4">
@@ -452,13 +452,13 @@ variables.</p>
 <div class="float">
 <img src="manymome_draw_q_serial-1.png" alt="Serial Mediation Model"><div class="figcaption">Serial Mediation Model</div>
 </div>
-<p>We would to fit three regression models:</p>
+<p>We would like to fit three regression models:</p>
 <ul>
 <li><p><code>m1 ~ x + c1 + c2</code></p></li>
 <li><p><code>m2 ~ m1 + x + c1 + c2</code></p></li>
 <li><p><code>y ~ m1 + m2 + x + c1 + c2</code></p></li>
 </ul>
-<p>and the compute and test the following indirect effects:</p>
+<p>and compute and test the following indirect effects:</p>
 <ul>
 <li><p><code>x -&gt; m1 -&gt; m2 -&gt; y</code></p></li>
 <li><p><code>x -&gt; m1 -&gt; y</code></p></li>
@@ -468,7 +468,7 @@ variables.</p>
 <div class="section level3">
 <h3 id="analysis-1">Analysis<a class="anchor" aria-label="anchor" href="#analysis-1"></a>
 </h3>
-<p>We can do that in one single step using
+<p>We can do that in a single step using
 <code><a href="../reference/q_mediation.html">q_serial_mediation()</a></code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_serial</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/q_mediation.html">q_serial_mediation</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span>
@@ -831,7 +831,7 @@ and can be a few minutes if <code>R</code> is large.</p>
 <h4 id="basic-information-1">Basic Information<a class="anchor" aria-label="anchor" href="#basic-information-1"></a>
 </h4>
 <p>The variables, the models, and the number of cases. Listwise deletion
-is used and only cases without missing data on all variables in the
+is used, and only cases without missing data on all variables in the
 models are used.</p>
 </div>
 <div class="section level4">
@@ -922,13 +922,13 @@ variables.</p>
 <div class="float">
 <img src="manymome_draw_q_parallel-1.png" alt="Parallel Mediation Model"><div class="figcaption">Parallel Mediation Model</div>
 </div>
-<p>We would to fit three regression models:</p>
+<p>We would like to fit three regression models:</p>
 <ul>
 <li><p><code>m1 ~ x + c1 + c2</code></p></li>
 <li><p><code>m2 ~ x + c1 + c2</code></p></li>
 <li><p><code>y ~ m1 + m2 + x + c1 + c2</code></p></li>
 </ul>
-<p>and the compute and test the following indirect effects:</p>
+<p>and compute and test the following indirect effects:</p>
 <ul>
 <li><p><code>x -&gt; m1 -&gt; y</code></p></li>
 <li><p><code>x -&gt; m2 -&gt; y</code></p></li>
@@ -1285,7 +1285,7 @@ model, and can be a few minutes if <code>R</code> is large.</p>
 <h4 id="basic-information-2">Basic Information<a class="anchor" aria-label="anchor" href="#basic-information-2"></a>
 </h4>
 <p>The variables, the models, and the number of cases. Listwise deletion
-is used and only cases without missing data on all variables in the
+is used, and only cases without missing data on all variables in the
 models are used.</p>
 </div>
 <div class="section level4">
@@ -1403,10 +1403,10 @@ be:</p>
 </h3>
 <p>The <code>print</code> method of the output of the quick mediation
 functions have arguments for customizing the output. These are arguments
-that likely may be used:</p>
+that may be used:</p>
 <ul>
 <li><p><code>digits</code>: The number of digits after the decimal place
-for most reults. Default is 4.</p></li>
+for most results. Default is 4.</p></li>
 <li><p><code>pvalue_digits</code>: The number of digits after the
 decimal place for <em>p</em>-values. Default is 4.</p></li>
 </ul>
@@ -1416,8 +1416,8 @@ arguments.</p>
 <div class="section level3">
 <h3 id="speed-and-parallel-processing">Speed and Parallel Processing<a class="anchor" aria-label="anchor" href="#speed-and-parallel-processing"></a>
 </h3>
-<p>By default, parallel processing is used. If this failed for some
-reasons, add <code>parallel</code> to <code>FALSE</code>. It will take
+<p>By default, parallel processing is used. If this fails for some
+reason, set <code>parallel</code> to <code>FALSE</code>. It will take
 longer to run but should still be just one to two minutes in typical
 models.</p>
 </div>
@@ -1454,7 +1454,7 @@ models.</p>
 <div class="section level2">
 <h2 id="final-remarks">Final Remarks<a class="anchor" aria-label="anchor" href="#final-remarks"></a>
 </h2>
-<p>For details on the quick functions, pleaes refer to the help page of
+<p>For details on the quick functions, please refer to the help page of
 <code><a href="../reference/q_mediation.html">q_mediation()</a></code>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

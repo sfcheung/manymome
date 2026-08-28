@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,7 +103,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-23</h4>
+            <h4 data-toc-skip class="date">2026-08-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/articles/med_mg.Rmd" class="external-link"><code>vignettes/articles/med_mg.Rmd</code></a></small>
       <div class="d-none name"><code>med_mg.Rmd</code></div>
@@ -119,10 +119,10 @@
 fitted by <code>lavaan</code>. <a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Support for multigroup model was introduced in Version
 0.1.14.2.&lt;/p&gt;"><sup>1</sup></a></p>
 <p>This article only focuses on issues specific to multigroup models.
-Readers are assumed to have basic understanding on using
+Readers are assumed to have a basic understanding of using
 <code>manymome</code>. Please refer to the <a href="https://sfcheung.github.io/manymome/articles/manymome.html">Get
 Started</a> guide for a full introduction, and <a href="https://sfcheung.github.io/manymome/articles/manymome.html#mediation-only">this
-section</a> on an illustration on a mediation model.</p>
+section</a> on an illustration of a mediation model.</p>
 </div>
 <div class="section level2">
 <h2 id="model">Model<a class="anchor" aria-label="anchor" href="#model"></a>
@@ -281,7 +281,7 @@ usual. There is no need to label any parameters because
 </h2>
 <p>We can use <code><a href="../reference/do_boot.html">do_boot()</a></code> to generate the bootstrap estimates
 first (see <a href="https://sfcheung.github.io/manymome/articles/do_boot.html">this
-article</a> for an illustration on this function). The argument
+article</a> for an illustration of this function). The argument
 <code>ncores</code> can be omitted if the default value is
 acceptable.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -297,8 +297,8 @@ acceptable.</p>
 <div class="section level3">
 <h3 id="estimate-each-effect-by-indirect_effect">Estimate Each Effect by <code>indirect_effect()</code><a class="anchor" aria-label="anchor" href="#estimate-each-effect-by-indirect_effect"></a>
 </h3>
-<p>The function <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> can be used to as usual
-to estimate an indirect effect and form its bootstrapping or Monte Carlo
+<p>The function <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> can be used as usual to
+estimate an indirect effect and form its bootstrapping or Monte Carlo
 confidence interval along a path in a model that starts with any numeric
 variable, ends with any numeric variable, through any numeric
 variable(s). A detailed illustration can be found in <a href="https://sfcheung.github.io/manymome/articles/manymome.html#est_indirect">this
@@ -401,7 +401,7 @@ treat the grouping variable as a “moderator” and use
 <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> to compute the indirect effects
 along a path for all groups. The detailed illustration of this function
 can be found <a href="https://sfcheung.github.io/manymome/articles/manymome.html#conditional-indirect-effects">here</a>.
-When use on a multigroup model, wwe can omit the argument
+When used on a multigroup model, we can omit the argument
 <code>wlevels</code>. The function will automatically identify all
 groups in a model, and compute the indirect effect of the requested path
 in each model.</p>
@@ -437,7 +437,7 @@ groups is more than two.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="compute-and-test-between-group-difference">Compute and Test Between-Group difference<a class="anchor" aria-label="anchor" href="#compute-and-test-between-group-difference"></a>
+<h2 id="compute-and-test-between-group-difference">Compute and Test Between-Group Difference<a class="anchor" aria-label="anchor" href="#compute-and-test-between-group-difference"></a>
 </h2>
 <p>There are several ways to compute and test the difference in indirect
 effects between two groups.</p>
@@ -520,9 +520,9 @@ groups is greater than two.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  - [CI.lo, CI.hi]: 95% percentile confidence interval.</span></span></code></pre></div>
 <p>The convention is <code>to</code> row minus <code>from</code> row.
-Though may sound not intuitive, the printout always states clearly which
-group is subtracted from which group. The results are identical to those
-using the math operator.</p>
+Though it may not sound intuitive, the printout always states clearly
+which group is subtracted from which group. The results are identical to
+those using the math operator.</p>
 </div>
 </div>
 <div class="section level2">
@@ -618,16 +618,16 @@ by setting <code>standardized_x</code> and/or
 <p>In <code>"Group A"</code>, the (completely) standardized indirect
 effect from <code>x</code> to <code>y</code> through <code>m</code> is
 0.204. In <code>"Group B"</code>, this effect is 0.259.</p>
-<p>Note that, unlike single-group model, in multigroup models, the
-standardized indirect effect in a group uses the the standard deviations
-of <code>x</code>- and <code>y</code>-variables in this group to do the
+<p>Note that, unlike a single-group model, in multigroup models, the
+standardized indirect effect in a group uses the standard deviations of
+<code>x</code>- and <code>y</code>-variables in this group to do the
 standardization. Therefore, two groups can have different unstandardized
 effects on a path but similar standardized effects on the same path, or
 have similar unstandardized effects on a path but different standardized
 effects on this path. This is a known phenomenon in multigroup
-structural equation model.</p>
+structural equation modeling.</p>
 <p>The difference in the two completely standardized indirect effects
-can computed and tested using the math operator <code>-</code>:</p>
+can be computed and tested using the math operator <code>-</code>:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">std_diff</span> <span class="op">&lt;-</span> <span class="va">std_gpB</span> <span class="op">-</span> <span class="va">std_gpA</span></span>
 <span><span class="va">std_diff</span></span>
@@ -755,8 +755,8 @@ multigroup model to identify indirect paths. The search can be
 restricted by setting arguments such as <code>x</code>, <code>y</code>,
 and <code>exclude</code> (see the <a href="file:///C:/GitHub/manymome/docs/reference/all_indirect_paths.html">help
 page</a> for details).</p>
-<p>For example, the following identify all paths from <code>x1</code> to
-<code>y1</code>:</p>
+<p>For example, the following identifies all paths from <code>x1</code>
+to <code>y1</code>:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">paths_x1_y1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/all_indirect_paths.html">all_indirect_paths</a></span><span class="op">(</span>fit <span class="op">=</span> <span class="va">fit2</span>,</span>
 <span>                                  x <span class="op">=</span> <span class="st">"x1"</span>,</span>
@@ -805,7 +805,7 @@ the same way they are formed for single-group models.</p>
 <div class="section level3">
 <h3 id="computing-testing-and-plotting-conditional-effects">Computing, Testing, and Plotting Conditional Effects<a class="anchor" aria-label="anchor" href="#computing-testing-and-plotting-conditional-effects"></a>
 </h3>
-<p>Though the focus is on indirect effect, the main functions in
+<p>Though the focus is on indirect effects, the main functions in
 <code>manymome</code> can also be used for computing and plotting the
 effects along the direct path between two variables. That is, we can
 focus on the moderating effect of group on a direct path.</p>
@@ -836,7 +836,7 @@ setting the mediator:</p>
 <span><span class="co">#&gt;  - The 'ind' column shows the direct effects.</span></span>
 <span><span class="co">#&gt; </span></span></code></pre></div>
 <p>The difference between the two paths can be tested using
-bootstrapping confidence interval using
+bootstrapping confidence intervals using
 <code><a href="../reference/cond_indirect_diff.html">cond_indirect_diff()</a></code>:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">path1_diff</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect_diff.html">cond_indirect_diff</a></span><span class="op">(</span><span class="va">path1</span>,</span>
@@ -882,17 +882,17 @@ models:</p>
 </div>
 <p>Note: The argument <code>keep_wlevels_order</code> needs to set to
 <code>FALSE</code> for version 0.3.4 or above to keep the order of the
-grouping variable in the plot. It only affects to order of group labels
+grouping variable in the plot. It only affects the order of group labels
 in the plot and the default colors.</p>
 <p>Note that, for multigroup models, the <em>tumble</em> graph proposed
 by <span class="citation">Bodner (2016)</span> will always be used. The
-position of a line for a group is determined by the model implied means
-and SDs of this group. If no equality constraints imposed, these means
-and SDs are close to the sample means and SDs. For example, the line
-segment of <code>"Group A"</code> is far to the right because
+position of a line for a group is determined by the model-implied means
+and SDs of this group. If no equality constraints are imposed, these
+means and SDs are close to the sample means and SDs. For example, the
+line segment of <code>"Group A"</code> is far to the right because
 <code>"Group A"</code> has a larger mean of <code>m</code> than
 <code>"Group B"</code>.</p>
-<p>These are the model implied means and SDs:</p>
+<p>These are the model-implied means and SDs:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Model implied means</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/lavInspect.html" class="external-link">lavInspect</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"mean.ov"</span><span class="op">)</span></span>
@@ -912,7 +912,7 @@ segment of <code>"Group A"</code> is far to the right because
 <span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">[[</span><span class="st">"Group B"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         m         y         x        c1        c2 </span></span>
 <span><span class="co">#&gt; 1.2142143 2.5838604 1.0094330 0.9518064 1.0594076</span></span></code></pre></div>
-<p>It would be misleading if the two lines are plotted on the same
+<p>It would be misleading if the two lines are plotted at the same
 horizontal position, assuming incorrectly that the ranges of
 <code>m</code> are similar in the two groups.</p>
 <p>The vertical positions of the two lines are similarly determined by
@@ -929,7 +929,7 @@ page</a>.</p>
 Currently, multiple imputation is not supported. Moreover, most
 functions do not (yet) support multigroup models with within-group
 moderators, except for <code><a href="../reference/cond_indirect.html">cond_indirect()</a></code>. We would appreciate
-users to report issues discovered when using <a href="https://sfcheung.github.io/manymome/index.html">manymome</a> on
+users reporting issues discovered when using <a href="https://sfcheung.github.io/manymome/index.html">manymome</a> on
 multigroup models at <a href="https://github.com/sfcheung/manymome/issues" class="external-link">GitHub</a>.</p>
 </div>
 <div class="section level2">

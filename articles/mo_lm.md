@@ -6,12 +6,12 @@ This article is part of a series of brief illustrations of how to use
 [`cond_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
 from the package [manymome](https://sfcheung.github.io/manymome/)
 (Cheung & Cheung, 2024) to estimate the conditional effects when the
-model parameters are estimate by ordinary least squares (OLS) multiple
+model parameters are estimated by ordinary least squares (OLS) multiple
 regression using [`lm()`](https://rdrr.io/r/stats/lm.html). For
 moderated mediation tested by OLS regression, please refer to [this
 article](https://sfcheung.github.io/manymome/articles/mome_lm.md).
 
-(Articles in this series had duplicated sections, to make each of them
+(Articles in this series had duplicated sections to make each of them
 self-contained.)
 
 ## Data Set and Model
@@ -66,7 +66,7 @@ lm_y_w1 <- lm(
 )
 ```
 
-These are the estimates of the regression coefficient of the paths:
+These are the estimates of the regression coefficients of the paths:
 
 ``` r
 
@@ -142,14 +142,14 @@ out_xy_on_w1
 #> 
 ```
 
-The column `ind` show the effects of `x` on `y` for different levels of
+The column `ind` shows the effects of `x` on `y` for different levels of
 `w1`.
 
-When `w1` is one standard deviation below mean, the effect of `x1` is
-0.105, with 95% confidence interval \[-0.167, 0.378\].
+When `w1` is one standard deviation below the mean, the effect of `x1`
+is 0.105, with a 95% confidence interval \[-0.167, 0.378\].
 
-When `w1` is one standard deviation above mean, the effect of `x1` is
-0.492, with 95% confidence interval \[0.292, 0.692\].
+When `w1` is one standard deviation above the mean, the effect of `x1`
+is 0.492, with a 95% confidence interval \[0.292, 0.692\].
 
 NOTE: The standard error (`SE`) and related results are computed using
 the pick-a-point approach by Rogosa (1980).
@@ -175,7 +175,7 @@ Conventional Plot of Conditional Effects
 By default, the lines span the range of one standard deviation below and
 above the mean of the `x` variable.
 
-The plot can be customized in a lot of way. Please refer to the help
+The plot can be customized in a lot of ways. Please refer to the help
 page of
 [`plot.cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/plot.cond_indirect_effects.md)
 for available options.
@@ -196,8 +196,8 @@ plot(out_xy_on_w1,
 
 Tumble Plot of Conditional Effects
 
-In this example, the distribution of the predictor vary slightly as the
-level of the moderator changes:
+In this example, the distribution of the predictor varies slightly as
+the level of the moderator changes:
 
 - lower with a smaller variation when `w1` is one standard deviation
   below its mean, and
@@ -212,10 +212,10 @@ effect of `w1`.
 
 Although OLS can be used to estimate and test the unstandardized
 effects, it is inappropriate for forming the confidence intervals for
-the standardized effects. See Yuan & Chan (2011) on the issue on
+the standardized effects. See Yuan & Chan (2011) on the issue of
 standardized regression coefficients.
 
-To form nonparametric bootstrap confidence interval for effects to be
+To form nonparametric bootstrap confidence intervals for effects to be
 computed, add `boot_ci = TRUE`, `R` to the number of bootstrap samples
 (should be 5000 or even 10000, for multiple regression), and `seed` (set
 it to an integer to ensure the results are reproducible).
@@ -259,10 +259,10 @@ std_xy_on_w1
 ```
 
 When `w1` is one standard deviation below its mean, the standardized
-effect is 0.080, with 95% confidence interval \[-0.136, 0.280\].
+effect is 0.080, with a 95% confidence interval \[-0.136, 0.280\].
 
 When `w` is one standard deviation above its mean, the standardized
-effect is 0.374, with 95% confidence interval \[0.204, 0.518\].
+effect is 0.374, with a 95% confidence interval \[0.204, 0.518\].
 
 #### Plot Standardized Conditional Effects
 
@@ -315,7 +315,7 @@ lm_y_w1w2 <- lm(
 )
 ```
 
-These are the estimates of the regression coefficient of the paths:
+These are the estimates of the regression coefficients of the paths:
 
 ``` r
 
@@ -387,13 +387,13 @@ out_xy_on_w1w2
 #> 
 ```
 
-The column `ind` show the effects of `x` on `y` for different levels of
+The column `ind` shows the effects of `x` on `y` for different levels of
 `w1` and `w2`.
 
 IMPORTANT: Even though this model does not have three-way interaction,
 the conditional effects still need to consider *both* moderators. It is
 because the effect of `x` depends on *all* moderators, whether there is
-a higher order interaction or not.
+a higher-order interaction or not.
 
 If one or more moderators are omitted, a *warning message* will be
 issued. This is an example:
@@ -460,7 +460,7 @@ This plot is not easy to read when the model has two or more moderators.
 The argument `facet_grid_cols` can be used to generate one plot for each
 level of one of the moderators, presented in one row, side-by-side.
 
-For example, supposed we would like to generate one graph for each level
+For example, suppose we would like to generate one graph for each level
 of `w2`, we add `facet_grid_cols = "w2"`:
 
 ``` r
@@ -624,7 +624,7 @@ lm_y_w1_x_w2 <- lm(
 )
 ```
 
-These are the estimates of the regression coefficient of this model:
+These are the estimates of the regression coefficients of this model:
 
 ``` r
 
@@ -808,8 +808,8 @@ The function
 has no limit on the number of moderators and the number of predictors
 with their effects moderated.
 
-The demonstrations of other moderated regression models can be found
-from the [list of
+The demonstrations of other moderated regression models can be found in
+the [list of
 articles](https://sfcheung.github.io/manymome/articles/index.html#moderated-regression).
 
 The levels for the moderators are controlled by
@@ -821,7 +821,7 @@ articles (e.g.,
 [`vignette("manymome")`](https://sfcheung.github.io/manymome/articles/manymome.md)
 and
 [`vignette("mod_levels")`](https://sfcheung.github.io/manymome/articles/mod_levels.md))
-on how to estimate effects in other model analyzed by multiple
+on how to estimate effects in other models analyzed by multiple
 regression.
 
 ## References

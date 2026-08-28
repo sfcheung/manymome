@@ -1,11 +1,11 @@
 # manymome
 
-(Version 0.3.6.16, updated on 2026-08-25, [release
+(Version 0.3.6.17, updated on 2026-08-27, [release
 history](https://sfcheung.github.io/manymome/news/index.html))
 
 Functions for estimating indirect effects, conditional indirect effects,
 and conditional effects in a model with moderation, mediation, and/or
-moderated mediation fitted by structural equation modelling (SEM) or
+moderated mediation fitted by structural equation modeling (SEM) or
 estimated by multiple regression. The package was introduced in:
 
 - Cheung, S. F., & Cheung, S.-H. (2024). *manymome*: An R package for
@@ -27,7 +27,7 @@ estimated by multiple regression. The package was introduced in:
 
 - Multigroup models fitted by
   [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html) are also
-  supported in 0.1.14.2 and later versions. Details can be found in this
+  supported in versions 0.1.14.2 and later. Details can be found in this
   [article](https://sfcheung.github.io/manymome/articles/med_mg.html).
 
 # Advantages
@@ -54,7 +54,7 @@ estimated by multiple regression. The package was introduced in:
   models fitted by regression using
   [`lm()`](https://rdrr.io/r/stats/lm.html), although the focus of this
   package is on structural equation models. The interface of the main
-  functions are nearly the same for both approaches.
+  functions is nearly the same for both approaches.
 
 - **Flexible in the Form of Models**
 
@@ -106,7 +106,7 @@ estimated by multiple regression. The package was introduced in:
 
 - **Less Time for Bootstrapping**
 
-  Bootstrapping, which can be time consuming, can be conducted just
+  Bootstrapping, which can be time-consuming, can be conducted just
   once. The main functions for computing indirect effects and
   conditional indirect effects can be called as many times as needed
   without redoing bootstrapping because they can reuse pregenerated
@@ -121,7 +121,7 @@ estimated by multiple regression. The package was introduced in:
   [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html) (see
   [`vignette("med_lav")`](https://sfcheung.github.io/manymome/articles/med_lav.md)).
 
-- **Support Treating Group As a Moderator**
+- **Supports Treating Group As a Moderator**
 
   For multigroup models fitted by
   [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html), it
@@ -146,7 +146,8 @@ has the following limitations:
 
 - For bootstrapping, only supports nonparametric bootstrapping, and
   supports only percentile and bias-corrected confidence interval. Does
-  not support other bootstrapping methods such parametric bootstrapping.
+  not support other bootstrapping methods, such as parametric
+  bootstrapping.
 
 - Only supports OLS estimation when
   [`lm()`](https://rdrr.io/r/stats/lm.html) is used.
@@ -183,7 +184,7 @@ The stable version at CRAN can be installed by
 install.packages("manymome")
 ```
 
-The latest developmental-but-stable version at GitHub can be installed
+The latest developmental-but-stable version on GitHub can be installed
 by `remotes::install_github()`:
 
 ``` r
@@ -195,24 +196,24 @@ remotes::install_github("sfcheung/manymome")
 
 We developed the package [`stdmod`](https://sfcheung.github.io/stdmod/)
 in 2021 for moderated regression. We included a function
-(`stdmod::stdmod_lavaan()`) for standardized moderation effect in path
+(`stdmod::stdmod_lavaan()`) for standardized moderation effects in path
 models fitted by
 [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html). However, in
-practice, path models nearly always included indirect effects and so
+practice, path models nearly always include indirect effects and so
 moderated mediation is common in path models. Moreover, `stdmod` is
 intended for moderated regression, not for structural equation modeling.
 We thought perhaps we could develop a more general tool for models
-fitted by structural equation modelling based on the interface we used
-in `stdmod::stdmod_lavaan()`. In our own projects, we also need to
-estimate indirect effects in models frequently. Large sample sizes with
-missing data are also common to us, for which bootstrapping is slow even
-with parallel processing. Therefore, we developed `manymome` to address
-these needs.
+fitted by structural equation modeling based on the interface we used in
+`stdmod::stdmod_lavaan()`. In our own projects, we also need to estimate
+indirect effects in models frequently. Large sample sizes with missing
+data are also common to us, for which bootstrapping is slow even with
+parallel processing. Therefore, we developed `manymome` to address these
+needs.
 
 # Issues
 
-If you have any suggestions and found any bugs or limitations, please
-feel feel to open a GitHub issue. Thanks.
+If you have any suggestions and find any bugs or limitations, please
+feel free to open a GitHub issue. Thanks.
 
 <https://github.com/sfcheung/manymome/issues>
 
@@ -356,7 +357,7 @@ Methods and utility functions for the output of the main functions.
   : Math Operators for 'indirect'-Class Objects
 
 - [`coef(`*`<indirect_list>`*`)`](https://sfcheung.github.io/manymome/reference/coef.indirect_list.md)
-  : Extract the Indirect Effects from a 'indirect_list' Object
+  : Extract the Indirect Effects from an 'indirect_list' Object
 
 - [`confint(`*`<indirect_list>`*`)`](https://sfcheung.github.io/manymome/reference/confint.indirect_list.md)
   : Confidence Intervals of Indirect Effects in an 'indirect_list'

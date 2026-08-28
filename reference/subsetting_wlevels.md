@@ -34,7 +34,7 @@ x[[i, j]] <- value
 
 - drop:
 
-  Whether dropping a dimension if it only have one row/column.
+  Whether dropping a dimension if it only has one row/column.
 
 - value:
 

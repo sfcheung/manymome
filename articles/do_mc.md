@@ -295,8 +295,8 @@ mc_out_lavaan[[1]]$est
 
 The content is just the first four columns of the output of
 [`lavaan::parameterEstimates()`](https://rdrr.io/pkg/lavaan/man/parameterEstimates.html).
-Note that only fixed and free parameters are used so other rows, if any,
-are not used even if present.
+Note that only fixed and free parameters are used, so other rows, if
+any, are not used even if present.
 
 This is the content of `implied_stats` of the first list:
 
@@ -320,7 +320,7 @@ It has three elements. `cov` is the implied variances and covariances of
 all variables. If a model has latent variables, they will be included
 too. The other elements, `mean` and `mean_lv`, are the implied means of
 the observed variables and the latent variables (if any), respectively.
-The elements are `NA` if mean structure is not in the fitted model.
+The elements are `NA` if the mean structure is not in the fitted model.
 
 ## Limitations
 

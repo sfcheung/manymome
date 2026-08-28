@@ -40,8 +40,8 @@ lm_out <- lm2list(lm_m, lm_y)
 # In real research, no need to set parallel to FALSE
 # In real research, no need to set progress to FALSE
 # Progress is displayed by default.
-lm_boot_out <- do_boot(lm_out, R = 100,
-                       seed = 1234,
+lm_boot_out <- do_boot(lm_out, R = 40,
+                       seed = 2345,
                        progress = FALSE,
                        parallel = FALSE)
 # Print the output of do_boot()
@@ -49,7 +49,7 @@ lm_boot_out
 #> 
 #> == A 'boot_out' class object ==
 #> 
-#> Number of bootstrap samples: 100 
+#> Number of bootstrap samples: 40 
 #> Number of cases in each bootstrap sample: 100 
 #> (Missing data, if any, is ignored in the count.)
 #> Column names in data:

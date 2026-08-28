@@ -48,8 +48,8 @@ lm2boot_out_parallel(
 - compute_implied_stats:
 
   If `TRUE`, default, implied statistics will be computed for each
-  bootstrap sample. Letting users to disable this is an experimental
-  features to let the process run faster.
+  bootstrap sample. Letting users disable this is an experimental
+  feature to let the process run faster.
 
 - parallel:
 

@@ -41,13 +41,13 @@ print(x, digits = 3, ...)
 - w_lower:
 
   The smallest value of the moderator when doing the search. If set to
-  `NULL,` the default, it will be 10 standard deviations below mean,
+  `NULL`, the default, it will be 10 standard deviations below the mean,
   which should be small enough.
 
 - w_upper:
 
   The largest value of the moderator when doing the search. If set to
-  `NULL,` the default, it will be 10 standard deviations above mean,
+  `NULL`, the default, it will be 10 standard deviations above the mean,
   which should be large enough.
 
 - optimize_method:
@@ -124,16 +124,16 @@ on the confidence interval.
 
 This function receives the output of
 [`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
-and search for, within a specific range, the two values of the moderator
-at which the conditional effect is "nearly just significant", that is,
-the confidence interval "nearly touches" zero.
+and searches for, within a specific range, the two values of the
+moderator at which the conditional effect is "nearly just significant",
+that is, the confidence interval "nearly touches" zero.
 
-Note that numerical method is used to find the points. Therefore,
-strictly speaking, the effects at the end points are still either
+Note that a numerical method is used to find the points. Therefore,
+strictly speaking, the effects at the endpoints are still either
 significant or not significant, even if the confidence limit is very
 close to zero.
 
-Though numerical method is used, if the test is conducted using the
+Though a numerical method is used, if the test is conducted using the
 standard error (see below), the result is equivalent to the (true)
 Johnson-Neyman (1936) probing. The function `johnson_neyman()` is just
 an alias to `pseudo_johnson_neyman()`, with the name consistent with
@@ -147,7 +147,7 @@ This function supports models fitted by
 [`lavaan.mi::sem.mi()`](https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html).
 This function also supports both bootstrapping and Monte Carlo
 confidence intervals. It also supports conditional direct paths (no
-mediator) and conditional indirect paths (with one or more mediator),
+mediator) and conditional indirect paths (with one or more mediators),
 with `x` and/or `y` standardized.
 
 ### Requirements
@@ -156,7 +156,7 @@ To be eligible for using this function, one of these conditions must be
 met:
 
 - One form of confidence intervals (e.g, bootstrapping or Monte Carlo)
-  must has been requested (e.g., setting `boot_ci = TRUE` or
+  must have been requested (e.g., setting `boot_ci = TRUE` or
   `mc_ci = TRUE`) when calling
   [`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md).
 
@@ -177,8 +177,8 @@ Even if a path has only one moderator, it is possible that no solution,
 or more than one solution, is/are found if the relation between this
 moderator and the conditional effect is not linear.
 
-Solution may also be not found if the conditional effect is significant
-over a wide range of value of the moderator.
+A solution may also not be found if the conditional effect is
+significant over a wide range of values of the moderator.
 
 It is advised to use
 [`plot_effect_vs_w()`](https://sfcheung.github.io/manymome/reference/plot_effect_vs_w.md)
@@ -237,7 +237,7 @@ fit <- sem(mod, dat)
 # progress is displayed by default.
 boot_out <- do_boot(fit,
                     R = 40,
-                    seed = 4314,
+                    seed = 2345,
                     parallel = FALSE,
                     progress = FALSE)
 out <- cond_indirect_effects(x = "x", y = "y", m = "m",
@@ -256,15 +256,17 @@ out_jn
 #> == Pseudo Johnson-Neyman Probing ==
 #> 
 #> The conditional effect is not significant when w is greater than -7.669
-#> and less than 1.124, at 0.05 level of significance.
+#> and less than 1.437, and is significant when w is greater than 1.437,
+#> at 0.05 level of significance.
 #> 
 #> -- Note --
 #> - The lower bound of the range of nonsignificance is below the range
 #> being searched (-7.669 to 12.028). Set a lower value for 'w_lower' if
 #> necessary.
-#> - The upper bound of the range of nonsignificance is above the range
-#> being searched (-7.669 to 12.028). Set a higher value for 'w_upper' if
-#> necessary.
+#> - On 'Sig': A conditional effect at the bound of the range may be
+#> marked as significant or not significant. However, it can be treated as
+#> 'just significant' if its confidence interval practically 'touches'
+#> zero.
 #> 
 #> == Conditional indirect effects ==
 #> 
@@ -273,8 +275,8 @@ out_jn
 #>  Moderator(s) represented by: w
 #> 
 #>    [w]    (w)    ind   CI.lo CI.hi Sig    m~x   y~m
-#> 1 High  1.124  1.148  -0.000 2.187      1.188 0.966
-#> 2 Low  -7.669 -7.112 -17.079 0.116     -7.361 0.966
+#> 1 High  1.437  1.442   0.000 2.817 Sig  1.492 0.966
+#> 2 Low  -7.669 -7.112 -17.779 2.488     -7.361 0.966
 #> 
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
 #>    nonparametric bootstrapping with 40 samples.

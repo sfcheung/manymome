@@ -7,7 +7,7 @@ This article is a brief illustration of how to use
 from the package [manymome](https://sfcheung.github.io/manymome/)
 ([Cheung & Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z)) to
 estimate the conditional indirect effects when the model parameters are
-estimate by ordinary least squares (OLS) multiple regression using
+estimated by ordinary least squares (OLS) multiple regression using
 [`lm()`](https://rdrr.io/r/stats/lm.html).
 
 ## Data Set and Model
@@ -28,7 +28,7 @@ print(head(dat), digits = 3)
 #> 6  9.66 2.22 26.4 35.4 4.02 5.03
 ```
 
-This dataset has 6 variables: one predictor (`x`), one mediators (`m`),
+This dataset has 6 variables: one predictor (`x`), one mediator (`m`),
 one outcome variable (`y`), one moderator (`w`) and two control
 variables (`c1` and `c2`).
 
@@ -46,7 +46,7 @@ lm_m <- lm(m ~ x*w + c1 + c2, dat)
 lm_y <- lm(y ~ m + x + c1 + c2, dat)
 ```
 
-These are the estimates of the regression coefficient of the paths:
+These are the estimates of the regression coefficients of the paths:
 
 ``` r
 
@@ -122,7 +122,7 @@ can be validly combined,
 [`lm2list()`](https://sfcheung.github.io/manymome/reference/lm2list.md)
 will also check:
 
-1.  whether the same sample is used in all regression analysis (not just
+1.  whether the same sample is used in all regression analyses (not just
     same sample size, but the same set of cases), and
 
 2.  whether the models are “connected”, to ensure that the regression
@@ -130,7 +130,7 @@ will also check:
 
 ## Generating Bootstrap Estimates
 
-To form nonparametric bootstrap confidence interval for effects to be
+To form nonparametric bootstrap confidence intervals for effects to be
 computed,
 [`do_boot()`](https://sfcheung.github.io/manymome/reference/do_boot.md)
 can be used to generate bootstrap estimates for all regression
@@ -201,18 +201,18 @@ out_xmy_on_w
 #>    on the moderator(s).
 ```
 
-When `w` is one standard deviation below mean, the indirect effect is
-1.212, with 95% confidence interval \[-0.288, 2.564\].
+When `w` is one standard deviation below the mean, the indirect effect
+is 1.212, with a 95% confidence interval \[-0.288, 2.564\].
 
-When `w` is one standard deviation above mean, the indirect effect is
-3.060, with 95% confidence interval \[2.168, 4.039\].
+When `w` is one standard deviation above the mean, the indirect effect
+is 3.060, with a 95% confidence interval \[2.168, 4.039\].
 
 Note that any conditional indirect path in the model can be estimated
 this way. There is no limit on the path to be estimated, as long as all
 required path coefficients are in the model.
 [`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
 will also check whether a path is valid. However, for complicated
-models, structural equation modelling may be a more flexible approach
+models, structural equation modeling may be a more flexible approach
 than multiple regression.
 
 Not covered here, but the index of moderated moderated mediation can
@@ -265,7 +265,7 @@ out_mome
 #>  - [CI.lo, CI.hi]: 95% percentile confidence interval.
 ```
 
-In this model, the index of moderated mediation is 0.938, with 95%
+In this model, the index of moderated mediation is 0.938, with a 95%
 bootstrap confidence interval \[0.178, 1.732\]. The indirect effect of
 `x` on `y` through `m` significantly changes when `w` increases by one
 unit.
@@ -308,8 +308,8 @@ std_xmy_on_w
 #>    on the moderator(s).
 ```
 
-The standardized indirect effect is 0.126, with 95% confidence interval
-\[-0.031, 0.260\].
+The standardized indirect effect is 0.126, with a 95% confidence
+interval \[-0.031, 0.260\].
 
 ## More Complicated Models
 
@@ -322,12 +322,12 @@ for the moderators are controlled by
 [`mod_levels()`](https://sfcheung.github.io/manymome/reference/mod_levels.md)
 and related functions in the same way whether a model is fitted by
 [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html) or
-[`lm()`](https://rdrr.io/r/stats/lm.html). Pplease refer to other
+[`lm()`](https://rdrr.io/r/stats/lm.html). Please refer to other
 articles (e.g.,
 [`vignette("manymome")`](https://sfcheung.github.io/manymome/articles/manymome.md)
 and
 [`vignette("mod_levels")`](https://sfcheung.github.io/manymome/articles/mod_levels.md))
-on how to estimate effects in other model analyzed by multiple
+on how to estimate effects in other models analyzed by multiple
 regression.
 
 ## Reference

@@ -1,6 +1,6 @@
 # Estimates of Conditional Indirect Effects or Conditional Effects
 
-Return the estimates of the conditional indirect effects or conditional
+Returns the estimates of the conditional indirect effects or conditional
 effects for all levels in the output of
 [`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md).
 

@@ -46,7 +46,7 @@ number of rows of user-supplied data.
 
 ## Details
 
-An `lm_list`-class object is a list of `lm`-class objects, this function
+An `lm_list`-class object is a list of `lm`-class objects; this function
 is similar to the
 [`stats::predict()`](https://rdrr.io/r/stats/predict.html) method of
 [`lm()`](https://rdrr.io/r/stats/lm.html) but it works on a system

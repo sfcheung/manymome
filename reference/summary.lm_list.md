@@ -1,6 +1,6 @@
 # Summary of an `lm_list`-Class Object
 
-The summary of content of the output of
+The summary of the content of the output of
 [`lm2list()`](https://sfcheung.github.io/manymome/reference/lm2list.md).
 
 ## Usage
@@ -53,8 +53,8 @@ print(x, digits = 3, digits_decimal = NULL, ...)
 
   The number of digits after the decimal in printing numerical results.
   Default is `NULL`. If set to an integer, numerical results in the
-  coefficient table will be printed according this setting, and `digits`
-  will be ignored.
+  coefficient table will be printed according to this setting, and
+  `digits` will be ignored.
 
 ## Value
 

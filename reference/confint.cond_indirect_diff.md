@@ -1,6 +1,6 @@
 # Confidence Interval of the Output of 'cond_indirect_diff()'
 
-Extract the confidence interval the output of
+Extract the confidence interval of the output of
 [`cond_indirect_diff()`](https://sfcheung.github.io/manymome/reference/cond_indirect_diff.md).
 
 ## Usage
@@ -28,7 +28,7 @@ confint(object, parm, level = NULL, ...)
   to recompute the confidence intervals. If the confidence interval is
   to be computed from the standard error, and so `level` is not set in
   `object`, then the default value is .95. (This new behavior applies to
-  0.3.6.15 and later version.)
+  0.3.6.15 and later versions.)
 
 - ...:
 

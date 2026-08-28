@@ -11,7 +11,7 @@ functions."><meta property="og:image" content="https://sfcheung.github.io/manymo
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -122,8 +122,8 @@ Called for its side effect.</p>
 <span class="r-in"><span><span class="co"># In real research, no need to set parallel to FALSE</span></span></span>
 <span class="r-in"><span><span class="co"># In real research, no need to set progress to FALSE</span></span></span>
 <span class="r-in"><span><span class="co"># Progress is displayed by default.</span></span></span>
-<span class="r-in"><span><span class="va">lm_boot_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="do_boot.html">do_boot</a></span><span class="op">(</span><span class="va">lm_out</span>, R <span class="op">=</span> <span class="fl">100</span>,</span></span>
-<span class="r-in"><span>                       seed <span class="op">=</span> <span class="fl">1234</span>,</span></span>
+<span class="r-in"><span><span class="va">lm_boot_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="do_boot.html">do_boot</a></span><span class="op">(</span><span class="va">lm_out</span>, R <span class="op">=</span> <span class="fl">40</span>,</span></span>
+<span class="r-in"><span>                       seed <span class="op">=</span> <span class="fl">2345</span>,</span></span>
 <span class="r-in"><span>                       progress <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>                       parallel <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Print the output of do_boot()</span></span></span>
@@ -131,7 +131,7 @@ Called for its side effect.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> == A 'boot_out' class object ==</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Number of bootstrap samples: 100 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of bootstrap samples: 40 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of cases in each bootstrap sample: 100 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Missing data, if any, is ignored in the count.)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Column names in data:</span>

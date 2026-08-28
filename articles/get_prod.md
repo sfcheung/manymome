@@ -3,12 +3,12 @@
 ## Goal
 
 This technical appendix describes how product terms in a model or
-dataset is identified in the package
+dataset are identified in the package
 [manymome](https://cran.r-project.org/package=manymome) ([Cheung &
 Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z)).
 
-The function,
-[`get_prod()`](https://sfcheung.github.io/manymome/reference/get_prod.md),
+The function
+[`get_prod()`](https://sfcheung.github.io/manymome/reference/get_prod.md)
 is called internally by other main functions. Users do not need to call
 it directly. Nevertheless, advanced users may be interested in learning
 how it works.
@@ -29,12 +29,12 @@ This function is used to find all product term(s), if any, from `x` to
 - `est`: The output of
   [`lavaan::parameterEstimates()`](https://rdrr.io/pkg/lavaan/man/parameterEstimates.html).
   If `NULL`, the default, it will be generated from `fit`. If supplied,
-  `fit` will ge ignored.
+  `fit` will be ignored.
 
 - `data`: A data frame. If supplied, it will be used to identify the
   product terms.
 
-- `operator`: The string used to indicate a product term. Default is
+- `operator`: The string used to indicate a product term. The default is
   `":"`, used in both [`lm()`](https://rdrr.io/r/stats/lm.html) and
   [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html) for
   observed variables. If raw data is not available, this is needed for
@@ -220,8 +220,8 @@ get_prod(x = "m1", y = "m3", fit = fit)
 In this mode, raw data supplied directly is used to identify product
 terms.
 
-The parameter estimate table `est` is used to determine the form of the
-model.
+The parameter estimate table `est` is used to determine the model’s
+form.
 
 It then returns product term(s) that involve `x` in predicting `y`, if
 any.
@@ -295,7 +295,7 @@ get_prod(x = "m1", y = "m3", est = lm_est$est, data = lm_est$data)
 In this mode, `operator` needs to be set to identify product terms from
 the parameter estimate table `est`.
 
-The table from `est` is then used to determine the form of the model.
+The table from `est` is then used to determine the model’s form.
 
 It then returns product term(s) that involve `x` in predicting `y`, if
 any.
@@ -386,7 +386,7 @@ when raw data is available.
 For each column in a dataset, it calls `find_product()` to check whether
 this column is the product of two other columns. If yes,
 `find_product()` returns the component column names. It then returns a
-named list of the output of `find_product()` for columns of product
+named list of the output of `find_product()` for columns of the product
 term.
 
 The search by `find_product()` is done numerically, checking whether a
@@ -398,7 +398,7 @@ special naming convention in the model to denote a product term.
 
 `find_all_products()` returns a named list of product term components.
 
-If `expand` = TRUE, it will try to find all lowest order components.
+If `expand` = TRUE, it will try to find all lowest-order components.
 Therefore, a product term of three or more columns can also be
 identified.
 

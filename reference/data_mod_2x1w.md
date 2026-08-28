@@ -1,6 +1,6 @@
 # Sample Dataset: One Moderator on Two Predictors
 
-A one-moderator model, with moderator affecting the effects of two
+A one-moderator model, with a moderator affecting the effects of two
 predictors.
 
 ## Usage

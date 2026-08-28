@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,7 +103,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-23</h4>
+            <h4 data-toc-skip class="date">2026-08-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/do_mc.Rmd" class="external-link"><code>vignettes/do_mc.Rmd</code></a></small>
       <div class="d-none name"><code>do_mc.Rmd</code></div>
@@ -362,7 +362,7 @@ with two elements: <code>est</code> and <code>implied_stats</code>.</p>
 <span><span class="co">#&gt; 15  c2 ~~  c2  0.724</span></span></code></pre></div>
 <p>The content is just the first four columns of the output of
 <code><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">lavaan::parameterEstimates()</a></code>. Note that only fixed and free
-parameters are used so other rows, if any, are not used even if
+parameters are used, so other rows, if any, are not used even if
 present.</p>
 <p>This is the content of <code>implied_stats</code> of the first
 list:</p>
@@ -384,7 +384,7 @@ covariances of all variables. If a model has latent variables, they will
 be included too. The other elements, <code>mean</code> and
 <code>mean_lv</code>, are the implied means of the observed variables
 and the latent variables (if any), respectively. The elements are
-<code>NA</code> if mean structure is not in the fitted model.</p>
+<code>NA</code> if the mean structure is not in the fitted model.</p>
 </div>
 <div class="section level2">
 <h2 id="limitations">Limitations<a class="anchor" aria-label="anchor" href="#limitations"></a>

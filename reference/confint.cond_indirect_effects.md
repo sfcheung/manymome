@@ -30,13 +30,13 @@ confint(object, parm, level = NULL, ...)
   to recompute the confidence intervals. If the confidence interval is
   to be computed from the standard error, and so `level` is not set in
   `object`, then the default value is .95. (This new behavior applies to
-  0.3.6.15 and later version.)
+  0.3.6.15 and later versions.)
 
 - ...:
 
   Additional arguments. To be passed to
   [`confint.indirect()`](https://sfcheung.github.io/manymome/reference/confint.indirect.md).
-  (This new behavior applies to 0.3.6.15 and later version.)
+  (This new behavior applies to 0.3.6.15 and later versions.)
 
 ## Value
 
@@ -55,7 +55,8 @@ bootstrapping or Monte Carlo), then this function merely retrieves the
 confidence intervals stored.
 
 If the following conditions are met, the stored standard errors, if
-available, will be used test an effect and form it confidence interval:
+available, will be used to test an effect and form its confidence
+interval:
 
 - Confidence intervals have not been formed (e.g., by bootstrapping or
   Monte Carlo).
@@ -64,7 +65,7 @@ available, will be used test an effect and form it confidence interval:
 
 - The model has only one group.
 
-- The path is moderated by one or more moderator.
+- The path is moderated by one or more moderators.
 
 - Both the `x`-variable and the `y`-variable are not standardized.
 
@@ -80,7 +81,7 @@ confidence intervals are computed from the *z* statistic.
 ### Caution
 
 If the model is fitted by structural equation modeling and has
-moderators, the standard errors, *p*-values, and confidence interval
+moderators, the standard errors, *p*-values, and confidence intervals
 computed from the variance-covariance matrices for conditional effects
 can only be trusted if all covariances involving the product terms are
 free. If any of them are fixed, for example, fixed to zero, it is

@@ -58,9 +58,9 @@ indirect effect along this path divided by the total effect from `x` to
 indirect effects from `x` to `y` and the direct effect from `x` to `y`.
 
 To ensure that the proportion can indeed be interpreted as a proportion,
-this function computes the the proportion only if the signs of all the
-indirect and direct effects from `x` to `y` are same (i.e., all effects
-positive or all effects negative).
+this function computes the proportion only if the signs of all the
+indirect and direct effects from `x` to `y` are the same (i.e., all
+effects positive or all effects negative).
 
 ## References
 

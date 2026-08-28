@@ -15,7 +15,7 @@ many_indirect_effects()."><meta property="og:image" content="https://sfcheung.gi
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -120,14 +120,14 @@ computed from the standard error,
 and so <code>level</code> is not set in <code>object</code>,
 then the default value is .95.
 (This new behavior applies to 0.3.6.15
-and later version.)</p></dd>
+and later versions.)</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional arguments.
 To be passed to <code><a href="confint.indirect.html">confint.indirect()</a></code>.
 (This new behavior applies to 0.3.6.15
-and later version.)</p></dd>
+and later versions.)</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -187,7 +187,7 @@ percentile confidence interval.</p>
 <span class="r-in"><span><span class="co"># Indirect effect estimates</span></span></span>
 <span class="r-in"><span><span class="co"># R should be 2000 or even 5000 in real research</span></span></span>
 <span class="r-in"><span><span class="co"># parallel should be used in real research.</span></span></span>
-<span class="r-in"><span><span class="va">fit_boot</span> <span class="op">&lt;-</span> <span class="fu"><a href="do_boot.html">do_boot</a></span><span class="op">(</span><span class="va">fit</span>, R <span class="op">=</span> <span class="fl">45</span>, seed <span class="op">=</span> <span class="fl">8974</span>,</span></span>
+<span class="r-in"><span><span class="va">fit_boot</span> <span class="op">&lt;-</span> <span class="fu"><a href="do_boot.html">do_boot</a></span><span class="op">(</span><span class="va">fit</span>, R <span class="op">=</span> <span class="fl">40</span>, seed <span class="op">=</span> <span class="fl">2345</span>,</span></span>
 <span class="r-in"><span>                    parallel <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>                    progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="cond_indirect.html">many_indirect_effects</a></span><span class="op">(</span><span class="va">paths</span>,</span></span>
@@ -199,21 +199,21 @@ percentile confidence interval.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> == Indirect Effect(s) ==</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                        ind  CI.lo CI.hi Sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m11 -&gt; m12 -&gt; y 0.193  0.029 0.550 Sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m11 -&gt; y        0.163 -0.346 0.570    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m12 -&gt; y        0.059 -0.156 0.208    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m2 -&gt; y         0.364  0.130 0.889 Sig</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m11 -&gt; m12 -&gt; y 0.193 -0.063 0.603    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m11 -&gt; y        0.163 -0.573 0.582    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m12 -&gt; y        0.059 -0.189 0.292    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m2 -&gt; y         0.364  0.047 0.829 Sig</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 45 samples.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the indirect effect(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      Percentile: 2.5 % Percentile: 97.5 %</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m11 -&gt; m12 -&gt; y        0.02866626          0.5501760</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m11 -&gt; y              -0.34617725          0.5702562</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m12 -&gt; y              -0.15615492          0.2081817</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m2 -&gt; y                0.12961514          0.8892807</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m11 -&gt; m12 -&gt; y       -0.06345507          0.6030915</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m11 -&gt; y              -0.57291478          0.5824840</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m12 -&gt; y              -0.18860352          0.2919631</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x -&gt; m2 -&gt; y                0.04739547          0.8285792</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>

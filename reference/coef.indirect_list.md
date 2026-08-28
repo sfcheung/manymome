@@ -1,4 +1,4 @@
-# Extract the Indirect Effects from a 'indirect_list' Object
+# Extract the Indirect Effects from an 'indirect_list' Object
 
 Return the estimates of the indirect effects in the output of
 [`many_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md).

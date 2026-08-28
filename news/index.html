@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,20 +72,21 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.6.16" id="manymome-03616">manymome 0.3.6.16<a class="anchor" aria-label="anchor" href="#manymome-03616"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.3.6.17" id="manymome-03617">manymome 0.3.6.17<a class="anchor" aria-label="anchor" href="#manymome-03617"></a></h2>
 <div class="section level3">
-<h3 id="new-features-0-3-6-16">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-3-6-16"></a></h3>
+<h3 id="new-features-0-3-6-17">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-3-6-17"></a></h3>
 <ul><li><p>Update the <code>q_*</code> functions (<code><a href="../reference/q_mediation.html">q_mediation()</a></code>, <code><a href="../reference/q_mediation.html">q_simple_mediation()</a></code>, <code><a href="../reference/q_mediation.html">q_serial_mediation()</a></code> and <code><a href="../reference/q_mediation.html">q_parallel_mediation()</a></code>) to support models with moderators (moderated mediation). The paths moderated are specified by the argument <code>moderators</code>. Models fitted by multiple regression or structural equation modelling on observed variables only are supported. If a model has latent variables and is fitted by structural equation modeling, then the <code>indicator_method</code> must be set to <code>"sam"</code> to use the structural-after-measurement method. (0.3.6.3)</p></li>
 <li><p>Updated <code><a href="../reference/index_of_mome.html">index_of_mome()</a></code> and <code><a href="../reference/index_of_mome.html">index_of_momome()</a></code> to use standard deviation as the unit of the moderator to compute the index, as proposed by Cheung and Cheung (2024), enabled by the arguments <code>w_unit</code> and <code>z_unit</code>. Also added two wrappers, <code>z_index_mome()</code> and <code><a href="../reference/index_of_mome.html">z_index_of_momome()</a></code>, with <code>w_unit</code> and <code>z_unit</code> set to <code>"sd"</code> automatically. (0.3.6.13)</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="improvement-0-3-6-16">Improvement<a class="anchor" aria-label="anchor" href="#improvement-0-3-6-16"></a></h3>
+<h3 id="improvement-0-3-6-17">Improvement<a class="anchor" aria-label="anchor" href="#improvement-0-3-6-17"></a></h3>
 <ul><li><p>Users can specify the change of moderator values when calling <code><a href="../reference/index_of_mome.html">index_of_mome()</a></code> and <code><a href="../reference/index_of_mome.html">index_of_momome()</a></code> via the new arguments <code>increase_from</code>, <code>increase_to</code>, <code>w_increase_from</code>, <code>w_increase_to</code>, <code>z_increase_from</code>, and <code>z_increase_to</code>. (0.3.6.5)</p></li>
 <li><p>Added the argument <code>cond_indirect_effects_args</code> to the <code>q_*</code> functions for customizing the computation of conditional indirect effects or conditional effects. (0.3.6.14)</p></li>
 <li><p>Most <code>confint</code> methods now can make use of the value set to <code>level</code>. If not set, the default is <code>NULL</code> and the stored value of <code>level</code> (e.g., when calling <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>) will be used. (0.3.6.15)</p></li>
+<li><p>Added the argument <code>wlevels_not_found</code> to <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>. If a variable in <code>wlevels</code> is not found among the component of the product term(s), a warning will be issued by default. These variables can be ignored silently by setting <code>wlevels_not_found</code> to <code>"ignore"</code>. If desired, an error can be raised by setting <code>wlevels_not_found</code> to <code>"error"</code>. (0.3.6.17)</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="miscellaneous-0-3-6-16">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-3-6-16"></a></h3>
+<h3 id="miscellaneous-0-3-6-17">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-3-6-17"></a></h3>
 <ul><li><p>Updated some tests for the forthcoming <code>lavaan</code> 0.7-1. (0.3.6.1)</p></li>
 <li><p>Fixed handling a special case: <code>x:w:w == x</code>. (0.3.6.2)</p></li>
 <li><p>Updated to handle possible <code>NA</code> from <code><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">parallel::detectCores()</a></code>. (0.3.6.4)</p></li>
@@ -98,7 +99,7 @@
 <li><p>Updated <code><a href="../reference/cond_indirect.html">many_indirect_effects()</a></code> to do bootstrapping or Monte Carlo simulation only once when <code>ci_type</code> is set. (0.3.6.12)</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-0-3-6-16">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-3-6-16"></a></h3>
+<h3 id="bug-fixes-0-3-6-17">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-3-6-17"></a></h3>
 <ul><li>Fixed a bug in finding a product term automatically in some special cases. (0.3.6.16)</li>
 </ul></div>
 </div>

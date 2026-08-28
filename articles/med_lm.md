@@ -83,16 +83,16 @@ can be validly combined,
 [`lm2list()`](https://sfcheung.github.io/manymome/reference/lm2list.md)
 will also check:
 
-1.  whether the same sample is used in all regression analysis (not just
+1.  whether the same sample is used in all regression analyses (not just
     same sample size, but the same set of cases), and
 
 2.  whether the models are “connected”, to ensure that the regression
-    outputs can be validly combined.
+    outputs can be combined in a valid way.
 
 ## Generating Bootstrap Estimates
 
-To form nonparametric bootstrap confidence interval for indirect effects
-to be computed,
+To form nonparametric bootstrap confidence intervals for indirect
+effects to be computed,
 [`do_boot()`](https://sfcheung.github.io/manymome/reference/do_boot.md)
 can be used to generate bootstrap estimates for all regression
 coefficients first. These estimates can be reused for any indirect
@@ -165,7 +165,7 @@ out_x1m11m12y1
 #>   y1~m12       0.234
 ```
 
-The indirect effect is 0.037, with 95% confidence interval \[0.003,
+The indirect effect is 0.037, with a 95% confidence interval \[0.003,
 0.077\].
 
 Similarly, we can estimate the indirect effect from `x2` to `y2` through
@@ -203,7 +203,7 @@ out_x2m2y2
 #>  y2~m2      -0.436
 ```
 
-The indirect effect is -0.126, with 95% confidence interval \[-0.233,
+The indirect effect is -0.126, with a 95% confidence interval \[-0.233,
 -0.043\].
 
 Note that any indirect path in the model can be estimated this way.
@@ -243,7 +243,7 @@ out_x2m11m12
 #>  m12~m11      0.4541
 ```
 
-The indirect effect is -0.020, with 95% confidence interval \[-0.139,
+The indirect effect is -0.020, with a 95% confidence interval \[-0.139,
 0.110\].
 
 There is no limit on the path to be estimated, as long as all required
@@ -298,8 +298,8 @@ std_x1m11m12y1
 #>   standardized.
 ```
 
-The standardized indirect effect is 0.039, with 95% confidence interval
-\[0.004,0.085\].
+The standardized indirect effect is 0.039, with a 95% confidence
+interval \[0.004,0.085\].
 
 Similarly, we can estimate the standardized indirect effect from `x1` to
 `y1` through `m2`:
@@ -342,8 +342,8 @@ std_x1m2y1
 #>   standardized.
 ```
 
-The standardized indirect effect is -0.010, with 95% confidence interval
-\[-0.069, 0.067\].
+The standardized indirect effect is -0.010, with a 95% confidence
+interval \[-0.069, 0.067\].
 
 ## Adding Effects
 
@@ -485,8 +485,8 @@ out_x1y1_total
 #> with 100 bootstrap samples.
 ```
 
-The total effect of `f1` on `f4` is 0.030, with 95% confidence interval
-\[-0.088, 0.132\].
+The total effect of `f1` on `f4` is 0.030, with a 95% confidence
+interval \[-0.088, 0.132\].
 
 See
 [`help("math_indirect")`](https://sfcheung.github.io/manymome/reference/math_indirect.md)
@@ -521,7 +521,7 @@ out_x1_diff
 #> with 100 bootstrap samples.
 ```
 
-The difference in effects is 0.047, with 95% confidence interval
+The difference in effects is 0.047, with a 95% confidence interval
 \[-0.038, 0.118\].
 
 See
@@ -628,7 +628,7 @@ all_paths
 - `exclude` is a vector of names. Paths that involve these variables
   will be excluded.
 
-The output is a `all_paths`-class object. It can be used in
+The output is an `all_paths`-class object. It can be used in
 [`many_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
 
 ``` r
@@ -680,7 +680,7 @@ out_all
 
 The output of
 [`many_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
-is a named list, names being the path name as appeared in the output.
+is a named list, names being the path name as it appears in the output.
 Individual indirect effects can be extracted using either the indices or
 the path names
 
@@ -746,7 +746,7 @@ out2
 
 The extracted element can be used just like the outputs of
 [`indirect_effect()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
-in previous section.
+in the previous section.
 
 See the help page of
 [`all_indirect_paths()`](https://sfcheung.github.io/manymome/reference/all_indirect_paths.md)
@@ -789,7 +789,7 @@ total_x1_y1
 
 The first argument is the output of
 [`many_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
-or a list of `indirect`-class object. `x` is the name of the variable
+or a list of `indirect`-class objects. `x` is the name of the variable
 that starts the paths. `y` is the name of the variable that ends the
 paths.
 

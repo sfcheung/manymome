@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,7 +103,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-23</h4>
+            <h4 data-toc-skip class="date">2026-08-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/med_lav.Rmd" class="external-link"><code>vignettes/med_lav.Rmd</code></a></small>
       <div class="d-none name"><code>med_lav.Rmd</code></div>
@@ -190,7 +190,7 @@ in parallel processing.</p>
 <div class="section level2">
 <h2 id="indirect-effects">Indirect Effects<a class="anchor" aria-label="anchor" href="#indirect-effects"></a>
 </h2>
-<p>Even though path coefficients are not labelled, we can still use
+<p>Even though path coefficients are not labeled, we can still use
 <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> to estimate the indirect effect and form
 its bootstrap confidence interval for any path in the model. By reusing
 the generated bootstrap estimates, there is no need to repeat the
@@ -226,7 +226,7 @@ to <code>f4</code> through <code>f3</code>:</p>
 <span><span class="co">#&gt;   Path Coefficient</span></span>
 <span><span class="co">#&gt;  f3~f1       0.243</span></span>
 <span><span class="co">#&gt;  f4~f3       0.402</span></span></code></pre></div>
-<p>The indirect effect is 0.098, with 95% confidence interval [-0.007,
+<p>The indirect effect is 0.098, with a 95% confidence interval [-0.007,
 0.216].</p>
 <p>Similarly, we can estimate the indirect effect from <code>f2</code>
 to <code>f4</code> through <code>f3</code>:</p>
@@ -259,7 +259,7 @@ to <code>f4</code> through <code>f3</code>:</p>
 <span><span class="co">#&gt;   Path Coefficient</span></span>
 <span><span class="co">#&gt;  f3~f2       0.326</span></span>
 <span><span class="co">#&gt;  f4~f3       0.402</span></span></code></pre></div>
-<p>The indirect effect is 0.131, with 95% confidence interval [0.049,
+<p>The indirect effect is 0.131, with a 95% confidence interval [0.049,
 0.254].</p>
 </div>
 <div class="section level2">
@@ -304,7 +304,7 @@ to <code>f4</code> through <code>f3</code>:</p>
 <span><span class="co">#&gt; NOTE:</span></span>
 <span><span class="co">#&gt; - The effects of the component paths are from the model, not</span></span>
 <span><span class="co">#&gt;   standardized.</span></span></code></pre></div>
-<p>The standardized indirect effect is 0.073, with 95% confidence
+<p>The standardized indirect effect is 0.073, with a 95% confidence
 interval [-0.005, 0.157].</p>
 <p>Similarly, we can estimate the standardized indirect effect from
 <code>f2</code> to <code>f4</code> through <code>f3</code>:</p>
@@ -343,7 +343,7 @@ interval [-0.005, 0.157].</p>
 <span><span class="co">#&gt; NOTE:</span></span>
 <span><span class="co">#&gt; - The effects of the component paths are from the model, not</span></span>
 <span><span class="co">#&gt;   standardized.</span></span></code></pre></div>
-<p>The standardized indirect effect is 0.116, with 95% confidence
+<p>The standardized indirect effect is 0.116, with a 95% confidence
 interval [0.044, 0.204].</p>
 <p>Note that, unlike the confidence intervals in
 <code><a href="https://rdrr.io/pkg/lavaan/man/standardizedSolution.html" class="external-link">lavaan::standardizedSolution()</a></code>, the confidence intervals
@@ -406,7 +406,7 @@ interval:</p>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span></code></pre></div>
 <p>The total effect of <code>f1</code> on <code>f4</code> is 0.545, with
-95% confidence interval [0.318, 0.858].</p>
+a 95% confidence interval [0.318, 0.858].</p>
 </div>
 <div class="section level2">
 <h2 id="differences-in-effects">Differences in Effects<a class="anchor" aria-label="anchor" href="#differences-in-effects"></a>
@@ -433,7 +433,7 @@ we can compute the difference between the indirect effect of
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span></code></pre></div>
-<p>The difference in effects is 0.350, with 95% confidence interval
+<p>The difference in effects is 0.350, with a 95% confidence interval
 [-0.027, 0.700].</p>
 </div>
 <div class="section level2">
@@ -451,7 +451,7 @@ all indirect paths (a path with at least one mediator) in a model:</p>
 <span><span class="co">#&gt;   path          </span></span>
 <span><span class="co">#&gt; 1 f1 -&gt; f3 -&gt; f4</span></span>
 <span><span class="co">#&gt; 2 f2 -&gt; f3 -&gt; f4</span></span></code></pre></div>
-<p>The output is a <code>all_paths</code>-class object. It can be used
+<p>The output is an <code>all_paths</code>-class object. It can be used
 in <code><a href="../reference/cond_indirect.html">many_indirect_effects()</a></code></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">many_indirect_effects</a></span><span class="op">(</span>paths <span class="op">=</span> <span class="va">all_paths</span>,</span>
@@ -478,8 +478,9 @@ summary of the indirect effects will be printed:</p>
 <span><span class="co">#&gt;  - The 'ind' column shows the indirect effect(s).</span></span>
 <span><span class="co">#&gt; </span></span></code></pre></div>
 <p>The output of <code><a href="../reference/cond_indirect.html">many_indirect_effects()</a></code> is a named list,
-names being the path name as appeared in the output. Individual indirect
-effects can be extracted using either the indices or the path names</p>
+names being the path name as it appears in the output. Individual
+indirect effects can be extracted using either the indices or the path
+names</p>
 <p>An example using index:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out1</span> <span class="op">&lt;-</span> <span class="va">out_all</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
@@ -532,7 +533,7 @@ is usually long):</p>
 <span><span class="co">#&gt;  f3~f2       0.326</span></span>
 <span><span class="co">#&gt;  f4~f3       0.402</span></span></code></pre></div>
 <p>The extracted element can be used just like the outputs of
-<code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> in previous section.</p>
+<code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> in the previous section.</p>
 <p>Users can customize the search. For example, if a model has control
 variables, they can be excluded in the search for indirect paths. Users
 can also limit the search to paths that start from or end at selected

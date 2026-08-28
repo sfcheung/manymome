@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -115,9 +115,9 @@
 <h2 id="goal">Goal<a class="anchor" aria-label="anchor" href="#goal"></a>
 </h2>
 <p>This technical appendix describes how product terms in a model or
-dataset is identified in the package <a href="https://cran.r-project.org/package=manymome" class="external-link">manymome</a> (<a href="https://doi.org/10.3758/s13428-023-02224-z" class="external-link">Cheung &amp; Cheung,
+dataset are identified in the package <a href="https://cran.r-project.org/package=manymome" class="external-link">manymome</a> (<a href="https://doi.org/10.3758/s13428-023-02224-z" class="external-link">Cheung &amp; Cheung,
 2024</a>).</p>
-<p>The function, <code><a href="../reference/get_prod.html">get_prod()</a></code>, is called internally by other
+<p>The function <code><a href="../reference/get_prod.html">get_prod()</a></code> is called internally by other
 main functions. Users do not need to call it directly. Nevertheless,
 advanced users may be interested in learning how it works.</p>
 </div>
@@ -139,13 +139,13 @@ advanced users may be interested in learning how it works.</p>
 <li><p><code>est</code>: The output of
 <code><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">lavaan::parameterEstimates()</a></code>. If <code>NULL</code>, the
 default, it will be generated from <code>fit</code>. If supplied,
-<code>fit</code> will ge ignored.</p></li>
+<code>fit</code> will be ignored.</p></li>
 <li><p><code>data</code>: A data frame. If supplied, it will be used to
 identify the product terms.</p></li>
 <li><p><code>operator</code>: The string used to indicate a product
-term. Default is <code>":"</code>, used in both <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> and
-<code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> for observed variables. If raw data is not
-available, this is needed for identifying product terms.</p></li>
+term. The default is <code>":"</code>, used in both <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>
+and <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> for observed variables. If raw data is
+not available, this is needed for identifying product terms.</p></li>
 </ul>
 </div>
 <div class="section level3">
@@ -294,7 +294,7 @@ predicting <code>y</code>, if any.</p>
 <p>In this mode, raw data supplied directly is used to identify product
 terms.</p>
 <p>The parameter estimate table <code>est</code> is used to determine
-the form of the model.</p>
+the model’s form.</p>
 <p>It then returns product term(s) that involve <code>x</code> in
 predicting <code>y</code>, if any.</p>
 <p>Case: A path with a moderator</p>
@@ -349,8 +349,8 @@ predicting <code>y</code>, if any.</p>
 </h4>
 <p>In this mode, <code>operator</code> needs to be set to identify
 product terms from the parameter estimate table <code>est</code>.</p>
-<p>The table from <code>est</code> is then used to determine the form of
-the model.</p>
+<p>The table from <code>est</code> is then used to determine the model’s
+form.</p>
 <p>It then returns product term(s) that involve <code>x</code> in
 predicting <code>y</code>, if any.</p>
 <p>This mode is useful when a product term is not formed from the raw
@@ -430,7 +430,7 @@ available.</p>
 check whether this column is the product of two other columns. If yes,
 <code>find_product()</code> returns the component column names. It then
 returns a named list of the output of <code>find_product()</code> for
-columns of product term.</p>
+columns of the product term.</p>
 <p>The search by <code>find_product()</code> is done numerically,
 checking whether a column can be formed from the product of any two
 other columns (missing data allowed).</p>
@@ -438,7 +438,7 @@ other columns (missing data allowed).</p>
 special naming convention in the model to denote a product term.</p>
 <p><code>find_all_products()</code> returns a named list of product term
 components.</p>
-<p>If <code>expand</code> = TRUE, it will try to find all lowest order
+<p>If <code>expand</code> = TRUE, it will try to find all lowest-order
 components. Therefore, a product term of three or more columns can also
 be identified.</p>
 </div>

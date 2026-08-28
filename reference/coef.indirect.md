@@ -2,7 +2,7 @@
 
 Return the estimate of the indirect effect in the output of
 [`indirect_effect()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
-or or the conditional indirect in the output of
+or the conditional indirect effect in the output of
 [`cond_indirect()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md).
 
 ## Usage
@@ -32,7 +32,7 @@ effect.
 
 ## Details
 
-It extracts and returns the element `indirect`. in an object.
+It extracts and returns the element `indirect` in an object.
 
 If standardized effect is requested when calling
 [`indirect_effect()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)

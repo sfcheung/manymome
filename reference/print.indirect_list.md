@@ -33,7 +33,7 @@ print(
 - annotation:
 
   Logical. Whether the annotation after the table of effects is to be
-  printed. Default is `TRUE.`
+  printed. Default is `TRUE`.
 
 - pvalue:
 

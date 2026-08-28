@@ -67,7 +67,7 @@ gen_mc_est(fit, R = 100, seed = NULL)
 - compute_implied_stats:
 
   If `TRUE`, default, implied statistics will be computed for each
-  replication. Letting users to disable this is an experimental features
+  replication. Letting users to disable this is an experimental feature
   to let the process run faster.
 
 ## Value
@@ -117,11 +117,11 @@ models fitted by `lavaan`.
 
 ## Functions
 
-- `do_mc()`: A general purpose function for creating Monte Carlo
+- `do_mc()`: A general-purpose function for creating Monte Carlo
   estimates to be reused by other functions. It returns a `mc_out`-class
   object.
 
-- `gen_mc_est()`: Generate Monte Carlo estimates and store them in the
+- `gen_mc_est()`: Generate Monte Carlo estimates and stores them in the
   `external` slot: `external$manymome$mc`. For advanced users.
 
 ## See also

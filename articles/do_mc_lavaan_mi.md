@@ -375,7 +375,7 @@ out_lavaan
 #>   y~m       0.736
 ```
 
-Reusing the simulated estimates can ensure that all analysis with Monte
+Reusing the simulated estimates can ensure that all analyses with Monte
 Carlo confidence intervals are based on the same set of simulated
 estimates.
 

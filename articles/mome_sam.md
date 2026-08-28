@@ -1,9 +1,5 @@
 # Latent Variable Moderated Mediation by SAM
 
-(This document is for Version 0.3.4.25 or later, currently on GitHub
-only. The new version is scheduled to be available on CRAN in June
-2026.)
-
 ## Introduction
 
 This article is a brief illustration of how to use
@@ -39,7 +35,7 @@ print(head(dat), digits = 3)
 ```
 
 This dataset has indicators of the following four latent variables: one
-predictor (`fx`), one mediators (`fm`), one outcome variable (`fy`), and
+predictor (`fx`), one mediator (`fm`), one outcome variable (`fy`), and
 one moderator (`fw`).
 
 Suppose this is the model being fitted:
@@ -55,7 +51,7 @@ is used to model the moderation.
 
 If the model is for the latent variables, the new approach, SAM
 (structural-after-measurement), presented in Rosseel et al. (2025) can
-be used, using the function
+be used using the function
 [`sam()`](https://rdrr.io/pkg/lavaan/man/sam.html) from `lavaan`. This
 is the model syntax:
 
@@ -74,7 +70,7 @@ fy ~ fm + fx
 "
 ```
 
-The moderation effect is modelled by `fx:fw`. To fit this model by SAM,
+The moderation effect is modeled by `fx:fw`. To fit this model by SAM,
 use [`sam()`](https://rdrr.io/pkg/lavaan/man/sam.html) from `lavaan`.
 
 As recommended by Rosseel et al. (2025), nonparametric bootstrapping
@@ -169,11 +165,11 @@ out_xmy_on_w
 #>    conditional on the moderator(s).
 ```
 
-When `fw` is one standard deviation below mean, the indirect effect is
--0.003, with 95% confidence interval \[-0.042, 0.034\].
+When `fw` is one standard deviation below the mean, the indirect effect
+is -0.003, with a 95% confidence interval \[-0.042, 0.034\].
 
-When `fw` is one standard deviation above mean, the indirect effect is
-0.361, with 95% confidence interval \[0.141, 0.568\].
+When `fw` is one standard deviation above the mean, the indirect effect
+is 0.361, with a 95% confidence interval \[0.141, 0.568\].
 
 Note that any conditional indirect path in the model can be estimated
 this way. There is no limit on the path to be estimated, as long as all
@@ -221,12 +217,12 @@ std_xmy_on_w
 #>    conditional on the moderator(s).
 ```
 
-When `fw` is one standard deviation below mean, the standardized
-indirect effect is -0.004, with 95% confidence interval \[-0.050,
+When `fw` is one standard deviation below the mean, the standardized
+indirect effect is -0.004, with a 95% confidence interval \[-0.050,
 0.041\].
 
-When `fw` is one standard deviation above mean, the indirect effect is
-0.435, with 95% confidence interval \[0.170, 0.680\].
+When `fw` is one standard deviation above the mean, the indirect effect
+is 0.435, with a 95% confidence interval \[0.170, 0.680\].
 
 ## Reference(s)
 

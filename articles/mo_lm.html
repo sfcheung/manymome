@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,7 +103,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-23</h4>
+            <h4 data-toc-skip class="date">2026-08-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/articles/mo_lm.Rmd" class="external-link"><code>vignettes/articles/mo_lm.Rmd</code></a></small>
       <div class="d-none name"><code>mo_lm.Rmd</code></div>
@@ -116,11 +116,11 @@
 </h2>
 <p>This article is part of a series of brief illustrations of how to use
 <code><a href="../reference/cond_indirect.html">cond_effects()</a></code> from the package <a href="https://sfcheung.github.io/manymome/">manymome</a> <span class="citation">(Cheung &amp; Cheung, 2024)</span> to estimate the
-conditional effects when the model parameters are estimate by ordinary
+conditional effects when the model parameters are estimated by ordinary
 least squares (OLS) multiple regression using <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>. For
 moderated mediation tested by OLS regression, please refer to <a href="./mome_lm.html">this article</a>.</p>
-<p>(Articles in this series had duplicated sections, to make each of
-them self-contained.)</p>
+<p>(Articles in this series had duplicated sections to make each of them
+self-contained.)</p>
 </div>
 <div class="section level2">
 <h2 id="data-set-and-model">Data Set and Model<a class="anchor" aria-label="anchor" href="#data-set-and-model"></a>
@@ -165,7 +165,7 @@ omitted from the plot for readability:</p>
 <span>  <span class="va">y</span> <span class="op">~</span> <span class="va">w1</span><span class="op">*</span><span class="va">x</span> <span class="op">+</span> <span class="va">c1</span> <span class="op">+</span> <span class="va">c2</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">dat</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>These are the estimates of the regression coefficient of the
+<p>These are the estimates of the regression coefficients of the
 paths:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lm_y_w1</span><span class="op">)</span></span>
@@ -230,14 +230,14 @@ paths:</p>
 <span><span class="co">#&gt;    regression standard errors.</span></span>
 <span><span class="co">#&gt;  - The 'ind' column shows the conditional effects.</span></span>
 <span><span class="co">#&gt; </span></span></code></pre></div>
-<p>The column <code>ind</code> show the effects of <code>x</code> on
+<p>The column <code>ind</code> shows the effects of <code>x</code> on
 <code>y</code> for different levels of <code>w1</code>.</p>
-<p>When <code>w1</code> is one standard deviation below mean, the effect
-of <code>x1</code> is 0.105, with 95% confidence interval [-0.167,
-0.378].</p>
-<p>When <code>w1</code> is one standard deviation above mean, the effect
-of <code>x1</code> is 0.492, with 95% confidence interval [0.292,
-0.692].</p>
+<p>When <code>w1</code> is one standard deviation below the mean, the
+effect of <code>x1</code> is 0.105, with a 95% confidence interval
+[-0.167, 0.378].</p>
+<p>When <code>w1</code> is one standard deviation above the mean, the
+effect of <code>x1</code> is 0.492, with a 95% confidence interval
+[0.292, 0.692].</p>
 <p>NOTE: The standard error (<code>SE</code>) and related results are
 computed using the pick-a-point approach by <span class="citation">Rogosa (1980)</span>.</p>
 </div>
@@ -257,7 +257,7 @@ effects):</p>
 </div>
 <p>By default, the lines span the range of one standard deviation below
 and above the mean of the <code>x</code> variable.</p>
-<p>The plot can be customized in a lot of way. Please refer to the help
+<p>The plot can be customized in a lot of ways. Please refer to the help
 page of <code><a href="../reference/plot.cond_indirect_effects.html">plot.cond_indirect_effects()</a></code> for available
 options.</p>
 </div>
@@ -274,7 +274,7 @@ by adding <code>graph_type = "tumble"</code>:</p>
 <div class="float">
 <img src="mo_lm_plot_cond_tumble_w1-1.png" alt="Tumble Plot of Conditional Effects"><div class="figcaption">Tumble Plot of Conditional Effects</div>
 </div>
-<p>In this example, the distribution of the predictor vary slightly as
+<p>In this example, the distribution of the predictor varies slightly as
 the level of the moderator changes:</p>
 <ul>
 <li><p>lower with a smaller variation when <code>w1</code> is one
@@ -292,10 +292,10 @@ moderating effect of <code>w1</code>.</p>
 <p>Although OLS can be used to estimate and test the unstandardized
 effects, it is inappropriate for forming the confidence intervals for
 the standardized effects. See <span class="citation">Yuan &amp; Chan
-(2011)</span> on the issue on standardized regression coefficients.</p>
-<p>To form nonparametric bootstrap confidence interval for effects to be
-computed, add <code>boot_ci = TRUE</code>, <code>R</code> to the number
-of bootstrap samples (should be 5000 or even 10000, for multiple
+(2011)</span> on the issue of standardized regression coefficients.</p>
+<p>To form nonparametric bootstrap confidence intervals for effects to
+be computed, add <code>boot_ci = TRUE</code>, <code>R</code> to the
+number of bootstrap samples (should be 5000 or even 10000, for multiple
 regression), and <code>seed</code> (set it to an integer to ensure the
 results are reproducible).</p>
 <p>The standardized conditional effect from <code>x</code> to
@@ -334,10 +334,10 @@ setting <code>standardized_x</code> and <code>standardized_y</code> to
 <span><span class="co">#&gt;  - ind: The unstandardized conditional effects.</span></span>
 <span><span class="co">#&gt; </span></span></code></pre></div>
 <p>When <code>w1</code> is one standard deviation below its mean, the
-standardized effect is 0.080, with 95% confidence interval [-0.136,
+standardized effect is 0.080, with a 95% confidence interval [-0.136,
 0.280].</p>
 <p>When <code>w</code> is one standard deviation above its mean, the
-standardized effect is 0.374, with 95% confidence interval [0.204,
+standardized effect is 0.374, with a 95% confidence interval [0.204,
 0.518].</p>
 <div class="section level4">
 <h4 id="plot-standardized-conditional-effects">Plot Standardized Conditional Effects<a class="anchor" aria-label="anchor" href="#plot-standardized-conditional-effects"></a>
@@ -379,7 +379,7 @@ regression model:</p>
 <span>  <span class="va">y</span> <span class="op">~</span> <span class="va">x</span><span class="op">*</span><span class="va">w1</span> <span class="op">+</span> <span class="va">x</span><span class="op">*</span><span class="va">w2</span> <span class="op">+</span> <span class="va">c1</span> <span class="op">+</span> <span class="va">c2</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">dat</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>These are the estimates of the regression coefficient of the
+<p>These are the estimates of the regression coefficients of the
 paths:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lm_y_w1w2</span><span class="op">)</span></span>
@@ -444,13 +444,13 @@ two moderators:</p>
 <span><span class="co">#&gt;    regression standard errors.</span></span>
 <span><span class="co">#&gt;  - The 'ind' column shows the conditional effects.</span></span>
 <span><span class="co">#&gt; </span></span></code></pre></div>
-<p>The column <code>ind</code> show the effects of <code>x</code> on
+<p>The column <code>ind</code> shows the effects of <code>x</code> on
 <code>y</code> for different levels of <code>w1</code> and
 <code>w2</code>.</p>
 <p>IMPORTANT: Even though this model does not have three-way
 interaction, the conditional effects still need to consider
 <em>both</em> moderators. It is because the effect of <code>x</code>
-depends on <em>all</em> moderators, whether there is a higher order
+depends on <em>all</em> moderators, whether there is a higher-order
 interaction or not.</p>
 <p>If one or more moderators are omitted, a <em>warning message</em>
 will be issued. This is an example:</p>
@@ -511,7 +511,7 @@ moderators:</p>
 moderators. The argument <code>facet_grid_cols</code> can be used to
 generate one plot for each level of one of the moderators, presented in
 one row, side-by-side.</p>
-<p>For example, supposed we would like to generate one graph for each
+<p>For example, suppose we would like to generate one graph for each
 level of <code>w2</code>, we add
 <code>facet_grid_cols = "w2"</code>:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -640,7 +640,7 @@ model:</p>
 <span>  <span class="va">y</span> <span class="op">~</span> <span class="va">w1</span><span class="op">*</span><span class="va">w2</span><span class="op">*</span><span class="va">x</span> <span class="op">+</span> <span class="va">c1</span> <span class="op">+</span> <span class="va">c2</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">dat</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>These are the estimates of the regression coefficient of this
+<p>These are the estimates of the regression coefficients of this
 model:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lm_y_w1_x_w2</span><span class="op">)</span></span>
@@ -796,14 +796,14 @@ Effects: By w1</div>
 of moderators and the number of predictors with their effects
 moderated.</p>
 <p>The demonstrations of other moderated regression models can be found
-from the <a href="./index.html#moderated-regression">list of
+in the <a href="./index.html#moderated-regression">list of
 articles</a>.</p>
 <p>The levels for the moderators are controlled by
 <code><a href="../reference/mod_levels.html">mod_levels()</a></code> and related functions in the same way whether
 a model is fitted by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> or <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.
 Please refer to other articles (e.g., <code><a href="../articles/manymome.html">vignette("manymome")</a></code>
 and <code><a href="../articles/mod_levels.html">vignette("mod_levels")</a></code>) on how to estimate effects in
-other model analyzed by multiple regression.</p>
+other models analyzed by multiple regression.</p>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

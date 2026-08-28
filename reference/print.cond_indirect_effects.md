@@ -50,7 +50,7 @@ as.data.frame(
 - annotation:
 
   Logical. Whether the annotation after the table of effects is to be
-  printed. Default is `TRUE.`
+  printed. Default is `TRUE`.
 
 - pvalue:
 
@@ -128,8 +128,8 @@ If bootstrapping confidence intervals were requested, this method has
 the option to print *p*-values computed by the method presented in
 Asparouhov and Muthén (2021). Note that these *p*-values are asymmetric
 bootstrap *p*-values based on the distribution of the bootstrap
-estimates. They not computed based on the distribution under the null
-hypothesis.
+estimates. They are not computed based on the distribution under the
+null hypothesis.
 
 For a *p*-value of *a*, it means that a 100(1 - *a*)% bootstrapping
 confidence interval will have one of its limits equal to 0. A confidence
@@ -139,7 +139,7 @@ confidence interval with a lower confidence level will exclude zero.
 ### Using Original Standard Errors
 
 If these conditions are met, the stored standard errors, if available,
-will be used test an effect and form it confidence interval:
+will be used to test an effect and form its confidence interval:
 
 - Confidence intervals have not been formed (e.g., by bootstrapping or
   Monte Carlo).
@@ -148,7 +148,7 @@ will be used test an effect and form it confidence interval:
 
 - The model has only one group.
 
-- The path is moderated by one or more moderator.
+- The path is moderated by one or more moderators.
 
 - Both the `x`-variable and the `y`-variable are not standardized.
 
@@ -165,7 +165,7 @@ then the variance-covariance computed by `lavaan` will be used, and the
 ### Caution
 
 If the model is fitted by structural equation modeling and has
-moderators, the standard errors, *p*-values, and confidence interval
+moderators, the standard errors, *p*-values, and confidence intervals
 computed from the variance-covariance matrices for conditional effects
 can only be trusted if all covariances involving the product terms are
 free. If any of them are fixed, for example, fixed to zero, it is

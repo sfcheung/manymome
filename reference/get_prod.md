@@ -50,7 +50,7 @@ get_prod(
   The output of
   [`lavaan::parameterEstimates()`](https://rdrr.io/pkg/lavaan/man/parameterEstimates.html).
   If `NULL`, the default, it will be generated from `fit`. If supplied,
-  `fit` will ge ignored.
+  `fit` will be ignored.
 
 - data:
 

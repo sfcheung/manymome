@@ -1,6 +1,6 @@
 # Sample Dataset: A Simple Mediation Model with b-Path Moderated-Moderation
 
-A simple mediation model with moderated-mediation on the b-path.
+A simple mediation model with moderated mediation on the b-path.
 
 ## Usage
 

@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,7 +103,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-23</h4>
+            <h4 data-toc-skip class="date">2026-08-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/manymome.Rmd" class="external-link"><code>vignettes/manymome.Rmd</code></a></small>
       <div class="d-none name"><code>manymome.Rmd</code></div>
@@ -117,8 +117,8 @@
 <p>This article is a brief illustration of how main functions from the
 package <a href="https://sfcheung.github.io/manymome/index.html">manymome</a> (<a href="https://doi.org/10.3758/s13428-023-02224-z" class="external-link">Cheung &amp; Cheung,
 2024</a>) can be used in some typical cases. It assumes that readers
-have basic understanding of mediation, moderation, moderated mediation,
-structural equation modeling (SEM), and bootstrapping.</p>
+have a basic understanding of mediation, moderation, moderated
+mediation, structural equation modeling (SEM), and bootstrapping.</p>
 <div class="section level3">
 <h3 id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a>
 </h3>
@@ -128,7 +128,7 @@ structural equation modeling (SEM), and bootstrapping.</p>
 <p>Stage 1: <strong>Fit the model</strong></p>
 <ul>
 <li><p>This can be done by SEM (using <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>) or a
-series of regression (using <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>).</p></li>
+series of regressions (using <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>).</p></li>
 <li><p>When <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> is used, no need to label any
 parameters or denote any variables as the predictors, mediators,
 moderators, or outcome variables for computing indirect effects or
@@ -155,10 +155,10 @@ be changed as often as needed.</p></li>
 </ul>
 <p><strong>Bootstrapping confidence intervals</strong>: All main
 functions support bootstrap confidence intervals for the effects.
-Bootstrapping can done in Stage 1 (e.g., by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>
-using <code>se = "boot"</code>) or in Stage 2 in the first call to the
-main functions, and only needs to be conducted once. Alternatively,
-<code><a href="../reference/do_boot.html">do_boot()</a></code> can be use (see
+Bootstrapping can be done in Stage 1 (e.g., by
+<code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> using <code>se = "boot"</code>) or in Stage 2
+in the first call to the main functions, and only needs to be conducted
+once. Alternatively, <code><a href="../reference/do_boot.html">do_boot()</a></code> can be used (see
 <code><a href="../articles/do_boot.html">vignette("do_boot")</a></code>). The bootstrap estimates can be reused
 by most main functions of <code>manymome</code> for any path and any
 level of the moderators.</p>
@@ -187,7 +187,7 @@ moderators.</p>
 confidence intervals.</p></li>
 <li><p>Use <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> to compute an
 <em>indirect</em> <em>effect</em>, with bootstrap confidence
-interval.</p></li>
+intervals.</p></li>
 <li><p>Use <code>+</code> and <code>-</code> to compute a
 <em>function</em> of effects, such as total indirect effects or total
 effects.</p></li>
@@ -208,7 +208,7 @@ respectively.</p></li>
 <div class="section level2">
 <h2 id="moderated-mediation-by-sem-using-lavaan">Moderated Mediation by SEM using <code>lavaan</code><a class="anchor" aria-label="anchor" href="#moderated-mediation-by-sem-using-lavaan"></a>
 </h2>
-<p>This is the sample data set comes with the package:</p>
+<p>This is the sample data set that comes with the package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sfcheung.github.io/manymome/">manymome</a></span><span class="op">)</span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">data_med_mod_ab</span></span>
@@ -317,7 +317,7 @@ done. There are several ways to do this. We first illustrate using
 </h4>
 <p>Using <code><a href="../reference/do_boot.html">do_boot()</a></code> instead of setting <code>se</code> to
 <code>"boot"</code> when calling <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> allows users
-to use other method for standard errors and confidence intervals for
+to use other methods for standard errors and confidence intervals for
 other parameters, such as the various types of robust standard errors
 provided by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>.</p>
 <p>The function <code><a href="../reference/do_boot.html">do_boot()</a></code> is used to generate and store
@@ -385,7 +385,7 @@ example</a>).</li>
 confidence intervals. Default is <code>FALSE</code>.</li>
 <li>
 <code>boot_out</code>: The pregenerated bootstrap estimates
-generated by <code><a href="../reference/do_boot.html">do_boot()</a></code> or previous call to
+generated by <code><a href="../reference/do_boot.html">do_boot()</a></code> or a previous call to
 <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> or
 <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>.</li>
 </ul>
@@ -411,13 +411,13 @@ generated by <code><a href="../reference/do_boot.html">do_boot()</a></code> or p
 <span><span class="co">#&gt;  - 'm~x','y~m' is/are the path coefficient(s) along the path conditional</span></span>
 <span><span class="co">#&gt;    on the moderator(s).</span></span></code></pre></div>
 <p>For two or more moderators, the default levels for numeric moderators
-are one standard deviation (SD) below mean and one SD above mean. For
-two moderators, there are four combinations.</p>
+are one standard deviation (SD) below the mean and one SD above the
+mean. For two moderators, there are four combinations.</p>
 <p>As shown above, among these four sets of levels, the indirect effect
 from <code>x</code> to <code>y</code> through <code>m</code> is
 significant only when both <code>w1</code> and <code>w2</code> are one
 SD above their means. The indirect effect at these levels of
-<code>w1</code> and <code>w2</code> are 0.399, with 95% bootstrap
+<code>w1</code> and <code>w2</code> is 0.399, with 95% bootstrap
 confidence interval [0.139, 0.705].</p>
 <p>The function <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code>, as well as other
 functions described below, also supports bias-corrected (BC) confidence
@@ -425,7 +425,7 @@ interval, which can be requested by adding <code>boot_type = "bc"</code>
 to the call. However, authors in some recent work do not advocate this
 method (e.g., Falk &amp; Biesanz, 2015; Hayes, 2022; Tofighi &amp;
 Kelley, 2020). Therefore, this option is provided merely for research
-purpose.</p>
+purposes.</p>
 <div class="section level5">
 <h5 id="examine-the-effect-at-a-particular-set-of-levels-of-the-moderators">Examine the Effect at a Particular Set of Levels of the
 Moderators<a class="anchor" aria-label="anchor" href="#examine-the-effect-at-a-particular-set-of-levels-of-the-moderators"></a>
@@ -434,7 +434,7 @@ Moderators<a class="anchor" aria-label="anchor" href="#examine-the-effect-at-a-p
 levels of the moderators, <code><a href="../reference/get_one_cond_indirect_effect.html">get_one_cond_indirect_effect()</a></code>
 can be used, with the first argument the output of
 <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> and the second argument the row
-number. For example, this shows the details on the computation of the
+number. For example, this shows the details of the computation of the
 indirect effect when both <code>w1</code> and <code>w2</code> are one SD
 above their means (row 1):</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -467,7 +467,7 @@ above their means (row 1):</p>
 <h5 id="changing-the-levels-of-the-moderators">Changing the Levels of the Moderators<a class="anchor" aria-label="anchor" href="#changing-the-levels-of-the-moderators"></a>
 </h5>
 <p>The levels of the moderators, <code>w1</code> and <code>w2</code> in
-this example, can be controlled directly by users. For examples,
+this example, can be controlled directly by users. For example,
 percentiles or exact values of the moderators can be used. See
 <code><a href="../articles/mod_levels.html">vignette("mod_levels")</a></code> on how to specify other levels of
 the moderators, and the arguments <code>w_method</code>,
@@ -524,7 +524,7 @@ do bootstrapping again.</p>
 <span><span class="co">#&gt;  - 'm~x','y~m' is/are the path coefficient(s) along the path conditional</span></span>
 <span><span class="co">#&gt;    on the moderator(s).</span></span></code></pre></div>
 <p>The standardized indirect effect when both <code>w1</code> and
-<code>w2</code> are one SD above mean is 0.401, with 95% bootstrap
+<code>w2</code> are one SD above the mean is 0.401, with 95% bootstrap
 confidence interval [0.154, 0.655].</p>
 <p>That is, when both <code>w1</code> and <code>w2</code> are one SD
 above their means, if <code>x</code> increases by one SD, it leads to an
@@ -534,8 +534,8 @@ increase of 0.401 SD of <code>y</code> through <code>m</code>.</p>
 <h3 id="index-of-moderated-moderated-mediation">Index of Moderated Moderated Mediation<a class="anchor" aria-label="anchor" href="#index-of-moderated-moderated-mediation"></a>
 </h3>
 <p>The index of moderated moderated mediation (Hayes, 2018) can be
-estimated, along with bootstrap confidence interval, using the function
-<code><a href="../reference/index_of_mome.html">index_of_momome()</a></code>:</p>
+estimated, along with a bootstrap confidence interval, using the
+function <code><a href="../reference/index_of_mome.html">index_of_momome()</a></code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_momome</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/index_of_mome.html">index_of_momome</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>,</span>
 <span>                              y <span class="op">=</span> <span class="st">"y"</span>,</span>
@@ -556,7 +556,7 @@ estimated, along with bootstrap confidence interval, using the function
 the path has more than one mediator (see <a href="#est_indirect">this
 example</a>).</li>
 <li>
-<code>w</code>: The name of one of the moderator.</li>
+<code>w</code>: The name of one of the moderators.</li>
 <li>
 <code>z</code>: The name of the other moderator. The order of
 <code>w</code> and <code>z</code> does not matter.</li>
@@ -567,7 +567,7 @@ example</a>).</li>
 confidence intervals. Default is <code>FALSE</code>.</li>
 <li>
 <code>boot_out</code>: The pregenerated bootstrap estimates
-generated by <code><a href="../reference/do_boot.html">do_boot()</a></code> or previous call to
+generated by <code><a href="../reference/do_boot.html">do_boot()</a></code> or a previous call to
 <code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> and
 <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code>.</li>
 </ul>
@@ -596,7 +596,7 @@ generated by <code><a href="../reference/do_boot.html">do_boot()</a></code> or p
 <span><span class="co">#&gt; Index x y 0.042 -0.003 0.116</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  - [CI.lo, CI.hi]: 95% percentile confidence interval.</span></span></code></pre></div>
-<p>The index of moderated moderated mediation is 0.042, with 95%
+<p>The index of moderated moderated mediation is 0.042, with a 95%
 bootstrap confidence interval [-0.003, 0.116].</p>
 <p>Note that this index is specifically for the change when
 <code>w1</code> or <code>w2</code> increases by one unit.</p>
@@ -678,14 +678,14 @@ be specified. This is the output:</p>
 <span><span class="co">#&gt; Index x y 0.088 -0.006 0.223</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  - [CI.lo, CI.hi]: 95% percentile confidence interval.</span></span></code></pre></div>
-<p>In this model, the index of moderated mediation is 0.088, with 95%
+<p>In this model, the index of moderated mediation is 0.088, with a 95%
 bootstrap confidence interval [-0.006, 0.223]. The indirect effect of
 <code>x</code> on <code>y</code> through <code>m</code> does not
 significantly change when <code>w1</code> increases by one unit.</p>
 <p>Note that this index is specifically for the change when
 <code>w1</code> increases by one unit. The index being not significant
-does not contradict with the significant moderation effect suggested by
-the product term.</p>
+does not contradict the significant moderation effect suggested by the
+product term.</p>
 </div>
 </div>
 <div class="section level2">
@@ -824,7 +824,7 @@ number of processes (cores) is the same.</p>
 <code>m1</code> and <code>m2</code> is 0.180, with a 95% confidence
 interval of [0.034, 0.396], significantly different from zero
 (<em>p</em> &lt; .05).</p>
-<p>Because bootstrap confidence interval is requested, the bootstrap
+<p>Because a bootstrap confidence interval is requested, the bootstrap
 estimates are stored in <code>out_med</code>. This output from
 <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> can also be used in the argument
 <code>boot_out</code> of other functions.</p>
@@ -928,7 +928,7 @@ increase in SD of <code>y</code> through <code>m1</code> and
 <code>m2</code> to <code>y</code> or from <code>x</code> through
 <code>m1</code> to <code>y</code> can also be tested by setting the
 three arguments accordingly. Although <code>c1</code> and
-<code>c2</code> are labelled as control variables, if appropriate, their
+<code>c2</code> are labeled as control variables, if appropriate, their
 indirect effects on <code>y</code> through <code>m1</code> and/or
 <code>m2</code> can also be computed and tested.</p>
 </div>
@@ -1076,26 +1076,25 @@ and subtraction for the output of <code><a href="../reference/cond_indirect.html
 <ul>
 <li><p>The model fitting stage is easier. No need to label any
 parameters or define any effects. Users can also use other methods for
-confidence interval and use bootstrapping only for indirect effects and
+confidence intervals and use bootstrapping only for indirect effects and
 conditional indirect effects.</p></li>
-<li><p>Missing data can be be handled by <code>missing = "fiml"</code>
-in calling <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>. Because bootstrapping estimates
-are used in Stage 2, indirect effects and conditional indirect effects
-can also be computed with bootstrap confidence intervals, just like
-defining them in <code>lavaan</code>, in the presence of missing
-data.</p></li>
+<li><p>Missing data can be handled by <code>missing = "fiml"</code> in
+calling <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>. Because bootstrapping estimates are
+used in Stage 2, indirect effects and conditional indirect effects can
+also be computed with bootstrap confidence intervals, just like defining
+them in <code>lavaan</code>, in the presence of missing data.</p></li>
 <li><p>Missing data handled by multiple imputation is also supported
 since version 0.2.7.3. Models fitted by <code><a href="https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html" class="external-link">lavaan.mi::sem.mi()</a></code>
 or <code><a href="https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html" class="external-link">lavaan.mi::lavaan.mi()</a></code> to multiple imputation datasets
 can be used just like the output of <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>. Monte
-Carlo confidence intervals cna be formed for effects computed for these
+Carlo confidence intervals can be formed for effects computed for these
 models (see <code><a href="../articles/do_mc_lavaan_mi.html">vignette("do_mc_lavaan_mi")</a></code>). (Support for
 <code>semTools::runMI()</code> and its wrappers was removed in version
 0.2.7.3 because this and related functions were deprecated in
 <code>semTools</code>.)</p></li>
 <li><p>Bootstrapping only needs to be done once. The bootstrap estimates
 can be reused in computing indirect effects and conditional indirect
-effects. This is particularly useful when the sample size is large and
+effects. This is particularly useful when the sample size is large, and
 there is missing data.</p></li>
 <li><p>Users can explore any path for any levels of the moderators
 without respecifying and refitting the model.</p></li>

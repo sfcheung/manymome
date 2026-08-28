@@ -2,10 +2,6 @@
 
 ## Introduction
 
-(This document is for Version 0.3.4.25 or later, currently on GitHub
-only. The new version is scheduled to be available on CRAN in June
-2026.)
-
 This article is a brief illustration of how to use the all-in-one
 “quick” functions from
 [manymome](https://sfcheung.github.io/manymome/index.html) ([Cheung &
@@ -24,7 +20,7 @@ indicators, with the measurement error taken into account using
 structural equation modeling (SEM).
 
 NOTE: This is part of a series of similar articles with duplicated
-sections, each dedicated to one form of models. See a full list of
+sections, each dedicated to one form of model. See a full list of
 articles
 [here](https://sfcheung.github.io/manymome/articles/index.html#all-in-one-functions).
 
@@ -63,7 +59,7 @@ print(round(head(dat), 2))
 For illustration, only the following variables will be used:
 
 - `x_1`, `x_2`, `x_3`, and `x_4`: The indicators of `fx`, the predictor.
-  The indicator `x_4` is a reverse items.
+  The indicator `x_4` is a reverse item.
 
 - `m1_1`, `m1_2`, `m1_3`, and `m1_4`: The indicators of `fm1`, the first
   mediator.
@@ -75,7 +71,7 @@ For illustration, only the following variables will be used:
   second mediator.
 
 - `y_1`, `y_2`, `y_3`, and `y_4`: The indicators of `fy`, the outcome
-  variable. The indicator `y_4` is a reverse items.
+  variable. The indicator `y_4` is a reverse item.
 
 - `c1_1`, `c1_2`, `c1_3`, and `c1_4`: The indicators of `fc1`, a control
   variable.
@@ -104,7 +100,7 @@ using nonparametric bootstrapping.
 
 ## Analysis
 
-We can do that in one single step using
+We can do that in a single step using
 [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md):
 
 ``` r
@@ -141,11 +137,10 @@ These are the arguments:
 
 - `y`: The name of the outcome (“y” variable).
 
-- `model`: A character vector of the paths in the model. Each of the
-  path is of this form: `"x -> m1 -> m2 -> y"`, from the predictor to
-  the outcome, separated by `->`. The mediators of the model will be
-  inferred from the paths. Any possible paths not specified will be
-  fixed to zero.
+- `model`: A character vector of the paths in the model. Each path is of
+  this form: `"x -> m1 -> m2 -> y"`, from the predictor to the outcome,
+  separated by `->`. The mediators of the model will be inferred from
+  the paths. Any possible paths not specified will be fixed to zero.
 
   - For example, the path `"fx -> fm1 -> fm2 -> y"` is not in the model.
     Therefore, the path `fm1 -> fm2` will be fixed to zero.
@@ -169,7 +164,7 @@ These are the arguments:
   to an integer to make the results reproducible.
 
 The computation may take some time to run, especially if missing data is
-presence, due to the processing time combining bootstrapping and
+present, due to the processing time combining bootstrapping and
 full-information maximum likelihood (FIML), the default way to handle
 missing data.
 
@@ -315,12 +310,12 @@ factor:
     `indicators`.
 
 - The reliability coefficient for each latent factor, based on the
-  factor loadings. Omega coefficient is used, computed by
+  factor loadings. The omega coefficient is used, computed by
   [`semTools::compRelSEM()`](https://rdrr.io/pkg/semTools/man/compRelSEM.html).
 
 ### Model Fit
 
-The section `Structural Equation Modeling Results` print the results
+The section `Structural Equation Modeling Results` prints the results
 from `lavaan` for the model.
 
     #> Model Test User Model:
@@ -820,9 +815,9 @@ variables.
 
 ### Customize The Printout
 
-The `print` method of the output of the quick mediation functions have
-arguments for customizing the output. These are arguments that likely
-may be used:
+The `print` method of the output of the quick mediation functions has
+arguments for customizing the output. These are arguments that may be
+used:
 
 - `digits`: The number of digits after the decimal place for most
   results. Default is 4.
@@ -836,9 +831,9 @@ for other arguments.
 
 ### Speed and Parallel Processing
 
-By default, parallel processing is used. If this failed for some
-reasons, add `parallel` to `FALSE`. It will take longer, sometimes much
-long, to run if `parallel` is set to `FALSE`. Therefore, use parallel
+By default, parallel processing is used. If this fails for some reason,
+set `parallel` to `FALSE`. It will take longer, sometimes much longer,
+to run if `parallel` is set to `FALSE`. Therefore, use parallel
 processing whenever possible.
 
 ### Progress Bar
@@ -877,5 +872,5 @@ computing and testing indirect effects for more complicated models.
 ## Final Remarks
 
 For details on the all-in-one functions, please refer to the help page
-of
+for
 [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md).

@@ -8,12 +8,12 @@ Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z)) to compute
 and test indirect effects in a multigroup model fitted by `lavaan`. [^1]
 
 This article only focuses on issues specific to multigroup models.
-Readers are assumed to have basic understanding on using `manymome`.
+Readers are assumed to have a basic understanding of using `manymome`.
 Please refer to the [Get
 Started](https://sfcheung.github.io/manymome/articles/manymome.html)
 guide for a full introduction, and [this
 section](https://sfcheung.github.io/manymome/articles/manymome.html#mediation-only)
-on an illustration on a mediation model.
+on an illustration of a mediation model.
 
 ## Model
 
@@ -183,7 +183,7 @@ We can use
 [`do_boot()`](https://sfcheung.github.io/manymome/reference/do_boot.md)
 to generate the bootstrap estimates first (see [this
 article](https://sfcheung.github.io/manymome/articles/do_boot.html) for
-an illustration on this function). The argument `ncores` can be omitted
+an illustration of this function). The argument `ncores` can be omitted
 if the default value is acceptable.
 
 ``` r
@@ -201,7 +201,7 @@ fit_boot_out <- do_boot(fit = fit,
 
 The function
 [`indirect_effect()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
-can be used to as usual to estimate an indirect effect and form its
+can be used as usual to estimate an indirect effect and form its
 bootstrapping or Monte Carlo confidence interval along a path in a model
 that starts with any numeric variable, ends with any numeric variable,
 through any numeric variable(s). A detailed illustration can be found in
@@ -320,7 +320,7 @@ the grouping variable as a “moderator” and use
 to compute the indirect effects along a path for all groups. The
 detailed illustration of this function can be found
 [here](https://sfcheung.github.io/manymome/articles/manymome.html#conditional-indirect-effects).
-When use on a multigroup model, wwe can omit the argument `wlevels`. The
+When used on a multigroup model, we can omit the argument `wlevels`. The
 function will automatically identify all groups in a model, and compute
 the indirect effect of the requested path in each model.
 
@@ -362,7 +362,7 @@ Using
 [`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
 is convenient when the number of groups is more than two.
 
-## Compute and Test Between-Group difference
+## Compute and Test Between-Group Difference
 
 There are several ways to compute and test the difference in indirect
 effects between two groups.
@@ -456,7 +456,7 @@ ind_diff2
 #>  - [CI.lo, CI.hi]: 95% percentile confidence interval.
 ```
 
-The convention is `to` row minus `from` row. Though may sound not
+The convention is `to` row minus `from` row. Though it may not sound
 intuitive, the printout always states clearly which group is subtracted
 from which group. The results are identical to those using the math
 operator.
@@ -559,17 +559,17 @@ std_gpB
 In `"Group A"`, the (completely) standardized indirect effect from `x`
 to `y` through `m` is 0.204. In `"Group B"`, this effect is 0.259.
 
-Note that, unlike single-group model, in multigroup models, the
-standardized indirect effect in a group uses the the standard deviations
-of `x`- and `y`-variables in this group to do the standardization.
+Note that, unlike a single-group model, in multigroup models, the
+standardized indirect effect in a group uses the standard deviations of
+`x`- and `y`-variables in this group to do the standardization.
 Therefore, two groups can have different unstandardized effects on a
 path but similar standardized effects on the same path, or have similar
 unstandardized effects on a path but different standardized effects on
 this path. This is a known phenomenon in multigroup structural equation
-model.
+modeling.
 
 The difference in the two completely standardized indirect effects can
-computed and tested using the math operator `-`:
+be computed and tested using the math operator `-`:
 
 ``` r
 
@@ -722,7 +722,7 @@ can be restricted by setting arguments such as `x`, `y`, and `exclude`
 page](file:///C:/GitHub/manymome/docs/reference/all_indirect_paths.md)
 for details).
 
-For example, the following identify all paths from `x1` to `y1`:
+For example, the following identifies all paths from `x1` to `y1`:
 
 ``` r
 
@@ -782,10 +782,10 @@ same way they are formed for single-group models.
 
 ### Computing, Testing, and Plotting Conditional Effects
 
-Though the focus is on indirect effect, the main functions in `manymome`
-can also be used for computing and plotting the effects along the direct
-path between two variables. That is, we can focus on the moderating
-effect of group on a direct path.
+Though the focus is on indirect effects, the main functions in
+`manymome` can also be used for computing and plotting the effects along
+the direct path between two variables. That is, we can focus on the
+moderating effect of group on a direct path.
 
 For example, in the simple mediation model examined above, suppose we
 are interested in the between-group difference in the path from `m` to
@@ -818,7 +818,7 @@ path1
 ```
 
 The difference between the two paths can be tested using bootstrapping
-confidence interval using
+confidence intervals using
 [`cond_indirect_diff()`](https://sfcheung.github.io/manymome/reference/cond_indirect_diff.md):
 
 ``` r
@@ -870,18 +870,18 @@ Conditional Effects
 
 Note: The argument `keep_wlevels_order` needs to set to `FALSE` for
 version 0.3.4 or above to keep the order of the grouping variable in the
-plot. It only affects to order of group labels in the plot and the
+plot. It only affects the order of group labels in the plot and the
 default colors.
 
 Note that, for multigroup models, the *tumble* graph proposed by Bodner
 (2016) will always be used. The position of a line for a group is
-determined by the model implied means and SDs of this group. If no
-equality constraints imposed, these means and SDs are close to the
+determined by the model-implied means and SDs of this group. If no
+equality constraints are imposed, these means and SDs are close to the
 sample means and SDs. For example, the line segment of `"Group A"` is
 far to the right because `"Group A"` has a larger mean of `m` than
 `"Group B"`.
 
-These are the model implied means and SDs:
+These are the model-implied means and SDs:
 
 ``` r
 
@@ -905,7 +905,7 @@ sqrt(diag(tmp[["Group B"]]))
 #> 1.2142143 2.5838604 1.0094330 0.9518064 1.0594076
 ```
 
-It would be misleading if the two lines are plotted on the same
+It would be misleading if the two lines are plotted at the same
 horizontal position, assuming incorrectly that the ranges of `m` are
 similar in the two groups.
 
@@ -923,7 +923,7 @@ Currently, multiple imputation is not supported. Moreover, most
 functions do not (yet) support multigroup models with within-group
 moderators, except for
 [`cond_indirect()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md).
-We would appreciate users to report issues discovered when using
+We would appreciate users reporting issues discovered when using
 [manymome](https://sfcheung.github.io/manymome/index.html) on multigroup
 models at [GitHub](https://github.com/sfcheung/manymome/issues).
 

@@ -69,8 +69,8 @@ do_boot(
 - compute_implied_stats:
 
   If `TRUE`, default, implied statistics will be computed for each
-  bootstrap sample. Letting users to disable this is an experimental
-  features to let the process run faster.
+  bootstrap sample. Allowing users to disable this is an experimental
+  feature to let the process run faster.
 
 ## Value
 
@@ -125,7 +125,7 @@ group.
 [`fit2boot_out()`](https://sfcheung.github.io/manymome/reference/fit2boot_out.md),
 and
 [`fit2boot_out_do_boot()`](https://sfcheung.github.io/manymome/reference/fit2boot_out.md),
-which implements the bootstrapping.
+which implement the bootstrapping.
 
 ## Examples
 

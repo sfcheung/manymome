@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,7 +103,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-23</h4>
+            <h4 data-toc-skip class="date">2026-08-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/articles/mome_sam.Rmd" class="external-link"><code>vignettes/articles/mome_sam.Rmd</code></a></small>
       <div class="d-none name"><code>mome_sam.Rmd</code></div>
@@ -111,9 +111,6 @@
 
     
     
-<p>(This document is for Version 0.3.4.25 or later, currently on GitHub
-only. The new version is scheduled to be available on CRAN in June
-2026.)</p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -146,7 +143,7 @@ method by <span class="citation">Rosseel et al. (2025)</span>.</p>
 <span><span class="co">#&gt; 5 -0.978 -0.0132 -1.268 -1.430 -0.696 -1.5051</span></span>
 <span><span class="co">#&gt; 6  1.591  0.4417 -0.284 -0.124 -0.351  0.7251</span></span></code></pre></div>
 <p>This dataset has indicators of the following four latent variables:
-one predictor (<code>fx</code>), one mediators (<code>fm</code>), one
+one predictor (<code>fx</code>), one mediator (<code>fm</code>), one
 outcome variable (<code>fy</code>), and one moderator
 (<code>fw</code>).</p>
 <p>Suppose this is the model being fitted:</p>
@@ -158,7 +155,7 @@ outcome variable (<code>fy</code>), and one moderator
 <p>If this model is fitted to the scale scores, then a product term
 <code>fx:fw</code> is used to model the moderation.</p>
 <p>If the model is for the latent variables, the new approach, SAM
-(structural-after-measurement), presented in <span class="citation">Rosseel et al. (2025)</span> can be used, using the
+(structural-after-measurement), presented in <span class="citation">Rosseel et al. (2025)</span> can be used using the
 function <code><a href="https://rdrr.io/pkg/lavaan/man/sam.html" class="external-link">sam()</a></code> from <code>lavaan</code>. This is the model
 syntax:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -173,7 +170,7 @@ syntax:</p>
 <span><span class="st">fm ~ fx + fw + fx:fw</span></span>
 <span><span class="st">fy ~ fm + fx</span></span>
 <span><span class="st">"</span></span></code></pre></div>
-<p>The moderation effect is modelled by <code>fx:fw</code>. To fit this
+<p>The moderation effect is modeled by <code>fx:fw</code>. To fit this
 model by SAM, use <code><a href="https://rdrr.io/pkg/lavaan/man/sam.html" class="external-link">sam()</a></code> from <code>lavaan</code>.</p>
 <p>As recommended by <span class="citation">Rosseel et al.
 (2025)</span>, nonparametric bootstrapping will be used to compute the
@@ -251,11 +248,11 @@ to <code>fy</code> through <code>fm</code>, conditional on
 <span><span class="co">#&gt;  - The 'ind' column shows the conditional indirect effects.</span></span>
 <span><span class="co">#&gt;  - 'fm~fx','fy~fm' is/are the path coefficient(s) along the path</span></span>
 <span><span class="co">#&gt;    conditional on the moderator(s).</span></span></code></pre></div>
-<p>When <code>fw</code> is one standard deviation below mean, the
-indirect effect is -0.003, with 95% confidence interval [-0.042,
+<p>When <code>fw</code> is one standard deviation below the mean, the
+indirect effect is -0.003, with a 95% confidence interval [-0.042,
 0.034].</p>
-<p>When <code>fw</code> is one standard deviation above mean, the
-indirect effect is 0.361, with 95% confidence interval [0.141,
+<p>When <code>fw</code> is one standard deviation above the mean, the
+indirect effect is 0.361, with a 95% confidence interval [0.141,
 0.568].</p>
 <p>Note that any conditional indirect path in the model can be estimated
 this way. There is no limit on the path to be estimated, as long as all
@@ -301,11 +298,11 @@ can be estimated by setting <code>standardized_x</code> and
 <span><span class="co">#&gt;  - ind: The unstandardized conditional indirect effects.</span></span>
 <span><span class="co">#&gt;  - 'fm~fx','fy~fm' is/are the path coefficient(s) along the path</span></span>
 <span><span class="co">#&gt;    conditional on the moderator(s).</span></span></code></pre></div>
-<p>When <code>fw</code> is one standard deviation below mean, the
-standardized indirect effect is -0.004, with 95% confidence interval
+<p>When <code>fw</code> is one standard deviation below the mean, the
+standardized indirect effect is -0.004, with a 95% confidence interval
 [-0.050, 0.041].</p>
-<p>When <code>fw</code> is one standard deviation above mean, the
-indirect effect is 0.435, with 95% confidence interval [0.170,
+<p>When <code>fw</code> is one standard deviation above the mean, the
+indirect effect is 0.435, with a 95% confidence interval [0.170,
 0.680].</p>
 </div>
 <div class="section level2">

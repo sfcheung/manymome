@@ -74,6 +74,7 @@ cond_indirect_effects(
   ci_type = NULL,
   boot_type = c("perc", "bc"),
   groups = NULL,
+  wlevels_not_found = c("warn", "error", "ignore"),
   ...
 )
 
@@ -139,6 +140,7 @@ cond_effects(
   ci_type = NULL,
   boot_type = c("perc", "bc"),
   groups = NULL,
+  wlevels_not_found = c("warn", "error", "ignore"),
   ...
 )
 
@@ -186,7 +188,7 @@ many_indirect_effects(paths, ...)
 
 - implied_stats:
 
-  Implied means, variances, and covariances of observed variables, of
+  Implied means, variances, and covariances of observed variables, in
   the form of the output of
   [`lavaan::lavInspect()`](https://rdrr.io/pkg/lavaan/man/lavInspect.html)
   with `what` set to `"implied"`. The standard deviations are extracted
@@ -202,14 +204,14 @@ many_indirect_effects(paths, ...)
 - standardized_x:
 
   Logical. Whether `x` will be standardized. Default is `FALSE`. For
-  multigroup models, model implied standard deviation for the selected
-  group will be used.
+  multigroup models, the model-implied standard deviation for the
+  selected group will be used.
 
 - standardized_y:
 
   Logical. Whether `y` will be standardized. Default is `FALSE`. For
-  multigroup models, model implied standard deviation for the selected
-  group will be used.
+  multigroup models, the model-implied standard deviation for the
+  selected group will be used.
 
 - boot_ci:
 
@@ -279,7 +281,7 @@ many_indirect_effects(paths, ...)
 - save_boot_full:
 
   If `TRUE`, full bootstrapping results will be stored. Default is
-  `FALSE.`
+  `FALSE`.
 
 - prods:
 
@@ -316,7 +318,7 @@ many_indirect_effects(paths, ...)
 - save_mc_full:
 
   If `TRUE`, full Monte Carlo results will be stored. Default is
-  `FALSE.`
+  `FALSE`.
 
 - save_mc_out:
 
@@ -332,7 +334,7 @@ many_indirect_effects(paths, ...)
 - save_ci_full:
 
   If `TRUE`, full bootstrapping or Monte Carlo results will be stored.
-  Default is `FALSE.`
+  Default is `FALSE`.
 
 - save_ci_out:
 
@@ -343,7 +345,7 @@ many_indirect_effects(paths, ...)
 
   The type of confidence intervals to be formed. Can be either `"boot"`
   (bootstrapping) or `"mc"` (Monte Carlo). If not supplied or is `NULL`,
-  will check other arguments (e.g, `boot_ci` and `mc_ci`). If supplied,
+  will check other arguments (e.g., `boot_ci` and `mc_ci`). If supplied,
   will override `boot_ci` and `mc_ci`.
 
 - group:
@@ -425,7 +427,7 @@ many_indirect_effects(paths, ...)
 
   A numeric vector. Specify the percentile (in proportion) for each
   level. Default is `c(.16, .50, .84)` if there is one moderator, and
-  `c(.16, .84)` when there are more than one moderator. Ignored if
+  `c(.16, .84)` when there is more than one moderator. Ignored if
   `w_method` is not equal to `"percentile"`. See
   [`mod_levels_list()`](https://sfcheung.github.io/manymome/reference/mod_levels.md)
   for further information.
@@ -434,7 +436,7 @@ many_indirect_effects(paths, ...)
 
   The type of output of `cond_indirect_effects()`. If `"data.frame"`,
   the default, the output will be converted to a data frame. If any
-  other values, the output is a list of the outputs from
+  other value, the output is a list of the outputs from
   `cond_indirect()`.
 
 - mod_levels_list_args:
@@ -455,6 +457,13 @@ many_indirect_effects(paths, ...)
   [lavaan::lavaan](https://rdrr.io/pkg/lavaan/man/lavaan-class.html)
   object. Used only when the number of groups is greater than one.
   Default is `NULL`.
+
+- wlevels_not_found:
+
+  How to handle variables in `wlevels` not found in the components of
+  product terms. If `"warn"`, a warning will be issued. If `"error"`, an
+  error will be raised. If `"ignore"`, variables not found in the
+  components will be ignored silently.\`
 
 - ...:
 
@@ -558,16 +567,16 @@ intervals are supported. When used on a multigroup model:
 
 - For `cond_indirect()` and `indirect_effect()`, users need to specify
   the `group` argument (by number or label). When using
-  `cond_indirect_effects()`, if `group` is not set, all groups wil be
+  `cond_indirect_effects()`, if `group` is not set, all groups will be
   used and the indirect effect in each group will be computed, kind of
   treating group as a moderator.
 
 - For `many_indirect_effects()`, the paths can be generated from a
-  multigroup models.
+  multigroup model.
 
 - Currently, `cond_indirect_effects()` does not support a multigroup
   model with moderators on the path selected. The function
-  `cond_indirect()` does not have this limitation but users need to
+  `cond_indirect()` does not have this limitation, but users need to
   manually specify the desired value of the moderator(s).
 
 ### `many_indirect_effects()`
@@ -598,7 +607,7 @@ prevents accidentally repeating the process once for each direct path.
   name when a path has no moderator.
 
 - `many_indirect_effects()`: Compute the indirect effects along more
-  than one paths. It call `indirect_effect()` once for each of the path.
+  than one path. It call `indirect_effect()` once for each of the paths.
 
 ## See also
 

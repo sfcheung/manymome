@@ -9,7 +9,7 @@ output of cond_indirect_effects()"><meta property="og:image" content="https://sf
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -129,7 +129,7 @@ display. Default is 3.</p></dd>
 <dd><p>Logical. Whether
 the annotation after the table of
 effects is to be printed. Default is
-<code>TRUE.</code></p></dd>
+<code>TRUE</code>.</p></dd>
 
 
 <dt id="arg-pvalue">pvalue<a class="anchor" aria-label="anchor" href="#arg-pvalue"></a></dt>
@@ -247,7 +247,7 @@ method presented in Asparouhov and Muthén (2021).
 Note that these <em>p</em>-values are asymmetric
 bootstrap <em>p</em>-values based on the
 distribution of the bootstrap estimates.
-They not computed based on the
+They are not computed based on the
 distribution under the null hypothesis.</p>
 <p>For a <em>p</em>-value of <em>a</em>, it means that
 a 100(1 - <em>a</em>)% bootstrapping confidence
@@ -263,14 +263,14 @@ will exclude zero.</p><div class="section">
 
 <p>If these conditions are met, the
 stored standard errors, if available,
-will be used test an effect and
-form it confidence interval:</p><ul><li><p>Confidence intervals have not been
+will be used to test an effect and
+form its confidence interval:</p><ul><li><p>Confidence intervals have not been
 formed (e.g., by bootstrapping or
 Monte Carlo).</p></li>
 <li><p>The path has no mediators.</p></li>
 <li><p>The model has only one group.</p></li>
 <li><p>The path is moderated by one or
-more moderator.</p></li>
+more moderators.</p></li>
 <li><p>Both the <code>x</code>-variable and the
 <code>y</code>-variable are not standardized.</p></li>
 </ul><p>If the model is fitted by OLS
@@ -295,7 +295,7 @@ from the <em>z</em> statistic.</p>
 <p>If the model is fitted by structural
 equation modeling and has moderators,
 the standard errors, <em>p</em>-values,
-and confidence interval computed
+and confidence intervals computed
 from the variance-covariance matrices
 for conditional effects
 can only be trusted if all covariances

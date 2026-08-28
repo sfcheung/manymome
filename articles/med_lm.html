@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,7 +103,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-23</h4>
+            <h4 data-toc-skip class="date">2026-08-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/med_lm.Rmd" class="external-link"><code>vignettes/med_lm.Rmd</code></a></small>
       <div class="d-none name"><code>med_lm.Rmd</code></div>
@@ -177,16 +177,16 @@ models into one object (a system of regression models) using
 matter. To ensure that the regression outputs can be validly combined,
 <code><a href="../reference/lm2list.html">lm2list()</a></code> will also check:</p>
 <ol style="list-style-type: lower-alpha">
-<li><p>whether the same sample is used in all regression analysis (not
+<li><p>whether the same sample is used in all regression analyses (not
 just same sample size, but the same set of cases), and</p></li>
 <li><p>whether the models are “connected”, to ensure that the regression
-outputs can be validly combined.</p></li>
+outputs can be combined in a valid way.</p></li>
 </ol>
 </div>
 <div class="section level2">
 <h2 id="generating-bootstrap-estimates">Generating Bootstrap Estimates<a class="anchor" aria-label="anchor" href="#generating-bootstrap-estimates"></a>
 </h2>
-<p>To form nonparametric bootstrap confidence interval for indirect
+<p>To form nonparametric bootstrap confidence intervals for indirect
 effects to be computed, <code><a href="../reference/do_boot.html">do_boot()</a></code> can be used to generate
 bootstrap estimates for all regression coefficients first. These
 estimates can be reused for any indirect effects to be estimated.</p>
@@ -243,7 +243,7 @@ to <code>y1</code> through <code>m11</code> and <code>m12</code>:</p>
 <span><span class="co">#&gt;   m11~x1       0.352</span></span>
 <span><span class="co">#&gt;  m12~m11       0.454</span></span>
 <span><span class="co">#&gt;   y1~m12       0.234</span></span></code></pre></div>
-<p>The indirect effect is 0.037, with 95% confidence interval [0.003,
+<p>The indirect effect is 0.037, with a 95% confidence interval [0.003,
 0.077].</p>
 <p>Similarly, we can estimate the indirect effect from <code>x2</code>
 to <code>y2</code> through <code>m2</code>:</p>
@@ -276,8 +276,8 @@ to <code>y2</code> through <code>m2</code>:</p>
 <span><span class="co">#&gt;   Path Coefficient</span></span>
 <span><span class="co">#&gt;  m2~x2       0.289</span></span>
 <span><span class="co">#&gt;  y2~m2      -0.436</span></span></code></pre></div>
-<p>The indirect effect is -0.126, with 95% confidence interval [-0.233,
--0.043].</p>
+<p>The indirect effect is -0.126, with a 95% confidence interval
+[-0.233, -0.043].</p>
 <p>Note that any indirect path in the model can be estimated this way.
 Suppose, after doing the regression analysis, we want to estimate the
 indirect effect from <code>x2</code> to <code>m12</code> through
@@ -311,8 +311,8 @@ indirect effect from <code>x2</code> to <code>m12</code> through
 <span><span class="co">#&gt;     Path Coefficient</span></span>
 <span><span class="co">#&gt;   m11~x2     -0.0447</span></span>
 <span><span class="co">#&gt;  m12~m11      0.4541</span></span></code></pre></div>
-<p>The indirect effect is -0.020, with 95% confidence interval [-0.139,
-0.110].</p>
+<p>The indirect effect is -0.020, with a 95% confidence interval
+[-0.139, 0.110].</p>
 <p>There is no limit on the path to be estimated, as long as all
 required path coefficients are in the model.
 <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> will also check whether a path is valid.
@@ -363,7 +363,7 @@ estimated by setting <code>standardized_x</code> and
 <span><span class="co">#&gt; NOTE:</span></span>
 <span><span class="co">#&gt; - The effects of the component paths are from the model, not</span></span>
 <span><span class="co">#&gt;   standardized.</span></span></code></pre></div>
-<p>The standardized indirect effect is 0.039, with 95% confidence
+<p>The standardized indirect effect is 0.039, with a 95% confidence
 interval [0.004,0.085].</p>
 <p>Similarly, we can estimate the standardized indirect effect from
 <code>x1</code> to <code>y1</code> through <code>m2</code>:</p>
@@ -402,7 +402,7 @@ interval [0.004,0.085].</p>
 <span><span class="co">#&gt; NOTE:</span></span>
 <span><span class="co">#&gt; - The effects of the component paths are from the model, not</span></span>
 <span><span class="co">#&gt;   standardized.</span></span></code></pre></div>
-<p>The standardized indirect effect is -0.010, with 95% confidence
+<p>The standardized indirect effect is -0.010, with a 95% confidence
 interval [-0.069, 0.067].</p>
 </div>
 <div class="section level2">
@@ -541,7 +541,7 @@ compute the indirect effects along Paths b, c, and d below:</p>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span></code></pre></div>
 <p>The total effect of <code>f1</code> on <code>f4</code> is 0.030, with
-95% confidence interval [-0.088, 0.132].</p>
+a 95% confidence interval [-0.088, 0.132].</p>
 <p>See <code><a href="../reference/math_indirect.html">help("math_indirect")</a></code> for further details on
 addition for <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> outputs.</p>
 </div>
@@ -571,7 +571,7 @@ we can compute the difference between the indirect effect of
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Percentile confidence interval formed by nonparametric bootstrapping</span></span>
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span></code></pre></div>
-<p>The difference in effects is 0.047, with 95% confidence interval
+<p>The difference in effects is 0.047, with a 95% confidence interval
 [-0.038, 0.118].</p>
 <p>See <code><a href="../reference/math_indirect.html">help("math_indirect")</a></code> for further details on
 subtraction for <code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> outputs.</p>
@@ -666,7 +666,7 @@ variables will be included.</p></li>
 <li><p><code>exclude</code> is a vector of names. Paths that involve
 these variables will be excluded.</p></li>
 </ul>
-<p>The output is a <code>all_paths</code>-class object. It can be used
+<p>The output is an <code>all_paths</code>-class object. It can be used
 in <code><a href="../reference/cond_indirect.html">many_indirect_effects()</a></code></p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cond_indirect.html">many_indirect_effects</a></span><span class="op">(</span>paths <span class="op">=</span> <span class="va">all_paths</span>,</span>
@@ -707,8 +707,9 @@ summary of the indirect effects will be printed:</p>
 <span><span class="co">#&gt;  - The 'ind' column shows the indirect effect(s).</span></span>
 <span><span class="co">#&gt; </span></span></code></pre></div>
 <p>The output of <code><a href="../reference/cond_indirect.html">many_indirect_effects()</a></code> is a named list,
-names being the path name as appeared in the output. Individual indirect
-effects can be extracted using either the indices or the path names</p>
+names being the path name as it appears in the output. Individual
+indirect effects can be extracted using either the indices or the path
+names</p>
 <p>An example using index:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out1</span> <span class="op">&lt;-</span> <span class="va">out_all</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
@@ -762,7 +763,7 @@ is usually long):</p>
 <span><span class="co">#&gt;  m2~x2       0.289</span></span>
 <span><span class="co">#&gt;  y2~m2      -0.436</span></span></code></pre></div>
 <p>The extracted element can be used just like the outputs of
-<code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> in previous section.</p>
+<code><a href="../reference/cond_indirect.html">indirect_effect()</a></code> in the previous section.</p>
 <p>See the help page of <code><a href="../reference/all_indirect_paths.html">all_indirect_paths()</a></code> and
 <code><a href="../reference/cond_indirect.html">many_indirect_effects()</a></code> for other arguments available.</p>
 <div class="section level3">
@@ -796,7 +797,7 @@ can be computed by <code><a href="../reference/total_indirect_effect.html">total
 <span><span class="co">#&gt; with 100 bootstrap samples.</span></span></code></pre></div>
 <p>The first argument is the output of
 <code><a href="../reference/cond_indirect.html">many_indirect_effects()</a></code> or a list of
-<code>indirect</code>-class object. <code>x</code> is the name of the
+<code>indirect</code>-class objects. <code>x</code> is the name of the
 variable that starts the paths. <code>y</code> is the name of the
 variable that ends the paths.</p>
 </div>

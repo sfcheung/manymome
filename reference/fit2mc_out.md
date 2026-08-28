@@ -27,8 +27,8 @@ fit2mc_out(fit, progress = TRUE, compute_implied_stats = TRUE)
 - compute_implied_stats:
 
   If `TRUE`, default, implied statistics will be computed for each
-  replication. Letting users to disable this is an experimental features
-  to let the process run faster.
+  replication. Letting users disable this is an experimental feature to
+  let the process run faster.
 
 ## Value
 

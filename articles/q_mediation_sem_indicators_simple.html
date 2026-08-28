@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,7 +106,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-23</h4>
+            <h4 data-toc-skip class="date">2026-08-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/articles/q_mediation_sem_indicators_simple.Rmd" class="external-link"><code>vignettes/articles/q_mediation_sem_indicators_simple.Rmd</code></a></small>
       <div class="d-none name"><code>q_mediation_sem_indicators_simple.Rmd</code></div>
@@ -117,9 +117,6 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>(This document is for Version 0.3.4.25 or later, currently on GitHub
-only. The new version is scheduled to be available on CRAN in June
-2026.)</p>
 <p>This article is a brief illustration of how to use the all-in-one
 “quick” functions from <a href="https://sfcheung.github.io/manymome/index.html">manymome</a> (<a href="https://doi.org/10.3758/s13428-023-02224-z" class="external-link">Cheung &amp; Cheung,
 2024</a>) to fit a structural model and compute and test indirect
@@ -133,7 +130,7 @@ effects when some of the constructs are latent variables measured by
 multiple indicators, with the measurement error taken into account using
 structural equation modeling (SEM).</p>
 <p>NOTE: This is part of a series of similar articles with duplicated
-sections, each dedicated to one form of models. See a full list of
+sections, each dedicated to one form of model. See a full list of
 articles <a href="./index.html#all-in-one-functions">here</a>.</p>
 </div>
 <div class="section level2">
@@ -170,13 +167,13 @@ illustration.</p>
 <ul>
 <li><p><code>x_1</code>, <code>x_2</code>, <code>x_3</code>, and
 <code>x_4</code>: The indicators of <code>fx</code>, the predictor. The
-indicator <code>x_4</code> is a reverse items.</p></li>
+indicator <code>x_4</code> is a reverse item.</p></li>
 <li><p><code>m1_1</code>, <code>m1_2</code>, <code>m1_3</code>, and
 <code>m1_4</code>: The indicators of <code>fm</code>, the
 mediator.</p></li>
 <li><p><code>y_1</code>, <code>y_2</code>, <code>y_3</code>, and
 <code>y_4</code>: The indicators of <code>fy</code>, the outcome
-variable. The indicator <code>y_4</code> is a reverse items.</p></li>
+variable. The indicator <code>y_4</code> is a reverse item.</p></li>
 <li><p><code>c1_1</code>, <code>c1_2</code>, <code>c1_3</code>, and
 <code>c1_4</code>: The indicators of <code>fc1</code>, a control
 variable.</p></li>
@@ -200,7 +197,7 @@ nonparametric bootstrapping.</p>
 <div class="section level2">
 <h2 id="analysis">Analysis<a class="anchor" aria-label="anchor" href="#analysis"></a>
 </h2>
-<p>We can do that in one single step using
+<p>We can do that in a single step using
 <code><a href="../reference/q_mediation.html">q_simple_mediation()</a></code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/q_mediation.html">q_simple_mediation</a></span><span class="op">(</span></span>
@@ -235,7 +232,7 @@ the name of the latent variable. If an indicator is a reverse item, add
 a minus sign, <code>-</code>, before its name. It will be reverse-coded
 (multiplied by <code>-1</code>) before fitting the model. If a variable
 in <code>x</code>, <code>y</code>, <code>m</code>, or <code>cov</code>
-is not one of the latent factor, it is an observed variable.</p></li>
+is not one of the latent factors, it is an observed variable.</p></li>
 <li><p><code>fit_method</code> and <code>indicator_method</code>: To fit
 a model with the measurement part, using the information from
 <code>indicators</code>, set <code>fit_method</code> to
@@ -249,7 +246,7 @@ Should always be set to an integer to make the results
 reproducible.</p></li>
 </ul>
 <p>The computation may take some time to run, especially if missing data
-is presence, due to the processing time combining bootstrapping and
+is present, due to the processing time combining bootstrapping and
 full-information maximum likelihood (FIML), the default way to handle
 missing data.</p>
 </div>
@@ -371,14 +368,14 @@ loading is negative, it may be a reverse indicator not specified in
 </ul>
 </li>
 <li><p>The reliability coefficient for each latent factor, based on the
-factor loadings. Omega coefficient is used, computed by
+factor loadings. The omega coefficient is used, computed by
 <code><a href="https://rdrr.io/pkg/semTools/man/compRelSEM.html" class="external-link">semTools::compRelSEM()</a></code>.</p></li>
 </ul>
 </div>
 <div class="section level3">
 <h3 id="model-fit">Model Fit<a class="anchor" aria-label="anchor" href="#model-fit"></a>
 </h3>
-<p>The section <code>Structural Equation Modeling Results</code> print
+<p>The section <code>Structural Equation Modeling Results</code> prints
 the results from <code>lavaan</code> for the model.</p>
 <pre><code><span><span class="co">#&gt; Model Test User Model:</span></span>
 <span><span class="co">#&gt;                                                       </span></span>
@@ -466,7 +463,7 @@ variable (<code>fy</code> in this model).</p>
 <span><span class="co">#&gt;   standardized. Variable(s) standardized is/are: fm, fx, fc1, c2</span></span>
 <span><span class="co">#&gt; - CI.lo and CI.hi are the 95.0% confidence levels of 'Estimate'</span></span>
 <span><span class="co">#&gt;   computed from the z values and standard errors.</span></span></code></pre>
-<p>These are the results in predicting <code>y</code>:</p>
+<p>These are the results of predicting <code>y</code>:</p>
 <pre><code><span><span class="co">#&gt;  --------------- </span></span>
 <span><span class="co">#&gt;  Predicting fy : </span></span>
 <span><span class="co">#&gt;  --------------- </span></span>
@@ -663,8 +660,8 @@ variables.</p>
 <h3 id="customize-the-printout">Customize The Printout<a class="anchor" aria-label="anchor" href="#customize-the-printout"></a>
 </h3>
 <p>The <code>print</code> method of the output of the quick mediation
-functions have arguments for customizing the output. These are arguments
-that likely may be used:</p>
+functions has arguments for customizing the output. These are arguments
+that may be used:</p>
 <ul>
 <li><p><code>digits</code>: The number of digits after the decimal place
 for most results. Default is 4.</p></li>
@@ -677,9 +674,9 @@ arguments.</p>
 <div class="section level3">
 <h3 id="speed-and-parallel-processing">Speed and Parallel Processing<a class="anchor" aria-label="anchor" href="#speed-and-parallel-processing"></a>
 </h3>
-<p>By default, parallel processing is used. If this failed for some
-reasons, add <code>parallel</code> to <code>FALSE</code>. It will take
-longer, sometimes much long, to run if <code>parallel</code> is set to
+<p>By default, parallel processing is used. If this fails for some
+reason, set <code>parallel</code> to <code>FALSE</code>. It will take
+longer, sometimes much longer, to run if <code>parallel</code> is set to
 <code>FALSE</code>. Therefore, use parallel processing whenever
 possible.</p>
 </div>
@@ -716,7 +713,7 @@ testing indirect effects for more complicated models.</p>
 <h2 id="final-remarks">Final Remarks<a class="anchor" aria-label="anchor" href="#final-remarks"></a>
 </h2>
 <p>For details on the all-in-one functions, please refer to the help
-page of <code><a href="../reference/q_mediation.html">q_mediation()</a></code>.</p>
+page for <code><a href="../reference/q_mediation.html">q_mediation()</a></code>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

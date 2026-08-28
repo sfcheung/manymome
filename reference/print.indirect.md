@@ -76,7 +76,7 @@ print(
 - wrap_computation:
 
   Logical. If `TRUE`, the default, long computational symbols and values
-  will be wrapped to fit to the screen width.
+  will be wrapped to fit the screen width.
 
 - ...:
 
@@ -102,14 +102,14 @@ confidence interval will have one of its limits equal to 0. A confidence
 interval with a higher confidence level will include zero, while a
 confidence interval with a lower confidence level will exclude zero.
 
-We recommend using confidence interval directly. Therefore, *p*-value is
-not printed by default. Nevertheless, users who need it can request it
-by setting `pvalue` to `TRUE`.
+We recommend using confidence intervals directly. Therefore, *p*-value
+is not printed by default. Nevertheless, users who need it can request
+it by setting `pvalue` to `TRUE`.
 
 ### Using Original Standard Errors
 
 If these conditions are met, the stored standard error, if available,
-will be used to test an effect and form it confidence interval:
+will be used to test an effect and form its confidence interval:
 
 - Confidence interval has not been formed (e.g., by bootstrapping or
   Monte Carlo).
@@ -133,10 +133,10 @@ then the variance-covariance computed by `lavaan` will be used, and the
 ### Caution
 
 If the model is fitted by structural equation modeling and has
-moderators, the standard errors, *p*-values, and confidence interval
+moderators, the standard errors, *p*-values, and confidence intervals
 computed from the variance-covariance matrices for conditional effects
 can only be trusted if all covariances involving the product terms are
-free. If any some of them are fixed, for example, fixed to zero, it is
+free. If any of them are fixed, for example, fixed to zero, it is
 possible that the model is not invariant to linear transformation of the
 variables.
 

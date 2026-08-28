@@ -268,10 +268,10 @@ print(
 - m:
 
   A character vector of the name(s) of the mediator(s). For a simple
-  mediation model, it must has only one name. For serial and parallel
+  mediation model, it must have only one name. For serial and parallel
   mediation models, it can have one or more names. For a serial
-  mediation models, the direction of the paths go from the first names
-  to the last names. For example, `c("m1", "m3", "m4")` denoted that the
+  mediation model, the direction of the paths go from the first names to
+  the last names. For example, `c("m1", "m3", "m4")` denoted that the
   path is `m1 -> m3 -> m4`.
 
 - cov:
@@ -289,7 +289,7 @@ print(
   A named list to specify paths that are moderated. For example,
   `list("x -> y" = "w1", "x -> m" = "w2")` indicates that the path
   `x -> y` is moderated by `"w1"` and the path `x -> m` is moderated by
-  `"w2"`. For now, moderators is supported only if `fit_method` is
+  `"w2"`. For now, moderators are supported only if `fit_method` is
   `"lm"` or `"regression"`. To fit the model by `lavaan`, please specify
   the model manually and use other functions in `manymome`. A path can
   be moderated by more than one moderator (e.g.,
@@ -343,7 +343,7 @@ print(
 
   The type of confidence intervals to be formed. Can be either `"boot"`
   (bootstrapping) or `"mc"` (Monte Carlo). If not supplied or is `NULL`,
-  will check other arguments (e.g, `boot_ci` and `mc_ci`). If supplied,
+  will check other arguments (e.g., `boot_ci` and `mc_ci`). If supplied,
   will override `boot_ci` and `mc_ci`. If `fit_method` is `"regression"`
   or `"lm"`, then only `"boot"` is supported.
 
@@ -385,7 +385,7 @@ print(
 - missing:
 
   If `fit_method` is set to `"sem"` or `"lavaan"`, this argument
-  determine how missing data is handled. The default value is `"fiml"`
+  determines how missing data is handled. The default value is `"fiml"`
   and full information maximum likelihood will be used to handle missing
   data. Please refer to
   [lavaan::lavOptions](https://rdrr.io/pkg/lavaan/man/lavOptions.html)
@@ -450,7 +450,7 @@ print(
 - annotation:
 
   Logical. Whether the annotation after the table of effects is to be
-  printed. Default is `TRUE.`
+  printed. Default is `TRUE`.
 
 - pvalue:
 
@@ -478,8 +478,8 @@ print(
 
   Logical. If `TRUE` and confidence interval has not been computed, the
   function will try to compute them from stored standard error if the
-  original standard error is to be used. Ignored if confidence interval
-  has already been computed. Default is `TRUE`.
+  original standard error is to be used. Ignored if the confidence
+  interval has already been computed. Default is `TRUE`.
 
 - wrap_computation:
 
@@ -508,9 +508,9 @@ print(
 
 - sem_style:
 
-  How the for the model is to be printed if the model is fitted by
-  structural equation modeling (using `lavaan`). Default is `"lm"` and
-  the results will be printed in a style similar to that of
+  How the model is to be printed if the model is fitted by structural
+  equation modeling (using `lavaan`). Default is `"lm"` and the results
+  will be printed in a style similar to that of
   [`summary()`](https://rdrr.io/r/base/summary.html) output of
   [`stats::lm()`](https://rdrr.io/r/stats/lm.html). If `"lavaan"`, the
   results will be printed in usual `lavaan` style.
@@ -596,7 +596,7 @@ will automatically identify all indirect effects and total effects.
 
 Note that they are *not* intended to be flexible. For more complex
 models, it is recommended to fit the models manually, either by
-structural equation modelling (e.g.,
+structural equation modeling (e.g.,
 [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html)) or by
 regression analysis using
 [`stats::lm()`](https://rdrr.io/r/stats/lm.html) or
@@ -681,7 +681,7 @@ coefficients by regression:
 
 - Return all the results for printing.
 
-The output of the "q" functions have a `print` method for printing all
+The output of the "q" functions has a `print` method for printing all
 the major results.
 
 #### Path Analysis
@@ -728,7 +728,7 @@ methods are supported.
 
 ### Printing the Results
 
-The output of the "q" functions have a `print` method for printing all
+The output of the "q" functions has a `print` method for printing all
 the major results.
 
 ### Moderated Mediation

@@ -21,8 +21,9 @@ print(x, digits = 3, level = NULL, full = FALSE, boot_type, ...)
 
 - level:
 
-  The level of confidence of bootstrap confidence interval, if requested
-  when created. If `NULL`, the default, the level requested when calling
+  The level of confidence of the bootstrap confidence interval, if
+  requested when created. If `NULL`, the default, the level requested
+  when calling
   [`delta_med()`](https://sfcheung.github.io/manymome/reference/delta_med.md)
   is used. If not null, then this level will be used.
 

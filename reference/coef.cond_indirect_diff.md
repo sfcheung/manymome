@@ -22,7 +22,7 @@ coef(object, ...)
 
 ## Value
 
-Scalar: The change of conditional indirect effect in `object`.
+Scalar: The change in conditional indirect effect in `object`.
 
 ## Details
 

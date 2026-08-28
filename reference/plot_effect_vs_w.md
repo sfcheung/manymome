@@ -1,6 +1,6 @@
 # Plot an Effect Against a Moderator
 
-It plots an effect, direct or indirect, against a moderator, with
+It plots an effect, direct or indirect, against a moderator, with a
 confidence band if available.
 
 ## Usage
@@ -65,7 +65,7 @@ fill_wlevels(to_fill, cond_out = NULL, k = 21)
 
 - always_draw_zero_line:
 
-  If `FALSE`, the default, then the line at zero, if requested will be
+  If `FALSE`, the default, then the line at zero, if requested, will be
   drawn only if zero is within the range of the plot. If `TRUE`, then
   the line at zero will always be drawn.
 
@@ -147,7 +147,7 @@ fill_wlevels(to_fill, cond_out = NULL, k = 21)
 
   A named list of additional arguments to be passed to
   [`ggplot2::geom_line()`](https://ggplot2.tidyverse.org/reference/geom_path.html)
-  for the line of the effect against moderator. Default is
+  for the line of the effect against the moderator. Default is
   [`list()`](https://rdrr.io/r/base/list.html).
 
 - band_args:
@@ -217,7 +217,7 @@ effect or a direct effect.
 
 It uses the levels of the moderator stored in the output of
 [`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md).
-Therefore, the desired levels of the moderator to be plotted needs to be
+Therefore, the desired levels of the moderator to be plotted need to be
 specified when calling
 [`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md),
 as illustrated in the example.
@@ -237,7 +237,7 @@ available, will be used to form the confidence intervals:
 
 - The model has only one group.
 
-- The path is moderated by one or more moderator.
+- The path is moderated by one or more moderators.
 
 - Both the `x`-variable and the `y`-variable are not standardized.
 
@@ -253,7 +253,7 @@ confidence intervals are computed from the *z* statistic.
 ### Caution
 
 If the model is fitted by structural equation modeling and has
-moderators, the standard errors, *p*-values, and confidence interval
+moderators, the standard errors, *p*-values, and confidence intervals
 computed from the variance-covariance matrices for conditional effects
 can only be trusted if all covariances involving the product terms are
 free. If any of them are fixed, for example, fixed to zero, it is
@@ -261,7 +261,7 @@ possible that the model is not invariant to linear transformation of the
 variables.
 
 The function `fill_wlevels()` is a helper to automatically fill in
-additional levels of the moderators, to plot a graph with smooth
+additional levels of the moderators, to plot a graph with a smooth
 confidence band. It accepts the output of
 [`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
 or

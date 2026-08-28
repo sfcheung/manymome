@@ -6,12 +6,12 @@ This article is part of a series of brief illustrations of how to use
 [`cond_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
 from the package [manymome](https://sfcheung.github.io/manymome/)
 (Cheung & Cheung, 2024) to estimate the conditional effects when the
-model parameters are estimate by ordinary least squares (OLS) multiple
+model parameters are estimated by ordinary least squares (OLS) multiple
 regression using [`lm()`](https://rdrr.io/r/stats/lm.html). For
 moderated mediation tested by OLS regression, please refer to [this
 article](https://sfcheung.github.io/manymome/articles/mome_lm.md).
 
-(Articles in this series had duplicated sections, to make each of them
+(Articles in this series had duplicated sections to make each of them
 self-contained.)
 
 ## Data Set and Model
@@ -73,7 +73,7 @@ lm_y <- lm(
 )
 ```
 
-These are the estimates of the regression coefficient of the paths:
+These are the estimates of the regression coefficients of the paths:
 
 ``` r
 
@@ -148,13 +148,13 @@ out
 #> 
 ```
 
-The column `ind` show the effects of `x` on `y` for combinations of the
+The column `ind` shows the effects of `x` on `y` for combinations of the
 levels of the moderators.
 
 IMPORTANT: Even though this model does not have a three-way interaction,
 the conditional effects still need to consider *both* moderators. It is
 because the effect of `x` depends on *all* moderators, whether there is
-a higher order interaction or not.
+a higher-order interaction or not.
 
 If one or more moderators are omitted, a *warning message* will be
 issued. This is an example:
@@ -219,7 +219,7 @@ Conventional Plot of Conditional Effects
 By default, the lines span the range of one standard deviation below and
 above the mean of the predictor.
 
-The plot can be customized in a lot of way. Please refer to the help
+The plot can be customized in a lot of ways. Please refer to the help
 page of
 [`plot.cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/plot.cond_indirect_effects.md)
 for available options.
@@ -276,10 +276,10 @@ graph.
 
 Although OLS can be used to estimate and test the unstandardized
 effects, it is inappropriate for forming the confidence intervals for
-the standardized effects. See Yuan & Chan (2011) on the issue on
+the standardized effects. See Yuan & Chan (2011) on the issue of
 standardized regression coefficients.
 
-To form nonparametric bootstrap confidence interval for effects to be
+To form nonparametric bootstrap confidence intervals for effects to be
 computed, add `boot_ci = TRUE`, `R` to the number of bootstrap samples
 (should be 5000 or even 10000, for multiple regression), and `seed` (set
 it to an integer to ensure the results are reproducible).
@@ -359,7 +359,7 @@ lm_y_city_x_w <- lm(
 )
 ```
 
-These are the estimates of the regression coefficient of this model:
+These are the estimates of the regression coefficients of this model:
 
 ``` r
 
@@ -515,8 +515,8 @@ The function
 has no limit on the number of moderators and the number of predictors
 with their effects moderated.
 
-The demonstrations of other moderated regression models can be found
-from the [list of
+The demonstrations of other moderated regression models can be found in
+the [list of
 articles](https://sfcheung.github.io/manymome/articles/index.html#moderated-regression).
 
 The levels for the moderators are controlled by
@@ -528,7 +528,7 @@ articles (e.g.,
 [`vignette("manymome")`](https://sfcheung.github.io/manymome/articles/manymome.md)
 and
 [`vignette("mod_levels")`](https://sfcheung.github.io/manymome/articles/mod_levels.md))
-on how to estimate effects in other model analyzed by multiple
+on how to estimate effects in other models analyzed by multiple
 regression.
 
 ## References

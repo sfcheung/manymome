@@ -1,6 +1,6 @@
 # Math Operators for 'indirect'-Class Objects
 
-Mathematic operators for 'indirect'-class object, the output of
+Mathematical operators for 'indirect'-class objects, the output of
 [`indirect_effect()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
 and
 [`cond_indirect()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md).

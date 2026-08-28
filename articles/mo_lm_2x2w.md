@@ -6,12 +6,12 @@ This article is part of a series of brief illustrations of how to use
 [`cond_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
 from the package [manymome](https://sfcheung.github.io/manymome/)
 (Cheung & Cheung, 2024) to estimate the conditional effects when the
-model parameters are estimate by ordinary least squares (OLS) multiple
+model parameters are estimated by ordinary least squares (OLS) multiple
 regression using [`lm()`](https://rdrr.io/r/stats/lm.html). For
 moderated mediation tested by OLS regression, please refer to [this
 article](https://sfcheung.github.io/manymome/articles/mome_lm.md).
 
-(Articles in this series had duplicated sections, to make each of them
+(Articles in this series had duplicated sections to make each of them
 self-contained.)
 
 ## Data Set and Model
@@ -62,7 +62,7 @@ lm_y <- lm(
 )
 ```
 
-These are the estimates of the regression coefficient of the paths:
+These are the estimates of the regression coefficients of the paths:
 
 ``` r
 
@@ -143,14 +143,14 @@ out1
 #> 
 ```
 
-The column `ind` show the effects of `x1` on `y` for different levels of
-`w1`.
+The column `ind` shows the effects of `x1` on `y` for different levels
+of `w1`.
 
-When `w1` is one standard deviation below mean, the effect of `x1` is
--0.050, with 95% confidence interval \[-0.114, 0.015\].
+When `w1` is one standard deviation below the mean, the effect of `x1`
+is -0.050, with a 95% confidence interval \[-0.114, 0.015\].
 
-When `w1` is one standard deviation above mean, the effect of `x1` is
-0.269, with 95% confidence interval \[0.224, 0.313\].
+When `w1` is one standard deviation above the mean, the effect of `x1`
+is 0.269, with a 95% confidence interval \[0.224, 0.313\].
 
 NOTE: The standard error (`SE`) and related results are computed using
 the pick-a-point approach by Rogosa (1980).
@@ -191,11 +191,11 @@ out2
 #> 
 ```
 
-When `w2` is one standard deviation below mean, the effect of `x2` is
--0.008, with 95% confidence interval \[-0.147, 0.130\].
+When `w2` is one standard deviation below the mean, the effect of `x2`
+is -0.008, with a 95% confidence interval \[-0.147, 0.130\].
 
-When `w2` is one standard deviation above mean, the effect of `x2` is
-0.229, with 95% confidence interval \[0.089, 0.370\].
+When `w2` is one standard deviation above the mean, the effect of `x2`
+is 0.229, with a 95% confidence interval \[0.089, 0.370\].
 
 ### Plotting the Conditional Effects
 
@@ -228,7 +228,7 @@ Conventional Plot of Conditional Effects (w2)
 By default, the lines span the range of one standard deviation below and
 above the mean of the predictor.
 
-The plot can be customized in a lot of way. Please refer to the help
+The plot can be customized in a lot of ways. Please refer to the help
 page of
 [`plot.cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/plot.cond_indirect_effects.md)
 for available options.
@@ -252,9 +252,9 @@ Tumble Plot of Conditional Effects (w1)
 
 The distributions of `x1` vary as the level of the moderator `w1`
 changes: the mean of `x1` is lower and the standard deviation smaller
-when `w1` is one standard deviation below its mean, and has higher mean
-and larger standard deviation when `w1` is one standard deviation above
-its mean.
+when `w1` is one standard deviation below its mean, and has a higher
+mean and larger standard deviation when `w1` is one standard deviation
+above its mean.
 
 Therefore, the tumble graph is a better way to visualize the moderating
 effect of `w1` on the effect of `x1`.
@@ -278,10 +278,10 @@ sufficient.
 
 Although OLS can be used to estimate and test the unstandardized
 effects, it is inappropriate for forming the confidence intervals for
-the standardized effects. See Yuan & Chan (2011) on the issue on
+the standardized effects. See Yuan & Chan (2011) on the issue of
 standardized regression coefficients.
 
-To form nonparametric bootstrap confidence interval for effects to be
+To form nonparametric bootstrap confidence intervals for effects to be
 computed, add `boot_ci = TRUE`, `R` to the number of bootstrap samples
 (should be 5000 or even 10000, for multiple regression), and `seed` (set
 it to an integer to ensure the results are reproducible).
@@ -327,11 +327,12 @@ std1
 ```
 
 When `w1` is one standard deviation below its mean, the standardized
-effect of `x1` is -0.117, with 95% confidence interval \[-0.272,
+effect of `x1` is -0.117, with a 95% confidence interval \[-0.272,
 0.029\].
 
 When `w1` is one standard deviation above its mean, the standardized
-effect of `x1` is 0.635, with 95% confidence interval \[0.529, 0.741\].
+effect of `x1` is 0.635, with a 95% confidence interval \[0.529,
+0.741\].
 
 This is the output for `x2`:
 
@@ -370,11 +371,12 @@ std2
 ```
 
 When `w2` is one standard deviation below its mean, the standardized
-effect of `x2` is -0.008, with 95% confidence interval \[-0.132,
+effect of `x2` is -0.008, with a 95% confidence interval \[-0.132,
 0.136\].
 
 When `w2` is one standard deviation above its mean, the standardized
-effect of `x2` is 0.227, with 95% confidence interval \[0.111, 0.344\].
+effect of `x2` is 0.227, with a 95% confidence interval \[0.111,
+0.344\].
 
 #### Conventional Plot Standardized Conditional Effects
 
@@ -435,8 +437,8 @@ The function
 has no limit on the number of moderators and the number of predictors
 with their effects moderated.
 
-The demonstrations of other moderated regression models can be found
-from the [list of
+The demonstrations of other moderated regression models can be found in
+the [list of
 articles](https://sfcheung.github.io/manymome/articles/index.html#moderated-regression).
 
 The levels for the moderators are controlled by
@@ -448,7 +450,7 @@ articles (e.g.,
 [`vignette("manymome")`](https://sfcheung.github.io/manymome/articles/manymome.md)
 and
 [`vignette("mod_levels")`](https://sfcheung.github.io/manymome/articles/mod_levels.md))
-on how to estimate effects in other model analyzed by multiple
+on how to estimate effects in other models analyzed by multiple
 regression.
 
 ## References

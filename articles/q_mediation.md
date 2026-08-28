@@ -9,7 +9,7 @@ Cheung, 2024](https://doi.org/10.3758/s13428-023-02224-z)) to fit the
 regression models and compute and test indirect effects in one step.
 
 The following sections on the three models, simple mediation model,
-serial mediation model, and parallel mediation model has sections
+serial mediation model, and parallel mediation model have sections
 duplicated, to make each section self-contained.
 
 ## Simple Mediation Model
@@ -38,14 +38,14 @@ mediator, with `c1` and `c2` as the control variables.
 
 Simple Mediation Model
 
-We would to fit the two regression models
+We would like to fit the two regression models
 
 - `m ~ x + c1 + c2`
 
 - `y ~ m + x + c1 + c2`
 
-and the compute and test the indirect effect along the path
-`x -> m -> y` using nonparametric bootstrapping.
+and compute and test the indirect effect along the path `x -> m -> y`
+using nonparametric bootstrapping.
 
 ### Analysis
 
@@ -291,7 +291,7 @@ These are the main sections of the default results:
 #### Basic Information
 
 The variables, the models, and the number of cases. Listwise deletion is
-used and only cases without missing data on all variables in the models
+used, and only cases without missing data on all variables in the models
 are used.
 
 #### Regression Results
@@ -359,7 +359,7 @@ mediators, with `c1` and `c2` as the control variables.
 
 Serial Mediation Model
 
-We would to fit three regression models:
+We would like to fit three regression models:
 
 - `m1 ~ x + c1 + c2`
 
@@ -367,7 +367,7 @@ We would to fit three regression models:
 
 - `y ~ m1 + m2 + x + c1 + c2`
 
-and the compute and test the following indirect effects:
+and compute and test the following indirect effects:
 
 - `x -> m1 -> m2 -> y`
 
@@ -379,7 +379,7 @@ using nonparametric bootstrapping.
 
 ### Analysis
 
-We can do that in one single step using
+We can do that in a single step using
 [`q_serial_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md):
 
 ``` r
@@ -751,7 +751,7 @@ These are the main sections of the default results:
 #### Basic Information
 
 The variables, the models, and the number of cases. Listwise deletion is
-used and only cases without missing data on all variables in the models
+used, and only cases without missing data on all variables in the models
 are used.
 
 #### Regression Results
@@ -844,7 +844,7 @@ mediators, with `c1` and `c2` as the control variables.
 
 Parallel Mediation Model
 
-We would to fit three regression models:
+We would like to fit three regression models:
 
 - `m1 ~ x + c1 + c2`
 
@@ -852,7 +852,7 @@ We would to fit three regression models:
 
 - `y ~ m1 + m2 + x + c1 + c2`
 
-and the compute and test the following indirect effects:
+and compute and test the following indirect effects:
 
 - `x -> m1 -> y`
 
@@ -1219,7 +1219,7 @@ These are the main sections of the default results:
 #### Basic Information
 
 The variables, the models, and the number of cases. Listwise deletion is
-used and only cases without missing data on all variables in the models
+used, and only cases without missing data on all variables in the models
 are used.
 
 #### Regression Results
@@ -1338,11 +1338,11 @@ out_serial_v2 <- q_serial_mediation(x = "x",
 ### Customize The Printout
 
 The `print` method of the output of the quick mediation functions have
-arguments for customizing the output. These are arguments that likely
-may be used:
+arguments for customizing the output. These are arguments that may be
+used:
 
 - `digits`: The number of digits after the decimal place for most
-  reults. Default is 4.
+  results. Default is 4.
 
 - `pvalue_digits`: The number of digits after the decimal place for
   *p*-values. Default is 4.
@@ -1353,9 +1353,9 @@ for other arguments.
 
 ### Speed and Parallel Processing
 
-By default, parallel processing is used. If this failed for some
-reasons, add `parallel` to `FALSE`. It will take longer to run but
-should still be just one to two minutes in typical models.
+By default, parallel processing is used. If this fails for some reason,
+set `parallel` to `FALSE`. It will take longer to run but should still
+be just one to two minutes in typical models.
 
 ### Progress Bar
 
@@ -1391,5 +1391,5 @@ computing and testing indirect effects for more complicated models.
 
 ## Final Remarks
 
-For details on the quick functions, pleaes refer to the help page of
+For details on the quick functions, please refer to the help page of
 [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md).

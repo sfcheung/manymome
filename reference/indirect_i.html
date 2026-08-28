@@ -11,7 +11,7 @@ value(s) of moderator(s) if present."><meta property="og:image" content="https:/
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -136,7 +136,7 @@ from <code>x</code> to <code>y</code>.</p></dd>
 <dd><p>The fit object. Currently
 only supports <a href="https://rdrr.io/pkg/lavaan/man/lavaan-class.html" class="external-link">lavaan::lavaan</a>
 objects. Support for lists of <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>
-output is implemented by high level
+output is implemented by high-level
 functions such as <code><a href="cond_indirect.html">indirect_effect()</a></code>
 and <code><a href="cond_indirect.html">cond_indirect_effects()</a></code>.
 It can also be
@@ -228,8 +228,8 @@ more than two terms will be searched.
 the function will warn against
 possible misspecification, such as
 not setting the value of a moderator
-which moderate one of the component
-path. Set this to <code>FALSE</code> will
+which moderates one of the component
+path. Setting this to <code>FALSE</code> will
 suppress these warnings. Suppress
 them only when the moderators are
 omitted intentionally.</p></dd>
@@ -304,7 +304,7 @@ function called by
 <code><a href="cond_indirect.html">indirect_effect()</a></code>,
 <code><a href="cond_indirect.html">cond_indirect_effects()</a></code>, and
 <code><a href="cond_indirect.html">cond_indirect()</a></code>, which call this
-function multiple times if bootstrap
+function multiple times if a bootstrap
 confidence interval is requested.</p>
 <p>This function usually should not be
 used directly. It is exported for

@@ -34,7 +34,7 @@ An `indirect`-class object.
 
 ## Details
 
-It extracts the `indirect`-class objects of relevant paths and then add
+It extracts the `indirect`-class objects of relevant paths and then adds
 the indirect effects together using the `+` operator.
 
 ## See also

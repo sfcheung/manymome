@@ -100,7 +100,7 @@ the number of CPU cores to be used in parallel processing.
 
 ## Indirect Effects
 
-Even though path coefficients are not labelled, we can still use
+Even though path coefficients are not labeled, we can still use
 [`indirect_effect()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
 to estimate the indirect effect and form its bootstrap confidence
 interval for any path in the model. By reusing the generated bootstrap
@@ -141,7 +141,7 @@ out_f1f3f4
 #>  f4~f3       0.402
 ```
 
-The indirect effect is 0.098, with 95% confidence interval \[-0.007,
+The indirect effect is 0.098, with a 95% confidence interval \[-0.007,
 0.216\].
 
 Similarly, we can estimate the indirect effect from `f2` to `f4` through
@@ -179,7 +179,7 @@ out_f2f3f4
 #>  f4~f3       0.402
 ```
 
-The indirect effect is 0.131, with 95% confidence interval \[0.049,
+The indirect effect is 0.131, with a 95% confidence interval \[0.049,
 0.254\].
 
 ## Standardized Indirect effects
@@ -225,8 +225,8 @@ std_f1f3f4
 #>   standardized.
 ```
 
-The standardized indirect effect is 0.073, with 95% confidence interval
-\[-0.005, 0.157\].
+The standardized indirect effect is 0.073, with a 95% confidence
+interval \[-0.005, 0.157\].
 
 Similarly, we can estimate the standardized indirect effect from `f2` to
 `f4` through `f3`:
@@ -269,8 +269,8 @@ std_f2f3f4
 #>   standardized.
 ```
 
-The standardized indirect effect is 0.116, with 95% confidence interval
-\[0.044, 0.204\].
+The standardized indirect effect is 0.116, with a 95% confidence
+interval \[0.044, 0.204\].
 
 Note that, unlike the confidence intervals in
 [`lavaan::standardizedSolution()`](https://rdrr.io/pkg/lavaan/man/standardizedSolution.html),
@@ -341,8 +341,8 @@ out_f1_total
 #> with 100 bootstrap samples.
 ```
 
-The total effect of `f1` on `f4` is 0.545, with 95% confidence interval
-\[0.318, 0.858\].
+The total effect of `f1` on `f4` is 0.545, with a 95% confidence
+interval \[0.318, 0.858\].
 
 ## Differences in Effects
 
@@ -371,7 +371,7 @@ out_f1_diff
 #> with 100 bootstrap samples.
 ```
 
-The difference in effects is 0.350, with 95% confidence interval
+The difference in effects is 0.350, with a 95% confidence interval
 \[-0.027, 0.700\].
 
 ## Identifying All Indirect paths
@@ -393,7 +393,7 @@ all_paths
 #> 2 f2 -> f3 -> f4
 ```
 
-The output is a `all_paths`-class object. It can be used in
+The output is an `all_paths`-class object. It can be used in
 [`many_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
 
 ``` r
@@ -431,7 +431,7 @@ out_all
 
 The output of
 [`many_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
-is a named list, names being the path name as appeared in the output.
+is a named list, names being the path name as it appears in the output.
 Individual indirect effects can be extracted using either the indices or
 the path names
 
@@ -496,7 +496,7 @@ out2
 
 The extracted element can be used just like the outputs of
 [`indirect_effect()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
-in previous section.
+in the previous section.
 
 Users can customize the search. For example, if a model has control
 variables, they can be excluded in the search for indirect paths. Users

@@ -216,7 +216,7 @@ z_index_of_mome(
 
   The type of confidence intervals to be formed. Can be either `"boot"`
   (bootstrapping) or `"mc"` (Monte Carlo). If not supplied or is `NULL`,
-  will check other arguments (e.g, `boot_ci` and `mc_ci`). If supplied,
+  will check other arguments (e.g., `boot_ci` and `mc_ci`). If supplied,
   will override `boot_ci` and `mc_ci`.
 
 - ci_out:
@@ -246,9 +246,9 @@ z_index_of_mome(
 
 - w_unit:
 
-  The unit used to by `increase_from` and `increase_to`. If `"raw"`, the
+  The unit used by `increase_from` and `increase_to`. If `"raw"`, the
   original unit of `w` is used. If `"sd"`, then distance from the mean
-  in standard deviation is used. Therefore, if `increase_from = 0`,
+  in standard deviations is used. Therefore, if `increase_from = 0`,
   `increase_to = 1`, and `w_unit == "sd"`, the *z-index of moderated
   mediation* proposed by Cheung and Cheung (2024) is computed. (For
   `index_of_momome()`, the corresponding arguments are `w_increase_from`
@@ -280,7 +280,7 @@ z_index_of_mome(
 
   The unit used to by `z_increase_from` and `z_increase_to`. If `"raw"`,
   the original unit of `z` is used. If `"sd"`, then distance from the
-  mean in standard deviation is used.
+  mean in standard deviations is used.
 
 ## Value
 
@@ -373,8 +373,8 @@ est <- parameterEstimates(fit)
 out_mome <- index_of_mome(x = "x", y = "y", m = "m1", w = "w1",
                           fit = fit,
                           boot_ci = TRUE,
-                          R = 42,
-                          seed = 4314,
+                          R = 40,
+                          seed = 2345,
                           parallel = FALSE,
                           progress = FALSE)
 out_mome
@@ -386,15 +386,15 @@ out_mome
 #>  Moderator(s) represented by: w1
 #> 
 #>   [w1] (w1)   ind  CI.lo CI.hi Sig  m1~x  y~m1
-#> 1    1    1 0.063 -0.693 0.491     0.697 0.091
-#> 2    0    0 0.042 -0.439 0.330     0.463 0.091
+#> 1    1    1 0.063 -0.528 0.654     0.697 0.091
+#> 2    0    0 0.042 -0.326 0.427     0.463 0.091
 #> 
 #> == Index of Moderated Mediation ==
 #> 
 #> Levels compared: Row 1 - Row 2
 #> 
 #>       x y Index  CI.lo CI.hi
-#> Index x y 0.021 -0.254 0.171
+#> Index x y 0.021 -0.202 0.228
 #> 
 #>  - [CI.lo, CI.hi]: 95% percentile confidence interval.
 #> 
@@ -407,7 +407,7 @@ print(est[19, ], nd = 8)
 #> 19 ind_mome := d*b ind_mome 0.02126581
 confint(out_mome)
 #>             2.50%    97.50%
-#> y~m1~x -0.2540199 0.1710191
+#> y~m1~x -0.2020105 0.2283638
 
 
 

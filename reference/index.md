@@ -138,7 +138,7 @@ Methods and utility functions for the output of the main functions.
   : Math Operators for 'indirect'-Class Objects
 
 - [`coef(`*`<indirect_list>`*`)`](https://sfcheung.github.io/manymome/reference/coef.indirect_list.md)
-  : Extract the Indirect Effects from a 'indirect_list' Object
+  : Extract the Indirect Effects from an 'indirect_list' Object
 
 - [`confint(`*`<indirect_list>`*`)`](https://sfcheung.github.io/manymome/reference/confint.indirect_list.md)
   : Confidence Intervals of Indirect Effects in an 'indirect_list'

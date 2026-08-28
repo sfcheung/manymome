@@ -11,7 +11,7 @@ lavaan::sem()."><meta property="og:image" content="https://sfcheung.github.io/ma
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -114,8 +114,8 @@ function only supports a
 <dd><p>If
 <code>TRUE</code>, default, implied statistics
 will be computed for each bootstrap
-sample. Letting users to disable this
-is an experimental features to let
+sample. Allowing users to disable this
+is an experimental feature to let
 the process run faster.</p></dd>
 
 
@@ -272,7 +272,7 @@ try first before using this function.</p></div>
 <span class="r-in"><span>           se <span class="op">=</span> <span class="st">"none"</span>, baseline <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fit_boot_out</span> <span class="op">&lt;-</span> <span class="fu">fit2boot_out_do_boot</span><span class="op">(</span>fit <span class="op">=</span> <span class="va">fit</span>,</span></span>
 <span class="r-in"><span>                                     R <span class="op">=</span> <span class="fl">40</span>,</span></span>
-<span class="r-in"><span>                                     seed <span class="op">=</span> <span class="fl">1234</span>,</span></span>
+<span class="r-in"><span>                                     seed <span class="op">=</span> <span class="fl">2345</span>,</span></span>
 <span class="r-in"><span>                                     progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>wlevels <span class="op">=</span> <span class="st">"w"</span>,</span></span>
 <span class="r-in"><span>                             x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
@@ -290,9 +290,9 @@ try first before using this function.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       [w]   (w)    ind  CI.lo CI.hi Sig    m~x   y~m</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD 6.046  0.248  0.033 0.459 Sig  0.342 0.725</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Mean    4.990  0.024 -0.065 0.237      0.063 0.375</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M-1.0SD 3.934 -0.006 -0.069 0.113     -0.216 0.026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD 6.046  0.248  0.093 0.583 Sig  0.342 0.725</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Mean    4.990  0.024 -0.091 0.145      0.063 0.375</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M-1.0SD 3.934 -0.006 -0.128 0.079     -0.216 0.026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>

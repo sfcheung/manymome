@@ -24,7 +24,7 @@ print(x, digits = 3, pvalue = FALSE, pvalue_digits = 3, se = FALSE, ...)
 - pvalue:
 
   Logical. If `TRUE`, asymmetric *p*-value based on bootstrapping will
-  be printed if available. Default is `FALSE.`
+  be printed if available. Default is `FALSE`.
 
 - pvalue_digits:
 

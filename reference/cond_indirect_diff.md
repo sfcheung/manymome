@@ -41,7 +41,7 @@ and a `confint` method
 
 ## Details
 
-Ths function takes the output of
+This function takes the output of
 [`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
 and computes the difference in conditional indirect effects between any
 two rows, that is, between levels of the moderator, or two sets of
@@ -49,7 +49,7 @@ levels of the moderators when the path has more than one moderator.
 
 The difference is meaningful when the difference between the two levels
 or sets of levels are meaningful. For example, if the two levels are the
-mean of the moderator and one standard deviation above mean of the
+mean of the moderator and one standard deviation above the mean of the
 moderator, then this difference is the change in indirect effect when
 the moderator increases by one standard deviation.
 
@@ -63,7 +63,7 @@ The function can also compute the change in the standardized indirect
 effect between two levels of a moderator or two sets of levels of the
 moderators.
 
-This function is intended to be a general purpose function that allows
+This function is intended to be a general-purpose function that allows
 users to compute the difference between any two levels or sets of levels
 that are meaningful in a context.
 
@@ -80,14 +80,14 @@ bootstrap or Monte Carlo confidence intervals are requested in calling
 for the difference in conditional indirect effects using the stored
 estimates.
 
-If bootstrap confidence interval is to be formed and both effects used
-the same type of interval, then that type will be used. Otherwise,
+If a bootstrap confidence interval is to be formed and both effects used
+the same type of interval, then that type will be used. Otherwise, a
 percentile confidence interval will be formed.
 
 ## Functions
 
-- `cond_indirect_diff()`: Compute the difference in in conditional
-  indirect effect between two rows in the output of
+- `cond_indirect_diff()`: Compute the difference in conditional indirect
+  effect between two rows in the output of
   [`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md).
 
 ## References
@@ -134,7 +134,7 @@ w1levels
 #> M-1.0SD -0.7100578
 
 # Conditional effects from x to y when w1 is equal to each of the levels
-boot_out <- fit2boot_out_do_boot(fit, R = 40, seed = 4314, progress = FALSE)
+boot_out <- fit2boot_out_do_boot(fit, R = 40, seed = 2345, progress = FALSE)
 out <- cond_indirect_effects(x = "x", y = "y", m = "m1",
                              wlevels = w1levels, fit = fit,
                              boot_ci = TRUE, boot_out = boot_out)
@@ -147,9 +147,9 @@ out
 #>  Moderator(s) represented by: w1
 #> 
 #>      [w1]   (w1)   ind  CI.lo CI.hi Sig  m1~x  y~m1
-#> 1 M+1.0SD  1.228 0.068 -0.776 0.534     0.750 0.091
-#> 2 Mean     0.259 0.048 -0.522 0.377     0.523 0.091
-#> 3 M-1.0SD -0.710 0.027 -0.267 0.221     0.297 0.091
+#> 1 M+1.0SD  1.228 0.068 -0.574 0.706     0.750 0.091
+#> 2 Mean     0.259 0.048 -0.378 0.485     0.523 0.091
+#> 3 M-1.0SD -0.710 0.027 -0.182 0.268     0.297 0.091
 #> 
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
 #>    nonparametric bootstrapping with 40 samples.
@@ -167,8 +167,8 @@ out_ind
 #>  Moderator(s) represented by: w1
 #> 
 #>      [w1]  (w1)   ind  CI.lo CI.hi Sig  m1~x  y~m1
-#> 1 M+1.0SD 1.228 0.068 -0.776 0.534     0.750 0.091
-#> 2 Mean    0.259 0.048 -0.522 0.377     0.523 0.091
+#> 1 M+1.0SD 1.228 0.068 -0.574 0.706     0.750 0.091
+#> 2 Mean    0.259 0.048 -0.378 0.485     0.523 0.091
 #> 
 #> == Difference in Conditional Indirect Effect ==
 #> 
@@ -182,7 +182,7 @@ out_ind
 #> Change in Indirect Effect:
 #> 
 #>        x y Change  CI.lo CI.hi
-#> Change x y  0.021 -0.255 0.166
+#> Change x y  0.021 -0.196 0.221
 #> 
 #>  - [CI.lo, CI.hi]: 95% percentile confidence interval.
 #> 
@@ -191,7 +191,7 @@ coef(out_ind)
 #> 0.0206078 
 confint(out_ind)
 #>             2.50%    97.50%
-#> y~m1~x -0.2547857 0.1662861
+#> y~m1~x -0.1957599 0.2212977
 
 
 ```

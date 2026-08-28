@@ -43,7 +43,7 @@ all_paths_to_df(all_paths)
 
   A character vector of variables that will be included as the `x`
   variables. If supplied, only paths that start from these variables
-  will be included in the search. If `NULL`, the default, then all
+  will be included in the search. If `NULL` the default, then all
   variables that are one of the predictors in at least one regression
   equation will be included in the search.
 
@@ -51,7 +51,7 @@ all_paths_to_df(all_paths)
 
   A character vector of variables that will be included as the `y`
   variables. If supplied, only paths that start from these variables
-  will be included in the search. If `NULL`, the default, then all
+  will be included in the search. If `NULL` the default, then all
   variables that are the outcome variables in at least one regression
   equation will be included in the search.
 
@@ -66,7 +66,7 @@ all_paths_to_df(all_paths)
   [lavaan::lavaan](https://rdrr.io/pkg/lavaan/man/lavaan-class.html)
   object. Used only when the number of groups is greater than one.
   Default is `NULL`. If not specified by the model has more than one
-  group, than paths that appears in at least one group will be included
+  group, then paths that appear in at least one group will be included
   in the output.
 
 - all_paths:
@@ -96,8 +96,8 @@ to identify paths in a model.
 
 Since Version 0.1.14.2, support for multigroup models has been added for
 models fitted by `lavaan`. If a model has more than one group and
-`group` is not specified, than paths in all groups will be returned. If
-`group` is specified, than only paths in the selected group will be
+`group` is not specified, then paths in all groups will be returned. If
+`group` is specified, then only paths in the selected group will be
 returned.
 
 ## Functions

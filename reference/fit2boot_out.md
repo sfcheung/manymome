@@ -33,8 +33,8 @@ fit2boot_out_do_boot(
 - compute_implied_stats:
 
   If `TRUE`, default, implied statistics will be computed for each
-  bootstrap sample. Letting users to disable this is an experimental
-  features to let the process run faster.
+  bootstrap sample. Allowing users to disable this is an experimental
+  feature to let the process run faster.
 
 - R:
 
@@ -164,7 +164,7 @@ fit <- sem(model = mod, data = dat, fixed.x = FALSE,
            se = "none", baseline = FALSE)
 fit_boot_out <- fit2boot_out_do_boot(fit = fit,
                                      R = 40,
-                                     seed = 1234,
+                                     seed = 2345,
                                      progress = FALSE)
 out <- cond_indirect_effects(wlevels = "w",
                              x = "x",
@@ -182,9 +182,9 @@ out
 #>  Moderator(s) represented by: w
 #> 
 #>       [w]   (w)    ind  CI.lo CI.hi Sig    m~x   y~m
-#> 1 M+1.0SD 6.046  0.248  0.033 0.459 Sig  0.342 0.725
-#> 2 Mean    4.990  0.024 -0.065 0.237      0.063 0.375
-#> 3 M-1.0SD 3.934 -0.006 -0.069 0.113     -0.216 0.026
+#> 1 M+1.0SD 6.046  0.248  0.093 0.583 Sig  0.342 0.725
+#> 2 Mean    4.990  0.024 -0.091 0.145      0.063 0.375
+#> 3 M-1.0SD 3.934 -0.006 -0.128 0.079     -0.216 0.026
 #> 
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
 #>    nonparametric bootstrapping with 40 samples.

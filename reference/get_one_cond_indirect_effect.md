@@ -28,7 +28,7 @@ print_all_cond_effects(object, ...)
 
 - ...:
 
-  Optional arguments to be passed to teh `print` method of the output of
+  Optional arguments to be passed to the `print` method of the output of
   [`indirect_effect()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
   and
   [`cond_indirect()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
@@ -58,7 +58,7 @@ from the requested row.
 `get_one_cond_effect()` is an alias of `get_one_cond_indirect_effect()`.
 
 `print_all_cond_indirect_effects()` loops over the conditional effects
-and print all of them.
+and prints all of them.
 
 `print_all_cond_effects()` is an alias of
 `print_all_cond_indirect_effects()`.
@@ -89,15 +89,15 @@ est <- parameterEstimates(fit)
 # Conditional effects from x to m1
 # when w1 is equal to each of the default levels
 out1 <- cond_indirect_effects(x = "x", y = "m1",
-                              wlevels = c("w1", "w4"), fit = fit)
+                              wlevels = c("w1"), fit = fit)
 get_one_cond_indirect_effect(out1, 3)
 #> 
 #> == Conditional  Effect   ==
-#>                                             
-#>  Path:               x -> m1                
-#>  Moderators:         w1, w4                 
-#>  Conditional Effect: 0.297                  
-#>  When:               w1 = -0.710, w4 = 1.209
+#>                                 
+#>  Path:               x -> m1    
+#>  Moderators:         w1         
+#>  Conditional Effect: 0.297      
+#>  When:               w1 = -0.710
 #> 
 #> Computation Formula:
 #>   (b.m1~x + (b.x:w1)*(w1))

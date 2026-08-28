@@ -11,7 +11,7 @@ moderators."><meta property="og:image" content="https://sfcheung.github.io/manym
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -154,7 +154,7 @@ required to have no titles.</p></dd>
 
 <dt id="arg-x-from-mean-in-sd">x_from_mean_in_sd<a class="anchor" aria-label="anchor" href="#arg-x-from-mean-in-sd"></a></dt>
 <dd><p>How many SD
-from mean is used to define "low" and
+from the mean is used to define "low" and
 "high" for the focal variable.
 Default is 1.</p></dd>
 
@@ -179,9 +179,9 @@ specifies the two percentiles to be
 used, divided by 100. It must be a
 vector of two numbers. The default
 is <code>c(.16, .84)</code>, the 16th and 84th
-percentiles, which corresponds
+percentiles, which correspond
 approximately to one SD below and
-above mean for a normal distribution,
+above the mean for a normal distribution,
 respectively.</p></dd>
 
 
@@ -206,7 +206,7 @@ Default is <code>NA</code>.</p></dd>
 
 <dt id="arg-note-standardized">note_standardized<a class="anchor" aria-label="anchor" href="#arg-note-standardized"></a></dt>
 <dd><p>If <code>TRUE</code>,
-will check whether a variable has SD
+will check whether a variable has an SD
 nearly equal to one. If yes, will
 report this in the plot. Default is
 <code>TRUE</code>.</p></dd>
@@ -237,7 +237,7 @@ typical line-graph with equal
 end-points will be plotted. If
 <code>"tumble"</code>, then the tumble graph
 proposed by Bodner (2016) will be
-plotted. Default is <code>"default"</code>
+plotted. The default is <code>"default"</code>
 for single-group models, and
 <code>"tumble"</code> for multigroup models.</p></dd>
 
@@ -248,12 +248,12 @@ multigroup model, if <code>TRUE</code>,
 the default,
 model implied statistics will be
 used in computing the means and SDs,
-which take into equality constraints,
+which take into account equality constraints,
 if any.
 If <code>FALSE</code>, then the raw
 data is
 used to compute the means and SDs.
-For latent variables, model implied
+For latent variables, model-implied
 statistics are always used.</p></dd>
 
 

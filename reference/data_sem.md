@@ -1,7 +1,6 @@
 # Sample Dataset: A Latent Variable Mediation Model With 4 Factors
 
-This data set is for testing functions in a four-factor structural
-model.
+This dataset is for testing functions in a four-factor structural model.
 
 ## Usage
 

@@ -13,7 +13,7 @@ moderators."><meta property="og:image" content="https://sfcheung.github.io/manym
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -132,7 +132,7 @@ method
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Ths function takes the output of
+    <p>This function takes the output of
 <code><a href="cond_indirect.html">cond_indirect_effects()</a></code> and
 computes the difference in
 conditional indirect effects between
@@ -145,7 +145,7 @@ difference between the two levels or
 sets of levels are meaningful. For
 example, if the two levels are the
 mean of the moderator and one
-standard deviation above mean of the
+standard deviation above the mean of the
 moderator, then this difference is
 the change in indirect effect when
 the moderator increases by one
@@ -163,7 +163,7 @@ effect between two levels of a
 moderator or two sets of levels of
 the moderators.</p>
 <p>This function is intended to be a
-general purpose function that allows
+general-purpose function that allows
 users to compute the difference
 between any two levels or sets of
 levels that are meaningful in a
@@ -186,17 +186,17 @@ the bootstrap confidence
 interval for the difference in
 conditional indirect effects
 using the stored estimates.</p>
-<p>If bootstrap confidence interval is
+<p>If a bootstrap confidence interval is
 to be formed and both effects used
 the same type of interval, then that
 type will be used. Otherwise,
-percentile confidence interval will
+a percentile confidence interval will
 be formed.</p>
     </div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
 
-<ul><li><p><code>cond_indirect_diff()</code>: Compute the difference in in
+<ul><li><p><code>cond_indirect_diff()</code>: Compute the difference in
 conditional indirect effect between
 two rows in the output of
 <code><a href="cond_indirect.html">cond_indirect_effects()</a></code>.</p></li>
@@ -245,7 +245,7 @@ the levels to be compared.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> M-1.0SD -0.7100578</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Conditional effects from x to y when w1 is equal to each of the levels</span></span></span>
-<span class="r-in"><span><span class="va">boot_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit2boot_out.html">fit2boot_out_do_boot</a></span><span class="op">(</span><span class="va">fit</span>, R <span class="op">=</span> <span class="fl">40</span>, seed <span class="op">=</span> <span class="fl">4314</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">boot_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit2boot_out.html">fit2boot_out_do_boot</a></span><span class="op">(</span><span class="va">fit</span>, R <span class="op">=</span> <span class="fl">40</span>, seed <span class="op">=</span> <span class="fl">2345</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="cond_indirect.html">cond_indirect_effects</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, m <span class="op">=</span> <span class="st">"m1"</span>,</span></span>
 <span class="r-in"><span>                             wlevels <span class="op">=</span> <span class="va">w1levels</span>, fit <span class="op">=</span> <span class="va">fit</span>,</span></span>
 <span class="r-in"><span>                             boot_ci <span class="op">=</span> <span class="cn">TRUE</span>, boot_out <span class="op">=</span> <span class="va">boot_out</span><span class="op">)</span></span></span>
@@ -258,9 +258,9 @@ the levels to be compared.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [w1]   (w1)   ind  CI.lo CI.hi Sig  m1~x  y~m1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD  1.228 0.068 -0.776 0.534     0.750 0.091</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Mean     0.259 0.048 -0.522 0.377     0.523 0.091</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M-1.0SD -0.710 0.027 -0.267 0.221     0.297 0.091</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD  1.228 0.068 -0.574 0.706     0.750 0.091</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Mean     0.259 0.048 -0.378 0.485     0.523 0.091</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M-1.0SD -0.710 0.027 -0.182 0.268     0.297 0.091</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    nonparametric bootstrapping with 40 samples.</span>
@@ -278,8 +278,8 @@ the levels to be compared.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [w1]  (w1)   ind  CI.lo CI.hi Sig  m1~x  y~m1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD 1.228 0.068 -0.776 0.534     0.750 0.091</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Mean    0.259 0.048 -0.522 0.377     0.523 0.091</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD 1.228 0.068 -0.574 0.706     0.750 0.091</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Mean    0.259 0.048 -0.378 0.485     0.523 0.091</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> == Difference in Conditional Indirect Effect ==</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -293,7 +293,7 @@ the levels to be compared.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Change in Indirect Effect:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        x y Change  CI.lo CI.hi</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Change x y  0.021 -0.255 0.166</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Change x y  0.021 -0.196 0.221</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo, CI.hi]: 95% percentile confidence interval.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -302,7 +302,7 @@ the levels to be compared.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.0206078 </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">out_ind</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             2.50%    97.50%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> y~m1~x -0.2547857 0.1662861</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> y~m1~x -0.1957599 0.2212977</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>

@@ -15,7 +15,7 @@ just one function."><meta property="og:image" content="https://sfcheung.github.i
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -358,10 +358,10 @@ functions.</p></dd>
 <dd><p>A character vector of the
 name(s) of the mediator(s). For
 a simple mediation model, it must
-has only one name. For serial and
+have only one name. For serial and
 parallel mediation models, it can
 have one or more names. For a serial
-mediation models, the direction of
+mediation model, the direction of
 the paths go from the first names to
 the last names. For example,
 <code>c("m1", "m3", "m4")</code> denoted that
@@ -390,7 +390,7 @@ For example, <code>list("x -&gt; y" = "w1", "x -&gt; m" = "w2")</code>
 indicates that the path <code>x -&gt; y</code> is
 moderated by <code>"w1"</code> and the path
 <code>x -&gt; m</code> is moderated by <code>"w2"</code>.
-For now, moderators is supported only
+For now, moderators are supported only
 if <code>fit_method</code> is <code>"lm"</code> or <code>"regression"</code>.
 To fit the model by <code>lavaan</code>, please
 specify the model manually and use
@@ -467,7 +467,7 @@ Can be either <code>"boot"</code> (bootstrapping)
 or <code>"mc"</code> (Monte Carlo). If not
 supplied or is <code>NULL</code>, will check
 other arguments
-(e.g, <code>boot_ci</code> and <code>mc_ci</code>). If
+(e.g., <code>boot_ci</code> and <code>mc_ci</code>). If
 supplied, will override <code>boot_ci</code>
 and <code>mc_ci</code>. If <code>fit_method</code> is
 <code>"regression"</code> or <code>"lm"</code>, then only
@@ -532,7 +532,7 @@ the regression coefficients</p></dd>
 <dt id="arg-missing">missing<a class="anchor" aria-label="anchor" href="#arg-missing"></a></dt>
 <dd><p>If <code>fit_method</code> is
 set to <code>"sem"</code> or <code>"lavaan"</code>, this
-argument determine how missing data
+argument determines how missing data
 is handled. The default value is
 <code>"fiml"</code> and full information maximum
 likelihood will be used to handle
@@ -621,7 +621,7 @@ display. Default is 4.</p></dd>
 <dd><p>Logical. Whether
 the annotation after the table of
 effects is to be printed. Default is
-<code>TRUE.</code></p></dd>
+<code>TRUE</code>.</p></dd>
 
 
 <dt id="arg-pvalue">pvalue<a class="anchor" aria-label="anchor" href="#arg-pvalue"></a></dt>
@@ -663,7 +663,7 @@ to compute them from stored
 standard error if the original
 standard error is to be used.
 Ignored
-if confidence interval has already
+if the confidence interval has already
 been computed. Default
 is <code>TRUE</code>.</p></dd>
 
@@ -707,7 +707,7 @@ if <code>lm_ci</code> is not <code>TRUE</code>.</p></dd>
 
 
 <dt id="arg-sem-style">sem_style<a class="anchor" aria-label="anchor" href="#arg-sem-style"></a></dt>
-<dd><p>How the for the
+<dd><p>How the
 model is to be printed if the model
 is fitted by structural equation
 modeling (using <code>lavaan</code>). Default
@@ -804,7 +804,7 @@ total effects.</p>
 be flexible. For more complex models,
 it is recommended to fit the models
 manually, either by structural
-equation modelling (e.g.,
+equation modeling (e.g.,
 <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>) or by regression
 analysis using <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">stats::lm()</a></code> or
 <code><a href="https://sfcheung.github.io/lmhelprs/reference/many_lm.html" class="external-link">lmhelprs::many_lm()</a></code>. See
@@ -899,7 +899,7 @@ form their confidence intervals.</p></li>
 <li><p>Call <code><a href="total_indirect_effect.html">total_indirect_effect()</a></code> to
 compute the total indirect effect.</p></li>
 <li><p>Return all the results for printing.</p></li>
-</ul><p>The output of the "q" functions have
+</ul><p>The output of the "q" functions has
 a <code>print</code> method for
 printing all the major results.</p>
 </div>
@@ -958,7 +958,7 @@ are supported.</p>
 <h3 id="printing-the-results">Printing the Results<a class="anchor" aria-label="anchor" href="#printing-the-results"></a></h3>
 
 
-<p>The output of the "q" functions have
+<p>The output of the "q" functions has
 a <code>print</code> method for
 printing all the major results.</p>
 </div>

@@ -202,8 +202,7 @@ The function `indirect_on_plot()` returns the object set to
 ## Details
 
 This method requires the `semptools` and `semPlot` packages. They are
-not installed by default. Install them first before using the plot
-method.
+not installed by default. Install them before using the plot method.
 
 This method draws the path models fitted by
 [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md),
@@ -316,9 +315,6 @@ plot(out)
 
 plot(out,
      v_pos = "lower")
-
-plot(out,
-     v_pos = "upper")
 
 
 # ===== A user-specified mediation model

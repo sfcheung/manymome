@@ -43,7 +43,7 @@ check_path(x, y, m = NULL, fit = NULL, est = NULL)
   The output of
   [`lavaan::parameterEstimates()`](https://rdrr.io/pkg/lavaan/man/parameterEstimates.html).
   If `NULL`, the default, it will be generated from `fit`. If supplied,
-  `fit` will ge ignored.
+  `fit` will be ignored.
 
 ## Value
 
@@ -55,7 +55,7 @@ the path is invalid.
 It checks whether the path defined by a predictor (`x`), an outcome
 (`y`), and optionally a sequence of mediators (`m`), exists in a model.
 It can check models in a `lavaan::lavaan-class` object or a list of
-outputs of [`lm()`](https://rdrr.io/r/stats/lm.html). It also support
+outputs of [`lm()`](https://rdrr.io/r/stats/lm.html). It also supports
 `lavaan.mi` objects returned by
 [`lavaan.mi::lavaan.mi()`](https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html)
 or its wrapper, such as

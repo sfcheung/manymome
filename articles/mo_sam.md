@@ -1,9 +1,5 @@
 # Latent Variable Moderation by SAM
 
-(This document is for Version 0.3.4.25 or later, currently on GitHub
-only. The new version is scheduled to be available on CRAN in June
-2026.)
-
 ## Introduction
 
 This article is a brief illustration of how to use
@@ -40,10 +36,10 @@ print(head(dat), digits = 3)
 ```
 
 This dataset has indicators of the following four latent variables: one
-predictor (`fx`), one mediators (`fm`), one outcome variable (`fy`), and
+predictor (`fx`), one mediator (`fm`), one outcome variable (`fy`), and
 one moderator (`fw`).
 
-Only the latent variables `fx`, `fx`, and `fy` will be used in this
+Only the latent variables `fx`, `fm`, and `fy` will be used in this
 illustration.
 
 Suppose this is the model being fitted:
@@ -59,7 +55,7 @@ is used to model the moderation.
 
 If the model is for the latent variables, the new approach, SAM
 (structural-after-measurement), presented in Rosseel et al. (2025) can
-be used, using the function
+be used using the function
 [`sam()`](https://rdrr.io/pkg/lavaan/man/sam.html) from `lavaan`. This
 is the model syntax:
 
@@ -76,7 +72,7 @@ fy ~ fx + fw + fx:fw
 "
 ```
 
-The moderation effect is modelled by `fx:fw`. To fit this model by SAM,
+The moderation effect is modeled by `fx:fw`. To fit this model by SAM,
 use [`sam()`](https://rdrr.io/pkg/lavaan/man/sam.html) from `lavaan`. As
 recommended by Rosseel et al. (2025), nonparametric bootstrapping will
 be used to compute the standard errors and form the confidence
@@ -234,11 +230,11 @@ out_xy_on_w
 #> 
 ```
 
-When `fw` is one standard deviation below mean, the indirect effect is
--0.032, with 95% confidence interval \[-0.154, 0.092\].
+When `fw` is one standard deviation below the mean, the indirect effect
+is -0.032, with a 95% confidence interval \[-0.154, 0.092\].
 
-When `fw` is one standard deviation above mean, the indirect effect is
-0.448, with 95% confidence interval \[0.322, 0.593\].
+When `fw` is one standard deviation above the mean, the indirect effect
+is 0.448, with a 95% confidence interval \[0.322, 0.593\].
 
 ## Standardized Conditional Indirect effects
 
@@ -278,12 +274,12 @@ std_xy_on_w
 #> 
 ```
 
-When `fw` is one standard deviation below mean, the standardized
-indirect effect is -0.038, with 95% confidence interval \[-0.187,
+When `fw` is one standard deviation below the mean, the standardized
+indirect effect is -0.038, with a 95% confidence interval \[-0.187,
 0.112\].
 
-When `fw` is one standard deviation above mean, the indirect effect is
-0.539, with 95% confidence interval \[0.405, 0.696\].
+When `fw` is one standard deviation above the mean, the indirect effect
+is 0.539, with a 95% confidence interval \[0.405, 0.696\].
 
 ## Plotting the Conditional Effects
 
@@ -314,10 +310,10 @@ plot(std_xy_on_w)
 plot of chunk plot_std
 
 The two plots are *expected* to be identical except for the values on
-the axes. It is because they differ merely only the units of the
+the axes. This is because they differ merely only in the units of the
 variables, one standardized and one unstandardized.
 
-Please the [help
+Please see the [help
 page](https://sfcheung.github.io/manymome/reference/plot.cond_indirect_effects.html)
 of the [`plot()`](https://rdrr.io/r/graphics/plot.default.html) method
 for the output of

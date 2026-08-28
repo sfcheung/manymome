@@ -15,7 +15,7 @@ lavaan::sem(), or lavaan.mi::sem.mi()."><meta property="og:image" content="https
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -155,6 +155,7 @@ structural model fitted by <code><a href="https://rdrr.io/r/stats/lm.html" class
 <span>  ci_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  boot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"perc"</span>, <span class="st">"bc"</span><span class="op">)</span>,</span>
 <span>  groups <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  wlevels_not_found <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"warn"</span>, <span class="st">"error"</span>, <span class="st">"ignore"</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -220,6 +221,7 @@ structural model fitted by <code><a href="https://rdrr.io/r/stats/lm.html" class
 <span>  ci_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  boot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"perc"</span>, <span class="st">"bc"</span><span class="op">)</span>,</span>
 <span>  groups <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  wlevels_not_found <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"warn"</span>, <span class="st">"error"</span>, <span class="st">"ignore"</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -278,7 +280,7 @@ generated from <code>fit</code>. If supplied,
 <dt id="arg-implied-stats">implied_stats<a class="anchor" aria-label="anchor" href="#arg-implied-stats"></a></dt>
 <dd><p>Implied means,
 variances, and covariances of
-observed variables, of the form of
+observed variables, in the form of
 the output of <code><a href="https://rdrr.io/pkg/lavaan/man/lavInspect.html" class="external-link">lavaan::lavInspect()</a></code>
 with <code>what</code> set to <code>"implied"</code>. The
 standard deviations are extracted
@@ -301,7 +303,7 @@ Default is <code>NULL</code>.</p></dd>
 <dd><p>Logical.
 Whether <code>x</code> will be standardized.
 Default is <code>FALSE</code>. For multigroup
-models, model implied standard
+models, the model-implied standard
 deviation for the selected group
 will be used.</p></dd>
 
@@ -310,7 +312,7 @@ will be used.</p></dd>
 <dd><p>Logical.
 Whether <code>y</code> will be standardized.
 Default is <code>FALSE</code>. For multigroup
-models, model implied standard
+models, the model-implied standard
 deviation for the selected group
 will be used.</p></dd>
 
@@ -408,7 +410,7 @@ Default is <code>TRUE</code>.</p></dd>
 <dt id="arg-save-boot-full">save_boot_full<a class="anchor" aria-label="anchor" href="#arg-save-boot-full"></a></dt>
 <dd><p>If <code>TRUE</code>, full
 bootstrapping results will be stored.
-Default is <code>FALSE.</code></p></dd>
+Default is <code>FALSE</code>.</p></dd>
 
 
 <dt id="arg-prods">prods<a class="anchor" aria-label="anchor" href="#arg-prods"></a></dt>
@@ -460,7 +462,7 @@ them from <code>fit</code>.</p></dd>
 <dt id="arg-save-mc-full">save_mc_full<a class="anchor" aria-label="anchor" href="#arg-save-mc-full"></a></dt>
 <dd><p>If <code>TRUE</code>, full
 Monte Carlo results will be stored.
-Default is <code>FALSE.</code></p></dd>
+Default is <code>FALSE</code>.</p></dd>
 
 
 <dt id="arg-save-mc-out">save_mc_out<a class="anchor" aria-label="anchor" href="#arg-save-mc-out"></a></dt>
@@ -482,7 +484,7 @@ argument will be used as <code>mc_out</code>.</p></dd>
 <dd><p>If <code>TRUE</code>, full
 bootstrapping or Monte Carlo results
 will be stored.
-Default is <code>FALSE.</code></p></dd>
+Default is <code>FALSE</code>.</p></dd>
 
 
 <dt id="arg-save-ci-out">save_ci_out<a class="anchor" aria-label="anchor" href="#arg-save-ci-out"></a></dt>
@@ -499,7 +501,7 @@ Can be either <code>"boot"</code> (bootstrapping)
 or <code>"mc"</code> (Monte Carlo). If not
 supplied or is <code>NULL</code>, will check
 other arguments
-(e.g, <code>boot_ci</code> and <code>mc_ci</code>). If
+(e.g., <code>boot_ci</code> and <code>mc_ci</code>). If
 supplied, will override <code>boot_ci</code>
 and <code>mc_ci</code>.</p></dd>
 
@@ -610,7 +612,7 @@ Specify the percentile (in
 proportion) for each level. Default
 is <code>c(.16, .50, .84)</code> if there is one
 moderator, and <code>c(.16, .84)</code> when
-there are more than one moderator.
+there is more than one moderator.
 Ignored if <code>w_method</code> is not equal to
 <code>"percentile"</code>. See
 <code><a href="mod_levels.html">mod_levels_list()</a></code> for further
@@ -622,7 +624,7 @@ information.</p></dd>
 of <code>cond_indirect_effects()</code>. If
 <code>"data.frame"</code>, the default, the
 output will be converted to a data
-frame. If any other values, the
+frame. If any other value, the
 output is a list of the outputs from
 <code>cond_indirect()</code>.</p></dd>
 
@@ -645,6 +647,17 @@ the <a href="https://rdrr.io/pkg/lavaan/man/lavaan-class.html" class="external-l
 Used only when the number of
 groups is greater than one. Default
 is <code>NULL</code>.</p></dd>
+
+
+<dt id="arg-wlevels-not-found">wlevels_not_found<a class="anchor" aria-label="anchor" href="#arg-wlevels-not-found"></a></dt>
+<dd><p>How to handle
+variables in <code>wlevels</code> not found in
+the components of product terms.
+If <code>"warn"</code>, a warning will be issued.
+If <code>"error"</code>, an error will be raised.
+If <code>"ignore"</code>, variables not found
+in the components will be ignored
+silently.`</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -780,18 +793,18 @@ a multigroup model:</p><ul><li><p>For <code>cond_indirect()</code> and
 specify the <code>group</code> argument
 (by number or label). When using
 <code>cond_indirect_effects()</code>, if
-<code>group</code> is not set, all groups wil
+<code>group</code> is not set, all groups will
 be used and the indirect effect
 in each group will be computed,
 kind of treating group as a moderator.</p></li>
 <li><p>For <code>many_indirect_effects()</code>,
 the paths can be generated from a
-multigroup models.</p></li>
+multigroup model.</p></li>
 <li><p>Currently, <code>cond_indirect_effects()</code>
 does not support a multigroup model
 with moderators on the path selected.
 The function <code>cond_indirect()</code> does
-not have this limitation but users
+not have this limitation, but users
 need to manually specify the desired
 value of the moderator(s).</p></li>
 </ul></div>
@@ -838,9 +851,9 @@ an alias to <code>cond_indirect_effects()</code>,
 a better name when a path has no
 moderator.</p></li>
 <li><p><code>many_indirect_effects()</code>: Compute the
-indirect effects along more than one paths.
+indirect effects along more than one path.
 It call <code>indirect_effect()</code> once for
-each of the path.</p></li>
+each of the paths.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
