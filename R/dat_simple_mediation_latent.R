@@ -2,8 +2,8 @@
 #' Latent Mediation Model
 #'
 #' @description Generated from a simple
-#' mediation model among xthree latent
-#' factors, `fx`, `fm`, and `fy`, xeach
+#' mediation model among three latent
+#' factors, `fx`, `fm`, and `fy`; each
 #' has three indicators.
 #'
 #' @details

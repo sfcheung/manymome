@@ -28,7 +28,7 @@ column name(s), or a logical vector
 of column(s) to be selected.}
 
 \item{drop}{Whether dropping a
-dimension if it only have one
+dimension if it only has one
 row/column.}
 
 \item{value}{Ignored.}

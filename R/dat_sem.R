@@ -2,7 +2,7 @@
 #' Variable Mediation Model With 4
 #' Factors
 #'
-#' @description This data set is for
+#' @description This dataset is for
 #' testing functions in a four-factor
 #' structural model.
 #'

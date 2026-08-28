@@ -42,7 +42,7 @@ between two sets of levels of the
 moderators.
 }
 \details{
-Ths function takes the output of
+This function takes the output of
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} and
 computes the difference in
 conditional indirect effects between
@@ -56,7 +56,7 @@ difference between the two levels or
 sets of levels are meaningful. For
 example, if the two levels are the
 mean of the moderator and one
-standard deviation above mean of the
+standard deviation above the mean of the
 moderator, then this difference is
 the change in indirect effect when
 the moderator increases by one
@@ -77,7 +77,7 @@ moderator or two sets of levels of
 the moderators.
 
 This function is intended to be a
-general purpose function that allows
+general-purpose function that allows
 users to compute the difference
 between any two levels or sets of
 levels that are meaningful in a
@@ -103,16 +103,16 @@ interval for the difference in
 conditional indirect effects
 using the stored estimates.
 
-If bootstrap confidence interval is
+If a bootstrap confidence interval is
 to be formed and both effects used
 the same type of interval, then that
 type will be used. Otherwise,
-percentile confidence interval will
+a percentile confidence interval will
 be formed.
 }
 \section{Functions}{
 \itemize{
-\item \code{cond_indirect_diff()}: Compute the difference in in
+\item \code{cond_indirect_diff()}: Compute the difference in
 conditional indirect effect between
 two rows in the output of
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
@@ -138,7 +138,7 @@ w1levels <- mod_levels("w1", fit = fit)
 w1levels
 
 # Conditional effects from x to y when w1 is equal to each of the levels
-boot_out <- fit2boot_out_do_boot(fit, R = 40, seed = 4314, progress = FALSE)
+boot_out <- fit2boot_out_do_boot(fit, R = 40, seed = 2345, progress = FALSE)
 out <- cond_indirect_effects(x = "x", y = "y", m = "m1",
                              wlevels = w1levels, fit = fit,
                              boot_ci = TRUE, boot_out = boot_out)

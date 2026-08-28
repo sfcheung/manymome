@@ -26,7 +26,7 @@ display. Default is 3.}
 \item{annotation}{Logical. Whether
 the annotation after the table of
 effects is to be printed. Default is
-\code{TRUE.}}
+\code{TRUE}.}
 
 \item{pvalue}{Logical. If \code{TRUE},
 asymmetric \emph{p}-values based on

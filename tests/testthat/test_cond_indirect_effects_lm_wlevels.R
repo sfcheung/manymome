@@ -23,11 +23,11 @@ fit <- list(lm_m1, lm_m2, lm_m3, lm_y)
 out_mm_1 <- mod_levels_list("w4", c("gpgp2", "gpgp3"), fit = fit, merge = TRUE)
 out_mm_2 <- mod_levels_list("w1", fit = fit, merge = TRUE)
 
-out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit)
-out_2 <- cond_indirect_effects(wlevels = out_mm_2, x = "x", y = "m1", fit = fit)
+out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit, wlevels_not_found = "ignore")
+out_2 <- cond_indirect_effects(wlevels = out_mm_2, x = "x", y = "m1", fit = fit, wlevels_not_found = "ignore")
 
-out_1b <- cond_indirect_effects(wlevels = list("w4", c("gpgp2", "gpgp3")), x = "x", y = "y", m = "m3", fit = fit)
-out_2b <- cond_indirect_effects(wlevels = "w1", x = "x", y = "m1", fit = fit)
+out_1b <- cond_indirect_effects(wlevels = list("w4", c("gpgp2", "gpgp3")), x = "x", y = "y", m = "m3", fit = fit, wlevels_not_found = "ignore")
+out_2b <- cond_indirect_effects(wlevels = "w1", x = "x", y = "m1", fit = fit, wlevels_not_found = "ignore")
 
 test_that("cond_indirect_effects: call mod_levels_list (lm)", {
     expect_equal(unlist(out_1), unlist(out_1b))
@@ -37,11 +37,11 @@ test_that("cond_indirect_effects: call mod_levels_list (lm)", {
 out_mm_1 <- mod_levels_list("w4", c("gpgp2", "gpgp3"), fit = fit, merge = TRUE, w_method = "percentile")
 out_mm_2 <- mod_levels_list("w1", fit = fit, merge = TRUE, w_method = "percentile")
 
-out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit)
-out_2 <- cond_indirect_effects(wlevels = out_mm_2, x = "x", y = "m1", fit = fit)
+out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit, wlevels_not_found = "ignore")
+out_2 <- cond_indirect_effects(wlevels = out_mm_2, x = "x", y = "m1", fit = fit, wlevels_not_found = "ignore")
 
-out_1b <- cond_indirect_effects(wlevels = list("w4", c("gpgp2", "gpgp3")), x = "x", y = "y", m = "m3", fit = fit, w_method = "percentile")
-out_2b <- cond_indirect_effects(wlevels = "w1", x = "x", y = "m1", fit = fit, w_method = "percentile")
+out_1b <- cond_indirect_effects(wlevels = list("w4", c("gpgp2", "gpgp3")), x = "x", y = "y", m = "m3", fit = fit, w_method = "percentile", wlevels_not_found = "ignore")
+out_2b <- cond_indirect_effects(wlevels = "w1", x = "x", y = "m1", fit = fit, w_method = "percentile", wlevels_not_found = "ignore")
 
 test_that("cond_indirect_effects: call mod_levels_list (lm), percentile", {
     expect_equal(unlist(out_1), unlist(out_1b))

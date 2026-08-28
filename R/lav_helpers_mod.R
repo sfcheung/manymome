@@ -3,7 +3,7 @@
 #' @description Set the df to `Inf`.
 #'
 #' @details
-#' - Support only `lavaan`-like objects.
+#' - Supports only `lavaan`-like objects.
 #'
 #' @param object A `lavaan`-like object.
 #'

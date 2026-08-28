@@ -1,7 +1,7 @@
 ---
 title: "Monte Carlo Confidence Intervals with Multiple Imputation"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-08-23"
+date: "2026-08-27"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -371,7 +371,7 @@ out_lavaan
 ```
 
 Reusing the simulated estimates can ensure that
-all analysis with Monte Carlo confidence intervals
+all analyses with Monte Carlo confidence intervals
 are based on the same set of simulated estimates.
 
 # Limitation

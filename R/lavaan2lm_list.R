@@ -190,7 +190,7 @@ terms.lm_from_lavaan <- function(x, ...) {
 #' for a variable in a `lavaan`-class
 #' object to a `formula`-class object.
 #' This function simply extracts the
-#' path coefficients estimates.
+#' path coefficient estimates.
 #' Intercept is always included, and set
 #' to zero if mean structure is not in
 #' the source `lavaan`-class object.

@@ -1,5 +1,5 @@
 
-#' @title Check the number of outcome variable
+#' @title Check the number of outcome variables
 #'
 #' @details
 #' If only one outcome variable, return it.
@@ -63,4 +63,22 @@ get_one_response_lavaan_mi <- function(fit) {
     } else {
       stop("The fit object has more than one outcome variable.")
     }
+}
+
+# Get all components in product terms
+#' @noRd
+get_prod_components <- function(
+  prods
+) {
+  out0 <- lapply(prods,
+    function(x) {
+      if (length(x) > 1) {
+        return(unlist(x$w))
+      } else {
+        return(NULL)
+      }
+    }
+  )
+  out0 <- unique(unname(unlist(out0)))
+  out0
 }

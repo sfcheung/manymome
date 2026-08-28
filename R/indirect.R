@@ -10,7 +10,7 @@
 #' [indirect_effect()],
 #' [cond_indirect_effects()], and
 #' [cond_indirect()], which call this
-#' function multiple times if bootstrap
+#' function multiple times if a bootstrap
 #' confidence interval is requested.
 #'
 #' This function usually should not be
@@ -43,7 +43,7 @@
 #' @param fit The fit object. Currently
 #' only supports [lavaan::lavaan-class]
 #' objects. Support for lists of [lm()]
-#' output is implemented by high level
+#' output is implemented by high-level
 #' functions such as [indirect_effect()]
 #' and [cond_indirect_effects()].
 #' It can also be
@@ -113,8 +113,8 @@
 #' the function will warn against
 #' possible misspecification, such as
 #' not setting the value of a moderator
-#' which moderate one of the component
-#' path. Set this to `FALSE` will
+#' which moderates one of the component
+#' path. Setting this to `FALSE` will
 #' suppress these warnings. Suppress
 #' them only when the moderators are
 #' omitted intentionally.

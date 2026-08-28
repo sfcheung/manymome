@@ -6,7 +6,7 @@
 #' an 'lm_list`-class object.
 #'
 #' @details An `lm_list`-class object is
-#' a list of `lm`-class objects, this
+#' a list of `lm`-class objects; this
 #' function is similar to the
 #' [stats::predict()] method of [lm()]
 #' but it works on a system defined by a

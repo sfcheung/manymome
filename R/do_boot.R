@@ -77,8 +77,8 @@
 #' @param compute_implied_stats If
 #' `TRUE`, default, implied statistics
 #' will be computed for each bootstrap
-#' sample. Letting users to disable this
-#' is an experimental features to let
+#' sample. Allowing users to disable this
+#' is an experimental feature to let
 #' the process run faster.
 #'
 #' @param parallel Logical. Whether
@@ -110,7 +110,7 @@
 #' @seealso [lm2boot_out()],
 #' [fit2boot_out()], and
 #' [fit2boot_out_do_boot()], which
-#' implements the bootstrapping.
+#' implement the bootstrapping.
 #'
 #' @examples
 #' data(data_med_mod_ab1)

@@ -61,7 +61,7 @@ Default is \code{TRUE}.}
 
 \item{always_draw_zero_line}{If \code{FALSE},
 the default,
-then the line at zero, if requested
+then the line at zero, if requested,
 will be drawn
 only if zero is within the range of
 the plot. If \code{TRUE}, then the line
@@ -165,7 +165,7 @@ Always overrides the value of
 \item{line_args}{A named list of
 additional arguments to be passed
 to \code{\link[ggplot2:geom_line]{ggplot2::geom_line()}} for the line
-of the effect against moderator.
+of the effect against the moderator.
 Default is \code{list()}.}
 
 \item{band_args}{A named list of
@@ -223,7 +223,7 @@ the moderator.
 \description{
 It plots an effect, direct
 or indirect,
-against a moderator, with confidence
+against a moderator, with a confidence
 band if available.
 }
 \details{
@@ -237,7 +237,7 @@ It uses the levels of the moderator
 stored in the output of
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}. Therefore,
 the desired levels of the moderator
-to be plotted needs to be specified
+to be plotted need to be specified
 when calling \code{\link[=cond_indirect_effects]{cond_indirect_effects()}},
 as illustrated in the example.
 
@@ -257,7 +257,7 @@ Monte Carlo).
 \item The path has no mediators.
 \item The model has only one group.
 \item The path is moderated by one or
-more moderator.
+more moderators.
 \item Both the \code{x}-variable and the
 \code{y}-variable are not standardized.
 }
@@ -283,7 +283,7 @@ from the \emph{z} statistic.
 If the model is fitted by structural
 equation modeling and has moderators,
 the standard errors, \emph{p}-values,
-and confidence interval computed
+and confidence intervals computed
 from the variance-covariance matrices
 for conditional effects
 can only be trusted if all covariances
@@ -298,7 +298,7 @@ The function \code{\link[=fill_wlevels]{fill_wlevels()}} is
 a helper to automatically
 fill in additional levels
 of the moderators, to plot a graph
-with smooth confidence band. It
+with a smooth confidence band. It
 accepts the output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
 or \code{\link[=pseudo_johnson_neyman]{pseudo_johnson_neyman()}}, finds
 the range of the values of the

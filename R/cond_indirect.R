@@ -118,20 +118,20 @@
 #' specify the `group` argument
 #' (by number or label). When using
 #' [cond_indirect_effects()], if
-#' `group` is not set, all groups wil
+#' `group` is not set, all groups will
 #' be used and the indirect effect
 #' in each group will be computed,
 #' kind of treating group as a moderator.
 #'
 #' - For [many_indirect_effects()],
 #' the paths can be generated from a
-#' multigroup models.
+#' multigroup model.
 #'
 #' - Currently, [cond_indirect_effects()]
 #' does not support a multigroup model
 #' with moderators on the path selected.
 #' The function [cond_indirect()] does
-#' not have this limitation but users
+#' not have this limitation, but users
 #' need to manually specify the desired
 #' value of the moderator(s).
 #'
@@ -213,7 +213,7 @@
 #'
 #' @param implied_stats Implied means,
 #' variances, and covariances of
-#' observed variables, of the form of
+#' observed variables, in the form of
 #' the output of [lavaan::lavInspect()]
 #' with `what` set to `"implied"`. The
 #' standard deviations are extracted
@@ -232,14 +232,14 @@
 #' @param standardized_x Logical.
 #' Whether `x` will be standardized.
 #' Default is `FALSE`. For multigroup
-#' models, model implied standard
+#' models, the model-implied standard
 #' deviation for the selected group
 #' will be used.
 #'
 #' @param standardized_y Logical.
 #' Whether `y` will be standardized.
 #' Default is `FALSE`. For multigroup
-#' models, model implied standard
+#' models, the model-implied standard
 #' deviation for the selected group
 #' will be used.
 #'
@@ -348,13 +348,13 @@
 #' of [cond_indirect_effects()]. If
 #' `"data.frame"`, the default, the
 #' output will be converted to a data
-#' frame. If any other values, the
+#' frame. If any other value, the
 #' output is a list of the outputs from
 #' [cond_indirect()].
 #'
 #' @param save_boot_full If `TRUE`, full
 #' bootstrapping results will be stored.
-#' Default is `FALSE.`
+#' Default is `FALSE`.
 #'
 #' @param prods The product terms found. For internal use.
 #'
@@ -394,7 +394,7 @@
 #'
 #' @param save_mc_full If `TRUE`, full
 #' Monte Carlo results will be stored.
-#' Default is `FALSE.`
+#' Default is `FALSE`.
 #'
 #' @param save_mc_out If `mc_out` is
 #' supplied, whether it will be saved in
@@ -403,7 +403,7 @@
 #' @param save_ci_full If `TRUE`, full
 #' bootstrapping or Monte Carlo results
 #' will be stored.
-#' Default is `FALSE.`
+#' Default is `FALSE`.
 #'
 #' @param save_ci_out If either `mc_out`
 #' or `boot_out` is
@@ -423,7 +423,7 @@
 #' or `"mc"` (Monte Carlo). If not
 #' supplied or is `NULL`, will check
 #' other arguments
-#' (e.g, `boot_ci` and `mc_ci`). If
+#' (e.g., `boot_ci` and `mc_ci`). If
 #' supplied, will override `boot_ci`
 #' and `mc_ci`.
 #'
@@ -955,7 +955,7 @@ indirect_effect <- function(x,
 #' proportion) for each level. Default
 #' is `c(.16, .50, .84)` if there is one
 #' moderator, and `c(.16, .84)` when
-#' there are more than one moderator.
+#' there is more than one moderator.
 #' Ignored if `w_method` is not equal to
 #' `"percentile"`. See
 #' [mod_levels_list()] for further
@@ -966,6 +966,15 @@ indirect_effect <- function(x,
 #' [mod_levels_list()] if it is called
 #' for creating the levels of
 #' moderators. Default is `list()`.
+#'
+#' @param wlevels_not_found How to handle
+#' variables in `wlevels` not found in
+#' the components of product terms.
+#' If `"warn"`, a warning will be issued.
+#' If `"error"`, an error will be raised.
+#' If `"ignore"`, variables not found
+#' in the components will be ignored
+#' silently.`
 #'
 #' @examples
 #' # Examples for cond_indirect_effects():
@@ -1036,7 +1045,9 @@ cond_indirect_effects <- function(wlevels,
                                   ci_type = NULL,
                                   boot_type = c("perc", "bc"),
                                   groups = NULL,
+                                  wlevels_not_found = c("warn", "error", "ignore"),
                                   ...) {
+    wlevels_not_found <- match.arg(wlevels_not_found)
     fit <- auto_lm2list(fit)
     if (missing(y)) {
         y <- tryCatch(get_one_response(fit),
@@ -1220,6 +1231,28 @@ cond_indirect_effects <- function(wlevels,
                                group = 1,
                                ...)
       }
+
+    # ==== Check w: In the paths? ====
+
+    prods_all_w <- get_prod_components(prods)
+    wvars <- unique(unname(unlist(attr(wlevels, "wvars"))))
+    w_chk <- setdiff(wvars, prods_all_w)
+    if ((length(w_chk) > 0) &&
+        (wlevels_not_found != "skip")) {
+      w_chk <- paste0(w_chk, collapse = ",")
+      tmp <- paste0(
+                w_chk, " in wlevels not among the product term(s). ",
+                "Either not moderator(s), or the function failed to identify the product term(s) automatically. ",
+                "Check wlevels, use ':' to form the product terms, ",
+                "or set wlevels_not_found to 'ignore' to suppress this "
+              )
+      tmp2 <- switch(
+        wlevels_not_found,
+        warn = warning(paste0(tmp, "warning.")),
+        error = stop(paste0(tmp, "error."))
+      )
+    }
+
     # TODO:
     # Revise cond_indirect and friends such that
     # no need to have three very similar blocks.
@@ -1520,9 +1553,9 @@ cond_effects <- cond_indirect_effects
 #' @export
 #'
 #' @describeIn cond_indirect Compute the
-#' indirect effects along more than one paths.
+#' indirect effects along more than one path.
 #' It call [indirect_effect()] once for
-#' each of the path.
+#' each of the paths.
 #'
 #' @order 5
 

@@ -19,10 +19,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-(This document is for Version 0.3.4.25 or later, currently
-on GitHub only. The new version is scheduled to be available
-on CRAN in June 2026.)
-
 # Introduction
 
 This article is a brief illustration of how
@@ -51,7 +47,7 @@ print(head(dat), digits = 3)
 This dataset has indicators of the following
 four latent variables:
 one predictor (`fx`),
-one mediators (`fm`),
+one mediator (`fm`),
 one outcome variable (`fy`), and
 one moderator (`fw`).
 
@@ -107,7 +103,7 @@ used to model the moderation.
 If the model is for the latent variables,
 the new approach, SAM (structural-after-measurement),
 presented in @rosseel_structural_2025
-can be used, using the function `sam()`
+can be used using the function `sam()`
 from `lavaan`. This is the model syntax:
 
 ```{r model_sam}
@@ -124,7 +120,7 @@ fy ~ fm + fx
 "
 ```
 
-The moderation effect is modelled by
+The moderation effect is modeled by
 `fx:fw`. To fit this model by SAM, use
 `sam()` from `lavaan`.
 
@@ -203,15 +199,15 @@ out_xmy_on_w
 ```
 
 When `fw` is one standard deviation
-below mean, the indirect effect is
+below the mean, the indirect effect is
 `r formatC(coef(out_xmy_on_w)[3], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out_xmy_on_w)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 When `fw` is one standard deviation
-above mean, the indirect effect is
+above the mean, the indirect effect is
 `r formatC(coef(out_xmy_on_w)[1], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(out_xmy_on_w)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 Note that any conditional indirect path in the model can be
@@ -244,15 +240,15 @@ std_xmy_on_w
 ```
 
 When `fw` is one standard deviation
-below mean, the standardized indirect effect is
+below the mean, the standardized indirect effect is
 `r formatC(coef(std_xmy_on_w)[3], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(std_xmy_on_w)[3, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 When `fw` is one standard deviation
-above mean, the indirect effect is
+above the mean, the indirect effect is
 `r formatC(coef(std_xmy_on_w)[1], digits = 3, format = "f")`,
-with 95% confidence interval
+with a 95% confidence interval
 `r paste0("[", paste(formatC(unlist(confint(std_xmy_on_w)[1, ]), digits = 3, format = "f"), collapse = ", "), "]")`.
 
 # Reference(s)

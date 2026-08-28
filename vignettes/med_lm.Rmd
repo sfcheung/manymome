@@ -1,7 +1,7 @@
 ---
 title: "Mediation Analysis by Multiple Regression"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-08-23"
+date: "2026-08-27"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -102,15 +102,15 @@ the regression outputs can be validly combined,
 `lm2list()` will also check:
 
 a. whether the same
-sample is used in all regression analysis (not just
+sample is used in all regression analyses (not just
 same sample size, but the same set of cases), and
 
 b. whether the models are "connected", to ensure that
-the regression outputs can be validly combined.
+the regression outputs can be combined in a valid way.
 
 # Generating Bootstrap Estimates
 
-To form nonparametric bootstrap confidence interval for
+To form nonparametric bootstrap confidence intervals for
 indirect effects to be computed, `do_boot()` can be used
 to generate bootstrap estimates for all regression
 coefficients first. These estimates can be reused for
@@ -185,7 +185,7 @@ out_x1m11m12y1
 
 The indirect effect is
 0.037,
-with 95% confidence interval
+with a 95% confidence interval
 [0.003, 0.077].
 
 Similarly, we can estimate the indirect
@@ -225,7 +225,7 @@ out_x2m2y2
 
 The indirect effect is
 -0.126,
-with 95% confidence interval
+with a 95% confidence interval
 [-0.233, -0.043].
 
 Note that any indirect path in the model can be
@@ -267,7 +267,7 @@ out_x2m11m12
 
 The indirect effect is
 -0.020,
-with 95% confidence interval
+with a 95% confidence interval
 [-0.139, 0.110].
 
 There is no limit on the path to be estimated, as long
@@ -325,7 +325,7 @@ std_x1m11m12y1
 
 The standardized indirect effect is
 0.039,
-with 95% confidence interval
+with a 95% confidence interval
 [0.004,0.085].
 
 Similarly, we can estimate the standardized indirect
@@ -371,7 +371,7 @@ std_x1m2y1
 
 The standardized indirect effect is
 -0.010,
-with 95% confidence interval
+with a 95% confidence interval
 [-0.069, 0.067].
 
 # Adding Effects
@@ -517,7 +517,7 @@ out_x1y1_total
 
 The total effect of `f1` on `f4` is
 0.030,
-with 95% confidence interval
+with a 95% confidence interval
 [-0.088, 0.132].
 
 See `help("math_indirect")` for further details on addition
@@ -553,7 +553,7 @@ out_x1_diff
 
 The difference in effects is
 0.047,
-with 95% confidence interval
+with a 95% confidence interval
 [-0.038, 0.118].
 
 See `help("math_indirect")` for further details on subtraction
@@ -665,7 +665,7 @@ all_paths
   that involve these variables will be
   excluded.
 
-The output is a `all_paths`-class object.
+The output is an `all_paths`-class object.
 It can be used in `many_indirect_effects()`
 
 
@@ -719,7 +719,7 @@ out_all
 
 The output of `many_indirect_effects()`
 is a named list, names being the path
-name as appeared in the output.
+name as it appears in the output.
 Individual indirect
 effects can be extracted using either
 the indices or the path names
@@ -787,7 +787,7 @@ out2
 
 The extracted element can be used just
 like the outputs of `indirect_effect()`
-in previous section.
+in the previous section.
 
 
 See the help page of `all_indirect_paths()`
@@ -829,7 +829,7 @@ total_x1_y1
 
 The first argument is the output
 of `many_indirect_effects()` or a list
-of `indirect`-class object. `x` is the
+of `indirect`-class objects. `x` is the
 name of the variable that starts the paths.
 `y` is the name of the variable that
 ends the paths.

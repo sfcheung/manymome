@@ -60,8 +60,8 @@
 #' @param compute_implied_stats If
 #' `TRUE`, default, implied statistics
 #' will be computed for each replication.
-#' Letting users to disable this
-#' is an experimental features to let
+#' Letting users disable this
+#' is an experimental feature to let
 #' the process run faster.
 #'
 #' @param progress Logical. Display

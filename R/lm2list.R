@@ -31,7 +31,7 @@
 #' - All models must be connected to at
 #' least one another model. That is, a
 #' regression model must either have (a)
-#' at least on predictor that is the
+#' at least one predictor that is the
 #' outcome variable of another model, or
 #' (b) its outcome variable the
 #' predictor of another model.
@@ -83,9 +83,9 @@
 #' outm11m12
 #' # Compute indirect effect from x to y
 #' # through m11 and m12 with bootstrapping CI
-#' # R should be at least 2000 or even 5000 in read study.
+#' # R should be at least 2000 or even 5000 in real studies.
 #' # In real research, parallel and progress can be omitted.
-#' # They are est to TRUE by default.
+#' # They are set to TRUE by default.
 #' outm11m12 <- cond_indirect(x = "x", y = "y",
 #'                            m = c("m11", "m12"),
 #'                            fit = lm_serial_parallel,

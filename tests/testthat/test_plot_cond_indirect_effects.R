@@ -31,7 +31,7 @@ out_mm_1 <- mod_levels_list("w4", c("gpgp2", "gpgp3"),
                             sd_from_mean = c(-1, 1),
                             fit = fit, merge = TRUE)
 
-out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit)
+out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit, wlevels_not_found = "ignore")
 
 test_that("plot for indirect", {
   expect_error(plot(out_1))
@@ -44,7 +44,7 @@ out_mm_1_lm <- mod_levels_list("w4", c("gpgp2", "gpgp3"),
                             fit = fit_lm, merge = TRUE)
 
 
-out_1_lm <- cond_indirect_effects(wlevels = out_mm_1_lm, x = "x", y = "y", m = "m3", fit = fit_lm)
+out_1_lm <- cond_indirect_effects(wlevels = out_mm_1_lm, x = "x", y = "y", m = "m3", fit = fit_lm, wlevels_not_found = "ignore")
 
 test_that("plot for indirect", {
   expect_error(plot(out_1_lm))
@@ -52,7 +52,7 @@ test_that("plot for indirect", {
 })
 
 out_1_std <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
-                                   standardized_x = TRUE, standardized_y = TRUE)
+                                   standardized_x = TRUE, standardized_y = TRUE, wlevels_not_found = "ignore")
 
 test_that("plot for indirect", {
   expect_error(plot(out_1_std))
@@ -60,7 +60,7 @@ test_that("plot for indirect", {
 })
 
 out_1_stdx <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
-                                   standardized_x = TRUE)
+                                   standardized_x = TRUE, wlevels_not_found = "ignore")
 
 test_that("plot for indirect", {
   expect_error(plot(out_1_stdx))
@@ -68,7 +68,7 @@ test_that("plot for indirect", {
 })
 
 out_1_stdy <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
-                                   standardized_y = TRUE)
+                                   standardized_y = TRUE, wlevels_not_found = "ignore")
 
 test_that("plot for indirect", {
   expect_error(plot(out_1_stdy))
@@ -81,7 +81,7 @@ out_mm_1_lm <- mod_levels_list("w4", c("gpgp2", "gpgp3"),
 
 
 out_1_lm_std <- cond_indirect_effects(wlevels = out_mm_1_lm, x = "x", y = "y", m = "m3", fit = fit_lm,
-                                  standardized_x = TRUE, standardized_y = TRUE)
+                                  standardized_x = TRUE, standardized_y = TRUE, wlevels_not_found = "ignore")
 
 test_that("plot for indirect", {
   expect_error(plot(out_1_lm_std))
@@ -89,7 +89,7 @@ test_that("plot for indirect", {
 })
 
 out_1_lm_stdx <- cond_indirect_effects(wlevels = out_mm_1_lm, x = "x", y = "y", m = "m3", fit = fit_lm,
-                                  standardized_x = TRUE)
+                                  standardized_x = TRUE, wlevels_not_found = "ignore")
 
 test_that("plot for indirect", {
   expect_error(plot(out_1_lm_stdx))
@@ -97,7 +97,7 @@ test_that("plot for indirect", {
 })
 
 out_1_lm_stdy <- cond_indirect_effects(wlevels = out_mm_1_lm, x = "x", y = "y", m = "m3", fit = fit_lm,
-                                  standardized_y = TRUE)
+                                  standardized_y = TRUE, wlevels_not_found = "ignore")
 
 test_that("plot for indirect", {
   expect_error(plot(out_1_lm_stdy))

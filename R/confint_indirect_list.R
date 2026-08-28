@@ -33,7 +33,7 @@
 #' @param ...  Additional arguments.
 #' To be passed to [confint.indirect()].
 #' (This new behavior applies to 0.3.6.15
-#' and later version.)
+#' and later versions.)
 #'
 #' @return A two-column data frame.
 #' The columns are the limits of
@@ -62,7 +62,7 @@
 #' # Indirect effect estimates
 #' # R should be 2000 or even 5000 in real research
 #' # parallel should be used in real research.
-#' fit_boot <- do_boot(fit, R = 45, seed = 8974,
+#' fit_boot <- do_boot(fit, R = 40, seed = 2345,
 #'                     parallel = FALSE,
 #'                     progress = FALSE)
 #' out <- many_indirect_effects(paths,

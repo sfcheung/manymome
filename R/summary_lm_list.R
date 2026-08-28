@@ -1,7 +1,7 @@
 #' @title Summary of an `lm_list`-Class
 #' Object
 #'
-#' @description The summary of content
+#' @description The summary of the content
 #' of the output of [lm2list()].
 #'
 #' @return [summary.lm_list()] returns a
@@ -47,7 +47,7 @@
 #' numerical results. Default is `NULL`.
 #' If set to an integer, numerical
 #' results in the coefficient table
-#' will be printed according this setting,
+#' will be printed according to this setting,
 #' and `digits` will be ignored.
 #'
 #' @param ...  Other arguments. Not

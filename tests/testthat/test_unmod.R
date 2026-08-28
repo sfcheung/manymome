@@ -17,10 +17,10 @@ expect_equal(out$original_se,
 out <- cond_indirect(x = "x", y = "m",  wvalues = c(w1 = 5), fit = lm_out)
 expect_equal(out$original_se,
              sqrt(vcov_m["x", "x"]))
-out <- cond_indirect_effects(x = "m", y = "y", wlevels = c("w1"), fit = lm_out)
+out <- cond_indirect_effects(x = "m", y = "y", wlevels = c("w1"), fit = lm_out, wlevels_not_found = "ignore")
 tmp <- range(sapply(attr(out, "full_output"), function(xx) xx$original_se))
 expect_equal(mean(tmp), tmp[1])
-out <- cond_indirect_effects(x = "x", y = "m", wlevels = c("w1"), fit = lm_out)
+out <- cond_indirect_effects(x = "x", y = "m", wlevels = c("w1"), fit = lm_out, wlevels_not_found = "ignore")
 tmp <- range(sapply(attr(out, "full_output"), function(xx) xx$original_se))
 expect_equal(mean(tmp), tmp[1])
 expect_equal(attr(out, "full_output")[[1]]$original_se,
@@ -42,7 +42,7 @@ expect_equal(out$original_se,
 out <- cond_indirect(x = "x", y = "m",  wvalues = c(w1 = 5), fit = lm_out)
 expect_equal(out$original_se,
              sqrt(vcov_m["x", "x"]))
-out <- cond_indirect_effects(x = "m", y = "y", wlevels = c("w1"), fit = lm_out)
+out <- cond_indirect_effects(x = "m", y = "y", wlevels = c("w1"), fit = lm_out, wlevels_not_found = "ignore")
 tmp <- range(sapply(attr(out, "full_output"), function(xx) xx$original_se))
 expect_equal(mean(tmp), tmp[1])
 expect_equal(attr(out, "full_output")[[1]]$original_se,

@@ -23,8 +23,8 @@ with a list of effects stored. See
 this class.
 }
 \description{
-Mathematic operators for
-'indirect'-class object, the output
+Mathematical operators for
+'indirect'-class objects, the output
 of \code{\link[=indirect_effect]{indirect_effect()}} and
 \code{\link[=cond_indirect]{cond_indirect()}}.
 }

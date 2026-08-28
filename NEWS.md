@@ -1,4 +1,4 @@
-# manymome 0.3.6.16
+# manymome 0.3.6.17
 
 ## New Features
 
@@ -52,6 +52,18 @@
   value of `level` (e.g., when calling
   `indirect_effect()`) will be used.
   (0.3.6.15)
+
+- Added the argument `wlevels_not_found`
+  to `cond_indirect_effects()`. If
+  a variable in `wlevels` is not found
+  among the component of the product
+  term(s), a warning will be issued by
+  default. These variables can be
+  ignored silently by setting `wlevels_not_found`
+  to `"ignore"`. If desired, an error can
+  be raised by setting `wlevels_not_found`
+  to `"error"`.
+  (0.3.6.17)
 
 ## Miscellaneous
 

@@ -13,9 +13,9 @@
 #' multigroup models has been added for models
 #' fitted by `lavaan`. If a model has more
 #' than one group and `group` is not
-#' specified, than paths in all groups
+#' specified, then paths in all groups
 #' will be returned. If `group` is
-#' specified, than only paths in the
+#' specified, then only paths in the
 #' selected group will be returned.
 #'
 #' @return
@@ -46,7 +46,7 @@
 #' included as the `x` variables. If supplied, only
 #' paths that start from these variables will be included
 #' in the search.
-#' If `NULL`, the default, then all variables that are
+#' If `NULL` the default, then all variables that are
 #' one of the predictors in at least one regression
 #' equation will be
 #' included in the search.
@@ -55,7 +55,7 @@
 #' included as the `y` variables. If supplied, only
 #' paths that start from these variables will be included
 #' in the search.
-#' If `NULL`, the default, then all variables that are
+#' If `NULL` the default, then all variables that are
 #' the outcome variables in at least one regression
 #' equation will be
 #' included in the search.
@@ -72,8 +72,8 @@
 #' Used only when the number of
 #' groups is greater than one. Default
 #' is `NULL`. If not specified by the model
-#' has more than one group, than paths
-#' that appears in at least one group
+#' has more than one group, then paths
+#' that appear in at least one group
 #' will be included in the output.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>

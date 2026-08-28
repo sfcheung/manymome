@@ -29,7 +29,7 @@ computed from the standard error,
 and so \code{level} is not set in \code{object},
 then the default value is .95.
 (This new behavior applies to 0.3.6.15
-and later version.)}
+and later versions.)}
 
 \item{boot_type}{If bootstrap
 confidence interval is to be formed,
@@ -76,8 +76,8 @@ percentile confidence interval.
 
 If the following conditions are met, the
 stored standard errors, if available,
-will be used test an effect and
-form it confidence interval:
+will be used to test an effect and
+form its confidence interval:
 \itemize{
 \item Confidence intervals have not been
 formed (e.g., by bootstrapping or
@@ -85,7 +85,7 @@ Monte Carlo).
 \item The path has no mediators.
 \item The model has only one group.
 \item The path is moderated by one or
-more moderator.
+more moderators.
 \item Both the \code{x}-variable and the
 \code{y}-variable are not standardized.
 }
@@ -109,7 +109,7 @@ from the \emph{z} statistic.
 If the model is fitted by structural
 equation modeling and has moderators,
 the standard errors, \emph{p}-values,
-and confidence interval computed
+and confidence intervals computed
 from the variance-covariance matrices
 for conditional effects
 can only be trusted if all covariances
@@ -140,7 +140,7 @@ fit <- sem(mod1, dat,
 out1 <- indirect_effect(x = "x", y = "y",
                         m = c("m1", "m2"),
                         fit = fit,
-                        boot_ci = TRUE, R = 45, seed = 54151,
+                        boot_ci = TRUE, R = 40, seed = 2345,
                         parallel = FALSE,
                         progress = FALSE)
 out1

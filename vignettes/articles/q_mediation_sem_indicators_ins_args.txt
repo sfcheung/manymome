@@ -16,7 +16,7 @@
   integer to make the results reproducible.
 
 The computation may take some time to run,
-especially if missing data is presence,
+especially if missing data is present,
 due to the processing time combining
 bootstrapping and full-information maximum
 likelihood (FIML), the default way to

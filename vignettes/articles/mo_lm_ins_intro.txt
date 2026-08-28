@@ -9,11 +9,11 @@ from the package
 [@cheung_manymome_2024]
 to estimate the conditional
 effects
-when the model parameters are estimate by
+when the model parameters are estimated by
 ordinary least squares (OLS) multiple regression
 using `lm()`. For moderated mediation
 tested by OLS regression, please refer
 to [this article](./mome_lm.html).
 
 (Articles in this series had duplicated
-sections, to make each of them self-contained.)
+sections to make each of them self-contained.)

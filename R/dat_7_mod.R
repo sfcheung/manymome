@@ -32,7 +32,7 @@
 #' @title Sample Dataset: One Moderator on Two Predictors
 #'
 #' @description A one-moderator model,
-#' with moderator affecting the effects
+#' with a moderator affecting the effects
 #' of two predictors.
 #'
 #' @format A data frame with 200 rows

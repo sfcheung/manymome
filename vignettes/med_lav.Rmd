@@ -1,7 +1,7 @@
 ---
 title: "Mediation Models with Latent Variables"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-08-23"
+date: "2026-08-27"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -115,7 +115,7 @@ parallel processing.
 
 # Indirect Effects
 
-Even though path coefficients are not labelled,
+Even though path coefficients are not labeled,
 we can still use `indirect_effect()` to
 estimate the indirect effect and form its
 bootstrap confidence interval for any path
@@ -160,7 +160,7 @@ out_f1f3f4
 
 The indirect effect is
 0.098,
-with 95% confidence interval
+with a 95% confidence interval
 [-0.007, 0.216].
 
 Similarly, we can estimate the indirect
@@ -200,7 +200,7 @@ out_f2f3f4
 
 The indirect effect is
 0.131,
-with 95% confidence interval
+with a 95% confidence interval
 [0.049, 0.254].
 
 # Standardized Indirect effects
@@ -250,7 +250,7 @@ std_f1f3f4
 
 The standardized indirect effect is
 0.073,
-with 95% confidence interval
+with a 95% confidence interval
 [-0.005, 0.157].
 
 Similarly, we can estimate the standardized indirect
@@ -296,7 +296,7 @@ std_f2f3f4
 
 The standardized indirect effect is
 0.116,
-with 95% confidence interval
+with a 95% confidence interval
 [0.044, 0.204].
 
 Note that, unlike the confidence intervals in
@@ -371,7 +371,7 @@ out_f1_total
 
 The total effect of `f1` on `f4` is
 0.545,
-with 95% confidence interval
+with a 95% confidence interval
 [0.318, 0.858].
 
 # Differences in Effects
@@ -404,7 +404,7 @@ out_f1_diff
 
 The difference in effects is
 0.350,
-with 95% confidence interval
+with a 95% confidence interval
 [-0.027, 0.700].
 
 # Identifying All Indirect paths
@@ -428,7 +428,7 @@ all_paths
 #> 2 f2 -> f3 -> f4
 ```
 
-The output is a `all_paths`-class object.
+The output is an `all_paths`-class object.
 It can be used in `many_indirect_effects()`
 
 
@@ -467,7 +467,7 @@ out_all
 
 The output of `many_indirect_effects()`
 is a named list, names being the path
-name as appeared in the output.
+name as it appears in the output.
 Individual indirect
 effects can be extracted using either
 the indices or the path names
@@ -534,7 +534,7 @@ out2
 
 The extracted element can be used just
 like the outputs of `indirect_effect()`
-in previous section.
+in the previous section.
 
 Users can customize the search.
 For example, if

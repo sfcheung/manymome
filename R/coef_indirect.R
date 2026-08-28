@@ -3,12 +3,12 @@
 #'
 #' @description Return the estimate of
 #' the indirect effect in the output of
-#' [indirect_effect()] or or the
-#' conditional indirect in the output of
+#' [indirect_effect()] or the
+#' conditional indirect effect in the output of
 #' [cond_indirect()].
 #'
 #' @details It extracts and returns the
-#' element `indirect`. in an object.
+#' element `indirect` in an object.
 #'
 #' If standardized effect is requested
 #' when calling [indirect_effect()] or

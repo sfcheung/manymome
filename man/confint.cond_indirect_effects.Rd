@@ -28,12 +28,12 @@ computed from the standard error,
 and so \code{level} is not set in \code{object},
 then the default value is .95.
 (This new behavior applies to 0.3.6.15
-and later version.)}
+and later versions.)}
 
 \item{...}{Additional arguments.
 To be passed to \code{\link[=confint.indirect]{confint.indirect()}}.
 (This new behavior applies to 0.3.6.15
-and later version.)}
+and later versions.)}
 }
 \value{
 A data frame with two
@@ -64,8 +64,8 @@ intervals stored.
 
 If the following conditions are met, the
 stored standard errors, if available,
-will be used test an effect and
-form it confidence interval:
+will be used to test an effect and
+form its confidence interval:
 \itemize{
 \item Confidence intervals have not been
 formed (e.g., by bootstrapping or
@@ -73,7 +73,7 @@ Monte Carlo).
 \item The path has no mediators.
 \item The model has only one group.
 \item The path is moderated by one or
-more moderator.
+more moderators.
 \item Both the \code{x}-variable and the
 \code{y}-variable are not standardized.
 }
@@ -97,7 +97,7 @@ from the \emph{z} statistic.
 If the model is fitted by structural
 equation modeling and has moderators,
 the standard errors, \emph{p}-values,
-and confidence interval computed
+and confidence intervals computed
 from the variance-covariance matrices
 for conditional effects
 can only be trusted if all covariances

@@ -15,7 +15,7 @@
 Ignored.}
 }
 \value{
-Scalar: The change of
+Scalar: The change in
 conditional indirect effect in
 \code{object}.
 }

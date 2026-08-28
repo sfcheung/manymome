@@ -25,7 +25,7 @@ computed from the standard error,
 and so \code{level} is not set in \code{object},
 then the default value is .95.
 (This new behavior applies to 0.3.6.15
-and later version.)}
+and later versions.)}
 
 \item{...}{Optional arguments.
 Ignored.}
@@ -38,7 +38,7 @@ the limits are \code{NA}s.
 }
 \description{
 Extract the confidence
-interval the output of
+interval of the output of
 \code{\link[=cond_indirect_diff]{cond_indirect_diff()}}.
 }
 \details{

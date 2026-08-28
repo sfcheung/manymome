@@ -24,9 +24,9 @@ fit <- sem(mod, dat, meanstructure = TRUE, fixed.x = FALSE)
 
 out_mm_1 <- mod_levels_list("w4", c("gpgp2", "gpgp3"), fit = fit, merge = TRUE)
 
-out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit)
+out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit, wlevels_not_found = "ignore")
 
-out_1b <- cond_indirect_effects(wlevels = list("w4", c("gpgp2", "gpgp3")), x = "x", y = "y", m = "m3", fit = fit)
+out_1b <- cond_indirect_effects(wlevels = list("w4", c("gpgp2", "gpgp3")), x = "x", y = "y", m = "m3", fit = fit, wlevels_not_found = "ignore")
 
 test_that("cond_indirect_effects: call mod_levels_list (lavaan)", {
     expect_equal(unlist(out_1), unlist(out_1b))
@@ -35,9 +35,9 @@ test_that("cond_indirect_effects: call mod_levels_list (lavaan)", {
 
 out_mm_1 <- mod_levels_list("w4", c("gpgp2", "gpgp3"), fit = fit, merge = TRUE, w_method = "percentile")
 
-out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit)
+out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit, wlevels_not_found = "ignore")
 
-out_1b <- cond_indirect_effects(wlevels = list("w4", c("gpgp2", "gpgp3")), x = "x", y = "y", m = "m3", fit = fit, w_method = "percentile")
+out_1b <- cond_indirect_effects(wlevels = list("w4", c("gpgp2", "gpgp3")), x = "x", y = "y", m = "m3", fit = fit, w_method = "percentile", wlevels_not_found = "ignore")
 
 test_that("cond_indirect_effects: call mod_levels_list (lavaan), percentile", {
     expect_equal(unlist(out_1), unlist(out_1b))

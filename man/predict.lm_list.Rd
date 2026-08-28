@@ -43,7 +43,7 @@ an 'lm_list`-class object.
 }
 \details{
 An \code{lm_list}-class object is
-a list of \code{lm}-class objects, this
+a list of \code{lm}-class objects; this
 function is similar to the
 \code{\link[stats:predict]{stats::predict()}} method of \code{\link[=lm]{lm()}}
 but it works on a system defined by a

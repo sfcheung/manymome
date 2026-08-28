@@ -25,7 +25,7 @@ print_all_cond_effects(object, ...)
 to be retrieved.}
 
 \item{...}{Optional arguments to be
-passed to teh \code{print} method of
+passed to the \code{print} method of
 the output of
 \code{\link[=indirect_effect]{indirect_effect()}} and
 \code{\link[=cond_indirect]{cond_indirect()}}}
@@ -60,7 +60,7 @@ row.
 alias of \code{\link[=get_one_cond_indirect_effect]{get_one_cond_indirect_effect()}}.
 
 \code{\link[=print_all_cond_indirect_effects]{print_all_cond_indirect_effects()}} loops over
-the conditional effects and print all
+the conditional effects and prints all
 of them.
 
 \code{\link[=print_all_cond_effects]{print_all_cond_effects()}} is an
@@ -86,7 +86,7 @@ est <- parameterEstimates(fit)
 # Conditional effects from x to m1
 # when w1 is equal to each of the default levels
 out1 <- cond_indirect_effects(x = "x", y = "m1",
-                              wlevels = c("w1", "w4"), fit = fit)
+                              wlevels = c("w1"), fit = fit)
 get_one_cond_indirect_effect(out1, 3)
 
 # Conditional Indirect effect from x1 through m1 to y,

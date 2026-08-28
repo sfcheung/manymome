@@ -216,7 +216,7 @@ Can be either \code{"boot"} (bootstrapping)
 or \code{"mc"} (Monte Carlo). If not
 supplied or is \code{NULL}, will check
 other arguments
-(e.g, \code{boot_ci} and \code{mc_ci}). If
+(e.g., \code{boot_ci} and \code{mc_ci}). If
 supplied, will override \code{boot_ci}
 and \code{mc_ci}.}
 
@@ -249,11 +249,11 @@ The default is a one-unit increase
 (e.g., from 0 to 1), as proposed by
 Hayes (2015).}
 
-\item{w_unit}{The unit used to
+\item{w_unit}{The unit used
 by \code{increase_from} and \code{increase_to}.
 If \code{"raw"}, the original unit of \code{w}
 is used. If \code{"sd"}, then distance
-from the mean in standard deviation
+from the mean in standard deviations
 is used. Therefore, if
 \code{increase_from = 0}, \code{increase_to = 1},
 and \code{w_unit == "sd"}, the
@@ -289,7 +289,7 @@ Hayes (2015).}
 by \code{z_increase_from} and \code{z_increase_to}.
 If \code{"raw"}, the original unit of \code{z}
 is used. If \code{"sd"}, then distance
-from the mean in standard deviation
+from the mean in standard deviations
 is used.}
 }
 \value{
@@ -387,8 +387,8 @@ est <- parameterEstimates(fit)
 out_mome <- index_of_mome(x = "x", y = "y", m = "m1", w = "w1",
                           fit = fit,
                           boot_ci = TRUE,
-                          R = 42,
-                          seed = 4314,
+                          R = 40,
+                          seed = 2345,
                           parallel = FALSE,
                           progress = FALSE)
 out_mome

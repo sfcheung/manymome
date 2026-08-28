@@ -24,9 +24,9 @@ list does not have control variables.
 ## Customize The Printout
 
 The `print` method of the output of
-the quick mediation functions have
+the quick mediation functions has
 arguments for customizing the output.
-These are arguments that likely may be
+These are arguments that may be
 used:
 
 - `digits`: The number of digits after
@@ -43,9 +43,9 @@ for other arguments.
 ## Speed and Parallel Processing
 
 By default, parallel processing is used.
-If this failed for some reasons,
-add `parallel` to `FALSE`. It will take
-longer, sometimes much long, to run
+If this fails for some reason,
+set `parallel` to `FALSE`. It will take
+longer, sometimes much longer, to run
 if `parallel` is set to `FALSE`. Therefore,
 use parallel processing whenever possible.
 

@@ -237,7 +237,7 @@ functions.
 This method requires the
 \code{semptools} and \code{semPlot} packages.
 They are not installed by default.
-Install them first before using the
+Install them before using the
 plot method.
 
 This method draws the path models
@@ -320,8 +320,6 @@ out <- q_parallel_mediation(x = "x",
 plot(out)
 plot(out,
      v_pos = "lower")
-plot(out,
-     v_pos = "upper")
 
 # ===== A user-specified mediation model
 

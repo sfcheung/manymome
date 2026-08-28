@@ -21,7 +21,7 @@ estimates of the conditional effects
 or conditional indirect effects.
 }
 \description{
-Return the estimates of
+Returns the estimates of
 the conditional indirect effects or
 conditional effects for all levels in
 the output of

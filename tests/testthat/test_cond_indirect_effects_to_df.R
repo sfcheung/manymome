@@ -25,11 +25,11 @@ fit <- list(lm_m1, lm_m2, lm_m3, lm_y)
 
 out_mm_1 <- mod_levels_list("w4", c("gpgp2", "gpgp3"), fit = fit, merge = TRUE)
 
-out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit)
+out_1 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit, wlevels_not_found = "ignore")
 fit_boot_out <- lm2boot_out(fit, R = 40, seed = 87415, progress = FALSE)
 out_6 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                standardized_x = TRUE,
-                               boot_ci = TRUE, boot_out = fit_boot_out)
+                               boot_ci = TRUE, boot_out = fit_boot_out, wlevels_not_found = "ignore")
 
 # Moderation only
 

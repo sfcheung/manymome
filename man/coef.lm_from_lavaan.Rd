@@ -29,7 +29,7 @@ object converts a regression model
 for a variable in a \code{lavaan}-class
 object to a \code{formula}-class object.
 This function simply extracts the
-path coefficients estimates.
+path coefficient estimates.
 Intercept is always included, and set
 to zero if mean structure is not in
 the source \code{lavaan}-class object.
