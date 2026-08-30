@@ -1,4 +1,4 @@
-# manymome 0.3.6.17
+# manymome 0.3.6.18
 
 ## New Features
 
@@ -64,6 +64,12 @@
   be raised by setting `wlevels_not_found`
   to `"error"`.
   (0.3.6.17)
+
+- The `print` method of
+  `cond_indirect_effects` objects
+  (`print.cond_indirect_effects()`) will
+  now print the computation formula.
+  (0.3.6.18)
 
 ## Miscellaneous
 
