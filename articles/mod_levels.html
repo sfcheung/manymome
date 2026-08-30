@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.18</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,7 +103,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-28</h4>
+            <h4 data-toc-skip class="date">2026-08-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/mod_levels.Rmd" class="external-link"><code>vignettes/mod_levels.Rmd</code></a></small>
       <div class="d-none name"><code>mod_levels.Rmd</code></div>
@@ -240,6 +240,8 @@ used by setting <code>values</code> to a vector of values:</p>
 <span><span class="co">#&gt;  Path: x -&gt; m</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): w1</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: w1</span></span>
+<span><span class="co">#&gt;  Computation Formula:</span></span>
+<span><span class="co">#&gt;    (b.m~x + (b.w1x)*(w1))</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   [w1] (w1)    ind    SE   Stat pvalue Sig  CI.lo CI.hi</span></span>
 <span><span class="co">#&gt; 1    8    8  0.964 0.308  3.130  0.002  **  0.360 1.568</span></span>
@@ -258,7 +260,8 @@ used by setting <code>values</code> to a vector of values:</p>
 <span><span class="co">#&gt;    involving the product terms are free. Otherwise, the model may not</span></span>
 <span><span class="co">#&gt;    be invariant to linear transformation of the variables.</span></span>
 <span><span class="co">#&gt;  - The 'ind' column shows the conditional effects.</span></span>
-<span><span class="co">#&gt; </span></span></code></pre></div>
+<span><span class="co">#&gt;   - Call 'print_all_cond_indirect_effects()' to print the detailed</span></span>
+<span><span class="co">#&gt;    outputs of all levels.</span></span></code></pre></div>
 <p><code><a href="../reference/cond_indirect.html">cond_indirect_effects()</a></code> will determine the moderators
 automatically from the object assigned to <code>wlevels</code>.</p>
 </div>
@@ -450,6 +453,9 @@ names of the dummy variables. The label can be changed by setting
 <span><span class="co">#&gt;  Path: x -&gt; m1 -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): w1</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: w1group2, w1group3</span></span>
+<span><span class="co">#&gt;  Computation Formula:</span></span>
+<span><span class="co">#&gt;    (b.m1~x + (b.w1group2x)*(w1group2) +</span></span>
+<span><span class="co">#&gt;    (b.w1group3x)*(w1group3))*(b.y~m1)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     [w1] (w1group2) (w1group3)   ind  m1~x  y~m1</span></span>
 <span><span class="co">#&gt; 1 group1          0          0 0.263 1.002 0.262</span></span>
@@ -458,7 +464,9 @@ names of the dummy variables. The label can be changed by setting
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  - The 'ind' column shows the conditional indirect effects.</span></span>
 <span><span class="co">#&gt;  - 'm1~x','y~m1' is/are the path coefficient(s) along the path</span></span>
-<span><span class="co">#&gt;    conditional on the moderator(s).</span></span></code></pre></div>
+<span><span class="co">#&gt;    conditional on the moderator(s).</span></span>
+<span><span class="co">#&gt;  - Call 'print_all_cond_indirect_effects()' to print the detailed</span></span>
+<span><span class="co">#&gt;    outputs of all levels.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="user-supplied-levels">User-Supplied Levels<a class="anchor" aria-label="anchor" href="#user-supplied-levels"></a>

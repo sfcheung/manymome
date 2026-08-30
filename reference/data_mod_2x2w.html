@@ -11,7 +11,7 @@ effects of different predictors."><meta property="og:image" content="https://sfc
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.18</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -131,6 +131,8 @@ and 6 variables:</p><dl><dt>y</dt>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Path: x1 -&gt; y</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Conditional on moderator(s): w1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Computation Formula:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    (b.y~x1 + (b.x1:w1)*(w1))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [w1]  (w1)    ind    SE   Stat pvalue Sig  CI.lo CI.hi</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD 2.285  0.269 0.023 11.801  0.000 ***  0.224 0.313</span>
@@ -144,7 +146,9 @@ and 6 variables:</p><dl><dt>y</dt>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    regression standard errors.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the conditional effects.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   - Call ‘print_all_cond_indirect_effects()’ to print the detailed</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    outputs of all levels.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">out1</span>, graph_type <span class="op">=</span> <span class="st">"tumble"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="data_mod_2x2w-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
@@ -160,6 +164,8 @@ and 6 variables:</p><dl><dt>y</dt>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Path: x2 -&gt; y</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Conditional on moderator(s): w2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Computation Formula:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    (b.y~x2 + (b.x2:w2)*(w2))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [w2]  (w2)    ind    SE   Stat pvalue Sig  CI.lo CI.hi</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD 1.666  0.229 0.071  3.218  0.002  **  0.089 0.370</span>
@@ -173,7 +179,9 @@ and 6 variables:</p><dl><dt>y</dt>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    regression standard errors.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the conditional effects.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   - Call ‘print_all_cond_indirect_effects()’ to print the detailed</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    outputs of all levels.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">out2</span>, graph_type <span class="op">=</span> <span class="st">"tumble"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="data_mod_2x2w-2.png" alt="" width="700" height="433"></span>
 </code></pre></div>

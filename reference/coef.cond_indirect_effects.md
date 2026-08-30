@@ -63,6 +63,8 @@ out1
 #>  Path: x -> m1
 #>  Conditional on moderator(s): w1
 #>  Moderator(s) represented by: w1
+#>  Computation Formula:
+#>    (b.m1~x + (b.x:w1)*(w1))
 #> 
 #>      [w1]   (w1)   ind
 #> 1 M+1.0SD  1.228 0.750
@@ -70,7 +72,9 @@ out1
 #> 3 M-1.0SD -0.710 0.297
 #> 
 #>  - The 'ind' column shows the conditional effects.
-#>  
+#>   - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
+#> 
 coef(out1)
 #> w1: M+1.0SD    w1: Mean w1: M-1.0SD 
 #>   0.7498826   0.5233201   0.2967576 
@@ -85,6 +89,8 @@ out2
 #>  Path: x -> m1 -> m2 -> y
 #>  Conditional on moderator(s): w1, w4
 #>  Moderator(s) represented by: w1, w4
+#>  Computation Formula:
+#>    (b.m1~x + (b.x:w1)*(w1))*(b.m2~m1)*(b.y~m2 + (b.m2:w4)*(w4))
 #> 
 #>      [w1]    [w4]   (w1)   (w4)   ind  m1~x m2~m1  y~m2
 #> 1 M+1.0SD M+1.0SD  1.228  1.209 0.137 0.750 0.399 0.458
@@ -95,12 +101,14 @@ out2
 #>  - The 'ind' column shows the conditional indirect effects.
 #>  - ‘m1~x’,‘m2~m1’,‘y~m2’ is/are the path coefficient(s) along the path
 #>    conditional on the moderator(s).
+#>  - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
 #> 
 coef(out2)
 #> w1: M+1.0SD; w4: M+1.0SD w1: M+1.0SD; w4: M-1.0SD w1: M-1.0SD; w4: M+1.0SD 
-#>               0.13702472               0.12079776               0.05422599 
+#>               0.13702461               0.12079753               0.05422595 
 #> w1: M-1.0SD; w4: M-1.0SD 
-#>               0.04780435 
+#>               0.04780426 
 
 # Standardized conditional indirect effects from x1 through m1 and m2 to y,
 out2std <- cond_indirect_effects(x = "x", y = "y", m = c("m1", "m2"),
@@ -113,6 +121,9 @@ out2std
 #>  Path: x -> m1 -> m2 -> y
 #>  Conditional on moderator(s): w1, w4
 #>  Moderator(s) represented by: w1, w4
+#>  Computation Formula:
+#>    (b.m1~x + (b.x:w1)*(w1))*(b.m2~m1)*(b.y~m2 +
+#>    (b.m2:w4)*(w4))*sd_x/sd_y
 #> 
 #>      [w1]    [w4]   (w1)   (w4)   std  m1~x m2~m1  y~m2   ind
 #> 1 M+1.0SD M+1.0SD  1.228  1.209 0.031 0.750 0.399 0.458 0.137
@@ -124,10 +135,12 @@ out2std
 #>  - ind: The unstandardized conditional indirect effects.
 #>  - ‘m1~x’,‘m2~m1’,‘y~m2’ is/are the path coefficient(s) along the path
 #>    conditional on the moderator(s).
+#>  - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
 #> 
 coef(out2std)
 #> w1: M+1.0SD; w4: M+1.0SD w1: M+1.0SD; w4: M-1.0SD w1: M-1.0SD; w4: M+1.0SD 
-#>               0.03124944               0.02754877               0.01236662 
+#>               0.03124942               0.02754872               0.01236660 
 #> w1: M-1.0SD; w4: M-1.0SD 
-#>               0.01090212 
+#>               0.01090210 
 ```

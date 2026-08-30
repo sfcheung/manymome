@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.18</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,7 +103,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-27</h4>
+            <h4 data-toc-skip class="date">2026-08-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/mome_lm.Rmd" class="external-link"><code>vignettes/mome_lm.Rmd</code></a></small>
       <div class="d-none name"><code>mome_lm.Rmd</code></div>
@@ -267,6 +267,9 @@ to <code>y</code> through <code>m</code>, conditional on
 <span><span class="co">#&gt;  Path: x -&gt; m -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): w</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: w</span></span>
+<span><span class="co">#&gt;  Computation Formula:</span></span>
+<span><span class="co">#&gt;    (b.m~x + (b.x:w)*(w))*(b.y~m)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;       [w]   (w)   ind  CI.lo CI.hi Sig   m~x   y~m</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD 3.164 3.060  2.168 4.039 Sig 3.192 0.959</span></span>
@@ -277,7 +280,9 @@ to <code>y</code> through <code>m</code>, conditional on
 <span><span class="co">#&gt;    nonparametric bootstrapping with 100 samples.</span></span>
 <span><span class="co">#&gt;  - The 'ind' column shows the conditional indirect effects.</span></span>
 <span><span class="co">#&gt;  - 'm~x','y~m' is/are the path coefficient(s) along the path conditional</span></span>
-<span><span class="co">#&gt;    on the moderator(s).</span></span></code></pre></div>
+<span><span class="co">#&gt;    on the moderator(s).</span></span>
+<span><span class="co">#&gt;  - Call 'print_all_cond_indirect_effects()' to print the detailed</span></span>
+<span><span class="co">#&gt;    outputs of all levels.</span></span></code></pre></div>
 <p>When <code>w</code> is one standard deviation below the mean, the
 indirect effect is 1.212, with a 95% confidence interval [-0.288,
 2.564].</p>
@@ -318,6 +323,9 @@ index of moderated mediation of <code>w</code> on the path
 <span><span class="co">#&gt;  Path: x -&gt; m -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): w</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: w</span></span>
+<span><span class="co">#&gt;  Computation Formula:</span></span>
+<span><span class="co">#&gt;    (b.m~x + (b.x:w)*(w))*(b.y~m)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   [w] (w)   ind  CI.lo CI.hi Sig   m~x   y~m</span></span>
 <span><span class="co">#&gt; 1   1   1 1.030 -0.622 2.543     1.074 0.959</span></span>
@@ -360,6 +368,9 @@ be estimated by setting <code>standardized_x</code> and
 <span><span class="co">#&gt;  Path: x -&gt; m -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): w</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: w</span></span>
+<span><span class="co">#&gt;  Computation Formula:</span></span>
+<span><span class="co">#&gt;    (b.m~x + (b.x:w)*(w))*(b.y~m)*sd_x/sd_y</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;       [w]   (w)   std  CI.lo CI.hi Sig   m~x   y~m   ind</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD 3.164 0.318  0.220 0.437 Sig 3.192 0.959 3.060</span></span>
@@ -371,7 +382,9 @@ be estimated by setting <code>standardized_x</code> and
 <span><span class="co">#&gt;  - std: The standardized conditional indirect effects. </span></span>
 <span><span class="co">#&gt;  - ind: The unstandardized conditional indirect effects.</span></span>
 <span><span class="co">#&gt;  - 'm~x','y~m' is/are the path coefficient(s) along the path conditional</span></span>
-<span><span class="co">#&gt;    on the moderator(s).</span></span></code></pre></div>
+<span><span class="co">#&gt;    on the moderator(s).</span></span>
+<span><span class="co">#&gt;  - Call 'print_all_cond_indirect_effects()' to print the detailed</span></span>
+<span><span class="co">#&gt;    outputs of all levels.</span></span></code></pre></div>
 <p>The standardized indirect effect is 0.126, with a 95% confidence
 interval [-0.031, 0.260].</p>
 </div>

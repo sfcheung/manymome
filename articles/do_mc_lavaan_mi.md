@@ -111,14 +111,6 @@ imputation:
 ``` r
 
 library(mice)
-#> 
-#> Attaching package: 'mice'
-#> The following object is masked from 'package:stats':
-#> 
-#>     filter
-#> The following objects are masked from 'package:base':
-#> 
-#>     cbind, rbind
 set.seed(26245)
 out_mice <- mice(dat, m = 5, printFlag = FALSE)
 dat_mi <- complete(out_mice, action = "all")
@@ -150,15 +142,6 @@ We then fit the model by
 ``` r
 
 library(lavaan.mi)
-#> Registered S3 method overwritten by 'lavaan.mi':
-#>   method           from  
-#>   print.lavMoments lavaan
-#> 
-#> ###################################################################
-#> This is lavaan.mi 0.1-1
-#> See the README file on github.com/TDJorgensen/lavaan.mi
-#> for a table comparing it with deprecated semTools features.
-#> ###################################################################
 mod <-
 "
 m ~ x + c1 + c2

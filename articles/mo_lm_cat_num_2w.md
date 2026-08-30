@@ -132,6 +132,9 @@ out
 #>  Path: x -> y
 #>  Conditional on moderator(s): city, w
 #>  Moderator(s) represented by: cityCity B, w
+#>  Computation Formula:
+#>    (b.y~x + (b.w:x)*(w) + (b.x:cityCity B)*(cityCity B))
+#> 
 #> 
 #>   [city]     [w] (cityCity B)    (w)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1 City A M+1.0SD            0 24.200  0.710 0.267  2.660  0.008 **   0.184 1.237
@@ -145,7 +148,7 @@ out
 #>  - [Sig]: 0 '***' 0.001 '**' 0.01 '*' 0.05 ' ' 1.
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed outputs of all levels.
 ```
 
 The column `ind` shows the effects of `x` on `y` for combinations of the
@@ -182,6 +185,9 @@ cond_effects(
 #>  Path: x -> y
 #>  Conditional on moderator(s): w
 #>  Moderator(s) represented by: w
+#>  Computation Formula:
+#>    (b.y~x + (b.w:x)*(w) + (b.x:cityCity B)*(cityCity B))
+#> 
 #> 
 #>       [w]    (w)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1 M+1.0SD 24.200  0.710 0.267  2.660  0.008  **  0.184 1.237
@@ -194,7 +200,7 @@ cond_effects(
 #>  - [Sig]: 0 '***' 0.001 '**' 0.01 '*' 0.05 ' ' 1.
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed outputs of all levels.
 ```
 
 NOTE: The standard error (`SE`) and related results are computed using
@@ -311,6 +317,9 @@ std
 #>  Path: x -> y
 #>  Conditional on moderator(s): city, w
 #>  Moderator(s) represented by: cityCity B, w
+#>  Computation Formula:
+#>    (b.y~x + (b.w:x)*(w) + (b.x:cityCity B)*(cityCity B))*sd_x/sd_y
+#> 
 #> 
 #>   [city]     [w] (cityCity B)    (w)    std  CI.lo CI.hi Sig    ind
 #> 1 City A M+1.0SD            0 24.200  0.383  0.090 0.679 Sig  0.710
@@ -322,7 +331,7 @@ std
 #>    samples.
 #>  - std: The standardized conditional effects. 
 #>  - ind: The unstandardized conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed outputs of all levels.
 ```
 
 #### Plot Standardized Conditional Effects
@@ -417,6 +426,9 @@ out_city_x_w
 #>  Path: x -> y
 #>  Conditional on moderator(s): city, w
 #>  Moderator(s) represented by: cityCity B, w
+#>  Computation Formula:
+#>    (b.y~x + (b.x:cityCity B)*(cityCity B) + (b.x:w)*(w) + (b.x:cityCity B:w)*(cityCity B*w))
+#> 
 #> 
 #>   [city]     [w] (cityCity B)    (w)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1 City A M+1.0SD            0 24.200 -0.076 0.344 -0.221  0.825     -0.754 0.602
@@ -430,7 +442,7 @@ out_city_x_w
 #>  - [Sig]: 0 '***' 0.001 '**' 0.01 '*' 0.05 ' ' 1.
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed outputs of all levels.
 ```
 
 The results show that, within one standard deviation of the mean of `w`,
@@ -479,6 +491,9 @@ std_city_x_w
 #>  Path: x -> y
 #>  Conditional on moderator(s): city, w
 #>  Moderator(s) represented by: cityCity B, w
+#>  Computation Formula:
+#>    (b.y~x + (b.x:cityCity B)*(cityCity B) + (b.x:w)*(w) + (b.x:cityCity B:w)*(cityCity B*w))*sd_x/sd_y
+#> 
 #> 
 #>   [city]     [w] (cityCity B)    (w)    std  CI.lo CI.hi Sig    ind
 #> 1 City A M+1.0SD            0 24.200 -0.041 -0.458 0.343     -0.076
@@ -490,7 +505,7 @@ std_city_x_w
 #>    samples.
 #>  - std: The standardized conditional effects. 
 #>  - ind: The unstandardized conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed outputs of all levels.
 ```
 
 These are the plots of the standardized conditional effects, with

@@ -53,6 +53,9 @@ out
 #>  Path: x -> y
 #>  Conditional on moderator(s): city, w
 #>  Moderator(s) represented by: cityCity B, w
+#>  Computation Formula:
+#>    (b.y~x + (b.x:cityCity B)*(cityCity B) + (b.x:w)*(w) + (b.x:cityCity
+#>    B:w)*(cityCity B*w))
 #> 
 #>   [city]     [w] (cityCity B)    (w)    ind    SE   Stat pvalue Sig  CI.lo
 #> 1 City A M+1.0SD            0 24.200 -0.076 0.344 -0.221  0.825     -0.754
@@ -72,6 +75,8 @@ out
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from
 #>    regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#>  
+#>   - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
+#> 
 plot(out, facet_grid_cols = "city", graph_type = "tumble")
 ```

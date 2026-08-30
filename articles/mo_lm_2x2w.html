@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.18</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,7 +103,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-27</h4>
+            <h4 data-toc-skip class="date">2026-08-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/articles/mo_lm_2x2w.Rmd" class="external-link"><code>vignettes/articles/mo_lm_2x2w.Rmd</code></a></small>
       <div class="d-none name"><code>mo_lm_2x2w.Rmd</code></div>
@@ -217,6 +217,9 @@ levels of the moderators, <code>w1</code> and <code>w2</code>.</p>
 <span><span class="co">#&gt;  Path: x1 -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): w1</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: w1</span></span>
+<span><span class="co">#&gt;  Computation Formula:</span></span>
+<span><span class="co">#&gt;    (b.y~x1 + (b.w1:x1)*(w1))</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [w1]  (w1)    ind    SE   Stat pvalue Sig  CI.lo CI.hi</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD 2.285  0.269 0.023 11.801  0.000 ***  0.224 0.313</span></span>
@@ -230,7 +233,8 @@ levels of the moderators, <code>w1</code> and <code>w2</code>.</p>
 <span><span class="co">#&gt;  - [CI.lo to CI.hi] are 95.0% confidence interval computed from</span></span>
 <span><span class="co">#&gt;    regression standard errors.</span></span>
 <span><span class="co">#&gt;  - The 'ind' column shows the conditional effects.</span></span>
-<span><span class="co">#&gt; </span></span></code></pre></div>
+<span><span class="co">#&gt;   - Call 'print_all_cond_indirect_effects()' to print the detailed</span></span>
+<span><span class="co">#&gt;    outputs of all levels.</span></span></code></pre></div>
 <p>The column <code>ind</code> shows the effects of <code>x1</code> on
 <code>y</code> for different levels of <code>w1</code>.</p>
 <p>When <code>w1</code> is one standard deviation below the mean, the
@@ -261,6 +265,9 @@ computed using the pick-a-point approach by <span class="citation">Rogosa (1980)
 <span><span class="co">#&gt;  Path: x2 -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): w2</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: w2</span></span>
+<span><span class="co">#&gt;  Computation Formula:</span></span>
+<span><span class="co">#&gt;    (b.y~x2 + (b.w2:x2)*(w2))</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [w2]  (w2)    ind    SE   Stat pvalue Sig  CI.lo CI.hi</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD 1.666  0.229 0.071  3.218  0.002  **  0.089 0.370</span></span>
@@ -274,7 +281,8 @@ computed using the pick-a-point approach by <span class="citation">Rogosa (1980)
 <span><span class="co">#&gt;  - [CI.lo to CI.hi] are 95.0% confidence interval computed from</span></span>
 <span><span class="co">#&gt;    regression standard errors.</span></span>
 <span><span class="co">#&gt;  - The 'ind' column shows the conditional effects.</span></span>
-<span><span class="co">#&gt; </span></span></code></pre></div>
+<span><span class="co">#&gt;   - Call 'print_all_cond_indirect_effects()' to print the detailed</span></span>
+<span><span class="co">#&gt;    outputs of all levels.</span></span></code></pre></div>
 <p>When <code>w2</code> is one standard deviation below the mean, the
 effect of <code>x2</code> is -0.008, with a 95% confidence interval
 [-0.147, 0.130].</p>
@@ -379,6 +387,9 @@ and <code>standardized_y</code> to <code>TRUE</code>.</p>
 <span><span class="co">#&gt;  Path: x1 -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): w1</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: w1</span></span>
+<span><span class="co">#&gt;  Computation Formula:</span></span>
+<span><span class="co">#&gt;    (b.y~x1 + (b.w1:x1)*(w1))*sd_x1/sd_y</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [w1]  (w1)    std  CI.lo CI.hi Sig    ind</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD 2.285  0.635  0.529 0.741 Sig  0.269</span></span>
@@ -389,7 +400,8 @@ and <code>standardized_y</code> to <code>TRUE</code>.</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - std: The standardized conditional effects. </span></span>
 <span><span class="co">#&gt;  - ind: The unstandardized conditional effects.</span></span>
-<span><span class="co">#&gt; </span></span></code></pre></div>
+<span><span class="co">#&gt;   - Call 'print_all_cond_indirect_effects()' to print the detailed</span></span>
+<span><span class="co">#&gt;    outputs of all levels.</span></span></code></pre></div>
 <p>When <code>w1</code> is one standard deviation below its mean, the
 standardized effect of <code>x1</code> is -0.117, with a 95% confidence
 interval [-0.272, 0.029].</p>
@@ -417,6 +429,9 @@ interval [0.529, 0.741].</p>
 <span><span class="co">#&gt;  Path: x2 -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): w2</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: w2</span></span>
+<span><span class="co">#&gt;  Computation Formula:</span></span>
+<span><span class="co">#&gt;    (b.y~x2 + (b.w2:x2)*(w2))*sd_x2/sd_y</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [w2]  (w2)    std  CI.lo CI.hi Sig    ind</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD 1.666  0.227  0.111 0.344 Sig  0.229</span></span>
@@ -427,7 +442,8 @@ interval [0.529, 0.741].</p>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 5000 samples.</span></span>
 <span><span class="co">#&gt;  - std: The standardized conditional effects. </span></span>
 <span><span class="co">#&gt;  - ind: The unstandardized conditional effects.</span></span>
-<span><span class="co">#&gt; </span></span></code></pre></div>
+<span><span class="co">#&gt;   - Call 'print_all_cond_indirect_effects()' to print the detailed</span></span>
+<span><span class="co">#&gt;    outputs of all levels.</span></span></code></pre></div>
 <p>When <code>w2</code> is one standard deviation below its mean, the
 standardized effect of <code>x2</code> is -0.008, with a 95% confidence
 interval [-0.132, 0.136].</p>

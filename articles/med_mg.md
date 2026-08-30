@@ -344,6 +344,9 @@ ind
 #> 
 #>  Path: x -> m -> y
 #>  Conditional on group(s): Group A[1], Group B[2]
+#>  Computation Formula:
+#>    (b.m~x)*(b.y~m)
+#> 
 #> 
 #>     Group Group_ID   ind CI.lo CI.hi Sig   m~x   y~m
 #> 1 Group A        1 0.409 0.096 0.753 Sig 0.880 0.465
@@ -354,6 +357,8 @@ ind
 #>  - The 'ind' column shows the indirect effects.
 #>  - 'm~x','y~m' is/are the path coefficient(s) along the path conditional
 #>    on the group(s).
+#>  - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 The results are identical to those computed individually using
@@ -434,6 +439,9 @@ ind_diff2
 #> 
 #>  Path: x -> m -> y
 #>  Conditional on group(s): Group B[2], Group A[1]
+#>  Computation Formula:
+#>    (b.m~x)*(b.y~m)
+#> 
 #> 
 #>     Group Group_ID   ind CI.lo CI.hi Sig   m~x   y~m
 #> 1 Group B        2 0.663 0.411 0.959 Sig 0.597 1.110
@@ -625,6 +633,9 @@ std
 #> 
 #>  Path: x -> m -> y
 #>  Conditional on group(s): Group A[1], Group B[2]
+#>  Computation Formula:
+#>    (b.m~x)*(b.y~m)*sd_x/sd_y
+#> 
 #> 
 #>     Group Group_ID   std CI.lo CI.hi Sig   m~x   y~m   ind
 #> 1 Group A        1 0.204 0.049 0.366 Sig 0.880 0.465 0.409
@@ -636,6 +647,8 @@ std
 #>  - ind: The unstandardized indirect effects.
 #>  - 'm~x','y~m' is/are the path coefficient(s) along the path conditional
 #>    on the group(s).
+#>  - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 ``` r
@@ -649,6 +662,9 @@ std_diff2
 #> 
 #>  Path: x -> m -> y
 #>  Conditional on group(s): Group B[2], Group A[1]
+#>  Computation Formula:
+#>    (b.m~x)*(b.y~m)*sd_x/sd_y
+#> 
 #> 
 #>     Group Group_ID   std CI.lo CI.hi Sig   m~x   y~m   ind
 #> 1 Group B        2 0.259 0.166 0.360 Sig 0.597 1.110 0.663
@@ -806,6 +822,9 @@ path1
 #> 
 #>  Path: m -> y
 #>  Conditional on group(s): Group A[1], Group B[2]
+#>  Computation Formula:
+#>    (b.y~m)
+#> 
 #> 
 #>     Group Group_ID   ind CI.lo CI.hi Sig
 #> 1 Group A        1 0.465 0.110 0.819 Sig
@@ -814,7 +833,8 @@ path1
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - The 'ind' column shows the direct effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 The difference between the two paths can be tested using bootstrapping
@@ -832,6 +852,9 @@ path1_diff
 #> 
 #>  Path: m -> y
 #>  Conditional on group(s): Group B[2], Group A[1]
+#>  Computation Formula:
+#>    (b.y~m)
+#> 
 #> 
 #>     Group Group_ID   ind CI.lo CI.hi Sig
 #> 1 Group B        2 1.110 0.765 1.475 Sig

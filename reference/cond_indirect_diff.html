@@ -13,7 +13,7 @@ moderators."><meta property="og:image" content="https://sfcheung.github.io/manym
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.18</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -256,6 +256,8 @@ the levels to be compared.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Path: x -&gt; m1 -&gt; y</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Conditional on moderator(s): w1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Computation Formula:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    (b.m1~x + (b.xw1)*(w1))*(b.y~m1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [w1]   (w1)   ind  CI.lo CI.hi Sig  m1~x  y~m1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD  1.228 0.068 -0.574 0.706     0.750 0.091</span>
@@ -267,6 +269,8 @@ the levels to be compared.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the conditional indirect effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m1~x’,‘y~m1’ is/are the path coefficient(s) along the path</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    conditional on the moderator(s).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - Call ‘print_all_cond_indirect_effects()’ to print the detailed</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    outputs of all levels.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">out_ind</span> <span class="op">&lt;-</span> <span class="fu">cond_indirect_diff</span><span class="op">(</span><span class="va">out</span>, from <span class="op">=</span> <span class="fl">2</span>, to <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">out_ind</span></span></span>
@@ -276,6 +280,8 @@ the levels to be compared.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Path: x -&gt; m1 -&gt; y</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Conditional on moderator(s): w1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Computation Formula:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    (b.m1~x + (b.xw1)*(w1))*(b.y~m1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [w1]  (w1)   ind  CI.lo CI.hi Sig  m1~x  y~m1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD 1.228 0.068 -0.574 0.706     0.750 0.091</span>

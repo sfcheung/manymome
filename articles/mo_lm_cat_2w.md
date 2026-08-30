@@ -130,6 +130,9 @@ out_gp
 #>  Path: x -> y
 #>  Conditional on moderator(s): gp
 #>  Moderator(s) represented by: gpTreatment
+#>  Computation Formula:
+#>    (b.y~x + (b.gpTreatment:x)*(gpTreatment))
+#> 
 #> 
 #>        [gp] (gpTreatment)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1 Control               0 -0.027 0.037 -0.745  0.456     -0.100 0.045
@@ -141,7 +144,7 @@ out_gp
 #>  - [Sig]: 0 '***' 0.001 '**' 0.01 '*' 0.05 ' ' 1.
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed outputs of all levels.
 ```
 
 The column `ind` shows the effects of `x` on `y` for different
@@ -238,6 +241,9 @@ std_gp
 #>  Path: x -> y
 #>  Conditional on moderator(s): gp
 #>  Moderator(s) represented by: gpTreatment
+#>  Computation Formula:
+#>    (b.y~x + (b.gpTreatment:x)*(gpTreatment))*sd_x/sd_y
+#> 
 #> 
 #>        [gp] (gpTreatment)    std  CI.lo CI.hi Sig    ind
 #> 1 Control               0 -0.039 -0.130 0.048     -0.027
@@ -247,7 +253,7 @@ std_gp
 #>    samples.
 #>  - std: The standardized conditional effects. 
 #>  - ind: The unstandardized conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed outputs of all levels.
 ```
 
 In the group `"Control"`, the standardized effect of `x` is -0.039, with
@@ -359,6 +365,9 @@ out_site
 #>  Path: x -> y
 #>  Conditional on moderator(s): site
 #>  Moderator(s) represented by: siteSite 2, siteSite 3
+#>  Computation Formula:
+#>    (b.y~x + (b.siteSite 2:x)*(siteSite 2) + (b.siteSite 3:x)*(siteSite 3))
+#> 
 #> 
 #>   [site] (siteSite 2) (siteSite 3)   ind    SE  Stat pvalue Sig  CI.lo CI.hi
 #> 1 Site 1            0            0 0.102 0.059 1.737  0.083     -0.013 0.217
@@ -371,7 +380,7 @@ out_site
 #>  - [Sig]: 0 '***' 0.001 '**' 0.01 '*' 0.05 ' ' 1.
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed outputs of all levels.
 ```
 
 In the site `"Site 1"`, the effect of `x` is 0.102, with a 95%
@@ -441,6 +450,9 @@ std_site
 #>  Path: x -> y
 #>  Conditional on moderator(s): site
 #>  Moderator(s) represented by: siteSite 2, siteSite 3
+#>  Computation Formula:
+#>    (b.y~x + (b.siteSite 2:x)*(siteSite 2) + (b.siteSite 3:x)*(siteSite 3))*sd_x/sd_y
+#> 
 #> 
 #>   [site] (siteSite 2) (siteSite 3)   std  CI.lo CI.hi Sig   ind
 #> 1 Site 1            0            0 0.146 -0.023 0.317     0.102
@@ -451,7 +463,7 @@ std_site
 #>    samples.
 #>  - std: The standardized conditional effects. 
 #>  - ind: The unstandardized conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed outputs of all levels.
 ```
 
 #### Plot Standardized Conditional Effects
@@ -559,6 +571,10 @@ out_gp_site
 #>  Path: x -> y
 #>  Conditional on moderator(s): gp, site
 #>  Moderator(s) represented by: gpTreatment, siteSite 2, siteSite 3
+#>  Computation Formula:
+#>    (b.y~x + (b.gpTreatment:x)*(gpTreatment) + (b.x:siteSite 2)*(siteSite 2) + (b.x:siteSite 3)*(siteSite
+#>    3))
+#> 
 #> 
 #>        [gp] [site] (gpTreatment) (siteSite 2) (siteSite 3)    ind    SE   Stat pvalue Sig  CI.lo  CI.hi
 #> 1 Control   Site 1             0            0            0 -0.084 0.060 -1.409  0.159     -0.201  0.033
@@ -574,7 +590,7 @@ out_gp_site
 #>  - [Sig]: 0 '***' 0.001 '**' 0.01 '*' 0.05 ' ' 1.
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed outputs of all levels.
 ```
 
 IMPORTANT: Even though this model does not have a three-way interaction,
@@ -605,6 +621,10 @@ cond_effects(
 #>  Path: x -> y
 #>  Conditional on moderator(s): gp
 #>  Moderator(s) represented by: gpTreatment
+#>  Computation Formula:
+#>    (b.y~x + (b.gpTreatment:x)*(gpTreatment) + (b.x:siteSite 2)*(siteSite 2) + (b.x:siteSite 3)*(siteSite
+#>    3))
+#> 
 #> 
 #>        [gp] (gpTreatment)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1 Control               0 -0.084 0.060 -1.409  0.159     -0.201 0.033
@@ -616,7 +636,7 @@ cond_effects(
 #>  - [Sig]: 0 '***' 0.001 '**' 0.01 '*' 0.05 ' ' 1.
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed outputs of all levels.
 ```
 
 ### Plotting the Conditional Effects
@@ -730,6 +750,10 @@ std_gp_site
 #>  Path: x -> y
 #>  Conditional on moderator(s): gp, site
 #>  Moderator(s) represented by: gpTreatment, siteSite 2, siteSite 3
+#>  Computation Formula:
+#>    (b.y~x + (b.gpTreatment:x)*(gpTreatment) + (b.x:siteSite 2)*(siteSite 2) + (b.x:siteSite 3)*(siteSite
+#>    3))*sd_x/sd_y
+#> 
 #> 
 #>        [gp] [site] (gpTreatment) (siteSite 2) (siteSite 3)    std  CI.lo  CI.hi Sig    ind
 #> 1 Control   Site 1             0            0            0 -0.120 -0.275  0.035     -0.084
@@ -743,7 +767,7 @@ std_gp_site
 #>    samples.
 #>  - std: The standardized conditional effects. 
 #>  - ind: The unstandardized conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed outputs of all levels.
 ```
 
 #### Tumble Plots of Standardized Conditional Effects
@@ -871,6 +895,11 @@ out_gp_x_site
 #>  Path: x -> y
 #>  Conditional on moderator(s): site, gp
 #>  Moderator(s) represented by: siteSite 2, siteSite 3, gpTreatment
+#>  Computation Formula:
+#>    (b.y~x + (b.x:siteSite 2)*(siteSite 2) + (b.x:siteSite 3)*(siteSite 3) + (b.x:gpTreatment)*(gpTreatment)
+#>    + (b.x:siteSite 2:gpTreatment)*(siteSite 2*gpTreatment) + (b.x:siteSite 3:gpTreatment)*(siteSite
+#>    3*gpTreatment))
+#> 
 #> 
 #>   [site]      [gp] (siteSite 2) (siteSite 3) (gpTreatment)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1 Site 1 Control              0            0             0 -0.128 0.074 -1.722  0.086     -0.274 0.018
@@ -886,7 +915,7 @@ out_gp_x_site
 #>  - [Sig]: 0 '***' 0.001 '**' 0.01 '*' 0.05 ' ' 1.
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed outputs of all levels.
 ```
 
 ### Plotting the Conditional Effects
@@ -944,6 +973,11 @@ std_gp_x_site
 #>  Path: x -> y
 #>  Conditional on moderator(s): gp, site
 #>  Moderator(s) represented by: gpTreatment, siteSite 2, siteSite 3
+#>  Computation Formula:
+#>    (b.y~x + (b.x:siteSite 2)*(siteSite 2) + (b.x:siteSite 3)*(siteSite 3) + (b.x:gpTreatment)*(gpTreatment)
+#>    + (b.x:siteSite 2:gpTreatment)*(siteSite 2*gpTreatment) + (b.x:siteSite 3:gpTreatment)*(siteSite
+#>    3*gpTreatment))*sd_x/sd_y
+#> 
 #> 
 #>        [gp] [site] (gpTreatment) (siteSite 2) (siteSite 3)    std  CI.lo CI.hi Sig    ind
 #> 1 Control   Site 1             0            0            0 -0.183 -0.374 0.003     -0.128
@@ -957,7 +991,7 @@ std_gp_x_site
 #>    samples.
 #>  - std: The standardized conditional effects. 
 #>  - ind: The unstandardized conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed outputs of all levels.
 ```
 
 These are the plots of the standardized conditional effects, with

@@ -332,6 +332,9 @@ out_cond
 #>  Path: x -> m -> y
 #>  Conditional on moderator(s): w1, w2
 #>  Moderator(s) represented by: w1, w2
+#>  Computation Formula:
+#>    (b.m~x + (b.w1x)*(w1))*(b.y~m + (b.w2m)*(w2))
+#> 
 #> 
 #>      [w1]    [w2]  (w1)  (w2)   ind  CI.lo CI.hi Sig   m~x   y~m
 #> 1 M+1.0SD M+1.0SD 6.173 4.040 0.399  0.139 0.705 Sig 0.596 0.671
@@ -344,6 +347,8 @@ out_cond
 #>  - The 'ind' column shows the conditional indirect effects.
 #>  - 'm~x','y~m' is/are the path coefficient(s) along the path conditional
 #>    on the moderator(s).
+#>  - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 For two or more moderators, the default levels for numeric moderators
@@ -452,6 +457,9 @@ out_cond_stdxy
 #>  Path: x -> m -> y
 #>  Conditional on moderator(s): w1, w2
 #>  Moderator(s) represented by: w1, w2
+#>  Computation Formula:
+#>    (b.m~x + (b.w1x)*(w1))*(b.y~m + (b.w2m)*(w2))*sd_x/sd_y
+#> 
 #> 
 #>      [w1]    [w2]  (w1)  (w2)   std  CI.lo CI.hi Sig   m~x   y~m   ind
 #> 1 M+1.0SD M+1.0SD 6.173 4.040 0.401  0.154 0.655 Sig 0.596 0.671 0.399
@@ -465,6 +473,8 @@ out_cond_stdxy
 #>  - ind: The unstandardized conditional indirect effects.
 #>  - 'm~x','y~m' is/are the path coefficient(s) along the path conditional
 #>    on the moderator(s).
+#>  - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 The standardized indirect effect when both `w1` and `w2` are one SD
@@ -525,6 +535,9 @@ out_momome
 #>  Path: x -> m -> y
 #>  Conditional on moderator(s): w1, w2
 #>  Moderator(s) represented by: w1, w2
+#>  Computation Formula:
+#>    (b.m~x + (b.w1x)*(w1))*(b.y~m + (b.w2m)*(w2))
+#> 
 #> 
 #>   [w1] [w2] (w1) (w2)    ind  CI.lo CI.hi Sig    m~x    y~m
 #> 1    1    1    1    1 -0.023 -0.276 0.312     -0.459  0.051
@@ -633,6 +646,9 @@ out_mome
 #>  Path: x -> m -> y
 #>  Conditional on moderator(s): w1
 #>  Moderator(s) represented by: w1
+#>  Computation Formula:
+#>    (b.m~x + (b.w1x)*(w1))*(b.y~m)
+#> 
 #> 
 #>   [w1] (w1)    ind  CI.lo CI.hi Sig    m~x   y~m
 #> 1    1    1 -0.199 -0.762 0.230     -0.459 0.434

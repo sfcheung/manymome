@@ -55,6 +55,8 @@ out1
 #>  Path: x1 -> y
 #>  Conditional on moderator(s): w
 #>  Moderator(s) represented by: w
+#>  Computation Formula:
+#>    (b.y~x1 + (b.x1:w)*(w))
 #> 
 #>       [w]   (w)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1 M+1.0SD 2.176  0.357 0.069  5.168  0.000 ***  0.221 0.493
@@ -68,7 +70,9 @@ out1
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from
 #>    regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#>  
+#>   - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
+#> 
 plot(out1, graph_type = "tumble")
 
 
@@ -84,6 +88,8 @@ out2
 #>  Path: x2 -> y
 #>  Conditional on moderator(s): w
 #>  Moderator(s) represented by: w
+#>  Computation Formula:
+#>    (b.y~x2 + (b.w:x2)*(w))
 #> 
 #>       [w]   (w)    ind    SE   Stat pvalue Sig  CI.lo  CI.hi
 #> 1 M+1.0SD 2.176  0.336 0.069  4.862  0.000 ***  0.200  0.472
@@ -97,6 +103,8 @@ out2
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from
 #>    regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#>  
+#>   - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
+#> 
 plot(out2, graph_type = "tumble")
 ```

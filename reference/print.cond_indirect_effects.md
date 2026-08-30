@@ -221,6 +221,8 @@ cond_indirect_effects(x = "x", y = "m1",
 #>  Path: x -> m1
 #>  Conditional on moderator(s): w1
 #>  Moderator(s) represented by: w1
+#>  Computation Formula:
+#>    (b.m1~x + (b.x:w1)*(w1))
 #> 
 #>      [w1]   (w1)   ind
 #> 1 M+1.0SD  1.228 0.750
@@ -228,7 +230,9 @@ cond_indirect_effects(x = "x", y = "m1",
 #> 3 M-1.0SD -0.710 0.297
 #> 
 #>  - The 'ind' column shows the conditional effects.
-#>  
+#>   - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
+#> 
 
 # Conditional Indirect effect from x1 through m1 to y,
 # when w1 is equal to each of the default levels
@@ -241,6 +245,8 @@ out
 #>  Path: x -> m1 -> y
 #>  Conditional on moderator(s): w1
 #>  Moderator(s) represented by: w1
+#>  Computation Formula:
+#>    (b.m1~x + (b.x:w1)*(w1))*(b.y~m1)
 #> 
 #>      [w1]   (w1)    ind  m1~x   y~m1
 #> 1 M+1.0SD  1.228 -0.031 0.750 -0.042
@@ -250,6 +256,8 @@ out
 #>  - The 'ind' column shows the conditional indirect effects.
 #>  - ‘m1~x’,‘y~m1’ is/are the path coefficient(s) along the path
 #>    conditional on the moderator(s).
+#>  - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
 #> 
 
 print(out, digits = 5)
@@ -259,6 +267,8 @@ print(out, digits = 5)
 #>  Path: x -> m1 -> y
 #>  Conditional on moderator(s): w1
 #>  Moderator(s) represented by: w1
+#>  Computation Formula:
+#>    (b.m1~x + (b.x:w1)*(w1))*(b.y~m1)
 #> 
 #>      [w1]     (w1)      ind    m1~x     y~m1
 #> 1 M+1.0SD  1.22806 -0.03147 0.74988 -0.04197
@@ -268,6 +278,8 @@ print(out, digits = 5)
 #>  - The 'ind' column shows the conditional indirect effects.
 #>  - ‘m1~x’,‘y~m1’ is/are the path coefficient(s) along the path
 #>    conditional on the moderator(s).
+#>  - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
 #> 
 
 print(out, annotation = FALSE)
@@ -277,6 +289,8 @@ print(out, annotation = FALSE)
 #>  Path: x -> m1 -> y
 #>  Conditional on moderator(s): w1
 #>  Moderator(s) represented by: w1
+#>  Computation Formula:
+#>    (b.m1~x + (b.x:w1)*(w1))*(b.y~m1)
 #> 
 #>      [w1]   (w1)    ind  m1~x   y~m1
 #> 1 M+1.0SD  1.228 -0.031 0.750 -0.042

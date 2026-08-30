@@ -145,6 +145,8 @@ out
 #>  Path: x -> m1 -> y
 #>  Conditional on moderator(s): w1
 #>  Moderator(s) represented by: w1
+#>  Computation Formula:
+#>    (b.m1~x + (b.xw1)*(w1))*(b.y~m1)
 #> 
 #>      [w1]   (w1)   ind  CI.lo CI.hi Sig  m1~x  y~m1
 #> 1 M+1.0SD  1.228 0.068 -0.574 0.706     0.750 0.091
@@ -156,6 +158,8 @@ out
 #>  - The 'ind' column shows the conditional indirect effects.
 #>  - ‘m1~x’,‘y~m1’ is/are the path coefficient(s) along the path
 #>    conditional on the moderator(s).
+#>  - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
 #> 
 out_ind <- cond_indirect_diff(out, from = 2, to = 1)
 out_ind
@@ -165,6 +169,8 @@ out_ind
 #>  Path: x -> m1 -> y
 #>  Conditional on moderator(s): w1
 #>  Moderator(s) represented by: w1
+#>  Computation Formula:
+#>    (b.m1~x + (b.xw1)*(w1))*(b.y~m1)
 #> 
 #>      [w1]  (w1)   ind  CI.lo CI.hi Sig  m1~x  y~m1
 #> 1 M+1.0SD 1.228 0.068 -0.574 0.706     0.750 0.091

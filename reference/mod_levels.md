@@ -279,6 +279,8 @@ cond_indirect_effects(x = "x", y = "y", m = "m",
 #>  Path: x -> m -> y
 #>  Conditional on moderator(s): w1, w2
 #>  Moderator(s) represented by: w1, w2
+#>  Computation Formula:
+#>    (b.m~x + (b.x:w1)*(w1))*(b.y~m + (b.mw2)*(w2))
 #> 
 #>      [w1]    [w2]  (w1)  (w2)   ind   m~x   y~m
 #> 1 M+1.0SD M+1.0SD 6.173 4.040 0.398 0.596 0.669
@@ -294,6 +296,8 @@ cond_indirect_effects(x = "x", y = "y", m = "m",
 #>  - The 'ind' column shows the conditional indirect effects.
 #>  - ‘m~x’,‘y~m’ is/are the path coefficient(s) along the path conditional
 #>    on the moderator(s).
+#>  - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
 #> 
 
 
@@ -319,6 +323,8 @@ cond_indirect_effects(x = "x", y = "y", m = "m",
 #>  Path: x -> m -> y
 #>  Conditional on moderator(s): w1, w2
 #>  Moderator(s) represented by: w1, w2
+#>  Computation Formula:
+#>    (b.m~x + (b.x:w1)*(w1))*(b.y~m + (b.mw2)*(w2))
 #> 
 #>      [w1]    [w2]  (w1)  (w2)   ind   m~x   y~m
 #> 1 M+1.0SD M+1.0SD 6.173 4.040 0.398 0.596 0.669
@@ -329,6 +335,8 @@ cond_indirect_effects(x = "x", y = "y", m = "m",
 #>  - The 'ind' column shows the conditional indirect effects.
 #>  - ‘m~x’,‘y~m’ is/are the path coefficient(s) along the path conditional
 #>    on the moderator(s).
+#>  - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
 #> 
 # Can work without merge = TRUE:
 w1w2_levels <- mod_levels_list("w1", "w2", fit = fit)
@@ -351,6 +359,8 @@ cond_indirect_effects(x = "x", y = "y", m = "m",
 #>  Path: x -> m -> y
 #>  Conditional on moderator(s): w1, w2
 #>  Moderator(s) represented by: w1, w2
+#>  Computation Formula:
+#>    (b.m~x + (b.x:w1)*(w1))*(b.y~m + (b.mw2)*(w2))
 #> 
 #>      [w1]    [w2]  (w1)  (w2)   ind   m~x   y~m
 #> 1 M+1.0SD M+1.0SD 6.173 4.040 0.398 0.596 0.669
@@ -361,6 +371,8 @@ cond_indirect_effects(x = "x", y = "y", m = "m",
 #>  - The 'ind' column shows the conditional indirect effects.
 #>  - ‘m~x’,‘y~m’ is/are the path coefficient(s) along the path conditional
 #>    on the moderator(s).
+#>  - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
 #> 
 
 ```

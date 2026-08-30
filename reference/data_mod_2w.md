@@ -55,6 +55,8 @@ out
 #>  Path: x -> y
 #>  Conditional on moderator(s): w1, w2
 #>  Moderator(s) represented by: w1, w2
+#>  Computation Formula:
+#>    (b.y~x + (b.x:w1)*(w1) + (b.x:w2)*(w2))
 #> 
 #>      [w1]    [w2]  (w1)  (w2)   ind    SE  Stat pvalue Sig  CI.lo CI.hi
 #> 1 M+1.0SD M+1.0SD 7.942 4.829 0.528 0.122 4.343  0.000 ***  0.288 0.768
@@ -69,7 +71,9 @@ out
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from
 #>    regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#>  
+#>   - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
+#> 
 plot(out, facet_grid_cols = "w1", graph_type = "tumble")
 
 plot(out, facet_grid_cols = "w2", graph_type = "tumble")

@@ -152,6 +152,9 @@ out_xmy_on_w
 #>  Path: fx -> fm -> fy
 #>  Conditional on moderator(s): fw
 #>  Moderator(s) represented by: fw
+#>  Computation Formula:
+#>    (b.fm~fx + (b.fx:fw)*(fw))*(b.fy~fm)
+#> 
 #> 
 #>      [fw]   (fw)    ind  CI.lo CI.hi Sig  fm~fx fy~fm
 #> 1 M+1.0SD  0.834  0.361  0.141 0.568 Sig  0.810 0.446
@@ -163,6 +166,8 @@ out_xmy_on_w
 #>  - The 'ind' column shows the conditional indirect effects.
 #>  - 'fm~fx','fy~fm' is/are the path coefficient(s) along the path
 #>    conditional on the moderator(s).
+#>  - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 When `fw` is one standard deviation below the mean, the indirect effect
@@ -203,6 +208,9 @@ std_xmy_on_w
 #>  Path: fx -> fm -> fy
 #>  Conditional on moderator(s): fw
 #>  Moderator(s) represented by: fw
+#>  Computation Formula:
+#>    (b.fm~fx + (b.fx:fw)*(fw))*(b.fy~fm)*sd_fx/sd_fy
+#> 
 #> 
 #>      [fw]   (fw)    std  CI.lo CI.hi Sig  fm~fx fy~fm    ind
 #> 1 M+1.0SD  0.834  0.435  0.170 0.680 Sig  0.810 0.446  0.361
@@ -215,6 +223,8 @@ std_xmy_on_w
 #>  - ind: The unstandardized conditional indirect effects.
 #>  - 'fm~fx','fy~fm' is/are the path coefficient(s) along the path
 #>    conditional on the moderator(s).
+#>  - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 When `fw` is one standard deviation below the mean, the standardized

@@ -126,6 +126,9 @@ out_xy_on_w1
 #>  Path: x -> y
 #>  Conditional on moderator(s): w1
 #>  Moderator(s) represented by: w1
+#>  Computation Formula:
+#>    (b.y~x + (b.w1:x)*(w1))
+#> 
 #> 
 #>      [w1]  (w1)   ind    SE  Stat pvalue Sig  CI.lo CI.hi
 #> 1 M+1.0SD 7.942 0.492 0.101 4.853  0.000 ***  0.292 0.692
@@ -139,7 +142,8 @@ out_xy_on_w1
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from
 #>    regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 The column `ind` shows the effects of `x` on `y` for different levels of
@@ -245,6 +249,9 @@ std_xy_on_w1
 #>  Path: x -> y
 #>  Conditional on moderator(s): w1
 #>  Moderator(s) represented by: w1
+#>  Computation Formula:
+#>    (b.y~x + (b.w1:x)*(w1))*sd_x/sd_y
+#> 
 #> 
 #>      [w1]  (w1)   std  CI.lo CI.hi Sig   ind
 #> 1 M+1.0SD 7.942 0.374  0.204 0.518 Sig 0.492
@@ -255,7 +262,8 @@ std_xy_on_w1
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - std: The standardized conditional effects. 
 #>  - ind: The unstandardized conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 When `w1` is one standard deviation below its mean, the standardized
@@ -370,6 +378,9 @@ out_xy_on_w1w2
 #>  Path: x -> y
 #>  Conditional on moderator(s): w1, w2
 #>  Moderator(s) represented by: w1, w2
+#>  Computation Formula:
+#>    (b.y~x + (b.x:w1)*(w1) + (b.x:w2)*(w2))
+#> 
 #> 
 #>      [w1]    [w2]  (w1)  (w2)   ind    SE  Stat pvalue Sig  CI.lo CI.hi
 #> 1 M+1.0SD M+1.0SD 7.942 4.829 0.528 0.122 4.343  0.000 ***  0.288 0.768
@@ -384,7 +395,8 @@ out_xy_on_w1w2
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from
 #>    regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 The column `ind` shows the effects of `x` on `y` for different levels of
@@ -424,6 +436,9 @@ cond_effects(
 #>  Path: x -> y
 #>  Conditional on moderator(s): w1
 #>  Moderator(s) represented by: w1
+#>  Computation Formula:
+#>    (b.y~x + (b.x:w1)*(w1) + (b.x:w2)*(w2))
+#> 
 #> 
 #>      [w1]  (w1)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1 M+1.0SD 7.942  0.346 0.363  0.951  0.343     -0.371 1.062
@@ -437,7 +452,8 @@ cond_effects(
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from
 #>    regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 ### Plotting the Conditional Effects
@@ -542,6 +558,9 @@ std_xy_on_w1w2
 #>  Path: x -> y
 #>  Conditional on moderator(s): w1, w2
 #>  Moderator(s) represented by: w1, w2
+#>  Computation Formula:
+#>    (b.y~x + (b.x:w1)*(w1) + (b.x:w2)*(w2))*sd_x/sd_y
+#> 
 #> 
 #>      [w1]    [w2]  (w1)  (w2)   std  CI.lo CI.hi Sig   ind
 #> 1 M+1.0SD M+1.0SD 7.942 4.829 0.402  0.203 0.560 Sig 0.528
@@ -553,7 +572,8 @@ std_xy_on_w1w2
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - std: The standardized conditional effects. 
 #>  - ind: The unstandardized conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 The [`plot()`](https://rdrr.io/r/graphics/plot.default.html) method can
@@ -683,6 +703,9 @@ out_xy_on_w1_x_w2
 #>  Path: x -> y
 #>  Conditional on moderator(s): w1, w2
 #>  Moderator(s) represented by: w1, w2
+#>  Computation Formula:
+#>    (b.y~x + (b.w1:x)*(w1) + (b.w2:x)*(w2) + (b.w1:w2:x)*(w1*w2))
+#> 
 #> 
 #>      [w1]    [w2]  (w1)  (w2)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1 M+1.0SD M+1.0SD 7.942 4.829  0.672 0.137  4.903  0.000 ***  0.402 0.942
@@ -697,7 +720,8 @@ out_xy_on_w1_x_w2
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from
 #>    regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 As shown above, among the levels examined, `x` has a significant effect
@@ -759,6 +783,10 @@ std_xy_on_w1_x_w2
 #>  Path: x -> y
 #>  Conditional on moderator(s): w1, w2
 #>  Moderator(s) represented by: w1, w2
+#>  Computation Formula:
+#>    (b.y~x + (b.w1:x)*(w1) + (b.w2:x)*(w2) +
+#>    (b.w1:w2:x)*(w1*w2))*sd_x/sd_y
+#> 
 #> 
 #>      [w1]    [w2]  (w1)  (w2)    std  CI.lo CI.hi Sig    ind
 #> 1 M+1.0SD M+1.0SD 7.942 4.829  0.511  0.360 0.760 Sig  0.672
@@ -770,7 +798,8 @@ std_xy_on_w1_x_w2
 #>    nonparametric bootstrapping with 5000 samples.
 #>  - std: The standardized conditional effects. 
 #>  - ind: The unstandardized conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 The [`plot()`](https://rdrr.io/r/graphics/plot.default.html) method can

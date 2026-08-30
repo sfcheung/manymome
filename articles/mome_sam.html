@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.18</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,7 +103,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-27</h4>
+            <h4 data-toc-skip class="date">2026-08-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/articles/mome_sam.Rmd" class="external-link"><code>vignettes/articles/mome_sam.Rmd</code></a></small>
       <div class="d-none name"><code>mome_sam.Rmd</code></div>
@@ -237,6 +237,9 @@ to <code>fy</code> through <code>fm</code>, conditional on
 <span><span class="co">#&gt;  Path: fx -&gt; fm -&gt; fy</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): fw</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: fw</span></span>
+<span><span class="co">#&gt;  Computation Formula:</span></span>
+<span><span class="co">#&gt;    (b.fm~fx + (b.fx:fw)*(fw))*(b.fy~fm)</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [fw]   (fw)    ind  CI.lo CI.hi Sig  fm~fx fy~fm</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD  0.834  0.361  0.141 0.568 Sig  0.810 0.446</span></span>
@@ -247,7 +250,9 @@ to <code>fy</code> through <code>fm</code>, conditional on
 <span><span class="co">#&gt;    nonparametric bootstrapping with 2000 samples.</span></span>
 <span><span class="co">#&gt;  - The 'ind' column shows the conditional indirect effects.</span></span>
 <span><span class="co">#&gt;  - 'fm~fx','fy~fm' is/are the path coefficient(s) along the path</span></span>
-<span><span class="co">#&gt;    conditional on the moderator(s).</span></span></code></pre></div>
+<span><span class="co">#&gt;    conditional on the moderator(s).</span></span>
+<span><span class="co">#&gt;  - Call 'print_all_cond_indirect_effects()' to print the detailed</span></span>
+<span><span class="co">#&gt;    outputs of all levels.</span></span></code></pre></div>
 <p>When <code>fw</code> is one standard deviation below the mean, the
 indirect effect is -0.003, with a 95% confidence interval [-0.042,
 0.034].</p>
@@ -286,6 +291,9 @@ can be estimated by setting <code>standardized_x</code> and
 <span><span class="co">#&gt;  Path: fx -&gt; fm -&gt; fy</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): fw</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: fw</span></span>
+<span><span class="co">#&gt;  Computation Formula:</span></span>
+<span><span class="co">#&gt;    (b.fm~fx + (b.fx:fw)*(fw))*(b.fy~fm)*sd_fx/sd_fy</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [fw]   (fw)    std  CI.lo CI.hi Sig  fm~fx fy~fm    ind</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD  0.834  0.435  0.170 0.680 Sig  0.810 0.446  0.361</span></span>
@@ -297,7 +305,9 @@ can be estimated by setting <code>standardized_x</code> and
 <span><span class="co">#&gt;  - std: The standardized conditional indirect effects. </span></span>
 <span><span class="co">#&gt;  - ind: The unstandardized conditional indirect effects.</span></span>
 <span><span class="co">#&gt;  - 'fm~fx','fy~fm' is/are the path coefficient(s) along the path</span></span>
-<span><span class="co">#&gt;    conditional on the moderator(s).</span></span></code></pre></div>
+<span><span class="co">#&gt;    conditional on the moderator(s).</span></span>
+<span><span class="co">#&gt;  - Call 'print_all_cond_indirect_effects()' to print the detailed</span></span>
+<span><span class="co">#&gt;    outputs of all levels.</span></span></code></pre></div>
 <p>When <code>fw</code> is one standard deviation below the mean, the
 standardized indirect effect is -0.004, with a 95% confidence interval
 [-0.050, 0.041].</p>

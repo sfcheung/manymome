@@ -341,6 +341,8 @@ cond_out
 #>  Path: x -> m
 #>  Conditional on moderator(s): w
 #>  Moderator(s) represented by: w
+#>  Computation Formula:
+#>    (b.m~x + (b.x:w)*(w))
 #> 
 #>       [w]    (w)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1 M+3.0SD  5.134  5.119 1.428  3.584  0.001 ***  2.283 7.955
@@ -354,7 +356,9 @@ cond_out
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from
 #>    regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#>  
+#>   - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
+#> 
 # Only 3 points
 p1 <- plot_effect_vs_w(cond_out)
 p1
@@ -369,6 +373,8 @@ cond_out_filled
 #>  Path: x -> m
 #>  Conditional on moderator(s): w
 #>  Moderator(s) represented by: w
+#>  Computation Formula:
+#>    (b.m~x + (b.x:w)*(w))
 #> 
 #>                   [w]    (w)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1  5.13382823045524    5.134  5.119 1.428  3.584  0.001 ***  2.283 7.955
@@ -394,7 +400,9 @@ cond_out_filled
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from
 #>    regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#>  
+#>   - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
+#> 
 p2 <- plot_effect_vs_w(cond_out_filled)
 p2
 

@@ -1,6 +1,6 @@
 # Changelog
 
-## manymome 0.3.6.17
+## manymome 0.3.6.18
 
 ### New Features
 
@@ -56,6 +56,10 @@
   can be ignored silently by setting `wlevels_not_found` to `"ignore"`.
   If desired, an error can be raised by setting `wlevels_not_found` to
   `"error"`. (0.3.6.17)
+
+- The `print` method of `cond_indirect_effects` objects
+  ([`print.cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/print.cond_indirect_effects.md))
+  will now print the computation formula. (0.3.6.18)
 
 ### Miscellaneous
 

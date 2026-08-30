@@ -218,6 +218,9 @@ out_xy_on_w
 #>  Path: fx -> fy
 #>  Conditional on moderator(s): fw
 #>  Moderator(s) represented by: fw
+#>  Computation Formula:
+#>    (b.fy~fx + (b.fx:fw)*(fw))
+#> 
 #> 
 #>      [fw]   (fw)    ind  CI.lo CI.hi Sig
 #> 1 M+1.0SD  0.834  0.448  0.322 0.593 Sig
@@ -227,7 +230,8 @@ out_xy_on_w
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
 #>    nonparametric bootstrapping with 2000 samples.
 #>  - The 'ind' column shows the conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 When `fw` is one standard deviation below the mean, the indirect effect
@@ -261,6 +265,9 @@ std_xy_on_w
 #>  Path: fx -> fy
 #>  Conditional on moderator(s): fw
 #>  Moderator(s) represented by: fw
+#>  Computation Formula:
+#>    (b.fy~fx + (b.fx:fw)*(fw))*sd_fx/sd_fy
+#> 
 #> 
 #>      [fw]   (fw)    std  CI.lo CI.hi Sig    ind
 #> 1 M+1.0SD  0.834  0.539  0.405 0.696 Sig  0.448
@@ -271,7 +278,8 @@ std_xy_on_w
 #>    nonparametric bootstrapping with 2000 samples.
 #>  - std: The standardized conditional effects. 
 #>  - ind: The unstandardized conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 When `fw` is one standard deviation below the mean, the standardized

@@ -53,6 +53,9 @@ out
 #>  Path: x -> y
 #>  Conditional on moderator(s): site, gp
 #>  Moderator(s) represented by: siteSite 2, siteSite 3, gpTreatment
+#>  Computation Formula:
+#>    (b.y~x + (b.x:gpTreatment)*(gpTreatment) + (b.x:siteSite
+#>    2)*(siteSite 2) + (b.x:siteSite 3)*(siteSite 3))
 #> 
 #>   [site]      [gp] (siteSite 2) (siteSite 3) (gpTreatment)    ind    SE   Stat
 #> 1 Site 1 Control              0            0             0 -0.084 0.060 -1.409
@@ -76,6 +79,8 @@ out
 #>  - [CI.lo to CI.hi] are 95.0% confidence interval computed from
 #>    regression standard errors.
 #>  - The 'ind' column shows the conditional effects.
-#>  
+#>   - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
+#> 
 plot(out, facet_grid_cols = "site", graph_type = "tumble")
 ```

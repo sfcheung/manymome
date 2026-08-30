@@ -159,6 +159,8 @@ out
 #>  Path: x -> m
 #>  Conditional on moderator(s): w1
 #>  Moderator(s) represented by: w1
+#>  Computation Formula:
+#>    (b.m~x + (b.w1x)*(w1))
 #> 
 #>   [w1] (w1)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1    8    8  0.964 0.308  3.130  0.002  **  0.360 1.568
@@ -177,7 +179,8 @@ out
 #>    involving the product terms are free. Otherwise, the model may not
 #>    be invariant to linear transformation of the variables.
 #>  - The 'ind' column shows the conditional effects.
-#> 
+#>   - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 [`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
@@ -414,6 +417,9 @@ out
 #>  Path: x -> m1 -> y
 #>  Conditional on moderator(s): w1
 #>  Moderator(s) represented by: w1group2, w1group3
+#>  Computation Formula:
+#>    (b.m1~x + (b.w1group2x)*(w1group2) +
+#>    (b.w1group3x)*(w1group3))*(b.y~m1)
 #> 
 #>     [w1] (w1group2) (w1group3)   ind  m1~x  y~m1
 #> 1 group1          0          0 0.263 1.002 0.262
@@ -423,6 +429,8 @@ out
 #>  - The 'ind' column shows the conditional indirect effects.
 #>  - 'm1~x','y~m1' is/are the path coefficient(s) along the path
 #>    conditional on the moderator(s).
+#>  - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 ### User-Supplied Levels

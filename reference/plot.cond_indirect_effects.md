@@ -285,13 +285,17 @@ out
 #> 
 #>  Path: m -> y
 #>  Conditional on group(s): Group A[1], Group B[2]
+#>  Computation Formula:
+#>    (b.y~m)
 #> 
 #>     Group Group_ID   ind
 #> 1 Group A        1 0.465
 #> 2 Group B        2 1.110
 #> 
 #>  - The 'ind' column shows the direct effects.
-#>  
+#>   - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
+#> 
 plot(out)
 
 

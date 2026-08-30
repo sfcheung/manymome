@@ -11,7 +11,7 @@ lavaan::sem()."><meta property="og:image" content="https://sfcheung.github.io/ma
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.18</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -288,6 +288,8 @@ try first before using this function.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Path: x -&gt; m -&gt; y</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Conditional on moderator(s): w</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Computation Formula:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    (b.m~x + (b.x:w)*(w))*(b.y~m + (b.m:w)*(w))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       [w]   (w)    ind  CI.lo CI.hi Sig    m~x   y~m</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 M+1.0SD 6.046  0.248  0.093 0.583 Sig  0.342 0.725</span>
@@ -299,6 +301,8 @@ try first before using this function.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - The 'ind' column shows the conditional indirect effects.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - ‘m~x’,‘y~m’ is/are the path coefficient(s) along the path conditional</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    on the moderator(s).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - Call ‘print_all_cond_indirect_effects()’ to print the detailed</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    outputs of all levels.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

@@ -13,7 +13,7 @@ proposed by Hayes (2015, 2018)."><meta property="og:image" content="https://sfch
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.17</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.6.18</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -545,6 +545,8 @@ mediation: Quantification, inference, and interpretation.
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Path: x -&gt; m1 -&gt; y</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Conditional on moderator(s): w1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Computation Formula:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    (b.m1~x + (b.xw1)*(w1))*(b.y~m1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [w1] (w1)   ind  CI.lo CI.hi Sig  m1~x  y~m1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    1    1 0.063 -0.528 0.654     0.697 0.091</span>
@@ -599,6 +601,8 @@ mediation: Quantification, inference, and interpretation.
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Path: x -&gt; m1 -&gt; y</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Conditional on moderator(s): w1, w4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Moderator(s) represented by: w1, w4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Computation Formula:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    (b.m1~x + (b.xw1)*(w1))*(b.y~m1 + (b.m1w4)*(w4))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [w1] [w4] (w1) (w4)    ind  m1~x   y~m1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    1    1    1    1 -0.119 0.697 -0.172</span>

@@ -273,6 +273,8 @@ out_jn
 #>  Path: x -> m -> y
 #>  Conditional on moderator(s): w
 #>  Moderator(s) represented by: w
+#>  Computation Formula:
+#>    (b.m~x + (b.wx)*(w))*(b.y~m)
 #> 
 #>    [w]    (w)    ind   CI.lo CI.hi Sig    m~x   y~m
 #> 1 High  1.437  1.442   0.000 2.817 Sig  1.492 0.966
@@ -283,6 +285,8 @@ out_jn
 #>  - The 'ind' column shows the conditional indirect effects.
 #>  - ‘m~x’,‘y~m’ is/are the path coefficient(s) along the path conditional
 #>    on the moderator(s).
+#>  - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
 #> 
 
 # Plot the range

@@ -384,6 +384,8 @@ out_mome
 #>  Path: x -> m1 -> y
 #>  Conditional on moderator(s): w1
 #>  Moderator(s) represented by: w1
+#>  Computation Formula:
+#>    (b.m1~x + (b.xw1)*(w1))*(b.y~m1)
 #> 
 #>   [w1] (w1)   ind  CI.lo CI.hi Sig  m1~x  y~m1
 #> 1    1    1 0.063 -0.528 0.654     0.697 0.091
@@ -438,6 +440,8 @@ out_momome
 #>  Path: x -> m1 -> y
 #>  Conditional on moderator(s): w1, w4
 #>  Moderator(s) represented by: w1, w4
+#>  Computation Formula:
+#>    (b.m1~x + (b.xw1)*(w1))*(b.y~m1 + (b.m1w4)*(w4))
 #> 
 #>   [w1] [w4] (w1) (w4)    ind  m1~x   y~m1
 #> 1    1    1    1    1 -0.119 0.697 -0.172

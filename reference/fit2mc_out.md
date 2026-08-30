@@ -106,16 +106,20 @@ out
 #>  Path: x -> m -> y
 #>  Conditional on moderator(s): w
 #>  Moderator(s) represented by: w
+#>  Computation Formula:
+#>    (b.m~x + (b.x:w)*(w))*(b.y~m + (b.m:w)*(w))
 #> 
 #>       [w]   (w)    ind  CI.lo CI.hi Sig    m~x   y~m
-#> 1 M+1.0SD 6.046  0.248  0.015 0.472 Sig  0.342 0.725
-#> 2 Mean    4.990  0.024 -0.062 0.128      0.063 0.375
-#> 3 M-1.0SD 3.934 -0.006 -0.056 0.044     -0.216 0.026
+#> 1 M+1.0SD 6.046  0.248  0.013 0.480 Sig  0.342 0.725
+#> 2 Mean    4.990  0.024 -0.066 0.121      0.063 0.375
+#> 3 M-1.0SD 3.934 -0.006 -0.043 0.052     -0.216 0.026
 #> 
 #>  - [CI.lo to CI.hi] are 95.0% Monte Carlo confidence intervals with 100
 #>    replications.
 #>  - The 'ind' column shows the conditional indirect effects.
 #>  - ‘m~x’,‘y~m’ is/are the path coefficient(s) along the path conditional
 #>    on the moderator(s).
+#>  - Call ‘print_all_cond_indirect_effects()’ to print the detailed
+#>    outputs of all levels.
 #> 
 ```
