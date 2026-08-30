@@ -456,9 +456,36 @@ print.cond_indirect_effects <- function(x, digits = 3,
                     collapse = ", ")
       cat("\n Conditional on group(s):", tmp)
     }
+
+  # ==== Print computational symbols ====
+
+  full_computation_symbol <- sapply(
+      full_output,
+      function(x) {
+        tmp <- x$computation_symbol
+        if (is.null(tmp)) {
+          return(NA_character_)
+        } else {
+          return(tmp)
+        }
+      }
+  )
+  # Assume computation_symbol is the same for all rows
+  full_computation_symbol <- unique(full_computation_symbol)
+  if (is.character(full_computation_symbol)) {
+    cat("\n Computation Formula:")
+    tmp <- strwrap(
+              full_computation_symbol,
+              indent = 3,
+              exdent = 3
+            )
+    cat("\n")
+    cat(tmp, sep = "\n")
+  }
+
   xold <- x
   x <- out1
-  cat("\n\n")
+  cat("\n")
   NextMethod()
   if (annotation) {
       if (has_ci) {
@@ -580,6 +607,11 @@ print.cond_indirect_effects <- function(x, digits = 3,
               "conditional on",
               tmp), exdent = 3), sep = "\n")
         }
+      tmp <- paste("\n - Call",
+                   sQuote("print_all_cond_indirect_effects()"),
+                   " to print the detailed outputs of all levels."
+                  )
+      cat(strwrap(tmp, exdent = 3, indent = 1), sep = "\n")
       cat("\n")
     }
   invisible(x)

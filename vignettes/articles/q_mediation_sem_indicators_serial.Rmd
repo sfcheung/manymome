@@ -2,7 +2,7 @@
 title: "Serial Mediation Models Corrected for Measurement Error"
 subtitle: "Using `q_mediation()`"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-08-27"
+date: "2026-08-30"
 output:
   html_document:
     fig.align: "center"
