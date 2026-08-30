@@ -31,6 +31,6 @@ knitr::knit("mo_lm_2x1w.Rmd.original", output = "mo_lm_2x1w.Rmd")
 knitr::knit("mo_lm_2x2w.Rmd.original", output = "mo_lm_2x2w.Rmd")
 knitr::knit("mo_lm_cat_2w.Rmd.original", output = "mo_lm_cat_2w.Rmd")
 knitr::knit("mo_lm_cat_num_2w.Rmd.original", output = "mo_lm_cat_num_2w.Rmd")
-pkgdown::build_articles("../../"); pkgdown::preview_site("../../")
+# pkgdown::build_articles("../../"); pkgdown::preview_site("../../")
 
 setwd(base_dir)

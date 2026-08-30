@@ -1,7 +1,7 @@
 ---
 title: "Moderated Mediation Analysis by Multiple Regression"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-08-27"
+date: "2026-08-30"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -210,6 +210,9 @@ out_xmy_on_w
 #>  Path: x -> m -> y
 #>  Conditional on moderator(s): w
 #>  Moderator(s) represented by: w
+#>  Computation Formula:
+#>    (b.m~x + (b.x:w)*(w))*(b.y~m)
+#> 
 #> 
 #>       [w]   (w)   ind  CI.lo CI.hi Sig   m~x   y~m
 #> 1 M+1.0SD 3.164 3.060  2.168 4.039 Sig 3.192 0.959
@@ -221,6 +224,8 @@ out_xmy_on_w
 #>  - The 'ind' column shows the conditional indirect effects.
 #>  - 'm~x','y~m' is/are the path coefficient(s) along the path conditional
 #>    on the moderator(s).
+#>  - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 When `w` is one standard deviation
@@ -274,6 +279,9 @@ out_mome
 #>  Path: x -> m -> y
 #>  Conditional on moderator(s): w
 #>  Moderator(s) represented by: w
+#>  Computation Formula:
+#>    (b.m~x + (b.x:w)*(w))*(b.y~m)
+#> 
 #> 
 #>   [w] (w)   ind  CI.lo CI.hi Sig   m~x   y~m
 #> 1   1   1 1.030 -0.622 2.543     1.074 0.959
@@ -323,6 +331,9 @@ std_xmy_on_w
 #>  Path: x -> m -> y
 #>  Conditional on moderator(s): w
 #>  Moderator(s) represented by: w
+#>  Computation Formula:
+#>    (b.m~x + (b.x:w)*(w))*(b.y~m)*sd_x/sd_y
+#> 
 #> 
 #>       [w]   (w)   std  CI.lo CI.hi Sig   m~x   y~m   ind
 #> 1 M+1.0SD 3.164 0.318  0.220 0.437 Sig 3.192 0.959 3.060
@@ -335,6 +346,8 @@ std_xmy_on_w
 #>  - ind: The unstandardized conditional indirect effects.
 #>  - 'm~x','y~m' is/are the path coefficient(s) along the path conditional
 #>    on the moderator(s).
+#>  - Call 'print_all_cond_indirect_effects()' to print the detailed
+#>    outputs of all levels.
 ```
 
 The standardized indirect effect is
