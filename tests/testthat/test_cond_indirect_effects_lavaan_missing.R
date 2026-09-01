@@ -1,3 +1,5 @@
+skip_on_cran()
+
 # To be examined in an interactive session
 
 library(manymome)

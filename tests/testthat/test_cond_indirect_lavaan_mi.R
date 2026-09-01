@@ -1,7 +1,7 @@
 skip_on_cran()
+skip("To be examined in an interactive session")
 skip_if_not_installed("lavaan.mi")
 skip_if_not_installed("Amelia")
-skip("To be examined in an interactive session")
 # It works if run in an interactive mode.
 # Something's about the methods in lavaan.mi
 # Require lavaan.mi
