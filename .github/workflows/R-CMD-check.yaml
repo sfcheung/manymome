@@ -20,13 +20,12 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macOS-latest,   r: 'release', nosuggests: false, args: 'c("--no-manual", "--as-cran")'}
-          - {os: windows-latest, r: 'release', nosuggests: false, args: 'c("--no-manual", "--as-cran")'}
-          - {os: ubuntu-latest,   r: 'devel', nosuggests: false, http-user-agent: 'release', args: 'c("--no-manual", "--as-cran")'}
-          - {os: ubuntu-latest,   r: 'release', nosuggests: false, args: 'c("--no-manual", "--as-cran")'}
-          - {os: ubuntu-latest,   r: 'oldrel-1', nosuggests: false, args: 'c("--no-manual", "--as-cran")'}
-          - {os: ubuntu-latest,   r: 'release', nosuggests: true, special: "No Suggests", args: 'c("--no-manual", "--as-cran")'}
-          - {os: ubuntu-latest,   r: 'release', nosuggests: false, special: "Not as CRAN", args: 'c("--no-manual")'}
+          - {os: macOS-latest,   r: 'release', nosuggests: false}
+          - {os: windows-latest, r: 'release', nosuggests: false}
+          - {os: ubuntu-latest,   r: 'devel', nosuggests: false, http-user-agent: 'release'}
+          - {os: ubuntu-latest,   r: 'release', nosuggests: false}
+          - {os: ubuntu-latest,   r: 'oldrel-1', nosuggests: false}
+          - {os: ubuntu-latest,   r: 'release', nosuggests: true, special: "No Suggests"}
 
     env:
       _R_CHECK_DEPENDS_ONLY_: ${{ matrix.config.nosuggests }}
@@ -53,5 +52,4 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
-          args: ${{ matrix.config.args }}
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
