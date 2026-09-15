@@ -118,12 +118,16 @@ get_vcov <- function(object) {
     if (inherits(object, "lavaan.mi")) {
         type <- "lavaan.mi"
       }
+    if (cond_indirect_check_fit(object) == "lm") {
+        type <- "lm"
+      }
     if (isTRUE(is.na(type))) {
         stop("Object is not of a supported type.")
       }
     out <- switch(type,
                   lavaan = get_vcov_lavaan(object),
-                  lavaan.mi = get_vcov_lavaan_mi(object))
+                  lavaan.mi = get_vcov_lavaan_mi(object),
+                  lm = get_vcov_lm(object))
     out
   }
 
@@ -143,6 +147,16 @@ get_vcov_lavaan_mi <- function(object) {
                                         scale.W = TRUE,
                                         omit.imps = c("no.conv", "no.se"))
   }
+
+#' @noRd
+
+get_vcov_lm <- function(object) {
+  ptable <- lm2ptable(object)
+  est_vcov0 <- ptable$vcov
+  est_vcov1 <- lm_list_vcov_to_one_vcov(est_vcov0)
+  est_vcov1
+}
+
 
 #' @noRd
 

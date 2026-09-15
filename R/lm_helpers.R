@@ -209,3 +209,28 @@ auto_lm2list <- function(object) {
       }
     object
   }
+
+#' Convert an lm_list_vcov() output
+#' to one VCOV matrix
+#' @noRd
+lm_list_vcov_to_one_vcov <- function(x) {
+  f <- function(yi, xi) {
+    colnames(xi) <- gsub("(Intercept)", "1", colnames(xi), fixed = TRUE)
+    colnames(xi) <- paste0(yi, "~", colnames(xi))
+    rownames(xi) <- colnames(xi)
+    xi
+  }
+  out0 <- mapply(
+    FUN = f,
+    yi = names(x),
+    xi = x
+  )
+  k0 <- unname(sum(sapply(out0, nrow)))
+  out1 <- matrix(0, nrow = k0, ncol = k0)
+  vnames <- unname(unlist(sapply(out0, colnames)))
+  colnames(out1) <- rownames(out1) <- vnames
+  for (xx in out0) {
+    out1[rownames(xx), colnames(xx)] <- xx
+  }
+  out1
+}
