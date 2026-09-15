@@ -193,3 +193,35 @@ gen_mc_est <- function(fit,
     fit@external$manymome$mc <- mc_est
     fit
   }
+
+# NOTE: mc stored in an attribute, not in a slot
+#' @noRd
+gen_mc_est_lm <- function(
+  fit,
+  R = 100,
+  seed = NULL
+) {
+  if (!missing(fit)) {
+        fit <- auto_lm2list(fit)
+    }
+  fit_vcov <- tryCatch(
+                get_vcov_lm(fit),
+                error = function(e) e
+              )
+  if (inherits(fit_vcov, "error")) {
+    stop("Monte Carlo method cannot be used. VCOV of estimates not available.")
+  }
+  if (!is.null(seed)) set.seed(seed)
+  ptable <- lm2ptable(fit)
+  est_names <- lavaan::lav_partable_labels(ptable$est)
+  est <- stats::setNames(ptable$est$est, est_names)
+  fit_vcov <- fit_vcov[est_names, est_names]
+  mc_est <- MASS::mvrnorm(n = R,
+                          mu = est,
+                          Sigma = fit_vcov)
+  attr(mc_est, "R") <- R
+  attr(mc_est, "est") <- est
+  attr(mc_est, "vcov") <- fit_vcov
+  attr(fit, "mc") <- mc_est
+  fit
+}
