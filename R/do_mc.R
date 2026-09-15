@@ -155,7 +155,16 @@ do_mc <- function(fit,
                           progress = progress)
       }
     if (fit_type == "lm") {
-        stop("Monte Carlo method does not support lm outputs.")
+        fit0 <- gen_mc_est_lm(
+                    fit = fit,
+                    seed = seed,
+                    R = R
+                  )
+        # TODO:
+        # - Find a way to compute implied stats for lm
+        out <- fit2mc_out(fit0,
+                          compute_implied_stats = FALSE,
+                          progress = progress)
       }
     return(out)
   }

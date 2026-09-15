@@ -16,7 +16,7 @@ mc2est_lm <- function(
     out_i$label <- NULL
     out_i
   }
-  out0 <- lapply(
+  out0 <- pbapply::pblapply(
     seq_len(nrow(mc_est0)),
     f
   )
