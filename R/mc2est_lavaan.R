@@ -133,8 +133,26 @@ fit2mc_out <- function(fit,
 # preferred because it is what users
 # usually see.
 #' @noRd
-
+#'
 mc2est <- function(fit,
+                   progress = TRUE) {
+  type <- cond_indirect_check_fit(fit)
+  out <- switch(
+    type,
+    lavaan = mc2est_lavaan(fit, progress = progress),
+    lavaan.mi = mc2est_lavaan(fit, progress = progress),
+    lm = mc2est_lm(fit, progress = progress)
+  )
+  out
+}
+
+# Convert stored estimates to a list of
+# parameter estimates tables. This is
+# preferred because it is what users
+# usually see.
+#' @noRd
+
+mc2est_lavaan <- function(fit,
                    progress = TRUE) {
     if (is.null(fit@external$manymome$mc)) {
         stop("Monte Carlo estimates not found. Please run do_mc() first.")
