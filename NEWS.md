@@ -1,3 +1,14 @@
+# manymome 0.3.7.1
+
+## Improvement
+
+- Added initial support for
+  Monte Carlo confidence
+  intervals when the model is fitted by
+  regression (`lm()`). Only unstandardized
+  effects are supported.
+  (0.3.7.1)
+
 # manymome 0.3.7
 
 ## New Features

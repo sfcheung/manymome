@@ -600,6 +600,11 @@ cond_indirect <- function(x,
       }
     if (all(boot_ci, mc_ci)) stop("Can only request one type of confidence intervals.")
     if (mc_ci) {
+        # MC CI with standardization not supported for lm
+        if ((fit_type == "lm") &&
+            (standardized_x || standardized_y)) {
+          stop("Monte Carlo CIs for standardized effects not supported for models fitted by regression.")
+        }
         if (!is.null(mc_out)) {
             if (inherits(mc_out, "cond_indirect_effects")) {
                 mc_out <- attr(mc_out, "mc_out")
