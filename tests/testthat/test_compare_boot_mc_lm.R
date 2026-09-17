@@ -1,5 +1,3 @@
-skip("WIP")
-
 skip("Long tests: Test in interactive sections")
 
 # To he examined in an interactive sessions.
@@ -62,7 +60,7 @@ confint(out_cond_boot)
 confint(out_cond_mc)
 
 # Should throw an error
-out_cond_stdxy_mc <- cond_indirect_effects(wlevels =c("w1", "w2"),
+expect_error(out_cond_stdxy_mc <- cond_indirect_effects(wlevels =c("w1", "w2"),
                                         x = "x",
                                         y = "y",
                                         m = "m",
@@ -70,7 +68,8 @@ out_cond_stdxy_mc <- cond_indirect_effects(wlevels =c("w1", "w2"),
                                         mc_ci = TRUE,
                                         mc_out = fit_mc,
                                         standardized_x = TRUE,
-                                        standardized_y = TRUE)
+                                        standardized_y = TRUE),
+             "not supported")
 
 out_momome_boot <- index_of_momome(x = "x",
                               y = "y",
@@ -188,14 +187,15 @@ confint(out_med_boot)
 confint(out_med_mc)
 
 # Should throw an error
-out_med_stdxy_mc <- indirect_effect(x = "x",
+expect_error(out_med_stdxy_mc <- indirect_effect(x = "x",
                                  y = "y",
                                  m = c("m1", "m2"),
                                  fit = fit_med,
                                  mc_ci = TRUE,
                                  mc_out = out_med_mc,
                                  standardized_x = TRUE,
-                                 standardized_y = TRUE)
+                                 standardized_y = TRUE),
+             "not supported")
 
 out_x_m2_y_boot <- indirect_effect(x = "x",
                               y = "y",

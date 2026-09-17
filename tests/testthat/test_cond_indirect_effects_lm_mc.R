@@ -1,5 +1,3 @@
-skip("WIP")
-
 skip("To be examined in an interactive session")
 
 library(manymome)
@@ -39,15 +37,18 @@ out_mm_1 <- mod_levels_list("w4", c("gpgp2", "gpgp3"), fit = fit, merge = TRUE)
 suppressWarnings(out_5 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                mc_ci = TRUE))
 # should throw errors
-suppressWarnings(out_6 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
+expect_error(suppressWarnings(out_6 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                standardized_x = TRUE,
-                               mc_ci = TRUE))
-suppressWarnings(out_7 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
+                               mc_ci = TRUE)),
+             "not supported")
+expect_error(suppressWarnings(out_7 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                standardized_y = TRUE,
-                               mc_ci = TRUE))
-suppressWarnings(out_8 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
+                               mc_ci = TRUE)),
+             "not supported")
+expect_error(suppressWarnings(out_8 <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                standardized_x = TRUE, standardized_y = TRUE,
-                               mc_ci = TRUE, output_type = "list"))
+                               mc_ci = TRUE, output_type = "list")),
+             "not supported")
 
 # Moderation only
 
@@ -66,15 +67,18 @@ fit_mc_out <- do_mc(fit, R = 1000, seed = 34143)
 suppressWarnings(outmo_5 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
                                mc_ci = TRUE, mc_out = fit_mc_out))
 # should throw errors
-suppressWarnings(outmo_6 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+expect_error(suppressWarnings(outmo_6 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
                                standardized_x = TRUE,
-                               mc_ci = TRUE, mc_out = fit_mc_out))
-suppressWarnings(outmo_7 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+                               mc_ci = TRUE, mc_out = fit_mc_out)),
+             "not supported")
+expect_error(suppressWarnings(outmo_7 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
                                standardized_y = TRUE,
-                               mc_ci = TRUE, mc_out = fit_mc_out))
-suppressWarnings(outmo_8 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+                               mc_ci = TRUE, mc_out = fit_mc_out)),
+             "not supported")
+expect_error(suppressWarnings(outmo_8 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
                                standardized_x = TRUE, standardized_y = TRUE,
-                               mc_ci = TRUE, mc_out = fit_mc_out))
+                               mc_ci = TRUE, mc_out = fit_mc_out)),
+             "not supported")
 
 # Monte Carlo
 
@@ -86,16 +90,19 @@ fit_mc_out <- do_mc(fit, R = 100, seed = 5155)
 suppressWarnings(out_5_mc <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                mc_ci = TRUE, mc_out = fit_mc_out))
 # should throw errors
-suppressWarnings(out_6_mc <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
+expect_error(suppressWarnings(out_6_mc <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                standardized_x = TRUE,
-                               mc_ci = TRUE, mc_out = fit_mc_out))
+                               mc_ci = TRUE, mc_out = fit_mc_out)),
+             "not supported")
 # should throw errors
-suppressWarnings(out_7_mc <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
+expect_error(suppressWarnings(out_7_mc <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                standardized_y = TRUE,
-                               mc_ci = TRUE, mc_out = fit_mc_out))
-suppressWarnings(out_8_mc <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
+                               mc_ci = TRUE, mc_out = fit_mc_out)),
+             "not supported")
+expect_error(suppressWarnings(out_8_mc <- cond_indirect_effects(wlevels = out_mm_1, x = "x", y = "y", m = "m3", fit = fit,
                                standardized_x = TRUE, standardized_y = TRUE,
-                               mc_ci = TRUE, mc_out = fit_mc_out, output_type = "list"))
+                               mc_ci = TRUE, mc_out = fit_mc_out, output_type = "list")),
+             "not supported")
 
 ## Moderation only
 
@@ -106,15 +113,18 @@ outmo_mm_1 <- mod_levels(c("gpgp2", "gpgp3"), fit = fit)
 suppressWarnings(outmo_5_mc <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
                                mc_ci = TRUE, mc_out = fit_mc_out))
 # should throw errors
-suppressWarnings(outmo_6_mc <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+expect_error(suppressWarnings(outmo_6_mc <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
                                standardized_x = TRUE,
-                               mc_ci = TRUE, mc_out = fit_mc_out))
-suppressWarnings(outmo_7_mc <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+                               mc_ci = TRUE, mc_out = fit_mc_out)),
+             "not supported")
+expect_error(suppressWarnings(outmo_7_mc <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
                                standardized_y = TRUE,
-                               mc_ci = TRUE, mc_out = fit_mc_out))
-suppressWarnings(outmo_8_mc <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+                               mc_ci = TRUE, mc_out = fit_mc_out)),
+             "not supported")
+expect_error(suppressWarnings(outmo_8_mc <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
                                standardized_x = TRUE, standardized_y = TRUE,
-                               mc_ci = TRUE, mc_out = fit_mc_out))
+                               mc_ci = TRUE, mc_out = fit_mc_out)),
+             "not supported")
 
 
 # ci_type
@@ -133,11 +143,12 @@ test_that("cond_indirect_effects: ci_type", {
 outmo_mm_1 <- mod_levels(c("gpgp2", "gpgp3"), fit = fit)
 
 # Should throw errors
-suppressWarnings(outmo_6_mc2 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+expect_error(suppressWarnings(outmo_6_mc2 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
                                standardized_x = TRUE,
-                               ci_type = "mc", ci_out = fit_mc_out))
-suppressWarnings(outmo_8_mc2 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
+                               ci_type = "mc", ci_out = fit_mc_out)),
+             "not supported")
+expect_error(suppressWarnings(outmo_8_mc2 <- cond_indirect_effects(wlevels = outmo_mm_1, x = "x", y = "m3", fit = fit,
                                standardized_x = TRUE, standardized_y = TRUE,
-                               ci_type = "mc", mc_out = fit_mc_out))
-
+                               ci_type = "mc", mc_out = fit_mc_out)),
+             "not supported")
 
