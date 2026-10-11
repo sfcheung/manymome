@@ -1,4 +1,4 @@
-# manymome 0.3.7.1
+# manymome 0.3.7.2
 
 ## Improvement
 
@@ -8,6 +8,14 @@
   regression (`lm()`). Only unstandardized
   effects are supported.
   (0.3.7.1)
+
+## Bug Fixes
+
+- Fixed a bug in refusing to compute
+  index of moderated mediation for
+  Model 8. The function `index_of_mome()`
+  will compute the index for Model 8 now.
+  (0.3.7.2)
 
 # manymome 0.3.7
 
