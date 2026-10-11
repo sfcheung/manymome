@@ -11,7 +11,7 @@ mediation among latent variables."><meta property="og:image" content="https://sf
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -156,7 +156,7 @@ and 16 variables:</p><dl><dt>x1</dt>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lavaan.ugent.be" class="external-link">lavaan</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sam.html" class="external-link">sam</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">mod</span>, data <span class="op">=</span> <span class="va">data_sem_mome</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> This is lavaan 0.7-2 -- using the SAM approach to SEM</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> This is lavaan 0.7-3 -- using the SAM approach to SEM</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   SAM method                                     LOCAL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Mapping matrix M method                           ML</span>
@@ -179,46 +179,52 @@ and 16 variables:</p><dl><dt>x1</dt>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      fx    fw    fm    fy</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   0.887 0.881 0.706 0.831</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Note: the lambda truncation engaged (lambda.star = 0.935):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   the structural estimates are biased (typically attenuated), and large</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   coefficients may have undercovering confidence intervals.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     max. approximate shrinkage bias : 0.020 (at most 0.18 SE)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Summary Information Structural part:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   chisq.scaled df pvalue.scaled cfi.robust rmsea.robust  srmr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          2.807  2         0.246      0.993         0.11 0.015</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   chisq.scaled df.scaled pvalue.scaled cfi.robust rmsea.robust  srmr</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          4.329         2         0.115       0.99        0.118 0.017</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameter Estimates:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Standard errors                                Local</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Information                                 Expected</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Information bread                           Observed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Information saturated (h1) model          Structured</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Regressions:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                    Estimate  Std.Err  z-value  P(&gt;|z|)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   fm ~                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     fx                0.401    0.046    8.699    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     fw               -0.010    0.030   -0.326    0.744</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     fx:fw             0.490    0.052    9.385    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     fx                0.398    0.040    9.890    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     fw               -0.009    0.028   -0.329    0.743</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     fx:fw             0.481    0.049    9.892    0.000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   fy ~                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     fm                0.446    0.135    3.304    0.001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     fx                0.029    0.072    0.398    0.691</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     fm                0.425    0.128    3.317    0.001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     fx                0.037    0.068    0.543    0.587</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Covariances:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                    Estimate  Std.Err  z-value  P(&gt;|z|)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   fx ~~                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     fw               -0.016    0.034   -0.477    0.634</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     fx:fw            -0.005    0.061   -0.087    0.930</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     fw               -0.016    0.034   -0.477    0.633</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     fx:fw            -0.005    0.048   -0.112    0.911</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   fw ~~                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     fx:fw             0.036    0.058    0.630    0.529</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     fx:fw             0.036    0.044    0.831    0.406</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intercepts:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                    Estimate  Std.Err  z-value  P(&gt;|z|)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     fx:fw            -0.016    0.034   -0.477    0.634</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     fx:fw            -0.016    0.034   -0.477    0.633</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Variances:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                    Estimate  Std.Err  z-value  P(&gt;|z|)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     fx                0.643    0.107    6.024    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     fw                0.695    0.058   11.929    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    .fm                0.007    0.013    0.556    0.578</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    .fy                0.395    0.035   11.290    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     fx:fw             0.436    0.106    4.098    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     fx                0.648    0.065    9.967    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     fw                0.701    0.066   10.553    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .fm                0.016    0.003    5.275    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .fy                0.402    0.043    9.288    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     fx:fw             0.444    0.090    4.953    0.000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

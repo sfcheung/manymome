@@ -121,7 +121,7 @@ Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 
 ``` r
 library(lavaan)
-#> This is lavaan 0.7-2
+#> This is lavaan 0.7-3
 #> lavaan is FREE software! Please report any bugs.
 data(data_serial_parallel)
 mod <-
@@ -213,7 +213,7 @@ y2 ~ m2 + x1 + x2 + c1 + c2
 "
 fit <- sem(mod, data_med_complicated_mg, group = "group")
 summary(fit)
-#> lavaan 0.7-2 ended normally after 13 iterations
+#> lavaan 0.7-3 ended normally after 13 iterations
 #> 
 #>   Estimator                                         ML
 #>   Optimization method                           NLMINB
@@ -231,6 +231,14 @@ summary(fit)
 #>   Test statistic for each group:
 #>     Group A                                      7.443
 #>     Group B                                      8.917
+#>                                                       
+#>   Browne's residual (NT model-based) test             
+#>   Test statistic                                15.652
+#>   Degrees of freedom                                14
+#>   P-value (Chi-square)                           0.335
+#>   Test statistic for each group:
+#>     Group A                                      7.114
+#>     Group B                                      8.538
 #> 
 #> Parameter Estimates:
 #> 

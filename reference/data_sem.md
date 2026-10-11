@@ -85,7 +85,7 @@ mod <-
   '
 fit <- lavaan::sem(model = mod, data = data_sem)
 summary(fit)
-#> lavaan 0.7-2 ended normally after 42 iterations
+#> lavaan 0.7-3 ended normally after 42 iterations
 #> 
 #>   Estimator                                         ML
 #>   Optimization method                           NLMINB
@@ -98,6 +98,11 @@ summary(fit)
 #>   Test statistic                                72.210
 #>   Degrees of freedom                                72
 #>   P-value (Chi-square)                           0.471
+#>                                                       
+#>   Browne's residual (NT model-based) test             
+#>   Test statistic                                67.947
+#>   Degrees of freedom                                72
+#>   P-value (Chi-square)                           0.614
 #> 
 #> Parameter Estimates:
 #> 
@@ -169,6 +174,6 @@ summary(fit)
 #> lavaan NOTE:  
 #>    Standard errors and confidence intervals of the (nonlinear) defined (:=) 
 #>    parameters are based on the first-order delta method; for strongly 
-#>    nonlinear definitions, se.def = "mc" (Monte Carlo) or se = "bootstrap" may 
+#>    nonlinear definitions, se_def = "mc" (Monte Carlo) or se = "bootstrap" may 
 #>    be more accurate.
 ```

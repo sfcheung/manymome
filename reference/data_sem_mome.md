@@ -93,7 +93,7 @@ fy ~ fm + fx
 library(lavaan)
 fit <- sam(model = mod, data = data_sem_mome)
 summary(fit)
-#> This is lavaan 0.7-2 -- using the SAM approach to SEM
+#> This is lavaan 0.7-3 -- using the SAM approach to SEM
 #> 
 #>   SAM method                                     LOCAL
 #>   Mapping matrix M method                           ML
@@ -116,45 +116,51 @@ summary(fit)
 #>      fx    fw    fm    fy
 #>   0.887 0.881 0.706 0.831
 #> 
+#>   Note: the lambda truncation engaged (lambda.star = 0.935):
+#>   the structural estimates are biased (typically attenuated), and large
+#>   coefficients may have undercovering confidence intervals.
+#>     max. approximate shrinkage bias : 0.020 (at most 0.18 SE)
+#> 
 #>   Summary Information Structural part:
 #> 
-#>   chisq.scaled df pvalue.scaled cfi.robust rmsea.robust  srmr
-#>          2.807  2         0.246      0.993         0.11 0.015
+#>   chisq.scaled df.scaled pvalue.scaled cfi.robust rmsea.robust  srmr
+#>          4.329         2         0.115       0.99        0.118 0.017
 #> 
 #> Parameter Estimates:
 #> 
 #>   Standard errors                                Local
 #>   Information                                 Expected
+#>   Information bread                           Observed
 #>   Information saturated (h1) model          Structured
 #> 
 #> Regressions:
 #>                    Estimate  Std.Err  z-value  P(>|z|)
 #>   fm ~                                                
-#>     fx                0.401    0.046    8.699    0.000
-#>     fw               -0.010    0.030   -0.326    0.744
-#>     fx:fw             0.490    0.052    9.385    0.000
+#>     fx                0.398    0.040    9.890    0.000
+#>     fw               -0.009    0.028   -0.329    0.743
+#>     fx:fw             0.481    0.049    9.892    0.000
 #>   fy ~                                                
-#>     fm                0.446    0.135    3.304    0.001
-#>     fx                0.029    0.072    0.398    0.691
+#>     fm                0.425    0.128    3.317    0.001
+#>     fx                0.037    0.068    0.543    0.587
 #> 
 #> Covariances:
 #>                    Estimate  Std.Err  z-value  P(>|z|)
 #>   fx ~~                                               
-#>     fw               -0.016    0.034   -0.477    0.634
-#>     fx:fw            -0.005    0.061   -0.087    0.930
+#>     fw               -0.016    0.034   -0.477    0.633
+#>     fx:fw            -0.005    0.048   -0.112    0.911
 #>   fw ~~                                               
-#>     fx:fw             0.036    0.058    0.630    0.529
+#>     fx:fw             0.036    0.044    0.831    0.406
 #> 
 #> Intercepts:
 #>                    Estimate  Std.Err  z-value  P(>|z|)
-#>     fx:fw            -0.016    0.034   -0.477    0.634
+#>     fx:fw            -0.016    0.034   -0.477    0.633
 #> 
 #> Variances:
 #>                    Estimate  Std.Err  z-value  P(>|z|)
-#>     fx                0.643    0.107    6.024    0.000
-#>     fw                0.695    0.058   11.929    0.000
-#>    .fm                0.007    0.013    0.556    0.578
-#>    .fy                0.395    0.035   11.290    0.000
-#>     fx:fw             0.436    0.106    4.098    0.000
+#>     fx                0.648    0.065    9.967    0.000
+#>     fw                0.701    0.066   10.553    0.000
+#>    .fm                0.016    0.003    5.275    0.000
+#>    .fy                0.402    0.043    9.288    0.000
+#>     fx:fw             0.444    0.090    4.953    0.000
 #> 
 ```
