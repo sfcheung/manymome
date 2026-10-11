@@ -520,7 +520,7 @@ index_of_momome <- function(x,
                             fit = fit,
                             get_prods_only = TRUE,
                             skip_indicators = skip_indicators)
-    if (!all.equal(n_prods(prods), c(1, 1), check.attributes = FALSE)) {
+    if (!isTRUE(all.equal(n_prods(prods), c(1, 1), check.attributes = FALSE))) {
         stop("The index can be computed only when there are exactly two moderators.")
       }
     out <- cond_indirect_effects(wlevels = mm, x = x, y = y,
@@ -636,6 +636,18 @@ index_of_momome <- function(x,
 
 n_prods <- function(prods) {
     isna <- sapply(prods, function(x) all(is.na(x)))
+    # Handle a special case
+    # - A clumsy solution, but work for now
+    isnull <- sapply(prods,
+        function(x) {
+          if ("prod" %in% names(x)) {
+            return(is.null(x$prod))
+          } else {
+            return(TRUE)
+          }
+        }
+      )
+    isna <- isna | isnull
     if (all(isna)) {
         return(0)
       }
