@@ -44,7 +44,7 @@ reverse_indicators <- function(
   out <- sapply(
     indicators,
     function(x) {
-        grepv("^-", x)
+        grep("^-", x, value = TRUE)
       },
     USE.NAMES = TRUE,
     simplify = FALSE
