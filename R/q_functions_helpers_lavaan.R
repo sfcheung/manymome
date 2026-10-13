@@ -579,6 +579,22 @@ fit_null <- function(
   fit_opts <- fit@Options
   fit_pt <- fit@ParTable
 
+  if (!is.null(mm$aux)) {
+    # Retain all auxiliary means, variances and covariances in each
+    # nested model. Removing them changes both the likelihood and data.
+    out_aux <- lapply(dvs, function(y) {
+      pt <- fit_pt
+      i <- pt$lhs == y & pt$op == "~"
+      pt$free[i] <- 0L
+      pt$ustart[i] <- 0
+      pt$label[i] <- ""
+      lavaan::lavaan(model = pt, slotData = fit_data,
+                     slotSampleStats = fit_sampstats,
+                     slotOptions = fit_opts)
+    })
+    return(stats::setNames(out_aux, dvs))
+  }
+
   out0 <- sapply(mod_null,
                  function(x) {
                     out <- lavaan::lavaan(
