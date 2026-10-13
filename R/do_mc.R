@@ -192,7 +192,15 @@ gen_mc_est <- function(fit,
           stop("Monte Carlo method cannot be used. VCOV of estimates not available.")
         }
     if (!is.null(seed)) set.seed(seed)
-    est <- lavaan::coef(fit)
+    if (inherits(fit, "lavaan.mi")) {
+        # Namespace-only use must dispatch to pooled MI coefficients,
+        # matching the pooled covariance matrix extracted above.
+        est <- methods::getMethod("coef", signature = "lavaan.mi",
+                    where = asNamespace("lavaan.mi"))(fit,
+                            omit.imps = c("no.conv", "no.se"))
+      } else {
+        est <- lavaan::coef(fit)
+      }
     mc_est <- MASS::mvrnorm(n = R,
                             mu = est,
                             Sigma = fit_vcov)

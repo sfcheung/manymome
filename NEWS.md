@@ -1,5 +1,21 @@
 # manymome 0.3.7.2
 
+## New Features
+
+- Added an initial all-in-one MI workflow to the `q_*` functions with
+  `fit_method = "sem"` and `missing = "mi"`. Raw data can be imputed
+  internally using `mice_args`, `mi_vars`, and `mi_seed`; supplied `mids`
+  objects or completed data frames are also accepted. Models are fitted
+  using `lavaan.mi`, with pooled path estimates and Monte Carlo intervals
+  for raw and standardized indirect/direct effects. Imputation objects,
+  completed data, and omitted-imputation information are retained.
+  Bootstrap, indicators, moderators, pooled R-square tests, and quick
+  plotting are not yet supported for this workflow.
+
+- Monte Carlo generation now explicitly uses pooled MI coefficients
+  when `lavaan.mi` is loaded only by namespace, matching its pooled
+  covariance matrix without requiring users to attach the package.
+
 ## Improvement
 
 - Added initial support for

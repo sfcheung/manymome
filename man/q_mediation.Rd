@@ -39,7 +39,10 @@ q_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  mice_args = list(),
+  mi_vars = NULL,
+  mi_seed = NULL
 )
 
 q_moderated_mediation(
@@ -67,7 +70,10 @@ q_moderated_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  mice_args = list(),
+  mi_vars = NULL,
+  mi_seed = NULL
 )
 
 q_simple_mediation(
@@ -95,7 +101,10 @@ q_simple_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  mice_args = list(),
+  mi_vars = NULL,
+  mi_seed = NULL
 )
 
 q_moderated_simple_mediation(
@@ -123,7 +132,10 @@ q_moderated_simple_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  mice_args = list(),
+  mi_vars = NULL,
+  mi_seed = NULL
 )
 
 q_serial_mediation(
@@ -151,7 +163,10 @@ q_serial_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  mice_args = list(),
+  mi_vars = NULL,
+  mi_seed = NULL
 )
 
 q_moderated_serial_mediation(
@@ -179,7 +194,10 @@ q_moderated_serial_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  mice_args = list(),
+  mi_vars = NULL,
+  mi_seed = NULL
 )
 
 q_parallel_mediation(
@@ -207,7 +225,10 @@ q_parallel_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  mice_args = list(),
+  mi_vars = NULL,
+  mi_seed = NULL
 )
 
 q_moderated_parallel_mediation(
@@ -235,7 +256,10 @@ q_moderated_parallel_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  mice_args = list(),
+  mi_vars = NULL,
+  mi_seed = NULL
 )
 
 get_fit(q_out)
@@ -475,6 +499,19 @@ detected by
 
 \item{progress}{Logical. Display
 progress or not.}
+
+\item{mice_args}{Named list passed to \code{\link[mice:mice]{mice::mice()}} when \code{missing = "mi"}
+and \code{data} is a raw data frame. The default is 20 imputations. Use this
+list to specify methods, iterations and predictor matrices. Do not pass
+\code{data} here. Inspect the returned \verb{$imputation} for diagnostics.}
+
+\item{mi_vars}{Additional raw-data variable names to include in imputation,
+but not in the substantive path equations. Model variables are always
+included. Default is \code{NULL}. Only used with raw data and \code{missing = "mi"}.}
+
+\item{mi_seed}{Seed for internally generated imputations. Falls back to
+\code{seed} if neither this argument nor \code{mice_args$seed} is supplied.
+\code{seed} also controls Monte Carlo draws. Do not set both imputation seeds.}
 
 \item{q_out}{The output of \code{\link[=q_mediation]{q_mediation()}}
 and friends.}
@@ -803,6 +840,28 @@ compute the total indirect effect.
 }
 }
 
+}
+
+\subsection{Multiple Imputation in One Call}{
+
+Set \code{fit_method = "sem"} and \code{missing = "mi"} to fit observed-variable
+mediation with \code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::sem.mi()}}. \code{data} can be a raw data frame,
+a \code{mids} object, or a list of completed data frames. Raw data are imputed
+with \code{\link[mice:mice]{mice::mice()}} using the model variables and optional \code{mi_vars}.
+Existing imputations are not regenerated. The returned \verb{$imputation}
+retains the \code{mids} object when available, and \verb{$imputed_data} retains
+completed data. Imputation settings and diagnostics remain the user's
+responsibility; default settings do not establish MAR or causal validity.
+Monte Carlo intervals are the default for MI. Explicit bootstrap requests
+are rejected. Use \verb{boot_ci = FALSE, mc_ci = FALSE} to request no intervals.
+Indirect and direct effects can be standardized using the existing
+post-fitting MI functions. Pooled standardized path tables, R-square
+tests, and quick plots are not provided in this initial implementation.
+Indicators, moderators, categorical model variables, grouped, clustered,
+and weighted analyses are not supported. Numeric binary predictors are
+allowed. At least two imputations with convergence and SEs are required;
+omissions are reported. Imputation-only variables do not adjust the
+substantive regressions; use \code{cov} for that purpose.
 }
 
 \subsection{Testing the Indirect Effects}{

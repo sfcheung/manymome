@@ -295,6 +295,10 @@ plot.q_mediation <- function(
                 plot_now = TRUE,
                 ...
               ) {
+  if (identical(x$missing, "mi")) {
+    stop("Quick plots are not yet available for MI models. Use get_fit() for the pooled fit.")
+  }
+
 
   # Does not support a model with moderators, for now
   if (q_mediation_has_moderators(x)) {
