@@ -1,0 +1,75 @@
+---
+title: "Auxiliary Variables in All-In-One FIML Mediation"
+output: html_document
+---
+
+## Covariates and auxiliary variables
+
+The `q_*` functions can use `aux` to add auxiliary variables to an
+observed-variable FIML mediation model in one call. Variables in `cov`
+predict the mediator(s) and/or outcome. Variables in `aux` are added using
+the saturated-correlates method implemented by `semTools::auxiliary()`;
+they are not added as regression predictors. A variable cannot appear in
+both roles. A confounder that needs to adjust the substantive equations
+should therefore be specified in `cov`, not merely in `aux`.
+
+An auxiliary variable related to missingness or to an incomplete variable
+can help make MAR more plausible. Its inclusion does not establish MAR,
+correct model misspecification, or establish a causal indirect effect.
+Choose auxiliary variables using knowledge of the study and available data.
+
+## A reproducible illustration
+
+This artificial example generates incomplete mediator values, with
+missingness depending on observed `z`. The same `z` also predicts the
+mediator. It is an illustration of the interface, not a comparison study.
+
+```{r}
+library(manymome)
+set.seed(731)
+n <- 300
+x <- rnorm(n)
+c1 <- rnorm(n)
+z <- rnorm(n)
+m <- 0.5*x + 0.3*c1 + 0.4*z + rnorm(n)
+y <- 0.2*x + 0.4*m + 0.2*c1 + rnorm(n)
+dat <- data.frame(x, m, y, c1, z)
+dat$m[runif(n) < plogis(-1 + 0.5*z)] <- NA
+
+out <- q_simple_mediation(
+  x = "x", m = "m", y = "y",
+  cov = "c1", aux = "z", data = dat,
+  fit_method = "sem", fixed.x = FALSE,
+  ci_type = "mc", R = 20000, seed = 123,
+  parallel = FALSE, progress = FALSE
+)
+print(out)
+```
+
+Both equations include `c1`. Neither equation includes `z` as a predictor.
+The fitted likelihood nevertheless includes `z` through its mean, variance
+and covariances. Missing values in an auxiliary variable are allowed.
+Use `ci_type = "boot"` for nonparametric bootstrap intervals; each
+resample refits the augmented model. Set an adequate number of resamples
+for the precision needed in the study.
+
+## Settings and scope
+
+Supplying `aux` treats exogenous variables as random (`fixed.x = FALSE`).
+If `fixed.x` is `TRUE`, a message announces this change. This introduces
+distributional assumptions for those variables; it is not just a display
+option. The printed output identifies the auxiliaries and their role.
+The path plot displays the substantive mediation model. The full
+augmented fit can be retrieved with `get_fit(out)`.
+
+This first implementation supports simple, serial, parallel, and custom
+observed-variable mediation models fitted by SEM with FIML and ML or MLR.
+Auxiliaries must be numeric, nonconstant, and distinct from the modeled
+variables. Factor/ordered auxiliary variables, indicators, moderators,
+SAM, grouped, clustered, weighted, and MI workflows are not supported by
+this argument. Unsupported combinations produce errors instead of silently
+ignoring the auxiliary variables. `aux = NULL` retains the usual workflow.
+
+Auxiliary parameters increase model size. Check convergence, uncertainty,
+and the number of usable bootstrap resamples, especially with small samples
+or many correlated auxiliaries.

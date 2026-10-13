@@ -39,7 +39,8 @@ q_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  aux = NULL
 )
 
 q_moderated_mediation(
@@ -67,7 +68,8 @@ q_moderated_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  aux = NULL
 )
 
 q_simple_mediation(
@@ -95,7 +97,8 @@ q_simple_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  aux = NULL
 )
 
 q_moderated_simple_mediation(
@@ -123,7 +126,8 @@ q_moderated_simple_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  aux = NULL
 )
 
 q_serial_mediation(
@@ -151,7 +155,8 @@ q_serial_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  aux = NULL
 )
 
 q_moderated_serial_mediation(
@@ -179,7 +184,8 @@ q_moderated_serial_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  aux = NULL
 )
 
 q_parallel_mediation(
@@ -207,7 +213,8 @@ q_parallel_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  aux = NULL
 )
 
 q_moderated_parallel_mediation(
@@ -235,7 +242,8 @@ q_moderated_parallel_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  aux = NULL
 )
 
 get_fit(q_out)
@@ -475,6 +483,18 @@ detected by
 
 \item{progress}{Logical. Display
 progress or not.}
+
+\item{aux}{Optional character vector of auxiliary variable names.
+These variables are added using saturated correlates for FIML,
+not as predictors in the substantive regression equations.
+Supported only for observed-variable SEM without indicators or
+moderators, using ML or MLR and FIML. Variables must be numeric,
+nonconstant, and distinct from model variables and covariates.
+Missing auxiliary values are permitted. Default is \code{NULL}.
+When supplied, exogenous variables are treated as random
+(\code{fixed.x = FALSE}); a message is shown if \code{fixed.x} was \code{TRUE}.
+This adds distributional assumptions for these variables and
+does not guarantee MAR or control for causal confounding.}
 
 \item{q_out}{The output of \code{\link[=q_mediation]{q_mediation()}}
 and friends.}
@@ -803,6 +823,21 @@ compute the total indirect effect.
 }
 }
 
+}
+
+\subsection{Auxiliary Variables for FIML}{
+
+With \code{aux}, the automatically generated path model is fitted using
+\code{\link[semTools:auxiliary]{semTools::auxiliary()}}. Auxiliary means, variances and covariances
+are estimated along with the substantive model. They can help make
+MAR more plausible when they are related to missingness or missing
+values, but do not establish MAR. Use \code{cov}, not \code{aux}, for variables
+that should adjust the substantive regression equations.
+Bootstrap and Monte Carlo confidence intervals use the augmented
+model. Printed output identifies auxiliary variables; the path plot
+continues to show the substantive mediation model.
+\code{aux = NULL} preserves the usual workflow. Grouped, clustered,
+weighted, categorical and SAM analyses are not supported with \code{aux}.
 }
 
 \subsection{Testing the Indirect Effects}{
