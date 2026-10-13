@@ -1,3 +1,12 @@
+# Local MI interface improvements
+
+- MI quick calls automatically select SEM when fitting is unspecified and
+  use 20000 Monte Carlo draws when R is unspecified; other methods retain
+  their defaults. Explicit regression and bootstrap requests are rejected.
+- Report interval and pooling conventions, actual draw count, and reasons
+  for omitted imputations. Document asymptotic normal MI intervals and
+  products of pooled coefficients.
+
 # manymome 0.3.7.2
 
 ## New Features
@@ -926,7 +935,7 @@
 - Some print methods support printing
   asymmetric bootstrap
   *p*-values using the method presented
-  in Asparouhov and Muthén (2021) if bootstrapping
+  in Asparouhov and Muth茅n (2021) if bootstrapping
   confidence interval is requested. By
   default, *p*-values are not printed. (0.1.9.7)
 

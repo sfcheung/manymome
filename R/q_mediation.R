@@ -228,8 +228,10 @@
 #'
 #' ## Multiple Imputation in One Call
 #'
-#' Set `fit_method = "sem"` and `missing = "mi"` to fit observed-variable
-#' mediation with [lavaan.mi::sem.mi()]. `data` can be a raw data frame,
+#' Set `missing = "mi"` to fit observed-variable
+#' mediation with [lavaan.mi::sem.mi()]. If omitted, `fit_method` becomes
+#' `"sem"` and `R` becomes 20000 for MI only. Explicit regression fitting
+#' is not supported. `data` can be a raw data frame,
 #' a `mids` object, or a list of completed data frames. Raw data are imputed
 #' with [mice::mice()] using the model variables and optional `mi_vars`.
 #' Existing imputations are not regenerated. The returned `$imputation`
@@ -244,7 +246,15 @@
 #' Indicators, moderators, categorical model variables, grouped, clustered,
 #' and weighted analyses are not supported. Numeric binary predictors are
 #' allowed. At least two imputations with convergence and SEs are required;
-#' omissions are reported. Imputation-only variables do not adjust the
+#' omissions and their reasons are reported in `$mi_info$omission_reasons`.
+#' MI intervals use multivariate normal draws centered on Rubin-pooled
+#' coefficients with their pooled total covariance, including between-
+#' imputation uncertainty. They are asymptotic MC intervals, not finite-df
+#' Rubin t intervals. Unstandardized indirect effects multiply pooled path
+#' coefficients; they do not average the products from each imputation.
+#' Standardized effects follow the existing post-fitting MI implementation.
+#' `$mi_info` records the interval method, draw count and pooling convention.
+#' Imputation-only variables do not adjust the
 #' substantive regressions; use `cov` for that purpose.
 #'
 #' ## Testing the Indirect Effects
@@ -430,9 +440,9 @@
 #' of the confidence interval. Default
 #' is .95 (for 95% confidence intervals).
 #'
-#' @param R The number of bootstrap
-#' samples. Default is 100. Should be
-#' set to 5000 or at least 10000.
+#' @param R The number of bootstrap samples or Monte Carlo draws.
+#' When omitted, the default is 20000 for `missing = "mi"`, and 100
+#' otherwise. For other methods, set a larger value for final inference.
 #'
 #' @param seed The seed for the random
 #' number generator. Default is `NULL`.
@@ -653,6 +663,8 @@ q_mediation <- function(x,
                         mi_vars = NULL,
                         mi_seed = NULL) {
   if (identical(missing, "mi")) {
+    if (missing(fit_method)) fit_method <- "sem"
+    if (missing(R)) R <- 20000L
     ci_type <- q_mi_ci(ci_type, boot_ci, mc_ci, missing(boot_ci))
   }
 
@@ -1767,6 +1779,8 @@ q_simple_mediation <- function(x,
                         mi_vars = NULL,
                         mi_seed = NULL) {
   if (identical(missing, "mi")) {
+    if (missing(fit_method)) fit_method <- "sem"
+    if (missing(R)) R <- 20000L
     ci_type <- q_mi_ci(ci_type, boot_ci, mc_ci, missing(boot_ci))
   }
 
@@ -1890,6 +1904,8 @@ q_serial_mediation <- function(x,
                         mi_vars = NULL,
                         mi_seed = NULL) {
   if (identical(missing, "mi")) {
+    if (missing(fit_method)) fit_method <- "sem"
+    if (missing(R)) R <- 20000L
     ci_type <- q_mi_ci(ci_type, boot_ci, mc_ci, missing(boot_ci))
   }
 
@@ -2012,6 +2028,8 @@ q_parallel_mediation <- function(x,
                         mi_vars = NULL,
                         mi_seed = NULL) {
   if (identical(missing, "mi")) {
+    if (missing(fit_method)) fit_method <- "sem"
+    if (missing(R)) R <- 20000L
     ci_type <- q_mi_ci(ci_type, boot_ci, mc_ci, missing(boot_ci))
   }
 

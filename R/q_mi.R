@@ -13,6 +13,13 @@ q_mi_mediation <- function(x, y, m, cov, model, model_type, lm_forms,
                            data, fixed.x, sem_args, mice_args, mi_vars,
                            mi_seed, ci_type, level, R, seed, parallel,
                            ncores, progress, original_call) {
+  if (identical(ci_type, "mc") &&
+      (!is.numeric(R) || length(R) != 1L || !is.finite(R) ||
+       R < 2 || R != floor(R))) {
+    stop("For MI Monte Carlo intervals, R must be an integer of at least 2.")
+  }
+  if (!is.numeric(level) || length(level) != 1L || !is.finite(level) ||
+      level <= 0 || level >= 1) stop("level must be a number between 0 and 1.")
   if (!requireNamespace("lavaan.mi", quietly = TRUE)) {
     stop("Install 'lavaan.mi' to use missing = 'mi'.")
   }
@@ -107,7 +114,8 @@ q_mi_mediation <- function(x, y, m, cov, model, model_type, lm_forms,
         }
       })
   # Match the omissions used by manymome's pooled covariance extraction.
-  usable <- vapply(fit@convergence, function(z) isTRUE(z[1]) && isTRUE(z[2]), logical(1))
+  omission_reasons <- q_mi_omissions(fit@convergence)
+  usable <- !seq_along(datasets) %in% omission_reasons$imputation
   if (sum(usable) < 2L) stop("Fewer than two imputations converged with standard errors.")
   if (!all(usable)) warning(sum(!usable), " imputation(s) omitted due to nonconvergence or unavailable SEs.")
   ci_out <- if (identical(ci_type, "mc")) {
@@ -139,7 +147,13 @@ q_mi_mediation <- function(x, y, m, cov, model, model_type, lm_forms,
               fixed.x=fixed.x, ci_type=ci_type, indicators=NULL,
               imputation=imp, imputed_data=datasets,
               mi_info=list(source=source, requested=length(datasets),
-                           used=sum(usable), omitted=which(!usable), n=n),
+                           used=sum(usable), omitted=which(!usable), n=n,
+                           omission_reasons=omission_reasons,
+                           interval_method=if (is.null(ci_type)) "none" else
+                             "asymptotic normal Monte Carlo with Rubin total covariance",
+                           mc_draws=if (is.null(ci_type)) 0L else R,
+                           level=level,
+                           effect_pooling="products of pooled path coefficients"),
               sem_args=sem_args, mice_args=mice_args, mi_vars=mi_vars)
   subclass <- if (model_type == "standard") paste0("q_", model, "_mediation") else "q_user_mediation"
   class(out) <- c(subclass, "q_mediation", "list")
@@ -155,7 +169,13 @@ print_q_mi <- function(x, digits, annotation, pvalue, pvalue_digits, se,
       "\nCases per imputation:", x$mi_info$n,
       "\nImputations supplied:", x$mi_info$requested,
       "\nImputations used:", x$mi_info$used, "\n")
-  if (length(x$mi_info$omitted)) cat("Omitted imputations:", x$mi_info$omitted, "\n")
+  if (length(x$mi_info$omitted)) {
+    cat("Omitted imputations and reasons:\n")
+    print(x$mi_info$omission_reasons, row.names=FALSE)
+  }
+  cat("Interval method:", x$mi_info$interval_method,
+      "\nMonte Carlo draws:", x$mi_info$mc_draws,
+      "\nUnstandardized indirect effects: products of pooled path coefficients.\n")
   cat("\nPath model:\n", x$sem_model, "\n")
   cat("\nPooled path estimates (Rubin pooling; lavaan.mi):\n")
   pt <- lavaan.mi::parameterEstimates.mi(x$lm_out, omit.imps=c("no.conv", "no.se"))
@@ -182,4 +202,15 @@ print_q_mi <- function(x, digits, annotation, pvalue, pvalue_digits, se,
       "Pooled standardized path tables, R-square tests and quick plots are not yet provided.\n",
       "Inspect $imputation for mice diagnostics and $imputed_data for completed data.\n", sep="")
   invisible(x)
+}
+
+
+#' @noRd
+q_mi_omissions <- function(convergence) {
+  reasons <- vapply(convergence, function(z) {
+    paste(c(if (!isTRUE(z[1])) "nonconvergence",
+            if (!isTRUE(z[2])) "unavailable standard errors"), collapse = "; ")
+  }, character(1))
+  omitted <- nzchar(reasons)
+  data.frame(imputation=which(omitted), reason=unname(reasons[omitted]))
 }

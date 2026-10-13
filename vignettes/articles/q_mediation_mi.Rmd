@@ -5,7 +5,9 @@ output: html_document
 
 ## Impute and analyze in one call
 
-Use `fit_method = "sem"` and `missing = "mi"`. For a raw data frame,
+Use `missing = "mi"`. When omitted, `fit_method` automatically becomes
+`"sem"` and `R` becomes 20000 for MI. Other missing-data methods retain
+their existing defaults. Explicit regression fitting is rejected. For a raw data frame,
 the function calls `mice`, fits the automatically generated path model
 with `lavaan.mi`, and computes Monte Carlo confidence intervals.
 The following data are artificial; this is an interface illustration,
@@ -98,3 +100,20 @@ Adding imputation-only variables does not control causal confounding.
 MI does not establish temporal ordering or the assumptions needed to
 interpret a path product causally. The choice and assessment of the
 imputation model remain part of the researcher's analysis.
+
+
+## Pooling convention and interval interpretation
+
+Unstandardized indirect effects are products of Rubin-pooled path
+coefficients, not averages of imputation-specific products. MC intervals
+use joint multivariate normal draws with Rubin's pooled total covariance,
+including between-imputation uncertainty and coefficient covariances.
+They approximate the sampling distribution asymptotically; they are not
+finite-df Rubin t intervals. Small samples and high missingness require
+particular care and empirical coverage checks. Standardized effects use
+the existing post-fitting MI implementation.
+
+`out$mi_info` reports the actual draw count, interval method, pooling
+convention, requested/used imputations and a table of omissions with reasons.
+An explicit `R` overrides the MI default. Setting both interval flags to
+FALSE requests no MC draws. Explicit bootstrap requests remain unsupported.

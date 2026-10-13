@@ -369,9 +369,9 @@ supported if \code{fit_method} is
 of the confidence interval. Default
 is .95 (for 95\% confidence intervals).}
 
-\item{R}{The number of bootstrap
-samples. Default is 100. Should be
-set to 5000 or at least 10000.}
+\item{R}{The number of bootstrap samples or Monte Carlo draws.
+When omitted, the default is 20000 for \code{missing = "mi"}, and 100
+otherwise. For other methods, set a larger value for final inference.}
 
 \item{seed}{The seed for the random
 number generator. Default is \code{NULL}.
@@ -844,8 +844,10 @@ compute the total indirect effect.
 
 \subsection{Multiple Imputation in One Call}{
 
-Set \code{fit_method = "sem"} and \code{missing = "mi"} to fit observed-variable
-mediation with \code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::sem.mi()}}. \code{data} can be a raw data frame,
+Set \code{missing = "mi"} to fit observed-variable
+mediation with \code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::sem.mi()}}. If omitted, \code{fit_method} becomes
+\code{"sem"} and \code{R} becomes 20000 for MI only. Explicit regression fitting
+is not supported. \code{data} can be a raw data frame,
 a \code{mids} object, or a list of completed data frames. Raw data are imputed
 with \code{\link[mice:mice]{mice::mice()}} using the model variables and optional \code{mi_vars}.
 Existing imputations are not regenerated. The returned \verb{$imputation}
@@ -860,7 +862,15 @@ tests, and quick plots are not provided in this initial implementation.
 Indicators, moderators, categorical model variables, grouped, clustered,
 and weighted analyses are not supported. Numeric binary predictors are
 allowed. At least two imputations with convergence and SEs are required;
-omissions are reported. Imputation-only variables do not adjust the
+omissions and their reasons are reported in \verb{$mi_info$omission_reasons}.
+MI intervals use multivariate normal draws centered on Rubin-pooled
+coefficients with their pooled total covariance, including between-
+imputation uncertainty. They are asymptotic MC intervals, not finite-df
+Rubin t intervals. Unstandardized indirect effects multiply pooled path
+coefficients; they do not average the products from each imputation.
+Standardized effects follow the existing post-fitting MI implementation.
+\verb{$mi_info} records the interval method, draw count and pooling convention.
+Imputation-only variables do not adjust the
 substantive regressions; use \code{cov} for that purpose.
 }
 

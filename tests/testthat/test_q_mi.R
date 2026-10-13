@@ -109,8 +109,59 @@ test_that("unsupported combinations and incomplete imputations fail clearly", {
   expect_error(mi_quick(list(d,d), mice_args=list(m=3)), "only to raw")
   expect_error(mi_quick(d, sem_args=list(group="z")), "Unsupported sem_args")
   expect_error(mi_quick(d, sem_args=list(estimator="WLSMV")), "only ML and MLR")
-  expect_error(q_simple_mediation(x="x",m="m1",y="y",data=d,missing="mi"),
+  expect_error(q_simple_mediation(x="x",m="m1",y="y",data=d,missing="mi",
+                                  fit_method="lm"),
                 "require observed-variable SEM")
   expect_error(q_simple_mediation(x="x",m="m1",y="y",data=d,
                                   mice_args=list(m=3)), "require missing")
+})
+
+
+test_that("MI defaults select SEM and 20000 MC draws across quick wrappers", {
+  # Check forwarding without repeating expensive 20000-draw implied-stat calculations.
+  mc_original <- do_mc
+  requested_draws <- numeric()
+  testthat::local_mocked_bindings(do_mc=function(fit, R, ...) {
+    requested_draws <<- c(requested_draws, R)
+    mc_original(fit=fit, R=200, ...)
+  })
+  d <- mi_raw_data()
+  imp <- mice::mice(d[, c("x", "m1", "m2", "y", "c1")],
+                    m=3, maxit=2, seed=13, printFlag=FALSE)
+  for (fun in list(q_simple_mediation, q_parallel_mediation, q_serial_mediation)) {
+    mediators <- if (identical(fun, q_simple_mediation)) "m1" else c("m1", "m2")
+    q <- fun(x="x", m=mediators, y="y", cov="c1", data=imp,
+             missing="mi", seed=16, progress=FALSE)
+    expect_identical(q$fit_method, "lavaan.mi")
+    expect_identical(q$ci_type, "mc")
+    expect_equal(q$mi_info$mc_draws, 20000)
+    expect_equal(tail(requested_draws, 1), 20000)
+    expect_equal(nrow(q$mi_info$omission_reasons), 0)
+    expect_output(print(q, pvalue=FALSE), "products of pooled path coefficients")
+  }
+  q <- q_mediation(x="x", y="y", model="x -> m1 -> y", data=imp,
+                    missing="mi", R=250, seed=16, progress=FALSE)
+  expect_equal(q$mi_info$mc_draws, 250)
+  q0 <- q_simple_mediation(x="x", m="m1", y="y", data=imp,
+                           missing="mi", boot_ci=FALSE, mc_ci=FALSE, progress=FALSE)
+  expect_equal(q0$mi_info$mc_draws, 0)
+  expect_identical(q0$mi_info$interval_method, "none")
+})
+
+
+test_that("MI omissions retain both failure reasons and input order", {
+  z <- q_mi_omissions(list(c(TRUE,TRUE,TRUE), c(FALSE,TRUE,TRUE),
+                            c(TRUE,FALSE,TRUE), c(FALSE,FALSE,TRUE)))
+  expect_equal(z$imputation, 2:4)
+  expect_identical(z$reason, c("nonconvergence", "unavailable standard errors",
+                            "nonconvergence; unavailable standard errors"))
+  expect_equal(nrow(q_mi_omissions(list(c(TRUE,TRUE,TRUE)))), 0)
+})
+
+test_that("invalid MI interval settings fail before imputation", {
+  d <- mi_raw_data()
+  for (r in list(1, NA_real_, Inf, 2.5, c(20,30), "100"))
+    expect_error(mi_quick(d, R=r), "R must be an integer")
+  for (l in list(0, 1, NA_real_, c(.9,.95)))
+    expect_error(mi_quick(d, level=l), "level must be a number")
 })
