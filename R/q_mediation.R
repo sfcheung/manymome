@@ -1745,7 +1745,8 @@ q_simple_mediation <- function(x,
                                na.action = NA,
                                parallel = TRUE,
                                ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-                               progress = TRUE) {
+                               progress = TRUE,
+                               aux = NULL) {
   boot_type <- match.arg(boot_type)
   fit_method <- match.arg(fit_method)
   if (fit_method == "sem") {
@@ -1778,7 +1779,8 @@ q_simple_mediation <- function(x,
                      na.action = na.action,
                      parallel = parallel,
                      ncores = ncores,
-                     progress = progress)
+                     progress = progress,
+                     aux = aux)
   out$call <- match.call()
   return(out)
 }
@@ -1858,7 +1860,8 @@ q_serial_mediation <- function(x,
                                na.action = NA,
                                parallel = TRUE,
                                ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-                               progress = TRUE) {
+                               progress = TRUE,
+                               aux = NULL) {
   boot_type <- match.arg(boot_type)
   fit_method <- match.arg(fit_method)
   if (fit_method == "sem") {
@@ -1891,7 +1894,8 @@ q_serial_mediation <- function(x,
                      na.action = na.action,
                      parallel = parallel,
                      ncores = ncores,
-                     progress = progress)
+                     progress = progress,
+                     aux = aux)
   out$call <- match.call()
   return(out)
 }
@@ -1970,7 +1974,8 @@ q_parallel_mediation <- function(x,
                                  na.action = NA,
                                  parallel = TRUE,
                                  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-                                 progress = TRUE) {
+                                 progress = TRUE,
+                                 aux = NULL) {
   boot_type <- match.arg(boot_type)
   fit_method <- match.arg(fit_method)
   if (fit_method == "sem") {
@@ -2003,7 +2008,8 @@ q_parallel_mediation <- function(x,
                      na.action = na.action,
                      parallel = parallel,
                      ncores = ncores,
-                     progress = progress)
+                     progress = progress,
+                     aux = aux)
   out$call <- match.call()
   return(out)
 }
