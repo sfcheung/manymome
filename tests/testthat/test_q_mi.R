@@ -165,3 +165,66 @@ test_that("invalid MI interval settings fail before imputation", {
   for (l in list(0, 1, NA_real_, c(.9,.95)))
     expect_error(mi_quick(d, level=l), "level must be a number")
 })
+
+
+test_that("MI extractors preserve diagnostics and expose unused auxiliaries", {
+  d <- mi_raw_data()
+  d$constant <- 1
+  q <- suppressWarnings(mi_quick(d, mi_vars=c("z","constant"),
+       mice_args=list(m=3,maxit=2), mi_seed=21, boot_ci=FALSE,mc_ci=FALSE))
+  info <- get_mi_info(q)
+  expect_identical(get_imputation(q), q$imputation)
+  expect_true(info$diagnostics$available)
+  expect_equal(info$diagnostics$iterations, 2)
+  expect_true(any(grepl("constant",info$diagnostics$logged_events$out)))
+  usage <- info$diagnostics$auxiliary_usage
+  expect_false(usage$predicts_imputed_model_variable[usage$variable=="constant"])
+  expect_true(usage$predicts_imputed_model_variable[usage$variable=="z"])
+  expect_output(print(q,pvalue=FALSE), "constant")
+  expect_output(print(q,pvalue=FALSE), "Logged mice events")
+  expect_false(info$execution$parallel_argument_used)
+  expect_false(info$execution$ncores_argument_used)
+  qc <- mi_quick(q$imputed_data,boot_ci=FALSE,mc_ci=FALSE)
+  expect_null(get_imputation(qc))
+  expect_false(get_mi_info(qc)$diagnostics$available)
+  expect_output(print(qc,pvalue=FALSE), "diagnostics unavailable")
+  expect_error(get_mi_info(list()), "MI result")
+  expect_error(get_imputation(list()), "MI result")
+})
+
+test_that("custom predictor settings and factor auxiliaries are retained", {
+  d <- mi_raw_data()
+  d$group <- factor(ifelse(d$z>0,"high","low"))
+  d$group[1:4] <- NA
+  selected <- d[,c("x","m1","y","c1","z","group")]
+  pm <- mice::make.predictorMatrix(selected)
+  pm[,"z"] <- 0
+  method <- mice::make.method(selected)
+  q <- mi_quick(d,mi_vars=c("z","group"),mice_args=list(m=3,maxit=2,
+       predictorMatrix=pm,method=method),mi_seed=35,boot_ci=FALSE,mc_ci=FALSE)
+  diag <- get_mi_info(q)$diagnostics
+  expect_identical(diag$methods[["group"]], "logreg")
+  expect_true(all(diag$predictor_matrix[,"z"]==0))
+  expect_false(diag$auxiliary_usage$predicts_imputed_model_variable[
+                   diag$auxiliary_usage$variable=="z"])
+  expect_true(is.factor(get_imputation(q)$data$group))
+  expect_identical(diag$imputation_seed, 35)
+  mids <- get_imputation(q)
+  attr(mids$blocks,"calltype")["m1"] <- "formula"
+  diag_formula <- q_mi_diagnostics(mids,c("x","m1","y","c1"))
+  expect_false(diag_formula$predictor_usage_complete)
+  expect_true(all(is.na(diag_formula$auxiliary_usage$predicts_imputed_model_variable)))
+})
+
+
+test_that("named imputation methods align with automatically selected columns", {
+  d <- mi_raw_data()
+  methods <- c(x="",m1="norm",y="",c1="pmm")
+  q <- mi_quick(d,mice_args=list(m=3,maxit=2,method=methods),mi_seed=45,
+                boot_ci=FALSE,mc_ci=FALSE)
+  expect_identical(get_imputation(q)$method[["m1"]], "norm")
+  expect_identical(get_imputation(q)$method[["c1"]], "pmm")
+  expect_true(all(is.finite(q$imputed_data[[1]]$m1)))
+  expect_error(mi_quick(d,mice_args=list(method=c(x="",wrong="pmm"))),
+               "name every selected imputation block")
+})

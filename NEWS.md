@@ -1,3 +1,15 @@
+# Local MI diagnostics and validation improvements
+
+- Add get_imputation() and get_mi_info() for retained mice objects and
+  computation/diagnostic metadata. Show logged events and unused auxiliaries,
+  distinguishing incomplete formula-based predictor diagnostics.
+- Align named imputation methods with selected block names rather than
+  silently relying on column positions. Add factor-auxiliary and predictor
+  matrix examples and document sequential execution.
+- Clarify the existing MC covariance extraction uses lavaan.mi scale.W=TRUE;
+  covariance pooling and imputation sensitivity have separate validation scripts.
+- Fix the existing undefined grepv() call when selecting reverse indicators.
+
 # Local MI interface improvements
 
 - MI quick calls automatically select SEM when fitting is unspecified and

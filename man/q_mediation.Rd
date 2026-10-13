@@ -482,11 +482,13 @@ is set to \code{"sem"} or \code{"lavaan"}. If
 listwise deletion is preferred, set
 \code{missing} to \code{"listwise"}.}
 
-\item{parallel}{If \code{TRUE}, default,
+\item{parallel}{Not used for \code{missing = "mi"}; that workflow is sequential.
+For other analyses, if \code{TRUE}, default,
 parallel processing will be used when
 doing bootstrapping.}
 
-\item{ncores}{Integer. The number of
+\item{ncores}{Not used for \code{missing = "mi"}.
+For other analyses, integer. The number of
 CPU cores to use when \code{parallel} is
 \code{TRUE}. Default is the number of
 non-logical cores minus one (one
@@ -864,12 +866,19 @@ and weighted analyses are not supported. Numeric binary predictors are
 allowed. At least two imputations with convergence and SEs are required;
 omissions and their reasons are reported in \verb{$mi_info$omission_reasons}.
 MI intervals use multivariate normal draws centered on Rubin-pooled
-coefficients with their pooled total covariance, including between-
-imputation uncertainty. They are asymptotic MC intervals, not finite-df
+coefficients with the existing lavaan.mi pooled covariance using
+\code{scale.W = TRUE}: the within-imputation covariance is scaled by the
+average relative increase in variance. This incorporates between-
+imputation uncertainty, but differs from adding the full between-
+imputation covariance matrix (\code{scale.W = FALSE}). Intervals are
+asymptotic MC intervals, not finite-df
 Rubin t intervals. Unstandardized indirect effects multiply pooled path
 coefficients; they do not average the products from each imputation.
 Standardized effects follow the existing post-fitting MI implementation.
-\verb{$mi_info} records the interval method, draw count and pooling convention.
+\code{\link[=get_mi_info]{get_mi_info()}} records the interval method, draw count, pooling convention,
+and mice logged events and predictor usage. \code{\link[=get_imputation]{get_imputation()}} retrieves
+the retained mice object. Completed-data lists have no imputation diagnostics.
+MI computation is sequential; \code{parallel} and \code{ncores} do not control it.
 Imputation-only variables do not adjust the
 substantive regressions; use \code{cov} for that purpose.
 }

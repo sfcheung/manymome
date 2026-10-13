@@ -248,12 +248,19 @@
 #' allowed. At least two imputations with convergence and SEs are required;
 #' omissions and their reasons are reported in `$mi_info$omission_reasons`.
 #' MI intervals use multivariate normal draws centered on Rubin-pooled
-#' coefficients with their pooled total covariance, including between-
-#' imputation uncertainty. They are asymptotic MC intervals, not finite-df
+#' coefficients with the existing lavaan.mi pooled covariance using
+#' `scale.W = TRUE`: the within-imputation covariance is scaled by the
+#' average relative increase in variance. This incorporates between-
+#' imputation uncertainty, but differs from adding the full between-
+#' imputation covariance matrix (`scale.W = FALSE`). Intervals are
+#' asymptotic MC intervals, not finite-df
 #' Rubin t intervals. Unstandardized indirect effects multiply pooled path
 #' coefficients; they do not average the products from each imputation.
 #' Standardized effects follow the existing post-fitting MI implementation.
-#' `$mi_info` records the interval method, draw count and pooling convention.
+#' [get_mi_info()] records the interval method, draw count, pooling convention,
+#' and mice logged events and predictor usage. [get_imputation()] retrieves
+#' the retained mice object. Completed-data lists have no imputation diagnostics.
+#' MI computation is sequential; `parallel` and `ncores` do not control it.
 #' Imputation-only variables do not adjust the
 #' substantive regressions; use `cov` for that purpose.
 #'
@@ -554,11 +561,13 @@
 #' listwise deletion is preferred, set
 #' `missing` to `"listwise"`.
 #'
-#' @param parallel If `TRUE`, default,
+#' @param parallel Not used for `missing = "mi"`; that workflow is sequential.
+#' For other analyses, if `TRUE`, default,
 #' parallel processing will be used when
 #' doing bootstrapping.
 #'
-#' @param ncores Integer. The number of
+#' @param ncores Not used for `missing = "mi"`.
+#' For other analyses, integer. The number of
 #' CPU cores to use when `parallel` is
 #' `TRUE`. Default is the number of
 #' non-logical cores minus one (one

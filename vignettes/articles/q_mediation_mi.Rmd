@@ -106,8 +106,13 @@ imputation model remain part of the researcher's analysis.
 
 Unstandardized indirect effects are products of Rubin-pooled path
 coefficients, not averages of imputation-specific products. MC intervals
-use joint multivariate normal draws with Rubin's pooled total covariance,
-including between-imputation uncertainty and coefficient covariances.
+use joint multivariate normal draws with the existing manymome covariance
+extraction from lavaan.mi (`scale.W = TRUE`). It inflates the within-imputation
+covariance using the average relative increase in variance, incorporating
+between-imputation uncertainty. This differs from the ordinary matrix sum
+`W + (1 + 1/m) * B` obtained with `scale.W = FALSE`. The current interface
+retains the existing manymome behavior; coverage depends on the imputation
+model, covariance pooling and asymptotic approximation.
 They approximate the sampling distribution asymptotically; they are not
 finite-df Rubin t intervals. Small samples and high missingness require
 particular care and empirical coverage checks. Standardized effects use
@@ -117,3 +122,82 @@ the existing post-fitting MI implementation.
 convention, requested/used imputations and a table of omissions with reasons.
 An explicit `R` overrides the MI default. Setting both interval flags to
 FALSE requests no MC draws. Explicit bootstrap requests remain unsupported.
+
+## Customize methods and predictor relationships
+
+The variables passed to mice are the model variables plus `mi_vars`, not
+all columns of `dat`. Build named settings against those selected columns.
+A named method vector is matched to the selected imputation blocks, even if
+its order differs from the internally selected columns. Supply every block
+name exactly once. Unnamed method vectors follow mice's positional rules.
+An auxiliary variable can itself have missing values and can be a factor.
+It is not added to the substantive regression equations unless included
+in `cov`.
+
+```{r}
+dat$group <- factor(ifelse(dat$z > 0, "high", "low"))
+dat$group[1:8] <- NA
+selected <- dat[, c("x", "m", "y", "c1", "z", "group")]
+methods <- mice::make.method(selected)
+# Explicit choices: numeric missing mediator -> predictive mean matching;
+# missing binary factor auxiliary -> logistic regression.
+methods["m"] <- "pmm"
+methods["group"] <- "logreg"
+predictors <- mice::make.predictorMatrix(selected)
+# Example restriction: group is imputed, but is not used to predict others.
+# This is an illustration, not a recommended scientific restriction.
+predictors[, "group"] <- 0
+
+out_custom <- q_simple_mediation(
+  x="x", m="m", y="y", cov="c1", data=dat, missing="mi",
+  mi_vars=c("z", "group"),
+  mice_args=list(m=5, maxit=5, method=methods, predictorMatrix=predictors),
+  mi_seed=123, boot_ci=FALSE, mc_ci=FALSE, progress=FALSE
+)
+get_imputation(out_custom)$method
+get_mi_info(out_custom)$diagnostics$auxiliary_usage
+```
+
+Columns in a predictor matrix identify predictors; rows identify target
+variables (or imputation blocks). A zero column excludes a variable as a
+predictor, but does not prevent that variable from being imputed. By contrast,
+an empty method (`""`) disables imputation of that target. If a modeled
+variable remains missing in the completed data, the quick interface rejects
+it before fitting. For more advanced blocks or formulas, use mice's own
+configuration tools and inspect the retained object.
+
+## Read the diagnostics
+
+```{r}
+info <- get_mi_info(out_custom)
+info$diagnostics$logged_events
+info$diagnostics$unused_predictors
+info$omission_reasons
+imp <- get_imputation(out_custom)
+# For interactive inspection, use plot(imp) to examine chain trajectories.
+# Use mice::densityplot(imp) for suitable continuous variables, with enough
+# imputations/iterations; judge the imputation model in its scientific context.
+```
+
+Printing the analysis reports the number of logged mice events and identifies
+auxiliary variables that do not predict any actively imputed modeled variable
+under the retained predictor matrix. Logged events can record constant or
+collinear variables and changes to individual imputation regressions. Read
+the actual event records; the absence of events does not establish convergence
+or the validity of the missingness assumptions. Predictor usage is not a
+measure of predictive usefulness. Active formula-based blocks make the
+matrix-only diagnostic incomplete; usage indicators are then `NA`, and the
+formulas should be inspected directly.
+
+When input is a `mids` object these diagnostics remain available. A list of
+completed data frames does not retain the imputation history; in that case
+`get_imputation()` returns `NULL` and diagnostics have `available = FALSE`.
+
+## Execution and reproducibility
+
+The current MI quick workflow runs imputation, fitting and MC generation
+sequentially. `parallel` and `ncores` are retained for the common quick-function
+interface but do not control this MI workflow. No parallel speedup is implied.
+Use `mi_seed` to control imputation and `seed` for MC generation; if `mi_seed`
+is omitted the latter also controls imputation, unless `mice_args$seed` is set.
+Choose only one of `mi_seed` and `mice_args$seed`.

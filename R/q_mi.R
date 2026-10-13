@@ -67,6 +67,7 @@ q_mi_mediation <- function(x, y, m, cov, model, model_type, lm_forms,
     # Extra variables enter imputation only; they do not adjust the path equations.
     args <- utils::modifyList(list(m = 20L, printFlag = progress), mice_args)
     args$data <- imp_data
+    args <- q_mi_align_methods(args)
     if (is.null(args$seed)) args$seed <- if (is.null(mi_seed)) seed else mi_seed
     if (is.null(args$seed)) args$seed <- NA
     imp <- do.call(mice::mice, args)
@@ -139,6 +140,7 @@ q_mi_mediation <- function(x, y, m, cov, model, model_type, lm_forms,
     p <- list(list(x=x, y=y, m=NULL)); names(p) <- paste(x, "->", y)
     effects(p)
   } else list(ustd=NULL, stdx=NULL, stdy=NULL, stdxy=NULL)
+  diagnostics <- q_mi_diagnostics(imp, vars)
   out <- list(lm_out=fit, lm_form=lm_forms, sem_model=sem_model,
               ind_out=ind, ind_total=total, dir_out=direct,
               cond_ind_out=list(ustd=NULL, stdx=NULL, stdy=NULL, stdxy=NULL),
@@ -150,10 +152,18 @@ q_mi_mediation <- function(x, y, m, cov, model, model_type, lm_forms,
                            used=sum(usable), omitted=which(!usable), n=n,
                            omission_reasons=omission_reasons,
                            interval_method=if (is.null(ci_type)) "none" else
-                             "asymptotic normal Monte Carlo with Rubin total covariance",
+                             "asymptotic normal Monte Carlo with lavaan.mi pooled covariance (scale.W=TRUE)",
                            mc_draws=if (is.null(ci_type)) 0L else R,
                            level=level,
-                           effect_pooling="products of pooled path coefficients"),
+                           effect_pooling="products of pooled path coefficients",
+                           covariance_pooling=list(scale_W=TRUE,
+                             method="within covariance scaled by average relative increase in variance"),
+                           diagnostics=diagnostics,
+                           execution=list(imputation=if (raw) "sequential" else "not regenerated",
+                                          model_fitting="sequential",
+                                          monte_carlo="sequential",
+                                          parallel_argument_used=FALSE,
+                                          ncores_argument_used=FALSE)),
               sem_args=sem_args, mice_args=mice_args, mi_vars=mi_vars)
   subclass <- if (model_type == "standard") paste0("q_", model, "_mediation") else "q_user_mediation"
   class(out) <- c(subclass, "q_mediation", "list")
@@ -176,6 +186,25 @@ print_q_mi <- function(x, digits, annotation, pvalue, pvalue_digits, se,
   cat("Interval method:", x$mi_info$interval_method,
       "\nMonte Carlo draws:", x$mi_info$mc_draws,
       "\nUnstandardized indirect effects: products of pooled path coefficients.\n")
+  diagnostics <- x$mi_info$diagnostics
+  if (isTRUE(diagnostics$available)) {
+    cat("\nImputation iterations:", diagnostics$iterations,
+        "\nLogged mice events:", nrow(diagnostics$logged_events), "\n")
+    if (nrow(diagnostics$logged_events)) {
+      cat("Inspect get_mi_info(x)$diagnostics$logged_events for details.\n")
+    }
+    usage <- diagnostics$auxiliary_usage$predicts_imputed_model_variable
+    unused <- diagnostics$auxiliary_usage$variable[!is.na(usage) & !usage]
+    if (length(unused) && length(diagnostics$imputed_model_variables)) {
+      cat("Auxiliary variables not used to predict imputed model variables:",
+          paste(unused, collapse=", "), "\n")
+    }
+    if (!isTRUE(diagnostics$predictor_usage_complete)) {
+      cat("Formula-based imputation detected; predictor-matrix usage alone is incomplete.\n")
+    }
+    cat("Inspect get_imputation(x) for chain and distribution diagnostics.\n")
+  } else cat("\nImputation diagnostics unavailable: only completed data were supplied.\n")
+  cat("MI computation is sequential; parallel and ncores do not control this workflow.\n")
   cat("\nPath model:\n", x$sem_model, "\n")
   cat("\nPooled path estimates (Rubin pooling; lavaan.mi):\n")
   pt <- lavaan.mi::parameterEstimates.mi(x$lm_out, omit.imps=c("no.conv", "no.se"))
@@ -213,4 +242,63 @@ q_mi_omissions <- function(convergence) {
   }, character(1))
   omitted <- nzchar(reasons)
   data.frame(imputation=which(omitted), reason=unname(reasons[omitted]))
+}
+
+
+#' @noRd
+q_mi_diagnostics <- function(imputation, model_variables) {
+  if (is.null(imputation)) return(list(available=FALSE))
+  pm <- imputation$predictorMatrix
+  blocks <- imputation$blocks
+  if (is.null(blocks)) blocks <- stats::setNames(as.list(rownames(pm)), rownames(pm))
+  active <- names(imputation$method)[nzchar(imputation$method)]
+  imputed_model_variables <- unique(unlist(blocks[intersect(active, names(blocks))]))
+  imputed_model_variables <- intersect(model_variables, imputed_model_variables)
+  auxiliary <- setdiff(names(imputation$data), model_variables)
+  targets <- lapply(auxiliary, function(v) {
+    rows <- if (v %in% colnames(pm)) rownames(pm)[pm[,v] != 0] else character()
+    rows <- intersect(rows, active)
+    intersect(model_variables, unique(unlist(blocks[intersect(rows,names(blocks))])))
+  })
+  call_types <- attr(blocks, "calltype")
+  if (is.null(call_types)) call_types <- imputation$calltype
+  formula_based <- any(call_types[intersect(names(call_types),active)] == "formula")
+  usage <- lengths(targets)>0
+  if (formula_based) usage[] <- NA
+  events <- imputation$loggedEvents
+  if (is.null(events)) events <- data.frame(it=integer(),im=integer(),dep=character(),
+                                          meth=character(),out=character())
+  list(available=TRUE, logged_events=events, methods=imputation$method,
+       predictor_matrix=pm, blocks=blocks, formulas=imputation$formulas,
+       call_types=call_types, predictor_usage_complete=!formula_based,
+       iterations=imputation$iteration,
+       imputation_seed=imputation$seed, model_variables=model_variables,
+       imputation_variables=names(imputation$data),
+       imputed_model_variables=imputed_model_variables,
+       unused_predictors=colnames(pm)[colSums(abs(pm)) == 0],
+       auxiliary_usage=data.frame(variable=auxiliary,
+         predicts_imputed_model_variable=usage,
+         model_targets=vapply(targets,paste,character(1),collapse=", ")))
+}
+
+
+#' @noRd
+q_mi_align_methods <- function(args) {
+  method <- args$method
+  if (is.null(method) || length(method) <= 1L || is.null(names(method))) return(args)
+  block_names <- if (!is.null(args$blocks)) {
+    names(args$blocks)
+  } else if (!is.null(args$formulas)) {
+    names(mice::construct.blocks(formulas=args$formulas,
+                                predictorMatrix=args$predictorMatrix))
+  } else if (!is.null(args$predictorMatrix)) {
+    colnames(args$predictorMatrix)
+  } else names(args$data)
+  if (is.null(block_names) || anyDuplicated(names(method)) ||
+      !setequal(names(method), block_names)) {
+    stop("Named mice_args$method must name every selected imputation block exactly once; name custom blocks explicitly.")
+  }
+  # mice replaces method names positionally; preserve the user's intended mapping.
+  args$method <- method[block_names]
+  args
 }
