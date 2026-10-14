@@ -152,10 +152,11 @@ test_that("path plots retain only substantive nodes", {
   skip_if_not_installed("semPlot")
   skip_if_not_installed("semptools", minimum_version = "0.3.2")
   grDevices::pdf(file = NULL)
-  withr::defer(grDevices::dev.off())
-  q <- aux_quick(make_aux_data(), aux = "z", boot_ci = FALSE)
-  for (standardized in c(FALSE, TRUE)) {
-    p <- plot(q, plot_now = FALSE, standardized = standardized)
-    expect_setequal(p$graphAttributes$Nodes$names, c("x", "m1", "y"))
-  }
+  tryCatch({
+    q <- aux_quick(make_aux_data(), aux = "z", boot_ci = FALSE)
+    for (standardized in c(FALSE, TRUE)) {
+      p <- plot(q, plot_now = FALSE, standardized = standardized)
+      expect_setequal(p$graphAttributes$Nodes$names, c("x", "m1", "y"))
+    }
+  }, finally = grDevices::dev.off())
 })
