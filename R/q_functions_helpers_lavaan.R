@@ -580,17 +580,9 @@ fit_null <- function(
   fit_pt <- fit@ParTable
 
   if (!is.null(mm$aux)) {
-    # Keep the same modeled variables and auxiliary nuisance structure;
-    # only constrain the regression paths for the outcome being tested.
-    # Related precedent: semTools::auxiliary() retains saturated auxiliary
-    # parameters in its baseline model (used for CFI/TLI, rather than the
-    # per-outcome regression tests here):
+    # Retain the auxiliary means, variances and covariances in each
+    # nested model, following the approach in semTools::auxiliary():
     # https://search.r-project.org/CRAN/refmans/semTools/html/auxiliary.html
-    # See also Enders (2010), Applied Missing Data Analysis, pp. 137-138,
-    # for the auxiliary structure in an independence baseline model.
-    # Auxiliary parameters are re-estimated, not fixed at the full-model
-    # estimates. Omitting auxiliary variables changes the observed-data
-    # likelihood being compared.
     out_aux <- lapply(dvs, function(y) {
       pt <- fit_pt
       i <- pt$lhs == y & pt$op == "~"
