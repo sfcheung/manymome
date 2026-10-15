@@ -226,6 +226,31 @@
 #'
 #' - Return all the results for printing.
 #'
+#' ## Auxiliary Variables for FIML
+#'
+#' With `aux`, the automatically generated path model is fitted using
+#' [semTools::auxiliary()]. Auxiliary means, variances and covariances
+#' are estimated along with the substantive model. They can help make
+#' MAR more plausible when they are related to missingness or missing
+#' values, but do not establish MAR. Use `cov`, not `aux`, for variables
+#' that should adjust the substantive regression equations.
+#' Bootstrap and Monte Carlo confidence intervals use the augmented
+#' model. Printed output identifies auxiliary variables; the path plot
+#' continues to show the substantive mediation model.
+#' `aux = NULL` preserves the usual workflow. SAM is not supported
+#' with `aux`.
+#'
+#' To use `aux`, set `fit_method = "sem"` and use FIML with ML or MLR.
+#' Both `indicators` and `moderators` must be `NULL`.
+#' Model variables, covariates, and auxiliary variables must be numeric;
+#' auxiliary variables must also be nonconstant and distinct from model
+#' variables and covariates. Missing auxiliary values are permitted.
+#' Exogenous variables are treated as random (`fixed.x = FALSE`).
+#' If `fixed.x` was `TRUE`, a message is shown only when `progress = TRUE`.
+#' Treating exogenous variables as random adds distributional assumptions
+#' for these variables. Using auxiliary variables does not guarantee MAR
+#' or control for confounding.
+#'
 #' ## Testing the Indirect Effects
 #'
 #' Two methods are available for testing
@@ -346,6 +371,10 @@
 #' indicates that `c1` predicts `"m1"`,
 #' while `c2` and `c3` predicts `"dv"`.
 #' Default is `NULL`, no covariates.
+#'
+#' @param aux Optional character vector of auxiliary variable names.
+#' Default is `NULL`. See Details, "Auxiliary Variables for FIML", for
+#' how they are included and the supported settings.
 #'
 #' @param moderators A named list to
 #' specify paths that are moderated.
@@ -616,7 +645,8 @@ q_mediation <- function(x,
                         na.action = NA,
                         parallel = TRUE,
                         ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-                        progress = TRUE) {
+                        progress = TRUE,
+                        aux = NULL) {
   if (is.null(model)) {
     stop("Must specify the model by setting the argument 'model'.")
   }
@@ -676,6 +706,17 @@ q_mediation <- function(x,
   }
 
   # ==== Sanity checks ====
+
+  check_q_auxiliary(aux = aux, data = data, fit_method = fit_method,
+                    missing = missing, indicators = indicators,
+                    moderators = moderators, indicator_method = indicator_method,
+                    sem_args = sem_args)
+  if (!is.null(aux) && isTRUE(fixed.x)) {
+    if (isTRUE(progress)) {
+      message("With 'aux', exogenous variables are treated as random (fixed.x = FALSE).")
+    }
+    fixed.x <- FALSE
+  }
 
   if ((fit_method == "lm") &&
       isTRUE(ci_type == "mc")) {
@@ -834,6 +875,9 @@ q_mediation <- function(x,
             )
     }
 
+    if (!is.null(aux)) {
+      mm <- add_q_auxiliary_data(mm, aux = aux, data = data)
+    }
     sem_model <- b_names_to_lavaan_model(mm$b_names)
     if (indicator_method %in% c("measurement_model", "sam")) {
       sem_model <- paste0(sem_model,
@@ -873,8 +917,13 @@ q_mediation <- function(x,
                           missing = missing)
                     )
 
-      lm_all <- do.call(lavaan::sem,
-                        sem_args1)
+      if (is.null(aux)) {
+        lm_all <- do.call(lavaan::sem, sem_args1)
+      } else {
+        sem_args1$aux <- aux
+        sem_args1$fun <- "sem"
+        lm_all <- do.call(semTools::auxiliary, sem_args1)
+      }
     }
 
     if (indicator_method == "sam") {
@@ -1034,7 +1083,7 @@ q_mediation <- function(x,
   paths <- all_indirect_paths(lm_all,
                               x = x,
                               y = y,
-                              exclude = unique(unlist(cov)))
+                              exclude = unique(c(unlist(cov), aux)))
   if (length(paths) > 0) {
     # Skip unforeseen cases for now
     # tmp <- rep(FALSE, length(paths))
@@ -1613,6 +1662,7 @@ q_mediation <- function(x,
               indicators = indicators,
               reliability = reliability,
               loadings = loadings)
+  out$aux <- aux
   if (model_type == "standard") {
     model_class <- switch(model,
                           simple = "q_simple_mediation",
@@ -1700,7 +1750,8 @@ q_simple_mediation <- function(x,
                                na.action = NA,
                                parallel = TRUE,
                                ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-                               progress = TRUE) {
+                               progress = TRUE,
+                               aux = NULL) {
   boot_type <- match.arg(boot_type)
   fit_method <- match.arg(fit_method)
   if (fit_method == "sem") {
@@ -1733,7 +1784,8 @@ q_simple_mediation <- function(x,
                      na.action = na.action,
                      parallel = parallel,
                      ncores = ncores,
-                     progress = progress)
+                     progress = progress,
+                     aux = aux)
   out$call <- match.call()
   return(out)
 }
@@ -1813,7 +1865,8 @@ q_serial_mediation <- function(x,
                                na.action = NA,
                                parallel = TRUE,
                                ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-                               progress = TRUE) {
+                               progress = TRUE,
+                               aux = NULL) {
   boot_type <- match.arg(boot_type)
   fit_method <- match.arg(fit_method)
   if (fit_method == "sem") {
@@ -1846,7 +1899,8 @@ q_serial_mediation <- function(x,
                      na.action = na.action,
                      parallel = parallel,
                      ncores = ncores,
-                     progress = progress)
+                     progress = progress,
+                     aux = aux)
   out$call <- match.call()
   return(out)
 }
@@ -1925,7 +1979,8 @@ q_parallel_mediation <- function(x,
                                  na.action = NA,
                                  parallel = TRUE,
                                  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-                                 progress = TRUE) {
+                                 progress = TRUE,
+                                 aux = NULL) {
   boot_type <- match.arg(boot_type)
   fit_method <- match.arg(fit_method)
   if (fit_method == "sem") {
@@ -1958,7 +2013,8 @@ q_parallel_mediation <- function(x,
                      na.action = na.action,
                      parallel = parallel,
                      ncores = ncores,
-                     progress = progress)
+                     progress = progress,
+                     aux = aux)
   out$call <- match.call()
   return(out)
 }
@@ -2405,6 +2461,12 @@ print.q_mediation <- function(x,
   cat("\nOutcome(y):", x$y)
   cat("\nMediator(s)(m):", paste0(x$m, collapse = ", "))
   cat("\nModel:", model_name)
+  if (!is.null(x$aux)) {
+    cat("\nAuxiliary variable(s):", paste(x$aux, collapse = ", "))
+    cat("\nAuxiliary method: Saturated correlates with FIML")
+    cat("\nExogenous variables: Random (fixed.x = FALSE)")
+    cat("\nAuxiliary variables are not regression covariates.")
+  }
   if (!is.null(x$indicators)) {
     cat("\nIndicators Method:",
         switch(indicator_method,
