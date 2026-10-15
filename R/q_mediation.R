@@ -709,7 +709,9 @@ q_mediation <- function(x,
                     moderators = moderators, indicator_method = indicator_method,
                     sem_args = sem_args)
   if (!is.null(aux) && isTRUE(fixed.x)) {
-    message("With 'aux', exogenous variables are treated as random (fixed.x = FALSE).")
+    if (isTRUE(progress)) {
+      message("With 'aux', exogenous variables are treated as random (fixed.x = FALSE).")
+    }
     fixed.x <- FALSE
   }
 

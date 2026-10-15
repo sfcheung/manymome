@@ -95,9 +95,6 @@ test_that("all quick model forms forward aux", {
                     cov = "c1", aux = "z", data = d, fit_method = "sem",
                     fixed.x = FALSE, boot_ci = FALSE, progress = FALSE)
   expect_equal(q$aux, "z")
-  expect_message(q_simple_mediation(x = "x", m = "m1", y = "y", aux = "z",
-                                    data = d, fit_method = "sem", boot_ci = FALSE,
-                                    progress = FALSE), "fixed.x = FALSE", fixed = TRUE)
 })
 
 test_that("invalid and unsupported auxiliary specifications fail clearly", {
@@ -159,4 +156,20 @@ test_that("path plots retain only substantive nodes", {
       expect_setequal(p$graphAttributes$Nodes$names, c("x", "m1", "y"))
     }
   }, finally = grDevices::dev.off())
+})
+
+test_that("progress controls the fixed.x message but not auxiliary estimation", {
+  d <- make_aux_data()
+  fit_quick <- function(progress) {
+    q_simple_mediation(x = "x", m = "m1", y = "y", aux = "z",
+                       data = d, fit_method = "sem", boot_ci = FALSE,
+                       parallel = FALSE, progress = progress)
+  }
+  expect_message(quiet <- fit_quick(FALSE), NA)
+  expect_message(verbose <- fit_quick(TRUE), "fixed.x = FALSE", fixed = TRUE)
+  for (q in list(quiet, verbose)) {
+    expect_false(lavaan::lavInspect(get_fit(q), "options")$fixed.x)
+    expect_true("z" %in% lavaan::lavNames(get_fit(q), "ov"))
+  }
+  expect_equal(lavaan::coef(get_fit(quiet)), lavaan::coef(get_fit(verbose)))
 })
