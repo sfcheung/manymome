@@ -1,4 +1,41 @@
+# Local MI diagnostics and validation improvements
+
+- Add get_imputation() and get_mi_info() for retained mice objects and
+  computation/diagnostic metadata. Show logged events and unused auxiliaries,
+  distinguishing incomplete formula-based predictor diagnostics.
+- Align named imputation methods with selected block names rather than
+  silently relying on column positions. Add factor-auxiliary and predictor
+  matrix examples and document sequential execution.
+- Clarify the existing MC covariance extraction uses lavaan.mi scale.W=TRUE;
+  covariance pooling and imputation sensitivity have separate validation scripts.
+- Fix the existing undefined grepv() call when selecting reverse indicators.
+
+# Local MI interface improvements
+
+- MI quick calls automatically select SEM when fitting is unspecified and
+  use 20000 Monte Carlo draws when R is unspecified; other methods retain
+  their defaults. Explicit regression and bootstrap requests are rejected.
+- Report interval and pooling conventions, actual draw count, and reasons
+  for omitted imputations. Document asymptotic normal MI intervals and
+  products of pooled coefficients.
+
 # manymome 0.3.7.2
+
+## New Features
+
+- Added an initial all-in-one MI workflow to the `q_*` functions with
+  `fit_method = "sem"` and `missing = "mi"`. Raw data can be imputed
+  internally using `mice_args`, `mi_vars`, and `mi_seed`; supplied `mids`
+  objects or completed data frames are also accepted. Models are fitted
+  using `lavaan.mi`, with pooled path estimates and Monte Carlo intervals
+  for raw and standardized indirect/direct effects. Imputation objects,
+  completed data, and omitted-imputation information are retained.
+  Bootstrap, indicators, moderators, pooled R-square tests, and quick
+  plotting are not yet supported for this workflow.
+
+- Monte Carlo generation now explicitly uses pooled MI coefficients
+  when `lavaan.mi` is loaded only by namespace, matching its pooled
+  covariance matrix without requiring users to attach the package.
 
 ## Improvement
 
@@ -910,7 +947,7 @@
 - Some print methods support printing
   asymmetric bootstrap
   *p*-values using the method presented
-  in Asparouhov and Muthén (2021) if bootstrapping
+  in Asparouhov and Muth茅n (2021) if bootstrapping
   confidence interval is requested. By
   default, *p*-values are not printed. (0.1.9.7)
 

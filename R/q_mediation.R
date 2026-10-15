@@ -226,6 +226,44 @@
 #'
 #' - Return all the results for printing.
 #'
+#' ## Multiple Imputation in One Call
+#'
+#' Set `missing = "mi"` to fit observed-variable
+#' mediation with [lavaan.mi::sem.mi()]. If omitted, `fit_method` becomes
+#' `"sem"` and `R` becomes 20000 for MI only. Explicit regression fitting
+#' is not supported. `data` can be a raw data frame,
+#' a `mids` object, or a list of completed data frames. Raw data are imputed
+#' with [mice::mice()] using the model variables and optional `mi_vars`.
+#' Existing imputations are not regenerated. The returned `$imputation`
+#' retains the `mids` object when available, and `$imputed_data` retains
+#' completed data. Imputation settings and diagnostics remain the user's
+#' responsibility; default settings do not establish MAR or causal validity.
+#' Monte Carlo intervals are the default for MI. Explicit bootstrap requests
+#' are rejected. Use `boot_ci = FALSE, mc_ci = FALSE` to request no intervals.
+#' Indirect and direct effects can be standardized using the existing
+#' post-fitting MI functions. Pooled standardized path tables, R-square
+#' tests, and quick plots are not provided in this initial implementation.
+#' Indicators, moderators, categorical model variables, grouped, clustered,
+#' and weighted analyses are not supported. Numeric binary predictors are
+#' allowed. At least two imputations with convergence and SEs are required;
+#' omissions and their reasons are reported in `$mi_info$omission_reasons`.
+#' MI intervals use multivariate normal draws centered on Rubin-pooled
+#' coefficients with the existing lavaan.mi pooled covariance using
+#' `scale.W = TRUE`: the within-imputation covariance is scaled by the
+#' average relative increase in variance. This incorporates between-
+#' imputation uncertainty, but differs from adding the full between-
+#' imputation covariance matrix (`scale.W = FALSE`). Intervals are
+#' asymptotic MC intervals, not finite-df
+#' Rubin t intervals. Unstandardized indirect effects multiply pooled path
+#' coefficients; they do not average the products from each imputation.
+#' Standardized effects follow the existing post-fitting MI implementation.
+#' [get_mi_info()] records the interval method, draw count, pooling convention,
+#' and mice logged events and predictor usage. [get_imputation()] retrieves
+#' the retained mice object. Completed-data lists have no imputation diagnostics.
+#' MI computation is sequential; `parallel` and `ncores` do not control it.
+#' Imputation-only variables do not adjust the
+#' substantive regressions; use `cov` for that purpose.
+#'
 #' ## Testing the Indirect Effects
 #'
 #' Two methods are available for testing
@@ -347,6 +385,17 @@
 #' while `c2` and `c3` predicts `"dv"`.
 #' Default is `NULL`, no covariates.
 #'
+#' @param mice_args Named list passed to [mice::mice()] when `missing = "mi"`
+#' and `data` is a raw data frame. The default is 20 imputations. Use this
+#' list to specify methods, iterations and predictor matrices. Do not pass
+#' `data` here. Inspect the returned `$imputation` for diagnostics.
+#' @param mi_vars Additional raw-data variable names to include in imputation,
+#' but not in the substantive path equations. Model variables are always
+#' included. Default is `NULL`. Only used with raw data and `missing = "mi"`.
+#' @param mi_seed Seed for internally generated imputations. Falls back to
+#' `seed` if neither this argument nor `mice_args$seed` is supplied.
+#' `seed` also controls Monte Carlo draws. Do not set both imputation seeds.
+#'
 #' @param moderators A named list to
 #' specify paths that are moderated.
 #' For example, `list("x -> y" = "w1", "x -> m" = "w2")`
@@ -398,9 +447,9 @@
 #' of the confidence interval. Default
 #' is .95 (for 95% confidence intervals).
 #'
-#' @param R The number of bootstrap
-#' samples. Default is 100. Should be
-#' set to 5000 or at least 10000.
+#' @param R The number of bootstrap samples or Monte Carlo draws.
+#' When omitted, the default is 20000 for `missing = "mi"`, and 100
+#' otherwise. For other methods, set a larger value for final inference.
 #'
 #' @param seed The seed for the random
 #' number generator. Default is `NULL`.
@@ -512,11 +561,13 @@
 #' listwise deletion is preferred, set
 #' `missing` to `"listwise"`.
 #'
-#' @param parallel If `TRUE`, default,
+#' @param parallel Not used for `missing = "mi"`; that workflow is sequential.
+#' For other analyses, if `TRUE`, default,
 #' parallel processing will be used when
 #' doing bootstrapping.
 #'
-#' @param ncores Integer. The number of
+#' @param ncores Not used for `missing = "mi"`.
+#' For other analyses, integer. The number of
 #' CPU cores to use when `parallel` is
 #' `TRUE`. Default is the number of
 #' non-logical cores minus one (one
@@ -616,7 +667,16 @@ q_mediation <- function(x,
                         na.action = NA,
                         parallel = TRUE,
                         ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-                        progress = TRUE) {
+                        progress = TRUE,
+                        mice_args = list(),
+                        mi_vars = NULL,
+                        mi_seed = NULL) {
+  if (identical(missing, "mi")) {
+    if (missing(fit_method)) fit_method <- "sem"
+    if (missing(R)) R <- 20000L
+    ci_type <- q_mi_ci(ci_type, boot_ci, mc_ci, missing(boot_ci))
+  }
+
   if (is.null(model)) {
     stop("Must specify the model by setting the argument 'model'.")
   }
@@ -676,6 +736,13 @@ q_mediation <- function(x,
   }
 
   # ==== Sanity checks ====
+
+  if (identical(missing, "mi") &&
+      (fit_method != "lavaan" || !is.null(indicators) ||
+       !is.null(moderators) || indicator_method == "sam")) {
+    stop("MI quick functions require observed-variable SEM without indicators or moderators.")
+  }
+
 
   if ((fit_method == "lm") &&
       isTRUE(ci_type == "mc")) {
@@ -763,6 +830,22 @@ q_mediation <- function(x,
     lm_forms <- form_models_paths(tmp1,
                               cov = cov,
                               moderators = moderators)
+  }
+
+  if (identical(missing, "mi")) {
+    if (fit_method != "lavaan" || !is.null(indicators) ||
+        !is.null(moderators) || indicator_method == "sam") {
+      stop("MI quick functions require observed-variable SEM without indicators or moderators.")
+    }
+    return(q_mi_mediation(x=x, y=y, m=m, cov=cov, model=model,
+             model_type=model_type, lm_forms=lm_forms, data=data,
+             fixed.x=fixed.x, sem_args=sem_args, mice_args=mice_args,
+             mi_vars=mi_vars, mi_seed=mi_seed, ci_type=ci_type,
+             level=level, R=R, seed=seed, parallel=parallel,
+             ncores=ncores, progress=progress, original_call=match.call()))
+  }
+  if (length(mice_args) || !is.null(mi_vars) || !is.null(mi_seed)) {
+    stop("mice_args, mi_vars and mi_seed require missing = 'mi'.")
   }
 
   # ==== Indicator method ====
@@ -1700,7 +1783,16 @@ q_simple_mediation <- function(x,
                                na.action = NA,
                                parallel = TRUE,
                                ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-                               progress = TRUE) {
+                               progress = TRUE,
+                        mice_args = list(),
+                        mi_vars = NULL,
+                        mi_seed = NULL) {
+  if (identical(missing, "mi")) {
+    if (missing(fit_method)) fit_method <- "sem"
+    if (missing(R)) R <- 20000L
+    ci_type <- q_mi_ci(ci_type, boot_ci, mc_ci, missing(boot_ci))
+  }
+
   boot_type <- match.arg(boot_type)
   fit_method <- match.arg(fit_method)
   if (fit_method == "sem") {
@@ -1733,7 +1825,10 @@ q_simple_mediation <- function(x,
                      na.action = na.action,
                      parallel = parallel,
                      ncores = ncores,
-                     progress = progress)
+                     progress = progress,
+                     mice_args = mice_args,
+                     mi_vars = mi_vars,
+                     mi_seed = mi_seed)
   out$call <- match.call()
   return(out)
 }
@@ -1813,7 +1908,16 @@ q_serial_mediation <- function(x,
                                na.action = NA,
                                parallel = TRUE,
                                ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-                               progress = TRUE) {
+                               progress = TRUE,
+                        mice_args = list(),
+                        mi_vars = NULL,
+                        mi_seed = NULL) {
+  if (identical(missing, "mi")) {
+    if (missing(fit_method)) fit_method <- "sem"
+    if (missing(R)) R <- 20000L
+    ci_type <- q_mi_ci(ci_type, boot_ci, mc_ci, missing(boot_ci))
+  }
+
   boot_type <- match.arg(boot_type)
   fit_method <- match.arg(fit_method)
   if (fit_method == "sem") {
@@ -1846,7 +1950,10 @@ q_serial_mediation <- function(x,
                      na.action = na.action,
                      parallel = parallel,
                      ncores = ncores,
-                     progress = progress)
+                     progress = progress,
+                     mice_args = mice_args,
+                     mi_vars = mi_vars,
+                     mi_seed = mi_seed)
   out$call <- match.call()
   return(out)
 }
@@ -1925,7 +2032,16 @@ q_parallel_mediation <- function(x,
                                  na.action = NA,
                                  parallel = TRUE,
                                  ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-                                 progress = TRUE) {
+                                 progress = TRUE,
+                        mice_args = list(),
+                        mi_vars = NULL,
+                        mi_seed = NULL) {
+  if (identical(missing, "mi")) {
+    if (missing(fit_method)) fit_method <- "sem"
+    if (missing(R)) R <- 20000L
+    ci_type <- q_mi_ci(ci_type, boot_ci, mc_ci, missing(boot_ci))
+  }
+
   boot_type <- match.arg(boot_type)
   fit_method <- match.arg(fit_method)
   if (fit_method == "sem") {
@@ -1958,7 +2074,10 @@ q_parallel_mediation <- function(x,
                      na.action = na.action,
                      parallel = parallel,
                      ncores = ncores,
-                     progress = progress)
+                     progress = progress,
+                     mice_args = mice_args,
+                     mi_vars = mi_vars,
+                     mi_seed = mi_seed)
   out$call <- match.call()
   return(out)
 }
@@ -2376,6 +2495,12 @@ print.q_mediation <- function(x,
                               lm_ci_level = .95,
                               sem_style = c("lm", "lavaan"),
                               ...) {
+
+  if (identical(x$missing, "mi")) {
+    return(print_q_mi(x=x, digits=digits, annotation=annotation,
+              pvalue=pvalue, pvalue_digits=pvalue_digits, se=se,
+              for_each_path=for_each_path, ...))
+  }
 
   fit_method <- x$fit_method
   indicator_method <- x$indicator_method

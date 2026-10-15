@@ -94,3 +94,5 @@ importFrom(graphics,
   mtext,
   par
 )
+export(get_imputation)
+export(get_mi_info)
