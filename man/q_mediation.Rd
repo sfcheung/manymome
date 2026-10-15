@@ -485,16 +485,8 @@ detected by
 progress or not.}
 
 \item{aux}{Optional character vector of auxiliary variable names.
-These variables are added using saturated correlates for FIML,
-not as predictors in the substantive regression equations.
-Supported only for observed-variable SEM without indicators or
-moderators, using ML or MLR and FIML. Variables must be numeric,
-nonconstant, and distinct from model variables and covariates.
-Missing auxiliary values are permitted. Default is \code{NULL}.
-When supplied, exogenous variables are treated as random
-(\code{fixed.x = FALSE}); a message is shown if \code{fixed.x} was \code{TRUE}.
-This adds distributional assumptions for these variables and
-does not guarantee MAR or control for causal confounding.}
+Default is \code{NULL}. See Details, "Auxiliary Variables for FIML", for
+how they are included and the supported settings.}
 
 \item{q_out}{The output of \code{\link[=q_mediation]{q_mediation()}}
 and friends.}
@@ -836,8 +828,19 @@ that should adjust the substantive regression equations.
 Bootstrap and Monte Carlo confidence intervals use the augmented
 model. Printed output identifies auxiliary variables; the path plot
 continues to show the substantive mediation model.
-\code{aux = NULL} preserves the usual workflow. Grouped, clustered,
-weighted, categorical and SAM analyses are not supported with \code{aux}.
+\code{aux = NULL} preserves the usual workflow. SAM is not supported
+with \code{aux}.
+
+To use \code{aux}, set \code{fit_method = "sem"} and use FIML with ML or MLR.
+Both \code{indicators} and \code{moderators} must be \code{NULL}.
+Model variables, covariates, and auxiliary variables must be numeric;
+auxiliary variables must also be nonconstant and distinct from model
+variables and covariates. Missing auxiliary values are permitted.
+Exogenous variables are treated as random (\code{fixed.x = FALSE}).
+If \code{fixed.x} was \code{TRUE}, a message is shown only when \code{progress = TRUE}.
+Treating exogenous variables as random adds distributional assumptions
+for these variables. Using auxiliary variables does not guarantee MAR
+or control for confounding.
 }
 
 \subsection{Testing the Indirect Effects}{

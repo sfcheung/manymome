@@ -237,8 +237,19 @@
 #' Bootstrap and Monte Carlo confidence intervals use the augmented
 #' model. Printed output identifies auxiliary variables; the path plot
 #' continues to show the substantive mediation model.
-#' `aux = NULL` preserves the usual workflow. Grouped, clustered,
-#' weighted, categorical and SAM analyses are not supported with `aux`.
+#' `aux = NULL` preserves the usual workflow. SAM is not supported
+#' with `aux`.
+#'
+#' To use `aux`, set `fit_method = "sem"` and use FIML with ML or MLR.
+#' Both `indicators` and `moderators` must be `NULL`.
+#' Model variables, covariates, and auxiliary variables must be numeric;
+#' auxiliary variables must also be nonconstant and distinct from model
+#' variables and covariates. Missing auxiliary values are permitted.
+#' Exogenous variables are treated as random (`fixed.x = FALSE`).
+#' If `fixed.x` was `TRUE`, a message is shown only when `progress = TRUE`.
+#' Treating exogenous variables as random adds distributional assumptions
+#' for these variables. Using auxiliary variables does not guarantee MAR
+#' or control for confounding.
 #'
 #' ## Testing the Indirect Effects
 #'
@@ -362,16 +373,8 @@
 #' Default is `NULL`, no covariates.
 #'
 #' @param aux Optional character vector of auxiliary variable names.
-#' These variables are added using saturated correlates for FIML,
-#' not as predictors in the substantive regression equations.
-#' Supported only for observed-variable SEM without indicators or
-#' moderators, using ML or MLR and FIML. Variables must be numeric,
-#' nonconstant, and distinct from model variables and covariates.
-#' Missing auxiliary values are permitted. Default is `NULL`.
-#' When supplied, exogenous variables are treated as random
-#' (`fixed.x = FALSE`); a message is shown if `fixed.x` was `TRUE`.
-#' This adds distributional assumptions for these variables and
-#' does not guarantee MAR or control for causal confounding.
+#' Default is `NULL`. See Details, "Auxiliary Variables for FIML", for
+#' how they are included and the supported settings.
 #'
 #' @param moderators A named list to
 #' specify paths that are moderated.
