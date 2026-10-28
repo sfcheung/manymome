@@ -226,6 +226,21 @@
 #'
 #' - Return all the results for printing.
 #'
+#' ## Auxiliary Variables for FIML
+#'
+#' In [q_mediation()], `aux` adds auxiliary variables using
+#' [semTools::auxiliary()] without adding regression covariates.
+#' Use `fit_method = "sem"`, FIML, and ML or MLR; `indicators` and
+#' `moderators` must be `NULL` (SAM is not supported).
+#' Model and auxiliary variables must be numeric; auxiliary variables
+#' must be nonconstant and distinct from model variables and covariates.
+#' Missing auxiliary values are allowed. Exogenous variables are treated
+#' as random (`fixed.x = FALSE`); a change is reported if `progress = TRUE`.
+#' Auxiliary variables can help make MAR more plausible, but do not
+#' guarantee MAR or control for confounding. The other wrappers do not
+#' yet expose `aux`; use [q_mediation()] with `model = "simple"`,
+#' `"parallel"`, or `"serial"` instead.
+#'
 #' ## Testing the Indirect Effects
 #'
 #' Two methods are available for testing
@@ -346,6 +361,10 @@
 #' indicates that `c1` predicts `"m1"`,
 #' while `c2` and `c3` predicts `"dv"`.
 #' Default is `NULL`, no covariates.
+#'
+#' @param aux Optional character vector of auxiliary variable names for
+#' [q_mediation()]. Default is `NULL`. See Details, "Auxiliary Variables
+#' for FIML", for supported settings.
 #'
 #' @param moderators A named list to
 #' specify paths that are moderated.
@@ -616,7 +635,8 @@ q_mediation <- function(x,
                         na.action = NA,
                         parallel = TRUE,
                         ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-                        progress = TRUE) {
+                        progress = TRUE,
+                        aux = NULL) {
   if (is.null(model)) {
     stop("Must specify the model by setting the argument 'model'.")
   }
@@ -676,6 +696,17 @@ q_mediation <- function(x,
   }
 
   # ==== Sanity checks ====
+
+  check_q_auxiliary(aux = aux, data = data, fit_method = fit_method,
+                    missing = missing, indicators = indicators,
+                    moderators = moderators, indicator_method = indicator_method,
+                    sem_args = sem_args)
+  if (!is.null(aux) && isTRUE(fixed.x)) {
+    if (isTRUE(progress)) {
+      message("With 'aux', exogenous variables are treated as random (fixed.x = FALSE).")
+    }
+    fixed.x <- FALSE
+  }
 
   if ((fit_method == "lm") &&
       isTRUE(ci_type == "mc")) {
@@ -834,6 +865,9 @@ q_mediation <- function(x,
             )
     }
 
+    if (!is.null(aux)) {
+      mm <- add_q_auxiliary_data(mm, aux = aux, data = data)
+    }
     sem_model <- b_names_to_lavaan_model(mm$b_names)
     if (indicator_method %in% c("measurement_model", "sam")) {
       sem_model <- paste0(sem_model,
@@ -873,8 +907,13 @@ q_mediation <- function(x,
                           missing = missing)
                     )
 
-      lm_all <- do.call(lavaan::sem,
-                        sem_args1)
+      if (is.null(aux)) {
+        lm_all <- do.call(lavaan::sem, sem_args1)
+      } else {
+        sem_args1$aux <- aux
+        sem_args1$fun <- "sem"
+        lm_all <- do.call(semTools::auxiliary, sem_args1)
+      }
     }
 
     if (indicator_method == "sam") {
@@ -1613,6 +1652,7 @@ q_mediation <- function(x,
               indicators = indicators,
               reliability = reliability,
               loadings = loadings)
+  if (!is.null(aux)) out$aux <- aux
   if (model_type == "standard") {
     model_class <- switch(model,
                           simple = "q_simple_mediation",
@@ -2405,6 +2445,10 @@ print.q_mediation <- function(x,
   cat("\nOutcome(y):", x$y)
   cat("\nMediator(s)(m):", paste0(x$m, collapse = ", "))
   cat("\nModel:", model_name)
+  if (!is.null(x$aux)) {
+    cat("\nAuxiliary variable(s):", paste(x$aux, collapse = ", "))
+    cat("\nAuxiliary method: Saturated correlates with FIML (fixed.x = FALSE)")
+  }
   if (!is.null(x$indicators)) {
     cat("\nIndicators Method:",
         switch(indicator_method,

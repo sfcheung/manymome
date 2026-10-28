@@ -39,7 +39,8 @@ q_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  aux = NULL
 )
 
 q_moderated_mediation(
@@ -67,7 +68,8 @@ q_moderated_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  aux = NULL
 )
 
 q_simple_mediation(
@@ -476,6 +478,10 @@ detected by
 \item{progress}{Logical. Display
 progress or not.}
 
+\item{aux}{Optional character vector of auxiliary variable names for
+\code{\link[=q_mediation]{q_mediation()}}. Default is \code{NULL}. See Details, "Auxiliary Variables
+for FIML", for supported settings.}
+
 \item{q_out}{The output of \code{\link[=q_mediation]{q_mediation()}}
 and friends.}
 
@@ -803,6 +809,22 @@ compute the total indirect effect.
 }
 }
 
+}
+
+\subsection{Auxiliary Variables for FIML}{
+
+In \code{\link[=q_mediation]{q_mediation()}}, \code{aux} adds auxiliary variables using
+\code{\link[semTools:auxiliary]{semTools::auxiliary()}} without adding regression covariates.
+Use \code{fit_method = "sem"}, FIML, and ML or MLR; \code{indicators} and
+\code{moderators} must be \code{NULL} (SAM is not supported).
+Model and auxiliary variables must be numeric; auxiliary variables
+must be nonconstant and distinct from model variables and covariates.
+Missing auxiliary values are allowed. Exogenous variables are treated
+as random (\code{fixed.x = FALSE}); a change is reported if \code{progress = TRUE}.
+Auxiliary variables can help make MAR more plausible, but do not
+guarantee MAR or control for confounding. The other wrappers do not
+yet expose \code{aux}; use \code{\link[=q_mediation]{q_mediation()}} with \code{model = "simple"},
+\code{"parallel"}, or \code{"serial"} instead.
 }
 
 \subsection{Testing the Indirect Effects}{
