@@ -573,6 +573,24 @@ fit_null <- function(
     )
   }
 
+  # Retain auxiliary nuisance parameters, following semTools::auxiliary():
+  # https://search.r-project.org/CRAN/refmans/semTools/html/auxiliary.html
+  if (!is.null(fit@external$aux)) {
+    out_aux <- lapply(dvs, function(y) {
+      pt <- fit@ParTable
+      i <- pt$lhs == y & pt$op == "~"
+      pt$free[i] <- 0L
+      pt$label[i] <- ""
+      for (nm in intersect(c("ustart", "start", "est"), names(pt))) {
+        pt[[nm]][i] <- 0
+      }
+      lavaan::lavaan(model = pt, slotData = fit@Data,
+                     slotSampleStats = fit@SampleStats,
+                     slotOptions = fit@Options)
+    })
+    return(stats::setNames(out_aux, dvs))
+  }
+
   fit_data <- fit@Data
   fit_model <- fit@Model
   fit_sampstats <- fit@SampleStats
