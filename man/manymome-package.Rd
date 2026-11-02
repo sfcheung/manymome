@@ -30,6 +30,7 @@ Authors:
 Other contributors:
 \itemize{
   \item Rong Wei Sun (\href{https://orcid.org/0000-0003-0034-1422}{ORCID}) [contributor]
+  \item Wendie Yang (\href{https://orcid.org/0009-0000-8388-6481}{ORCID}) [contributor]
 }
 
 }

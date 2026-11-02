@@ -1,4 +1,13 @@
-# manymome 0.3.7.2
+# manymome 0.3.7.3
+
+## New Features
+
+- Updated `q_mediation()`
+  to support auxiliary variables when
+  missing data is handled by FIML and
+  the model is fitted by SEM. Implemented
+  by `semTools::auxiliary().`
+  (0.3.7.3)
 
 ## Improvement
 
