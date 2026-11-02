@@ -345,7 +345,7 @@
 #' - Only `fixed.x = FALSE` is
 #'   supported. If `fixed.x` is set to
 #'   `TRUE` (the default), it will be
-#'   automatically changed to `TRUE`,
+#'   automatically changed to `FALSE`,
 #'   and alerting users of this change
 #'   if `progress = TRUE`.
 #'

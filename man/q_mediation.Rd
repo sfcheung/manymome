@@ -927,7 +927,7 @@ through \code{sem_args}.
 \item Only \code{fixed.x = FALSE} is
 supported. If \code{fixed.x} is set to
 \code{TRUE} (the default), it will be
-automatically changed to \code{TRUE},
+automatically changed to \code{FALSE},
 and alerting users of this change
 if \code{progress = TRUE}.
 \item The other wrappers (e.g.,
