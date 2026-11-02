@@ -1,3 +1,5 @@
+skip_on_cran()
+# Long tests
 q_aux_data <- function() {
   set.seed(731)
   n <- 260

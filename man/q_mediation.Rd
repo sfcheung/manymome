@@ -811,22 +811,6 @@ compute the total indirect effect.
 
 }
 
-\subsection{Auxiliary Variables for FIML}{
-
-In \code{\link[=q_mediation]{q_mediation()}}, \code{aux} adds auxiliary variables using
-\code{\link[semTools:auxiliary]{semTools::auxiliary()}} without adding regression covariates.
-Use \code{fit_method = "sem"}, FIML, and ML or MLR; \code{indicators} and
-\code{moderators} must be \code{NULL} (SAM is not supported).
-Model and auxiliary variables must be numeric; auxiliary variables
-must be nonconstant and distinct from model variables and covariates.
-Missing auxiliary values are allowed. Exogenous variables are treated
-as random (\code{fixed.x = FALSE}); a change is reported if \code{progress = TRUE}.
-Auxiliary variables can help make MAR more plausible, but do not
-guarantee MAR or control for confounding. The other wrappers do not
-yet expose \code{aux}; use \code{\link[=q_mediation]{q_mediation()}} with \code{model = "simple"},
-\code{"parallel"}, or \code{"serial"} instead.
-}
-
 \subsection{Testing the Indirect Effects}{
 
 Two methods are available for testing
@@ -888,6 +872,72 @@ counterparts. The functions
 \code{\link[=q_serial_mediation]{q_serial_mediation()}}, and
 \code{\link[=q_simple_mediation]{q_simple_mediation()}} can also be
 used for models with moderators.
+}
+
+\subsection{Auxiliary Variables for FIML}{
+
+If the model is to be fitted by
+structural equation modeling
+(\code{fit_method} set to \code{"sem"} or
+\code{"lavaan"}) and FIML is used to
+handle missing data (\code{missing = "fiml"}, the default), users can try
+to improve the estimation by
+including auxiliary variables:
+variables correlated with with
+variables with missing data, even
+though they are not related to
+hypotheses being tested in the model
+(see Collins, Schafer, & Kam, 2001).
+Including auxiliary variables can
+help make the missing at random (MAR)
+assumption more plausible, but note
+that this does not guarantee MAR, nor
+does it control for confounding.
+
+Add the auxiliary variables using
+the argument \code{aux}. For example,
+if \code{z1} and \code{z2} are not covariates
+in the model but believed to be
+related to variables with missing
+data, add \code{aux = c("z1", "z2")}. They
+will be added to the model using the
+saturated-correlates approach
+(Enders, 2008). These auxiliary variables
+themselves can also have missing data.
+
+Auxiliary variables are supported through
+\code{\link[semTools:auxiliary]{semTools::auxiliary()}}. See the
+help page of \code{\link[semTools:auxiliary]{semTools::auxiliary()}}
+for the technical details of the
+implementation.
+\subsection{Limitations in Including Auxiliary Variables}{
+\itemize{
+\item If \code{aux} is used, the estimator must
+be ML or MLR.
+\item Indicators are not yet supported.
+Therefore, \code{indicators} must be \code{NULL}
+(the default).
+\item Moderators are not yet supported.
+Therefore, \code{moderators} must be \code{NULL}
+(the default).
+\item The variables in the model must be
+numeric (i.e., no variables are
+declared as ordered variables
+through \code{sem_args}.
+\item Only \code{fixed.x = FALSE} is
+supported. If \code{fixed.x} is set to
+\code{TRUE} (the default), it will be
+automatically changed to \code{TRUE},
+and alerting users of this change
+if \code{progress = TRUE}.
+\item The other wrappers (e.g.,
+\code{q_simple_mediation()}) do not yet
+expose \code{aux}. Please use
+\code{\link[=q_mediation]{q_mediation()}} with \code{model = "simple"}, \code{"parallel"}, or
+\code{"serial"} instead.
+}
+}
+
 }
 
 \subsection{Notes}{
@@ -1075,6 +1125,22 @@ print(out,
 
 }
 \references{
+Collins, L. M., Schafer, J. L., &
+Kam, C.-M. (2001). A comparison of
+inclusive and restrictive strategies
+in modern missing data procedures.
+\emph{Psychological Methods, 6}(4), 330--351.
+https://doi.org/10.1037//1082-989X.6.4.330
+
+Enders, C. K. (2008). A note on the
+use of missing auxiliary variables in
+full information maximum
+likelihood-based structural equation
+models. \emph{Structural Equation Modeling: A Multidisciplinary Journal},
+\emph{15}(3),
+434--448.
+https://doi.org/10.1080/10705510802154307
+
 Rosseel, Y., & Loh, W. W. (2024). A
 structural after measurement approach
 to structural equation modeling.
@@ -1102,4 +1168,6 @@ structural equation modeling by
 Rong wei Sun \url{https://orcid.org/0000-0003-0034-1422},
 implemented by
 Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}.
+Support for auxiliary variables contributed
+by Wendie Yang \url{https://orcid.org/0009-0000-8388-6481}.
 }
