@@ -235,6 +235,7 @@ print.cond_indirect_effects <- function(x, digits = 3,
     }
   standardized_x <- x_i$standardized_x
   standardized_y <- x_i$standardized_y
+  standardized <- (standardized_x && standardized_y)
   has_m <- isTRUE(!is.null(x_i$m))
 
   # Default to OLS or Wald SE
@@ -441,10 +442,28 @@ print.cond_indirect_effects <- function(x, digits = 3,
           cond_str2 <- "Direct"
         }
     }
+  std_str <- ""
+  if (standardized) {
+    std_str <- paste0(" (Both ", "x-variable(s)",
+                      " and ", "y-variable(s)", " Standardized)")
+  } else {
+    if (standardized_x) {
+      std_str <- paste0(" (", "x-variable(s)", " Standardized)")
+    }
+    if (standardized_y) {
+      std_str <- paste0(" (", "y-variable(s)", " Standardized)")
+    }
+  }
   if (has_m) {
-      cat("\n== Conditional indirect effects ==\n")
+      cat("\n== Conditional indirect effects",
+          std_str,
+          " ==\n",
+          sep = "")
     } else {
-      cat("\n== Conditional effects ==\n")
+      cat("\n== Conditional effects",
+          std_str,
+          " ==\n",
+          sep = "")
     }
   cat("\n Path:", path)
   if (has_wlevels) {
