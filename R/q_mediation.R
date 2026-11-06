@@ -286,6 +286,76 @@
 #' [q_simple_mediation()] can also be
 #' used for models with moderators.
 #'
+#' ## Auxiliary Variables for FIML
+#'
+#' If the model is to be fitted by
+#' structural equation modeling
+#' (`fit_method` set to `"sem"` or
+#' `"lavaan"`) and FIML is used to
+#' handle missing data (`missing =
+#' "fiml"`, the default), users can try
+#' to improve the estimation by
+#' including auxiliary variables:
+#' variables correlated with with
+#' variables with missing data, even
+#' though they are not related to
+#' hypotheses being tested in the model
+#' (see Collins, Schafer, & Kam, 2001).
+#' Including auxiliary variables can
+#' help make the missing at random (MAR)
+#' assumption more plausible, but note
+#' that this does not guarantee MAR, nor
+#' does it control for confounding.
+#'
+#' Add the auxiliary variables using
+#' the argument `aux`. For example,
+#' if `z1` and `z2` are not covariates
+#' in the model but believed to be
+#' related to variables with missing
+#' data, add `aux = c("z1", "z2")`. They
+#' will be added to the model using the
+#' saturated-correlates approach
+#' (Enders, 2008). These auxiliary variables
+#' themselves can also have missing data.
+#'
+#' Auxiliary variables are supported through
+#' [semTools::auxiliary()]. See the
+#' help page of [semTools::auxiliary()]
+#' for the technical details of the
+#' implementation.
+#'
+#' ### Limitations in Including Auxiliary Variables
+#'
+#' - If `aux` is used, the estimator must
+#'   be ML or MLR.
+#'
+#' - Indicators are not yet supported.
+#'   Therefore, `indicators` must be `NULL`
+#'   (the default).
+#'
+#' - Moderators are not yet supported.
+#'   Therefore, `moderators` must be `NULL`
+#'   (the default).
+#'
+#' - The variables in the model must be
+#'   numeric (i.e., no variables are
+#'   declared as ordered variables
+#'   through `sem_args`.
+#'
+#' - Only `fixed.x = FALSE` is
+#'   supported. If `fixed.x` is set to
+#'   `TRUE` (the default), it will be
+#'   automatically changed to `FALSE`,
+#'   and alerting users of this change
+#'   if `progress = TRUE`.
+#'
+#' - The other wrappers (e.g.,
+#'   `q_simple_mediation()`) do not yet
+#'   expose `aux`. Please use
+#'   [q_mediation()] with `model =
+#'   "simple"`, `"parallel"`, or
+#'   `"serial"` instead.
+#'
 #' ## Notes
 #'
 #' ### Flexibility
@@ -346,6 +416,10 @@
 #' indicates that `c1` predicts `"m1"`,
 #' while `c2` and `c3` predicts `"dv"`.
 #' Default is `NULL`, no covariates.
+#'
+#' @param aux Optional character vector of auxiliary variable names for
+#' [q_mediation()]. Default is `NULL`. See Details, "Auxiliary Variables
+#' for FIML", for supported settings.
 #'
 #' @param moderators A named list to
 #' specify paths that are moderated.
@@ -545,6 +619,23 @@
 #' indirect effects.
 #'
 #' @references
+#'
+#' Collins, L. M., Schafer, J. L., &
+#' Kam, C.-M. (2001). A comparison of
+#' inclusive and restrictive strategies
+#' in modern missing data procedures.
+#' *Psychological Methods, 6*(4), 330--351.
+#' https://doi.org/10.1037//1082-989X.6.4.330
+#'
+#' Enders, C. K. (2008). A note on the
+#' use of missing auxiliary variables in
+#' full information maximum
+#' likelihood-based structural equation
+#' models. *Structural Equation Modeling: A Multidisciplinary Journal*,
+#' *15*(3),
+#' 434--448.
+#' https://doi.org/10.1080/10705510802154307
+#'
 #' Rosseel, Y., & Loh, W. W. (2024). A
 #' structural after measurement approach
 #' to structural equation modeling.
@@ -556,6 +647,8 @@
 #' Rong wei Sun <https://orcid.org/0000-0003-0034-1422>,
 #' implemented by
 #' Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>.
+#' Support for auxiliary variables contributed
+#' by Wendie Yang <https://orcid.org/0009-0000-8388-6481>.
 #'
 #' @name q_mediation
 NULL
@@ -616,7 +709,8 @@ q_mediation <- function(x,
                         na.action = NA,
                         parallel = TRUE,
                         ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-                        progress = TRUE) {
+                        progress = TRUE,
+                        aux = NULL) {
   if (is.null(model)) {
     stop("Must specify the model by setting the argument 'model'.")
   }
@@ -676,6 +770,17 @@ q_mediation <- function(x,
   }
 
   # ==== Sanity checks ====
+
+  check_q_auxiliary(aux = aux, data = data, fit_method = fit_method,
+                    missing = missing, indicators = indicators,
+                    moderators = moderators, indicator_method = indicator_method,
+                    sem_args = sem_args)
+  if (!is.null(aux) && isTRUE(fixed.x)) {
+    if (isTRUE(progress)) {
+      message("With 'aux', exogenous variables are treated as random (fixed.x = FALSE).")
+    }
+    fixed.x <- FALSE
+  }
 
   if ((fit_method == "lm") &&
       isTRUE(ci_type == "mc")) {
@@ -834,6 +939,9 @@ q_mediation <- function(x,
             )
     }
 
+    if (!is.null(aux)) {
+      mm <- add_q_auxiliary_data(mm, aux = aux, data = data)
+    }
     sem_model <- b_names_to_lavaan_model(mm$b_names)
     if (indicator_method %in% c("measurement_model", "sam")) {
       sem_model <- paste0(sem_model,
@@ -873,8 +981,13 @@ q_mediation <- function(x,
                           missing = missing)
                     )
 
-      lm_all <- do.call(lavaan::sem,
-                        sem_args1)
+      if (is.null(aux)) {
+        lm_all <- do.call(lavaan::sem, sem_args1)
+      } else {
+        sem_args1$aux <- aux
+        sem_args1$fun <- "sem"
+        lm_all <- do.call(semTools::auxiliary, sem_args1)
+      }
     }
 
     if (indicator_method == "sam") {
@@ -1613,6 +1726,7 @@ q_mediation <- function(x,
               indicators = indicators,
               reliability = reliability,
               loadings = loadings)
+  if (!is.null(aux)) out$aux <- aux
   if (model_type == "standard") {
     model_class <- switch(model,
                           simple = "q_simple_mediation",
@@ -2405,6 +2519,10 @@ print.q_mediation <- function(x,
   cat("\nOutcome(y):", x$y)
   cat("\nMediator(s)(m):", paste0(x$m, collapse = ", "))
   cat("\nModel:", model_name)
+  if (!is.null(x$aux)) {
+    cat("\nAuxiliary variable(s):", paste(x$aux, collapse = ", "))
+    cat("\nAuxiliary method: Saturated correlates with FIML (fixed.x = FALSE)")
+  }
   if (!is.null(x$indicators)) {
     cat("\nIndicators Method:",
         switch(indicator_method,
@@ -2890,13 +3008,13 @@ print.q_mediation <- function(x,
       !is.null(x$cond_ind_out$stdxy)) {
     cat("\n")
     cat("===================================================\n")
-    cat("|       Conditional Indirect Effect Result        |\n")
+    cat("|       Conditional Indirect Effect Results       |\n")
     cat("===================================================\n")
   }
 
   if (!is.null(x$cond_ind_out$ustd)) {
     # cat("\n")
-    # cat("===== Indirect Effect(s) =====")
+    # cat("===== Conditional Indirect Effect(s) =====")
     # cat("\n")
     cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$cond_ind_out$ustd,
@@ -2911,7 +3029,7 @@ print.q_mediation <- function(x,
 
   if (!is.null(x$cond_ind_out$stdx)) {
     # cat("\n")
-    # cat("===== Indirect Effect(s): Predictor (", x$x, ") Standardized =====",
+    # cat("===== Conditional Indirect Effect(s): Predictor (", x$x, ") Standardized =====",
     #     sep = "")
     # cat("\n")
     cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
@@ -2927,7 +3045,7 @@ print.q_mediation <- function(x,
 
   if (!is.null(x$cond_ind_out$stdy)) {
     # cat("\n")
-    # cat("===== Indirect Effect(s): Outcome (", x$y, ") Standardized =====",
+    # cat("===== Conditional Indirect Effect(s): Outcome (", x$y, ") Standardized =====",
     #     sep = "")
     # cat("\n")
     cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
@@ -2943,7 +3061,7 @@ print.q_mediation <- function(x,
 
   if (!is.null(x$cond_ind_out$stdxy)) {
     # cat("\n")
-    # cat("===== Indirect Effect(s): Both Predictor (", x$x,
+    # cat("===== Conditional Indirect Effect(s): Both Predictor (", x$x,
     #     ") and Outcome (", x$y, ") Standardized =====",
     #     sep = "")
     # cat("\n")
@@ -3046,8 +3164,8 @@ print.q_mediation <- function(x,
                       "")
 
   t_stat_name <- switch(fit_method,
-                        lm = "OLS t-statistc",
-                        lavaan = "z-statistc")
+                        lm = "OLS t-statistic",
+                        lavaan = "z-statistic")
 
   if (print_direct &&
       (ci_type != "none")) {

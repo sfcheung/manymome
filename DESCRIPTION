@@ -1,6 +1,6 @@
 Package: manymome
 Title: Mediation, Moderation and Moderated-Mediation After Model Fitting
-Version: 0.3.7.2
+Version: 0.3.7.4
 Authors@R:
     c(person(given = "Shu Fai",
            family = "Cheung",
@@ -14,7 +14,11 @@ Authors@R:
       person(given = "Rong Wei",
              family = "Sun",
              role = c("ctb"),
-             comment = c(ORCID = "0000-0003-0034-1422")))
+             comment = c(ORCID = "0000-0003-0034-1422")),
+      person(given = "Wendie",
+             family = "Yang",
+             role = c("ctb"),
+             comment = c(ORCID = "0009-0000-8388-6481")))
 Description: Computes indirect effects, conditional effects, and conditional
   indirect effects in a structural equation model or path model after model
   fitting, with no need to define any user parameters or label any paths in
