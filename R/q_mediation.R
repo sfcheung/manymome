@@ -3008,14 +3008,14 @@ print.q_mediation <- function(x,
       !is.null(x$cond_ind_out$stdxy)) {
     cat("\n")
     cat("===================================================\n")
-    cat("|       Conditional Indirect Effect Result        |\n")
+    cat("|       Conditional Indirect Effect Results       |\n")
     cat("===================================================\n")
   }
 
   if (!is.null(x$cond_ind_out$ustd)) {
-    # cat("\n")
-    # cat("===== Indirect Effect(s) =====")
-    # cat("\n")
+    cat("\n")
+    cat("===== Conditional Indirect Effect(s) =====")
+    cat("\n")
     cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$cond_ind_out$ustd,
           digits = digits,
@@ -3028,10 +3028,10 @@ print.q_mediation <- function(x,
   }
 
   if (!is.null(x$cond_ind_out$stdx)) {
-    # cat("\n")
-    # cat("===== Indirect Effect(s): Predictor (", x$x, ") Standardized =====",
-    #     sep = "")
-    # cat("\n")
+    cat("\n")
+    cat("===== Conditional Indirect Effect(s): Predictor (", x$x, ") Standardized =====",
+        sep = "")
+    cat("\n")
     cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$cond_ind_out$stdx,
           digits = digits,
@@ -3044,10 +3044,10 @@ print.q_mediation <- function(x,
   }
 
   if (!is.null(x$cond_ind_out$stdy)) {
-    # cat("\n")
-    # cat("===== Indirect Effect(s): Outcome (", x$y, ") Standardized =====",
-    #     sep = "")
-    # cat("\n")
+    cat("\n")
+    cat("===== Conditional Indirect Effect(s): Outcome (", x$y, ") Standardized =====",
+        sep = "")
+    cat("\n")
     cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$cond_ind_out$stdy,
           digits = digits,
@@ -3060,11 +3060,11 @@ print.q_mediation <- function(x,
   }
 
   if (!is.null(x$cond_ind_out$stdxy)) {
-    # cat("\n")
-    # cat("===== Indirect Effect(s): Both Predictor (", x$x,
-    #     ") and Outcome (", x$y, ") Standardized =====",
-    #     sep = "")
-    # cat("\n")
+    cat("\n")
+    cat("===== Conditional Indirect Effect(s): Both Predictor (", x$x,
+        ") and Outcome (", x$y, ") Standardized =====",
+        sep = "")
+    cat("\n")
     cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$cond_ind_out$stdxy,
           digits = digits,
@@ -3164,8 +3164,8 @@ print.q_mediation <- function(x,
                       "")
 
   t_stat_name <- switch(fit_method,
-                        lm = "OLS t-statistc",
-                        lavaan = "z-statistc")
+                        lm = "OLS t-statistic",
+                        lavaan = "z-statistic")
 
   if (print_direct &&
       (ci_type != "none")) {
