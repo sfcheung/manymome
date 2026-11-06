@@ -3013,9 +3013,9 @@ print.q_mediation <- function(x,
   }
 
   if (!is.null(x$cond_ind_out$ustd)) {
-    cat("\n")
-    cat("===== Conditional Indirect Effect(s) =====")
-    cat("\n")
+    # cat("\n")
+    # cat("===== Conditional Indirect Effect(s) =====")
+    # cat("\n")
     cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$cond_ind_out$ustd,
           digits = digits,
@@ -3028,10 +3028,10 @@ print.q_mediation <- function(x,
   }
 
   if (!is.null(x$cond_ind_out$stdx)) {
-    cat("\n")
-    cat("===== Conditional Indirect Effect(s): Predictor (", x$x, ") Standardized =====",
-        sep = "")
-    cat("\n")
+    # cat("\n")
+    # cat("===== Conditional Indirect Effect(s): Predictor (", x$x, ") Standardized =====",
+    #     sep = "")
+    # cat("\n")
     cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$cond_ind_out$stdx,
           digits = digits,
@@ -3044,10 +3044,10 @@ print.q_mediation <- function(x,
   }
 
   if (!is.null(x$cond_ind_out$stdy)) {
-    cat("\n")
-    cat("===== Conditional Indirect Effect(s): Outcome (", x$y, ") Standardized =====",
-        sep = "")
-    cat("\n")
+    # cat("\n")
+    # cat("===== Conditional Indirect Effect(s): Outcome (", x$y, ") Standardized =====",
+    #     sep = "")
+    # cat("\n")
     cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$cond_ind_out$stdy,
           digits = digits,
@@ -3060,11 +3060,11 @@ print.q_mediation <- function(x,
   }
 
   if (!is.null(x$cond_ind_out$stdxy)) {
-    cat("\n")
-    cat("===== Conditional Indirect Effect(s): Both Predictor (", x$x,
-        ") and Outcome (", x$y, ") Standardized =====",
-        sep = "")
-    cat("\n")
+    # cat("\n")
+    # cat("===== Conditional Indirect Effect(s): Both Predictor (", x$x,
+    #     ") and Outcome (", x$y, ") Standardized =====",
+    #     sep = "")
+    # cat("\n")
     cat("\n", strrep("-", ceiling(opt_width * .8)), "\n", sep = "")
     print(x$cond_ind_out$stdxy,
           digits = digits,
