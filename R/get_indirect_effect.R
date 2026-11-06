@@ -106,6 +106,35 @@ get_one_cond_effect <- get_one_cond_indirect_effect
 #' @export
 
 print_all_cond_indirect_effects <- function(object, ...) {
+    if (inherits(object, "q_mediation")) {
+
+      # ==== Work for q_mediation output ====
+
+      out_names <- c("ustd", "stdx", "stdy", "stdxy")
+      for (name_i in out_names) {
+        x_i <- object$cond_ind_out[[name_i]]
+        if (!is.null(x_i)) {
+          name_x_i <- names(x_i)
+          for (name_j in name_x_i) {
+            section_sep <- paste0(rep("-",
+                                  round(getOption("width") * .80)),
+                                  collapse = "")
+            cat(section_sep, "\n")
+            cat("==== Path:",
+                name_j,
+                "====\n")
+            cat(section_sep, "\n")
+            cat("\n")
+            print_all_cond_indirect_effects(
+              x_i[[name_x_i]],
+              ...
+            )
+          }
+        }
+      }
+      return(invisible(object))
+    }
+
     full_output <- attr(object, "full_output")
     wlevels <- attr(object, "wlevels")
     wlevels_names <- rownames(wlevels)
