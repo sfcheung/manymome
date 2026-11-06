@@ -588,7 +588,7 @@ print.cond_indirect_effects <- function(x, digits = 3,
               "\n - ind: The unstandardized", cond_str, "effects.", sep = " ")
         }
       if (!standardized_x && standardized_y) {
-          cat(" - std: Te partially standardized", cond_str, "effects.",
+          cat(" - std: The partially standardized", cond_str, "effects.",
               "\n - ", sQuote(y0), " is standardized.",
               "\n - ind: The unstandardized", cond_str, "effects.", sep = " ")
         }
