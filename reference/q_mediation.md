@@ -32,7 +32,8 @@ q_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  aux = NULL
 )
 
 q_moderated_mediation(
@@ -60,7 +61,8 @@ q_moderated_mediation(
   na.action = NA,
   parallel = TRUE,
   ncores = max(parallel::detectCores(logical = FALSE) - 1, 1, na.rm = TRUE),
-  progress = TRUE
+  progress = TRUE,
+  aux = NULL
 )
 
 q_simple_mediation(
@@ -439,6 +441,12 @@ print(
 
   Logical. Display progress or not.
 
+- aux:
+
+  Optional character vector of auxiliary variable names for
+  `q_mediation()`. Default is `NULL`. See Details, "Auxiliary Variables
+  for FIML", for supported settings.
+
 - q_out:
 
   The output of `q_mediation()` and friends.
@@ -755,6 +763,51 @@ nonmoderated counterparts. The functions `q_mediation()`,
 `q_parallel_mediation()`, `q_serial_mediation()`, and
 `q_simple_mediation()` can also be used for models with moderators.
 
+### Auxiliary Variables for FIML
+
+If the model is to be fitted by structural equation modeling
+(`fit_method` set to `"sem"` or `"lavaan"`) and FIML is used to handle
+missing data (`missing = "fiml"`, the default), users can try to improve
+the estimation by including auxiliary variables: variables correlated
+with with variables with missing data, even though they are not related
+to hypotheses being tested in the model (see Collins, Schafer, & Kam,
+2001). Including auxiliary variables can help make the missing at random
+(MAR) assumption more plausible, but note that this does not guarantee
+MAR, nor does it control for confounding.
+
+Add the auxiliary variables using the argument `aux`. For example, if
+`z1` and `z2` are not covariates in the model but believed to be related
+to variables with missing data, add `aux = c("z1", "z2")`. They will be
+added to the model using the saturated-correlates approach (Enders,
+2008). These auxiliary variables themselves can also have missing data.
+
+Auxiliary variables are supported through
+[`semTools::auxiliary()`](https://rdrr.io/pkg/semTools/man/auxiliary.html).
+See the help page of
+[`semTools::auxiliary()`](https://rdrr.io/pkg/semTools/man/auxiliary.html)
+for the technical details of the implementation.
+
+#### Limitations in Including Auxiliary Variables
+
+- If `aux` is used, the estimator must be ML or MLR.
+
+- Indicators are not yet supported. Therefore, `indicators` must be
+  `NULL` (the default).
+
+- Moderators are not yet supported. Therefore, `moderators` must be
+  `NULL` (the default).
+
+- The variables in the model must be numeric (i.e., no variables are
+  declared as ordered variables through `sem_args`.
+
+- Only `fixed.x = FALSE` is supported. If `fixed.x` is set to `TRUE`
+  (the default), it will be automatically changed to `FALSE`, and
+  alerting users of this change if `progress = TRUE`.
+
+- The other wrappers (e.g., `q_simple_mediation()`) do not yet expose
+  `aux`. Please use `q_mediation()` with `model = "simple"`,
+  `"parallel"`, or `"serial"` instead.
+
 ### Notes
 
 #### Flexibility
@@ -800,6 +853,16 @@ intervals if OLS regression is used.
 
 ## References
 
+Collins, L. M., Schafer, J. L., & Kam, C.-M. (2001). A comparison of
+inclusive and restrictive strategies in modern missing data procedures.
+*Psychological Methods, 6*(4), 330–351.
+https://doi.org/10.1037//1082-989X.6.4.330
+
+Enders, C. K. (2008). A note on the use of missing auxiliary variables
+in full information maximum likelihood-based structural equation models.
+*Structural Equation Modeling: A Multidisciplinary Journal*, *15*(3),
+434–448. https://doi.org/10.1080/10705510802154307
+
 Rosseel, Y., & Loh, W. W. (2024). A structural after measurement
 approach to structural equation modeling. *Psychological Methods,
 29*(3), 561–588. https://doi.org/10.1037/met0000503
@@ -821,7 +884,8 @@ for computing and testing the total indirect effects.
 
 Idea to fit a model by structural equation modeling by Rong wei Sun
 <https://orcid.org/0000-0003-0034-1422>, implemented by Shu Fai Cheung
-<https://orcid.org/0000-0002-9871-9448>.
+<https://orcid.org/0000-0002-9871-9448>. Support for auxiliary variables
+contributed by Wendie Yang <https://orcid.org/0009-0000-8388-6481>.
 
 ## Examples
 
@@ -1294,8 +1358,8 @@ print(out,
 #> 
 #> - For reference, the bootstrap confidence interval (and bootstrap
 #>   p-value, if requested) of the (unstandardized) direct effect is also
-#>   reported. The bootstrap p-value and the OLS t-statistc p-value can be
-#>   different.
+#>   reported. The bootstrap p-value and the OLS t-statistic p-value can
+#>   be different.
 #> - For the direct effects with either 'x'-variable or 'y'-variable, or
 #>   both, standardized, it is recommended to use the bootstrap confidence
 #>   intervals, which take into account the sampling error of the sample

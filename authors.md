@@ -11,6 +11,9 @@
 - **Rong Wei Sun**. Contributor.
   [](https://orcid.org/0000-0003-0034-1422)
 
+- **Wendie Yang**. Contributor.
+  [](https://orcid.org/0009-0000-8388-6481)
+
 ## Citation
 
 Source:

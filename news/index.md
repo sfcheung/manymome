@@ -1,6 +1,14 @@
 # Changelog
 
-## manymome 0.3.7.2
+## manymome 0.3.7.4
+
+### New Features
+
+- Updated
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  to support auxiliary variables when missing data is handled by FIML
+  and the model is fitted by SEM. Implemented by
+  `semTools::auxiliary().` (0.3.7.3)
 
 ### Improvement
 
@@ -8,6 +16,12 @@
   model is fitted by regression
   ([`lm()`](https://rdrr.io/r/stats/lm.html)). Only unstandardized
   effects are supported. (0.3.7.1)
+
+### Miscellaneous
+
+- Improved the printout of conditional effects in
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md).
+  (0.3.7.4)
 
 ### Bug Fixes
 
