@@ -1,4 +1,4 @@
-# manymome 0.3.7.3
+# manymome 0.3.7.4
 
 ## New Features
 
@@ -17,6 +17,12 @@
   regression (`lm()`). Only unstandardized
   effects are supported.
   (0.3.7.1)
+
+## Miscellaneous
+
+- Improved the printout of conditional
+  effects in `q_mediation()`.
+  (0.3.7.4)
 
 ## Bug Fixes
 
