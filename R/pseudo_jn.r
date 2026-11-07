@@ -154,6 +154,10 @@
 #' @param object A
 #' `cond_indirect_effects`-class object,
 #' which is the output of [cond_indirect_effects()].
+#' Since Version 0.3.7.5, It can also be
+#' the output of [q_mediation()] and
+#' friends, with one or more paths
+#' moderated.
 #'
 #' @param w_lower The smallest value of
 #' the moderator when doing the search.
