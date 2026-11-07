@@ -383,7 +383,7 @@ plot_effect_vs_w <- function(object,
       } else {
         warning(
           "Failed to increase the levels of the moderator automatically. ",
-          "Set the levels when computing the conditional effects, or",
+          "Set the levels when computing the conditional effects, or ",
           "set 'minimum_wlevels' to 0 to suppress this warning."
         )
       }
