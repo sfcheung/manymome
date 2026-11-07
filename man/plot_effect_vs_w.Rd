@@ -28,14 +28,20 @@ plot_effect_vs_w(
   band_args = list(),
   intervals_args = list(),
   zero_line_args = list(),
-  level = 0.95
+  level = 0.95,
+  which = c("ustd", "stdx", "stdy", "stdxy"),
+  m = NULL
 )
 
 fill_wlevels(to_fill, cond_out = NULL, k = 21)
 }
 \arguments{
 \item{object}{The output of
-\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
+\code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+Since Version 0.3.7.5, It can also be
+the output of \code{\link[=q_mediation]{q_mediation()}} and
+friends, with one or more paths
+moderated.}
 
 \item{w}{The name of the moderator.
 Must be present in \code{object}. If \code{NULL},
@@ -192,6 +198,24 @@ from the original standard errors. Used only for
 paths without mediators and both
 \code{x}- and \code{y}-variables are not
 standardized.}
+
+\item{which}{If \code{object} is the output
+of \code{\link[=q_mediation]{q_mediation()}} and friends,
+this specifies the conditional effects
+to extract: \code{ustd}, \code{stdx}, \code{stdy}
+and \code{stdxy} denotes unstandardized
+effects, effects with \code{x} standardized,
+effects with \code{y} standardized, and
+effects with both \code{x} and \code{y}
+standardized, respectively.}
+
+\item{m}{The mediator(s) along the
+path from \code{x} to \code{y}. Used when (a)
+\code{object} is the output of \code{\link[=q_mediation]{q_mediation()}}
+and (b) more than one path
+is moderated. If the model has only
+one path moderated, this argument
+can be omitted.}
 
 \item{to_fill}{The output of
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} or
