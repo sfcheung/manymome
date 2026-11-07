@@ -46,10 +46,16 @@
 #'
 #' @param x Character. The name of the
 #' predictor at the start of the path.
+#' If `fit` is the output of
+#' [q_mediation()] and friends, `x`
+#' can be omitted.
 #'
 #' @param y Character. The name of the
 #' outcome variable at the end of the
 #' path.
+#' If `fit` is the output of
+#' [q_mediation()] and friends, `x`
+#' can be omitted.
 #'
 #' @param m A vector of the variable
 #' names of the mediator(s). The path
@@ -75,10 +81,17 @@
 #' returned by
 #' [lavaan.mi::lavaan.mi()] or
 #' its wrapper, such as [lavaan.mi::sem.mi()].
+#' Since Version 0.3.7.5, It can also be
+#' the output of [q_mediation()] and
+#' friends.
 #'
 #' @param boot_ci Logical. Whether
 #' bootstrap confidence interval will be
 #' formed. Default is `FALSE`.
+#' If `fit` is the output of
+#' [q_mediation()] and friends and
+#' bootstrapping has been requested,
+#' this argument is ignored.
 #'
 #' @param level The level of confidence
 #' for the bootstrap confidence
@@ -100,6 +113,11 @@
 #' bootstrapping again. If not supplied,
 #' the function will try to generate
 #' them from `fit`.
+#' If `fit` is the output of
+#' [q_mediation()] and friends and
+#' bootstrapping has been requested,
+#' this argument is ignored if `boot_out`
+#' can be retrieved.
 #'
 #' @param R Integer. If `boot_ci` is
 #' `TRUE`, `boot_out` is `NULL`, and
@@ -126,6 +144,10 @@
 #' @param mc_ci Logical. Whether
 #' Monte Carlo confidence interval will be
 #' formed. Default is `FALSE`.
+#' If `fit` is the output of
+#' [q_mediation()] and friends and
+#' Monte Carlo simulation has been requested,
+#' this argument is ignored.
 #'
 #' @param mc_out If `mc_ci` is
 #' `TRUE`, users can supply pregenerated
@@ -144,6 +166,11 @@
 #' supplied,
 #' the function will try to generate
 #' them from `fit`.
+#' If `fit` is the output of
+#' [q_mediation()] and friends and
+#' Monte Carlo simulation has been requested,
+#' this argument is ignored if `mc_out`
+#' can be retrieved.
 #'
 #' @param ci_out If `ci_type` is supplied,
 #' this is the corresponding argument.
@@ -285,6 +312,31 @@ index_of_mome <- function(x,
                           increase_to = 1,
                           w_unit = c("raw", "sd"),
                           ...) {
+
+    if (inherits(fit, "q_mediation")) {
+
+      # ==== Work with q_mediation ====
+
+      q_out <- fit
+      fit <- q_out$lm_out
+      ci_out <- get_ci_out_from_q(q_out)
+      if (!is.null(ci_out)) {
+        ci_type <- switch(
+          class(ci_out),
+          boot_out = "boot",
+          mc_out = "mc"
+        )
+      }
+      x <- q_out$x
+      y <- q_out$y
+      if (is.null(m)) {
+        stop("The mediator(s) ('m') not specified.")
+      }
+
+    } else {
+      q_out <- NULL
+    }
+
     if (missing(x) || missing(y)) {
       stop("Both 'x' and 'y' must be specified.")
     }
@@ -490,6 +542,31 @@ index_of_momome <- function(x,
                             w_unit = c("raw", "sd"),
                             z_unit = c("raw", "sd"),
                             ...) {
+
+    if (inherits(fit, "q_mediation")) {
+
+      # ==== Work with q_mediation ====
+
+      q_out <- fit
+      fit <- q_out$lm_out
+      ci_out <- get_ci_out_from_q(q_out)
+      if (!is.null(ci_out)) {
+        ci_type <- switch(
+          class(ci_out),
+          boot_out = "boot",
+          mc_out = "mc"
+        )
+      }
+      x <- q_out$x
+      y <- q_out$y
+      if (is.null(m)) {
+        stop("The mediator(s) ('m') not specified.")
+      }
+
+    } else {
+      q_out <- NULL
+    }
+
     dotdotdot <- list(...)
     fit <- auto_lm2list(fit)
     boot_type <- match.arg(boot_type)
