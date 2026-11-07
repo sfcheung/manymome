@@ -62,8 +62,8 @@ index_of_momome(
 )
 
 z_index_of_momome(
-  x,
-  y,
+  x = NULL,
+  y = NULL,
   m = NULL,
   w = NULL,
   z = NULL,
@@ -78,20 +78,18 @@ z_index_of_momome(
   mc_out = NULL,
   ci_type = NULL,
   ci_out = NULL,
-  boot_type = c("perc", "bc"),
+  boot_type = "perc",
   skip_indicators = TRUE,
   w_increase_from = 0,
   w_increase_to = 1,
   z_increase_from = 0,
   z_increase_to = 1,
-  w_unit = c("raw", "sd"),
-  z_unit = c("raw", "sd"),
   ...
 )
 
 z_index_of_mome(
-  x,
-  y,
+  x = NULL,
+  y = NULL,
   m = NULL,
   w = NULL,
   fit = NULL,
@@ -105,21 +103,26 @@ z_index_of_mome(
   mc_out = NULL,
   ci_type = NULL,
   ci_out = NULL,
-  boot_type = c("perc", "bc"),
+  boot_type = "perc",
   skip_indicators = TRUE,
   increase_from = 0,
   increase_to = 1,
-  w_unit = c("raw", "sd"),
   ...
 )
 }
 \arguments{
 \item{x}{Character. The name of the
-predictor at the start of the path.}
+predictor at the start of the path.
+If \code{fit} is the output of
+\code{\link[=q_mediation]{q_mediation()}} and friends, \code{x}
+can be omitted.}
 
 \item{y}{Character. The name of the
 outcome variable at the end of the
-path.}
+path.
+If \code{fit} is the output of
+\code{\link[=q_mediation]{q_mediation()}} and friends, \code{x}
+can be omitted.}
 
 \item{m}{A vector of the variable
 names of the mediator(s). The path
@@ -139,11 +142,18 @@ It can also be
 a \code{lavaan.mi} object
 returned by
 \code{\link[lavaan.mi:lavaan.mi]{lavaan.mi::lavaan.mi()}} or
-its wrapper, such as \code{\link[lavaan.mi:sem.mi]{lavaan.mi::sem.mi()}}.}
+its wrapper, such as \code{\link[lavaan.mi:sem.mi]{lavaan.mi::sem.mi()}}.
+Since Version 0.3.7.5, It can also be
+the output of \code{\link[=q_mediation]{q_mediation()}} and
+friends.}
 
 \item{boot_ci}{Logical. Whether
 bootstrap confidence interval will be
-formed. Default is \code{FALSE}.}
+formed. Default is \code{FALSE}.
+If \code{fit} is the output of
+\code{\link[=q_mediation]{q_mediation()}} and friends and
+bootstrapping has been requested,
+this argument is ignored.}
 
 \item{level}{The level of confidence
 for the bootstrap confidence
@@ -164,7 +174,12 @@ stored estimates will be reused such
 that there is no need to do
 bootstrapping again. If not supplied,
 the function will try to generate
-them from \code{fit}.}
+them from \code{fit}.
+If \code{fit} is the output of
+\code{\link[=q_mediation]{q_mediation()}} and friends and
+bootstrapping has been requested,
+this argument is ignored if \code{boot_out}
+can be retrieved.}
 
 \item{R}{Integer. If \code{boot_ci} is
 \code{TRUE}, \code{boot_out} is \code{NULL}, and
@@ -190,7 +205,11 @@ Default is \code{TRUE}.}
 
 \item{mc_ci}{Logical. Whether
 Monte Carlo confidence interval will be
-formed. Default is \code{FALSE}.}
+formed. Default is \code{FALSE}.
+If \code{fit} is the output of
+\code{\link[=q_mediation]{q_mediation()}} and friends and
+Monte Carlo simulation has been requested,
+this argument is ignored.}
 
 \item{mc_out}{If \code{mc_ci} is
 \code{TRUE}, users can supply pregenerated
@@ -208,7 +227,12 @@ that there is no need to do
 Monte Carlo simulation again. If not
 supplied,
 the function will try to generate
-them from \code{fit}.}
+them from \code{fit}.
+If \code{fit} is the output of
+\code{\link[=q_mediation]{q_mediation()}} and friends and
+Monte Carlo simulation has been requested,
+this argument is ignored if \code{mc_out}
+can be retrieved.}
 
 \item{ci_type}{The type of
 confidence intervals to be formed.

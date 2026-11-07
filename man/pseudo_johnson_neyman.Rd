@@ -13,7 +13,9 @@ pseudo_johnson_neyman(
   optimize_method = c("uniroot", "optimize"),
   extendInt = c("no", "yes", "downX", "upX"),
   tol = .Machine$double.eps^0.25,
-  level = 0.95
+  level = 0.95,
+  which = c("ustd", "stdx", "stdy", "stdxy"),
+  m = NULL
 )
 
 johnson_neyman(
@@ -23,7 +25,9 @@ johnson_neyman(
   optimize_method = c("uniroot", "optimize"),
   extendInt = c("no", "yes", "downX", "upX"),
   tol = .Machine$double.eps^0.25,
-  level = 0.95
+  level = 0.95,
+  which = c("ustd", "stdx", "stdy", "stdxy"),
+  m = NULL
 )
 
 \method{print}{pseudo_johnson_neyman}(x, digits = 3, ...)
@@ -31,7 +35,11 @@ johnson_neyman(
 \arguments{
 \item{object}{A
 \code{cond_indirect_effects}-class object,
-which is the output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.}
+which is the output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}.
+Since Version 0.3.7.5, It can also be
+the output of \code{\link[=q_mediation]{q_mediation()}} and
+friends, with one or more paths
+moderated.}
 
 \item{w_lower}{The smallest value of
 the moderator when doing the search.
@@ -72,6 +80,24 @@ of the confidence level. One minus
 this level is the level of significance.
 Default is .95, equivalent to a
 level of significance of .05.}
+
+\item{which}{If \code{object} is the output
+of \code{\link[=q_mediation]{q_mediation()}} and friends,
+this specifies the conditional effects
+to extract: \code{ustd}, \code{stdx}, \code{stdy}
+and \code{stdxy} denotes unstandardized
+effects, effects with \code{x} standardized,
+effects with \code{y} standardized, and
+effects with both \code{x} and \code{y}
+standardized, respectively.}
+
+\item{m}{The mediator(s) along the
+path from \code{x} to \code{y}. Used when (a)
+\code{object} is the output of \code{\link[=q_mediation]{q_mediation()}}
+and (b) more than one path
+is moderated. If the model has only
+one path moderated, this argument
+can be omitted.}
 
 \item{x}{The output of
 \code{\link[=pseudo_johnson_neyman]{pseudo_johnson_neyman()}}.}

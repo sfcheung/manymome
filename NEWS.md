@@ -1,4 +1,4 @@
-# manymome 0.3.7.4
+# manymome 0.3.7.5
 
 ## New Features
 
@@ -8,6 +8,18 @@
   the model is fitted by SEM. Implemented
   by `semTools::auxiliary().`
   (0.3.7.3)
+
+- Updated the following functions to
+  the output of `q_mediation()` and
+  friends: `index_of_mome()`,
+  `index_of_momome()`,
+  `z_index_of_mome()`,
+  `z_index_of_momome()`,
+  `print_all_cond_indirect_effects()`,
+  `johnson_neyman()`,
+  `pseudo_johnson_neyman()`, and
+  `plot_effect_vs_w()`.
+  (0.3.7.5)
 
 ## Improvement
 

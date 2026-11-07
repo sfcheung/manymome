@@ -154,6 +154,10 @@
 #' @param object A
 #' `cond_indirect_effects`-class object,
 #' which is the output of [cond_indirect_effects()].
+#' Since Version 0.3.7.5, It can also be
+#' the output of [q_mediation()] and
+#' friends, with one or more paths
+#' moderated.
 #'
 #' @param w_lower The smallest value of
 #' the moderator when doing the search.
@@ -200,6 +204,24 @@
 #' this level is the level of significance.
 #' Default is .95, equivalent to a
 #' level of significance of .05.
+#'
+#' @param which If `object` is the output
+#' of [q_mediation()] and friends,
+#' this specifies the conditional effects
+#' to extract: `ustd`, `stdx`, `stdy`
+#' and `stdxy` denotes unstandardized
+#' effects, effects with `x` standardized,
+#' effects with `y` standardized, and
+#' effects with both `x` and `y`
+#' standardized, respectively.
+#'
+#' @param m The mediator(s) along the
+#' path from `x` to `y`. Used when (a)
+#' `object` is the output of [q_mediation()]
+#' and (b) more than one path
+#' is moderated. If the model has only
+#' one path moderated, this argument
+#' can be omitted.
 #'
 #' @param ... Other arguments. Not used.
 #'
@@ -257,8 +279,17 @@ pseudo_johnson_neyman <- function(object = NULL,
                                   optimize_method = c("uniroot", "optimize"),
                                   extendInt = c("no", "yes", "downX", "upX"),
                                   tol = .Machine$double.eps^0.25,
-                                  level = .95) {
+                                  level = .95,
+                                  which = c("ustd", "stdx", "stdy", "stdxy"),
+                                  m = NULL) {
     optimize_method <- match.arg(optimize_method)
+    if (inherits(object, "q_mediation")) {
+      object <- get_cond_effects_from_q(
+        object,
+        m = m,
+        which = match.arg(which)
+      )
+    }
     if (inherits(object, "cond_indirect_effects")) {
         if (cond_indirect_effects_has_groups(object)) {
             stop("Multigroup models are not supported.")
