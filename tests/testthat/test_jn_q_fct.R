@@ -41,6 +41,7 @@ expect_equal(
 )
 
 expect_no_error(plot_effect_vs_w(out1))
+expect_no_error(plot_effect_vs_w(out_jn))
 
 })
 
@@ -79,6 +80,7 @@ expect_equal(
 )
 
 expect_no_error(plot_effect_vs_w(out0, which = "stdx", m = "m1"))
+expect_no_error(plot_effect_vs_w(out_jn, which = "stdx", m = "m1"))
 
 })
 
@@ -118,6 +120,7 @@ expect_equal(
 )
 
 expect_no_error(plot_effect_vs_w(out0, which = "stdy", m = "m1"))
+expect_no_error(plot_effect_vs_w(out_jn, which = "stdy", m = "m1", minimum_wlevels = 5))
 
 
 })

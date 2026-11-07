@@ -4,6 +4,9 @@ skip_on_cran()
 library(testthat)
 library(manymome)
 
+test_that("mod only", {
+
+
 dat <- data_med_mod_b_mod
 lm_m <- lm(m ~ x*w1 + c1 + c2, dat)
 lm_y <- lm(y ~ w1*m*w2 + x + c1 + c2, dat)
@@ -69,7 +72,7 @@ sos_2 <- cond_indirect_effects(wlevels = "w1",
 sos_3 <- cond_indirect_effects(wlevels = c("w1", "w2"),
                                x = "m", y = "y",
                                fit = fit3)
-test_that("mod only", {
+
 expect_no_error(plot_effect_vs_w(cos_1a, level = .99) + ggplot2::ylim(0, 1))
 expect_no_error(plot_effect_vs_w(cos_1a) + ggplot2::ylim(0, 1))
 expect_no_error(plot_effect_vs_w(cos_1a, level = .60) + ggplot2::ylim(0, 1))
