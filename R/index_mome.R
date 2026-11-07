@@ -285,6 +285,19 @@ index_of_mome <- function(x,
                           increase_to = 1,
                           w_unit = c("raw", "sd"),
                           ...) {
+    if (missing(x) || missing(y)) {
+      stop("Both 'x' and 'y' must be specified.")
+    }
+    if (is.null(x) || is.null(y)) {
+      stop("Both 'x' and 'y' must be specified.")
+    }
+    if (length(x) != 1) {
+      stop("More than one variable set to `x`.")
+    }
+    if (length(y) != 1) {
+      stop("More than one variable set to `y`.")
+    }
+
     fit <- auto_lm2list(fit)
     boot_type <- match.arg(boot_type)
     w_unit <- match.arg(w_unit)
