@@ -1,4 +1,4 @@
-# manymome 0.3.7.5
+# manymome 0.3.7.6
 
 ## New Features
 
@@ -29,6 +29,12 @@
   regression (`lm()`). Only unstandardized
   effects are supported.
   (0.3.7.1)
+
+- Updated `fill_wlevels()` to work with
+  the output of `pseudo_johnson_neyman()`
+  without the need for the original
+  `cond_indirect_effects()` output.
+  (0.3.7.6)
 
 ## Miscellaneous
 
