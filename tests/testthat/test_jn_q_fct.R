@@ -40,6 +40,8 @@ expect_equal(
   coef(out_jn1$cond_effects)
 )
 
+expect_no_error(plot_effect_vs_w(out1))
+
 })
 
 # Test: Serial mediation
@@ -75,6 +77,8 @@ expect_equal(
   coef(out_jn$cond_effects),
   coef(out_jn1$cond_effects)
 )
+
+expect_no_error(plot_effect_vs_w(out0, which = "stdx", m = "m1"))
 
 })
 
@@ -112,6 +116,9 @@ expect_equal(
   coef(out_jn$cond_effects),
   coef(out_jn1$cond_effects)
 )
+
+expect_no_error(plot_effect_vs_w(out0, which = "stdy", m = "m1"))
+
 
 })
 
