@@ -1,7 +1,7 @@
 ---
 title: "Moderated Regression: Two Predictors and Two Moderators"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-08-30"
+date: "2026-11-07"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -152,7 +152,6 @@ out1
 #>  Computation Formula:
 #>    (b.y~x1 + (b.w1:x1)*(w1))
 #> 
-#> 
 #>      [w1]  (w1)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1 M+1.0SD 2.285  0.269 0.023 11.801  0.000 ***  0.224 0.313
 #> 2 Mean    2.032  0.110 0.021  5.222  0.000 ***  0.068 0.151
@@ -215,7 +214,6 @@ out2
 #>  Moderator(s) represented by: w2
 #>  Computation Formula:
 #>    (b.y~x2 + (b.w2:x2)*(w2))
-#> 
 #> 
 #>      [w2]  (w2)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1 M+1.0SD 1.666  0.229 0.071  3.218  0.002  **  0.089 0.370
@@ -361,14 +359,13 @@ std1 <- cond_effects(
 #> 19 processes started to run bootstrapping.
 std1
 #> 
-#> == Conditional effects ==
+#> == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==
 #> 
 #>  Path: x1 -> y
 #>  Conditional on moderator(s): w1
 #>  Moderator(s) represented by: w1
 #>  Computation Formula:
 #>    (b.y~x1 + (b.w1:x1)*(w1))*sd_x1/sd_y
-#> 
 #> 
 #>      [w1]  (w1)    std  CI.lo CI.hi Sig    ind
 #> 1 M+1.0SD 2.285  0.635  0.529 0.741 Sig  0.269
@@ -413,14 +410,13 @@ std2 <- cond_effects(
 #> 19 processes started to run bootstrapping.
 std2
 #> 
-#> == Conditional effects ==
+#> == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==
 #> 
 #>  Path: x2 -> y
 #>  Conditional on moderator(s): w2
 #>  Moderator(s) represented by: w2
 #>  Computation Formula:
 #>    (b.y~x2 + (b.w2:x2)*(w2))*sd_x2/sd_y
-#> 
 #> 
 #>      [w2]  (w2)    std  CI.lo CI.hi Sig    ind
 #> 1 M+1.0SD 1.666  0.227  0.111 0.344 Sig  0.229

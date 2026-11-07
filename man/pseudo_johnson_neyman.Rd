@@ -304,7 +304,10 @@ out_jn <- pseudo_johnson_neyman(out)
 out_jn
 
 # Plot the range
-plot_effect_vs_w(out_jn$cond_effects)
+# 'minimum_wlevels = 0' added to prevent adding levels of w.
+# Remove minimum_wlevels or set it to the desired number of levels
+# of the moderator
+plot_effect_vs_w(out_jn, minimum_wlevels = 0)
 
 }
 \references{

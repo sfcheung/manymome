@@ -30,7 +30,8 @@ plot_effect_vs_w(
   zero_line_args = list(),
   level = 0.95,
   which = c("ustd", "stdx", "stdy", "stdxy"),
-  m = NULL
+  m = NULL,
+  minimum_wlevels = 3
 )
 
 fill_wlevels(to_fill, cond_out = NULL, k = 21)
@@ -217,14 +218,27 @@ is moderated. If the model has only
 one path moderated, this argument
 can be omitted.}
 
+\item{minimum_wlevels}{The minimum
+levels of the moderator used in the
+plot. If the number of levels in
+\code{object} is less than this number,
+\code{\link[=fill_wlevels]{fill_wlevels()}} will be used to
+increase the number of levels. If
+failed, a warning will be issued
+and no additional levels will be
+added.}
+
 \item{to_fill}{The output of
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} or
 \code{\link[=pseudo_johnson_neyman]{pseudo_johnson_neyman()}}, for which
 additional levels of the moderator
 will be added.}
 
-\item{cond_out}{If \code{to_fill} is
-the output of \code{\link[=pseudo_johnson_neyman]{pseudo_johnson_neyman()}},
+\item{cond_out}{No longer used. Required
+only for version older than 0.3.7.6.
+If \code{to_fill} is
+the output of \code{\link[=pseudo_johnson_neyman]{pseudo_johnson_neyman()}}
+created before \code{manymome} 0.3.7.6,
 the original output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
 used in the call to \code{\link[=pseudo_johnson_neyman]{pseudo_johnson_neyman()}}
 need to be supplied through this argument.}

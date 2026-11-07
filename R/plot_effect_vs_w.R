@@ -263,6 +263,16 @@
 #' one path moderated, this argument
 #' can be omitted.
 #'
+#' @param minimum_wlevels The minimum
+#' levels of the moderator used in the
+#' plot. If the number of levels in
+#' `object` is less than this number,
+#' [fill_wlevels()] will be used to
+#' increase the number of levels. If
+#' failed, a warning will be issued
+#' and no additional levels will be
+#' added.
+#'
 #' @seealso [cond_indirect_effects()]
 #'
 #' @examples
@@ -325,7 +335,8 @@ plot_effect_vs_w <- function(object,
                              zero_line_args = list(),
                              level = .95,
                              which = c("ustd", "stdx", "stdy", "stdxy"),
-                             m = NULL) {
+                             m = NULL,
+                             minimum_wlevels = 3) {
     if (inherits(object, "q_mediation")) {
       object <- get_cond_effects_from_q(
         object,
@@ -333,6 +344,56 @@ plot_effect_vs_w <- function(object,
         which = match.arg(which)
       )
     }
+
+    if (inherits(object, "pseudo_johnson_neyman")) {
+      is_jn <- TRUE
+      if (nrow(object$cond_effects) < minimum_wlevels) {
+        # Need to run fill_wlevels directly on object if
+        # it is the output of pseudo_johnson_neyman()
+        object_filled <- try(
+                          fill_wlevels(
+                              object,
+                              k = minimum_wlevels
+                            ),
+                          silent = TRUE
+                        )
+        if (inherits(object_filled, "try-error")) {
+          warning(
+            "Failed to increase the levels of the moderator automatically. ",
+            "Only the levels from 'pseudo_johnson_neyman()' are plotted. ",
+            "Set 'minimum_wlevels' to 0 to suppress this warning."
+          )
+          object <- object$cond_effects
+        } else {
+          object <- object_filled
+        }
+      } else {
+        object <- object$cond_effects
+      }
+    } else {
+      is_jn <- FALSE
+    }
+
+    if ((nrow(object) < minimum_wlevels) &&
+        !is_jn) {
+      object_filled <- try(
+                        fill_wlevels(
+                            object,
+                            k = minimum_wlevels
+                          ),
+                        silent = TRUE
+                      )
+      if (!inherits(object_filled, "try-error")) {
+        object <- object_filled
+      } else {
+        warning(
+          "Failed to increase the levels of the moderator automatically. ",
+          "Set the levels when computing the conditional effects, or ",
+          "set 'minimum_wlevels' to 0 to suppress this warning."
+        )
+      }
+    }
+
     full_output_1 <- attr(object, "full_output")[[1]]
     has_m <- isTRUE(!is.null(full_output_1$m))
     standardized_x <- full_output_1$standardized_x
@@ -478,8 +539,11 @@ plot_effect_vs_w <- function(object,
 #' additional levels of the moderator
 #' will be added.
 #'
-#' @param cond_out If `to_fill` is
-#' the output of [pseudo_johnson_neyman()],
+#' @param cond_out No longer used. Required
+#' only for version older than 0.3.7.6.
+#' If `to_fill` is
+#' the output of [pseudo_johnson_neyman()]
+#' created before `manymome` 0.3.7.6,
 #' the original output of [cond_indirect_effects()]
 #' used in the call to [pseudo_johnson_neyman()]
 #' need to be supplied through this argument.
@@ -528,19 +592,35 @@ fill_wlevels <- function(to_fill,
                          cond_out = NULL,
                          k = 21) {
     is_jn <- inherits(to_fill, "pseudo_johnson_neyman")
-    if (is_jn && is.null(cond_out)) {
-        stop("The original cond_indirect_effects output is required",
-             "if the 'to_fill' is the output of 'pseudo_johnson_neyman()'.")
+    old_jn <- FALSE
+    if (is_jn) {
+        if (is.null(to_fill$cond_out_call)) {
+          if (is.null(cond_out)) {
+            stop("Is the 'to_fill' object created by pre-0.3.7.6 ",
+                "manymome? Is yes, 'cond_out' needs to be set.")
+          } else {
+            old_jn <- TRUE
+          }
+        }
       }
     if (is_jn) {
         jn_cond <- to_fill$cond_effects
         wlevels <- attr(jn_cond, "wlevels")
+        if (old_jn) {
+          call0 <- attr(cond_out, "call")
+          fit <- attr(cond_out, "fit")
+        } else {
+          call0 <- to_fill$cond_out_call
+          fit <- to_fill$fit
+        }
+        # Use the level of confidence stored in jn
+        call0$level <- attr(jn_cond, "full_output")[[1]]$level
       } else {
         cond_out <- to_fill
         wlevels <- attr(cond_out, "wlevels")
+        call0 <- attr(cond_out, "call")
+        fit <- attr(cond_out, "fit")
       }
-    call0 <- attr(cond_out, "call")
-    fit <- attr(cond_out, "fit")
     if (ncol(wlevels) > 1) {
         stop("Only support a path with one moderator.")
       }

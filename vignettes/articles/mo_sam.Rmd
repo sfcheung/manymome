@@ -1,7 +1,7 @@
 ---
 title: "Latent Variable Moderation by SAM"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-08-30"
+date: "2026-11-07"
 output:
   html_document:
     fig.align: "center"
@@ -129,7 +129,7 @@ This is a summary of the results:
 ``` r
 summary(fit,
         ci = TRUE)
-#> This is lavaan 0.7-2.3166 -- using the SAM approach to SEM
+#> This is lavaan 0.7-3.3364 -- using the SAM approach to SEM
 #> 
 #>   SAM method                                     LOCAL
 #>   Mapping matrix M method                           ML
@@ -247,7 +247,6 @@ out_xy_on_w
 #>  Computation Formula:
 #>    (b.fy~fx + (b.fx:fw)*(fw))
 #> 
-#> 
 #>      [fw]   (fw)    ind  CI.lo CI.hi Sig
 #> 1 M+1.0SD  0.834  0.448  0.322 0.593 Sig
 #> 2 Mean     0.000  0.208  0.120 0.296 Sig
@@ -294,14 +293,13 @@ std_xy_on_w <- cond_effects(
 )
 std_xy_on_w
 #> 
-#> == Conditional effects ==
+#> == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==
 #> 
 #>  Path: fx -> fy
 #>  Conditional on moderator(s): fw
 #>  Moderator(s) represented by: fw
 #>  Computation Formula:
 #>    (b.fy~fx + (b.fx:fw)*(fw))*sd_fx/sd_fy
-#> 
 #> 
 #>      [fw]   (fw)    std  CI.lo CI.hi Sig    ind
 #> 1 M+1.0SD  0.834  0.539  0.405 0.696 Sig  0.448
