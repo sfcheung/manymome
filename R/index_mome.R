@@ -348,8 +348,8 @@ index_of_mome <- function(x,
 #'
 #' @order 3
 z_index_of_mome <- function(
-  x,
-  y,
+  x = NULL,
+  y = NULL,
   m = NULL,
   w = NULL,
   fit = NULL,
@@ -363,16 +363,15 @@ z_index_of_mome <- function(
   mc_out = NULL,
   ci_type = NULL,
   ci_out = NULL,
-  boot_type = c("perc", "bc"),
+  boot_type = "perc",
   skip_indicators = TRUE,
   increase_from = 0,
   increase_to = 1,
-  w_unit = c("raw", "sd"),
   ...) {
-  if (missing(x) || missing(y)) {
-    stop("Both 'x' and 'y' must be specified.")
-  }
-  boot_type <- match.arg(boot_type)
+  # if (missing(x) || missing(y)) {
+  #   stop("Both 'x' and 'y' must be specified.")
+  # }
+  # boot_type <- match.arg(boot_type)
   index_of_mome(
     x = x,
     y = y,
@@ -483,9 +482,31 @@ index_of_momome <- function(x,
     boot_type <- match.arg(boot_type)
     w_unit <- match.arg(w_unit)
     z_unit <- match.arg(z_unit)
-    if (is.null(w) || is.null(z) ||
-        length(w) != 1 || length(z) != 1) {
-        stop("The path must have exactly two moderators.")
+
+    if (missing(x) || missing(y)) {
+      stop("Both 'x' and 'y' must be specified.")
+    }
+    if (is.null(x) || is.null(y)) {
+      stop("Both 'x' and 'y' must be specified.")
+    }
+    if (length(x) != 1) {
+      stop("More than one variable set to `x`.")
+    }
+    if (length(y) != 1) {
+      stop("More than one variable set to `y`.")
+    }
+
+    if (is.null(w)) {
+        stop("The moderator ('w') not specified.")
+      }
+    if (length(w) != 1) {
+        stop("More than one variable set to `w`.")
+      }
+    if (is.null(z)) {
+        stop("The moderator ('z') not specified.")
+      }
+    if (length(z) != 1) {
+        stop("More than one variable set to `z`.")
       }
     mm_w <- switch(
       w_unit,
@@ -675,8 +696,8 @@ n_prods <- function(prods) {
 #' @order 2
 
 z_index_of_momome <- function(
-  x,
-  y,
+  x = NULL,
+  y = NULL,
   m = NULL,
   w = NULL,
   z = NULL,
@@ -691,19 +712,17 @@ z_index_of_momome <- function(
   mc_out = NULL,
   ci_type = NULL,
   ci_out = NULL,
-  boot_type = c("perc", "bc"),
+  boot_type = "perc",
   skip_indicators = TRUE,
   w_increase_from = 0,
   w_increase_to = 1,
   z_increase_from = 0,
   z_increase_to = 1,
-  w_unit = c("raw", "sd"),
-  z_unit = c("raw", "sd"),
   ...) {
-  if (missing(x) || missing(y)) {
-    stop("Both 'x' and 'y' must be specified.")
-  }
-  boot_type <- match.arg(boot_type)
+  # if (missing(x) || missing(y)) {
+  #   stop("Both 'x' and 'y' must be specified.")
+  # }
+  # boot_type <- match.arg(boot_type)
   index_of_momome(
     x = x,
     y = y,
