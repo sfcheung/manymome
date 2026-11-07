@@ -1,7 +1,7 @@
 ---
 title: "Moderating Effect by Multiple Regression"
 author: "Shu Fai Cheung & Sing-Hang Cheung"
-date: "2026-08-30"
+date: "2026-11-07"
 output:
   rmarkdown::html_vignette:
     number_sections: true
@@ -151,7 +151,6 @@ out_xy_on_w1
 #>  Computation Formula:
 #>    (b.y~x + (b.w1:x)*(w1))
 #> 
-#> 
 #>      [w1]  (w1)   ind    SE  Stat pvalue Sig  CI.lo CI.hi
 #> 1 M+1.0SD 7.942 0.492 0.101 4.853  0.000 ***  0.292 0.692
 #> 2 Mean    6.878 0.299 0.082 3.643  0.000 ***  0.137 0.460
@@ -284,14 +283,13 @@ std_xy_on_w1 <- cond_effects(
 #> 19 processes started to run bootstrapping.
 std_xy_on_w1
 #> 
-#> == Conditional effects ==
+#> == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==
 #> 
 #>  Path: x -> y
 #>  Conditional on moderator(s): w1
 #>  Moderator(s) represented by: w1
 #>  Computation Formula:
 #>    (b.y~x + (b.w1:x)*(w1))*sd_x/sd_y
-#> 
 #> 
 #>      [w1]  (w1)   std  CI.lo CI.hi Sig   ind
 #> 1 M+1.0SD 7.942 0.374  0.204 0.518 Sig 0.492
@@ -424,7 +422,6 @@ out_xy_on_w1w2
 #>  Computation Formula:
 #>    (b.y~x + (b.x:w1)*(w1) + (b.x:w2)*(w2))
 #> 
-#> 
 #>      [w1]    [w2]  (w1)  (w2)   ind    SE  Stat pvalue Sig  CI.lo CI.hi
 #> 1 M+1.0SD M+1.0SD 7.942 4.829 0.528 0.122 4.343  0.000 ***  0.288 0.768
 #> 2 M+1.0SD M-1.0SD 7.942 2.897 0.455 0.141 3.220  0.002 **   0.176 0.734
@@ -485,7 +482,6 @@ cond_effects(
 #>  Moderator(s) represented by: w1
 #>  Computation Formula:
 #>    (b.y~x + (b.x:w1)*(w1) + (b.x:w2)*(w2))
-#> 
 #> 
 #>      [w1]  (w1)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1 M+1.0SD 7.942  0.346 0.363  0.951  0.343     -0.371 1.062
@@ -598,14 +594,13 @@ std_xy_on_w1w2 <- cond_effects(
 #> 19 processes started to run bootstrapping.
 std_xy_on_w1w2
 #> 
-#> == Conditional effects ==
+#> == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==
 #> 
 #>  Path: x -> y
 #>  Conditional on moderator(s): w1, w2
 #>  Moderator(s) represented by: w1, w2
 #>  Computation Formula:
 #>    (b.y~x + (b.x:w1)*(w1) + (b.x:w2)*(w2))*sd_x/sd_y
-#> 
 #> 
 #>      [w1]    [w2]  (w1)  (w2)   std  CI.lo CI.hi Sig   ind
 #> 1 M+1.0SD M+1.0SD 7.942 4.829 0.402  0.203 0.560 Sig 0.528
@@ -748,7 +743,6 @@ out_xy_on_w1_x_w2
 #>  Computation Formula:
 #>    (b.y~x + (b.w1:x)*(w1) + (b.w2:x)*(w2) + (b.w1:w2:x)*(w1*w2))
 #> 
-#> 
 #>      [w1]    [w2]  (w1)  (w2)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1 M+1.0SD M+1.0SD 7.942 4.829  0.672 0.137  4.903  0.000 ***  0.402 0.942
 #> 2 M+1.0SD M-1.0SD 7.942 2.897  0.284 0.161  1.768  0.079     -0.033 0.602
@@ -817,7 +811,7 @@ std_xy_on_w1_x_w2 <- cond_effects(
 #> 19 processes started to run bootstrapping.
 std_xy_on_w1_x_w2
 #> 
-#> == Conditional effects ==
+#> == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==
 #> 
 #>  Path: x -> y
 #>  Conditional on moderator(s): w1, w2
@@ -825,7 +819,6 @@ std_xy_on_w1_x_w2
 #>  Computation Formula:
 #>    (b.y~x + (b.w1:x)*(w1) + (b.w2:x)*(w2) +
 #>    (b.w1:w2:x)*(w1*w2))*sd_x/sd_y
-#> 
 #> 
 #>      [w1]    [w2]  (w1)  (w2)    std  CI.lo CI.hi Sig    ind
 #> 1 M+1.0SD M+1.0SD 7.942 4.829  0.511  0.360 0.760 Sig  0.672
