@@ -223,8 +223,11 @@ can be omitted.}
 additional levels of the moderator
 will be added.}
 
-\item{cond_out}{If \code{to_fill} is
-the output of \code{\link[=pseudo_johnson_neyman]{pseudo_johnson_neyman()}},
+\item{cond_out}{No longer used. Required
+only for version older than 0.3.7.6.
+If \code{to_fill} is
+the output of \code{\link[=pseudo_johnson_neyman]{pseudo_johnson_neyman()}}
+created before \code{manymome} 0.3.7.6,
 the original output of \code{\link[=cond_indirect_effects]{cond_indirect_effects()}}
 used in the call to \code{\link[=pseudo_johnson_neyman]{pseudo_johnson_neyman()}}
 need to be supplied through this argument.}
