@@ -346,6 +346,7 @@ plot_effect_vs_w <- function(object,
     }
 
     if (inherits(object, "pseudo_johnson_neyman")) {
+      is_jn <- TRUE
       if (nrow(object$cond_effects) < minimum_wlevels) {
         # Need to run fill_wlevels directly on object if
         # it is the output of pseudo_johnson_neyman()
@@ -356,21 +357,25 @@ plot_effect_vs_w <- function(object,
                             ),
                           silent = TRUE
                         )
-        if (!inherits(object_filled, "try-error")) {
-          object <- object_filled
-        } else {
+        if (inherits(object_filled, "try-error")) {
           warning(
             "Failed to increase the levels of the moderator automatically. ",
             "Only the levels from 'pseudo_johnson_neyman()' are plotted. ",
             "Set 'minimum_wlevels' to 0 to suppress this warning."
           )
+          object <- object$cond_effects
+        } else {
+          object <- object_filled
         }
       } else {
         object <- object$cond_effects
       }
+    } else {
+      is_jn <- FALSE
     }
 
-    if (nrow(object) < minimum_wlevels) {
+    if ((nrow(object) < minimum_wlevels) &&
+        !is_jn) {
       object_filled <- try(
                         fill_wlevels(
                             object,
