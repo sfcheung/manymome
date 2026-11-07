@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +102,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-30</h4>
+            <h4 data-toc-skip class="date">2026-11-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/articles/med_mg.Rmd" class="external-link"><code>vignettes/articles/med_mg.Rmd</code></a></small>
       <div class="d-none name"><code>med_mg.Rmd</code></div>
@@ -166,7 +166,7 @@ usual. There is no need to label any parameters because
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit</span>,</span>
 <span>        estimates <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; lavaan 0.7-2.3166 ended normally after 1 iteration</span></span>
+<span><span class="co">#&gt; lavaan 0.7-3.3364 ended normally after 1 iteration</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Estimator                                         ML</span></span>
 <span><span class="co">#&gt;   Optimization method                           NLMINB</span></span>
@@ -422,7 +422,6 @@ in each model.</p>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.m~x)*(b.y~m)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Group Group_ID   ind CI.lo CI.hi Sig   m~x   y~m</span></span>
 <span><span class="co">#&gt; 1 Group A        1 0.409 0.096 0.753 Sig 0.880 0.465</span></span>
 <span><span class="co">#&gt; 2 Group B        2 0.663 0.411 0.959 Sig 0.597 1.110</span></span>
@@ -505,7 +504,6 @@ groups is greater than two.</p>
 <span><span class="co">#&gt;  Conditional on group(s): Group B[2], Group A[1]</span></span>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.m~x)*(b.y~m)</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Group Group_ID   ind CI.lo CI.hi Sig   m~x   y~m</span></span>
 <span><span class="co">#&gt; 1 Group B        2 0.663 0.411 0.959 Sig 0.597 1.110</span></span>
@@ -678,13 +676,12 @@ standardization:</p>
 <span>                             standardized_y <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">std</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; == Conditional indirect effects ==</span></span>
+<span><span class="co">#&gt; == Conditional indirect effects (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Path: x -&gt; m -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on group(s): Group A[1], Group B[2]</span></span>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.m~x)*(b.y~m)*sd_x/sd_y</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Group Group_ID   std CI.lo CI.hi Sig   m~x   y~m   ind</span></span>
 <span><span class="co">#&gt; 1 Group A        1 0.204 0.049 0.366 Sig 0.880 0.465 0.409</span></span>
@@ -704,13 +701,12 @@ standardization:</p>
 <span>                                to <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">std_diff2</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; == Conditional indirect effects ==</span></span>
+<span><span class="co">#&gt; == Conditional indirect effects (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Path: x -&gt; m -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on group(s): Group B[2], Group A[1]</span></span>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.m~x)*(b.y~m)*sd_x/sd_y</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Group Group_ID   std CI.lo CI.hi Sig   m~x   y~m   ind</span></span>
 <span><span class="co">#&gt; 1 Group B        2 0.259 0.166 0.360 Sig 0.597 1.110 0.663</span></span>
@@ -844,7 +840,6 @@ setting the mediator:</p>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~m)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Group Group_ID   ind CI.lo CI.hi Sig</span></span>
 <span><span class="co">#&gt; 1 Group A        1 0.465 0.110 0.819 Sig</span></span>
 <span><span class="co">#&gt; 2 Group B        2 1.110 0.765 1.475 Sig</span></span>
@@ -869,7 +864,6 @@ bootstrapping confidence intervals using
 <span><span class="co">#&gt;  Conditional on group(s): Group B[2], Group A[1]</span></span>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~m)</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Group Group_ID   ind CI.lo CI.hi Sig</span></span>
 <span><span class="co">#&gt; 1 Group B        2 1.110 0.765 1.475 Sig</span></span>

@@ -133,7 +133,6 @@ out_gp
 #>  Computation Formula:
 #>    (b.y~x + (b.gpTreatment:x)*(gpTreatment))
 #> 
-#> 
 #>        [gp] (gpTreatment)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1 Control               0 -0.027 0.037 -0.745  0.456     -0.100 0.045
 #> 2 Treatment             1  0.320 0.033  9.655  0.000 ***  0.255 0.385
@@ -236,14 +235,13 @@ std_gp <- cond_effects(
 #> 19 processes started to run bootstrapping.
 std_gp
 #> 
-#> == Conditional effects ==
+#> == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==
 #> 
 #>  Path: x -> y
 #>  Conditional on moderator(s): gp
 #>  Moderator(s) represented by: gpTreatment
 #>  Computation Formula:
 #>    (b.y~x + (b.gpTreatment:x)*(gpTreatment))*sd_x/sd_y
-#> 
 #> 
 #>        [gp] (gpTreatment)    std  CI.lo CI.hi Sig    ind
 #> 1 Control               0 -0.039 -0.130 0.048     -0.027
@@ -368,7 +366,6 @@ out_site
 #>  Computation Formula:
 #>    (b.y~x + (b.siteSite 2:x)*(siteSite 2) + (b.siteSite 3:x)*(siteSite 3))
 #> 
-#> 
 #>   [site] (siteSite 2) (siteSite 3)   ind    SE  Stat pvalue Sig  CI.lo CI.hi
 #> 1 Site 1            0            0 0.102 0.059 1.737  0.083     -0.013 0.217
 #> 2 Site 2            1            0 0.432 0.064 6.715  0.000 ***  0.306 0.558
@@ -445,14 +442,13 @@ std_site <- cond_effects(
 #> 19 processes started to run bootstrapping.
 std_site
 #> 
-#> == Conditional effects ==
+#> == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==
 #> 
 #>  Path: x -> y
 #>  Conditional on moderator(s): site
 #>  Moderator(s) represented by: siteSite 2, siteSite 3
 #>  Computation Formula:
 #>    (b.y~x + (b.siteSite 2:x)*(siteSite 2) + (b.siteSite 3:x)*(siteSite 3))*sd_x/sd_y
-#> 
 #> 
 #>   [site] (siteSite 2) (siteSite 3)   std  CI.lo CI.hi Sig   ind
 #> 1 Site 1            0            0 0.146 -0.023 0.317     0.102
@@ -575,7 +571,6 @@ out_gp_site
 #>    (b.y~x + (b.gpTreatment:x)*(gpTreatment) + (b.x:siteSite 2)*(siteSite 2) + (b.x:siteSite 3)*(siteSite
 #>    3))
 #> 
-#> 
 #>        [gp] [site] (gpTreatment) (siteSite 2) (siteSite 3)    ind    SE   Stat pvalue Sig  CI.lo  CI.hi
 #> 1 Control   Site 1             0            0            0 -0.084 0.060 -1.409  0.159     -0.201  0.033
 #> 2 Control   Site 2             0            1            0  0.229 0.065  3.527  0.000 ***  0.101  0.356
@@ -624,7 +619,6 @@ cond_effects(
 #>  Computation Formula:
 #>    (b.y~x + (b.gpTreatment:x)*(gpTreatment) + (b.x:siteSite 2)*(siteSite 2) + (b.x:siteSite 3)*(siteSite
 #>    3))
-#> 
 #> 
 #>        [gp] (gpTreatment)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1 Control               0 -0.084 0.060 -1.409  0.159     -0.201 0.033
@@ -745,7 +739,7 @@ std_gp_site <- cond_effects(
 #> 19 processes started to run bootstrapping.
 std_gp_site
 #> 
-#> == Conditional effects ==
+#> == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==
 #> 
 #>  Path: x -> y
 #>  Conditional on moderator(s): gp, site
@@ -753,7 +747,6 @@ std_gp_site
 #>  Computation Formula:
 #>    (b.y~x + (b.gpTreatment:x)*(gpTreatment) + (b.x:siteSite 2)*(siteSite 2) + (b.x:siteSite 3)*(siteSite
 #>    3))*sd_x/sd_y
-#> 
 #> 
 #>        [gp] [site] (gpTreatment) (siteSite 2) (siteSite 3)    std  CI.lo  CI.hi Sig    ind
 #> 1 Control   Site 1             0            0            0 -0.120 -0.275  0.035     -0.084
@@ -900,7 +893,6 @@ out_gp_x_site
 #>    + (b.x:siteSite 2:gpTreatment)*(siteSite 2*gpTreatment) + (b.x:siteSite 3:gpTreatment)*(siteSite
 #>    3*gpTreatment))
 #> 
-#> 
 #>   [site]      [gp] (siteSite 2) (siteSite 3) (gpTreatment)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1 Site 1 Control              0            0             0 -0.128 0.074 -1.722  0.086     -0.274 0.018
 #> 2 Site 1 Treatment            0            0             1  0.326 0.078  4.190  0.000 ***  0.173 0.478
@@ -968,7 +960,7 @@ std_gp_x_site <- cond_effects(
 #> 19 processes started to run bootstrapping.
 std_gp_x_site
 #> 
-#> == Conditional effects ==
+#> == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==
 #> 
 #>  Path: x -> y
 #>  Conditional on moderator(s): gp, site
@@ -977,7 +969,6 @@ std_gp_x_site
 #>    (b.y~x + (b.x:siteSite 2)*(siteSite 2) + (b.x:siteSite 3)*(siteSite 3) + (b.x:gpTreatment)*(gpTreatment)
 #>    + (b.x:siteSite 2:gpTreatment)*(siteSite 2*gpTreatment) + (b.x:siteSite 3:gpTreatment)*(siteSite
 #>    3*gpTreatment))*sd_x/sd_y
-#> 
 #> 
 #>        [gp] [site] (gpTreatment) (siteSite 2) (siteSite 3)    std  CI.lo CI.hi Sig    ind
 #> 1 Control   Site 1             0            0            0 -0.183 -0.374 0.003     -0.128

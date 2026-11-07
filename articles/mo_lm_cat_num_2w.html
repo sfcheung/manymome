@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +102,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-30</h4>
+            <h4 data-toc-skip class="date">2026-11-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/articles/mo_lm_cat_num_2w.Rmd" class="external-link"><code>vignettes/articles/mo_lm_cat_num_2w.Rmd</code></a></small>
       <div class="d-none name"><code>mo_lm_cat_num_2w.Rmd</code></div>
@@ -224,7 +224,6 @@ and different cities.</p>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x + (b.w:x)*(w) + (b.x:cityCity B)*(cityCity B))</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   [city]     [w] (cityCity B)    (w)    ind    SE   Stat pvalue Sig  CI.lo CI.hi</span></span>
 <span><span class="co">#&gt; 1 City A M+1.0SD            0 24.200  0.710 0.267  2.660  0.008 **   0.184 1.237</span></span>
 <span><span class="co">#&gt; 2 City A M-1.0SD            0 13.353 -0.247 0.247 -1.001  0.318     -0.735 0.240</span></span>
@@ -271,7 +270,6 @@ will be issued. This is an example:</p>
 <span><span class="co">#&gt;  Moderator(s) represented by: w</span></span>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x + (b.w:x)*(w) + (b.x:cityCity B)*(cityCity B))</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;       [w]    (w)    ind    SE   Stat pvalue Sig  CI.lo CI.hi</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD 24.200  0.710 0.267  2.660  0.008  **  0.184 1.237</span></span>
@@ -375,14 +373,13 @@ be estimated by setting <code>standardized_x</code> and
 <span><span class="co">#&gt; 19 processes started to run bootstrapping.</span></span>
 <span><span class="va">std</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; == Conditional effects ==</span></span>
+<span><span class="co">#&gt; == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Path: x -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): city, w</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: cityCity B, w</span></span>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x + (b.w:x)*(w) + (b.x:cityCity B)*(cityCity B))*sd_x/sd_y</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   [city]     [w] (cityCity B)    (w)    std  CI.lo CI.hi Sig    ind</span></span>
 <span><span class="co">#&gt; 1 City A M+1.0SD            0 24.200  0.383  0.090 0.679 Sig  0.710</span></span>
@@ -480,7 +477,6 @@ same way, whether the moderators interact with each other or not:</p>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x + (b.x:cityCity B)*(cityCity B) + (b.x:w)*(w) + (b.x:cityCity B:w)*(cityCity B*w))</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   [city]     [w] (cityCity B)    (w)    ind    SE   Stat pvalue Sig  CI.lo CI.hi</span></span>
 <span><span class="co">#&gt; 1 City A M+1.0SD            0 24.200 -0.076 0.344 -0.221  0.825     -0.754 0.602</span></span>
 <span><span class="co">#&gt; 2 City A M-1.0SD            0 13.353  0.210 0.285  0.738  0.461     -0.352 0.772</span></span>
@@ -532,14 +528,13 @@ bootstrap confidence intervals:</p>
 <span><span class="co">#&gt; 19 processes started to run bootstrapping.</span></span>
 <span><span class="va">std_city_x_w</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; == Conditional effects ==</span></span>
+<span><span class="co">#&gt; == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Path: x -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): city, w</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: cityCity B, w</span></span>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x + (b.x:cityCity B)*(cityCity B) + (b.x:w)*(w) + (b.x:cityCity B:w)*(cityCity B*w))*sd_x/sd_y</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   [city]     [w] (cityCity B)    (w)    std  CI.lo CI.hi Sig    ind</span></span>
 <span><span class="co">#&gt; 1 City A M+1.0SD            0 24.200 -0.041 -0.458 0.343     -0.076</span></span>

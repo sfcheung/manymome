@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +102,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-30</h4>
+            <h4 data-toc-skip class="date">2026-11-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/articles/mo_sam.Rmd" class="external-link"><code>vignettes/articles/mo_sam.Rmd</code></a></small>
       <div class="d-none name"><code>mo_sam.Rmd</code></div>
@@ -193,7 +193,7 @@ and form the confidence intervals.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit</span>,</span>
 <span>        ci <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; This is lavaan 0.7-2.3166 -- using the SAM approach to SEM</span></span>
+<span><span class="co">#&gt; This is lavaan 0.7-3.3364 -- using the SAM approach to SEM</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   SAM method                                     LOCAL</span></span>
 <span><span class="co">#&gt;   Mapping matrix M method                           ML</span></span>
@@ -297,7 +297,6 @@ need to repeat the resampling.</p>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.fy~fx + (b.fx:fw)*(fw))</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [fw]   (fw)    ind  CI.lo CI.hi Sig</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD  0.834  0.448  0.322 0.593 Sig</span></span>
 <span><span class="co">#&gt; 2 Mean     0.000  0.208  0.120 0.296 Sig</span></span>
@@ -335,14 +334,13 @@ setting <code>standardized_x</code> and <code>standardized_y</code> to
 <span><span class="op">)</span></span>
 <span><span class="va">std_xy_on_w</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; == Conditional effects ==</span></span>
+<span><span class="co">#&gt; == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Path: fx -&gt; fy</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): fw</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: fw</span></span>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.fy~fx + (b.fx:fw)*(fw))*sd_fx/sd_fy</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [fw]   (fw)    std  CI.lo CI.hi Sig    ind</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD  0.834  0.539  0.405 0.696 Sig  0.448</span></span>

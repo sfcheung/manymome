@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +102,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-30</h4>
+            <h4 data-toc-skip class="date">2026-11-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/articles/mome_sam.Rmd" class="external-link"><code>vignettes/articles/mome_sam.Rmd</code></a></small>
       <div class="d-none name"><code>mome_sam.Rmd</code></div>
@@ -239,11 +239,10 @@ to <code>fy</code> through <code>fm</code>, conditional on
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.fm~fx + (b.fx:fw)*(fw))*(b.fy~fm)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [fw]   (fw)    ind  CI.lo CI.hi Sig  fm~fx fy~fm</span></span>
-<span><span class="co">#&gt; 1 M+1.0SD  0.834  0.361  0.141 0.568 Sig  0.810 0.446</span></span>
-<span><span class="co">#&gt; 2 Mean    -0.000  0.179  0.069 0.288 Sig  0.401 0.446</span></span>
-<span><span class="co">#&gt; 3 M-1.0SD -0.834 -0.003 -0.042 0.034     -0.007 0.446</span></span>
+<span><span class="co">#&gt; 1 M+1.0SD  0.837  0.340  0.135 0.530 Sig  0.801 0.425</span></span>
+<span><span class="co">#&gt; 2 Mean    -0.000  0.169  0.067 0.271 Sig  0.398 0.425</span></span>
+<span><span class="co">#&gt; 3 M-1.0SD -0.837 -0.002 -0.038 0.032     -0.005 0.425</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span></span>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 2000 samples.</span></span>
@@ -253,11 +252,11 @@ to <code>fy</code> through <code>fm</code>, conditional on
 <span><span class="co">#&gt;  - Call 'print_all_cond_indirect_effects()' to print the detailed</span></span>
 <span><span class="co">#&gt;    outputs of all levels.</span></span></code></pre></div>
 <p>When <code>fw</code> is one standard deviation below the mean, the
-indirect effect is -0.003, with a 95% confidence interval [-0.042,
-0.034].</p>
+indirect effect is -0.002, with a 95% confidence interval [-0.038,
+0.032].</p>
 <p>When <code>fw</code> is one standard deviation above the mean, the
-indirect effect is 0.361, with a 95% confidence interval [0.141,
-0.568].</p>
+indirect effect is 0.340, with a 95% confidence interval [0.135,
+0.530].</p>
 <p>Note that any conditional indirect path in the model can be estimated
 this way. There is no limit on the path to be estimated, as long as all
 required path coefficients are in the model.
@@ -285,7 +284,7 @@ can be estimated by setting <code>standardized_x</code> and
 <span><span class="op">)</span></span>
 <span><span class="va">std_xmy_on_w</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; == Conditional indirect effects ==</span></span>
+<span><span class="co">#&gt; == Conditional indirect effects (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Path: fx -&gt; fm -&gt; fy</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): fw</span></span>
@@ -293,11 +292,10 @@ can be estimated by setting <code>standardized_x</code> and
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.fm~fx + (b.fx:fw)*(fw))*(b.fy~fm)*sd_fx/sd_fy</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [fw]   (fw)    std  CI.lo CI.hi Sig  fm~fx fy~fm    ind</span></span>
-<span><span class="co">#&gt; 1 M+1.0SD  0.834  0.435  0.170 0.680 Sig  0.810 0.446  0.361</span></span>
-<span><span class="co">#&gt; 2 Mean    -0.000  0.215  0.083 0.342 Sig  0.401 0.446  0.179</span></span>
-<span><span class="co">#&gt; 3 M-1.0SD -0.834 -0.004 -0.050 0.041     -0.007 0.446 -0.003</span></span>
+<span><span class="co">#&gt; 1 M+1.0SD  0.837  0.408  0.163 0.631 Sig  0.801 0.425  0.340</span></span>
+<span><span class="co">#&gt; 2 Mean    -0.000  0.203  0.081 0.321 Sig  0.398 0.425  0.169</span></span>
+<span><span class="co">#&gt; 3 M-1.0SD -0.837 -0.002 -0.045 0.039     -0.005 0.425 -0.002</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by</span></span>
 <span><span class="co">#&gt;    nonparametric bootstrapping with 2000 samples.</span></span>
@@ -308,11 +306,11 @@ can be estimated by setting <code>standardized_x</code> and
 <span><span class="co">#&gt;  - Call 'print_all_cond_indirect_effects()' to print the detailed</span></span>
 <span><span class="co">#&gt;    outputs of all levels.</span></span></code></pre></div>
 <p>When <code>fw</code> is one standard deviation below the mean, the
-standardized indirect effect is -0.004, with a 95% confidence interval
-[-0.050, 0.041].</p>
+standardized indirect effect is -0.002, with a 95% confidence interval
+[-0.045, 0.039].</p>
 <p>When <code>fw</code> is one standard deviation above the mean, the
-indirect effect is 0.435, with a 95% confidence interval [0.170,
-0.680].</p>
+indirect effect is 0.408, with a 95% confidence interval [0.163,
+0.631].</p>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">Reference(s)<a class="anchor" aria-label="anchor" href="#references"></a>

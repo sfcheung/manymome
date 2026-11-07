@@ -191,7 +191,6 @@ out_xmy_on_w
 #>  Computation Formula:
 #>    (b.m~x + (b.x:w)*(w))*(b.y~m)
 #> 
-#> 
 #>       [w]   (w)   ind  CI.lo CI.hi Sig   m~x   y~m
 #> 1 M+1.0SD 3.164 3.060  2.168 4.039 Sig 3.192 0.959
 #> 2 Mean    2.179 2.136  1.407 2.925 Sig 2.228 0.959
@@ -258,7 +257,6 @@ out_mome
 #>  Computation Formula:
 #>    (b.m~x + (b.x:w)*(w))*(b.y~m)
 #> 
-#> 
 #>   [w] (w)   ind  CI.lo CI.hi Sig   m~x   y~m
 #> 1   1   1 1.030 -0.622 2.543     1.074 0.959
 #> 2   0   0 0.092 -2.389 2.434     0.096 0.959
@@ -297,14 +295,13 @@ std_xmy_on_w <- cond_indirect_effects(wlevels = "w",
                                       standardized_y = TRUE)
 std_xmy_on_w
 #> 
-#> == Conditional indirect effects ==
+#> == Conditional indirect effects (Both x-variable(s) and y-variable(s) Standardized) ==
 #> 
 #>  Path: x -> m -> y
 #>  Conditional on moderator(s): w
 #>  Moderator(s) represented by: w
 #>  Computation Formula:
 #>    (b.m~x + (b.x:w)*(w))*(b.y~m)*sd_x/sd_y
-#> 
 #> 
 #>       [w]   (w)   std  CI.lo CI.hi Sig   m~x   y~m   ind
 #> 1 M+1.0SD 3.164 0.318  0.220 0.437 Sig 3.192 0.959 3.060

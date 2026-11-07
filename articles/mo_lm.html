@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +102,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-30</h4>
+            <h4 data-toc-skip class="date">2026-11-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/articles/mo_lm.Rmd" class="external-link"><code>vignettes/articles/mo_lm.Rmd</code></a></small>
       <div class="d-none name"><code>mo_lm.Rmd</code></div>
@@ -218,7 +218,6 @@ paths:</p>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x + (b.w1:x)*(w1))</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [w1]  (w1)   ind    SE  Stat pvalue Sig  CI.lo CI.hi</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD 7.942 0.492 0.101 4.853  0.000 ***  0.292 0.692</span></span>
 <span><span class="co">#&gt; 2 Mean    6.878 0.299 0.082 3.643  0.000 ***  0.137 0.460</span></span>
@@ -320,14 +319,13 @@ setting <code>standardized_x</code> and <code>standardized_y</code> to
 <span><span class="co">#&gt; 19 processes started to run bootstrapping.</span></span>
 <span><span class="va">std_xy_on_w1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; == Conditional effects ==</span></span>
+<span><span class="co">#&gt; == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Path: x -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): w1</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: w1</span></span>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x + (b.w1:x)*(w1))*sd_x/sd_y</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [w1]  (w1)   std  CI.lo CI.hi Sig   ind</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD 7.942 0.374  0.204 0.518 Sig 0.492</span></span>
@@ -439,7 +437,6 @@ two moderators:</p>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x + (b.x:w1)*(w1) + (b.x:w2)*(w2))</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [w1]    [w2]  (w1)  (w2)   ind    SE  Stat pvalue Sig  CI.lo CI.hi</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD M+1.0SD 7.942 4.829 0.528 0.122 4.343  0.000 ***  0.288 0.768</span></span>
 <span><span class="co">#&gt; 2 M+1.0SD M-1.0SD 7.942 2.897 0.455 0.141 3.220  0.002 **   0.176 0.734</span></span>
@@ -492,7 +489,6 @@ will be issued. This is an example:</p>
 <span><span class="co">#&gt;  Moderator(s) represented by: w1</span></span>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x + (b.x:w1)*(w1) + (b.x:w2)*(w2))</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [w1]  (w1)    ind    SE   Stat pvalue Sig  CI.lo CI.hi</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD 7.942  0.346 0.363  0.951  0.343     -0.371 1.062</span></span>
@@ -588,14 +584,13 @@ confidence intervals:</p>
 <span><span class="co">#&gt; 19 processes started to run bootstrapping.</span></span>
 <span><span class="va">std_xy_on_w1w2</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; == Conditional effects ==</span></span>
+<span><span class="co">#&gt; == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Path: x -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): w1, w2</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: w1, w2</span></span>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x + (b.x:w1)*(w1) + (b.x:w2)*(w2))*sd_x/sd_y</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [w1]    [w2]  (w1)  (w2)   std  CI.lo CI.hi Sig   ind</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD M+1.0SD 7.942 4.829 0.402  0.203 0.560 Sig 0.528</span></span>
@@ -715,7 +710,6 @@ same way, whether the moderators interact with each other or not:</p>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x + (b.w1:x)*(w1) + (b.w2:x)*(w2) + (b.w1:w2:x)*(w1*w2))</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [w1]    [w2]  (w1)  (w2)    ind    SE   Stat pvalue Sig  CI.lo CI.hi</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD M+1.0SD 7.942 4.829  0.672 0.137  4.903  0.000 ***  0.402 0.942</span></span>
 <span><span class="co">#&gt; 2 M+1.0SD M-1.0SD 7.942 2.897  0.284 0.161  1.768  0.079     -0.033 0.602</span></span>
@@ -775,7 +769,7 @@ bootstrap confidence intervals:</p>
 <span><span class="co">#&gt; 19 processes started to run bootstrapping.</span></span>
 <span><span class="va">std_xy_on_w1_x_w2</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; == Conditional effects ==</span></span>
+<span><span class="co">#&gt; == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Path: x -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): w1, w2</span></span>
@@ -783,7 +777,6 @@ bootstrap confidence intervals:</p>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x + (b.w1:x)*(w1) + (b.w2:x)*(w2) +</span></span>
 <span><span class="co">#&gt;    (b.w1:w2:x)*(w1*w2))*sd_x/sd_y</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;      [w1]    [w2]  (w1)  (w2)    std  CI.lo CI.hi Sig    ind</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD M+1.0SD 7.942 4.829  0.511  0.360 0.760 Sig  0.672</span></span>

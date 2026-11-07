@@ -335,7 +335,6 @@ out_cond
 #>  Computation Formula:
 #>    (b.m~x + (b.w1x)*(w1))*(b.y~m + (b.w2m)*(w2))
 #> 
-#> 
 #>      [w1]    [w2]  (w1)  (w2)   ind  CI.lo CI.hi Sig   m~x   y~m
 #> 1 M+1.0SD M+1.0SD 6.173 4.040 0.399  0.139 0.705 Sig 0.596 0.671
 #> 2 M+1.0SD M-1.0SD 6.173 2.055 0.158 -0.025 0.381     0.596 0.266
@@ -452,14 +451,13 @@ This is the output:
 
 out_cond_stdxy
 #> 
-#> == Conditional indirect effects ==
+#> == Conditional indirect effects (Both x-variable(s) and y-variable(s) Standardized) ==
 #> 
 #>  Path: x -> m -> y
 #>  Conditional on moderator(s): w1, w2
 #>  Moderator(s) represented by: w1, w2
 #>  Computation Formula:
 #>    (b.m~x + (b.w1x)*(w1))*(b.y~m + (b.w2m)*(w2))*sd_x/sd_y
-#> 
 #> 
 #>      [w1]    [w2]  (w1)  (w2)   std  CI.lo CI.hi Sig   m~x   y~m   ind
 #> 1 M+1.0SD M+1.0SD 6.173 4.040 0.401  0.154 0.655 Sig 0.596 0.671 0.399
@@ -537,7 +535,6 @@ out_momome
 #>  Moderator(s) represented by: w1, w2
 #>  Computation Formula:
 #>    (b.m~x + (b.w1x)*(w1))*(b.y~m + (b.w2m)*(w2))
-#> 
 #> 
 #>   [w1] [w2] (w1) (w2)    ind  CI.lo CI.hi Sig    m~x    y~m
 #> 1    1    1    1    1 -0.023 -0.276 0.312     -0.459  0.051
@@ -648,7 +645,6 @@ out_mome
 #>  Moderator(s) represented by: w1
 #>  Computation Formula:
 #>    (b.m~x + (b.w1x)*(w1))*(b.y~m)
-#> 
 #> 
 #>   [w1] (w1)    ind  CI.lo CI.hi Sig    m~x   y~m
 #> 1    1    1 -0.199 -0.762 0.230     -0.459 0.434

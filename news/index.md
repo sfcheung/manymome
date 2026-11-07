@@ -1,6 +1,6 @@
 # Changelog
 
-## manymome 0.3.7.5
+## manymome 0.3.7.7
 
 ### New Features
 
@@ -30,6 +30,23 @@
   model is fitted by regression
   ([`lm()`](https://rdrr.io/r/stats/lm.html)). Only unstandardized
   effects are supported. (0.3.7.1)
+
+- Updated
+  [`fill_wlevels()`](https://sfcheung.github.io/manymome/reference/plot_effect_vs_w.md)
+  to work with the output of
+  [`pseudo_johnson_neyman()`](https://sfcheung.github.io/manymome/reference/pseudo_johnson_neyman.md)
+  without the need for the original
+  [`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
+  output. (0.3.7.6)
+
+- Updated
+  [`plot_effect_vs_w()`](https://sfcheung.github.io/manymome/reference/plot_effect_vs_w.md)
+  to work with the output of
+  [`pseudo_johnson_neyman()`](https://sfcheung.github.io/manymome/reference/pseudo_johnson_neyman.md).
+  It can also call
+  [`fill_wlevels()`](https://sfcheung.github.io/manymome/reference/plot_effect_vs_w.md)
+  automatically to fill in more levels. Controlled by the new argument
+  `minimum_wlevels`. (0.3.7.7)
 
 ### Miscellaneous
 

@@ -155,11 +155,10 @@ out_xmy_on_w
 #>  Computation Formula:
 #>    (b.fm~fx + (b.fx:fw)*(fw))*(b.fy~fm)
 #> 
-#> 
 #>      [fw]   (fw)    ind  CI.lo CI.hi Sig  fm~fx fy~fm
-#> 1 M+1.0SD  0.834  0.361  0.141 0.568 Sig  0.810 0.446
-#> 2 Mean    -0.000  0.179  0.069 0.288 Sig  0.401 0.446
-#> 3 M-1.0SD -0.834 -0.003 -0.042 0.034     -0.007 0.446
+#> 1 M+1.0SD  0.837  0.340  0.135 0.530 Sig  0.801 0.425
+#> 2 Mean    -0.000  0.169  0.067 0.271 Sig  0.398 0.425
+#> 3 M-1.0SD -0.837 -0.002 -0.038 0.032     -0.005 0.425
 #> 
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
 #>    nonparametric bootstrapping with 2000 samples.
@@ -171,10 +170,10 @@ out_xmy_on_w
 ```
 
 When `fw` is one standard deviation below the mean, the indirect effect
-is -0.003, with a 95% confidence interval \[-0.042, 0.034\].
+is -0.002, with a 95% confidence interval \[-0.038, 0.032\].
 
 When `fw` is one standard deviation above the mean, the indirect effect
-is 0.361, with a 95% confidence interval \[0.141, 0.568\].
+is 0.340, with a 95% confidence interval \[0.135, 0.530\].
 
 Note that any conditional indirect path in the model can be estimated
 this way. There is no limit on the path to be estimated, as long as all
@@ -203,7 +202,7 @@ std_xmy_on_w <- cond_indirect_effects(
 )
 std_xmy_on_w
 #> 
-#> == Conditional indirect effects ==
+#> == Conditional indirect effects (Both x-variable(s) and y-variable(s) Standardized) ==
 #> 
 #>  Path: fx -> fm -> fy
 #>  Conditional on moderator(s): fw
@@ -211,11 +210,10 @@ std_xmy_on_w
 #>  Computation Formula:
 #>    (b.fm~fx + (b.fx:fw)*(fw))*(b.fy~fm)*sd_fx/sd_fy
 #> 
-#> 
 #>      [fw]   (fw)    std  CI.lo CI.hi Sig  fm~fx fy~fm    ind
-#> 1 M+1.0SD  0.834  0.435  0.170 0.680 Sig  0.810 0.446  0.361
-#> 2 Mean    -0.000  0.215  0.083 0.342 Sig  0.401 0.446  0.179
-#> 3 M-1.0SD -0.834 -0.004 -0.050 0.041     -0.007 0.446 -0.003
+#> 1 M+1.0SD  0.837  0.408  0.163 0.631 Sig  0.801 0.425  0.340
+#> 2 Mean    -0.000  0.203  0.081 0.321 Sig  0.398 0.425  0.169
+#> 3 M-1.0SD -0.837 -0.002 -0.045 0.039     -0.005 0.425 -0.002
 #> 
 #>  - [CI.lo to CI.hi] are 95.0% percentile confidence intervals by
 #>    nonparametric bootstrapping with 2000 samples.
@@ -228,11 +226,11 @@ std_xmy_on_w
 ```
 
 When `fw` is one standard deviation below the mean, the standardized
-indirect effect is -0.004, with a 95% confidence interval \[-0.050,
-0.041\].
+indirect effect is -0.002, with a 95% confidence interval \[-0.045,
+0.039\].
 
 When `fw` is one standard deviation above the mean, the indirect effect
-is 0.435, with a 95% confidence interval \[0.170, 0.680\].
+is 0.408, with a 95% confidence interval \[0.163, 0.631\].
 
 ## Reference(s)
 

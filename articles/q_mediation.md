@@ -276,8 +276,8 @@ out_simple
 #> 
 #> - For reference, the bootstrap confidence interval (and bootstrap
 #>   p-value, if requested) of the (unstandardized) direct effect is also
-#>   reported. The bootstrap p-value and the OLS t-statistc p-value can be
-#>   different.
+#>   reported. The bootstrap p-value and the OLS t-statistic p-value can
+#>   be different.
 #> - For the direct effects with either 'x'-variable or 'y'-variable, or
 #>   both, standardized, it is recommended to use the bootstrap confidence
 #>   intervals, which take into account the sampling error of the sample
@@ -736,8 +736,8 @@ out_serial
 #> 
 #> - For reference, the bootstrap confidence interval (and bootstrap
 #>   p-value, if requested) of the (unstandardized) direct effect is also
-#>   reported. The bootstrap p-value and the OLS t-statistc p-value can be
-#>   different.
+#>   reported. The bootstrap p-value and the OLS t-statistic p-value can
+#>   be different.
 #> - For the direct effects with either 'x'-variable or 'y'-variable, or
 #>   both, standardized, it is recommended to use the bootstrap confidence
 #>   intervals, which take into account the sampling error of the sample
@@ -1204,8 +1204,8 @@ out_parallel
 #> 
 #> - For reference, the bootstrap confidence interval (and bootstrap
 #>   p-value, if requested) of the (unstandardized) direct effect is also
-#>   reported. The bootstrap p-value and the OLS t-statistc p-value can be
-#>   different.
+#>   reported. The bootstrap p-value and the OLS t-statistic p-value can
+#>   be different.
 #> - For the direct effects with either 'x'-variable or 'y'-variable, or
 #>   both, standardized, it is recommended to use the bootstrap confidence
 #>   intervals, which take into account the sampling error of the sample

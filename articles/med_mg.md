@@ -67,7 +67,7 @@ These are the estimates of the paths:
 
 summary(fit,
         estimates = TRUE)
-#> lavaan 0.7-2.3166 ended normally after 1 iteration
+#> lavaan 0.7-3.3364 ended normally after 1 iteration
 #> 
 #>   Estimator                                         ML
 #>   Optimization method                           NLMINB
@@ -347,7 +347,6 @@ ind
 #>  Computation Formula:
 #>    (b.m~x)*(b.y~m)
 #> 
-#> 
 #>     Group Group_ID   ind CI.lo CI.hi Sig   m~x   y~m
 #> 1 Group A        1 0.409 0.096 0.753 Sig 0.880 0.465
 #> 2 Group B        2 0.663 0.411 0.959 Sig 0.597 1.110
@@ -441,7 +440,6 @@ ind_diff2
 #>  Conditional on group(s): Group B[2], Group A[1]
 #>  Computation Formula:
 #>    (b.m~x)*(b.y~m)
-#> 
 #> 
 #>     Group Group_ID   ind CI.lo CI.hi Sig   m~x   y~m
 #> 1 Group B        2 0.663 0.411 0.959 Sig 0.597 1.110
@@ -629,13 +627,12 @@ std <- cond_indirect_effects(x = "x",
                              standardized_y = TRUE)
 std
 #> 
-#> == Conditional indirect effects ==
+#> == Conditional indirect effects (Both x-variable(s) and y-variable(s) Standardized) ==
 #> 
 #>  Path: x -> m -> y
 #>  Conditional on group(s): Group A[1], Group B[2]
 #>  Computation Formula:
 #>    (b.m~x)*(b.y~m)*sd_x/sd_y
-#> 
 #> 
 #>     Group Group_ID   std CI.lo CI.hi Sig   m~x   y~m   ind
 #> 1 Group A        1 0.204 0.049 0.366 Sig 0.880 0.465 0.409
@@ -658,13 +655,12 @@ std_diff2 <- cond_indirect_diff(std,
                                 to = 2)
 std_diff2
 #> 
-#> == Conditional indirect effects ==
+#> == Conditional indirect effects (Both x-variable(s) and y-variable(s) Standardized) ==
 #> 
 #>  Path: x -> m -> y
 #>  Conditional on group(s): Group B[2], Group A[1]
 #>  Computation Formula:
 #>    (b.m~x)*(b.y~m)*sd_x/sd_y
-#> 
 #> 
 #>     Group Group_ID   std CI.lo CI.hi Sig   m~x   y~m   ind
 #> 1 Group B        2 0.259 0.166 0.360 Sig 0.597 1.110 0.663
@@ -825,7 +821,6 @@ path1
 #>  Computation Formula:
 #>    (b.y~m)
 #> 
-#> 
 #>     Group Group_ID   ind CI.lo CI.hi Sig
 #> 1 Group A        1 0.465 0.110 0.819 Sig
 #> 2 Group B        2 1.110 0.765 1.475 Sig
@@ -854,7 +849,6 @@ path1_diff
 #>  Conditional on group(s): Group B[2], Group A[1]
 #>  Computation Formula:
 #>    (b.y~m)
-#> 
 #> 
 #>     Group Group_ID   ind CI.lo CI.hi Sig
 #> 1 Group B        2 1.110 0.765 1.475 Sig

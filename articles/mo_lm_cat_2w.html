@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +102,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-30</h4>
+            <h4 data-toc-skip class="date">2026-11-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/articles/mo_lm_cat_2w.Rmd" class="external-link"><code>vignettes/articles/mo_lm_cat_2w.Rmd</code></a></small>
       <div class="d-none name"><code>mo_lm_cat_2w.Rmd</code></div>
@@ -223,7 +223,6 @@ moderator <code>gp</code>.</p>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x + (b.gpTreatment:x)*(gpTreatment))</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;        [gp] (gpTreatment)    ind    SE   Stat pvalue Sig  CI.lo CI.hi</span></span>
 <span><span class="co">#&gt; 1 Control               0 -0.027 0.037 -0.745  0.456     -0.100 0.045</span></span>
 <span><span class="co">#&gt; 2 Treatment             1  0.320 0.033  9.655  0.000 ***  0.255 0.385</span></span>
@@ -309,14 +308,13 @@ setting <code>standardized_x</code> and <code>standardized_y</code> to
 <span><span class="co">#&gt; 19 processes started to run bootstrapping.</span></span>
 <span><span class="va">std_gp</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; == Conditional effects ==</span></span>
+<span><span class="co">#&gt; == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Path: x -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): gp</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: gpTreatment</span></span>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x + (b.gpTreatment:x)*(gpTreatment))*sd_x/sd_y</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;        [gp] (gpTreatment)    std  CI.lo CI.hi Sig    ind</span></span>
 <span><span class="co">#&gt; 1 Control               0 -0.039 -0.130 0.048     -0.027</span></span>
@@ -426,7 +424,6 @@ categories automatically:</p>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x + (b.siteSite 2:x)*(siteSite 2) + (b.siteSite 3:x)*(siteSite 3))</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   [site] (siteSite 2) (siteSite 3)   ind    SE  Stat pvalue Sig  CI.lo CI.hi</span></span>
 <span><span class="co">#&gt; 1 Site 1            0            0 0.102 0.059 1.737  0.083     -0.013 0.217</span></span>
 <span><span class="co">#&gt; 2 Site 2            1            0 0.432 0.064 6.715  0.000 ***  0.306 0.558</span></span>
@@ -490,14 +487,13 @@ bootstrap confidence intervals:</p>
 <span><span class="co">#&gt; 19 processes started to run bootstrapping.</span></span>
 <span><span class="va">std_site</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; == Conditional effects ==</span></span>
+<span><span class="co">#&gt; == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Path: x -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): site</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: siteSite 2, siteSite 3</span></span>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x + (b.siteSite 2:x)*(siteSite 2) + (b.siteSite 3:x)*(siteSite 3))*sd_x/sd_y</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   [site] (siteSite 2) (siteSite 3)   std  CI.lo CI.hi Sig   ind</span></span>
 <span><span class="co">#&gt; 1 Site 1            0            0 0.146 -0.023 0.317     0.102</span></span>
@@ -603,7 +599,6 @@ of moderators, as long as they are listed in <code>wlevels</code>:</p>
 <span><span class="co">#&gt;    (b.y~x + (b.gpTreatment:x)*(gpTreatment) + (b.x:siteSite 2)*(siteSite 2) + (b.x:siteSite 3)*(siteSite</span></span>
 <span><span class="co">#&gt;    3))</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;        [gp] [site] (gpTreatment) (siteSite 2) (siteSite 3)    ind    SE   Stat pvalue Sig  CI.lo  CI.hi</span></span>
 <span><span class="co">#&gt; 1 Control   Site 1             0            0            0 -0.084 0.060 -1.409  0.159     -0.201  0.033</span></span>
 <span><span class="co">#&gt; 2 Control   Site 2             0            1            0  0.229 0.065  3.527  0.000 ***  0.101  0.356</span></span>
@@ -648,7 +643,6 @@ will be issued. This is an example:</p>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x + (b.gpTreatment:x)*(gpTreatment) + (b.x:siteSite 2)*(siteSite 2) + (b.x:siteSite 3)*(siteSite</span></span>
 <span><span class="co">#&gt;    3))</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;        [gp] (gpTreatment)    ind    SE   Stat pvalue Sig  CI.lo CI.hi</span></span>
 <span><span class="co">#&gt; 1 Control               0 -0.084 0.060 -1.409  0.159     -0.201 0.033</span></span>
@@ -748,7 +742,7 @@ bootstrap confidence intervals:</p>
 <span><span class="co">#&gt; 19 processes started to run bootstrapping.</span></span>
 <span><span class="va">std_gp_site</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; == Conditional effects ==</span></span>
+<span><span class="co">#&gt; == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Path: x -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): gp, site</span></span>
@@ -756,7 +750,6 @@ bootstrap confidence intervals:</p>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x + (b.gpTreatment:x)*(gpTreatment) + (b.x:siteSite 2)*(siteSite 2) + (b.x:siteSite 3)*(siteSite</span></span>
 <span><span class="co">#&gt;    3))*sd_x/sd_y</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;        [gp] [site] (gpTreatment) (siteSite 2) (siteSite 3)    std  CI.lo  CI.hi Sig    ind</span></span>
 <span><span class="co">#&gt; 1 Control   Site 1             0            0            0 -0.120 -0.275  0.035     -0.084</span></span>
@@ -884,7 +877,6 @@ same way, whether the moderators interact with each other or not:</p>
 <span><span class="co">#&gt;    + (b.x:siteSite 2:gpTreatment)*(siteSite 2*gpTreatment) + (b.x:siteSite 3:gpTreatment)*(siteSite</span></span>
 <span><span class="co">#&gt;    3*gpTreatment))</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   [site]      [gp] (siteSite 2) (siteSite 3) (gpTreatment)    ind    SE   Stat pvalue Sig  CI.lo CI.hi</span></span>
 <span><span class="co">#&gt; 1 Site 1 Control              0            0             0 -0.128 0.074 -1.722  0.086     -0.274 0.018</span></span>
 <span><span class="co">#&gt; 2 Site 1 Treatment            0            0             1  0.326 0.078  4.190  0.000 ***  0.173 0.478</span></span>
@@ -943,7 +935,7 @@ bootstrap confidence intervals:</p>
 <span><span class="co">#&gt; 19 processes started to run bootstrapping.</span></span>
 <span><span class="va">std_gp_x_site</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; == Conditional effects ==</span></span>
+<span><span class="co">#&gt; == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Path: x -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): gp, site</span></span>
@@ -952,7 +944,6 @@ bootstrap confidence intervals:</p>
 <span><span class="co">#&gt;    (b.y~x + (b.x:siteSite 2)*(siteSite 2) + (b.x:siteSite 3)*(siteSite 3) + (b.x:gpTreatment)*(gpTreatment)</span></span>
 <span><span class="co">#&gt;    + (b.x:siteSite 2:gpTreatment)*(siteSite 2*gpTreatment) + (b.x:siteSite 3:gpTreatment)*(siteSite</span></span>
 <span><span class="co">#&gt;    3*gpTreatment))*sd_x/sd_y</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;        [gp] [site] (gpTreatment) (siteSite 2) (siteSite 3)    std  CI.lo CI.hi Sig    ind</span></span>
 <span><span class="co">#&gt; 1 Control   Site 1             0            0            0 -0.183 -0.374 0.003     -0.128</span></span>

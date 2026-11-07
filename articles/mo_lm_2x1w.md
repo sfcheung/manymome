@@ -129,7 +129,6 @@ out1
 #>  Computation Formula:
 #>    (b.y~x1 + (b.w:x1)*(w))
 #> 
-#> 
 #>       [w]   (w)    ind    SE   Stat pvalue Sig  CI.lo CI.hi
 #> 1 M+1.0SD 2.176  0.357 0.069  5.168  0.000 ***  0.221 0.493
 #> 2 Mean    1.717  0.148 0.047  3.160  0.002 **   0.055 0.240
@@ -180,7 +179,6 @@ out2
 #>  Moderator(s) represented by: w
 #>  Computation Formula:
 #>    (b.y~x2 + (b.w:x2)*(w))
-#> 
 #> 
 #>       [w]   (w)    ind    SE   Stat pvalue Sig  CI.lo  CI.hi
 #> 1 M+1.0SD 2.176  0.336 0.069  4.862  0.000 ***  0.200  0.472
@@ -318,14 +316,13 @@ std1 <- cond_effects(
 #> 19 processes started to run bootstrapping.
 std1
 #> 
-#> == Conditional effects ==
+#> == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==
 #> 
 #>  Path: x1 -> y
 #>  Conditional on moderator(s): w
 #>  Moderator(s) represented by: w
 #>  Computation Formula:
 #>    (b.y~x1 + (b.w:x1)*(w))*sd_x1/sd_y
-#> 
 #> 
 #>       [w]   (w)    std  CI.lo CI.hi Sig    ind
 #> 1 M+1.0SD 2.176  0.401  0.267 0.533 Sig  0.357
@@ -366,14 +363,13 @@ std2 <- cond_effects(
 #> 19 processes started to run bootstrapping.
 std2
 #> 
-#> == Conditional effects ==
+#> == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==
 #> 
 #>  Path: x2 -> y
 #>  Conditional on moderator(s): w
 #>  Moderator(s) represented by: w
 #>  Computation Formula:
 #>    (b.y~x2 + (b.w:x2)*(w))*sd_x2/sd_y
-#> 
 #> 
 #>       [w]   (w)    std  CI.lo  CI.hi Sig    ind
 #> 1 M+1.0SD 2.176  0.420  0.265  0.586 Sig  0.336

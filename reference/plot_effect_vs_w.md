@@ -31,7 +31,8 @@ plot_effect_vs_w(
   zero_line_args = list(),
   level = 0.95,
   which = c("ustd", "stdx", "stdy", "stdxy"),
-  m = NULL
+  m = NULL,
+  minimum_wlevels = 3
 )
 
 fill_wlevels(to_fill, cond_out = NULL, k = 21)
@@ -199,6 +200,13 @@ fill_wlevels(to_fill, cond_out = NULL, k = 21)
   and (b) more than one path is moderated. If the model has only one
   path moderated, this argument can be omitted.
 
+- minimum_wlevels:
+
+  The minimum levels of the moderator used in the plot. If the number of
+  levels in `object` is less than this number, `fill_wlevels()` will be
+  used to increase the number of levels. If failed, a warning will be
+  issued and no additional levels will be added.
+
 - to_fill:
 
   The output of
@@ -209,9 +217,10 @@ fill_wlevels(to_fill, cond_out = NULL, k = 21)
 
 - cond_out:
 
-  If `to_fill` is the output of
-  [`pseudo_johnson_neyman()`](https://sfcheung.github.io/manymome/reference/pseudo_johnson_neyman.md),
-  the original output of
+  No longer used. Required only for version older than 0.3.7.6. If
+  `to_fill` is the output of
+  [`pseudo_johnson_neyman()`](https://sfcheung.github.io/manymome/reference/pseudo_johnson_neyman.md)
+  created before `manymome` 0.3.7.6, the original output of
   [`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
   used in the call to
   [`pseudo_johnson_neyman()`](https://sfcheung.github.io/manymome/reference/pseudo_johnson_neyman.md)

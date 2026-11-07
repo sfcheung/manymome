@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +102,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Sing-Hang Cheung</h4>
             
-            <h4 data-toc-skip class="date">2026-08-30</h4>
+            <h4 data-toc-skip class="date">2026-11-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/manymome/blob/main/vignettes/articles/mo_lm_2x1w.Rmd" class="external-link"><code>vignettes/articles/mo_lm_2x1w.Rmd</code></a></small>
       <div class="d-none name"><code>mo_lm_2x1w.Rmd</code></div>
@@ -218,7 +218,6 @@ levels of the moderator (<code>w</code>).</p>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x1 + (b.w:x1)*(w))</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;       [w]   (w)    ind    SE   Stat pvalue Sig  CI.lo CI.hi</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD 2.176  0.357 0.069  5.168  0.000 ***  0.221 0.493</span></span>
 <span><span class="co">#&gt; 2 Mean    1.717  0.148 0.047  3.160  0.002 **   0.055 0.240</span></span>
@@ -265,7 +264,6 @@ computed using the pick-a-point approach by <span class="citation">Rogosa (1980)
 <span><span class="co">#&gt;  Moderator(s) represented by: w</span></span>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x2 + (b.w:x2)*(w))</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;       [w]   (w)    ind    SE   Stat pvalue Sig  CI.lo  CI.hi</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD 2.176  0.336 0.069  4.862  0.000 ***  0.200  0.472</span></span>
@@ -381,14 +379,13 @@ estimated by setting <code>standardized_x</code> and
 <span><span class="co">#&gt; 19 processes started to run bootstrapping.</span></span>
 <span><span class="va">std1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; == Conditional effects ==</span></span>
+<span><span class="co">#&gt; == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Path: x1 -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): w</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: w</span></span>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x1 + (b.w:x1)*(w))*sd_x1/sd_y</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;       [w]   (w)    std  CI.lo CI.hi Sig    ind</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD 2.176  0.401  0.267 0.533 Sig  0.357</span></span>
@@ -423,14 +420,13 @@ interval [0.267, 0.533].</p>
 <span><span class="co">#&gt; 19 processes started to run bootstrapping.</span></span>
 <span><span class="va">std2</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; == Conditional effects ==</span></span>
+<span><span class="co">#&gt; == Conditional effects (Both x-variable(s) and y-variable(s) Standardized) ==</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Path: x2 -&gt; y</span></span>
 <span><span class="co">#&gt;  Conditional on moderator(s): w</span></span>
 <span><span class="co">#&gt;  Moderator(s) represented by: w</span></span>
 <span><span class="co">#&gt;  Computation Formula:</span></span>
 <span><span class="co">#&gt;    (b.y~x2 + (b.w:x2)*(w))*sd_x2/sd_y</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;       [w]   (w)    std  CI.lo  CI.hi Sig    ind</span></span>
 <span><span class="co">#&gt; 1 M+1.0SD 2.176  0.420  0.265  0.586 Sig  0.336</span></span>

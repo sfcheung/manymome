@@ -15,7 +15,7 @@ effect is not significant."><meta property="og:image" content="https://sfcheung.
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -422,7 +422,7 @@ method for output of <code>pseudo_johnson_neyman()</code>.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The conditional effect is not significant when w is greater than -7.669</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> and less than 1.437, and is significant when w is greater than 1.437,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> at 0.05 level of significance.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> at level of significance.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -- Note --</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> - The lower bound of the range of nonsignificance is below the range</span>
@@ -455,7 +455,10 @@ method for output of <code>pseudo_johnson_neyman()</code>.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot the range</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="plot_effect_vs_w.html">plot_effect_vs_w</a></span><span class="op">(</span><span class="va">out_jn</span><span class="op">$</span><span class="va">cond_effects</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># 'minimum_wlevels = 0' added to prevent adding levels of w.</span></span></span>
+<span class="r-in"><span><span class="co"># Remove minimum_wlevels or set it to the desired number of levels</span></span></span>
+<span class="r-in"><span><span class="co"># of the moderator</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plot_effect_vs_w.html">plot_effect_vs_w</a></span><span class="op">(</span><span class="va">out_jn</span>, minimum_wlevels <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="pseudo_johnson_neyman-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
