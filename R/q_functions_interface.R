@@ -44,7 +44,7 @@ get_cond_effects_from_q <- function(
   which <- match.arg(which)
   out0 <- q_out$cond_ind_out[[which]]
   if (is.null(out0)) {
-    return(NULL)
+    stop("No conditional effects found.")
   }
   x <- q_out$x
   y <- q_out$y
