@@ -478,8 +478,11 @@ plot_effect_vs_w <- function(object,
 #' additional levels of the moderator
 #' will be added.
 #'
-#' @param cond_out If `to_fill` is
-#' the output of [pseudo_johnson_neyman()],
+#' @param cond_out No longer used. Required
+#' only for version older than 0.3.7.6.
+#' If `to_fill` is
+#' the output of [pseudo_johnson_neyman()]
+#' created before `manymome` 0.3.7.6,
 #' the original output of [cond_indirect_effects()]
 #' used in the call to [pseudo_johnson_neyman()]
 #' need to be supplied through this argument.
@@ -528,19 +531,35 @@ fill_wlevels <- function(to_fill,
                          cond_out = NULL,
                          k = 21) {
     is_jn <- inherits(to_fill, "pseudo_johnson_neyman")
-    if (is_jn && is.null(cond_out)) {
-        stop("The original cond_indirect_effects output is required",
-             "if the 'to_fill' is the output of 'pseudo_johnson_neyman()'.")
+    old_jn <- FALSE
+    if (is_jn) {
+        if (is.null(to_fill$cond_out_call)) {
+          if (is.null(cond_out)) {
+            stop("Is the 'to_fill' object created by pre-0.3.7.6 ",
+                "manymome? Is yes, 'cond_out' needs to be set.")
+          } else {
+            old_jn <- TRUE
+          }
+        }
       }
     if (is_jn) {
         jn_cond <- to_fill$cond_effects
         wlevels <- attr(jn_cond, "wlevels")
+        if (old_jn) {
+          call0 <- attr(cond_out, "call")
+          fit <- attr(cond_out, "fit")
+        } else {
+          call0 <- to_fill$cond_out_call
+          fit <- to_fill$fit
+        }
+        # Use the level of confidence stored in jn
+        call0$level <- attr(jn_cond, "full_output")[[1]]$level
       } else {
         cond_out <- to_fill
         wlevels <- attr(cond_out, "wlevels")
+        call0 <- attr(cond_out, "call")
+        fit <- attr(cond_out, "fit")
       }
-    call0 <- attr(cond_out, "call")
-    fit <- attr(cond_out, "fit")
     if (ncol(wlevels) > 1) {
         stop("Only support a path with one moderator.")
       }
