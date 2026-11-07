@@ -288,8 +288,11 @@ index_of_mome <- function(x,
     fit <- auto_lm2list(fit)
     boot_type <- match.arg(boot_type)
     w_unit <- match.arg(w_unit)
-    if (is.null(w) || length(w) != 1) {
-        stop("The path must have exactly one moderator.")
+    if (is.null(w)) {
+        stop("The moderator ('w') not specified.")
+      }
+    if (length(w) != 1) {
+        stop("More than one variable set to `w`.")
       }
     mm_w <- switch(
       w_unit,
