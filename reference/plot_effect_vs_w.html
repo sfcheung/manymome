@@ -13,7 +13,7 @@ band if available."><meta property="og:image" content="https://sfcheung.github.i
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -110,7 +110,9 @@ band if available.</p>
 <span>  band_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  intervals_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  zero_line_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  level <span class="op">=</span> <span class="fl">0.95</span></span>
+<span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  which <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ustd"</span>, <span class="st">"stdx"</span>, <span class="st">"stdy"</span>, <span class="st">"stdxy"</span><span class="op">)</span>,</span>
+<span>  m <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">fill_wlevels</span><span class="op">(</span><span class="va">to_fill</span>, cond_out <span class="op">=</span> <span class="cn">NULL</span>, k <span class="op">=</span> <span class="fl">21</span><span class="op">)</span></span></code></pre></div>
@@ -122,7 +124,11 @@ band if available.</p>
 
 <dl><dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
 <dd><p>The output of
-<code><a href="cond_indirect.html">cond_indirect_effects()</a></code>.</p></dd>
+<code><a href="cond_indirect.html">cond_indirect_effects()</a></code>.
+Since Version 0.3.7.5, It can also be
+the output of <code><a href="q_mediation.html">q_mediation()</a></code> and
+friends, with one or more paths
+moderated.</p></dd>
 
 
 <dt id="arg-w">w<a class="anchor" aria-label="anchor" href="#arg-w"></a></dt>
@@ -323,6 +329,28 @@ from the original standard errors. Used only for
 paths without mediators and both
 <code>x</code>- and <code>y</code>-variables are not
 standardized.</p></dd>
+
+
+<dt id="arg-which">which<a class="anchor" aria-label="anchor" href="#arg-which"></a></dt>
+<dd><p>If <code>object</code> is the output
+of <code><a href="q_mediation.html">q_mediation()</a></code> and friends,
+this specifies the conditional effects
+to extract: <code>ustd</code>, <code>stdx</code>, <code>stdy</code>
+and <code>stdxy</code> denotes unstandardized
+effects, effects with <code>x</code> standardized,
+effects with <code>y</code> standardized, and
+effects with both <code>x</code> and <code>y</code>
+standardized, respectively.</p></dd>
+
+
+<dt id="arg-m">m<a class="anchor" aria-label="anchor" href="#arg-m"></a></dt>
+<dd><p>The mediator(s) along the
+path from <code>x</code> to <code>y</code>. Used when (a)
+<code>object</code> is the output of <code><a href="q_mediation.html">q_mediation()</a></code>
+and (b) more than one path
+is moderated. If the model has only
+one path moderated, this argument
+can be omitted.</p></dd>
 
 
 <dt id="arg-to-fill">to_fill<a class="anchor" aria-label="anchor" href="#arg-to-fill"></a></dt>

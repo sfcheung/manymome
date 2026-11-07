@@ -59,8 +59,8 @@ index_of_momome(
 )
 
 z_index_of_momome(
-  x,
-  y,
+  x = NULL,
+  y = NULL,
   m = NULL,
   w = NULL,
   z = NULL,
@@ -75,20 +75,18 @@ z_index_of_momome(
   mc_out = NULL,
   ci_type = NULL,
   ci_out = NULL,
-  boot_type = c("perc", "bc"),
+  boot_type = "perc",
   skip_indicators = TRUE,
   w_increase_from = 0,
   w_increase_to = 1,
   z_increase_from = 0,
   z_increase_to = 1,
-  w_unit = c("raw", "sd"),
-  z_unit = c("raw", "sd"),
   ...
 )
 
 z_index_of_mome(
-  x,
-  y,
+  x = NULL,
+  y = NULL,
   m = NULL,
   w = NULL,
   fit = NULL,
@@ -102,11 +100,10 @@ z_index_of_mome(
   mc_out = NULL,
   ci_type = NULL,
   ci_out = NULL,
-  boot_type = c("perc", "bc"),
+  boot_type = "perc",
   skip_indicators = TRUE,
   increase_from = 0,
   increase_to = 1,
-  w_unit = c("raw", "sd"),
   ...
 )
 ```
@@ -115,11 +112,17 @@ z_index_of_mome(
 
 - x:
 
-  Character. The name of the predictor at the start of the path.
+  Character. The name of the predictor at the start of the path. If
+  `fit` is the output of
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  and friends, `x` can be omitted.
 
 - y:
 
-  Character. The name of the outcome variable at the end of the path.
+  Character. The name of the outcome variable at the end of the path. If
+  `fit` is the output of
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  and friends, `x` can be omitted.
 
 - m:
 
@@ -141,11 +144,17 @@ z_index_of_mome(
   [`lavaan.mi::lavaan.mi()`](https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html)
   or its wrapper, such as
   [`lavaan.mi::sem.mi()`](https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html).
+  Since Version 0.3.7.5, It can also be the output of
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  and friends.
 
 - boot_ci:
 
   Logical. Whether bootstrap confidence interval will be formed. Default
-  is `FALSE`.
+  is `FALSE`. If `fit` is the output of
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  and friends and bootstrapping has been requested, this argument is
+  ignored.
 
 - level:
 
@@ -168,7 +177,11 @@ z_index_of_mome(
   [`cond_indirect()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md)
   with bootstrap confidence intervals requested. These stored estimates
   will be reused such that there is no need to do bootstrapping again.
-  If not supplied, the function will try to generate them from `fit`.
+  If not supplied, the function will try to generate them from `fit`. If
+  `fit` is the output of
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  and friends and bootstrapping has been requested, this argument is
+  ignored if `boot_out` can be retrieved.
 
 - R:
 
@@ -191,7 +204,10 @@ z_index_of_mome(
 - mc_ci:
 
   Logical. Whether Monte Carlo confidence interval will be formed.
-  Default is `FALSE`.
+  Default is `FALSE`. If `fit` is the output of
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  and friends and Monte Carlo simulation has been requested, this
+  argument is ignored.
 
 - mc_out:
 
@@ -210,7 +226,10 @@ z_index_of_mome(
   with Monte Carlo confidence intervals requested. These stored
   estimates will be reused such that there is no need to do Monte Carlo
   simulation again. If not supplied, the function will try to generate
-  them from `fit`.
+  them from `fit`. If `fit` is the output of
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  and friends and Monte Carlo simulation has been requested, this
+  argument is ignored if `mc_out` can be retrieved.
 
 - ci_type:
 

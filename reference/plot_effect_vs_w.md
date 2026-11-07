@@ -29,7 +29,9 @@ plot_effect_vs_w(
   band_args = list(),
   intervals_args = list(),
   zero_line_args = list(),
-  level = 0.95
+  level = 0.95,
+  which = c("ustd", "stdx", "stdy", "stdxy"),
+  m = NULL
 )
 
 fill_wlevels(to_fill, cond_out = NULL, k = 21)
@@ -41,6 +43,9 @@ fill_wlevels(to_fill, cond_out = NULL, k = 21)
 
   The output of
   [`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md).
+  Since Version 0.3.7.5, It can also be the output of
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  and friends, with one or more paths moderated.
 
 - w:
 
@@ -176,6 +181,23 @@ fill_wlevels(to_fill, cond_out = NULL, k = 21)
   The level of confidence for the confidence intervals computed from the
   original standard errors. Used only for paths without mediators and
   both `x`- and `y`-variables are not standardized.
+
+- which:
+
+  If `object` is the output of
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  and friends, this specifies the conditional effects to extract:
+  `ustd`, `stdx`, `stdy` and `stdxy` denotes unstandardized effects,
+  effects with `x` standardized, effects with `y` standardized, and
+  effects with both `x` and `y` standardized, respectively.
+
+- m:
+
+  The mediator(s) along the path from `x` to `y`. Used when (a) `object`
+  is the output of
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  and (b) more than one path is moderated. If the model has only one
+  path moderated, this argument can be omitted.
 
 - to_fill:
 

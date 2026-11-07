@@ -14,7 +14,9 @@ pseudo_johnson_neyman(
   optimize_method = c("uniroot", "optimize"),
   extendInt = c("no", "yes", "downX", "upX"),
   tol = .Machine$double.eps^0.25,
-  level = 0.95
+  level = 0.95,
+  which = c("ustd", "stdx", "stdy", "stdxy"),
+  m = NULL
 )
 
 johnson_neyman(
@@ -24,7 +26,9 @@ johnson_neyman(
   optimize_method = c("uniroot", "optimize"),
   extendInt = c("no", "yes", "downX", "upX"),
   tol = .Machine$double.eps^0.25,
-  level = 0.95
+  level = 0.95,
+  which = c("ustd", "stdx", "stdy", "stdxy"),
+  m = NULL
 )
 
 # S3 method for class 'pseudo_johnson_neyman'
@@ -37,6 +41,9 @@ print(x, digits = 3, ...)
 
   A `cond_indirect_effects`-class object, which is the output of
   [`cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/cond_indirect.md).
+  Since Version 0.3.7.5, It can also be the output of
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  and friends, with one or more paths moderated.
 
 - w_lower:
 
@@ -78,6 +85,23 @@ print(x, digits = 3, ...)
   The level of confidence of the confidence level. One minus this level
   is the level of significance. Default is .95, equivalent to a level of
   significance of .05.
+
+- which:
+
+  If `object` is the output of
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  and friends, this specifies the conditional effects to extract:
+  `ustd`, `stdx`, `stdy` and `stdxy` denotes unstandardized effects,
+  effects with `x` standardized, effects with `y` standardized, and
+  effects with both `x` and `y` standardized, respectively.
+
+- m:
+
+  The mediator(s) along the path from `x` to `y`. Used when (a) `object`
+  is the output of
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  and (b) more than one path is moderated. If the model has only one
+  path moderated, this argument can be omitted.
 
 - x:
 

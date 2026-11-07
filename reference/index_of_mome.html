@@ -13,7 +13,7 @@ proposed by Hayes (2015, 2018)."><meta property="og:image" content="https://sfch
 
     <a class="navbar-brand me-2" href="../index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -140,8 +140,8 @@ proposed by Hayes (2015, 2018).</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">z_index_of_momome</span><span class="op">(</span></span>
-<span>  <span class="va">x</span>,</span>
-<span>  <span class="va">y</span>,</span>
+<span>  x <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  y <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  m <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  w <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  z <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -156,20 +156,18 @@ proposed by Hayes (2015, 2018).</p>
 <span>  mc_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ci_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ci_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  boot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"perc"</span>, <span class="st">"bc"</span><span class="op">)</span>,</span>
+<span>  boot_type <span class="op">=</span> <span class="st">"perc"</span>,</span>
 <span>  skip_indicators <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  w_increase_from <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  w_increase_to <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  z_increase_from <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  z_increase_to <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  w_unit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raw"</span>, <span class="st">"sd"</span><span class="op">)</span>,</span>
-<span>  z_unit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raw"</span>, <span class="st">"sd"</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">z_index_of_mome</span><span class="op">(</span></span>
-<span>  <span class="va">x</span>,</span>
-<span>  <span class="va">y</span>,</span>
+<span>  x <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  y <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  m <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  w <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fit <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -183,11 +181,10 @@ proposed by Hayes (2015, 2018).</p>
 <span>  mc_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ci_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ci_out <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  boot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"perc"</span>, <span class="st">"bc"</span><span class="op">)</span>,</span>
+<span>  boot_type <span class="op">=</span> <span class="st">"perc"</span>,</span>
 <span>  skip_indicators <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  increase_from <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  increase_to <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  w_unit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"raw"</span>, <span class="st">"sd"</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -198,13 +195,19 @@ proposed by Hayes (2015, 2018).</p>
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>Character. The name of the
-predictor at the start of the path.</p></dd>
+predictor at the start of the path.
+If <code>fit</code> is the output of
+<code><a href="q_mediation.html">q_mediation()</a></code> and friends, <code>x</code>
+can be omitted.</p></dd>
 
 
 <dt id="arg-y">y<a class="anchor" aria-label="anchor" href="#arg-y"></a></dt>
 <dd><p>Character. The name of the
 outcome variable at the end of the
-path.</p></dd>
+path.
+If <code>fit</code> is the output of
+<code><a href="q_mediation.html">q_mediation()</a></code> and friends, <code>x</code>
+can be omitted.</p></dd>
 
 
 <dt id="arg-m">m<a class="anchor" aria-label="anchor" href="#arg-m"></a></dt>
@@ -230,13 +233,20 @@ It can also be
 a <code>lavaan.mi</code> object
 returned by
 <code><a href="https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html" class="external-link">lavaan.mi::lavaan.mi()</a></code> or
-its wrapper, such as <code><a href="https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html" class="external-link">lavaan.mi::sem.mi()</a></code>.</p></dd>
+its wrapper, such as <code><a href="https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html" class="external-link">lavaan.mi::sem.mi()</a></code>.
+Since Version 0.3.7.5, It can also be
+the output of <code><a href="q_mediation.html">q_mediation()</a></code> and
+friends.</p></dd>
 
 
 <dt id="arg-boot-ci">boot_ci<a class="anchor" aria-label="anchor" href="#arg-boot-ci"></a></dt>
 <dd><p>Logical. Whether
 bootstrap confidence interval will be
-formed. Default is <code>FALSE</code>.</p></dd>
+formed. Default is <code>FALSE</code>.
+If <code>fit</code> is the output of
+<code><a href="q_mediation.html">q_mediation()</a></code> and friends and
+bootstrapping has been requested,
+this argument is ignored.</p></dd>
 
 
 <dt id="arg-level">level<a class="anchor" aria-label="anchor" href="#arg-level"></a></dt>
@@ -261,7 +271,12 @@ stored estimates will be reused such
 that there is no need to do
 bootstrapping again. If not supplied,
 the function will try to generate
-them from <code>fit</code>.</p></dd>
+them from <code>fit</code>.
+If <code>fit</code> is the output of
+<code><a href="q_mediation.html">q_mediation()</a></code> and friends and
+bootstrapping has been requested,
+this argument is ignored if <code>boot_out</code>
+can be retrieved.</p></dd>
 
 
 <dt id="arg-r">R<a class="anchor" aria-label="anchor" href="#arg-r"></a></dt>
@@ -295,7 +310,11 @@ Default is <code>TRUE</code>.</p></dd>
 <dt id="arg-mc-ci">mc_ci<a class="anchor" aria-label="anchor" href="#arg-mc-ci"></a></dt>
 <dd><p>Logical. Whether
 Monte Carlo confidence interval will be
-formed. Default is <code>FALSE</code>.</p></dd>
+formed. Default is <code>FALSE</code>.
+If <code>fit</code> is the output of
+<code><a href="q_mediation.html">q_mediation()</a></code> and friends and
+Monte Carlo simulation has been requested,
+this argument is ignored.</p></dd>
 
 
 <dt id="arg-mc-out">mc_out<a class="anchor" aria-label="anchor" href="#arg-mc-out"></a></dt>
@@ -315,7 +334,12 @@ that there is no need to do
 Monte Carlo simulation again. If not
 supplied,
 the function will try to generate
-them from <code>fit</code>.</p></dd>
+them from <code>fit</code>.
+If <code>fit</code> is the output of
+<code><a href="q_mediation.html">q_mediation()</a></code> and friends and
+Monte Carlo simulation has been requested,
+this argument is ignored if <code>mc_out</code>
+can be retrieved.</p></dd>
 
 
 <dt id="arg-ci-type">ci_type<a class="anchor" aria-label="anchor" href="#arg-ci-type"></a></dt>

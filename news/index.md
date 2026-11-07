@@ -1,6 +1,6 @@
 # Changelog
 
-## manymome 0.3.7.4
+## manymome 0.3.7.5
 
 ### New Features
 
@@ -9,6 +9,20 @@
   to support auxiliary variables when missing data is handled by FIML
   and the model is fitted by SEM. Implemented by
   `semTools::auxiliary().` (0.3.7.3)
+
+- Updated the following functions to the output of
+  [`q_mediation()`](https://sfcheung.github.io/manymome/reference/q_mediation.md)
+  and friends:
+  [`index_of_mome()`](https://sfcheung.github.io/manymome/reference/index_of_mome.md),
+  [`index_of_momome()`](https://sfcheung.github.io/manymome/reference/index_of_mome.md),
+  [`z_index_of_mome()`](https://sfcheung.github.io/manymome/reference/index_of_mome.md),
+  [`z_index_of_momome()`](https://sfcheung.github.io/manymome/reference/index_of_mome.md),
+  [`print_all_cond_indirect_effects()`](https://sfcheung.github.io/manymome/reference/get_one_cond_indirect_effect.md),
+  [`johnson_neyman()`](https://sfcheung.github.io/manymome/reference/pseudo_johnson_neyman.md),
+  [`pseudo_johnson_neyman()`](https://sfcheung.github.io/manymome/reference/pseudo_johnson_neyman.md),
+  and
+  [`plot_effect_vs_w()`](https://sfcheung.github.io/manymome/reference/plot_effect_vs_w.md).
+  (0.3.7.5)
 
 ### Improvement
 
