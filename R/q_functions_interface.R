@@ -51,6 +51,7 @@ get_cond_effects_from_q <- function(
   if (length(out0) == 1) {
     # Has only one path. Use it
     path_name <- names(out0)
+    m <- q_out$m
   } else {
     if (is.null(m)) {
       stop("m must be specified because there are more than one path.")
