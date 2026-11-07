@@ -1,4 +1,4 @@
-# manymome 0.3.7.6
+# manymome 0.3.7.7
 
 ## New Features
 
@@ -35,6 +35,14 @@
   without the need for the original
   `cond_indirect_effects()` output.
   (0.3.7.6)
+
+- Updated `plot_effect_vs_w()` to work
+  with the output of `pseudo_johnson_neyman()`.
+  It can also call `fill_wlevels()`
+  automatically to fill in more levels.
+  Controlled by the new argument
+  `minimum_wlevels`.
+  (0.3.7.7)
 
 ## Miscellaneous
 
