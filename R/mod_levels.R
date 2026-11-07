@@ -617,6 +617,9 @@ find_w_type <- function(w, fit) {
                           function(x) stats::delete.response(stats::terms(x)))
         i <- sapply(terms_list, function(x) {any(w %in% all.vars(x))})
         terms_i <- terms_list[[which(i)[1]]]
+        if (is.null(terms_i)) {
+          stop("Cannot find ", w, " in the data.")
+        }
         w_dc <- attr(terms_i, "dataClasses")[w]
         if (w_dc == "numeric") {
             return("numeric")
