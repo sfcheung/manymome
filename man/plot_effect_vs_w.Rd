@@ -30,7 +30,8 @@ plot_effect_vs_w(
   zero_line_args = list(),
   level = 0.95,
   which = c("ustd", "stdx", "stdy", "stdxy"),
-  m = NULL
+  m = NULL,
+  minimum_wlevels = 3
 )
 
 fill_wlevels(to_fill, cond_out = NULL, k = 21)
@@ -216,6 +217,16 @@ and (b) more than one path
 is moderated. If the model has only
 one path moderated, this argument
 can be omitted.}
+
+\item{minimum_wlevels}{The minimum
+levels of the moderator used in the
+plot. If the number of levels in
+\code{object} is less than this number,
+\code{\link[=fill_wlevels]{fill_wlevels()}} will be used to
+increase the number of levels. If
+failed, a warning will be issued
+and no additional levels will be
+added.}
 
 \item{to_fill}{The output of
 \code{\link[=cond_indirect_effects]{cond_indirect_effects()}} or

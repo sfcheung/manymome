@@ -263,6 +263,16 @@
 #' one path moderated, this argument
 #' can be omitted.
 #'
+#' @param minimum_wlevels The minimum
+#' levels of the moderator used in the
+#' plot. If the number of levels in
+#' `object` is less than this number,
+#' [fill_wlevels()] will be used to
+#' increase the number of levels. If
+#' failed, a warning will be issued
+#' and no additional levels will be
+#' added.
+#'
 #' @seealso [cond_indirect_effects()]
 #'
 #' @examples
@@ -325,7 +335,8 @@ plot_effect_vs_w <- function(object,
                              zero_line_args = list(),
                              level = .95,
                              which = c("ustd", "stdx", "stdy", "stdxy"),
-                             m = NULL) {
+                             m = NULL,
+                             minimum_wlevels = 3) {
     if (inherits(object, "q_mediation")) {
       object <- get_cond_effects_from_q(
         object,
@@ -333,6 +344,51 @@ plot_effect_vs_w <- function(object,
         which = match.arg(which)
       )
     }
+
+    if (inherits(object, "pseudo_johnson_neyman")) {
+      if (nrow(object$cond_effects) < minimum_wlevels) {
+        # Need to run fill_wlevels directly on object if
+        # it is the output of pseudo_johnson_neyman()
+        object_filled <- try(
+                          fill_wlevels(
+                              object,
+                              k = minimum_wlevels
+                            ),
+                          silent = TRUE
+                        )
+        if (!inherits(object_filled, "try-error")) {
+          object <- object_filled
+        } else {
+          warning(
+            "Failed to increase the levels of the moderator automatically. ",
+            "Only the levels from 'pseudo_johnson_neyman()' are plotted. ",
+            "Set 'minimum_wlevels' to 0 to suppress this warning."
+          )
+        }
+      } else {
+        object <- object$cond_effects
+      }
+    }
+
+    if (nrow(object) < minimum_wlevels) {
+      object_filled <- try(
+                        fill_wlevels(
+                            object,
+                            k = minimum_wlevels
+                          ),
+                        silent = TRUE
+                      )
+      if (!inherits(object_filled, "try-error")) {
+        object <- object_filled
+      } else {
+        warning(
+          "Failed to increase the levels of the moderator automatically. ",
+          "Set the levels when computing the conditional effects, or",
+          "set 'minimum_wlevels' to 0 to suppress this warning."
+        )
+      }
+    }
+
     full_output_1 <- attr(object, "full_output")[[1]]
     has_m <- isTRUE(!is.null(full_output_1$m))
     standardized_x <- full_output_1$standardized_x
