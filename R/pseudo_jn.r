@@ -431,7 +431,8 @@ pseudo_johnson_neyman <- function(object = NULL,
                 w_range_ub = w_max,
                 w_lower = w_lower,
                 w_upper = w_upper,
-                level = level)
+                fit = fit,
+                cond_out_call = out_call)
     class(out) <- c("pseudo_johnson_neyman", class(out))
     out
   }

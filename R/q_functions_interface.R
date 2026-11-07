@@ -68,6 +68,12 @@ get_cond_effects_from_q <- function(
          " not in the output.")
   }
   out1 <- out0[[i]]
+  # Fix call
+  call1 <- attr(out1, "call")
+  call1$x <- x
+  call1$m <- m
+  call1$y <- y
+  attr(out1, "call") <- call1
   if (inherits(out1, "cond_indirect_effects")) {
     return(out1)
   } else {
