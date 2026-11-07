@@ -84,6 +84,10 @@
 #'
 #' @param object The output of
 #' [cond_indirect_effects()].
+#' Since Version 0.3.7.5, It can also be
+#' the output of [q_mediation()] and
+#' friends, with one or more paths
+#' moderated.
 #'
 #' @param w The name of the moderator.
 #' Must be present in `object`. If `NULL`,
@@ -241,6 +245,24 @@
 #' `x`- and `y`-variables are not
 #' standardized.
 #'
+#' @param which If `object` is the output
+#' of [q_mediation()] and friends,
+#' this specifies the conditional effects
+#' to extract: `ustd`, `stdx`, `stdy`
+#' and `stdxy` denotes unstandardized
+#' effects, effects with `x` standardized,
+#' effects with `y` standardized, and
+#' effects with both `x` and `y`
+#' standardized, respectively.
+#'
+#' @param m The mediator(s) along the
+#' path from `x` to `y`. Used when (a)
+#' `object` is the output of [q_mediation()]
+#' and (b) more than one path
+#' is moderated. If the model has only
+#' one path moderated, this argument
+#' can be omitted.
+#'
 #' @seealso [cond_indirect_effects()]
 #'
 #' @examples
@@ -301,7 +323,16 @@ plot_effect_vs_w <- function(object,
                              band_args = list(),
                              intervals_args = list(),
                              zero_line_args = list(),
-                             level = .95) {
+                             level = .95,
+                             which = c("ustd", "stdx", "stdy", "stdxy"),
+                             m = NULL) {
+    if (inherits(object, "q_mediation")) {
+      object <- get_cond_effects_from_q(
+        object,
+        m = m,
+        which = match.arg(which)
+      )
+    }
     full_output_1 <- attr(object, "full_output")[[1]]
     has_m <- isTRUE(!is.null(full_output_1$m))
     standardized_x <- full_output_1$standardized_x
