@@ -493,11 +493,41 @@ indirect_i <- function(x,
           }
       }
     b_all_final <- b_all * scale_x / scale_y
+
+    # ==== Ensure some arguments are always evaluated ====
+
+    # This is OK because only manymome functions are supposed
+    # to use the original calls.
+
+    my_call <- match.call()
+    not_eval <- c(
+      "fit",
+      "est",
+      "implied_stats",
+      "data",
+      "est_vcov",
+      "df_residual"
+    )
+
+    for (e_names in setdiff(names(my_call), not_eval)) {
+      if (nchar(e_names) > 0) {
+        tmp <- try(
+          eval(my_call[[e_names]]),
+          silent = TRUE
+        )
+        if (!inherits(tmp, "try-error")) {
+          my_call[[e_names]] <- tmp
+        }
+      }
+    }
+
+    # ==== Finalize the output ====
+
     out <- list(indirect = unname(b_all_final),
                 indirect_raw = unname(b_all),
                 components = bs_org,
                 components_conditional = bs,
-                call = match.call(),
+                call = my_call,
                 scale_x = scale_x,
                 scale_y = scale_y,
                 standardized_x = standardized_x,

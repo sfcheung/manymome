@@ -2,6 +2,8 @@ library(testthat)
 library(manymome)
 suppressMessages(library(lavaan))
 
+test_that("cond_indirect_lm", {
+
 dat <- modmed_x1m3w4y1
 lm_m1 <- lm(m1 ~ x * w1, dat)
 lm_m2 <- lm(m2 ~ m1 * w2, dat)
@@ -129,45 +131,45 @@ outmo_boot_chk <- mapply(indirect_i,
                        SIMPLIFY = FALSE)
 
 
-test_that("cond_indirect: lm", {
+# test_that("cond_indirect: lm", {
     expect_equal(out$indirect, out_chk$indirect)
     # expect_identical(out_boot$boot_indirect,
     #                  sapply(out_boot_chk, function(x) x$indirect))
-  })
+  # })
 
-test_that("confint for indirect: lm", {
+# test_that("confint for indirect: lm", {
     expect_warning(confint(out))
     expect_equal(coef(out),  out_boot$indirect, ignore_attr = TRUE)
     expect_equal(confint(out_boot),  out_boot$boot_ci, ignore_attr = TRUE)
-  })
+  # })
 
-test_that("cond_indirect: lm, mediation only", {
+# test_that("cond_indirect: lm, mediation only", {
     expect_equal(outm$indirect, outm_chk$indirect)
     expect_equal(outm_boot$boot_indirect,
                      sapply(outm_boot_chk, function(x) x$indirect))
     expect_identical(outm[-which(names(outm) == "cond_indirect_call")],
                      outi[-which(names(outi) == "cond_indirect_call")])
-  })
+  # })
 
-test_that("confint for indirect, mediation only", {
+# test_that("confint for indirect, mediation only", {
     expect_warning(confint(outm))
     expect_equal(coef(outm),  outm_boot$indirect, ignore_attr = TRUE)
     expect_equal(confint(outm_boot),  outm_boot$boot_ci, ignore_attr = TRUE)
     expect_equal(confint(outi_boot),  outm_boot$boot_ci, ignore_attr = TRUE)
-  })
+  # })
 
-test_that("cond_indirect: lm, moderation only", {
+# test_that("cond_indirect: lm, moderation only", {
     expect_equal(outmo$indirect, outmo_chk$indirect)
     # expect_identical(outmo_boot$boot_indirect,
     #                  sapply(outmo_boot_chk, function(x) x$indirect))
-  })
+  # })
 
-test_that("confint for indirect: lm, moderation only", {
+# test_that("confint for indirect: lm, moderation only", {
     # SE-CI is valid and returned now
     # expect_warning(confint(outmo))
     expect_equal(coef(outmo),  outmo_boot$indirect, ignore_attr = TRUE)
     expect_equal(confint(outmo_boot),  outmo_boot$boot_ci, ignore_attr = TRUE)
-  })
+  # })
 
 out_boot2_preboot <- cond_indirect(x = "x", y = "y",
                                     m = c("m1", "m2", "m3"),
@@ -176,9 +178,9 @@ out_boot2_preboot <- cond_indirect(x = "x", y = "y",
                                     boot_ci = TRUE,
                                     boot_out = out_boot2)
 
-test_that("cond_indirect: Use boot_out from previous run", {
+# test_that("cond_indirect: Use boot_out from previous run", {
     expect_equal(out_boot2_preboot$boot_ci, out_boot2$boot_ci, ignore_attr = TRUE)
-  })
+  # })
 
 outm_boot2 <- indirect_effect(x = "x", y = "y",
                      m = c("m1", "m2", "m3"),
@@ -194,6 +196,8 @@ outm_boot2_preboot <- indirect_effect(x = "x", y = "y",
                      boot_ci = TRUE,
                      boot_out = outm_boot2)
 
-test_that("indirect_effect: Use boot_out from previous run", {
+# test_that("indirect_effect: Use boot_out from previous run", {
     expect_equal(outm_boot2_preboot$boot_ci, outm_boot2$boot_ci, ignore_attr = TRUE)
-  })
+  # })
+
+})
