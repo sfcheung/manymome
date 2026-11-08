@@ -9,7 +9,7 @@
 [![R-CMD-check](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/manymome/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-(Version 0.3.7.8, updated on 2026-11-08, [release history](https://sfcheung.github.io/manymome/news/index.html))
+(Version 0.3.8, updated on 2026-11-08, [release history](https://sfcheung.github.io/manymome/news/index.html))
 
 # manymome  <img src="man/figures/logo.png" align="right" height="150" />
 
@@ -90,13 +90,16 @@ by multiple regression. The package was introduced in:
   effects correctly take into account the sampling variation
   of the standardizers (the standard deviations of the predictor
   and the outcome variable) by recomputing them in each bootstrap
-  sample or replication.
+  sample or replication. As demonstrated by
+  [M. W.-L. Cheung, (2009)](https://doi.org/10.3758/BRM.41.2.425),
+  standardizing the variables before
+  doing bootstrapping is inappropriate, and `manymome` does not use this
+  approach.
 
 - **Supports Missing Data**
 
   Supports datasets with missing data
   through `lavaan::sem()` with full information maximum likelihood (`fiml`).
-
   In version 0.2.7.3 or later, it also supports missing data handled
   by multiple imputation if the models are fitted by `lavaan.mi::sem.mi()`
   or `lavaan.mi::lavaan.mi()` (see `vignette("do_mc_lavaan_mi")`).
@@ -111,6 +114,50 @@ by multiple regression. The package was introduced in:
   creation of dummy variables in `lavaan::sem()`, and can also capitalize on
   the native support of categorical moderators in `lm()`.
 
+- **Supports Latent Variables Mediation**
+
+  Supports indirect effects among
+  latent variables for models fitted by `lavaan::sem()` (see
+  `vignette("med_lav")`).
+
+- **Supports Latent Variable Moderation and Moderated Mediation**
+
+  Supports latent variable models
+  with moderation
+  and moderated mediation fitted
+  by `lavaan::sam()` using
+  the SAM (Structural After Measurement,
+  see [Rosseel et al., 2025](https://doi.org/10.3758/s13428-024-02532-y)).
+  See articles [mome_sam](https://sfcheung.github.io/manymome/articles/mome_sam.html)
+  and [mo_sam](https://sfcheung.github.io/manymome/articles/mo_sam.html)
+  for illustrations.
+  (Added in 0.3.6)
+
+- **Supports Treating Group As a Moderator**
+
+  For multigroup models fitted by `lavaan::sem()`, it supports
+  comparing the direct or indirect effects along any path
+  between any two groups. That is, it uses the grouping variable
+  as a moderator, as illustrated [in this article](https://sfcheung.github.io/manymome/articles/med_mg.html). There
+  is no limit on the number of groups, other
+  than those set by `lavaan::sem()`.
+  (Added in 0.1.14.2)
+
+- **All-In-One Functions for Common Models**
+
+  For common models, it also has several
+  all-in-one functions. Instead of the
+  step-by-step workflow, users can also
+  call one function to fit a model
+  and compute all major effects.
+  Illustrated
+  in [this page](https://sfcheung.github.io/manymome/articles/q_mediation.html). It also supports custom models,
+  as illustrated [in this post](https://sfcheung.github.io/manymome/reference/q_mediation.html#specifying-a-model-of-an-arbitrary-form)
+  and in the [first example](https://sfcheung.github.io/manymome/reference/q_mediation.html#ref-examples).
+  Since 0.3.7, these all-in-one functions
+  also support models with moderators.
+  (All-in-one functions added in 0.2.7)
+
 - **Less Time for Bootstrapping**
 
   Bootstrapping, which can be time-consuming, can
@@ -118,20 +165,9 @@ by multiple regression. The package was introduced in:
   and conditional indirect effects can be called as many times as needed without redoing
   bootstrapping because they can reuse pregenerated bootstrap
   estimates (see `vignette("manymome")` and `vignette("do_boot")`).
-
-- **Supports Latent Variables Mediation**
-
-  Supports indirect effects among
-  latent variables for models fitted by `lavaan::sem()` (see
-  `vignette("med_lav")`).
-
-- **Supports Treating Group As a Moderator**
-
-  For multigroup models fitted by `lavaan::sem()`, it supports
-  comparing the direct or indirect effects along any path
-  between any two groups. That is, it uses the grouping variable
-  as a moderator (illustrated [here](https://sfcheung.github.io/manymome/articles/med_mg.html);
-  supported in 0.1.14.2 and later versions).
+  As long as the model itself and the estimation method
+  are not changed, no need to redo bootstrapping when
+  computing effects.
 
 # Limitations
 
@@ -214,3 +250,20 @@ If you have any suggestions and find any bugs or limitations, please feel
 free to open a GitHub issue. Thanks.
 
 https://github.com/sfcheung/manymome/issues
+
+# References
+
+Cheung, M. W.-L. (2009). Comparison of
+methods for constructing confidence
+intervals of standardized indirect
+effects. *Behavior Research Methods*,
+*41*(2), 425-438.
+https://doi.org/10.3758/BRM.41.2.425
+
+Rosseel, Y., Burghgraeve, E., Loh, W.
+W., & Schermelleh-Engel, K. (2025).
+Structural after measurement (SAM)
+approaches for accommodating latent
+quadratic and interaction effects.
+*Behavior Research Methods, 57*(4), 101.
+https://doi.org/10.3758/s13428-024-02532-y

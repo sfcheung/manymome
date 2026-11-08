@@ -92,6 +92,16 @@ interval correctly (Cheung, 2009; Friedrich, 1982).
 No need to standardize the
 variables in advance in Stage 1, even for paths with moderators.
 
+For common models, users may also use the
+*all-in-one* workflow provided by `q_mediation()`
+and friends: Call one function to fit
+a model and compute most effects. See
+[this article](https://sfcheung.github.io/manymome/articles/q_mediation.html)
+for an illustration. This approach is
+less flexible than the conventional one
+presented above. Nevertheless, this workflow
+may suffice in some scenarios.
+
 ## What Will Be Covered In This Get-Started Article
 
 - Use `cond_indirect_effects()` to compute *conditional*
