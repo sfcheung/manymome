@@ -324,6 +324,9 @@
 #' for the technical details of the
 #' implementation.
 #'
+#' (Support for auxiliary variables is
+#' available for `manymome` 0.3.7.3 or later.)
+#'
 #' ### Limitations in Including Auxiliary Variables
 #'
 #' - If `aux` is used, the estimator must
