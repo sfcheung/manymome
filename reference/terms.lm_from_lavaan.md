@@ -67,7 +67,7 @@ terms(fit_list$m)
 #> attr(,"response")
 #> [1] 1
 #> attr(,".Environment")
-#> <environment: 0x5c66350ec2c8>
+#> <environment: 0x5b37115f5a20>
 terms(fit_list$y)
 #> y ~ m + x + c1 + c2
 #> attr(,"variables")
@@ -88,5 +88,5 @@ terms(fit_list$y)
 #> attr(,"response")
 #> [1] 1
 #> attr(,".Environment")
-#> <environment: 0x5c663512a8b0>
+#> <environment: 0x5b37115f78d0>
 ```

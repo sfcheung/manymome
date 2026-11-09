@@ -2,6 +2,8 @@
 
 ## manymome 0.3.8
 
+CRAN release: 2026-11-08
+
 ### New Features
 
 - Updated
