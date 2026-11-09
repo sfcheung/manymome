@@ -910,6 +910,9 @@ Auxiliary variables are supported through
 help page of \code{\link[semTools:auxiliary]{semTools::auxiliary()}}
 for the technical details of the
 implementation.
+
+(Support for auxiliary variables is
+available for \code{manymome} 0.3.7.3 or later.)
 \subsection{Limitations in Including Auxiliary Variables}{
 \itemize{
 \item If \code{aux} is used, the estimator must
