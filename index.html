@@ -30,7 +30,7 @@
 
     <a class="navbar-brand me-2" href="index.html">manymome</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.7.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.8</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,7 +97,7 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9">
-<p>(Version 0.3.7.7, updated on 2026-11-07, <a href="https://sfcheung.github.io/manymome/news/index.html">release history</a>)</p>
+<p>(Version 0.3.8, updated on 2026-11-08, <a href="https://sfcheung.github.io/manymome/news/index.html">release history</a>)</p>
 <div class="section level1">
 <div class="page-header">
 <img src="logo.png" class="logo" alt=""><h1 id="manymome-">manymome <a class="anchor" aria-label="anchor" href="#manymome-"></a>
@@ -136,28 +136,35 @@
 </li>
 <li>
 <p><strong>Supports Standardized Effects</strong></p>
-<p>Can estimate standardized indirect effects and standardized conditional indirect effects without the need to standardize the variables. The bootstrap and Monte Carlo confidence intervals for standardized effects correctly take into account the sampling variation of the standardizers (the standard deviations of the predictor and the outcome variable) by recomputing them in each bootstrap sample or replication.</p>
+<p>Can estimate standardized indirect effects and standardized conditional indirect effects without the need to standardize the variables. The bootstrap and Monte Carlo confidence intervals for standardized effects correctly take into account the sampling variation of the standardizers (the standard deviations of the predictor and the outcome variable) by recomputing them in each bootstrap sample or replication. As demonstrated by <a href="https://doi.org/10.3758/BRM.41.2.425" class="external-link">M. W.-L. Cheung, (2009)</a>, standardizing the variables before doing bootstrapping is inappropriate, and <code>manymome</code> does not use this approach.</p>
 </li>
 <li>
 <p><strong>Supports Missing Data</strong></p>
-<p>Supports datasets with missing data through <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> with full information maximum likelihood (<code>fiml</code>).</p>
-<p>In version 0.2.7.3 or later, it also supports missing data handled by multiple imputation if the models are fitted by <code><a href="https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html" class="external-link">lavaan.mi::sem.mi()</a></code> or <code><a href="https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html" class="external-link">lavaan.mi::lavaan.mi()</a></code> (see <code><a href="articles/do_mc_lavaan_mi.html">vignette("do_mc_lavaan_mi")</a></code>). (Support for <code>semTools::runMI()</code> and its wrappers was removed in version 0.2.7.3 because this and related functions were deprecated in <code>semTools</code>.)</p>
+<p>Supports datasets with missing data through <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> with full information maximum likelihood (<code>fiml</code>). In version 0.2.7.3 or later, it also supports missing data handled by multiple imputation if the models are fitted by <code><a href="https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html" class="external-link">lavaan.mi::sem.mi()</a></code> or <code><a href="https://rdrr.io/pkg/lavaan.mi/man/lavaan.mi.html" class="external-link">lavaan.mi::lavaan.mi()</a></code> (see <code><a href="articles/do_mc_lavaan_mi.html">vignette("do_mc_lavaan_mi")</a></code>). (Support for <code>semTools::runMI()</code> and its wrappers was removed in version 0.2.7.3 because this and related functions were deprecated in <code>semTools</code>.)</p>
 </li>
 <li>
 <p><strong>Supports Numeric and Categorical Moderators</strong></p>
 <p>Supports numeric and categorical moderators. It has a function (<code><a href="reference/factor2var.html">factor2var()</a></code>) for the easy creation of dummy variables in <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>, and can also capitalize on the native support of categorical moderators in <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.</p>
 </li>
 <li>
-<p><strong>Less Time for Bootstrapping</strong></p>
-<p>Bootstrapping, which can be time-consuming, can be conducted just once. The main functions for computing indirect effects and conditional indirect effects can be called as many times as needed without redoing bootstrapping because they can reuse pregenerated bootstrap estimates (see <code><a href="articles/manymome.html">vignette("manymome")</a></code> and <code><a href="articles/do_boot.html">vignette("do_boot")</a></code>).</p>
-</li>
-<li>
 <p><strong>Supports Latent Variables Mediation</strong></p>
 <p>Supports indirect effects among latent variables for models fitted by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> (see <code><a href="articles/med_lav.html">vignette("med_lav")</a></code>).</p>
 </li>
 <li>
+<p><strong>Supports Latent Variable Moderation and Moderated Mediation</strong></p>
+<p>Supports latent variable models with moderation and moderated mediation fitted by <code><a href="https://rdrr.io/pkg/lavaan/man/sam.html" class="external-link">lavaan::sam()</a></code> using the SAM (Structural After Measurement, see <a href="https://doi.org/10.3758/s13428-024-02532-y" class="external-link">Rosseel et al., 2025</a>). See articles <a href="https://sfcheung.github.io/manymome/articles/mome_sam.html">mome_sam</a> and <a href="https://sfcheung.github.io/manymome/articles/mo_sam.html">mo_sam</a> for illustrations. (Added in 0.3.6)</p>
+</li>
+<li>
 <p><strong>Supports Treating Group As a Moderator</strong></p>
-<p>For multigroup models fitted by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>, it supports comparing the direct or indirect effects along any path between any two groups. That is, it uses the grouping variable as a moderator (illustrated <a href="https://sfcheung.github.io/manymome/articles/med_mg.html">here</a>; supported in 0.1.14.2 and later versions).</p>
+<p>For multigroup models fitted by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>, it supports comparing the direct or indirect effects along any path between any two groups. That is, it uses the grouping variable as a moderator, as illustrated <a href="https://sfcheung.github.io/manymome/articles/med_mg.html">in this article</a>. There is no limit on the number of groups, other than those set by <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>. (Added in 0.1.14.2)</p>
+</li>
+<li>
+<p><strong>All-In-One Functions for Common Models</strong></p>
+<p>For common models, it also has several all-in-one functions. Instead of the step-by-step workflow, users can also call one function to fit a model and compute all major effects. Illustrated in <a href="https://sfcheung.github.io/manymome/articles/q_mediation.html">this page</a>. It also supports custom models, as illustrated <a href="https://sfcheung.github.io/manymome/reference/q_mediation.html#specifying-a-model-of-an-arbitrary-form">in this post</a> and in the <a href="https://sfcheung.github.io/manymome/reference/q_mediation.html#ref-examples">first example</a>. Since 0.3.7, these all-in-one functions also support models with moderators. (All-in-one functions added in 0.2.7)</p>
+</li>
+<li>
+<p><strong>Less Time for Bootstrapping</strong></p>
+<p>Bootstrapping, which can be time-consuming, can be conducted just once. The main functions for computing indirect effects and conditional indirect effects can be called as many times as needed without redoing bootstrapping because they can reuse pregenerated bootstrap estimates (see <code><a href="articles/manymome.html">vignette("manymome")</a></code> and <code><a href="articles/do_boot.html">vignette("do_boot")</a></code>). As long as the model itself and the estimation method are not changed, no need to redo bootstrapping when computing effects.</p>
 </li>
 </ul>
 </div>
@@ -205,6 +212,12 @@
 </h1>
 <p>If you have any suggestions and find any bugs or limitations, please feel free to open a GitHub issue. Thanks.</p>
 <p><a href="https://github.com/sfcheung/manymome/issues" class="external-link uri">https://github.com/sfcheung/manymome/issues</a></p>
+</div>
+<div class="section level1">
+<h1 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h1>
+<p>Cheung, M. W.-L. (2009). Comparison of methods for constructing confidence intervals of standardized indirect effects. <em>Behavior Research Methods</em>, <em>41</em>(2), 425-438. <a href="https://doi.org/10.3758/BRM.41.2.425" class="external-link uri">https://doi.org/10.3758/BRM.41.2.425</a></p>
+<p>Rosseel, Y., Burghgraeve, E., Loh, W. W., &amp; Schermelleh-Engel, K. (2025). Structural after measurement (SAM) approaches for accommodating latent quadratic and interaction effects. <em>Behavior Research Methods, 57</em>(4), 101. <a href="https://doi.org/10.3758/s13428-024-02532-y" class="external-link uri">https://doi.org/10.3758/s13428-024-02532-y</a></p>
 </div>
 
   </main><aside class="col-md-3"><div class="links">
